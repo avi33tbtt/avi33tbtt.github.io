@@ -10,34 +10,31 @@
     <script src="js/components/ground.js"></script>
     <script src="js/components/link-controls.js"></script>
     <script src="shaders/skyGradient.js"></script>
+    <link rel="stylesheet" href="css/app.css"/>
   </head>
   <body>
+
     <a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse" camera-position>
+      
       <a-assets>
         <img id="arena" crossOrigin="anonymous" src="brain.jpg">
 
-        <img id="fetus" crossOrigin="anonymous" src="./images/fetus1.jpg">
-        <img id="child" crossOrigin="anonymous" src="./images/child1.jpg">
-        <img id="adult" crossOrigin="anonymous" src="./imagesadult1.jpg">
-        <img id="old" crossOrigin="anonymous" src="./images/old1.jpg">
+        <img id="fetus" crossOrigin="anonymous" src="fetus1.jpg">
+        <img id="child" crossOrigin="anonymous" src="child1.jpg">
+        <img id="adult" crossOrigin="anonymous" src="adult1.jpg">
+        <img id="old" crossOrigin="anonymous" src="old1.jpg">
 
         <img id="blank" crossOrigin="anonymous" src="blank1.jpg">
 
       </a-assets>
+      <a-link href="index.html" position="-7 6 -4" image="#fetus"></a-link>
+
+       <a-sky src="./images/back.png" rotation="0 -60 0"></a-sky>
+
       
-       <a-link href="index.html" position="-11 5 -4" image="#fetus"></a-link>  
-
-
-      
-      
-
-       <a-sky src="./images/neuro.jpg" rotation="0 -60 0"></a-sky>
-
-            
-
-
       <a-entity id="leftHand" link-controls="hand: left"></a-entity>
       <a-entity id="rightHand" link-controls="hand: right"></a-entity>
+
     </a-scene>
   </body>
-</html>
+</html></html>
