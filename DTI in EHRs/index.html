@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Links</title>
+    <meta name="description" content="Motion Capture Components – A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="js/components/aframe-tooltip-component.js"></script>
+    <script src="js/components/camera-position.js"></script>
+    <script src="js/components/ground.js"></script>
+    <script src="js/components/link-controls.js"></script>
+    <script src="shaders/skyGradient.js"></script>
+  </head>
+  <body>
+    <a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse" camera-position>
+      <a-assets>
+        <img id="arena" crossOrigin="anonymous" src="./images/brain.jpg">
+
+        <img id="child" crossOrigin="anonymous" src="./images/neuro.jpg">
+
+      </a-assets>
+      <a-link href="fetal.html" position="-7  8 -8" image="#child"></a-link>
+      <a-link href="neonate.html" position="-8  6 -8" image="#adult"></a-link>
+      <a-link href="child.html" position="-8.5 4 -8" image="#old"></a-link>
+      <a-link href="adult.html" position="-9 2 -8" image="#old"></a-link>
+      <a-link href="middle-age.html" position="-9 0 -8" image="#old"></a-link>
+      <a-link href="old-age.html" position="-8.5 -2 -8" image="#old"></a-link>
+      <a-link href="death.html" position="-8 -4 -8" image="#old"></a-link>
+
+      <a-link href="empathy.html" position="7  8 -8" image="#fetus"></a-link>
+      <a-link href="sketches.html" position="8  6 -8" image="#child"></a-link>
+      <a-link href="sculptures.html" position="8.5 4 -8" image="#adult"></a-link>
+      <a-link href="music.html" position="9 2 -8" image="#old"></a-link>
+      <a-link href="video.html" position="9 0 -8" image="#old"></a-link>
+      <a-link href="drama.html" position="8.5 -2 -8" image="#old"></a-link>
+      <a-link href="innovation.html" position="8 -4 -8" image="#old"></a-link>
+
+       <a-sky src="./images/ab.jpg" rotation="0 -200 0"></a-sky>
+
+      <a-entity id="ground"
+                geometry="primitive: circle; radius: 45;"
+                rotation="0 0 0"
+                position="0 0 -50"
+                material="shader: flat; src: #arena"></a-entity>
+      <a-entity id="leftHand" link-controls="hand: left"></a-entity>
+      <a-entity id="rightHand" link-controls="hand: right"></a-entity>
+      <a-sound src="src: url(pt.mp3)" autoplay="true" position="0 2 5"></a-sound>
+    </a-scene>
+  </body>
+</html>

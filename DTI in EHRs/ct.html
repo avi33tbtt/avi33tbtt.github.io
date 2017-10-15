@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Links</title>
+    <meta name="description" content="Motion Capture Components – A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="js/components/aframe-tooltip-component.js"></script>
+    <script src="js/components/camera-position.js"></script>
+    <script src="js/components/ground.js"></script>
+    <script src="js/components/link-controls.js"></script>
+    <script src="shaders/skyGradient.js"></script>
+  </head>
+  <body>
+    <a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse" camera-position>
+      <a-assets>
+
+        <img id="fetus" crossOrigin="anonymous" src="fetus1.jpg">
+        <img id="child" crossOrigin="anonymous" src="child1.jpg">
+        <img id="adult" crossOrigin="anonymous" src="adult1.jpg">
+        <img id="old" crossOrigin="anonymous" src="old1.jpg">
+        <img id="ct" crossOrigin="anonymous" src="ct.jpg">
+
+        <a-image src="fetus" width="200" height="100"></a-image>
+
+      </a-assets>
+      <a-link href="index.html" position="-11 6 -4" image="#fetus"></a-link>  
+      <a-link href="sunrise.html" position="-11 3 -4" image="#fetus"></a-link>  
+      <a-link href="index.html" position="-11 0 -4" image="#fetus"></a-link>  
+      <a-link href="sunrise.html" position="-11 -3 -4" image="#fetus"></a-link>  
+      
+       <a-image src="#ct" width="8" height="12" position="-7 3 -6"></a-image>
+
+       <a-text value=" was fine and had no problems till  4 months ago. no Diabetes, no Hypertension, but one day i got malaria, for 1 month got treatment but it didn't weny well, then diagnosed with typhoid 3 months ago and then got treated for another two month, then swelling started on my neck 1 month ago, it was small, around size of an almond, but it pain, and so i got to hospital. I Took medicine from Dr. but it kept increasing, then i got admitted because of large size it caused difficult to swallow then difficulty in speaking and also some pain." position="-1 5 -3" color="#FFFFFF"></a-text>
+
+      <a-link href="mountains.html" position="-7 -8 -11" image="#adult"></a-link>
+      <a-link href="sunrise.html" position="-5 -8 -11" image="#old"></a-link>
+      <a-link href="sunrise.html" position="-3 -8 -11" image="#old"></a-link>
+      <a-link href="sunrise.html" position="-1 -8 -11" image="#old"></a-link>
+      <a-link href="sunrise.html" position="1 -8 -11" image="#old"></a-link>
+      <a-link href="sunrise.html" position="3 -8 -11" image="#old"></a-link> 
+      <a-link href="sunrise.html" position="5 -8 -11" image="#old"></a-link>
+      <a-link href="sunrise.html" position="7 -8 -11" image="#old"></a-link>
+
+      <a-link href="http://classworkdecjan.blogspot.in/2016/12/70m-neck-mass-of-large-size-and-unknown.html" position="9 -8 -11" image="#blank"></a-link>
+      
+
+       <a-sky src="neuro.jpg" rotation="0 -60 0"></a-sky>
+
+      
+      <a-entity id="leftHand" link-controls="hand: left"></a-entity>
+      <a-entity id="rightHand" link-controls="hand: right"></a-entity>
+    </a-scene>
+  </body>
+</html>

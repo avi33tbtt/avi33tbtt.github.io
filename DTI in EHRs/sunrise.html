@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Links</title>
+    <meta name="description" content="Motion Capture Components – A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="js/components/aframe-tooltip-component.js"></script>
+    <script src="js/components/camera-position.js"></script>
+    <script src="js/components/ground.js"></script>
+    <script src="js/components/link-controls.js"></script>
+    <script src="shaders/skyGradient.js"></script>
+    <link rel="stylesheet" href="css/app.css"/>
+  </head>
+  <body>
+
+    <a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse" camera-position>
+      
+      <a-assets>
+        <img id="arena" crossOrigin="anonymous" src="brain.jpg">
+
+        <img id="fetus" crossOrigin="anonymous" src="fetus1.jpg">
+        <img id="child" crossOrigin="anonymous" src="child1.jpg">
+        <img id="adult" crossOrigin="anonymous" src="adult1.jpg">
+        <img id="old" crossOrigin="anonymous" src="old1.jpg">
+
+        <img id="blank" crossOrigin="anonymous" src="blank1.jpg">
+
+      </a-assets>
+      <a-link href="index.html" position="-7 6 -4" image="#fetus"></a-link>
+
+       <a-sky src="back.png" rotation="0 -60 0"></a-sky>
+
+      
+      <a-entity id="leftHand" link-controls="hand: left"></a-entity>
+      <a-entity id="rightHand" link-controls="hand: right"></a-entity>
+
+    </a-scene>
+  </body>
+</html>
