@@ -1,105 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    
-    /* Add a gray background color and some padding to the footer */
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rounds in Healthcare</title>
+    <style>
+        :root {
+            --text-color: #1a1a1a;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --link-color: #000000;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            line-height: 1.6;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .intro-tag {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+
+        .intro-tag .icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+            color: #5850ec; /* Medical/Stethoscope brand color */
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        /* Custom list style matching the ↳ arrow symbols in image_dfe775.png */
+        ul.vibe-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 24px;
+        }
+
+        ul.vibe-list li {
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+        }
+
+        ul.vibe-list li::before {
+            content: "↳";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--text-color);
+        }
+
+        a.read-pdf-btn {
+            display: inline-block;
+            font-size: 1.1rem;
+            color: var(--link-color);
+            text-decoration: underline;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        a.read-pdf-btn:hover {
+            color: #333333;
+        }
+
+        /* Video container layout setup */
+        .video-wrapper {
+            margin-top: 12px;
+            max-width: 520px; /* Aligns with the proportional width in the image */
+            width: 100%;
+        }
+
+        /* Aspect ratio container for clean responsive video embedding */
+        .video-container {
+            position: relative;
+            padding-bottom: 74.5%; /* Custom percentage to approximate the layout block aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">Portfolio</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Recommendations</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Case Blogs</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <h1>Vibe Rounds in Healthcare</h1>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Avinash Kumar</h1>      
-    <p>Short Bio.</p>
-  </div>
-</div>
-  
-<div class="container-fluid bg-3 text-center">    
-  <h3>Achievements.</h3><br>
-  <div class="row">
-    <div class="col-sm-3">
-      <p>Malaria Basics</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
+    <div class="intro-tag">
+        <span class="icon">🩺</span> Introducing: VIBE ROUNDS
     </div>
-    <div class="col-sm-3"> 
-      <p>Malaria Expert</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-3"> 
-      <p>Clinical Trial Expert</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-3">
-      <p>EBM expert</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-  </div>
-</div><br>
 
-<div class="container-fluid bg-3 text-center">    
-  <div class="row">
-    <div class="col-sm-3">
-      <p>Scientist 2</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-3"> 
-      <p>Innovator 3</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-3"> 
-      <p>Communication 2</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-    <div class="col-sm-3">
-      <p>Top Scorer of month</p>
-      <img src="./LearningPortfolio/badge.png" class="img-responsive" style="width:100%" alt="Image">
-    </div>
-  </div>
-</div><br><br>
+    <p>Vibe coding changed software. It's time medicine had its equivalent.</p>
 
-<footer class="container-fluid text-center">
-  <p>Prototype Made By Avinash Kumar Gupta</p>
-</footer>
+    <p>Vibe Rounds is a concept for AI-augmented clinical care — where a doctor commands a multimodal AI in natural language, at the bedside, in real time.</p>
+
+    <p>Speak. Point. Show. Get answers.</p>
+
+    <ul class="vibe-list">
+        <li>"What are the drug interactions for this patient?"</li>
+        <li>Point camera at a wound → instant analysis</li>
+        <li>"Draft my SOAP note" → done in 30 seconds</li>
+        <li>Differential diagnosis, evidence-linked, right now</li>
+    </ul>
+
+    <p>Not AI replacing doctors.<br>
+    AI giving doctors the cognitive bandwidth to be their best — at 3 AM, on the 12th hour of a shift, for every patient.</p>
+
+    <p>The best version of every clinician, at every hour, for every patient.</p>
+
+    <p>I've put together a full concept document — free to read and share.</p>
+
+    <a href="https://archive.org/details/vibe-rounds-concept-document" target="_blank" class="read-pdf-btn">Read Pdf</a>
+
+    <!-- Video element referencing the specified link -->
+    <div class="video-wrapper">
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/A8zSJ8oCFUU" 
+                title="Vibe Rounds Video Player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
 
 </body>
 </html>
