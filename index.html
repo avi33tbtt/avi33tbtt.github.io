@@ -1,280 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Rounds in Healthcare</title>
-    <meta name="description" content="Vibe Rounds — AI-augmented clinical care coined by [Dr. Avinash Kumar Gupta], June 2026. The healthcare equivalent of Vibe Coding.">
-    <meta name="author" content="Your Full Name">
-    <style>
-        :root {
-            --text-color: #1a1a1a;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --link-color: #000000;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Rounds — AI-Augmented Clinical Care</title>
+  <meta name="description" content="Vibe Rounds: the healthcare equivalent of Vibe Coding. AI-augmented clinical care coined by Dr. Avinash Kumar Gupta, June 2026." />
+  <meta name="author" content="Dr. Avinash Kumar Gupta" />
+  <meta name="keywords" content="Vibe Rounds, healthcare AI, clinical AI, AI augmented care, vibe coding healthcare, Dr Avinash Kumar Gupta" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://avi33tbtt.github.io/" />
+  <meta property="og:title" content="Vibe Rounds — AI-Augmented Clinical Care" />
+  <meta property="og:description" content="Vibe coding changed software. Vibe Rounds brings the same revolution to medicine. Coined by Dr. Avinash Kumar Gupta, June 2026." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vibe Rounds — AI-Augmented Clinical Care" />
+  <meta name="twitter:description" content="Vibe coding changed software. Vibe Rounds brings the same revolution to medicine." />
+  <link rel="canonical" href="https://avi33tbtt.github.io/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Vibe Rounds: AI-Augmented Clinical Care",
+    "author": { "@type": "Person", "name": "Dr. Avinash Kumar Gupta" },
+    "datePublished": "2026-06",
+    "description": "Vibe Rounds is a concept for AI-augmented clinical care where a doctor commands a multimodal AI in natural language, at the bedside, in real time.",
+    "url": "https://avi33tbtt.github.io/",
+    "sameAs": ["https://archive.org/details/vibe-rounds-concept-document", "https://zenodo.org/records/20622693"]
+  }
+  </script>
 
-        body {
-            font-family: var(--font-family);
-            color: var(--text-color);
-            line-height: 1.6;
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background-color: #ffffff;
-        }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-top: 0;
-            margin-bottom: 24px;
-            letter-spacing: -0.5px;
-        }
+    :root {
+      --bg: #f4f3ef;
+      --surface: #ffffff;
+      --ink: #141414;
+      --ink-muted: #555;
+      --ink-faint: #999;
+      --teal: #0b6b6b;
+      --teal-mid: #138f8f;
+      --teal-light: #ddf0f0;
+      --teal-glow: rgba(11,107,107,0.12);
+      --gold: #c8873a;
+      --border: #e0ded8;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 10px;
+    }
 
-        .intro-tag {
-            display: flex;
-            align-items: center;
-            font-size: 1.1rem;
-            margin-bottom: 24px;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.75; }
 
-        .intro-tag .icon {
-            margin-right: 8px;
-            font-size: 1.2rem;
-            color: #5850ec; /* Medical/Stethoscope brand color */
-        }
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(150deg, #093f3f 0%, #0b6b6b 55%, #0e8080 100%);
+      position: relative; overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 80% 50%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* subtle grid texture */
+    header::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .header-inner { max-width: 880px; margin: 0 auto; padding: 72px 28px 64px; position: relative; z-index: 1; }
 
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 24px;
-            font-weight: 400;
-        }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 24px;
+    }
+    .eyebrow-dot { width: 5px; height: 5px; background: #6dd4d4; border-radius: 50%; animation: pulse-dot 2.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.7)} }
+    .eyebrow span { color: rgba(255,255,255,0.85); }
 
-        /* Custom list style matching the ↳ arrow symbols in image_dfe775.png */
-        ul.vibe-list {
-            list-style: none;
-            padding-left: 0;
-            margin-bottom: 24px;
-        }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6.5vw, 4.4rem);
+      line-height: 1.05; letter-spacing: -0.025em; color: #fff; margin-bottom: 16px;
+    }
+    h1 em { font-style: italic; color: #7de0e0; }
 
-        ul.vibe-list li {
-            font-size: 1.1rem;
-            position: relative;
-            padding-left: 24px;
-            margin-bottom: 8px;
-        }
+    .tagline {
+      font-size: 1.18rem; color: rgba(255,255,255,0.7);
+      max-width: 540px; margin-bottom: 40px; font-weight: 300; line-height: 1.6;
+    }
 
-        ul.vibe-list li::before {
-            content: "↳";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--text-color);
-        }
+    .header-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
-        a.read-pdf-btn {
-            display: inline-block;
-            font-size: 1.1rem;
-            color: var(--link-color);
-            text-decoration: underline;
-            margin-bottom: 28px;
-            font-weight: 500;
-        }
+    .coined-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+      border-radius: 6px; padding: 10px 18px; font-size: 0.88rem; color: rgba(255,255,255,0.88);
+    }
+    .coined-badge strong { color: #fff; }
 
-        a.read-pdf-btn:hover {
-            color: #333333;
-        }
+    .pdf-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold); color: #fff; text-decoration: none;
+      border-radius: 6px; padding: 10px 20px; font-size: 0.88rem; font-weight: 600;
+      transition: filter 0.2s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(200,135,58,0.4);
+    }
+    .pdf-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-        /* Video container layout setup */
-        .video-wrapper {
-            margin-top: 12px;
-            max-width: 520px; /* Aligns with the proportional width in the image */
-            width: 100%;
-        }
+    /* ── MAIN ── */
+    main { max-width: 880px; margin: 0 auto; padding: 0 28px 100px; }
 
-        /* Aspect ratio container for clean responsive video embedding */
-        .video-container {
-            position: relative;
-            padding-bottom: 74.5%; /* Custom percentage to approximate the layout block aspect ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+    /* ── DEFINITION ── */
+    .definition {
+      background: var(--surface);
+      border-left: 5px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 36px 40px; margin: 52px 0;
+      box-shadow: 0 4px 24px var(--teal-glow);
+      position: relative;
+    }
+    .definition::before {
+      content: '"';
+      position: absolute; top: 10px; right: 24px;
+      font-family: 'DM Serif Display', serif; font-size: 6rem; line-height: 1;
+      color: var(--teal-light); pointer-events: none; user-select: none;
+    }
+    .definition-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .definition blockquote { font-family: 'DM Serif Display', serif; font-size: 1.4rem; line-height: 1.55; color: var(--ink); font-style: italic; position: relative; z-index: 1; }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-    </style>
+    /* ── SECTION HEADINGS ── */
+    h2 {
+      font-family: 'DM Serif Display', serif; font-size: 1.85rem; color: var(--ink);
+      margin: 56px 0 22px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.92rem; font-weight: 700; color: var(--teal); margin: 32px 0 10px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+    p { margin-bottom: 16px; color: var(--ink); }
+
+    /* ── PULLQUOTE ── */
+    .pullquote {
+      margin: 48px 0; padding: 36px 40px;
+      background: linear-gradient(135deg, #093f3f, #0b6b6b);
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(9,63,63,0.25);
+    }
+    .pullquote p {
+      font-family: 'DM Serif Display', serif; font-size: 1.45rem; font-style: italic;
+      color: #fff; max-width: 620px; margin: 0 auto; line-height: 1.5;
+    }
+
+    /* ── USE CASES ── */
+    .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 28px 0 44px; }
+    .use-case {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+    .use-case:hover { box-shadow: 0 6px 24px var(--teal-glow); transform: translateY(-2px); border-color: var(--teal-mid); }
+    .use-case .prompt {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--teal-mid);
+      background: var(--teal-light); border-radius: 5px; padding: 9px 13px;
+      margin-bottom: 12px; line-height: 1.45; border-left: 3px solid var(--teal-mid);
+    }
+    .use-case p { font-size: 0.875rem; color: var(--ink-muted); margin: 0; }
+
+    /* ── WHY NOW ── */
+    .why-now-items { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+    .why-item {
+      display: grid; grid-template-columns: 56px 1fr;
+      gap: 0 20px; padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .why-item:last-child { border-bottom: none; }
+    .why-num {
+      font-family: 'DM Serif Display', serif; font-size: 2.2rem; font-style: italic;
+      color: var(--teal-light); line-height: 1; padding-top: 4px;
+      text-shadow: 0 0 0 var(--teal);
+    }
+    .why-item h3 { margin: 0 0 8px; font-size: 0.95rem; }
+    .why-item p { margin: 0; font-size: 0.95rem; color: var(--ink-muted); }
+
+    /* ── VIDEO ── */
+    .video-wrap { margin: 32px 0; }
+    .video-thumb {
+      display: block; position: relative; border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); box-shadow: 0 6px 28px rgba(0,0,0,0.12);
+      text-decoration: none;
+    }
+    .video-placeholder {
+      background: linear-gradient(135deg, #093f3f 0%, #0b6b6b 50%, #138f8f 100%);
+      height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+      position: relative;
+    }
+    .video-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
+    }
+    .play-circle {
+      width: 72px; height: 72px;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 8px rgba(255,255,255,0.06);
+      transition: transform 0.25s, background 0.25s;
+      position: relative; z-index: 1;
+    }
+    .video-thumb:hover .play-circle { transform: scale(1.1); background: rgba(255,255,255,0.25); }
+    .play-circle svg { margin-left: 5px; }
+    .video-title-overlay {
+      color: rgba(255,255,255,0.88); font-size: 1rem; font-weight: 500;
+      letter-spacing: 0.01em; position: relative; z-index: 1;
+    }
+    .video-caption { font-size: 0.84rem; color: var(--ink-faint); margin-top: 10px; text-align: center; }
+
+    /* ── RESOURCE GRID ── */
+    .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 28px 0; }
+    .resource-link {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 18px;
+      text-decoration: none; color: var(--ink); font-size: 0.9rem; font-weight: 600;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .resource-link:hover { border-color: var(--teal); box-shadow: 0 4px 16px var(--teal-glow); transform: translateY(-1px); }
+    .resource-link .icon { font-size: 1.25rem; flex-shrink: 0; }
+    .resource-link .rl-text { display: flex; flex-direction: column; }
+    .resource-link .rl-label { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    .resource-link .rl-sub { font-size: 0.75rem; color: var(--ink-faint); font-weight: 400; margin-top: 1px; }
+
+    /* ── SEEN ON ── */
+    .seen-on { background: var(--teal-light); border-radius: var(--radius); padding: 26px 30px; margin: 36px 0; border: 1px solid #c4e4e4; }
+    .seen-on-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
+    .seen-on-list { display: flex; flex-wrap: wrap; gap: 10px; }
+    .seen-on-list a {
+      background: #fff; border: 1px solid var(--border); border-radius: 5px;
+      padding: 6px 16px; font-size: 0.83rem; font-weight: 500; color: var(--ink);
+      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+    }
+    .seen-on-list a:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── CTA BLOCK ── */
+    .cta-block {
+      background: var(--ink); color: #fff;
+      border-radius: var(--radius); padding: 48px 44px; margin: 52px 0;
+      position: relative; overflow: hidden;
+    }
+    .cta-block::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(11,107,107,0.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-block h2 {
+      font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: #fff;
+      border: none; margin: 0 0 12px; padding: 0; position: relative; z-index: 1;
+    }
+    .cta-block p { color: rgba(255,255,255,0.65); margin-bottom: 32px; max-width: 480px; position: relative; z-index: 1; }
+    .cta-buttons { display: flex; flex-wrap: wrap; gap: 14px; position: relative; z-index: 1; }
+    .cta-btn-primary {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--teal-mid); color: #fff; text-decoration: none;
+      padding: 13px 26px; border-radius: 7px; font-weight: 600; font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 12px rgba(19,143,143,0.4);
+    }
+    .cta-btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
+    .cta-btn-secondary {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: transparent; color: rgba(255,255,255,0.8); text-decoration: none;
+      padding: 13px 26px; border-radius: 7px; font-weight: 500; font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .cta-btn-secondary:hover { border-color: rgba(255,255,255,0.5); color: #fff; background: rgba(255,255,255,0.06); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 32px 28px;
+      text-align: center; font-size: 0.84rem; color: var(--ink-faint);
+      max-width: 880px; margin: 0 auto;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header-inner { padding: 52px 20px 44px; }
+      .definition { padding: 26px 22px; }
+      .cta-block { padding: 32px 24px; }
+      h1 { font-size: 2.4rem; }
+      .why-item { grid-template-columns: 40px 1fr; }
+      .why-num { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Vibe Rounds in Healthcare</h1>
-
-    <div class="intro-tag">
-        <span class="icon">🩺</span> Introducing: VIBE ROUNDS
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      🩺 Healthcare AI Concept &nbsp;·&nbsp; <span>Coined June 2026</span>
+    </p>
+    <h1>Vibe <em>Rounds</em></h1>
+    <p class="tagline">Vibe Coding changed software. It's time medicine had its equivalent.</p>
+    <div class="header-meta">
+      <div class="coined-badge">
+        Coined by <strong>&nbsp;Dr. Avinash Kumar Gupta&nbsp;</strong> · June 2026
+      </div>
+      <a class="pdf-btn" href="https://archive.org/details/vibe-rounds-concept-document" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Read the PDF
+      </a>
     </div>
+  </div>
+</header>
 
-    <p><strong>Vibe coding changed software. It's time medicine had its equivalent.</strong></p>
-    <p>Vibe Rounds is a concept for AI-augmented clinical care — where a doctor commands a multimodal AI in natural language, at the bedside, in real time.</p>
+<main>
 
-    <p>Speak. Point. Show. Get answers.</p>
+  <!-- ── DEFINITION ── -->
+  <div class="definition">
+    <p class="definition-label">Definition</p>
+    <blockquote>
+      Vibe Rounds is AI-augmented clinical care — where a doctor commands a multimodal AI
+      in natural language, at the bedside, in real time. Speak. Point. Show. Get answers.
+    </blockquote>
+  </div>
 
-    <ul class="vibe-list">
-        <li>"What are the drug interactions for this patient?"</li>
-        <li>Point camera at a wound → instant analysis</li>
-        <li>"Draft my SOAP note" → done in 30 seconds</li>
-        <li>Differential diagnosis, evidence-linked, right now</li>
-    </ul>
-
-    <p>Not AI replacing doctors.<br>
-    AI giving doctors the cognitive bandwidth to be their best — at 3 AM, on the 12th hour of a shift, for every patient.</p>
-
-    <p>The best version of every clinician, at every hour, for every patient.</p>
-
-    <p>I've put together a full concept document — free to read and share.</p>
-
-    <a href="https://archive.org/details/vibe-rounds-concept-document" target="_blank" class="read-pdf-btn">Read Pdf</a>
-
-    <!-- Video element referencing the specified link -->
-    <div class="video-wrapper">
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/A8zSJ8oCFUU" 
-                title="Vibe Rounds Video Player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-    <p>Contact Dr. Avinash Kumar Gupta on LinkedIn: <a href="https://in.linkedin.com/in/dravinashkumargupta" target="_blank" rel="noopener noreferrer">https://in.linkedin.com/in/dravinashkumargupta</a></p>
-
-    <!-- Add this to your CSS stylesheet or inside your <style> tag -->
-<style>
-  .collab-container {
-    text-align: center;
-    padding: 25px 20px;
-    background-color: #ffffff; /* Clean white background */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-
-  .collab-text {
-    font-size: 16px;
-    color: #333333;
-    margin-bottom: 12px;
-  }
-
-  .collab-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #0066cc; /* Clean link blue */
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
-    transition: color 0.2s ease, border-bottom 0.2s ease;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-  }
-
-  .collab-link:hover {
-    color: #004499;
-    border-bottom: 2px solid #004499;
-  }
-</style>
-
-<!-- The HTML structure -->
-<div class="collab-container">
-  <p class="collab-text">
-    Want to collaborate or write about <strong>Vibe Rounds</strong>? 
+  <!-- ── WHAT IS IT ── -->
+  <h2>What is Vibe Rounds?</h2>
+  <p>
+    Just as <em>Vibe Coding</em> lets developers build software through natural language and intuition,
+    <strong>Vibe Rounds</strong> brings the same paradigm to clinical medicine. A doctor doesn't type
+    into a form or navigate menus — they speak, gesture, and show. The AI responds in real time,
+    augmenting clinical judgment without replacing it.
   </p>
-  <a href="mailto:avi33tbtt@gmail.com" class="collab-link">
-    Reach me at avi33tbtt@gmail.com
-  </a>
-</div>
-    
-    <style>
-  .footer-links-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 20px;
-    background-color: #f8f9fa; /* Light background, change to match your site */
-    border-top: 1px solid #e9ecef;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
+  <p>
+    Not AI replacing doctors. AI giving doctors the cognitive bandwidth to be their best —
+    at 3 AM, on the 12th hour of a shift, for every patient.
+  </p>
 
-  .footer-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-  }
+  <!-- ── PULLQUOTE ── -->
+  <div class="pullquote">
+    <p>"The best version of every clinician, at every hour, for every patient."</p>
+  </div>
 
-  /* Zenodo Custom Style */
-  .badge-zenodo {
-    background-color: #024e75;
-    color: #ffffff;
-  }
-  .badge-zenodo:hover {
-    background-color: #013652;
-    transform: translateY(-2px);
-  }
+  <!-- ── USE CASES ── -->
+  <h2>At the Bedside, Right Now</h2>
+  <div class="use-cases">
+    <div class="use-case">
+      <div class="prompt">"What are the drug interactions for this patient?"</div>
+      <p>Instant cross-reference across all active medications.</p>
+    </div>
+    <div class="use-case">
+      <div class="prompt">📷 Point camera at wound →</div>
+      <p>Multimodal AI analysis: wound staging, infection risk, dressing recommendation.</p>
+    </div>
+    <div class="use-case">
+      <div class="prompt">"Draft my SOAP note" →</div>
+      <p>Done in 30 seconds. Review, edit, sign.</p>
+    </div>
+    <div class="use-case">
+      <div class="prompt">"Differential diagnosis for these findings?"</div>
+      <p>Evidence-linked differentials, ranked by probability, with citation.</p>
+    </div>
+  </div>
 
-  /* GitHub Custom Style */
-  .badge-github {
-    background-color: #24292e;
-    color: #ffffff;
-  }
-  .badge-github:hover {
-    background-color: #171a1d;
-    transform: translateY(-2px);
-  }
+  <!-- ── WHY NOW ── -->
+  <h2>Why Now</h2>
+  <p>Three forces converged in 2025–26 to make Vibe Rounds possible for the first time:</p>
+  <div class="why-now-items">
+    <div class="why-item">
+      <div class="why-num">01</div>
+      <div>
+        <h3>Multimodal LLMs reaching clinical grade</h3>
+        <p>Large language models can now process text, images, audio, and video simultaneously — the same inputs a doctor uses at the bedside.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">02</div>
+      <div>
+        <h3>Global digital health infrastructure coming of age</h3>
+        <p>From interoperable health records in the EU and FHIR adoption in the US, to national digital health missions across Asia and Africa, the world is building the data infrastructure that Vibe Rounds can plug into — making AI-augmented care accessible at every level of the health system, not just in elite hospitals.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">03</div>
+      <div>
+        <h3>The Vibe Coding paradigm shift</h3>
+        <p>Andrej Karpathy's coining of <em>Vibe Coding</em> proved that natural language as an interface unlocks entirely new classes of users. Clinicians are next. Vibe Rounds is the healthcare derivative.</p>
+      </div>
+    </div>
+  </div>
 
-  /* HackerNews Custom Style */
-  .badge-hn {
-    background-color: #ff6600;
-    color: #ffffff;
-  }
-  .badge-hn:hover {
-    background-color: #e05a00;
-    transform: translateY(-2px);
-  }
-</style>
+  <!-- ── VIDEO ── -->
+  <h2>Watch the Overview</h2>
+  <div class="video-wrap">
+    <a class="video-thumb" href="https://www.youtube.com/watch?v=A8zSJ8oCFUU" target="_blank" rel="noopener">
+      <div class="video-placeholder">
+        <div class="play-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="video-title-overlay">Vibe Rounds — Concept Overview</span>
+      </div>
+    </a>
+    <p class="video-caption">Generated with NotebookLM · Opens on YouTube</p>
+  </div>
 
-<footer class="footer-links-container">
-  
-  <a href="https://doi.org/10.5281/zenodo.20622692" 
-     target="_blank" 
-     rel="noopener noreferrer" 
-     class="footer-badge badge-zenodo">
-     Zenodo DOI
-  </a>
+  <!-- ── READ & CITE ── -->
+  <h2>Read &amp; Cite</h2>
+  <div class="resource-grid">
+    <a class="resource-link" href="https://archive.org/details/vibe-rounds-concept-document" target="_blank" rel="noopener">
+      <span class="icon">📄</span>
+      <span class="rl-text"><span class="rl-label">Full PDF</span><span class="rl-sub">Archive.org</span></span>
+    </a>
+    <a class="resource-link" href="https://zenodo.org/records/20622693" target="_blank" rel="noopener">
+      <span class="icon">🔬</span>
+      <span class="rl-text"><span class="rl-label">Zenodo</span><span class="rl-sub">DOI · CERN-backed</span></span>
+    </a>
+    <a class="resource-link" href="https://github.com/avi33tbtt/Vibe-Rounds" target="_blank" rel="noopener">
+      <span class="icon">💻</span>
+      <span class="rl-text"><span class="rl-label">GitHub</span><span class="rl-sub">Source & docs</span></span>
+    </a>
+    <a class="resource-link" href="https://news.ycombinator.com/item?id=48472171" target="_blank" rel="noopener">
+      <span class="icon">🟠</span>
+      <span class="rl-text"><span class="rl-label">Hacker News</span><span class="rl-sub">Discussion thread</span></span>
+    </a>
+  </div>
 
-  <a href="https://github.com/avi33tbtt/Vibe-Rounds" 
-     target="_blank" 
-     rel="noopener noreferrer" 
-     class="footer-badge badge-github">
-    GitHub Repo
-  </a>
+  <!-- ── SEEN ON ── -->
+  <div class="seen-on">
+    <p class="seen-on-label">Published &amp; Referenced At</p>
+    <div class="seen-on-list">
+      <a href="https://archive.org/details/vibe-rounds-concept-document" target="_blank">Archive.org</a>
+      <a href="https://zenodo.org/records/20622693" target="_blank">Zenodo</a>
+      <a href="https://github.com/avi33tbtt/Vibe-Rounds" target="_blank">GitHub</a>
+      <a href="https://news.ycombinator.com/item?id=48472171" target="_blank">Hacker News</a>
+      <a href="https://twitter.com/search?q=%23VibeRounds" target="_blank">#VibeRounds on X</a>
+    </div>
+  </div>
 
-  <a href="https://news.ycombinator.com/item?id=48472171" 
-     target="_blank" 
-     rel="noopener noreferrer" 
-     class="footer-badge badge-hn">
-    HackerNews
-  </a>
+  <!-- ── CTA ── -->
+  <div class="cta-block">
+    <h2>Collaborate or Write About Vibe Rounds</h2>
+    <p>
+      Are you a clinician, researcher, journalist, or health-tech builder?
+      Reach out to discuss collaboration, citation, or media enquiries.
+    </p>
+    <div class="cta-buttons">
+      <a class="cta-btn-primary" href="mailto:avi33tbtt@gmail.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        avi33tbtt@gmail.com
+      </a>
+      <a class="cta-btn-secondary" href="https://in.linkedin.com/in/dravinashkumargupta" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn Profile
+      </a>
+    </div>
+  </div>
 
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>
+    <strong>Vibe Rounds</strong> was coined by <strong>Dr. Avinash Kumar Gupta</strong> in June 2026.
+    Released as public domain. Free to share with attribution.
+  </p>
 </footer>
+
 </body>
 </html>
