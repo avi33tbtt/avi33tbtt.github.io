@@ -1421,64 +1421,6 @@
 </div>
 
 
-
-<!-- Trigger button -->
-<button onclick="document.getElementById('pubread-overlay').style.display='flex'" style="
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  padding: 10px 20px;
-  background: #1a1a18;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-">📖 Open PubRead</button>
-
-<!-- Fullscreen overlay -->
-<div id="pubread-overlay" onclick="if(event.target===this)this.style.display='none'" style="
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-">
-  <!-- Modal shell -->
-  <div style="
-    width: 96vw;
-    height: 92vh;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-  ">
-    <!-- Close button -->
-    <button onclick="document.getElementById('pubread-overlay').style.display='none'" style="
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      z-index: 10;
-      background: rgba(0,0,0,0.35);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 13px;
-      cursor: pointer;
-    ">✕ Close</button>
-
-    <!-- ✂ PASTE YOUR FULL PUBREAD HTML HERE -->
-    <!-- Replace everything between <body> and </body> tags from vibe-rounds-pubread.html -->
-    <!-- Also move the <style> block from <head> to just before your pasted content -->
-    <!-- And move the <link> for Tabler icons into your main page's <head> if not already there -->
-
-
   
 <!-- ── Top bar ── -->
 <div class="pr-topbar">
@@ -1715,10 +1657,6 @@
 </script>
 
 
-
-
-  </div>
-</div>
 
 
     
