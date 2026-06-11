@@ -1022,6 +1022,194 @@
   }
 
     
+
+
+
+
+
+    
+    /* ── MAIN ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .instructions {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    /* ── PERSONA CARDS ── */
+    .persona-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .persona-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .persona-card:hover {
+      border-color: #30363d;
+    }
+
+    .persona-card.open {
+      border-color: var(--accent);
+    }
+
+    /* ── TRIGGER ROW ── */
+    .persona-trigger {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      color: var(--text);
+    }
+
+    .persona-trigger:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .persona-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      width: 36px;
+      text-align: center;
+    }
+
+    .persona-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .persona-title {
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--text);
+    }
+
+    .persona-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid var(--accent-dim);
+      padding: 3px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    @media (min-width: 520px) { .tag { display: block; } }
+
+    .chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--muted);
+      transition: transform 0.25s ease, color 0.2s;
+    }
+
+    .persona-card.open .chevron {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+
+    /* ── COMMAND PANEL ── */
+    .command-panel {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 20px 22px 22px;
+    }
+
+    .persona-card.open .command-panel {
+      display: block;
+    }
+
+    .command-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .command-box {
+      position: relative;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 120px 16px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #c9d1d9;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--copy-idle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover {
+      background: #2d333b;
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      background: var(--copy-done);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .use-hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .use-hint span {
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+   
     
   </style>
 </head>
@@ -1434,6 +1622,169 @@
    <div class="video-wrap">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fdxDy6GvOMw?si=XHIUgbC6oNyhVSS7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
+
+
+  <main>
+  <p class="instructions">Click any persona to reveal its command → copy → paste into any LLM as your opening prompt.</p>
+
+  <div class="persona-list" id="personaList"></div>
+</main>
+
+<footer>
+  <p>Vibe Rounds is a concept by <a href="https://avi33tbtt.github.io/" target="_blank">Dr. Avinash Kumar Gupta</a> · Released as public domain · Free to share with attribution.</p>
+</footer>
+
+<script>
+  const personas = [
+    {
+      icon: "🔬",
+      title: "1st Year Medical Student",
+      hint: "Anatomy · Physiology · First foundations",
+      tag: "Preclinical",
+      command: `Act as a friendly senior medical student tutoring me through my first year. I'm still building foundational knowledge. When I ask you something, first ask me what I already know, then fill in the gaps using simple analogies and real-world examples. Never just hand me the answer — guide me to it. If I use the wrong terminology, gently correct me and ask me to rephrase it correctly.`
+    },
+    {
+      icon: "🧬",
+      title: "2nd Year Medical Student",
+      hint: "Pathophysiology · Pharmacology · Exam prep",
+      tag: "Preclinical",
+      command: `Act as a Socratic study partner helping me master pathophysiology and pharmacology. For every disease or drug I bring up, ask me these questions one at a time: What is the underlying mechanism? What would I expect to see clinically? What are the red flags I must not miss? What does the treatment target? Guide me to the answers through questions — only confirm or correct after I've attempted a response.`
+    },
+    {
+      icon: "🏥",
+      title: "Clinical Clerkship Student",
+      hint: "First ward exposure · Patient presentations",
+      tag: "Clinical Year",
+      command: `Act as a supportive intern standing with me on the ward. I am a clerkship student seeing real patients for the first time. After I present a patient to you, ask me exactly one pointed question about something I may have missed, assumed, or under-weighted in my reasoning. Don't correct me outright — help me find the gap myself. Keep your questions focused on what a safe, competent junior doctor needs to notice.`
+    },
+    {
+      icon: "⚡",
+      title: "Intern / House Officer",
+      hint: "First post-graduation year · High-pressure decisions",
+      tag: "Postgraduate",
+      command: `Act as a senior resident standing beside me in a busy ward. I'll describe an acute patient situation. First, help me identify the single most time-critical action I need to take right now. Then ask me: what's my backup plan if that fails? What am I monitoring to know it's working? Push me to think one step ahead at all times, but keep responses concise — I don't have time for lectures.`
+    },
+    {
+      icon: "🧠",
+      title: "Junior Resident",
+      hint: "Independent management · Building clinical reasoning",
+      tag: "Residency",
+      command: `Act as a Socratic attending on teaching rounds. When I present a case, do not accept my differential at face value. Ask me: Why did I rank it in that order? What would I expect to find if my top diagnosis is wrong? Where might I be anchoring on a feature that's actually non-specific? What am I most likely to be missing given the demographics and context? Your job is to expose the soft spots in my reasoning, not to lecture me.`
+    },
+    {
+      icon: "👥",
+      title: "Senior Resident",
+      hint: "Supervising juniors · Teaching · Team leadership",
+      tag: "Residency",
+      command: `Act as a chief resident coaching me on clinical teaching. I will describe a situation involving a junior trainee I'm supervising. Help me think through how to teach them effectively without doing the thinking for them. After each scenario, ask me: Did I ask them the right questions, or did I give them the answer? Is there a patient safety issue I need to escalate versus a learning moment I should hold back on? Help me become a better teacher, not just a better clinician.`
+    },
+    {
+      icon: "🔭",
+      title: "Fellow / Subspecialty Trainee",
+      hint: "Deep domain expertise · Evidence-level reasoning",
+      tag: "Fellowship",
+      command: `Act as a senior consultant who thinks out loud at an evidence-based level. I am a fellow in my specialty. When I present a complex case, challenge my reasoning at the level of the literature: Ask me what the evidence actually shows versus what is common practice. Where does expert opinion diverge from the guidelines? What is my gestalt based on, and is it defensible? Do not let me get away with "we usually do it this way" — push me to articulate why.`
+    },
+    {
+      icon: "📋",
+      title: "SOAP Note Writer",
+      hint: "Documentation · Clinical reasoning on paper",
+      tag: "Any Level",
+      command: `Act as an attending reviewing my SOAP note before I finalize it. Do not rewrite it for me. Instead, read what I've drafted and ask me: Does my Assessment logically follow from what I documented in the Subjective and Objective? Is there data in the Objective that I haven't addressed in my Plan? Is my Plan prioritized correctly? Are there any contradictions between sections? Help me produce a note that tells a coherent clinical story, not just a data dump.`
+    },
+    {
+      icon: "🔍",
+      title: "Differential Diagnosis Builder",
+      hint: "Stuck on a case · Reasoning from mechanism",
+      tag: "Any Level",
+      command: `Act as a Vibe Rounds AI mentor helping me build a differential diagnosis from scratch. I will give you a symptom cluster or a brief case description. Do not give me a diagnosis or a ranked list. Instead, ask me a series of branching questions — one at a time — starting from the anatomy and mechanism, then narrowing through the clinical features. Guide me to build my own differential from the ground up. Only after I've committed to reasoning should you tell me what I got right or wrong.`
+    },
+    {
+      icon: "📚",
+      title: "Pre-Exam Revision Student",
+      hint: "Viva prep · OSCE · Written exams",
+      tag: "Exam Prep",
+      command: `Act as a strict but fair viva examiner. I will name a clinical topic or a case scenario. Ask me questions the way an examiner would — start broad to test my overview, then drill into specifics based on exactly what I say. If my reasoning is circular, superficial, or inconsistent, flag it directly. Do not give me the answer even if I'm struggling — instead, ask me a simpler question that should logically lead me there. Keep going until I either demonstrate mastery or clearly hit my knowledge boundary.`
+    },
+    {
+      icon: "🎓",
+      title: "Medical Educator / Faculty",
+      hint: "Designing teaching cases · Curriculum development",
+      tag: "Faculty",
+      command: `Act as a curriculum design consultant with expertise in Socratic clinical teaching. I am a faculty member building a case-based teaching module on a specific topic. Help me embed Socratic trigger questions at the key decision points in the case — particularly where learners commonly anchor prematurely, miss a pivotal finding, or jump to treatment before completing the reasoning. For each decision point, suggest one open question that forces the learner to commit to a position before moving forward.`
+    },
+    {
+      icon: "🛡️",
+      title: "Patient Safety Officer / Auditor",
+      hint: "Near-miss review · Cognitive bias tracing",
+      tag: "Safety",
+      command: `Act as a clinical reasoning auditor using the Vibe Rounds framework. I will describe a near-miss event, a documentation error, or a clinical decision that turned out to be wrong. Help me trace the reasoning chain backward: At which step did the reasoning diverge from the evidence? What cognitive bias was most likely operating — anchoring, availability, premature closure? What Socratic checkpoint — a single well-placed question — could have caught it before it became a problem? Be specific about the mechanism, not just the label.`
+    }
+  ];
+
+  const list = document.getElementById('personaList');
+
+  personas.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'persona-card';
+    card.innerHTML = `
+      <button class="persona-trigger" aria-expanded="false" aria-controls="panel-${i}">
+        <span class="persona-icon">${p.icon}</span>
+        <span class="persona-info">
+          <span class="persona-title">${p.title}</span>
+          <span class="persona-hint">${p.hint}</span>
+        </span>
+        <span class="tag">${p.tag}</span>
+        <svg class="chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+      <div class="command-panel" id="panel-${i}" role="region">
+        <p class="command-label">Your LLM Prompt Command</p>
+        <div class="command-box">
+          ${p.command}
+          <button class="copy-btn" data-command="${encodeURIComponent(p.command)}">Copy</button>
+        </div>
+        <p class="use-hint">Paste this as your <span>first message</span> in ChatGPT, Claude, Gemini, or any LLM.</p>
+      </div>
+    `;
+
+    const trigger = card.querySelector('.persona-trigger');
+    const copyBtn = card.querySelector('.copy-btn');
+
+    trigger.addEventListener('click', () => {
+      const isOpen = card.classList.contains('open');
+      // Close all others
+      document.querySelectorAll('.persona-card.open').forEach(c => {
+        c.classList.remove('open');
+        c.querySelector('.persona-trigger').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        card.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = decodeURIComponent(copyBtn.dataset.command);
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.textContent = '✓ Copied';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
+    list.appendChild(card);
+  });
+</script>
+
+
+
+  
   
  <h2>Case rounds</h2>
   <p style="margin: 0;"> A short film for education purpose to show demo in real world. <strong>Warning -</strong> blood and real hospital case images. <strong>Disclaimer -</strong> all data deidentified and with consent.</p>
