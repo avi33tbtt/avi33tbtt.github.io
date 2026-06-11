@@ -309,6 +309,307 @@
       .why-item { grid-template-columns: 40px 1fr; }
       .why-num { font-size: 1.8rem; }
     }
+
+
+
+
+
+    
+    /* ── Shared tokens ── */
+    :root {
+      --green:      #2d7d6f;
+      --green-light:#e8f5f2;
+      --green-mid:  #3a9b89;
+      --cream:      #f5f3ee;
+      --card-bg:    #ffffff;
+      --border:     #e2ddd6;
+      --text-muted: #6b6b6b;
+      --tag-bg:     #edf7f5;
+      --tag-text:   #2d7d6f;
+      --radius:     12px;
+      --radius-sm:  8px;
+    }
+
+    section { padding: 64px 24px; }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* ── Eyebrow label (matches "WHO BENEFITS IN MED SCHOOL" style) ── */
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* ════════════════════════════════════════════
+       PHILOSOPHY STATEMENT SECTION
+    ════════════════════════════════════════════ */
+    .philosophy {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .philosophy .eyebrow::before {
+      content: '●';
+      color: var(--green);
+      margin-right: 8px;
+    }
+
+    .philosophy h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .philosophy h2 em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .philosophy-intro {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin-bottom: 36px;
+    }
+
+    /* Statement card */
+    .statement-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .statement-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--green);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .statement-card p {
+      font-size: 15.5px;
+      line-height: 1.75;
+      color: #2a2a2a;
+      margin-bottom: 16px;
+    }
+
+    .statement-card p:last-child { margin-bottom: 0; }
+
+    .statement-card strong { color: var(--green); font-weight: 600; }
+
+    /* Pull-quote variant */
+    .pullquote {
+      background: var(--green);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-top: 20px;
+    }
+
+    .pullquote blockquote {
+      font-size: 16px;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.7;
+      border: none;
+      padding: 0;
+    }
+
+    /* ════════════════════════════════════════════
+       WHO BENEFITS SECTION
+    ════════════════════════════════════════════ */
+    .who-benefits { background: var(--card-bg); }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .benefit-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+    }
+
+    .benefit-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 14px;
+      color: var(--green);
+    }
+
+    .benefit-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .benefit-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ════════════════════════════════════════════
+       SCENARIOS SECTION
+    ════════════════════════════════════════════ */
+    .scenarios { background: var(--cream); }
+
+    .scenario-list { margin-top: 20px; }
+
+    .scenario-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.15s;
+    }
+
+    .scenario-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+
+    .scenario-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .scenario-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .scenario-icon-wrap {
+      width: 40px; height: 40px;
+      background: var(--green-light);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--green);
+    }
+
+    .scenario-title { font-size: 15px; font-weight: 600; }
+
+    .scenario-tags {
+      display: flex; gap: 6px; margin-top: 3px; flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+
+    .chevron {
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .scenario-item.open .chevron { transform: rotate(180deg); }
+
+    .scenario-body {
+      display: none;
+      padding: 0 22px 22px;
+    }
+
+    .scenario-item.open .scenario-body { display: block; }
+
+    /* Chat UI */
+    .chat {
+      background: #f9f9f9;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+    }
+
+    .msg { display: flex; gap: 10px; margin-bottom: 14px; }
+    .msg:last-child { margin-bottom: 0; }
+
+    .msg.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .avatar.ai {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .msg.user .bubble {
+      background: var(--green);
+      color: #fff;
+      border-bottom-right-radius: 3px;
+    }
+
+    .msg.ai .bubble {
+      background: var(--card-bg);
+      color: #1a1a1a;
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 3px;
+    }
+
+    .insight {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: #fffbf0;
+      border: 1px solid #f0e5b8;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      color: #5a4a1a;
+      line-height: 1.5;
+    }
+
+    .insight-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .benefits-grid { grid-template-columns: 1fr 1fr; }
+      .statement-card { padding: 24px 22px; }
+    }
+
+
+
+  
   </style>
 </head>
 <body>
