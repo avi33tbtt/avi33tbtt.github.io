@@ -1313,6 +1313,272 @@
     }
 
     
+
+
+
+
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #111827;
+    max-width: 640px;
+    margin: 0 auto 20px;
+  }
+  h1 em {
+    font-style: italic;
+  }
+
+  .subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* ── Layout ── */
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* ── Intro blockquote ── */
+  .intro-block {
+    border-left: 3px solid #111827;
+    padding: 4px 0 4px 24px;
+    margin-bottom: 56px;
+    color: #111827;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  /* ── Section heading ── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 6px;
+  }
+
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #111827;
+    margin-bottom: 32px;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 52px 0;
+  }
+
+  /* ── Steps ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 0 20px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 32px;
+    bottom: 0;
+    width: 1px;
+    background: #e5e7eb;
+  }
+  .step-num {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111827;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .step-body {
+    padding-top: 8px;
+  }
+  .step-body strong {
+    display: block;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+    font-size: 0.97rem;
+  }
+  .step-body p {
+    color: #111827;
+    font-size: 0.93rem;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: #111827;
+  }
+
+  /* ── Scenarios ── */
+  .scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .scenario {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .scenario-header {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .scenario-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #374151;
+  }
+
+  .scenario-title {
+    font-weight: 600;
+    font-size: 0.93rem;
+    color: #111827;
+  }
+
+  .scenario-body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 68px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .row-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #374151;
+    padding-top: 2px;
+  }
+
+  .row-content {
+    font-size: 0.92rem;
+    color: #111827;
+    line-height: 1.65;
+  }
+
+  .questions {
+    list-style: none;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .questions li {
+    display: flex;
+    gap: 10px;
+    font-size: 0.91rem;
+    color: #111827;
+  }
+  .questions li::before {
+    content: '→';
+    color: #111827;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Key tip ── */
+  .tip-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 28px 32px;
+  }
+
+  .tip-box h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #111827;
+    margin-bottom: 12px;
+  }
+
+  .tip-box p {
+    font-size: 0.93rem;
+    color: #111827;
+    line-height: 1.75;
+  }
+
+  .tip-box strong { color: #111827; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid #e5e7eb;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+  }
+
+  @media (max-width: 560px) {
+    main { padding: 36px 16px 60px; }
+    .row { grid-template-columns: 1fr; gap: 4px; }
+    .row-label { font-size: 9px; }
+    .tip-box { padding: 20px; }
+    .scenario-body, .scenario-header { padding: 14px 16px; }
+  }
+
+
+
+
     
   </style>
 </head>
@@ -2016,11 +2282,152 @@
   });
 </script>
 
+
+
+
+
+
+   <div class="intro-block">
+    This tutorial will guide you through using the Vibe Rounds framework within a notebook environment. Instead of simply providing answers, the AI will act as a <strong>cognitive assistant</strong> that challenges your reasoning, identifies biases, and helps you sharpen your clinical judgment.
+  </div>
+
+  <!-- Step 1 -->
+  <div class="section-label">Step 1</div>
+  <h2>Set Up Your Learning Environment</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Open your notebook</strong>
+        <p>Go to Google Notebook (NotebookLM).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Add the Source</strong>
+        <p>In the "Sources" panel, select "Website" and enter the URL for the Vibe Rounds website. This provides the AI with the core philosophy and persona instructions needed for the session.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Choose Your Persona</strong>
+        <p>Scroll through the source material to find the Persona Command that fits your needs — e.g., Supportive Intern, Socratic Attending, or Junior Resident.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Copy and Paste</strong>
+        <p>Copy the specific <code>#VibeRounds</code> command and paste it as your first message in the chat to set the "vibe" for the conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Step 2 -->
+  <div class="section-label">Step 2</div>
+  <h2>Example Learning Scenarios</h2>
+  <p style="color:#6b7280; font-size:0.94rem; margin-bottom:28px; margin-top:-16px;">Three ways to use this setup to enhance your clinical training.</p>
+
+  <div class="scenarios">
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge">Scenario 1</span>
+        <span class="scenario-title">The "Supportive Intern" — Ward Help</span>
+      </div>
+      <div class="scenario-body">
+        <div class="row">
+          <span class="row-label">Persona</span>
+          <span class="row-content">Copy the Supportive Intern prompt — <code>#VibeRounds Act as a supportive intern...</code></span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Case</span>
+          <span class="row-content">"I have a patient who is 23F, 5 months pregnant, presenting with an unusual sensation in her tummy. What should I be looking for?"</span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Vibe</span>
+          <span class="row-content">The AI acts as a peer who identifies gaps in your assessment rather than correcting you outright. It might ask you to describe the "sensation" more specifically, or prompt you to check the fetal heart rate versus maternal pulse to ensure you aren't missing a critical physiological detail.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge">Scenario 2</span>
+        <span class="scenario-title">The "Socratic Attending" — Imaginary Case Generation</span>
+      </div>
+      <div class="scenario-body">
+        <div class="row">
+          <span class="row-label">Persona</span>
+          <span class="row-content">Copy the Socratic Attending prompt — <code>#VibeRounds Act as a Socratic attending on teaching rounds...</code></span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Request</span>
+          <span class="row-content">"Act as an Attending and give me an imaginary case for learning."</span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Vibe</span>
+          <span class="row-content">The AI generates a clinical vignette — like a 62-year-old smoker with weight loss — then asks you to walk through the differential. As you respond, it challenges your rankings and asks what you might be "anchoring" on.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge">Scenario 3</span>
+        <span class="scenario-title">The "Socratic Attending" — Case Analysis</span>
+      </div>
+      <div class="scenario-body">
+        <div class="row">
+          <span class="row-label">Persona</span>
+          <span class="row-content">Copy the Junior Resident / Attending prompt.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Case</span>
+          <span class="row-content">A 54-year-old female in the ED with acute shortness of breath and sharp, right-sided chest pain after a 14-hour flight. Vitals: HR 112, BP 130/84, O₂ Sat 92%, Lungs clear.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">The Vibe</span>
+          <span class="row-content">
+            When you suggest Pulmonary Embolism (PE), the AI will not accept it at face value. It will ask:
+            <ul class="questions">
+              <li>"Why did you rank PE first?"</li>
+              <li>"What would you expect to find if your top diagnosis is wrong?"</li>
+              <li>"What single finding on a chest X-ray — like a widened mediastinum — would make you regret starting anticoagulation?" <em style="font-size:0.88em;">(prompting you to consider aortic dissection)</em></li>
+            </ul>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- Key Tip -->
+  <div class="tip-box">
+    <h3>Key Learning Tip</h3>
+    <p>Remember that Vibe Rounds is <strong>not AI that answers — it is AI that questions</strong>. The goal is to use the <strong>"What / Where / Do" template</strong> to capture your initial reasoning while the AI identifies the soft spots in your logic. This ensures that you, the clinician, remain the final decision-maker while the AI provides the <strong>cognitive scaffolding</strong> to make your thinking more robust.</p>
+  </div>
+
+
+
+  
   
     <h2>Case Discussion - 1</h2>
   <div class="video-wrap">
  <iframe width="560" height="315" src="https://www.youtube.com/embed/agj0wwDjq70?si=Qc84OtAqiTkkHLEw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
+
+
+
+
+
 
   
  <h2>Case rounds</h2>
@@ -2028,6 +2435,8 @@
   <div class="video-wrap">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xvE5b8Xk3vM?si=XTB_5M-xMbbpoa3c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
+
+
 
   
  
