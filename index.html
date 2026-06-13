@@ -1243,12 +1243,13 @@
 
     .slide.active { opacity: 1; }
 
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+   .slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* ← shows full image, no cropping */
+  display: block;
+  background: #000;      /* background color for letterbox areas — use #fff or any color */
+}
 
     .slide-caption {
       position: absolute;
