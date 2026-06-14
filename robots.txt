@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://avi33tbtt.github.io/sitemap.xml
