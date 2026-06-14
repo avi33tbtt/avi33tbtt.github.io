@@ -1581,6 +1581,133 @@
     .scenario .scenario-body, .scenario .scenario-header { padding: 14px 16px; }
   }
 
+  /* ════════════════════════════════════════════
+     PEDAGOGICAL SPECTRUM (interactive, CSS-only tabs)
+  ════════════════════════════════════════════ */
+  .pedagogy { margin: 36px 0 48px; }
+
+  .ped-radio { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+
+  .ped-axis {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px;
+  }
+  .ped-axis span:first-child { color: var(--teal); }
+  .ped-axis span:last-child { color: var(--gold); }
+
+  .ped-track {
+    position: relative;
+    display: flex; justify-content: space-between;
+    margin-bottom: 28px; padding-top: 4px;
+  }
+  .ped-track::before {
+    content: '';
+    position: absolute; top: 24px; left: 24px; right: 24px; height: 2px;
+    background: linear-gradient(90deg, var(--teal) 0%, var(--teal-mid) 45%, var(--gold) 100%);
+    z-index: 0;
+  }
+  .ped-stop {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    flex: 1; cursor: pointer; padding: 0 4px; text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ped-dot {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-weight: 700; font-size: 1.05rem;
+    color: var(--ink-faint);
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .ped-name {
+    font-size: 0.78rem; font-weight: 600; color: var(--ink-muted);
+    transition: color 0.2s; line-height: 1.3;
+  }
+  .ped-badge {
+    font-family: var(--mono); font-size: 8.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--teal-light); color: var(--teal);
+    border: 1px solid #c4e4e4; border-radius: 20px; padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  /* Active stage states (5 explicit pairings) */
+  #ped1:checked ~ .ped-track label[for="ped1"] .ped-dot,
+  #ped2:checked ~ .ped-track label[for="ped2"] .ped-dot,
+  #ped3:checked ~ .ped-track label[for="ped3"] .ped-dot,
+  #ped4:checked ~ .ped-track label[for="ped4"] .ped-dot,
+  #ped5:checked ~ .ped-track label[for="ped5"] .ped-dot {
+    background: var(--teal); border-color: var(--teal); color: #fff;
+    transform: scale(1.12);
+    box-shadow: 0 4px 16px var(--teal-glow);
+  }
+  #ped1:checked ~ .ped-track label[for="ped1"] .ped-name,
+  #ped2:checked ~ .ped-track label[for="ped2"] .ped-name,
+  #ped3:checked ~ .ped-track label[for="ped3"] .ped-name,
+  #ped4:checked ~ .ped-track label[for="ped4"] .ped-name,
+  #ped5:checked ~ .ped-track label[for="ped5"] .ped-name {
+    color: var(--ink);
+  }
+
+  /* Panels */
+  .ped-panel { display: none; animation: ped-fade 0.25s ease; }
+  @keyframes ped-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  #ped1:checked ~ .ped-panels #panel1,
+  #ped2:checked ~ .ped-panels #panel2,
+  #ped3:checked ~ .ped-panels #panel3,
+  #ped4:checked ~ .ped-panels #panel4,
+  #ped5:checked ~ .ped-panels #panel5 { display: block; }
+
+  .ped-panels {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px 32px;
+  }
+
+  .ped-stage-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .ped-stage-num {
+    font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.6rem;
+    color: var(--teal-light); text-shadow: 0 0 0 var(--teal);
+  }
+  .ped-stage-title { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--ink); }
+
+  .ped-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .ped-meta-item { background: var(--teal-light); border-radius: var(--radius-sm); padding: 12px 14px; }
+  .ped-meta-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 5px;
+  }
+  .ped-meta-value { font-size: 0.88rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
+
+  .ped-desc { font-size: 0.95rem; color: var(--ink); margin-bottom: 16px; }
+
+  .ped-bestfor {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: #fdf6ec; border: 1px solid #f0ddc0; border-radius: var(--radius-sm);
+    padding: 12px 16px; font-size: 0.88rem; color: #6b4a1f; line-height: 1.55;
+  }
+  .ped-bestfor strong { color: #a8702f; }
+
+  .ped-vibe-note {
+    margin-top: 16px; display: flex; gap: 12px; align-items: flex-start;
+    background: var(--teal-light); border: 1px solid #c4e4e4; border-radius: var(--radius-sm);
+    padding: 14px 16px; font-size: 0.88rem; color: #0b4a4a; line-height: 1.6;
+  }
+  .ped-vibe-note strong { color: var(--teal); }
+
+  @media (max-width: 640px) {
+    .ped-track::before { left: 18px; right: 18px; }
+    .ped-dot { width: 38px; height: 38px; font-size: 0.92rem; }
+    .ped-name { font-size: 0.68rem; }
+    .ped-badge { display: none; }
+    .ped-meta { grid-template-columns: 1fr; }
+    .ped-panels { padding: 22px 18px; }
+    .ped-axis span { font-size: 9px; }
+  }
+
+
+
 
 
 
@@ -1815,6 +1942,10 @@
 
       <!-- Scenario 1 -->
       <div class="scenario-item open" onclick="toggle(this)">
+        <div class="scenario-header">
+          <div class="scenario-left">
+            <div class="scenario-icon-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </div>
             <div>
               <div class="scenario-title">Case-based learning at 2 AM</div>
@@ -2171,7 +2302,109 @@
   <div class="video-wrap">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/x5JIiGSihuk?si=S1wWlVfvYpBML8jM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
   </div>
-  
+
+  <!-- ── PEDAGOGICAL SPECTRUM (interactive) ── -->
+  <h2>The Pedagogical Spectrum — Where Vibe Rounds Fits</h2>
+  <div class="intro-block">
+    This progression is a pedagogical spectrum, moving from <strong>instructor-centered transmission</strong> to <strong>learner-centered inquiry</strong>. Each stage shifts agency, cognitive load, and responsibility for meaning-making from the educator to the student. Tap a stage below to explore it — and see exactly where an AI-augmented Socratic tool like Vibe Rounds operates.
+  </div>
+
+  <div class="pedagogy">
+    <input type="radio" name="pedstage" id="ped1" class="ped-radio" checked>
+    <input type="radio" name="pedstage" id="ped2" class="ped-radio">
+    <input type="radio" name="pedstage" id="ped3" class="ped-radio">
+    <input type="radio" name="pedstage" id="ped4" class="ped-radio">
+    <input type="radio" name="pedstage" id="ped5" class="ped-radio">
+
+    <div class="ped-axis">
+      <span>Instructor-Centered</span>
+      <span>Learner-Centered</span>
+    </div>
+
+    <div class="ped-track">
+      <label for="ped1" class="ped-stop"><span class="ped-dot">1</span><span class="ped-name">Lecture</span></label>
+      <label for="ped2" class="ped-stop"><span class="ped-dot">2</span><span class="ped-name">Dyadic</span></label>
+      <label for="ped3" class="ped-stop"><span class="ped-dot">3</span><span class="ped-name">Socratic</span><span class="ped-badge">Vibe Rounds</span></label>
+      <label for="ped4" class="ped-stop"><span class="ped-dot">4</span><span class="ped-name">Guided Discovery</span><span class="ped-badge">Vibe Rounds</span></label>
+      <label for="ped5" class="ped-stop"><span class="ped-dot">5</span><span class="ped-name">Research</span></label>
+    </div>
+
+    <div class="ped-panels">
+
+      <div class="ped-panel" id="panel1">
+        <div class="ped-stage-head"><span class="ped-stage-num">1</span><span class="ped-stage-title">Lecture — The Foundation</span></div>
+        <div class="ped-meta">
+          <div class="ped-meta-item"><div class="ped-meta-label">Educator</div><div class="ped-meta-value">Expert / Source</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Learner</div><div class="ped-meta-value">Passive Receiver</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Primary Goal</div><div class="ped-meta-value">Information delivery &amp; foundational framing</div></div>
+        </div>
+        <p class="ped-desc">At the start, the educator provides the "map of the territory." This is most effective for introducing complex terminology, historical context, or core theories that the learner cannot yet deduce on their own.</p>
+        <div class="ped-bestfor"><span>📍</span><span><strong>Best for:</strong> Establishing common language and conceptual frameworks.</span></div>
+      </div>
+
+      <div class="ped-panel" id="panel2">
+        <div class="ped-stage-head"><span class="ped-stage-num">2</span><span class="ped-stage-title">Dyadic — The Clarification</span></div>
+        <div class="ped-meta">
+          <div class="ped-meta-item"><div class="ped-meta-label">Educator</div><div class="ped-meta-value">Facilitator / Partner</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Learner</div><div class="ped-meta-value">Active Collaborator</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Primary Goal</div><div class="ped-meta-value">Peer-to-peer articulation &amp; social learning</div></div>
+        </div>
+        <p class="ped-desc">Learning is inherently social. By pairing learners, they must translate the "lecture" into their own words to explain it to a peer. This forces <strong>encoding</strong> — the process of converting external information into internal understanding.</p>
+        <div class="ped-bestfor"><span>📍</span><span><strong>Best for:</strong> Identifying gaps in understanding and building confidence.</span></div>
+      </div>
+
+      <div class="ped-panel" id="panel3">
+        <div class="ped-stage-head"><span class="ped-stage-num">3</span><span class="ped-stage-title">Socratic — The Stress Test</span></div>
+        <div class="ped-meta">
+          <div class="ped-meta-item"><div class="ped-meta-label">Educator</div><div class="ped-meta-value">Questioner</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Learner</div><div class="ped-meta-value">Critical Thinker</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Primary Goal</div><div class="ped-meta-value">Challenging assumptions &amp; surfacing logical gaps</div></div>
+        </div>
+        <p class="ped-desc">Once learners believe they understand, the Socratic method tests the <strong>depth of that understanding</strong>. By asking "Why?" or "What if?", the educator exposes inconsistencies in the learner's logic, forcing them to refine their mental models.</p>
+        <div class="ped-bestfor"><span>📍</span><span><strong>Best for:</strong> Developing critical thinking and weeding out misconceptions.</span></div>
+        <div class="ped-vibe-note"><span>🩺</span><span><strong>This is Vibe Rounds' home base.</strong> The "AI that questions, not answers" philosophy, the Socratic Attending persona, and the answer-withholding constraints described earlier in this page are all built to operate at exactly this stage — every "Why do you think that?" is a Stage 3 move.</span></div>
+      </div>
+
+      <div class="ped-panel" id="panel4">
+        <div class="ped-stage-head"><span class="ped-stage-num">4</span><span class="ped-stage-title">Guided Discovery — The Application</span></div>
+        <div class="ped-meta">
+          <div class="ped-meta-item"><div class="ped-meta-label">Educator</div><div class="ped-meta-value">Architect of Experience</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Learner</div><div class="ped-meta-value">Problem Solver</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Primary Goal</div><div class="ped-meta-value">Constructing mental models through experience</div></div>
+        </div>
+        <p class="ped-desc">Here, the educator creates a "scaffolded environment" — a problem or simulation where the answer isn't provided, but the parameters are set so the learner is <em>likely</em> to reach the correct conclusion. The struggle is the point.</p>
+        <div class="ped-bestfor"><span>📍</span><span><strong>Best for:</strong> Transitioning from theory to practical application.</span></div>
+        <div class="ped-vibe-note"><span>🩺</span><span><strong>Vibe Rounds extends here too.</strong> The tiered-hint constraints — framework, then narrowed direction, then partial answer — turn an open-ended case into exactly this kind of scaffolded environment, generated on demand.</span></div>
+      </div>
+
+      <div class="ped-panel" id="panel5">
+        <div class="ped-stage-head"><span class="ped-stage-num">5</span><span class="ped-stage-title">Research — The Mastery</span></div>
+        <div class="ped-meta">
+          <div class="ped-meta-item"><div class="ped-meta-label">Educator</div><div class="ped-meta-value">Mentor / Guide</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Learner</div><div class="ped-meta-value">Independent Scholar</div></div>
+          <div class="ped-meta-item"><div class="ped-meta-label">Primary Goal</div><div class="ped-meta-value">Generating original insights &amp; mastery</div></div>
+        </div>
+        <p class="ped-desc">The final stage is <strong>autonomy</strong>. The learner is no longer just absorbing or refining existing knowledge but is tasked with investigating a novel question. The educator moves from a teacher to a consultant, providing resources and mentorship.</p>
+        <div class="ped-bestfor"><span>📍</span><span><strong>Best for:</strong> Cultivating lifelong learning and innovation.</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pullquote">
+    <p>
+      This model respects <strong style="color:#fff;">Cognitive Load Theory</strong>: start at "Research" and learners feel overwhelmed by ambiguity; stay in "Lecture" and they never build the muscle for independent thought. Moving through these stages builds the scaffolding that turns a novice into a self-directed expert — and Vibe Rounds is the tool purpose-built for Stages 3 and 4.
+    </p>
+  </div>
+
+  <div class="tip-box" style="margin-top: 28px;">
+    <h3>For Medical Educators — A Reflection</h3>
+    <p>Which stage of this progression are you currently designing for, and what subject matter are you teaching? If it's Stage 3 or 4, that's precisely the gap Vibe Rounds is built to fill — pick a persona prompt above, paste it into your AI tool of choice, and try running a session on your own case material.</p>
+  </div>
+
+  <hr class="divider">
+
+
    <h2>Student Example</h2>
   <p style="margin: 0;">This second video will specifically feature:</p>
 
