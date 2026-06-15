@@ -48,5 +48,12 @@ With your permission, we'll feature contributions (with attribution, or anonymou
 Want to help review prompts before they're submitted to the GitHub repo?
  
 **We'd love to have you!** If you're interested in joining as a prompt reviewer, reach out to us via email.
+
+# 📁 Prompts
+ 
+A curated collection of seed prompts organized by use case — for learning, teaching, evaluation, publication reading, critical appraisal, and case-based guided discovery.
+ 
+👉 [**Browse the Prompts directory →**](https://github.com/avi33tbtt/avi33tbtt.github.io/tree/master/Prompts)
+
  
 📧 **Email us to get involved!**
