@@ -1,0 +1,820 @@
+This is a rich, well-structured prompts directory. Here's an exhaustive list of all key topics, tools, techniques, models, and concepts drawn from it:
+
+---
+
+## 🧠 Prompt Architecture & Structure
+
+- Contribution header template (Title, Author, Specialty, Difficulty Level, Intended Setting, Based On, Notes)
+- Version lineage / base tracking (V0, V1, V2, adaptations)
+- Single-file-per-prompt organization
+- Session openers as explicit prompt elements
+- De-identification protocols (initials-only, e.g. "Mr. JK")
+- Role assignment ("Act as…") — persona framing
+- Identity declaration within the prompt ("IDENTITY: Thinking partner")
+- Rules-as-numbered-blocks inside the prompt body
+- Socratic question banks embedded in prompts
+- Hint ladders (tiered, structured)
+- Teaching summary format (Gap | Why it matters | Rule to remember)
+- Safety override clauses
+- Off-case / personal distress boundary clauses
+- Adaptive difficulty instructions inside the prompt
+- Response format constraints (short, ward-style; no bullet-list differentials)
+- Withholding logic (what to release when, triggered by student actions)
+- Endpoint/closure triggers ("I'm done", "close the case", "end session")
+
+---
+
+## 📊 Difficulty & Scaffolding Framework
+
+- Six-Level Difficulty Framework (L1–L6)
+- L2 — Peer-Learn / devil's advocate mode
+- L3 — Supervised ward teaching / Socratic mentor
+- L4 — Independent study / delayed hint mode
+- L5 — Formative assessment / scored reasoning, no hints
+- L6 — OSCE simulation / full withholding, rubric output
+- N/A level — CDSS / practising clinician mode (not a teaching level)
+- Adaptive difficulty (struggling → developing → strong learner tracks)
+- Minimum effort threshold rule ("idk" / <10 words handling)
+- Forced commitment mechanism (must state working diagnosis before anything else)
+- Attempt counting / unlock logic (hints unlock at attempt #3 in L4)
+- Hint exhaustion ladder: Hint 1 (framework/domain) → Hint 2 (narrowed direction) → Hint 3 (partial answer/mechanism) → Teaching Summary
+
+---
+
+## 🎭 Persona / Role Types
+
+- Fellow student (peer, devil's advocate, coffee-table tone)
+- Supportive senior (independent review, higher bar)
+- Examiner (formative, no softening, scored)
+- OSCE examiner (summative, rubric output only)
+- Senior registrar (psychiatry, risk assessment)
+- Senior surgical resident (peri-operative ward)
+- Paediatrics senior
+- Incoming shift colleague (handoff receiver)
+- Sharp skeptical colleague / Socratic Attending (CDSS, peer-level)
+- Calm organised assistant (patient/lay mode)
+
+---
+
+## 🏥 Specialty Domains Covered
+
+- General Medicine (any specialty, cross-specialty)
+- Psychiatry (risk assessment, mental health)
+- Surgery (general/procedural, peri-operative)
+- Paediatrics (weight-based dosing, developmental reasoning)
+- Nursing (SBAR handoff, simulation lab)
+- Patient / non-medical lay use (guided discovery)
+- (Implied gaps noted): pharmacy, obstetrics, emergency medicine, oncology, radiology
+
+---
+
+## 📚 Intended Use Settings
+
+- Study groups / paired peer learning
+- Supervised ward teaching / clinical clerkship
+- Independent study / take-home case review
+- Formative assessment / practice exams
+- Summative simulation / OSCE prep
+- Bedside or desk use by qualified clinicians (real-time CDSS)
+- Simulation lab / pre-shift prep
+- Patient use (preparing for doctor's appointment)
+- Faculty-reviewed scoring (rubric designed for faculty, not student)
+
+---
+
+## 🛠️ Core Prompt Techniques
+
+- Socratic questioning ("one question only per turn" rule)
+- Devil's advocate mode
+- Forced commitment before any guidance
+- Answer withholding until commitment + Socratic exhaustion
+- Delayed hint unlocking (attempt-gated)
+- Teaching summary at case close
+- Rubric-only output (examiner mode)
+- Staged case information release (OSCE-style: history → examination → investigations → management)
+- Numeracy check override (paediatric dosing)
+- Reflect-and-correct technique (timeline building for patients)
+- "What would make you wrong?" question
+- "What if…" scenario escalation
+- Tangent-following (allowed in L2, discouraged in higher levels)
+- Positive acknowledgment + advancement (if correct, acknowledge then deepen)
+- Silent tracking (tracking diagnostic accuracy, reasoning quality, safety without revealing)
+
+---
+
+## ⚖️ Safety & Ethics Mechanisms
+
+- Safety override clause (breaks Socratic mode for dangerous plans)
+- Off-case / personal distress boundary (especially psychiatry)
+- Patient / lay-user diagnostic disclaimer
+- Urgent symptom detection + care redirection
+- De-identification enforcement + redirect if real identifiers appear
+- Clinician remains decision-maker (CDSS never recommends unilaterally)
+- Reference/evidence provision allowed only in CDSS mode (not student-facing modes)
+
+---
+
+## 📋 Assessment & Output Formats
+
+- Structured score: Diagnostic Accuracy / Reasoning Quality / Safety Awareness (each: Developing / Competent / Strong + one-sentence justification)
+- OSCE rubric block: History-Taking / Examination / Investigations / Differential / Management Plan / Safety-Netting / Overall (Pass-equivalent / Borderline / Fail-equivalent)
+- Teaching Summary (Gap | Why it matters | Rule to remember)
+- Patient health timeline summary + questions-for-doctor list
+- SBAR completeness feedback (Situation / Background / Assessment / Recommendation)
+
+---
+
+## 🔍 Specific Clinical Reasoning Constructs Prompted
+
+- Working diagnosis / differential building
+- Reasoning justification, weighting, revision
+- Red flag / time-critical action identification (unprompted)
+- Safety netting
+- Risk assessment (suicidality — means, intent, plan, protective factors)
+- Pre-op workup, anaesthetic/surgical approach modification
+- Post-op complication recognition (day-specific timelines)
+- SBAR handoff completeness
+- Weight-based dosing with formula + working shown
+- Age/developmental stage reasoning in paediatrics
+- Blind spot surfacing in experienced clinician reasoning
+- "3 AM with no senior available" stress-test question
+
+---
+
+## 🌐 Audience Segmentation
+
+- Medical students / trainees (core audience)
+- Peer learners (study groups)
+- Specialists and clinicians (CDSS sounding board)
+- Academics and educators (assessment/OSCE design)
+- Nursing and allied health
+- Patients and non-medical explorers (lay guided discovery)
+- Faculty (rubric review, post-session)
+
+---
+
+## 🧩 Meta / Repository Concepts
+
+- Seed prompt set (starter collection)
+- Version lineage (V0 → V1 → V2 → specialty adaptations)
+- Contribution gap tracking (L2/L4/L5/L6 and specialty adapters as priority)
+- Pre-pilot stress-testing checklist (lazy replies, dangerous plans, off-case queries, personal disclosure, real identifiers, answer-pressure)
+- DOI-cited original concept (Zenodo)
+- PR-based or email-based contribution workflow
+- Prompt reviewer role (community)
+
+---
+
+This covers essentially every layer: structure, scaffolding, personas, safety, assessment, reasoning constructs, and community/repo meta. Want me to turn this into a visual taxonomy, a filterable table, or something else?
+
+
+
+
+
+
+
+
+The PDFs aren't renderable via fetch (binary files). I have everything from the Seed Prompts + README + repo context. Now building the full expanded list grounded in the repo's domain (clinical/medical education AI prompts) plus everything in the EBM/grading/PICO universe:
+
+---
+
+## 📐 GRADING & RUBRIC SYSTEMS (Medical Education)
+
+**Competency Rating Scales**
+- Developing / Competent / Strong (used in Vibe Rounds)
+- Novice / Advanced Beginner / Competent / Proficient / Expert (Dreyfus model)
+- Milestones (ACGME) — EPAs (Entrustable Professional Activities)
+- Level 1–5 entrustability scale (not yet / with direct supervision / indirect supervision / unsupervised / supervises others)
+- Pass / Borderline / Fail — OSCE standard
+- Pass-equivalent / Borderline / Fail-equivalent (simulation rubric language)
+
+**Dimension-Based Scoring Rubrics**
+- Diagnostic Accuracy
+- Reasoning Quality / Clinical Reasoning Quality
+- Safety Awareness / Patient Safety Consciousness
+- History-Taking completeness
+- Examination completeness
+- Investigation appropriateness (appropriate / over-ordered / under-ordered)
+- Differential Diagnosis quality (breadth, priority, justification)
+- Management Plan appropriateness (appropriate / incomplete / unsafe)
+- Safety-Netting (present / absent)
+- Communication / Professionalism
+- Time management under pressure
+- Escalation / help-seeking appropriateness
+- Documentation quality
+- Numeracy / dose calculation accuracy
+
+**OSCE-Specific Rubric Elements**
+- Global rating scale (GRS)
+- Checklist scoring vs. holistic rating
+- Domain weightings (history vs. management vs. communication)
+- Examiner inter-rater reliability
+- Borderline regression / borderline group method
+- Standard setting (Angoff, modified Angoff, Ebel)
+
+**Formative vs. Summative Assessment Distinctions**
+- Formative: scored but feedback-rich, hints allowed post-session
+- Summative: rubric-only output, no real-time feedback
+- Low-stakes / high-stakes distinctions
+- Faculty-reviewed vs. self-reviewed rubric outputs
+
+---
+
+## 🔬 EVIDENCE-BASED MEDICINE (EBM) FRAMEWORKS
+
+**PICO & Variants**
+- PICO (Population / Intervention / Comparison / Outcome)
+- PICOT (+ Time)
+- PICOTS (+ Setting)
+- PICOS (+ Study design)
+- PECO (Population / Exposure / Comparator / Outcome) — for observational/etiological questions
+- SPIDER (Sample / Phenomenon of Interest / Design / Evaluation / Research type) — qualitative
+- ECLIPSE (Expectation / Client group / Location / Impact / Professionals / Service) — health policy
+- PICo (Population / Interest / Context) — qualitative
+
+**Clinical Question Types**
+- Therapy/intervention questions
+- Diagnosis questions
+- Prognosis questions
+- Etiology/harm questions
+- Prevention questions
+- Qualitative/experience questions
+- Cost-effectiveness questions
+- Screening questions
+
+**Evidence Hierarchies**
+- Systematic review / meta-analysis (top)
+- RCT (randomized controlled trial)
+- Cohort study (prospective / retrospective)
+- Case-control study
+- Cross-sectional study
+- Case series / case report
+- Expert opinion / editorial (bottom)
+- Animal / in-vitro studies
+- Pre-print / grey literature
+
+**Grading Evidence Quality**
+- GRADE (Grading of Recommendations Assessment, Development and Evaluation): High / Moderate / Low / Very Low
+- Oxford Centre for EBM Levels (1a–5)
+- SIGN grading (Scottish)
+- US Preventive Services Task Force (A/B/C/D/I)
+- SORT (Strength of Recommendation Taxonomy): A/B/C
+
+**Critical Appraisal Frameworks**
+- CASP (Critical Appraisal Skills Programme) — RCT, cohort, case-control, systematic review, qualitative checklists
+- CONSORT (reporting RCTs)
+- PRISMA (reporting systematic reviews/meta-analyses)
+- STROBE (observational studies)
+- STARD (diagnostic accuracy studies)
+- CARE (case reports)
+- AGREE II (clinical guidelines)
+- QUADAS-2 (diagnostic test accuracy)
+- ROBINS-I (risk of bias, non-randomized interventions)
+- Cochrane RoB 2.0 (risk of bias for RCTs)
+
+**Statistical Literacy for EBM (Prompt-Relevant)**
+- Absolute risk reduction (ARR)
+- Relative risk reduction (RRR)
+- Number needed to treat (NNT) / Number needed to harm (NNH)
+- Odds ratio (OR) / Relative risk (RR) / Hazard ratio (HR)
+- Confidence intervals — width, overlap, clinical vs. statistical significance
+- P-value interpretation + its limitations
+- Sensitivity / Specificity / PPV / NPV
+- Likelihood ratios (LR+ / LR−)
+- Pre-test vs. post-test probability (Fagan nomogram)
+- Forest plot interpretation
+- Funnel plot + publication bias
+- Heterogeneity (I²)
+- Intention-to-treat vs. per-protocol analysis
+- Subgroup analysis pitfalls
+- Absolute vs. relative risk framing (spin detection)
+
+---
+
+## 📖 PUBLICATION READING & CLINICAL APPRAISAL PROMPTS
+
+**Paper Dissection Framework**
+- Is the research question clearly stated?
+- Is the study design appropriate for the question?
+- Population: representative? Inclusion/exclusion criteria appropriate?
+- Allocation: randomized? Concealed?
+- Blinding: who was blinded? Does it matter here?
+- Follow-up: complete? Long enough?
+- Outcomes: patient-important vs. surrogate?
+- Results: magnitude, precision, direction
+- Applicability: does this apply to MY patient?
+- Conflict of interest / funding source assessment
+
+**Journal Club Prompt Structures**
+- Presenter-led Socratic journal club
+- "What would change your practice?" question
+- "What's the one methodological flaw that limits this paper?" question
+- "How would you explain this result to the patient?" question
+- Pre-appraised evidence sources (UpToDate, DynaMed, BMJ Best Practice, NEJM Evidence)
+
+**Guideline Appraisal**
+- Who wrote it and who funded it?
+- What evidence base underpins each recommendation?
+- GRADE strength of recommendation vs. quality of evidence distinction
+- Applicability to local context / resource setting
+- When was it last updated?
+
+---
+
+## 🧠 CLINICAL REASONING MODELS (Prompt-Relevant)
+
+**Dual-Process Theory**
+- System 1 (fast, intuitive, pattern recognition) vs. System 2 (slow, analytical, deliberate)
+- Cognitive bias identification prompts (anchoring, premature closure, availability, framing, representativeness, base-rate neglect, search satisficing)
+- Metacognition prompts ("what would make you change your mind?")
+
+**Illness Script Framework**
+- Epidemiology / risk factors
+- Pathophysiology
+- Time course
+- Symptoms / signs
+- Distinguishing features
+- Complications
+
+**Problem Representation**
+- One-liner summary construction
+- Semantic qualifier use (acute vs. chronic, central vs. peripheral, etc.)
+- Pivot point identification
+
+**Diagnostic Reasoning Constructs**
+- Differential diagnosis generation (broad → narrowed)
+- Probability ranking vs. must-not-miss ranking
+- Discriminating features identification
+- Iterative hypothesis refinement
+- Bayesian updating (informal)
+- Threshold model (test threshold / treat threshold)
+- Pretest probability estimation
+
+**Management Reasoning**
+- Risk-benefit weighing
+- Shared decision-making framework
+- Stepwise escalation plans
+- Safety-netting criteria
+- Time-critical action identification
+- "Worst first" vs. "most likely first" approaches
+- Disposition reasoning (admit / discharge / watch)
+
+---
+
+## 🏫 MEDICAL EDUCATION FRAMEWORKS (Underpinning Prompt Design)
+
+**Pedagogical Models**
+- Socratic method / maieutic questioning
+- Guided discovery learning
+- Problem-based learning (PBL)
+- Case-based learning (CBL)
+- Team-based learning (TBL)
+- Flipped classroom model
+- Spaced repetition
+- Retrieval practice / testing effect
+- Mastery learning
+- Deliberate practice (Ericsson)
+- Near-transfer vs. far-transfer learning
+
+**Cognitive Load Theory (Prompt Design Implications)**
+- Intrinsic / extraneous / germane load
+- Worked example effect
+- Expertise reversal effect (why L6 strips scaffolding)
+- Goal-free effect
+- Completion problem strategy (partial prompts)
+
+**Feedback Models**
+- Pendleton's rules
+- SET-GO model (Share / Elaborate / Time / Go on / Others)
+- SCOPME model
+- R2C2 model (Relationship / Reaction / Content / Coaching)
+- Plus-Delta
+- Elphinstone's AID (Action / Impact / Desired outcome)
+
+**Miller's Pyramid**
+- Knows (knowledge)
+- Knows How (competence)
+- Shows How (performance — OSCE)
+- Does (action — workplace-based assessment)
+
+**Bloom's Taxonomy (Prompt Level Targeting)**
+- Remember / Understand / Apply / Analyze / Evaluate / Create
+- Prompt design maps to level: recall questions (L1) → evaluation/synthesis (L5/L6)
+
+**Kirkpatrick Model (Evaluation of Educational Programs)**
+- Level 1: Reaction (did learners like it?)
+- Level 2: Learning (did knowledge/skill improve?)
+- Level 3: Behaviour (did practice change?)
+- Level 4: Results (did patient outcomes improve?)
+
+---
+
+## 📊 WORKPLACE-BASED ASSESSMENT (WBA) TOOLS
+
+- Mini-CEX (Mini Clinical Evaluation Exercise)
+- DOPS (Direct Observation of Procedural Skills)
+- CBD (Case-Based Discussion)
+- MSF (Multi-Source Feedback / 360°)
+- PS (Patient Satisfaction questionnaire)
+- ACAT (Acute Care Assessment Tool)
+- Logbook / procedure sign-off
+- Portfolio-based learning
+
+---
+
+## 🔄 CLINICAL DECISION SUPPORT (CDSS) CONCEPTS
+
+- Sounding board mode (vs. teaching mode)
+- Blind-spot surfacing
+- "What would change your plan?" question
+- Clinician as decision-maker (AI never unilaterally recommends)
+- Evidence retrieval with citation (CDSS-only feature)
+- Real-time bedside brevity requirement
+- Immediate safety flag mechanism (state risk, not dramatise)
+- Post-decision review vs. real-time support distinction
+- Alert fatigue awareness (over-flagging vs. under-flagging)
+
+---
+
+## 🧩 STRUCTURED COMMUNICATION TOOLS
+
+- SBAR (Situation / Background / Assessment / Recommendation)
+- ISBAR (+ Identification)
+- ISOBAR (+ Observation / Read-back)
+- SOAP (Subjective / Objective / Assessment / Plan)
+- SNAPPS (Summarise / Narrow / Analyse / Probe / Plan / Select)
+- OMP (One-Minute Preceptor): commitment / probe / teach / reinforce / correct
+- ICE (Ideas / Concerns / Expectations) — patient consultation
+- Calgary-Cambridge guide (consultation structure)
+- BATHE (Background / Affect / Trouble / Handling / Empathy)
+
+---
+
+## 🔐 SAFETY, ETHICS & GOVERNANCE IN PROMPTS
+
+- De-identification standards (initials only, no ages where range suffices, no ward/unit names)
+- Personal distress boundary detection (off-case vs. on-case)
+- Safety override (break Socratic mode for dangerous plans)
+- Diagnostic disclaimer (especially lay/patient-facing)
+- Urgent symptom recognition + care redirection
+- AI as support tool, not decision-maker
+- Hallucination risk acknowledgment (especially drug doses, guidelines)
+- Consent to AI involvement (implicit in educational setting)
+- Data privacy / no real patient data in prompts
+- Regulatory framing (not a medical device; paradigm, not product)
+
+---
+
+That's the full expanded universe across grading rubrics, EBM/PICO, clinical reasoning, education theory, WBA tools, structured communication, and safety governance — all relevant to building prompts in this domain. Want this rendered as a filterable interactive table or turned into a structured prompt taxonomy?
+
+
+
+
+
+
+Let me pull the remaining files I haven't read yet.Now I have the full picture — the website, the guided discovery protocol description, the pedagogical spectrum, all personas, the N-of-1 workflow, and the constraint system. Here's the exhaustive expansion:
+
+---
+
+## 🔭 GUIDED DISCOVERY — Full Framework
+
+**Core Concept**
+- Guided Discovery as distinct from Socratic teaching — learner as problem-solver, educator as architect of experience
+- Scaffolded environment where the answer isn't given but the parameters make the correct conclusion reachable
+- Struggle as the point (productive failure / desirable difficulty)
+- Stage 4 on the pedagogical spectrum (beyond Socratic, before independent research)
+- "Scaffolded environment generated on demand" — the AI's role in guided discovery
+
+**Seven-Stage N-of-1 Guided Discovery Workflow**
+- Stage 1: Raw case narrative capture (clinician-led, unstructured)
+- Stage 2: Structured case synthesis (AI-assisted organisation)
+- Stage 3: Hypothesis generation (open differential, no premature closure)
+- Stage 4: Evidence interrogation (literature mapped to case)
+- Stage 5: Two-Tier Analysis (see below)
+- Stage 6: Structured output generation (CARE-aligned, publication-compatible)
+- Stage 7: Reflection and gap identification (what remains unknown)
+
+**Two-Tier Analysis Methodology**
+- Tier 1: Surface-level pattern matching (what does this look like?)
+- Tier 2: Deep mechanistic interrogation (why does this pattern exist? what's the underlying biology?)
+- Applied to both rare and common presentations
+- Prevents diagnostic closure — common case example (diabetic presentation) used to show the same protocol stops premature anchoring
+
+**N-of-1 Research Synthesis**
+- Single-patient research paradigm
+- Rare disease use case: suspected convergence of G6PD + AMPD1 + GSD III/IX deficiencies (triple energy-pathway disorder)
+- Common hospital presentation use case: routine diabetic case
+- Mapping from raw case narrative → structured, publication-compatible output in a single session
+- CARE-aligned outputs (Case Report guidelines)
+
+**Preventing Diagnostic Closure at the Bedside**
+- Diagnostic closure = premature commitment to a diagnosis before full data is in
+- AI role: surface what hasn't been asked, what hasn't been checked
+- "What would make you regret starting anticoagulation?" question type
+- "What could kill the patient?" as a forced reconsideration prompt
+
+---
+
+## 🏥 SPECIALTY-SPECIFIC PROMPT DIMENSIONS
+
+**General Medicine**
+- Cross-specialty case applicability
+- Undifferentiated presentations
+- Multi-system illness
+- Frailty / multimorbidity management
+- Polypharmacy reasoning
+- Ward vs. outpatient vs. ED context shifts
+
+**Psychiatry**
+- Risk assessment structure: means / intent / plan / protective factors
+- Suicide risk stratification (acute vs. chronic)
+- Protective factor weighting (how much do they really count here?)
+- Mental state examination prompting
+- Safety planning components
+- Involuntary treatment thresholds
+- Capacity assessment
+- Off-case vs. on-case personal distress boundary (unique to psychiatry prompts)
+- Psychosis / mood / personality / substance presentations
+- Medication adherence reasoning
+
+**Surgery**
+- Pre-operative workup interrogation
+- Anaesthetic approach modification triggers
+- Intra-operative decision points
+- Post-operative complication timelines (day-specific)
+- "Back to theatre tonight vs. wait until morning" threshold question
+- Anastomotic leak reasoning
+- Wound assessment
+- Drain output interpretation
+- Surgical escalation triggers
+- "3 AM with no senior available" stress-test
+
+**Paediatrics**
+- Weight-based dose calculation (formula + working shown, not just answer)
+- Age / developmental stage as reasoning modifier
+- Paediatric vs. adult presentation differences
+- Paediatric SOFA scoring
+- Febrile child red flags (meningism, petechiae, non-blanching rash)
+- Fluid resuscitation weight-based
+- Immunisation status as clinical variable
+- Growth / developmental milestone integration
+- De-identification by range not exact age (toddler / school-age)
+- Safeguarding triggers
+
+**Nursing**
+- SBAR handoff completeness (Situation / Background / Assessment / Recommendation)
+- Specificity of Recommendation ("keep an eye on" → what specifically triggers escalation?)
+- Incoming shift handoff simulation
+- Escalation criteria articulation
+- Family communication scenarios
+- Documentation quality
+- Medication administration safety check
+- Observations trending vs. single values
+
+**Emergency Medicine** *(implied / needed)*
+- Time-critical action identification
+- Triage reasoning (priority sequencing)
+- Resuscitation decision-making
+- ABCDE approach prompting
+- PE / dissection / MI differentiation
+- Sepsis recognition (qSOFA, Sepsis-3)
+- Trauma primary survey
+- Disposition reasoning (admit / discharge / observe)
+
+**Cardiology** *(from website case examples)*
+- HCM + arrhythmia management
+- Broad complex tachycardia classification
+- VT vs. SVT with aberrancy distinction
+- Synchronised DC cardioversion timing
+- Negative inotropy risk in LVOTO
+- ECG interpretation prompting
+- Post-CABG complication timeline
+
+**Respiratory / PE** *(from case examples)*
+- PE work-up: Well's score, D-dimer, CTPA
+- Aortic dissection as PE mimic / must-not-miss
+- "Widened mediastinum" trap question
+- O₂ saturation trending
+- CXR interpretation prompting (opacity morphology, margins, location)
+
+**Obstetrics** *(from student example)*
+- Pregnant patient assessment
+- Anterior placenta and fetal movement
+- Maternal vs. fetal pulse distinction
+- Fetal heart rate vs. maternal HR
+- Unusual sensation in pregnancy — differential construction
+
+**Infectious Disease / Sepsis**
+- Sepsis-3 definition
+- Source control urgency
+- qSOFA criteria
+- Lactate interpretation
+- Sequential escalation of antibiotics
+- Culture timing relative to antibiotics
+
+**Neurology** *(implied)*
+- Focal vs. diffuse neurological deficit
+- Time-sensitive thrombolysis windows
+- NIHSS reasoning
+- Headache red flags
+
+**Oncology** *(implied from haemoptysis case)*
+- Lung malignancy workup
+- Staging system prompting (TNM)
+- Sputum cytology / CT staging sequence
+- Weight loss + haemoptysis pattern recognition
+
+**Endocrinology / Metabolic** *(from N-of-1 rare case)*
+- G6PD deficiency
+- AMPD1 deficiency
+- Glycogen storage disease (GSD III/IX)
+- Triple energy-pathway disorder concept
+- Diabetic presentation — common case, deep reasoning
+
+**Rare Disease** *(Guided Discovery specific)*
+- Convergent multi-system enzyme deficiency
+- Literature gap identification
+- Case report pathway (CARE guidelines)
+- N-of-1 as valid evidence unit
+
+---
+
+## 🧩 CLINICAL COMPLEXITY CONSTRUCTS
+
+**Complexity Dimensions for Prompts**
+- Single diagnosis vs. multimorbidity
+- Single system vs. multi-system involvement
+- Acute vs. chronic vs. acute-on-chronic
+- Reversible vs. irreversible pathology
+- Time-critical vs. time-permissive presentations
+- High-stakes (low-frequency) vs. low-stakes (high-frequency) presentations
+- Diagnostic certainty spectrum: clear / ambiguous / diagnostically unknown
+- Resource-rich vs. resource-limited setting adaptation
+- Shift fatigue context ("3 AM on the 12th hour of a shift")
+- High cognitive load context (6 patients, 40 minutes)
+
+**Case Complexity Layers for Prompt Design**
+- Simple (single diagnosis, single system, typical presentation)
+- Moderate (two competing diagnoses, one atypical feature)
+- Complex (multimorbidity, atypical presentation, treatment interaction)
+- Very complex (rare disease, diagnostic uncertainty, no clear guideline)
+- Crisis (haemodynamically unstable, immediate decision required)
+
+**Clinical Vignette Progression (Faculty Use)**
+- Progressively harder case series (as in sepsis example: basic → advanced)
+- Case 1: typical presentation, named criteria (qSOFA)
+- Case 2: complication layer (confusion, lactate)
+- Case 3: atypical host (elderly, immunocompromised)
+- Case 4: paediatric adaptation (same disease, adjusted scoring)
+- Case 5: resource-limited or unusual context
+
+**What/Where/Do Template (Vibe Rounds Clinical Reasoning Scaffold)**
+- What: what is wrong with this patient? (diagnosis)
+- Where: where in the system / anatomy / pathophysiology? (localisation)
+- Do: what do I do next? (management / investigation / escalation)
+- AI identifies soft spots in each of the three limbs
+- Captures initial reasoning before AI engagement
+
+---
+
+## 🎭 PERSONA SYSTEM (Expanded)
+
+**Named Personas in Vibe Rounds**
+- Supportive Intern (ward peer, low threat, gap-identifier not corrector)
+- Socratic Attending (rigorous, challenge-first, assumption-surfacing)
+- Junior Resident (preparation mode, real-time support)
+- Senior Registrar (specialty-specific, escalation-aware)
+- Examiner (formative — scored; summative — rubric only)
+- OSCE Examiner (full withholding, structured rubric output)
+- Peer/Fellow Student (devil's advocate, coffee-table tone)
+- Supportive Senior — Independent Mode (higher effort bar, no faculty)
+- Paediatrics Senior
+- Surgical Senior Resident
+- Incoming Shift Colleague (SBAR receiver)
+- Socratic Attending for CDSS (peer-level, not teacher-level)
+- Calm Organised Assistant (lay / patient-facing)
+
+**Persona Design Variables**
+- Challenge level (gentle / moderate / aggressive Socratic)
+- Tone (warm / neutral / examiner-brisk)
+- Hint availability (full ladder / delayed / none)
+- Feedback timing (real-time / post-session / withheld)
+- Evidence citation permission (CDSS only)
+- Answer provision permission (never in teaching modes)
+- Role relative to learner (peer / senior / examiner / patient-side)
+- Trigger for safety override
+
+**Persona Command Format**
+- `#VibeRounds` hashtag as session initiator
+- "Act as a…" role assignment as first line
+- Core rules block
+- Socratic question bank (specialty-specific)
+- Hint ladder definition
+- Safety clause
+- Off-case boundary clause
+- De-identification rule
+- Session opener line
+
+---
+
+## 📊 PEDAGOGICAL SPECTRUM (Full 5-Stage Model)
+
+- Stage 1 — Lecture: educator as expert/source, learner as passive receiver; information delivery and foundational framing
+- Stage 2 — Dyadic: educator as facilitator, learner as active collaborator; peer-to-peer articulation, encoding, social learning
+- Stage 3 — Socratic: educator as questioner, learner as critical thinker; challenging assumptions, surfacing logical gaps (Vibe Rounds home base)
+- Stage 4 — Guided Discovery: educator as architect of experience, learner as problem-solver; constructing mental models through scaffolded experience (Vibe Rounds extends here)
+- Stage 5 — Research: educator as mentor, learner as independent scholar; generating original insight, mastery
+
+**Spectrum Design Principles**
+- Cognitive load theory maps to stage selection (start at Research = overwhelmed; stay at Lecture = no independent muscle built)
+- Agency and responsibility shift from educator to student across the spectrum
+- Meaning-making transfers stage by stage
+- Vibe Rounds is the tool purpose-built for Stages 3 and 4
+
+---
+
+## 🤖 AI CONSTRAINT SYSTEM (Full Set)
+
+1. Forced commitment first
+2. Minimum effort threshold ("idk" redirect)
+3. 10-second rule / delayed rescue (deliberate pause)
+4. Tiered hints, never full answer upfront (framework → direction → partial → teaching summary)
+5. Effort-weighted assistance (more thoughtful attempt → deeper teaching)
+6. Reasoning grading, not just correctness (logic / prioritisation / uncertainty-flagging)
+7. Adaptive difficulty (novice → aggressive Socratic)
+8. Role-calibrated rigor (intern / resident / attending / examiner posture)
+9. Reflection before reveal ("Why do you think that?" / "What could kill the patient?" / "What are you missing?")
+10. Answer-withholding policy (full answer released only after attempt + reasoning + revision OR explicit surrender)
+
+**Appending Constraint Line to Any Prompt**
+- "Apply effort-weighted, tiered-hint Socratic constraints — require a committed first attempt, withhold the full answer until I've reasoned through it, and grade my logic and uncertainty as much as my final answer."
+
+---
+
+## 🌐 SYSTEM / INFRASTRUCTURE CONCEPTS
+
+**Multimodal AI at the Bedside**
+- Text input (clinical history, reasoning)
+- Image input (wound photos, ECGs, CXR, pathology slides)
+- Audio input (dictation, bedside verbal command)
+- Video input (procedure observation, gait analysis)
+- Natural language as primary interface (no menus, no forms)
+- Speak / Point / Show command modalities
+
+**EMR Integration**
+- Vibe Rounds as Socratic layer inside the EMR
+- EMR as cognitive scaffold, not just database
+- AI as clinical partner within the EMR workflow
+- Bedside real-time brevity requirement
+- FHIR infrastructure dependency
+- Interoperable health records (EU, US, Asia, Africa)
+- Digital health infrastructure maturity dependency
+
+**Platform / Tool Contexts**
+- NotebookLM (Google) — source-anchored Socratic sessions
+- Claude / ChatGPT / any LLM — persona prompt pasting
+- Educator App — standalone custom persona builder
+- PubReads app — Socratic co-pilot for paper reading
+- Custom LLM system instructions (prompt as system prompt)
+- Zenodo DOI-published concept document
+- Archive.org / GitHub / Hacker News distribution
+
+**Domain Maturity Map**
+- Domain 1 (Clinical Education): High maturity — Socratic feedback loop, six-level difficulty, V0–V2 evolution, pilot protocol, live deployment
+- Domain 2 (Guided Discovery Research): Medium maturity — seven-stage N-of-1 workflow, two-tier analysis, CARE-aligned outputs, awaiting multi-case validation
+- Domain 3 (Bedside CDSS): Early/concept stage — architecture defined, EMR + multimodal + FHIR pre-implementation
+
+---
+
+## 📚 PUBLICATION / RESEARCH READING (PubReads Layer)
+
+- Stop reading papers → start questioning them
+- Socratic Co-pilot for paper reading
+- Passive consumption → active critical thinking
+- AI challenges your interpretation of the paper, not the paper itself
+- "Why do you think this finding matters for YOUR patient?" question type
+- Applicability interrogation (does this apply to my context?)
+- Methodological flaw surfacing
+- Spin detection in results framing
+- What would change your practice?
+- Journal club Socratic facilitation
+
+---
+
+## 🎓 EXAM PREP USE CASES
+
+- USMLE Step 1 / Step 2 / Step 3
+- MRCP Part 1 / Part 2 / PACES
+- FMGE (Foreign Medical Graduate Examination)
+- USMLE-style vignette format
+- Adaptive quiz mode (correct → harder; incorrect → supportive scaffolding)
+- Specialty-specific question banks (cardiology, arrhythmias, etc.)
+- Distractor explanation (MCQ with explained wrong answers)
+- "Make it harder" escalation command
+- "Quiz me, I'm weak on X" learning-gap targeting
+- Midnight / 2 AM study partner persona
+- Board prep as Vibe Rounds use case
+
+---
+
+That's the complete picture across guided discovery, specialty-specific dimensions, clinical complexity, the constraint system, the pedagogical spectrum, and the infrastructure layer. Want this compiled into a single master taxonomy document you can download?
