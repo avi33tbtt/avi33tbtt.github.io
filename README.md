@@ -34,6 +34,24 @@ With your permission, we'll feature contributions (with attribution, or anonymou
 
 ---
 
+## 🔗 Quick Links
+ 
+- 📄 **Sample / Seed Prompts** → [View on GitHub](https://github.com/avi33tbtt/avi33tbtt.github.io/blob/master/Seed%20prompts.md)
+- 🌐 **Website** → [avi33tbtt.github.io](https://avi33tbtt.github.io/)
+---
+ 
+> Feel free to explore seed prompts and visit website to learn more!
+
+
+## 🤝 Join the Team
+ 
+Want to help review prompts before they're submitted to the GitHub repo?
+ 
+**We'd love to have you!** If you're interested in joining as a prompt reviewer, reach out to us via email.
+ 
+📧 **Email us to get involved!**
+
+
 *Vibe Rounds — Concept by Dr. Avinash Kumar Gupta | DOI: [10.5281/zenodo.20622693](https://doi.org/10.5281/zenodo.20622693)*
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dravinashkumargupta/)
