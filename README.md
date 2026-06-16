@@ -55,7 +55,5 @@ A curated collection of seed prompts organized by use case — for learning, tea
  
 👉 [**Browse the Prompts directory →**](https://github.com/avi33tbtt/avi33tbtt.github.io/tree/master/Prompts)
 
-👉 [**Check Youtube playlist →**]([https://github.com/avi33tbtt/avi33tbtt.github.io/tree/master/Prompts](https://www.youtube.com/watch?v=95fjEK-aIb8&list=PL7NbfQr9rYIdl1sLjfD6xb3t8JWgV7FgQ))
-
  
 📧 **Email us to get involved!**
