@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Module 0 — Cold-Start Orientation
 
@@ -76,4 +76,4 @@ None applied directly in Module 0 — this module exists purely to route users t
 
 **Next:** [Module 1 — Socratic Clinical Reasoning →](Module-01-Socratic-Clinical-Reasoning.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
