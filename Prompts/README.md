@@ -35,6 +35,7 @@ If you already know which module and step you need, skip straight there using th
 | Running registry-level analytics | [Module 6 – Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) |
 | Mining the registry for cross-case learning | [Module 7 – Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) |
 | Authoring or QA-checking a new Socratic prompt | [Module 8 – Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) |
+| N-of-1 Case Research Protocol | [Module 9 – N-of-1 Case Research Protocol](VibeRounds_Module9_Research_Protocol.md) |
 
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
@@ -79,7 +80,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 6 | [Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) | Queries an entire case registry across nine escalating levels of analytic depth |
 | 7 | [Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) | Turns the registry itself into a cross-case, cross-time learning system *(proposed; not yet validated live)* |
 | 8 | [Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) | A 12-point QA specification for authoring or revising any new Socratic-mode prompt |
-| 9 | [N-of-1 Case Research Protocol (Vibe Rounds Core Method)](VibeRounds_Module9_Research_Protocol.md) | Running the seven-stage research protocol on your own complex case. |
+| 9 | [N-of-1 Case Research Protocol](VibeRounds_Module9_Research_Protocol.md) | Running the seven-stage research protocol on your own complex case. |
 
 ## 🧩 Supplementary Frameworks
 
