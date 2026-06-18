@@ -51,9 +51,6 @@ ontology mapping gaps. This is my baseline before any queries.
 > [!NOTE]
 > **Application Note:** Run once per analytics session. The structured metadata completeness check (point 4) is critical — analytics on cases lacking populated term lists will fall back to narrative search, increasing hallucination risk. Establish what percentage of your registry has been through the structuring layer before drawing population-level conclusions.
 
-> [!TIP]
-> **From the live experiment:** When asked directly, the bot correctly distinguished between cases that exist as raw narrative versus those with structured metadata overlays. Cases without structured tags can still be queried but will yield semantic approximations rather than deterministic counts.
-
 ---
 
 ## Phase 2 · Execution — Escalating analytic levels
@@ -132,9 +129,6 @@ State the risk briefly.
 
 > [!NOTE]
 > **Application Note:** In the live experiment, the bot surfaced a high-value case (a 42-year-old male with multi-year neurological and endocrine accumulation) and provided a direct access link without requiring navigation through a WhatsApp group. **Direct case access via the bot is confirmed.** When requesting high-value N-of-1 cases, specify "cases with the longest documented trajectory and highest number of distinct data points" for richer output than "interesting."
-
-> [!TIP]
-> **Update access confirmed:** You can add updates to any case directly via the bot without accessing its specific group channel. State: *"For case [Title or ID], add the following timestamped note: [update]."*
 
 ---
 
