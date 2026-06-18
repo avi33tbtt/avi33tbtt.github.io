@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Supplementary Framework A — Humanistic Persona & Confidence-Building Trait Set
 
@@ -82,4 +82,4 @@ Embedded in Modules 1–8 via persona language throughout, and explicitly via cr
 
 **Other frameworks:** [Framework B — Fink's FLINK Taxonomy](Framework-B-Finks-FLINK-Taxonomy.md) · [Framework C — Bloom's Taxonomy](Framework-C-Blooms-Taxonomy.md) · [Framework D — Critical Awareness](Framework-D-Critical-Awareness-Framework.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
