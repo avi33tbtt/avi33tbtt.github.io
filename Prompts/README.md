@@ -104,7 +104,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 2** | 🟡 In Progress | Active development, expect changes. |
 | **Module 3** | 🟡 In Progress | Active development, expect changes. |
 | **Module 4** | 🟢 Mature | Ready for ~~production~~ self learning use. |
-| **Module 5** | 🟡 In Progress | Ready for ~~production~~ self learning use.. |
+| **Module 5** | 🟡 In Progress | Ready for ~~production~~ self learning use. |
 | **Module 6** | 🔴 Primitive | Experimental / Alpha stage. |
 | **Module 7** | 🔴 Primitive | Experimental / Alpha stage. |
 | **Module 8** | 🟡 In Progress | Ready for ~~production~~ self learning use. |
