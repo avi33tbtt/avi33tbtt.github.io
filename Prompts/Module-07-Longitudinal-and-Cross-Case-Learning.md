@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Module 7 — Longitudinal & Cross-Case Learning
 
@@ -202,4 +202,4 @@ from this session?
 **Previous:** [← Module 6 — Registry-Level Analytics](Module-06-Registry-Level-Analytics.md)
 **Next:** [Module 8 — Socratic-Mode Design Specification →](Module-08-Socratic-Mode-Design-Specification.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
