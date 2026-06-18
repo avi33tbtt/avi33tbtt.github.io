@@ -1,4 +1,4 @@
-# Module 9 — N-of-1 Case Research Protocol (Vibe Rounds Core Method)
+# Module 9 — N-of-1 Case Research Protocol
 
 **Drafted from:** *Vibe Rounds — N-of-1 Protocol & Worked Case* (Extended Preprint, June 2026), Section 2 ("Protocol Description: The Seven Stages of Vibe Rounds") and Table 1.
 
