@@ -1,3 +1,41 @@
+# Disclosure Statement
+
+> [!IMPORTANT]
+> **Clinical Disclaimer & Independent Verification Required**
+> All AI-generated outputs produced using these prompts — including but not limited to diagnostic suggestions, severity/priority ratings, drug-interaction flags, and registry-level or cross-case conclusions — **require independent clinical verification before being acted upon.** This document does not substitute for clinical judgment, professional medical advice, or established institutional safety protocols at any stage.
+
+---
+
+## Authorship & Development
+This document (*Vibe Rounds Prompt Modules 1–9*) was developed by `[team]`. 
+* **Review Process:** No formal peer-review or institutional review process is done/documented yet.
+
+## Funding & Conflicts of Interest
+* **Funding:** No funding source is disclosed.
+* **Conflicts of Interest:** No conflict-of-interest statement is provided. 
+* **Platform Affiliations:** No affiliance with any institution or company. Gemini was used for testing but no affiliation with that.
+
+---
+
+## Evidence Base
+IMPORTANT - This document has not undergone controlled evaluation of clinical, educational, or patient-safety outcomes. 
+
+### ⚠️ Key Evidentiary Limitations
+
+| Aspect | Status & Context |
+| :--- | :--- |
+| **"Validated Environment" (Modules 1–8)** | Indicates **only** that a prompt was run, informally and without a comparator condition or outcome measure, in the named environment against typically one case or one testing session. It does *not* mean the output was verified against clinical ground truth, peer-reviewed, or shown to improve any outcome. |
+| **Module 9** | Derived from a single *n-of-1* case-report preprint and inherits that source's evidentiary limitations. |
+| **Evidence Hierarchy Rating** | By the *Oxford Centre for Evidence-Based Medicine* hierarchy, the entire evidence base underlying this document sits at the **case-report / expert-opinion level — the lowest tier of clinical evidence** — and should be treated accordingly. |
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 # Share Your Vibe Rounds Experience
 
 **Vibe Rounds is a paradigm, not a product.** It's a way of using conversational AI — as a Socratic mentor for clinical education, a guided-discovery partner for case-based research, or a layer of clinical decision support (CDSS). Anyone can pick up this approach, write their own prompts, and apply it to their own context.
