@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Supplementary Framework C — Bloom's Revised Taxonomy
 
@@ -115,4 +115,4 @@ See the [Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md) for the full
 
 **Other frameworks:** [Framework A — Humanistic Persona](Framework-A-Humanistic-Persona.md) · [Framework B — Fink's FLINK Taxonomy](Framework-B-Finks-FLINK-Taxonomy.md) · [Framework D — Critical Awareness](Framework-D-Critical-Awareness-Framework.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
