@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation</title>
-    <!-- This stylesheet gives you the exact, clean GitHub Markdown look -->
+    <!-- This stylesheet provides the clean GitHub Markdown look -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
     <style>
         body {
@@ -21,37 +21,44 @@
 </head>
 <body class="markdown-body">
 
+    <!-- The markdown content will load inside this container -->
     <div id="content">Loading documentation...</div>
 
-    <!-- This script fetches your actual README and converts it to HTML safely -->
-    <!-- The final, bulletproof markdown processor -->
+    <!-- Markdown Parser Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+        // 1. Get the page name from the URL (?page=filename.md). Default to README.md
         const urlParams = new URLSearchParams(window.location.search);
         let targetPage = urlParams.get('page') || 'README.md';
+
+        // 2. Set the exact folder path (Case-sensitive matching your 'Prompts' folder)
         const folderPath = 'Prompts/';
 
-        // Configure marked to handle links and line breaks properly
+        // 3. Configure the markdown parser for clean formatting and line breaks
         marked.setOptions({
             breaks: true,
             gfm: true
         });
 
+        // 4. Fetch the file and inject it into the page
         fetch(folderPath + targetPage)
             .then(response => {
                 if (!response.ok) throw new Error('Page not found');
                 return response.text();
             })
             .then(text => {
-                // Force marked to parse the text and inject it into our styled container
-                const htmlContent = marked.parse(text);
-                document.getElementById('content').innerHTML = htmlContent;
+                // Convert markdown text to styled HTML
+                document.getElementById('content').innerHTML = marked.parse(text);
                 
-                // Optional: Automatically update the browser's title bar to match the page name
+                // Set the browser tab title to the name of the current file
                 document.title = targetPage.replace('.md', '').toUpperCase();
             })
             .catch(err => {
-                document.getElementById('content').innerHTML = `<h2>404: Page Not Found</h2><p>Could not load ${folderPath}${targetPage}</p>`;
+                document.getElementById('content').innerHTML = `
+                    <h2>404: Page Not Found</h2>
+                    <p>Could not locate: <code>${folderPath}${targetPage}</code></p>
+                    <p><a href="?page=README.md">← Back to Safety (Home)</a></p>
+                `;
             });
     </script>
 </body>
