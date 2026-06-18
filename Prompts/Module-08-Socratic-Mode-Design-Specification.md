@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Module 8 — Socratic-Mode Design Specification
 
@@ -118,4 +118,4 @@ prompt]
 
 This is the final module. **Up next:** browse the [Supplementary Frameworks](Start-Here.md#-supplementary-frameworks) or [Reference Material](Start-Here.md#-reference-material).
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
