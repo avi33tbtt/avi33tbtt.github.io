@@ -28,8 +28,6 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 | **Module 9** | Derived from a single *n-of-1* case-report preprint and inherits that source's evidentiary limitations. |
 | **Evidence Hierarchy Rating** | By the *Oxford Centre for Evidence-Based Medicine* hierarchy, the entire evidence base underlying this document sits at the **case-report / expert-opinion level — the lowest tier of clinical evidence** — and should be treated accordingly. |
 
-### ⚠️ Frameworks
-None of the frameworks are described as built into PaJR Health Bot itself — they're pedagogical lenses applied to the prompts/steps that happen to be validated for execution on that platform.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
