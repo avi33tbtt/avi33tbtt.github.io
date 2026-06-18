@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
-    <!-- This stylesheet provides the clean GitHub Markdown look -->
+    <title>Prompts Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
     <style>
         body {
@@ -21,43 +20,46 @@
 </head>
 <body class="markdown-body">
 
-    <!-- The markdown content will load inside this container -->
     <div id="content">Loading documentation...</div>
 
-    <!-- Markdown Parser Script -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // 1. Get the page name from the URL (?page=filename.md). Default to README.md
+        // 1. Look for the page param in the URL (?page=filename.md). Default to README.md
         const urlParams = new URLSearchParams(window.location.search);
         let targetPage = urlParams.get('page') || 'README.md';
 
-        // 2. Set the exact folder path (Case-sensitive matching your 'Prompts' folder)
+        // 2. Set the folder path to look inside your Prompts folder
         const folderPath = 'Prompts/';
 
-        // 3. Configure the markdown parser for clean formatting and line breaks
         marked.setOptions({
             breaks: true,
             gfm: true
         });
 
-        // 4. Fetch the file and inject it into the page
+        // 3. Fetch the markdown file from the Prompts folder
         fetch(folderPath + targetPage)
             .then(response => {
                 if (!response.ok) throw new Error('Page not found');
                 return response.text();
             })
             .then(text => {
-                // Convert markdown text to styled HTML
                 document.getElementById('content').innerHTML = marked.parse(text);
-                
-                // Set the browser tab title to the name of the current file
                 document.title = targetPage.replace('.md', '').toUpperCase();
+
+                // 4. SMART LINKS: Force links inside markdown to stay on prompts.html
+                document.querySelectorAll('#content a').forEach(link => {
+                    const href = link.getAttribute('href');
+                    // If it's a relative link to another markdown file, rewrite it to use prompts.html?page=
+                    if (href && href.endsWith('.md') && !href.startsWith('http') && !href.includes('?page=')) {
+                        link.setAttribute('href', `prompts.html?page=${href}`);
+                    }
+                });
             })
             .catch(err => {
                 document.getElementById('content').innerHTML = `
                     <h2>404: Page Not Found</h2>
                     <p>Could not locate: <code>${folderPath}${targetPage}</code></p>
-                    <p><a href="?page=README.md">← Back to Safety (Home)</a></p>
+                    <p><a href="prompts.html?page=README.md">← Back to Prompts Home</a></p>
                 `;
             });
     </script>
