@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Module 2 — Patient-Advocate Case Documentation (4-Step Workflow)
 
@@ -172,4 +172,4 @@ correct response warmly before moving to the next.
 **Previous:** [← Module 1 — Socratic Clinical Reasoning](Module-01-Socratic-Clinical-Reasoning.md)
 **Next:** [Module 3 — Extended Patient-Advocate Monitoring →](Module-03-Extended-Patient-Advocate-Monitoring.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
