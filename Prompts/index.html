@@ -24,24 +24,31 @@
     <div id="content">Loading documentation...</div>
 
     <!-- This script fetches your actual README and converts it to HTML safely -->
+    <!-- The final, bulletproof markdown processor -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // 1. Look at the URL to see if a specific page was requested (e.g., ?page=about.md)
-        // If nothing is requested, default to 'README.md'
         const urlParams = new URLSearchParams(window.location.search);
         let targetPage = urlParams.get('page') || 'README.md';
+        const folderPath = 'Prompts/';
 
-        // 2. Force the script to look inside your 'prom' folder
-        const folderPath = 'Promts/';
+        // Configure marked to handle links and line breaks properly
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
 
-        // 3. Fetch and display the file from prom/filename.md
         fetch(folderPath + targetPage)
             .then(response => {
                 if (!response.ok) throw new Error('Page not found');
                 return response.text();
             })
             .then(text => {
-                document.getElementById('content').innerHTML = marked.parse(text);
+                // Force marked to parse the text and inject it into our styled container
+                const htmlContent = marked.parse(text);
+                document.getElementById('content').innerHTML = htmlContent;
+                
+                // Optional: Automatically update the browser's title bar to match the page name
+                document.title = targetPage.replace('.md', '').toUpperCase();
             })
             .catch(err => {
                 document.getElementById('content').innerHTML = `<h2>404: Page Not Found</h2><p>Could not load ${folderPath}${targetPage}</p>`;
