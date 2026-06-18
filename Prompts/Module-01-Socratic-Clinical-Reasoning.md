@@ -1,4 +1,4 @@
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
 
 # Module 1 — Socratic Clinical Reasoning
 
@@ -197,4 +197,4 @@ remains unresolved? Be honest but constructive.
 **Previous:** [← Module 0 — Cold-Start Orientation](Module-00-Cold-Start-Orientation.md)
 **Next:** [Module 2 — Patient-Advocate Case Documentation →](Module-02-Patient-Advocate-Case-Documentation.md)
 
-[← Back to Start Here](Start-Here.md)
+[← Back to README](README.md)
