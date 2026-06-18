@@ -180,5 +180,11 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 > All links in this repository are relative and assume every file sits in the same directory (the repo root). If you reorganize files into subfolders, update the links accordingly.
 
 ---
+## 📑 Project Evaluation
 
+| File | Contents |
+|---|---|
+| [Vibe Rounds — Academic Evaluation](VibeRounds_Academic_Evaluation.md) | Conversation transcript with Claude | June 19, 2026
+
+---
 *Vibe Rounds Prompt Modules.*
