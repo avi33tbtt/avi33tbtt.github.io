@@ -27,11 +27,15 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // 1. Look at the URL to see if a specific page was requested (e.g., ?page=about.md)
+        // If nothing is requested, default to 'README.md'
         const urlParams = new URLSearchParams(window.location.search);
         let targetPage = urlParams.get('page') || 'README.md';
 
-        // 2. Fetch and display that specific page
-        fetch(targetPage)
+        // 2. Force the script to look inside your 'prom' folder
+        const folderPath = 'Promts/';
+
+        // 3. Fetch and display the file from prom/filename.md
+        fetch(folderPath + targetPage)
             .then(response => {
                 if (!response.ok) throw new Error('Page not found');
                 return response.text();
@@ -40,7 +44,7 @@
                 document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(err => {
-                document.getElementById('content').innerHTML = `<h2>404: Page Not Found</h2><p>Could not load ${targetPage}</p>`;
+                document.getElementById('content').innerHTML = `<h2>404: Page Not Found</h2><p>Could not load ${folderPath}${targetPage}</p>`;
             });
     </script>
 </body>
