@@ -9,7 +9,7 @@
 **Validated Environment:** PaJR Health bot, run as a structured 9-level analytics session. Prefix each query with the platform's bot-mention syntax (e.g., `@PaJR Health`).
 
 > [!IMPORTANT]
-> This module requires **de-identified data only**. See the [Safety & Compliance Note](Start-Here.md#️-safety--compliance-note).
+> This module requires **de-identified data only**.
 
 > [!NOTE]
 > **Experimental Basis:** The prompts and sequencing in this module were refined through a live session with the PaJR Health bot on a registry of 12,022 cases. The bot self-described as a *"continuity engine, not a static database"* — preserving links between clinical events, human reasoning, and evolving narratives rather than merely storing records. This distinction shapes how queries should be framed.
