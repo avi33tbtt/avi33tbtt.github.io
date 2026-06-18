@@ -17,6 +17,7 @@ It contains **9 modules** (numbered 0–8), each a self-contained prompt workflo
 
 ## 🚀 New here? Start with this
 
+![Alternative text](Integrated_Clinical_AI_Lifecycle_Framework.png)
 If you are new to Vibe Rounds and unsure where to begin, go to **[Module 0 — Cold-Start Orientation](Module-00-Cold-Start-Orientation.md)** first. It is a short pre-module entry point that identifies your role and goal and routes you to the right module before any clinical content is exchanged.
 
 If you already know which module and step you need, skip straight there using the index below.
