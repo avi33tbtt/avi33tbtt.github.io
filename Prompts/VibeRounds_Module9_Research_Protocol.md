@@ -1,16 +1,14 @@
 # Module 9 — N-of-1 Case Research Protocol (Vibe Rounds Core Method)
 
-*A standalone companion to `VibeRounds_Prompt_Modules_v4.txt`*
-
 **Drafted from:** *Vibe Rounds — N-of-1 Protocol & Worked Case* (Extended Preprint, June 2026), Section 2 ("Protocol Description: The Seven Stages of Vibe Rounds") and Table 1.
 
 ---
 
 ## How This Module Relates to v4
 
-Modules 0–8 in `VibeRounds_Prompt_Modules_v4.txt` cover teaching (Module 1), patient-advocate documentation and monitoring (Modules 2–3), ward-round prep (Module 4), single-case auditing (Module 5), registry-level analytics (Modules 6–7), and Socratic-prompt design QA (Module 8). None of them implement the seven-stage research protocol that is actually the subject of the Vibe Rounds preprint — the workflow a clinician runs alone, on one complex case, from raw narrative to a fixed, publication-ready output package. This module fills that gap.
+Modules 0–8 in cover teaching (Module 1), patient-advocate documentation and monitoring (Modules 2–3), ward-round prep (Module 4), single-case auditing (Module 5), registry-level analytics (Modules 6–7), and Socratic-prompt design QA (Module 8). None of them implement the seven-stage research protocol that is actually the subject of the Vibe Rounds preprint — the workflow a clinician runs alone, on one complex case, from raw narrative to a fixed, publication-ready output package. This module fills that gap.
 
-**Numbering:** This file is written as "Module 9" so it can be appended to v4 without renumbering anything that already exists. If merged, it should slot in after Module 8 and before the Supplementary Frameworks, and the Module Index, Lifecycle Coverage Summary, and Appendix checklist in v4 should each gain a Module 9 line — see [Merge Notes](#merge-notes-ifwhen-appended-to-v4) at the end of this file.
+**Numbering:** This file is written as "Module 9" so it can be appended without renumbering anything that already exists. If merged, it should slot in after Module 8 and before the Supplementary Frameworks, and the Module Index, Lifecycle Coverage Summary, and Appendix checklist should each gain a Module 9 line — see [Merge Notes](#merge-notes-ifwhen-appended-to-v4) at the end of this file.
 
 **Two ways to use this module:**
 
@@ -168,7 +166,7 @@ If you are using this module alongside `VibeRounds_Prompt_Modules_v4.txt`, this 
 
 ---
 
-## Safety & Compliance Note *(Consistent with v4)*
+## Safety & Compliance Note
 
 This module, like v4's Modules 5–7, is designed for use against real case material. Before Step 9.1: confirm the case narrative you are about to paste is de-identified, consistent with the de-identification requirement in the v4 Safety & Compliance Note and the Data Security Notes in v4 Modules 2–3. At every stage, the AI's role is Socratic and structuring, not diagnostic — diagnostic interpretation, clinical judgment, and decisions about which AI-suggested lead to pursue remain with the clinician throughout (preprint Section 2, Section 5.4, Section 5.6). Treat all Stage 2/3/6 literature-gap or novelty claims as provisional and search-coverage-limited until independently verified (Section 5.1) — this applies whether or not the case is ultimately written up for publication.
 
@@ -176,7 +174,7 @@ This module, like v4's Modules 5–7, is designed for use against real case mate
 
 ## Merge Notes *(If/When Appended to v4)*
 
-If this file is folded into `VibeRounds_Prompt_Modules_v4.txt` as Module 9, the following updates to v4's front matter and back matter would keep the document internally consistent:
+If this file as Module 9, the following updates to front matter and back matter would keep the document internally consistent:
 
 - **Module Index:** add "9. N-of-1 Case Research Protocol (Vibe Rounds Core Method)" after Module 8.
 - **How to Use This Document:** add a line — "Running the seven-stage research protocol on your own complex case, alone? → Module 9."
