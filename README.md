@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # Share Your Vibe Rounds Experience
 
 **Vibe Rounds is a paradigm, not a product.** It's a way of using conversational AI — as a Socratic mentor for clinical education, a guided-discovery partner for case-based research, or a layer of clinical decision support (CDSS). Anyone can pick up this approach, write their own prompts, and apply it to their own context.
