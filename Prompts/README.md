@@ -97,7 +97,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 |---|---|
 | [Appendix — QA & Publication Checklist](Appendix-QA-Publication-Checklist.md) | Pre-publication safety checklist and known limitations of Socratic-mode prompts |
 | [Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md) | Master cross-reference of which module/step carries which framework |
-| [Changelog](CHANGELOG.md) | Version history — what changed from v2 → v3 → v4 |
+|
 
 ---
 
@@ -121,7 +121,6 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Framework-D-Critical-Awareness-Framework.md
 ├── Appendix-QA-Publication-Checklist.md
 ├── Lifecycle-Coverage-Summary.md
-└── CHANGELOG.md
 ```
 
 > [!NOTE]
@@ -129,4 +128,4 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 
 ---
 
-*Vibe Rounds Prompt Modules — v4. See [CHANGELOG.md](CHANGELOG.md) for full version history.*
+*Vibe Rounds Prompt Modules.*
