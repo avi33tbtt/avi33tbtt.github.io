@@ -24,36 +24,40 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // 1. Look for the page param in the URL (?page=filename.md). Default to README.md
         const urlParams = new URLSearchParams(window.location.search);
         let targetPage = urlParams.get('page') || 'README.md';
-
-        // 2. Set the folder path to look inside your Prompts folder
         const folderPath = 'Prompts/';
 
+        // Use a Custom Renderer to intercept links DURING parsing so they never break
+        const renderer = {
+            link({ href, title, text }) {
+                // If the link is a relative markdown file link (ends with .md and isn't a web URL)
+                if (href && href.endsWith('.md') && !href.startsWith('http') && !href.startsWith('//')) {
+                    // Extract just the filename if it accidentally included folder paths
+                    const fileName = href.split('/').pop();
+                    return `<a href="prompts.html?page=${fileName}" title="${title || ''}">${text}</a>`;
+                }
+                // Leave standard website links alone
+                return `<a href="${href}" title="${title || ''}">${text}</a>`;
+            }
+        };
+
+        marked.use({ renderer });
         marked.setOptions({
             breaks: true,
             gfm: true
         });
 
-        // 3. Fetch the markdown file from the Prompts folder
+        // Fetch the file from the Prompts folder
         fetch(folderPath + targetPage)
             .then(response => {
                 if (!response.ok) throw new Error('Page not found');
                 return response.text();
             })
             .then(text => {
+                // Parse markdown and throw it to the page
                 document.getElementById('content').innerHTML = marked.parse(text);
                 document.title = targetPage.replace('.md', '').toUpperCase();
-
-                // 4. SMART LINKS: Force links inside markdown to stay on prompts.html
-                document.querySelectorAll('#content a').forEach(link => {
-                    const href = link.getAttribute('href');
-                    // If it's a relative link to another markdown file, rewrite it to use prompts.html?page=
-                    if (href && href.endsWith('.md') && !href.startsWith('http') && !href.includes('?page=')) {
-                        link.setAttribute('href', `prompts.html?page=${href}`);
-                    }
-                });
             })
             .catch(err => {
                 document.getElementById('content').innerHTML = `
