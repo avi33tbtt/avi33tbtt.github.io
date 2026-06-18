@@ -7,7 +7,7 @@
 **Status:** Proposed; not yet validated live, but ready for piloting.
 
 > [!IMPORTANT]
-> This module requires **de-identified data only**. See the [Safety & Compliance Note](Start-Here.md#️-safety--compliance-note).
+> This module requires **de-identified data only**.
 
 > [!NOTE]
 > **Experimental Basis:** The architecture underpinning this module was directly confirmed through a live PaJR Health bot session. The bot validated that cross-case pattern mining is a distinct *horizontal* analytic mode — not a repetition of single-case vertical analysis. It specifically named four horizontal analytic types: population-level symptom surveillance, comparative trajectory analysis, systemic failure pattern recognition, and cross-lingual cohort discovery. Module 7 operationalises all four as structured prompts.
