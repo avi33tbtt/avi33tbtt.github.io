@@ -68,8 +68,8 @@ If you already know which module and step you need, skip straight there using th
 | A family member building a case record | [Module 2](Module-02-Patient-Advocate-Case-Documentation.md) and [Module 3](Module-03-Extended-Patient-Advocate-Monitoring.md) |
 | Prepping for or running ward rounds | [Module 4 – Peer-Level Ward Round Preparation](Module-04-Peer-Level-Ward-Round-Preparation.md) |
 | Auditing a live patient log | [Module 5 – Real-Time Case Review & Data Audit](Module-05-Real-Time-Case-Review-and-Data-Audit.md) |
-| Running registry-level analytics | [Module 6 – Registry-Level Analytics](odule-06-Registry-Level-Analytics.md) |
-| Mining the registry for cross-case learning | [Module 7 – Longitudinal & Cross-Case Learning](odule-07-Longitudinal-and-Cross-Case-Learning.md) |
+| Running registry-level analytics | [Module 6 – Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) |
+| Mining the registry for cross-case learning | [Module 7 – Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) |
 | Authoring or QA-checking a new Socratic prompt | [Module 8 – Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) |
 | N-of-1 Case Research Protocol | [Module 9 – N-of-1 Case Research Protocol](VibeRounds_Module9_Research_Protocol.md) |
 
