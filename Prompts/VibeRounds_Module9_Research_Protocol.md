@@ -1,3 +1,5 @@
+[← Back to README](README.md)
+
 # Module 9 — N-of-1 Case Research Protocol
 
 **Drafted from:** *Vibe Rounds — N-of-1 Protocol & Worked Case* (Extended Preprint, June 2026), Section 2 ("Protocol Description: The Seven Stages of Vibe Rounds") and Table 1.
@@ -180,3 +182,5 @@ If this file as Module 9, the following updates to front matter and back matter 
 - **How to Use This Document:** add a line — "Running the seven-stage research protocol on your own complex case, alone? → Module 9."
 - **Lifecycle Coverage Summary:** Module 9 carries Framework D (Step 9.9) as its Critical Awareness application; it does not currently carry Frameworks A, B, or C (Humanistic Persona, FLINK, Bloom's) since the preprint's seven stages are evidence-structuring and search-discipline stages rather than learner-facing teaching stages — these could be layered in later (e.g. a Bloom's pass over Stage 7's outputs) if a teaching use case for Module 9 emerges.
 - **Appendix — Quality Assurance & Publication Checklist:** Module 9 contains no patient data and is template-safe as written, same as Modules 1–4; add it to that line. Add a second note alongside the existing "known limitations" bullet: Stage 2/6 novelty and literature-gap claims carry the same search-coverage-limitation caveat already disclosed in the preprint (Section 5.1) and should be disclosed wherever Module 9 output is reused.
+
+[← Back to README](README.md)
