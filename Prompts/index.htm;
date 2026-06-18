@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <!-- This stylesheet gives you the exact, clean GitHub Markdown look -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+        @media (max-width: 767px) {
+            body { padding: 15px; }
+        }
+    </style>
+</head>
+<body class="markdown-body">
+
+    <div id="content">Loading documentation...</div>
+
+    <!-- This script fetches your actual README and converts it to HTML safely -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // 1. Look at the URL to see if a specific page was requested (e.g., ?page=about.md)
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetPage = urlParams.get('page') || 'README.md';
+
+        // 2. Fetch and display that specific page
+        fetch(targetPage)
+            .then(response => {
+                if (!response.ok) throw new Error('Page not found');
+                return response.text();
+            })
+            .then(text => {
+                document.getElementById('content').innerHTML = marked.parse(text);
+            })
+            .catch(err => {
+                document.getElementById('content').innerHTML = `<h2>404: Page Not Found</h2><p>Could not load ${targetPage}</p>`;
+            });
+    </script>
+</body>
+</html>
