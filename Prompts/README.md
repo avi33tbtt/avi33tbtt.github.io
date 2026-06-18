@@ -79,6 +79,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 6 | [Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) | Queries an entire case registry across nine escalating levels of analytic depth |
 | 7 | [Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) | Turns the registry itself into a cross-case, cross-time learning system *(proposed; not yet validated live)* |
 | 8 | [Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) | A 12-point QA specification for authoring or revising any new Socratic-mode prompt |
+| 9 | [N-of-1 Case Research Protocol (Vibe Rounds Core Method)](VibeRounds_Module9_Research_Protocol.md) | Running the seven-stage research protocol on your own complex case. |
 
 ## 🧩 Supplementary Frameworks
 
@@ -97,7 +98,6 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 |---|---|
 | [Appendix — QA & Publication Checklist](Appendix-QA-Publication-Checklist.md) | Pre-publication safety checklist and known limitations of Socratic-mode prompts |
 | [Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md) | Master cross-reference of which module/step carries which framework |
-|
 
 ---
 
