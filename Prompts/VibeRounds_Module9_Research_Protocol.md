@@ -6,7 +6,7 @@
 
 ---
 
-## How This Module Relates to v4
+## How This Module Relates
 
 Modules 0–8 in cover teaching (Module 1), patient-advocate documentation and monitoring (Modules 2–3), ward-round prep (Module 4), single-case auditing (Module 5), registry-level analytics (Modules 6–7), and Socratic-prompt design QA (Module 8). None of them implement the seven-stage research protocol that is actually the subject of the Vibe Rounds preprint — the workflow a clinician runs alone, on one complex case, from raw narrative to a fixed, publication-ready output package. This module fills that gap.
 
@@ -25,7 +25,7 @@ Modules 0–8 in cover teaching (Module 1), patient-advocate documentation and m
 
 **Indication:** A single clinician, working alone, with one complex patient and an unstructured personal or clinical health record, who wants a disciplined alternative to writing a single synthesized narrative straight from memory. Works equally on a rare, multisystem case (depth) or a routine ward presentation (scale) — the protocol's value does not depend on disease rarity (preprint Section 4).
 
-**Not indicated for:** Population-scale or cohort-level analysis (see v4 Modules 6–7 instead), or as a substitute for clinical judgment — at every stage, diagnostic and management decisions remain with the clinician, never the AI (preprint Section 2, Section 5.4).
+**Not indicated for:** Population-scale or cohort-level analysis (see Modules 6–7 instead), or as a substitute for clinical judgment — at every stage, diagnostic and management decisions remain with the clinician, never the AI (preprint Section 2, Section 5.4).
 
 ### Lifecycle
 
@@ -33,7 +33,7 @@ Modules 0–8 in cover teaching (Module 1), patient-advocate documentation and m
 |---|---|
 | **1 · Initiation** | Step 9.0 (optional single-session orchestration) and Step 9.1 (Stage 1: index case structuring) |
 | **2 · Execution** | Steps 9.2–9.6 (Stages 2 through 6) |
-| **3 · Closure/Review** | Step 9.7 (Stage 7: convergence to fixed outputs), plus Step 9.8 (manuscript/CARE export) and Step 9.9 (Critical Awareness debrief, cross-linked to v4 Framework D) |
+| **3 · Closure/Review** | Step 9.7 (Stage 7: convergence to fixed outputs), plus Step 9.8 (manuscript/CARE export) and Step 9.9 (Critical Awareness debrief, cross-linked to Framework D) |
 
 A note on rigor, carried through every step below: the preprint frames each stage as exposed to a specific kind of reviewer challenge (Table 1) — this module's prompts are written to produce that documentation as a byproduct of running the stage, not as an afterthought bolted on at the end.
 
@@ -141,13 +141,13 @@ Run this only if you intend to write the case up formally.
 
 **Application Note:** The explicit instruction not to invent detail to fill a field gap matters — an LLM under instruction to "produce a CARE-mapped summary" will sometimes smooth over a genuine gap rather than flag it, which is the opposite of what a methods-honest write-up needs.
 
-### Step 9.9 — Critical Awareness Debrief *(Cross-Linked to v4 Framework D)*
+### Step 9.9 — Critical Awareness Debrief *(Cross-Linked to Framework D)*
 
-If you are using this module alongside `VibeRounds_Prompt_Modules_v4.txt`, this step is the same Critical Awareness Standing Prompt defined there — included here in full so this file is usable on its own without v4.
+If you are using this module alongside Framework D, this step is the same Critical Awareness Standing Prompt defined there — included here in full so this file is usable on its own without Framework D.
 
 > **Prompt:** "#VibeRounds Apply the Critical Awareness lens to this protocol run: (1) What cognitive bias most likely affected the reasoning across these seven stages — mine or the AI's? (2) What is the most important clinical risk of acting on today's Stage 7 outputs without further verification? (3) What would the strongest critic of this case research say about its methodology — particularly about the Stage 2 comparator search and any Stage 6 novelty or literature-gap claim? (4) What single uncertainty should I hold clearly in mind before treating anything from this run as more than a provisional hypothesis?"
 
-**Application Note:** Run this once at the close of every protocol pass, chunked or single-session. It is deliberately the same prompt structure as v4's standing Critical Awareness prompt so that a case run through Module 9 and a teaching session run through Modules 1–7 produce comparably self-critical closures.
+**Application Note:** Run this once at the close of every protocol pass, chunked or single-session. It is deliberately the same prompt structure as standing Critical Awareness prompt so that a case run through Module 9 and a teaching session run through Modules 1–7 produce comparably self-critical closures.
 
 ---
 
@@ -170,11 +170,11 @@ If you are using this module alongside `VibeRounds_Prompt_Modules_v4.txt`, this 
 
 ## Safety & Compliance Note
 
-This module, like v4's Modules 5–7, is designed for use against real case material. Before Step 9.1: confirm the case narrative you are about to paste is de-identified, consistent with the de-identification requirement in the v4 Safety & Compliance Note and the Data Security Notes in v4 Modules 2–3. At every stage, the AI's role is Socratic and structuring, not diagnostic — diagnostic interpretation, clinical judgment, and decisions about which AI-suggested lead to pursue remain with the clinician throughout (preprint Section 2, Section 5.4, Section 5.6). Treat all Stage 2/3/6 literature-gap or novelty claims as provisional and search-coverage-limited until independently verified (Section 5.1) — this applies whether or not the case is ultimately written up for publication.
+This module, like Modules 5–7, is designed for use against real case material. Before Step 9.1: confirm the case narrative you are about to paste is de-identified, consistent with the de-identification requirement in the Framework Safety & Compliance Note and the Data Security Notes in Modules 2–3. At every stage, the AI's role is Socratic and structuring, not diagnostic — diagnostic interpretation, clinical judgment, and decisions about which AI-suggested lead to pursue remain with the clinician throughout (preprint Section 2, Section 5.4, Section 5.6). Treat all Stage 2/3/6 literature-gap or novelty claims as provisional and search-coverage-limited until independently verified (Section 5.1) — this applies whether or not the case is ultimately written up for publication.
 
 ---
 
-## Merge Notes *(If/When Appended to v4)*
+## Merge Notes *(If/When Appended)*
 
 If this file as Module 9, the following updates to front matter and back matter would keep the document internally consistent:
 
