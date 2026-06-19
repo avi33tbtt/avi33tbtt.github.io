@@ -45,6 +45,7 @@ This is grounded in a specific concern: when students or clinicians can get a di
 | Module 7 | Cross-case learning: treating the registry as a dynamic learning object rather than a static database |
 | Module 8 | 12-point QA specification for authoring new Socratic prompts, with regression-testing steps |
 | Module 9 | Seven-stage research protocol for a clinician working alone on a single complex case |
+## Check modules here - [← Back to README](README.md)
 
 ### 2. Four Cross-Cutting Frameworks
 
