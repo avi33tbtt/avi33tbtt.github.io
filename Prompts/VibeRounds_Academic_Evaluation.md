@@ -28,11 +28,17 @@
 | [Vibe Rounds — Demo Implementation](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
 
 ---
+Online demo - [Vibe Rounds — Demo Implementation](https://avi33tbtt.github.io/demo/pajr/index.html)) 
+
+---
 ## What Vibe Rounds Is
 
 Most people use AI as an oracle: ask a question, get an answer. Vibe Rounds flips this entirely. The AI is configured to **question rather than answer** — acting as a Socratic interlocutor that forces the clinician or learner to construct their own reasoning before any guidance is offered. The framework's core formulation is: **AI that questions, not AI that answers.**
 
 This is grounded in a specific concern: when students or clinicians can get a differential diagnosis or management plan on demand, the effortful cognitive work through which clinical competence is actually built gets bypassed. Vibe Rounds is designed to prevent that bypass.
+
+---
+[← Back to README](README.md)
 
 ---
 
