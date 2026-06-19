@@ -26,6 +26,7 @@
 | File | Contents |
 |---|---|
 | [Vibe Rounds — Demo Implementation](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
+- Online Demo: [https://avi33tbtt.github.io/demo/pajr/index.html](https://avi33tbtt.github.io/demo/pajr/index.html)
 
 ---
 ## What Vibe Rounds Is
