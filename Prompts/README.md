@@ -119,6 +119,9 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 9** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
+## Prompts Analytics
+
+| Check analytics - Traditional Ai , Socratic Ai, Devil's advocate Ai, Brainstorming AI| [Check analytics](VibeRounds_Prompt_Directory.md) |
 
 ## ⚠️ Safety & Compliance Note
 
