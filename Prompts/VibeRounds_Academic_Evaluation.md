@@ -21,7 +21,13 @@
 *Evaluation generated June 19, 2026*
 
 ---
+## 📑 Project Evaluation
 
+| File | Contents |
+|---|---|
+| [Vibe Rounds — Demo Implementation](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
+
+---
 ## What Vibe Rounds Is
 
 Most people use AI as an oracle: ask a question, get an answer. Vibe Rounds flips this entirely. The AI is configured to **question rather than answer** — acting as a Socratic interlocutor that forces the clinician or learner to construct their own reasoning before any guidance is offered. The framework's core formulation is: **AI that questions, not AI that answers.**
