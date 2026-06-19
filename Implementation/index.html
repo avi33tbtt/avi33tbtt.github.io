@@ -1,1 +1,840 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaJR · VibeRounds Prompt Library</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --border: #e1e5eb;
+    --text: #1a202c;
+    --muted: #6b7280;
+    --accent-teal: #0891b2;
+    --accent-gold: #b45309;
+    --accent-rose: #be185d;
+    --accent-purple: #7c3aed;
+    --m1: #0891b2;
+    --m2: #b45309;
+    --m3: #be185d;
+    --m9: #7c3aed;
+    --radius: 10px;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .logo-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0891b2, #7c3aed);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #000; letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+  header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+  header h1 span { color: #0369a1; }
+  header p { color: var(--muted); font-size: 13px; margin-left: auto; max-width: 320px; text-align: right; }
+
+  /* ── Setup notice ── */
+  .setup-bar {
+    background: #e0f2fe;
+    border-left: 3px solid var(--accent-teal);
+    margin: 24px 32px;
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 13px;
+    color: #0c4a6e;
+    line-height: 1.7;
+  }
+  .setup-bar strong { color: #0369a1; }
+
+  /* ── Tabs ── */
+  .tab-row {
+    display: flex;
+    gap: 4px;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-row::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 10px 18px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: currentColor; }
+  .tab-btn[data-mod="1"].active { color: var(--m1); }
+  .tab-btn[data-mod="2"].active { color: var(--m2); }
+  .tab-btn[data-mod="3"].active { color: var(--m3); }
+  .tab-btn[data-mod="9"].active { color: var(--m9); }
+
+  /* ── Main layout ── */
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px 32px 60px;
+  }
+
+  .module-panel { display: none; }
+  .module-panel.active { display: block; }
+
+  /* ── Module header ── */
+  .mod-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mod-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .mod-header h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .mod-header p { color: var(--muted); font-size: 14px; }
+  .phase-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 28px 0 12px;
+    border-left: 2px solid var(--border);
+    padding-left: 10px;
+  }
+
+  /* ── Prompt cards ── */
+  .prompt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .prompt-card:hover { border-color: #30363d; }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+  .card-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .toggle-arrow {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform .2s;
+    flex-shrink: 0;
+  }
+  .prompt-card.open .toggle-arrow { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .prompt-card.open .card-body { display: block; }
+
+  .prompt-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: #1e293b;
+    white-space: pre-wrap;
+    word-break: break-word;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: var(--sans);
+    font-weight: 600;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: 0.3px;
+  }
+  .copy-btn:hover { background: #f1f5f9; color: var(--text); }
+  .copy-btn.copied { color: #16a34a; border-color: #16a34a; }
+
+  .note-box {
+    background: #f8fafc;
+    border-left: 3px solid #cbd5e1;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: #64748b;
+    line-height: 1.6;
+  }
+  .note-box strong { color: #475569; }
+
+  /* module accent colours */
+  [data-mod-color="1"] .step-num { background: #e0f2fe; color: #0369a1; }
+  [data-mod-color="1"] .card-head:hover .card-title { color: var(--m1); }
+  [data-mod-color="2"] .step-num { background: #fef3c7; color: #92400e; }
+  [data-mod-color="2"] .card-head:hover .card-title { color: var(--m2); }
+  [data-mod-color="3"] .step-num { background: #fce7f3; color: #9d174d; }
+  [data-mod-color="3"] .card-head:hover .card-title { color: var(--m3); }
+  [data-mod-color="9"] .step-num { background: #ede9fe; color: #6d28d9; }
+  [data-mod-color="9"] .card-head:hover .card-title { color: var(--m9); }
+
+  /* badge accent */
+  [data-badge-color="1"] { background: #e0f2fe; color: #0369a1; }
+  [data-badge-color="2"] { background: #fef3c7; color: #92400e; }
+  [data-badge-color="3"] { background: #fce7f3; color: #9d174d; }
+  [data-badge-color="9"] { background: #ede9fe; color: #6d28d9; }
+
+  /* ── Safety banner ── */
+  .safety-banner {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.7;
+  }
+  .safety-banner strong { color: #92400e; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent-teal); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    header { padding: 16px; }
+    header p { margin-left: 0; text-align: left; }
+    main { padding: 20px 16px 40px; }
+    .tab-row { padding: 0 16px; }
+    .setup-bar { margin: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-pill">
+    <div class="logo-dot">VR</div>
+    <h1><span>PaJR</span> · VibeRounds</h1>
+  </div>
+  <p>Quick-access prompts for patients, advocates, students &amp; teachers · #VibeRounds</p>
+</header>
+
+<div class="setup-bar">
+  <strong>How to use:</strong> Pick a module tab · Click a step to expand · Copy the prompt · Paste into your AI (WhatsApp bot, Claude, Gemini, etc.) · Fill in the <code>[bracketed]</code> parts with your case details. Always verify AI output with a clinician before acting.
+</div>
+
+<div class="tab-row">
+  <button class="tab-btn active" data-mod="1" onclick="switchTab(1)">📚 Module 1 · Socratic Reasoning</button>
+  <button class="tab-btn" data-mod="2" onclick="switchTab(2)">📋 Module 2 · Advocate Documentation</button>
+  <button class="tab-btn" data-mod="3" onclick="switchTab(3)">📈 Module 3 · Monitoring</button>
+  <button class="tab-btn" data-mod="9" onclick="switchTab(9)">🔬 Module 9 · N-of-1 Research</button>
+</div>
+
+<main>
+
+<!-- ═══════════ MODULE 1 ═══════════ -->
+<div class="module-panel active" id="panel-1" data-mod-color="1">
+  <div class="mod-header">
+    <span class="mod-badge" data-badge-color="1">Module 1 · 🟢 Mature</span>
+    <h2>Socratic Clinical Reasoning</h2>
+    <p>For students &amp; teachers · Push yourself to reason through a case — not just get the answer.</p>
+  </div>
+
+  <div class="safety-banner">
+    <strong>⚠️ Reminder:</strong> These are teaching prompts with no patient data. Suitable to use as-is. AI output requires clinical verification before any action.
+  </div>
+
+  <div class="phase-label">Phase 1 · Initiation</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.0</span>
+      <div><div class="card-title">Session Setup & Learner Framing</div><div class="card-subtitle">Run once at the start · Establishes Socratic rules</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">Best opening prompt for any teaching/learning session. The AI will ask questions, affirm correct reasoning, and withhold the answer until you genuinely try.</div>
+      <div class="prompt-box">#VibeRounds You are a warm, encouraging educational assistant who uses the Socratic method to guide clinical reasoning. I am a [medical student / junior doctor / learner] working through a clinical case. Your role is to ask me one question at a time, wait for my response, and acknowledge what I got right before gently probing further. Only reveal the answer after I have made a genuine attempt and then explicitly surrendered — if I ask for the answer outright without attempting one, redirect me once with: 'Give your best guess, differential, or next step first,' and only proceed to reveal the answer if I still cannot or will not attempt one after that. Start every session by telling me one thing you believe I will find interesting about this case. Confirm you understand the rules before we begin.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 2 · Execution</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.1</span>
+      <div><div class="card-title">Socratic Question Generator</div><div class="card-subtitle">Generates a long list of case questions</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">Make a long list of Socratic questions around this case.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.2</span>
+      <div><div class="card-title">Socratic Teacher on Interventions</div><div class="card-subtitle">One question per clinical intervention · Used in PaJR Health bot</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">Apply to a list of up to 5 prior interventions for a patient. Validated in <strong>PaJR Health Bot</strong>.</div>
+      <div class="prompt-box">#VibeRounds Act as an encouraging educational assistant using the Socratic method. Ask me one question for each of the following interventions. Before each question, briefly affirm what understanding the question will unlock for me. I am a learner practicing clinical reasoning around this case.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.3</span>
+      <div><div class="card-title">Knowledge-Scoped Examination Guide</div><div class="card-subtitle">Textbook-restricted teaching · Teach only what I don't know</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Soft restrict (not hard restriction) your knowledge to [textbook name, e.g. Macleod's Clinical Examination]. Tell me what examinations I need to do for a [condition, e.g. atrial fibrillation] case. Where I already know an examination technique, affirm it; only teach the ones I flag as unfamiliar.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.4</span>
+      <div><div class="card-title">Mid-Session Reasoning Checkpoint</div><div class="card-subtitle">Scores reasoning · 3 domains · Identifies your strongest skill</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Pause. Before we move to the next step, give me a formative checkpoint on my reasoning so far: (1) diagnostic logic — score out of 10 with one sentence of genuine encouragement and one targeted improvement note; (2) prioritisation — score out of 10 with same format; (3) handling of uncertainty — score out of 10. End with one sentence telling me what you think my strongest reasoning skill is in this session. Then continue.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.5</span>
+      <div><div class="card-title">Bloom's Taxonomy Progression</div><div class="card-subtitle">Remember → Understand → Apply → Analyse → Evaluate → Create</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds For this case, take me through all six levels of Bloom's Taxonomy in clinical reasoning order. Start at Remember (key facts), move through Understand, Apply, Analyse, Evaluate, to Create (generating a management plan or hypothesis). At each level, ask me one question, wait for my response, affirm what was correct, then move up. Do not skip levels.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.6</span>
+      <div><div class="card-title">Fink FLINK Deep Learning Prompt</div><div class="card-subtitle">6 dimensions of significant learning · Best for end-of-case tutorials</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Using Fink's six dimensions of significant learning, guide me through this case so that I leave with: (1) Foundational Knowledge I can recall, (2) Application I can practice, (3) Integration across body systems, (4) Human Dimension — what this case means for a real patient, (5) Caring — what values or professional identity this case activates in me, (6) Learning How to Learn — one strategy I will use to approach the next similar case differently. Ask me one reflective question per dimension.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 3 · Closure</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.7</span>
+      <div><div class="card-title">End-of-Case Teaching Summary</div><div class="card-subtitle">2 strengths + 2 clinical pearls + 1 review topic</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We have reached the end of this case. Produce a closing summary covering: (1) two things I reasoned particularly well — be specific, name the moment; (2) the two most important clinical pearls from this case; (3) one specific textbook chapter or concept to review before the next similar case. Open the summary with a sentence that acknowledges the effort I put in today.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.8</span>
+      <div><div class="card-title">Missed Diagnosis Debrief</div><div class="card-subtitle">Finds blind spots · Names the cognitive bias · Framed as growth</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds For this case, identify any diagnosis I failed to consider that should have been in my differential. Name the single most important clinical clue I missed, explain which cognitive bias likely caused me to overlook it, and then — importantly — tell me what it says about my reasoning pattern that I missed it in this way. Frame it as a growth observation, not a failure.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">1.10</span>
+      <div><div class="card-title">Critical Awareness Debrief</div><div class="card-subtitle">Biases · Risks · Critique · Unresolved uncertainty</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Before we close this session, apply the Vibe Rounds Critical Awareness lens: (1) What cognitive biases may have affected my reasoning today? (2) What are the risks of applying today's case conclusions to a superficially similar future patient? (3) What would a critic of my diagnostic reasoning say? (4) What is the most important uncertainty that remains unresolved? Be honest but constructive.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODULE 2 ═══════════ -->
+<div class="module-panel" id="panel-2" data-mod-color="2">
+  <div class="mod-header">
+    <span class="mod-badge" data-badge-color="2">Module 2 · 🟡 In Progress</span>
+    <h2>Patient-Advocate Case Documentation</h2>
+    <p>For family members &amp; patient advocates · Build a structured case record alongside AI.</p>
+  </div>
+
+  <div class="safety-banner">
+    <strong>⚠️ Data security:</strong> Use a private account. Type drug name/dose/frequency rather than uploading prescription photos (photos capture name, DOB, address). Never enter the patient's full name — a first name or "my mother" is enough. The AI does not notify the care team — flag urgent findings directly to a clinician.
+  </div>
+
+  <div class="phase-label">Phase 1 · Initiation</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.0</span>
+      <div><div class="card-title">Case Opening & Advocate Onboarding</div><div class="card-subtitle">Run once at the very start · Sets compassionate AI tone</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a compassionate documentation companion helping a patient advocate — someone with no medical training — build a clear, organized case record for their loved one. Your tone is calm, encouraging, and jargon-free. Acknowledge the advocate's effort at each step. Begin by telling the advocate: 'You are doing something important. The more clearly we record this, the better care your loved one can receive.' Then ask only one question at a time to collect the information we need: start with the main symptom that prompted this record. Do not use medical terms without immediately explaining them in plain language.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 2 · Execution</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.1</span>
+      <div><div class="card-title">Symptom & Classifier Capture</div><div class="card-subtitle">Narrative-method data entry · Prompts for missing details</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a documentation companion helping a patient advocate build a case record by narrative method. Whenever the advocate shares clinical information, capture the symptoms list and classifier data. For missing data, give a warm, encouraging one-line statement: 'No problem — here are the details that will help us complete the picture:' followed by the list of clarifiers needed.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.2</span>
+      <div><div class="card-title">Clinical Examination Guidance</div><div class="card-subtitle">Plain-language observation checklist for advocates</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a documentation companion helping a patient advocate understand what physical checks matter for this case. Whenever the advocate asks about examination, provide a plain-language list of relevant clinical observations they can relay to the treating team. Encourage them by saying: 'You are becoming a better advocate for your loved one every time you observe and record these details.' Suggest they find short video demonstrations for any technique that involves measurement or observation.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.3</span>
+      <div><div class="card-title">Prescription Transcription & Dosage Capture</div><div class="card-subtitle">Records medications accurately · Safer than photo upload</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a documentation companion helping a patient advocate accurately record medications. When the advocate shares a prescription (image or description), ask them to type it out alongside the photo for accuracy. Collect drug name, dose, frequency, and route. Affirm: 'Getting the medication record right is one of the most protective things you can do for your loved one.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.4</span>
+      <div><div class="card-title">SOAP Note Generation</div><div class="card-subtitle">Produces Subjective · Objective · Assessment · Plan in plain language</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a documentation companion. When the advocate indicates the case record is complete for this entry, generate a SOAP-format note in plain language — Subjective (what the patient feels), Objective (what was measured or observed), Assessment (the current working picture), Plan (what is happening next). After generating it, tell the advocate: 'You have just created a structured clinical summary. Well done.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.5</span>
+      <div><div class="card-title">Data Completeness Audit</div><div class="card-subtitle">Friendly checklist · Run before closing the record</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Review the case record built so far. List all critical data fields that are still empty or ambiguous (history, vitals, examination, investigations, medications). Present it as a friendly numbered checklist — frame each missing item as: 'Still to get: [item] — this matters because [one-line reason].' End with: 'You have already captured [X] key items — that is a strong foundation.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 3 · Closure</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.6</span>
+      <div><div class="card-title">Case Record Sign-Off</div><div class="card-subtitle">Diagnosis · Medications · Pending tests · Next review date</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are closing this case record for now. Generate a Case Sign-Off Summary containing: (1) confirmed diagnosis or working impression in plain language, (2) current active medications with doses, (3) outstanding investigations still awaited, (4) agreed next review date or trigger condition for re-logging. Format it for a non-medical reader. End with: 'This is a complete, useful record. You have done well by your loved one today.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.7</span>
+      <div><div class="card-title">Advocate Handover Brief</div><div class="card-subtitle">≤150 words · For reading aloud to a new doctor or ER team</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">📌 <strong>PaJR use case:</strong> Paste this output into the WhatsApp group when transferring care or attending a new consultation.</div>
+      <div class="prompt-box">#VibeRounds Generate a short handover note (maximum 150 words) this patient advocate could read aloud to a new doctor or emergency team. Cover: who the patient is, their main conditions, current medications, and the most urgent concern right now. Use plain, confident language the advocate can deliver without stumbling.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">2.8</span>
+      <div><div class="card-title">Advocate Learning Check (Bloom's)</div><div class="card-subtitle">Remember → Understand → Apply · Health literacy for advocates</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds After building this case record, help the advocate move from simply recording to understanding. Ask three questions in sequence: (1) [Remember] What is the main diagnosis or condition we have documented? (2) [Understand] In your own words, why is the current medication important? (3) [Apply] If your loved one develops [named red-flag symptom from the record], what is the one action you will take immediately? Affirm each correct response warmly before moving to the next.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODULE 3 ═══════════ -->
+<div class="module-panel" id="panel-3" data-mod-color="3">
+  <div class="mod-header">
+    <span class="mod-badge" data-badge-color="3">Module 3 · 🟡 In Progress</span>
+    <h2>Extended Patient-Advocate Monitoring</h2>
+    <p>Longitudinal tracking · Runs alongside Module 2 once a baseline record exists.</p>
+  </div>
+
+  <div class="safety-banner">
+    <strong>⚠️ Longitudinal data warning:</strong> Weeks of mood, lifestyle and medication data can re-identify a patient. Periodically delete inactive monitoring threads. The ALERT in Step 3.4 does <em>not</em> notify the treating team — call or visit a clinician directly for urgent findings.
+  </div>
+
+  <div class="phase-label">Phase 1 · Initiation</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.0</span>
+      <div><div class="card-title">Baseline Domain Snapshot</div><div class="card-subtitle">Sets reference point across all 4 domains</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a compassionate monitoring companion setting up a longitudinal tracking record with a patient advocate. Using the existing case record, produce a one-page Baseline Snapshot across four domains: (1) Lifestyle & Physical Baseline, (2) Mood & Coping Baseline, (3) Medication Adherence Baseline, (4) Current Red-Flag Risk Level. After the snapshot, tell the advocate: 'This baseline is your reference point. Every update we log will show us how your loved one is progressing — and your observations are what make that possible.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 2 · Execution</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.1</span>
+      <div><div class="card-title">Lifestyle Monitoring</div><div class="card-subtitle">Diet · Sleep · Mobility · Fluid compliance · Narrative method</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a supportive monitoring companion helping a patient advocate track lifestyle and physical patterns using the narrative method. Whenever the advocate shares daily routine details, analyse them for: dietary intake, sleep quality, physical mobility, and fluid compliance. Structure findings clearly and give one practical, encouraging recommendation on how these factors may affect the patient's chronic conditions or recovery. Recognise any positive behaviour the advocate reports before addressing gaps.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.2</span>
+      <div><div class="card-title">Mood & Coping Monitoring</div><div class="card-subtitle">Emotional state · Stressors · Resilience · Also checks on the advocate</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a holistic monitoring companion helping a patient advocate track psychological and emotional wellbeing. Whenever the advocate describes the patient's mood, stress levels, or coping, map: current emotional state, key psychosocial stressors, and areas of resilience or positive coping. For any significant distress noted, offer the advocate one warm, actionable strategy they can use today. Acknowledge the emotional weight the advocate themselves may be carrying.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.3</span>
+      <div><div class="card-title">Medication Monitoring & Adherence</div><div class="card-subtitle">Current vs. discontinued table · Flags sudden cessation risk</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a medication monitoring companion helping a patient advocate audit a treatment regimen. Whenever the advocate shares medication notes, build a Current vs. Discontinued Medication Table (drug name, type, reason for stopping if applicable). If there is any history of sudden cessation of important medications, explain the clinical risk clearly but without alarm — and affirm: 'Catching this is exactly what this monitoring process is for.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.4</span>
+      <div><div class="card-title">🚨 Critical Alert & Red-Flag Triage</div><div class="card-subtitle">Generates ALERT block for urgent symptoms · Use immediately</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">⚠️ If the AI generates an ALERT — <strong>contact your clinician or emergency services directly</strong>. This prompt does not send any notification.</div>
+      <div class="prompt-box">#VibeRounds You are a safety-focused monitoring companion reviewing a patient update for urgent clinical signals. Whenever the advocate shares a real-time symptom change, scan specifically for red-flag symptoms (severe dehydration, altered consciousness, sudden vision changes, signs of infection). If any urgent criteria are met, generate a clearly formatted ALERT block at the top of your response stating exactly what action to take right now. After the alert, add: 'You did the right thing by flagging this — your vigilance matters.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.5</span>
+      <div><div class="card-title">Fink FLINK Monitoring Reflection</div><div class="card-subtitle">Run monthly · 6 dimensions of learning for advocates</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds At this monitoring checkpoint, help the advocate reflect across Fink's six dimensions: (1) Foundational Knowledge — what new clinical facts have they learned about this patient's conditions this month? (2) Application — what one monitoring behaviour are they now doing that they weren't doing before? (3) Integration — how do the different conditions interact, as they have observed? (4) Human Dimension — what has changed in their relationship with their loved one through this process? (5) Caring — what value or commitment drives their continued monitoring? (6) Learning How to Learn — what would they do differently in a future monitoring role? Acknowledge each response before prompting the next.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 3 · Closure</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.6</span>
+      <div><div class="card-title">Monthly Domain Review</div><div class="card-subtitle">Improved / Stable / Deteriorated across all 4 domains</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds You are a monitoring companion conducting a monthly review across all four domains: lifestyle, mood, medications, and red-flag events. For each domain, state: Improved / Stable / Deteriorated compared to baseline, and give one specific action point. Open with: 'Here is what [X] weeks of consistent monitoring shows us.' Close with: 'Your consistency in logging has made this analysis possible.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">3.7</span>
+      <div><div class="card-title">Monitoring Closure or Escalation Decision</div><div class="card-subtitle">Continue · Escalate to physician · or Close</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Based on the full longitudinal monitoring record to date, recommend one of three dispositions: (1) Continue monitoring — stable trajectory; (2) Escalate — specific concern for physician review (state it); (3) Close monitoring — condition resolved, no active flags. Justify in two sentences. If closing, acknowledge what was accomplished: 'This monitoring episode covered [X] weeks and helped track [key issues].'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODULE 9 ═══════════ -->
+<div class="module-panel" id="panel-9" data-mod-color="9">
+  <div class="mod-header">
+    <span class="mod-badge" data-badge-color="9">Module 9 · 🟢 Mature</span>
+    <h2>N-of-1 Case Research Protocol</h2>
+    <p>For clinicians · 7-stage protocol from raw case narrative to publication-ready outputs.</p>
+  </div>
+
+  <div class="safety-banner">
+    <strong>⚠️ De-identification required:</strong> Paste only de-identified case material into any step. The AI's role is Socratic and structuring — diagnostic decisions stay with the clinician throughout. All Stage 2/3/6 novelty claims are provisional until independently verified.
+  </div>
+
+  <div class="phase-label">Optional · Single-Session Entry Point</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.0</span>
+      <div><div class="card-title">Single-Session Orchestration</div><div class="card-subtitle">Runs all 7 stages in one conversation · Built-in pause points</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">Use this when you already know the case well and want a single working session. For a multi-day disciplined run, use Steps 9.1–9.7 separately.</div>
+      <div class="prompt-box">#VibeRounds I am running the full seven-stage Vibe Rounds n-of-1 case research protocol on one patient case in a single session. You will act as a Socratic interlocutor throughout — expanding the option space and structuring evidence, not concluding a diagnosis. The seven stages, in order, are: (1) Index case structuring — extract two clean term lists from my case narrative: all diagnosis-related terms, and all intervention-related terms. (2) Comparator identification — using those terms as search seeds, help me identify a small set of comparable published cases; state which sources you are drawing on and on what basis you judge something comparable. (3) Aggregation and cross-comparison — compare the comparator cases against my index case and surface shared features and points of divergence; ask me to confirm which of three match criteria is doing the work in any similarity claim — shared gene, shared phenotype cluster, or shared intervention response. (4) Two-tier analysis — analyse my case twice: once restricted only to the coded diagnosis/intervention terms from Stage 1 with no narrative context, and once using the full narrative; present both tiers separately, not merged. (5) Open-ended analytic ideation — ask me 'what else would you analyze?' and generate candidate analyses for me to accept, reject, or modify; do not converge on conclusions at this stage. (6) Selection of an analytic menu — once I have told you which Stage 5 candidates I want to pursue, help me build a working menu of the analyses I will actually run. (7) Convergence to fixed outputs — regardless of which Stage 6 analyses we ran, produce: a severity rating per diagnosis, a priority rating per diagnosis, a condensed patient-journey timeline, and an intervention-symptom correlation table. After each stage, stop and ask me to confirm before moving to the next — do not collapse stages or skip ahead. Confirm you understand this structure before I share my case material.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 1 · Initiation</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.1</span>
+      <div><div class="card-title">Stage 1 · Index Case Structuring</div><div class="card-subtitle">Extracts Diagnosis list (A) + Intervention list (B) · No synthesis yet</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are starting Stage 1 of the Vibe Rounds protocol: index case structuring. I am going to paste my case narrative — it may be a patient-reported history, a clinical record, a longitudinal blog, or notes I have taken myself. Your task is narrow: extract two clean, de-duplicated term lists, and nothing else yet. List A: every diagnosis-related term mentioned or implied (confirmed diagnoses, suspected diagnoses, ruled-out diagnoses — label which is which). List B: every intervention-related term mentioned (medications, procedures, dietary or lifestyle interventions, self-trialed or informal interventions — label source where stated, e.g. prescribed vs. self-trialed). Do not interpret, rank, or synthesize anything yet — this stage is extraction only. Where a term is ambiguous, list it and flag the ambiguity rather than resolving it yourself. [paste case narrative]<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+      <div class="note-box"><strong>9.1a Completeness check</strong> — run immediately after:<br><br>#VibeRounds Before we move to Stage 2, check your own Stage 1 output against my original text: did you miss any diagnosis or intervention term, including ones mentioned only once, mentioned as ruled-out, or mentioned in an appendix or aside? List anything you may have missed on a second pass, even tentatively.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 2 · Execution</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.2</span>
+      <div><div class="card-title">Stage 2 · Comparator Identification</div><div class="card-subtitle">Finds ~5 comparable published cases · States search sources + criteria</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are starting Stage 2: comparator identification. Using the diagnosis and intervention terms from Stage 1 as search seeds, help me identify a small set of comparable published cases — aim for roughly five unless the case is unusually rare or unusually common. Before you give me results, state explicitly: (1) which sources you are searching or drawing on, (2) what seed terms you are using, drawn directly from the Stage 1 lists, (3) what criteria a case must meet to count as a comparator — be explicit about whether you mean shared gene, shared phenotype cluster, or shared intervention response, since these are different criteria and I need to know which one you are using for each comparator you propose. Present the comparator list with, for each case, one sentence on why it qualifies under your stated criterion.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.3</span>
+      <div><div class="card-title">Stage 3 · Aggregation & Cross-Comparison</div><div class="card-subtitle">Shared features · Divergences · Names the match criterion per claim</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are starting Stage 3: aggregation and cross-comparison. Pool the full text of the Stage 2 comparator cases into a single working set and compare it against my index case. Surface: (1) features shared between my case and the comparators, (2) points of clear divergence, (3) for every claim of similarity you make, state explicitly which one of the three match criteria — shared gene, shared phenotype cluster, or shared intervention response — is doing the work. If a similarity claim mixes more than one criterion, separate them rather than presenting it as a single match. Flag anywhere you are uncertain which criterion applies.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.4</span>
+      <div><div class="card-title">Stage 4 · Two-Tier Analysis</div><div class="card-subtitle">Coded view vs. Narrative view · Do NOT merge — kept separate</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">If the AI merges the tiers, ask it to redo the stage with tiers kept separate before continuing.</div>
+      <div class="prompt-box">#VibeRounds We are starting Stage 4: two-tier analysis — the protocol's central methodological move. Run two separate analyses of my case and present them as two distinct, clearly labeled outputs; do not merge them into one synthesized narrative. Tier 1 (coded view): analyse using only the Stage 1 diagnosis and intervention term lists, stripped of all narrative context — this should approximate what a structured registry or database entry would capture. Tier 2 (narrative view): analyse using the full unstructured case text, preserving sequencing, context, and clinical reasoning that the coded view strips away. After presenting both, tell me explicitly: what does Tier 2 surface that Tier 1 misses, and is there anything Tier 1's stripped-down view makes clearer by removing narrative noise?<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.5</span>
+      <div><div class="card-title">Stage 5 · Open-Ended Analytic Ideation</div><div class="card-subtitle">Expands the option space · Do not pre-filter or rank yet</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are starting Stage 5: open-ended analytic ideation. This stage is Socratic, not conclusive — your job here is to expand the option space, not narrow it. Given everything from Stages 1–4, answer one open question as expansively as you can: what else would you analyze about this case that we have not yet done? Generate as many distinct candidate analyses as you can — do not pre-filter for what you think I will choose, and do not rank them yet. For each candidate, give one sentence on what question it would answer. I will decide what to keep in the next stage.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.6</span>
+      <div><div class="card-title">Stage 6 · Selection of an Analytic Menu</div><div class="card-subtitle">You choose which Stage 5 candidates to run · Converts to concrete tasks</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds We are starting Stage 6: selection of an analytic menu. From the Stage 5 candidates, I am going to tell you which ones I want to actually run — [list your chosen candidates, e.g.: a symptom-trigger-intervention timeline, a literature-gap analysis, a risk-trajectory model]. For each one I select, restate it as a concrete, runnable task specific to my case — not the generic description from Stage 5 — so I have a working menu I can execute one item at a time. If any of my selections overlaps heavily with another, tell me now, before we run them separately.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 3 · Closure</div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.7</span>
+      <div><div class="card-title">Stage 7 · Convergence to Fixed Outputs</div><div class="card-subtitle">Severity · Priority · Timeline · Intervention-symptom table</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">This is the non-negotiable floor of the protocol. Even if nothing novel emerged, this output means better-organized clinical reasoning — which is itself the value.</div>
+      <div class="prompt-box">#VibeRounds We are converging to Stage 7 — the fixed output package. Regardless of which Stage 6 analyses we ran, produce all four of the following: (1) Severity rating per diagnosis — a qualitative severity level for each diagnosis or suspected diagnosis identified in Stage 1, with one sentence of justification per rating, and an explicit note where a rating is contingent on a pending confirmation versus already confirmed. (2) Priority rating per diagnosis — a qualitative clinical-action priority for each diagnosis, distinct from severity (a high-severity but already well-managed condition may be lower priority for new action than a moderate-severity one with an unaddressed risk). (3) Condensed patient-journey timeline — a compressed, chronological timeline of the case suitable for someone seeing the case for the first time. (4) Intervention-symptom correlation table — every intervention identified in Stage 1, paired with its reported or observed effect on symptoms, explicitly labeled as patient-reported, clinician-observed, or unblinded/uncontrolled n-of-1 observation as appropriate — do not present these as if they were controlled trial evidence.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.8</span>
+      <div><div class="card-title">Manuscript / CARE-Field Export</div><div class="card-subtitle">Optional · Maps to CARE guidelines · Flags gaps honestly</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Take everything produced across Stages 1–7 and map it onto the CARE guideline's case-description fields: patient information, timeline, diagnostic assessment, therapeutic interventions, follow-up and outcomes. For each field, either pull directly from our Stage outputs or flag explicitly what is still missing and needs to be gathered before this could be submitted. Separately, attach the Stage 2 search-strategy note as the search-reproducibility appendix. Do not invent any detail not already established in Stages 1–7 to fill a CARE field — leave it marked as a gap instead.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+
+  <div class="prompt-card" onclick="toggleCard(this)">
+    <div class="card-head">
+      <span class="step-num">9.9</span>
+      <div><div class="card-title">Critical Awareness Debrief</div><div class="card-subtitle">Run once at close of every protocol pass</div></div>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="prompt-box">#VibeRounds Apply the Critical Awareness lens to this protocol run: (1) What cognitive bias most likely affected the reasoning across these seven stages — mine or the AI's? (2) What is the most important clinical risk of acting on today's Stage 7 outputs without further verification? (3) What would the strongest critic of this case research say about its methodology — particularly about the Stage 2 comparator search and any Stage 6 novelty or literature-gap claim? (4) What single uncertainty should I hold clearly in mind before treating anything from this run as more than a provisional hypothesis?<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>PaJR VibeRounds Prompt Library · Based on <a href="https://avi33tbtt.github.io/Prompts/" target="_blank">Dr. Avinash Kumar Gupta's VibeRounds documentation</a> · All AI outputs require independent clinical verification before action.</p>
+</footer>
+
+<script>
+  function switchTab(mod) {
+    document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + mod).classList.add('active');
+    document.querySelector('.tab-btn[data-mod="' + mod + '"]').classList.add('active');
+  }
+
+  function toggleCard(card) {
+    card.classList.toggle('open');
+  }
+
+  function copyPrompt(event, btn) {
+    event.stopPropagation();
+    const box = btn.closest('.prompt-box');
+    const text = box.childNodes[0].textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
