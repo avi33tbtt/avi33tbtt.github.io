@@ -17,7 +17,7 @@
 
 ## Publications
 
-> *Researchgate - Articles and Pre-Print Section - https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2*
+> *Researchgate - Articles and Pre-Print Section - [https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2](https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2)*
 *Evaluation generated June 19, 2026*
 
 ---
