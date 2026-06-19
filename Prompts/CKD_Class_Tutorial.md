@@ -1,4 +1,9 @@
 [← Back to README](README.md)
+
+## Copy this in claude to directly see demo -> I am taking classes today on ckd for mbbs 4th year students. give something from https://avi33tbtt.github.io/Prompts/ to use with projector in class sharing my computer screen.
+
+```
+
 # CKD Class Tutorial — Socratic Clinical Reasoning with Claude
 **For: MBBS 4th Year Students**
 **Format: Live projector session, instructor-led, screen shared with class**
