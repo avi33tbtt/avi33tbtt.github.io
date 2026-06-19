@@ -35,8 +35,8 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 
 | File | Contents |
 |---|---|
-| [Vibe Rounds — Demo Implementation](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
-| [Vibe Rounds — Demo Implementation](CKD_Class_Tutorial.md) | Conversation transcript with Claude | June 19, 2026
+| [Vibe Rounds — Demo Implementation - PaJR](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
+| [Vibe Rounds — Demo Implementation * CKD Class](CKD_Class_Tutorial.md) | Conversation transcript with Claude | June 19, 2026
 | [Vibe Rounds — Academic Evaluation](VibeRounds_Academic_Evaluation.md) | Conversation transcript with Claude | June 19, 2026
 
 ---
