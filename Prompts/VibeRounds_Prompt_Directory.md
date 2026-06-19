@@ -1,3 +1,4 @@
+[← Back to README](README.md)
 # VibeRounds Prompt Directory — Modules 1–9
 
 *Coined and developed by Dr. Avinash Kumar Gupta · Vibe Rounds, June 2026*
@@ -159,3 +160,4 @@ Two prompts carry dual tags where their design genuinely spans two modes.
 **Brainstorming** was assigned when the prompt's explicit goal is *expansion* of the option space — generating lists, clusters, hypotheses, or analytic candidates without premature filtering or ranking.
 
 *VibeRounds Prompt Modules · Dr. Avinash Kumar Gupta · June 2026*
+[← Back to README](README.md)
