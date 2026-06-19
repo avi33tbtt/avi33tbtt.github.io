@@ -4,6 +4,7 @@
 
 > **Modules 1 · 2 · 3 · 9** — curated and trimmed for the PaJR care ecosystem  
 > Source: [Vibe Rounds by Dr. Avinash Kumar Gupta](https://avi33tbtt.github.io/Prompts/) · [PaJR Health](https://publications.pajrhealth.org/about/)
+> Demo: [PaJR Prompts]([https://avi33tbtt.github.io/Prompts/](https://avi33tbtt.github.io/demo/pajr/index.html)
 
 ---
 
