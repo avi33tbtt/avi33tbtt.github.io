@@ -35,7 +35,6 @@
     min-height: 100vh;
   }
 
-  /* ── Header ── */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -45,24 +44,19 @@
     gap: 20px;
     flex-wrap: wrap;
   }
-  .logo-pill {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .logo-pill { display: flex; align-items: center; gap: 10px; }
   .logo-dot {
     width: 36px; height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, #0891b2, #7c3aed);
     display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 14px; color: #000; letter-spacing: -0.5px;
+    font-weight: 800; font-size: 14px; color: #fff; letter-spacing: -0.5px;
     flex-shrink: 0;
   }
   header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
   header h1 span { color: #0369a1; }
   header p { color: var(--muted); font-size: 13px; margin-left: auto; max-width: 320px; text-align: right; }
 
-  /* ── Setup notice ── */
   .setup-bar {
     background: #e0f2fe;
     border-left: 3px solid var(--accent-teal);
@@ -75,7 +69,6 @@
   }
   .setup-bar strong { color: #0369a1; }
 
-  /* ── Tabs ── */
   .tab-row {
     display: flex;
     gap: 4px;
@@ -106,7 +99,6 @@
   .tab-btn[data-mod="3"].active { color: var(--m3); }
   .tab-btn[data-mod="9"].active { color: var(--m9); }
 
-  /* ── Main layout ── */
   main {
     max-width: 1000px;
     margin: 0 auto;
@@ -116,7 +108,6 @@
   .module-panel { display: none; }
   .module-panel.active { display: block; }
 
-  /* ── Module header ── */
   .mod-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
@@ -134,6 +125,7 @@
   }
   .mod-header h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
   .mod-header p { color: var(--muted); font-size: 14px; }
+
   .phase-label {
     display: inline-block;
     font-size: 11px;
@@ -146,7 +138,6 @@
     padding-left: 10px;
   }
 
-  /* ── Prompt cards ── */
   .prompt-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -156,6 +147,7 @@
     transition: border-color .15s;
   }
   .prompt-card:hover { border-color: #30363d; }
+
   .card-head {
     display: flex;
     align-items: center;
@@ -164,6 +156,7 @@
     cursor: pointer;
     user-select: none;
   }
+
   .step-num {
     font-family: var(--mono);
     font-size: 11px;
@@ -173,16 +166,46 @@
     flex-shrink: 0;
     opacity: 0.9;
   }
-  .card-title {
-    flex: 1;
-    font-size: 14px;
+
+  .card-title-block { flex: 1; min-width: 0; }
+  .card-title { font-size: 14px; font-weight: 600; }
+  .card-subtitle { font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+
+  /* Hashtag badges row */
+  .hash-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .hash-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.2px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: opacity .15s;
+    white-space: nowrap;
+  }
+  .hash-tag:hover { opacity: 0.75; }
+  .hash-tag.copied-tag { opacity: 0.6; }
+
+  /* placeholder badge */
+  .req-badge {
+    font-family: var(--mono);
+    font-size: 10px;
     font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    white-space: nowrap;
   }
-  .card-subtitle {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 400;
-  }
+
   .toggle-arrow {
     color: var(--muted);
     font-size: 12px;
@@ -242,23 +265,28 @@
   }
   .note-box strong { color: #475569; }
 
-  /* module accent colours */
-  [data-mod-color="1"] .step-num { background: #e0f2fe; color: #0369a1; }
+  /* Module accent colours */
+  [data-mod-color="1"] .step-num  { background: #e0f2fe; color: #0369a1; }
+  [data-mod-color="1"] .hash-tag  { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
   [data-mod-color="1"] .card-head:hover .card-title { color: var(--m1); }
-  [data-mod-color="2"] .step-num { background: #fef3c7; color: #92400e; }
+
+  [data-mod-color="2"] .step-num  { background: #fef3c7; color: #92400e; }
+  [data-mod-color="2"] .hash-tag  { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
   [data-mod-color="2"] .card-head:hover .card-title { color: var(--m2); }
-  [data-mod-color="3"] .step-num { background: #fce7f3; color: #9d174d; }
+
+  [data-mod-color="3"] .step-num  { background: #fce7f3; color: #9d174d; }
+  [data-mod-color="3"] .hash-tag  { background: #fce7f3; color: #9d174d; border-color: #fbcfe8; }
   [data-mod-color="3"] .card-head:hover .card-title { color: var(--m3); }
-  [data-mod-color="9"] .step-num { background: #ede9fe; color: #6d28d9; }
+
+  [data-mod-color="9"] .step-num  { background: #ede9fe; color: #6d28d9; }
+  [data-mod-color="9"] .hash-tag  { background: #ede9fe; color: #6d28d9; border-color: #ddd6fe; }
   [data-mod-color="9"] .card-head:hover .card-title { color: var(--m9); }
 
-  /* badge accent */
   [data-badge-color="1"] { background: #e0f2fe; color: #0369a1; }
   [data-badge-color="2"] { background: #fef3c7; color: #92400e; }
   [data-badge-color="3"] { background: #fce7f3; color: #9d174d; }
   [data-badge-color="9"] { background: #ede9fe; color: #6d28d9; }
 
-  /* ── Safety banner ── */
   .safety-banner {
     background: #fffbeb;
     border: 1px solid #fcd34d;
@@ -271,7 +299,6 @@
   }
   .safety-banner strong { color: #92400e; }
 
-  /* ── Footer ── */
   footer {
     text-align: center;
     padding: 24px;
@@ -287,6 +314,7 @@
     main { padding: 20px 16px 40px; }
     .tab-row { padding: 0 16px; }
     .setup-bar { margin: 16px; }
+    .hash-row { gap: 4px; }
   }
 </style>
 </head>
@@ -301,7 +329,8 @@
 </header>
 
 <div class="setup-bar">
-  <strong>How to use:</strong> Pick a module tab · Click a step to expand · Copy the prompt · Paste into your AI (WhatsApp bot, Claude, Gemini, etc.) · Fill in the <code>[bracketed]</code> parts with your case details. Always verify AI output with a clinician before acting.
+  <strong>How to use:</strong> Pick a module tab · Click a step to expand · Copy the prompt · Paste into your AI (WhatsApp bot, Claude, Gemini, etc.) · Fill in the <code>[bracketed]</code> parts with your case details. Always verify AI output with a clinician before acting.<br>
+  <strong>Hashtags:</strong> Click any <code>#tag</code> on a card to copy it. Use the <strong>code</strong> (#VR11) or the <strong>mnemonic</strong> (#Questions) — both identify the same prompt. 🟡 badges show required inputs.
 </div>
 
 <div class="tab-row">
@@ -320,31 +349,26 @@
     <h2>Socratic Clinical Reasoning</h2>
     <p>For students &amp; teachers · Push yourself to reason through a case — not just get the answer.</p>
   </div>
-
   <div class="safety-banner">
     <strong>⚠️ Reminder:</strong> These are teaching prompts with no patient data. Suitable to use as-is. AI output requires clinical verification before any action.
   </div>
 
   <div class="phase-label">Phase 1 · Initiation</div>
-<!-- 
-  <div class="prompt-card" onclick="toggleCard(this)">
-    <div class="card-head">
-      <span class="step-num">1.0</span>
-      <div><div class="card-title">Session Setup & Learner Framing</div><div class="card-subtitle">Run once at the start · Establishes Socratic rules</div></div>
-      <span class="toggle-arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="note-box">Best opening prompt for any teaching/learning session. The AI will ask questions, affirm correct reasoning, and withhold the answer until you genuinely try.</div>
-      <div class="prompt-box">#VibeRounds You are a warm, encouraging educational assistant who uses the Socratic method to guide clinical reasoning. I am a [medical student / junior doctor / learner] working through a clinical case. Your role is to ask me one question at a time, wait for my response, and acknowledge what I got right before gently probing further. Only reveal the answer after I have made a genuine attempt and then explicitly surrendered — if I ask for the answer outright without attempting one, redirect me once with: 'Give your best guess, differential, or next step first,' and only proceed to reveal the answer if I still cannot or will not attempt one after that. Start every session by telling me one thing you believe I will find interesting about this case. Confirm you understand the rules before we begin.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-    </div>
-  </div>
- -->
+
   <div class="phase-label">Phase 2 · Execution</div>
 
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.1</span>
-      <div><div class="card-title">Socratic Question Generator</div><div class="card-subtitle">Generates a long list of case questions</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Socratic Question Generator</div>
+        <div class="card-subtitle">Generates a long list of case questions</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR11')">#VR11</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Questions')">#Questions</span>
+          <span class="req-badge">⬛ case narrative</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -355,7 +379,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.2</span>
-      <div><div class="card-title">Socratic Teacher on Interventions</div><div class="card-subtitle">One question per clinical intervention · Used in PaJR Health bot</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Socratic Teacher on Interventions</div>
+        <div class="card-subtitle">One question per clinical intervention · Used in PaJR Health bot</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR12')">#VR12</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Interventions')">#Interventions</span>
+          <span class="req-badge">⬛ up to 5 interventions</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -367,7 +399,16 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.3</span>
-      <div><div class="card-title">Knowledge-Scoped Examination Guide</div><div class="card-subtitle">Textbook-restricted teaching · Teach only what I don't know</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Knowledge-Scoped Examination Guide</div>
+        <div class="card-subtitle">Textbook-restricted teaching · Teach only what I don't know</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR13')">#VR13</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Textbook')">#Textbook</span>
+          <span class="req-badge">⬛ textbook name</span>
+          <span class="req-badge">⬛ condition</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -378,7 +419,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.4</span>
-      <div><div class="card-title">Mid-Session Reasoning Checkpoint</div><div class="card-subtitle">Scores reasoning · 3 domains · Identifies your strongest skill</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Mid-Session Reasoning Checkpoint</div>
+        <div class="card-subtitle">Scores reasoning · 3 domains · Identifies your strongest skill</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR14')">#VR14</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Checkpoint')">#Checkpoint</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -389,31 +437,34 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.5</span>
-      <div><div class="card-title">Bloom's Taxonomy Progression</div><div class="card-subtitle">Remember → Understand → Apply → Analyse → Evaluate → Create</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Bloom's Taxonomy Progression</div>
+        <div class="card-subtitle">Remember → Understand → Apply → Analyse → Evaluate → Create</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR15')">#VR15</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Blooms')">#Blooms</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
       <div class="prompt-box">#VibeRounds For this case, take me through all six levels of Bloom's Taxonomy in clinical reasoning order. Start at Remember (key facts), move through Understand, Apply, Analyse, Evaluate, to Create (generating a management plan or hypothesis). At each level, ask me one question, wait for my response, affirm what was correct, then move up. Do not skip levels.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
     </div>
   </div>
-<!--
-  <div class="prompt-card" onclick="toggleCard(this)">
-    <div class="card-head">
-      <span class="step-num">1.6</span>
-      <div><div class="card-title">Fink FLINK Deep Learning Prompt</div><div class="card-subtitle">6 dimensions of significant learning · Best for end-of-case tutorials</div></div>
-      <span class="toggle-arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="prompt-box">#VibeRounds Using Fink's six dimensions of significant learning, guide me through this case so that I leave with: (1) Foundational Knowledge I can recall, (2) Application I can practice, (3) Integration across body systems, (4) Human Dimension — what this case means for a real patient, (5) Caring — what values or professional identity this case activates in me, (6) Learning How to Learn — one strategy I will use to approach the next similar case differently. Ask me one reflective question per dimension.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-    </div>
-  </div>
- -->
+
   <div class="phase-label">Phase 3 · Closure</div>
 
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.7</span>
-      <div><div class="card-title">End-of-Case Teaching Summary</div><div class="card-subtitle">2 strengths + 2 clinical pearls + 1 review topic</div></div>
+      <div class="card-title-block">
+        <div class="card-title">End-of-Case Teaching Summary</div>
+        <div class="card-subtitle">2 strengths + 2 clinical pearls + 1 review topic</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR17')">#VR17</span>
+          <span class="hash-tag" onclick="copyHash(event,'#CaseClose')">#CaseClose</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -424,7 +475,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.8</span>
-      <div><div class="card-title">Missed Diagnosis Debrief</div><div class="card-subtitle">Finds blind spots · Names the cognitive bias · Framed as growth</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Missed Diagnosis Debrief</div>
+        <div class="card-subtitle">Finds blind spots · Names the cognitive bias · Framed as growth</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR18')">#VR18</span>
+          <span class="hash-tag" onclick="copyHash(event,'#BlindSpot')">#BlindSpot</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -435,7 +493,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">1.10</span>
-      <div><div class="card-title">Critical Awareness Debrief</div><div class="card-subtitle">Biases · Risks · Critique · Unresolved uncertainty</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Critical Awareness Debrief</div>
+        <div class="card-subtitle">Biases · Risks · Critique · Unresolved uncertainty</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR110')">#VR110</span>
+          <span class="hash-tag" onclick="copyHash(event,'#TeachDebrief')">#TeachDebrief</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -451,7 +516,6 @@
     <h2>Patient-Advocate Case Documentation</h2>
     <p>For family members &amp; patient advocates · Build a structured case record alongside AI.</p>
   </div>
-
   <div class="safety-banner">
     <strong>⚠️ Data security:</strong> Use a private account. Type drug name/dose/frequency rather than uploading prescription photos (photos capture name, DOB, address). Never enter the patient's full name — a first name or "my mother" is enough. The AI does not notify the care team — flag urgent findings directly to a clinician.
   </div>
@@ -461,7 +525,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.0</span>
-      <div><div class="card-title">Case Opening & Advocate Onboarding</div><div class="card-subtitle">Run once at the very start · Sets compassionate AI tone</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Case Opening &amp; Advocate Onboarding</div>
+        <div class="card-subtitle">Run once at the very start · Sets compassionate AI tone</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR20')">#VR20</span>
+          <span class="hash-tag" onclick="copyHash(event,'#StartCase')">#StartCase</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -474,7 +545,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.1</span>
-      <div><div class="card-title">Symptom & Classifier Capture</div><div class="card-subtitle">Narrative-method data entry · Prompts for missing details</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Symptom &amp; Classifier Capture</div>
+        <div class="card-subtitle">Narrative-method data entry · Prompts for missing details</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR21')">#VR21</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Symptoms')">#Symptoms</span>
+          <span class="req-badge">⬛ symptom / clinical narrative</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -485,7 +564,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.2</span>
-      <div><div class="card-title">Clinical Examination Guidance</div><div class="card-subtitle">Plain-language observation checklist for advocates</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Clinical Examination Guidance</div>
+        <div class="card-subtitle">Plain-language observation checklist for advocates</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR22')">#VR22</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Examine')">#Examine</span>
+          <span class="req-badge">⬛ condition or case context</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -496,7 +583,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.3</span>
-      <div><div class="card-title">Prescription Transcription & Dosage Capture</div><div class="card-subtitle">Records medications accurately · Safer than photo upload</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Prescription Transcription &amp; Dosage Capture</div>
+        <div class="card-subtitle">Records medications accurately · Safer than photo upload</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR23')">#VR23</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Meds')">#Meds</span>
+          <span class="req-badge">⬛ drug · dose · frequency · route</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -507,7 +602,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.4</span>
-      <div><div class="card-title">SOAP Note Generation</div><div class="card-subtitle">Produces Subjective · Objective · Assessment · Plan in plain language</div></div>
+      <div class="card-title-block">
+        <div class="card-title">SOAP Note Generation</div>
+        <div class="card-subtitle">Produces Subjective · Objective · Assessment · Plan in plain language</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR24')">#VR24</span>
+          <span class="hash-tag" onclick="copyHash(event,'#SOAP')">#SOAP</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -518,7 +620,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.5</span>
-      <div><div class="card-title">Data Completeness Audit</div><div class="card-subtitle">Friendly checklist · Run before closing the record</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Data Completeness Audit</div>
+        <div class="card-subtitle">Friendly checklist · Run before closing the record</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR25')">#VR25</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Audit')">#Audit</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -531,7 +640,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.6</span>
-      <div><div class="card-title">Case Record Sign-Off</div><div class="card-subtitle">Diagnosis · Medications · Pending tests · Next review date</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Case Record Sign-Off</div>
+        <div class="card-subtitle">Diagnosis · Medications · Pending tests · Next review date</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR26')">#VR26</span>
+          <span class="hash-tag" onclick="copyHash(event,'#SignOff')">#SignOff</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -542,7 +658,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.7</span>
-      <div><div class="card-title">Advocate Handover Brief</div><div class="card-subtitle">≤150 words · For reading aloud to a new doctor or ER team</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Advocate Handover Brief</div>
+        <div class="card-subtitle">≤150 words · For reading aloud to a new doctor or ER team</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR27')">#VR27</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Handover')">#Handover</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -554,7 +677,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">2.8</span>
-      <div><div class="card-title">Advocate Learning Check (Bloom's)</div><div class="card-subtitle">Remember → Understand → Apply · Health literacy for advocates</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Advocate Learning Check (Bloom's)</div>
+        <div class="card-subtitle">Remember → Understand → Apply · Health literacy for advocates</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR28')">#VR28</span>
+          <span class="hash-tag" onclick="copyHash(event,'#AdvLearn')">#AdvLearn</span>
+          <span class="req-badge">⬛ named red-flag symptom from record</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -570,7 +701,6 @@
     <h2>Extended Patient-Advocate Monitoring</h2>
     <p>Longitudinal tracking · Runs alongside Module 2 once a baseline record exists.</p>
   </div>
-
   <div class="safety-banner">
     <strong>⚠️ Longitudinal data warning:</strong> Weeks of mood, lifestyle and medication data can re-identify a patient. Periodically delete inactive monitoring threads. The ALERT in Step 3.4 does <em>not</em> notify the treating team — call or visit a clinician directly for urgent findings.
   </div>
@@ -580,11 +710,19 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.0</span>
-      <div><div class="card-title">Baseline Domain Snapshot</div><div class="card-subtitle">Sets reference point across all 4 domains</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Baseline Domain Snapshot</div>
+        <div class="card-subtitle">Sets reference point across all 4 domains</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR30')">#VR30</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Baseline')">#Baseline</span>
+          <span class="req-badge">⬛ existing case record</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
-      <div class="prompt-box">#VibeRounds You are a compassionate monitoring companion setting up a longitudinal tracking record with a patient advocate. Using the existing case record, produce a one-page Baseline Snapshot across four domains: (1) Lifestyle & Physical Baseline, (2) Mood & Coping Baseline, (3) Medication Adherence Baseline, (4) Current Red-Flag Risk Level. After the snapshot, tell the advocate: 'This baseline is your reference point. Every update we log will show us how your loved one is progressing — and your observations are what make that possible.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+      <div class="prompt-box">#VibeRounds You are a compassionate monitoring companion setting up a longitudinal tracking record with a patient advocate. Using the existing case record, produce a one-page Baseline Snapshot across four domains: (1) Lifestyle &amp; Physical Baseline, (2) Mood &amp; Coping Baseline, (3) Medication Adherence Baseline, (4) Current Red-Flag Risk Level. After the snapshot, tell the advocate: 'This baseline is your reference point. Every update we log will show us how your loved one is progressing — and your observations are what make that possible.'<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
     </div>
   </div>
 
@@ -593,7 +731,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.1</span>
-      <div><div class="card-title">Lifestyle Monitoring</div><div class="card-subtitle">Diet · Sleep · Mobility · Fluid compliance · Narrative method</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Lifestyle Monitoring</div>
+        <div class="card-subtitle">Diet · Sleep · Mobility · Fluid compliance · Narrative method</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR31')">#VR31</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Lifestyle')">#Lifestyle</span>
+          <span class="req-badge">⬛ daily routine details</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -604,7 +750,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.2</span>
-      <div><div class="card-title">Mood & Coping Monitoring</div><div class="card-subtitle">Emotional state · Stressors · Resilience · Also checks on the advocate</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Mood &amp; Coping Monitoring</div>
+        <div class="card-subtitle">Emotional state · Stressors · Resilience · Also checks on the advocate</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR32')">#VR32</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Mood')">#Mood</span>
+          <span class="req-badge">⬛ mood / stress / coping description</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -615,7 +769,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.3</span>
-      <div><div class="card-title">Medication Monitoring & Adherence</div><div class="card-subtitle">Current vs. discontinued table · Flags sudden cessation risk</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Medication Monitoring &amp; Adherence</div>
+        <div class="card-subtitle">Current vs. discontinued table · Flags sudden cessation risk</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR33')">#VR33</span>
+          <span class="hash-tag" onclick="copyHash(event,'#MedTrack')">#MedTrack</span>
+          <span class="req-badge">⬛ current medication notes</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -626,7 +788,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.4</span>
-      <div><div class="card-title">🚨 Critical Alert & Red-Flag Triage</div><div class="card-subtitle">Generates ALERT block for urgent symptoms · Use immediately</div></div>
+      <div class="card-title-block">
+        <div class="card-title">🚨 Critical Alert &amp; Red-Flag Triage</div>
+        <div class="card-subtitle">Generates ALERT block for urgent symptoms · Use immediately</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR34')">#VR34</span>
+          <span class="hash-tag" onclick="copyHash(event,'#ALERT')">#ALERT</span>
+          <span class="req-badge">⬛ real-time symptom update</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -638,7 +808,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.5</span>
-      <div><div class="card-title">Fink FLINK Monitoring Reflection</div><div class="card-subtitle">Run monthly · 6 dimensions of learning for advocates</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Fink FLINK Monitoring Reflection</div>
+        <div class="card-subtitle">Run monthly · 6 dimensions of learning for advocates</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR35')">#VR35</span>
+          <span class="hash-tag" onclick="copyHash(event,'#FLINK')">#FLINK</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -651,7 +828,15 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.6</span>
-      <div><div class="card-title">Monthly Domain Review</div><div class="card-subtitle">Improved / Stable / Deteriorated across all 4 domains</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Monthly Domain Review</div>
+        <div class="card-subtitle">Improved / Stable / Deteriorated across all 4 domains</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR36')">#VR36</span>
+          <span class="hash-tag" onclick="copyHash(event,'#MonthReview')">#MonthReview</span>
+          <span class="req-badge">⬛ number of weeks monitored</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -662,7 +847,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">3.7</span>
-      <div><div class="card-title">Monitoring Closure or Escalation Decision</div><div class="card-subtitle">Continue · Escalate to physician · or Close</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Monitoring Closure or Escalation Decision</div>
+        <div class="card-subtitle">Continue · Escalate to physician · or Close</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR37')">#VR37</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Escalate')">#Escalate</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -678,36 +870,36 @@
     <h2>N-of-1 Case Research Protocol</h2>
     <p>For clinicians · 7-stage protocol from raw case narrative to publication-ready outputs.</p>
   </div>
-
   <div class="safety-banner">
     <strong>⚠️ De-identification required:</strong> Paste only de-identified case material into any step. The AI's role is Socratic and structuring — diagnostic decisions stay with the clinician throughout. All Stage 2/3/6 novelty claims are provisional until independently verified.
   </div>
 
-  <div class="phase-label">Optional · Single-Session Entry Point</div>
-<!--
-  <div class="prompt-card" onclick="toggleCard(this)">
-    <div class="card-head">
-      <span class="step-num">9.0</span>
-      <div><div class="card-title">Single-Session Orchestration</div><div class="card-subtitle">Runs all 7 stages in one conversation · Built-in pause points</div></div>
-      <span class="toggle-arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="note-box">Use this when you already know the case well and want a single working session. For a multi-day disciplined run, use Steps 9.1–9.7 separately.</div>
-      <div class="prompt-box">#VibeRounds I am running the full seven-stage Vibe Rounds n-of-1 case research protocol on one patient case in a single session. You will act as a Socratic interlocutor throughout — expanding the option space and structuring evidence, not concluding a diagnosis. The seven stages, in order, are: (1) Index case structuring — extract two clean term lists from my case narrative: all diagnosis-related terms, and all intervention-related terms. (2) Comparator identification — using those terms as search seeds, help me identify a small set of comparable published cases; state which sources you are drawing on and on what basis you judge something comparable. (3) Aggregation and cross-comparison — compare the comparator cases against my index case and surface shared features and points of divergence; ask me to confirm which of three match criteria is doing the work in any similarity claim — shared gene, shared phenotype cluster, or shared intervention response. (4) Two-tier analysis — analyse my case twice: once restricted only to the coded diagnosis/intervention terms from Stage 1 with no narrative context, and once using the full narrative; present both tiers separately, not merged. (5) Open-ended analytic ideation — ask me 'what else would you analyze?' and generate candidate analyses for me to accept, reject, or modify; do not converge on conclusions at this stage. (6) Selection of an analytic menu — once I have told you which Stage 5 candidates I want to pursue, help me build a working menu of the analyses I will actually run. (7) Convergence to fixed outputs — regardless of which Stage 6 analyses we ran, produce: a severity rating per diagnosis, a priority rating per diagnosis, a condensed patient-journey timeline, and an intervention-symptom correlation table. After each stage, stop and ask me to confirm before moving to the next — do not collapse stages or skip ahead. Confirm you understand this structure before I share my case material.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-    </div>
-  </div>
--->
   <div class="phase-label">Phase 1 · Initiation</div>
 
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.1</span>
-      <div><div class="card-title">Stage 1 · Index Case Structuring</div><div class="card-subtitle">Extracts Diagnosis list (A) + Intervention list (B) · No synthesis yet</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Stage 1 · Index Case Structuring</div>
+        <div class="card-subtitle">Extracts Diagnosis list (A) + Intervention list (B) · No synthesis yet</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR91')">#VR91</span>
+          <span class="hash-tag" onclick="copyHash(event,'#IndexCase')">#IndexCase</span>
+          <span class="req-badge">⬛ de-identified case narrative</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
       <div class="prompt-box">#VibeRounds We are starting Stage 1 of the Vibe Rounds protocol: index case structuring. I am going to paste my case narrative — it may be a patient-reported history, a clinical record, a longitudinal blog, or notes I have taken myself. Your task is narrow: extract two clean, de-duplicated term lists, and nothing else yet. List A: every diagnosis-related term mentioned or implied (confirmed diagnoses, suspected diagnoses, ruled-out diagnoses — label which is which). List B: every intervention-related term mentioned (medications, procedures, dietary or lifestyle interventions, self-trialed or informal interventions — label source where stated, e.g. prescribed vs. self-trialed). Do not interpret, rank, or synthesize anything yet — this stage is extraction only. Where a term is ambiguous, list it and flag the ambiguity rather than resolving it yourself. [paste case narrative]<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-      <div class="note-box"><strong>9.1a Completeness check</strong> — run immediately after:<br><br>#VibeRounds Before we move to Stage 2, check your own Stage 1 output against my original text: did you miss any diagnosis or intervention term, including ones mentioned only once, mentioned as ruled-out, or mentioned in an appendix or aside? List anything you may have missed on a second pass, even tentatively.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+      <div class="note-box">
+        <strong>9.1a · Completeness Check</strong> — run immediately after:
+        <div class="hash-row" style="margin-top:8px;">
+          <span class="hash-tag" onclick="copyHash(event,'#VR91a')">#VR91a</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Complete')">#Complete</span>
+        </div>
+        <div class="prompt-box" style="margin-top:10px;">#VibeRounds Before we move to Stage 2, check your own Stage 1 output against my original text: did you miss any diagnosis or intervention term, including ones mentioned only once, mentioned as ruled-out, or mentioned in an appendix or aside? List anything you may have missed on a second pass, even tentatively.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
+      </div>
     </div>
   </div>
 
@@ -716,7 +908,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.2</span>
-      <div><div class="card-title">Stage 2 · Comparator Identification</div><div class="card-subtitle">Finds ~5 comparable published cases · States search sources + criteria</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Stage 2 · Comparator Identification</div>
+        <div class="card-subtitle">Finds ~5 comparable published cases · States search sources + criteria</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR92')">#VR92</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Comparators')">#Comparators</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -727,54 +926,52 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.3</span>
-      <div><div class="card-title">Stage 3 · Aggregation & Cross-Comparison</div><div class="card-subtitle">Shared features · Divergences · Names the match criterion per claim</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Stage 3 · Aggregation &amp; Cross-Comparison</div>
+        <div class="card-subtitle">Shared features · Divergences · Names the match criterion per claim</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR93')">#VR93</span>
+          <span class="hash-tag" onclick="copyHash(event,'#CrossCheck')">#CrossCheck</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
       <div class="prompt-box">#VibeRounds We are starting Stage 3: aggregation and cross-comparison. Pool the full text of the Stage 2 comparator cases into a single working set and compare it against my index case. Surface: (1) features shared between my case and the comparators, (2) points of clear divergence, (3) for every claim of similarity you make, state explicitly which one of the three match criteria — shared gene, shared phenotype cluster, or shared intervention response — is doing the work. If a similarity claim mixes more than one criterion, separate them rather than presenting it as a single match. Flag anywhere you are uncertain which criterion applies.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
     </div>
   </div>
-<!--
-  <div class="prompt-card" onclick="toggleCard(this)">
-    <div class="card-head">
-      <span class="step-num">9.4</span>
-      <div><div class="card-title">Stage 4 · Two-Tier Analysis</div><div class="card-subtitle">Coded view vs. Narrative view · Do NOT merge — kept separate</div></div>
-      <span class="toggle-arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="note-box">If the AI merges the tiers, ask it to redo the stage with tiers kept separate before continuing.</div>
-      <div class="prompt-box">#VibeRounds We are starting Stage 4: two-tier analysis — the protocol's central methodological move. Run two separate analyses of my case and present them as two distinct, clearly labeled outputs; do not merge them into one synthesized narrative. Tier 1 (coded view): analyse using only the Stage 1 diagnosis and intervention term lists, stripped of all narrative context — this should approximate what a structured registry or database entry would capture. Tier 2 (narrative view): analyse using the full unstructured case text, preserving sequencing, context, and clinical reasoning that the coded view strips away. After presenting both, tell me explicitly: what does Tier 2 surface that Tier 1 misses, and is there anything Tier 1's stripped-down view makes clearer by removing narrative noise?<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-    </div>
-  </div>
--->
+
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.5</span>
-      <div><div class="card-title">Stage 5 · Open-Ended Analytic Ideation</div><div class="card-subtitle">Expands the option space · Do not pre-filter or rank yet</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Stage 5 · Open-Ended Analytic Ideation</div>
+        <div class="card-subtitle">Expands the option space · Do not pre-filter or rank yet</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR95')">#VR95</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Ideate')">#Ideate</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
       <div class="prompt-box">#VibeRounds We are starting Stage 5: open-ended analytic ideation. This stage is Socratic, not conclusive — your job here is to expand the option space, not narrow it. Given everything from Stages 1–4, answer one open question as expansively as you can: what else would you analyze about this case that we have not yet done? Generate as many distinct candidate analyses as you can — do not pre-filter for what you think I will choose, and do not rank them yet. For each candidate, give one sentence on what question it would answer. I will decide what to keep in the next stage.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
     </div>
   </div>
-<!--
-  <div class="prompt-card" onclick="toggleCard(this)">
-    <div class="card-head">
-      <span class="step-num">9.6</span>
-      <div><div class="card-title">Stage 6 · Selection of an Analytic Menu</div><div class="card-subtitle">You choose which Stage 5 candidates to run · Converts to concrete tasks</div></div>
-      <span class="toggle-arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="prompt-box">#VibeRounds We are starting Stage 6: selection of an analytic menu. From the Stage 5 candidates, I am going to tell you which ones I want to actually run — [list your chosen candidates, e.g.: a symptom-trigger-intervention timeline, a literature-gap analysis, a risk-trajectory model]. For each one I select, restate it as a concrete, runnable task specific to my case — not the generic description from Stage 5 — so I have a working menu I can execute one item at a time. If any of my selections overlaps heavily with another, tell me now, before we run them separately.<button class="copy-btn" onclick="copyPrompt(event, this)">Copy</button></div>
-    </div>
-  </div>
--->
+
   <div class="phase-label">Phase 3 · Closure</div>
 
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.7</span>
-      <div><div class="card-title">Stage 7 · Convergence to Fixed Outputs</div><div class="card-subtitle">Severity · Priority · Timeline · Intervention-symptom table</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Stage 7 · Convergence to Fixed Outputs</div>
+        <div class="card-subtitle">Severity · Priority · Timeline · Intervention-symptom table</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR97')">#VR97</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Converge')">#Converge</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -786,7 +983,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.8</span>
-      <div><div class="card-title">Manuscript / CARE-Field Export</div><div class="card-subtitle">Optional · Maps to CARE guidelines · Flags gaps honestly</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Manuscript / CARE-Field Export</div>
+        <div class="card-subtitle">Optional · Maps to CARE guidelines · Flags gaps honestly</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR98')">#VR98</span>
+          <span class="hash-tag" onclick="copyHash(event,'#Manuscript')">#Manuscript</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -797,7 +1001,14 @@
   <div class="prompt-card" onclick="toggleCard(this)">
     <div class="card-head">
       <span class="step-num">9.9</span>
-      <div><div class="card-title">Critical Awareness Debrief</div><div class="card-subtitle">Run once at close of every protocol pass</div></div>
+      <div class="card-title-block">
+        <div class="card-title">Critical Awareness Debrief</div>
+        <div class="card-subtitle">Run once at close of every protocol pass</div>
+        <div class="hash-row">
+          <span class="hash-tag" onclick="copyHash(event,'#VR99')">#VR99</span>
+          <span class="hash-tag" onclick="copyHash(event,'#ResDebrief')">#ResDebrief</span>
+        </div>
+      </div>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="card-body">
@@ -832,6 +1043,17 @@
       btn.textContent = 'Copied ✓';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyHash(event, tag) {
+    event.stopPropagation();
+    const span = event.currentTarget;
+    navigator.clipboard.writeText(tag).then(() => {
+      const orig = span.textContent;
+      span.textContent = '✓ copied';
+      span.classList.add('copied-tag');
+      setTimeout(() => { span.textContent = orig; span.classList.remove('copied-tag'); }, 1500);
     });
   }
 </script>
