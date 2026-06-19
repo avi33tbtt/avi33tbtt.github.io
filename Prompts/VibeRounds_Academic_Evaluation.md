@@ -56,11 +56,16 @@ This is grounded in a specific concern: when students or clinicians can get a di
 ### 3. Three Academic Papers
 
 - **DIAR (Dimensionally Isolated Asymmetric Retrieval):** Technical architecture proposal solving the "centroid drifting" problem in clinical RAG systems. When a 2,000-word clinical note is collapsed into a single embedding vector, routine narrative text drowns out rare but clinically critical secondary findings. DIAR maintains separate embedding vectors per clinical dimension, enabling targeted similarity searches.
-- **Cognitive Biases in AI-Assisted Clinical Reasoning: Mechanisms, Risks, and Mitigation Strategies:** We argue that epistemic transparency, adversarial self-querying, and structured closure protocols are essential safeguards for any clinical AI deployment.
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407270508_DIMENSIONALLY_ISOLATED_ASYMMETRIC_RETRIEVAL_DIAR_Dimensionally_Isolated_Asymmetric_Retrieval_DIAR_A_Novel_Architecture_for_Multi-Vector_Similarity_Search_in_Unstructured_Clinical_Case_Registries)
+- **Cognitive Biases in AI-Assisted Clinical Reasoning: Mechanisms, Risks, and Mitigation Strategies:** We argue that epistemic transparency, adversarial self-querying, and structured closure protocols are essential safeguards for any clinical AI deployment.4
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407280243_Cognitive_Biases_in_AI-Assisted_Clinical_Reasoning_Mechanisms_Risks_and_Mitigation_Strategies?_sg%5B0%5D=idfkgy2Zh1Xf0Aeuqs952JpfU9t1nurU0YV27Qis60GwnekWP6TbZknZJASv4YzgxedCcVvDhthKJEJ89j_GthVmHbth-8FQreV_9hwg.LCTqUa2rzcEKcK5DKfiEs4eqqoLUyr_R2ed7XdMlrv1zRxZcly83NYKg0Tk0K0nwNXXJHiDmileiRyZaeK_shQ&_tp=eyJjb250ZXh0Ijp7ImZpcnN0UGFnZSI6ImhvbWUiLCJwYWdlIjoicHJvZmlsZSIsInByZXZpb3VzUGFnZSI6InByb2ZpbGUiLCJwb3NpdGlvbiI6InBhZ2VDb250ZW50In19)  
 - **Vibe Rounds Preprints:** Academic framing of the entire paradigm — pedagogical positioning (Levels 3–4 of the teaching spectrum), pilot observations, and honest limitations statement. 3 paper series.
 - Vibe Rounds: A Socratic AI Paradigm for Clinical Education
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407180273_Vibe_Rounds_A_Socratic_AI_Paradigm_for_Clinical_Education)
 - Vibe Rounds -N-of-1 Protocol & Worked Case Vibe Rounds: A Conversational-AI-Assisted Protocol for Clinician-Led N-of-1 Case Research
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407185095_Vibe_Rounds_-N-of-1_Protocol_Worked_Case_Vibe_Rounds_A_Conversational-AI-Assisted_Protocol_for_Clinician-Led_N-of-1_Case_Research)
 - Evaluating "Vibe Rounds": A Comparative Analysis of a Prompt-Based Framework for AI-Assisted Clinical Reasoning, Patient Advocacy, and N-of-1 Case Research
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407278485_Evaluating_Vibe_Rounds_A_Comparative_Analysis_of_a_Prompt-Based_Framework_for_AI-Assisted_Clinical_Reasoning_Patient_Advocacy_and_N-of-1_Case_Research)
 
 ---
 
