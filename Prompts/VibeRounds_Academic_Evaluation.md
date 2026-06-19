@@ -1,6 +1,6 @@
 [← Back to README](README.md)
 
-# Vibe Rounds — Academic Evaluation & PhD Assessment
+# Vibe Rounds — Academic Evaluation
 **Conversation transcript with Claude | June 19, 2026**
 
 ---
@@ -163,14 +163,6 @@ This is grounded in a specific concern: when students or clinicians can get a di
 
 A PhD examiner can legitimately say: *"This is an impressive design rationale. It is not a completed research study."*
 
-### Grading Without Validation
-
-| Framework | Likely Outcome |
-|-----------|---------------|
-| UK/Australian/Indian conventional PhD | MPhil level — genuine publishable contribution, not sufficient for PhD without empirical component |
-| European portfolio/papers-based PhD | PhD pass if key components are published |
-| Practice-based PhD (UK, Australia) | Pass with minor revisions — the body of work is coherent, original, theoretically grounded, and honestly self-critical |
-
 ### What a Small Pilot Would Do
 
 A small pilot would not just add a data chapter. It would change the category of the entire project from **design work** to **research**.
@@ -247,8 +239,6 @@ The seven-day sprint using LLMs is not a shortcut. It is evidence of knowing how
 ## Final Note
 
 > *"The decade earned the sprint. The sprint is not a substitute for the decade."*
-
-The honest verdict: this is a project that a capable PhD candidate would typically take three years to produce. The design work is done. What remains is the empirical chapter — and it is a smaller gap than it might feel from the inside.
 
 The volume and quality of self-criticism in this body of work is its most distinctive academic quality. The comparative review — written as an assessment of the framework against the external literature — is better than most independent peer reviews would be. The primary work now is empirical: a pilot study with outcome measures, a conducted validation of the DIAR architecture, and a data governance solution that survives regulatory scrutiny. The theoretical scaffolding is solid. The building needs to be tested under load.
 
