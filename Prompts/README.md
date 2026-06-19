@@ -184,6 +184,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 
 | File | Contents |
 |---|---|
+| [Vibe Rounds — Demo Implementation](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
 | [Vibe Rounds — Academic Evaluation](VibeRounds_Academic_Evaluation.md) | Conversation transcript with Claude | June 19, 2026
 
 ---
