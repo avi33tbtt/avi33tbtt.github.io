@@ -53,9 +53,10 @@ This is grounded in a specific concern: when students or clinicians can get a di
 - **Framework C** — Bloom's Revised Taxonomy (Remember → Understand → Apply → Analyse → Evaluate → Create), mapped to clinical reasoning tasks.
 - **Framework D** — Critical Awareness framework explicitly naming the cognitive biases the framework itself is susceptible to (automation bias, anchoring, hallucination risk, rare-diagnosis overweighting) with standing debrief prompts to counteract them.
 
-### 3. Two Academic Papers
+### 3. Three Academic Papers
 
 - **DIAR (Dimensionally Isolated Asymmetric Retrieval):** Technical architecture proposal solving the "centroid drifting" problem in clinical RAG systems. When a 2,000-word clinical note is collapsed into a single embedding vector, routine narrative text drowns out rare but clinically critical secondary findings. DIAR maintains separate embedding vectors per clinical dimension, enabling targeted similarity searches.
+- **Cognitive Biases in AI-Assisted Clinical Reasoning: Mechanisms, Risks, and Mitigation Strategies:** We argue that epistemic transparency, adversarial self-querying, and structured closure protocols are essential safeguards for any clinical AI deployment.
 - **Vibe Rounds Preprint:** Academic framing of the entire paradigm — pedagogical positioning (Levels 3–4 of the teaching spectrum), pilot observations, and honest limitations statement.
 
 ---
