@@ -15,6 +15,13 @@
 
 ---
 
+## Publications
+
+> *Researchgate - Articles and Pre-Print Section - https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2*
+*Evaluation generated June 19, 2026*
+
+---
+
 ## What Vibe Rounds Is
 
 Most people use AI as an oracle: ask a question, get an answer. Vibe Rounds flips this entirely. The AI is configured to **question rather than answer** — acting as a Socratic interlocutor that forces the clinician or learner to construct their own reasoning before any guidance is offered. The framework's core formulation is: **AI that questions, not AI that answers.**
@@ -223,9 +230,5 @@ The honest verdict: this is a project that a capable PhD candidate would typical
 The volume and quality of self-criticism in this body of work is its most distinctive academic quality. The comparative review — written as an assessment of the framework against the external literature — is better than most independent peer reviews would be. The primary work now is empirical: a pilot study with outcome measures, a conducted validation of the DIAR architecture, and a data governance solution that survives regulatory scrutiny. The theoretical scaffolding is solid. The building needs to be tested under load.
 
 ---
-## Publications
-
-> *Researchgate - Articles and Pre-Print Section - https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2*
-*Evaluation generated June 19, 2026*
 
 [← Back to README](README.md)
