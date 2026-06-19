@@ -57,7 +57,7 @@ This is grounded in a specific concern: when students or clinicians can get a di
 
 - **DIAR (Dimensionally Isolated Asymmetric Retrieval):** Technical architecture proposal solving the "centroid drifting" problem in clinical RAG systems. When a 2,000-word clinical note is collapsed into a single embedding vector, routine narrative text drowns out rare but clinically critical secondary findings. DIAR maintains separate embedding vectors per clinical dimension, enabling targeted similarity searches.
 - **Cognitive Biases in AI-Assisted Clinical Reasoning: Mechanisms, Risks, and Mitigation Strategies:** We argue that epistemic transparency, adversarial self-querying, and structured closure protocols are essential safeguards for any clinical AI deployment.
-- **Vibe Rounds Preprint:** Academic framing of the entire paradigm — pedagogical positioning (Levels 3–4 of the teaching spectrum), pilot observations, and honest limitations statement.
+- **Vibe Rounds Preprints:** Academic framing of the entire paradigm — pedagogical positioning (Levels 3–4 of the teaching spectrum), pilot observations, and honest limitations statement. (3 paper series)
 
 ---
 
