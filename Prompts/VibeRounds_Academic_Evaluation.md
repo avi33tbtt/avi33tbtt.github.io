@@ -52,6 +52,8 @@ This is grounded in a specific concern: when students or clinicians can get a di
 | Module 8 | 12-point QA specification for authoring new Socratic prompts, with regression-testing steps |
 | Module 9 | Seven-stage research protocol for a clinician working alone on a single complex case |
 
+---
+
 ### 2. Four Cross-Cutting Frameworks
 
 - **Framework A** — Humanistic persona specification with six confidence-building traits (specific affirmation before challenge, strength-forward closure, normalising uncertainty as intelligence). Design principle: *challenge without affirmation triggers defensive cognition.*
