@@ -1,6 +1,6 @@
 [← Back to README](README.md)
 
-# PaJR × Vibe Rounds — Prompt Cheat Sheet
+# PaJR × Vibe Rounds — Prompts
 
 > **Modules 1 · 2 · 3 · 9** — curated and trimmed for the PaJR care ecosystem  
 > Source: [Vibe Rounds by Dr. Avinash Kumar Gupta](https://avi33tbtt.github.io/Prompts/) · [PaJR Health](https://publications.pajrhealth.org/about/)
