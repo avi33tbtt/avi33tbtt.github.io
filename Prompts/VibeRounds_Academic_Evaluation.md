@@ -1,7 +1,7 @@
 [← Back to README](README.md)
 
 # Vibe Rounds — Academic Evaluation
-**Conversation transcript with Claude | June 19, 2026**
+**AI-assisted self-critique exercise | June 19, 2026**
 
 ---
 
