@@ -25,8 +25,9 @@ Short, usable prompts for our **PaJR project** and the **patient–student–lea
    - Create as **HTML**, so it can be shown on the website for quick access and use
    - Run the above prompt in Claude
 
-3. **Host the HTML page online** for quick access
-
+3. **Host the HTML page online** for quick access 
+   - Online Demo: (https://avi33tbtt.github.io/demo/pajr/index.html))
+     
 4. **Refine the prompt list**
    - Eradicate unnecessary prompts and modify the remaining ones as needed
    - **Key principle: fewer prompts, more usage** — not the opposite
