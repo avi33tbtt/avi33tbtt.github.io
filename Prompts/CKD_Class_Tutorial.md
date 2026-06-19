@@ -1,9 +1,5 @@
 [← Back to README](README.md)
 
-## Copy this in claude to directly see demo -> I am taking classes today on ckd for mbbs 4th year students. give something from https://avi33tbtt.github.io/Prompts/ to use with projector in class sharing my computer screen.
-
-```
-
 # CKD Class Tutorial — Socratic Clinical Reasoning with Claude
 **For: MBBS 4th Year Students**
 **Format: Live projector session, instructor-led, screen shared with class**
@@ -11,6 +7,8 @@
 ---
 
 ## Overview
+
+Copy this in claude to directly see demo -> "I am taking classes today on ckd for mbbs 4th year students. give something from https://avi33tbtt.github.io/Prompts/ to use with projector in class sharing my computer screen."
 
 This tutorial uses a Socratic-method prompt to walk a class through a Chronic Kidney Disease (CKD) case live, projected on screen. Instead of Claude just stating answers, it asks one question at a time, waits for a response, acknowledges correct reasoning, and only reveals an answer after a genuine attempt has been made and explicitly surrendered.
 
