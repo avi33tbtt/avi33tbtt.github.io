@@ -1,3 +1,4 @@
+[← Back to README](README.md)
 # CKD Class Tutorial — Socratic Clinical Reasoning with Claude
 **For: MBBS 4th Year Students**
 **Format: Live projector session, instructor-led, screen shared with class**
@@ -272,3 +273,4 @@ So now you've built a solid initial workup:
 Let's push the case one step further now.
 
 This patient has had diabetes long enough to develop nephropathy. Before you settle on diabetic nephropathy as the final diagnosis, what other diabetes-related complications would you want to check for on history/exam — and why might finding them (or not finding them) actually support or argue against diabetic nephropathy as the cause?
+[← Back to README](README.md)
