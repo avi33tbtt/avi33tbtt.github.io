@@ -1,3 +1,5 @@
+[← Back to README](README.md)
+
 # PaJR × Vibe Rounds — Prompt Cheat Sheet
 
 > **Modules 1 · 2 · 3 · 9** — curated and trimmed for the PaJR care ecosystem  
@@ -206,3 +208,5 @@
 
 *PaJR Health · Learning for Caring · [publications.pajrhealth.org](https://publications.pajrhealth.org/about/)*  
 *Vibe Rounds — a Socratic AI paradigm for clinical medicine · Dr. Avinash Kumar Gupta · June 2026*
+
+[← Back to README](README.md)
