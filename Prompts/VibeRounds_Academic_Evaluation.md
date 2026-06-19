@@ -1,3 +1,5 @@
+[← Back to README](README.md)
+
 # Vibe Rounds — Academic Evaluation & PhD Assessment
 **Conversation transcript with Claude | June 19, 2026**
 
@@ -225,3 +227,5 @@ The volume and quality of self-criticism in this body of work is its most distin
 
 > *Researchgate - Articles and Pre-Print Section - https://www.researchgate.net/profile/Avinash-Kumar-Gupta-2*
 *Evaluation generated June 19, 2026*
+
+[← Back to README](README.md)
