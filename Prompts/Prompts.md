@@ -190,6 +190,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis|
 | -- | [CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief|
 | -- | [Master Case Analysis Protocol](VibeRounds-Master-Protocol.md) | Master Case Analysis Protocol|
+| -- | [Master Case Analysis: A Multi-Level Explainer](VibeRounds_case_analysis_explainer.md) | Master Case Analysis: A Multi-Level Explainer|
 
 
 ## 🧩 Supplementary Frameworks
@@ -250,6 +251,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Clinical-Importance-Ranking.md
 ├── VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md
 ├── VibeRounds-Master-Protocol.md
+├── VibeRounds_case_analysis_explainer.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
