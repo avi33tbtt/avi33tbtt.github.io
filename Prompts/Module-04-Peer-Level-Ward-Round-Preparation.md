@@ -2,7 +2,7 @@
 
 # Module 4 — Peer-Level Ward Round Preparation
 
-**Objective:** Rehearse rounds, prep admissions and pre-op clearance, screen for polypharmacy risk, and triage overnight deterioration — using an AI as a stand-in study partner and thinking companion.
+**Objective:** Rehearse rounds, prep admissions and pre-op clearance, screen for polypharmacy risk — using an AI as a stand-in study partner and thinking companion.
 
 **Indication:** The morning before rounds, on admission, when reviewing a complex multi-system case, or overnight when cross-covering wards.
 
