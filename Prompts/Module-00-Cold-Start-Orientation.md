@@ -21,9 +21,7 @@ Phase 1 · Initiation → Phase 2 · Execution → Phase 3 · Closure / Review
 **Prompt:**
 ```text
 #VibeRounds I am new to Vibe Rounds. Before we do anything else, ask me two
-things: (1) my role right now — medical student/junior doctor learner,
-patient advocate, peer clinician preparing for rounds, or registry/data
-analyst; (2) what I am trying to accomplish in this session, in one
+things: (1) my role right now — medical student; (2) what I am trying to accomplish in this session, in one
 sentence. Do not assume which Vibe Rounds module I need until I have
 answered both.
 ```
