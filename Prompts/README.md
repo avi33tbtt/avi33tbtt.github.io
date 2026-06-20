@@ -88,7 +88,6 @@ If you already know which module and step you need, skip straight there using th
 
 **Cross-cutting frameworks:** Frameworks A–D are not separate modules to run on their own — they are layered into specific steps throughout Modules 0–8. **[Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md)** is the master index of exactly which step, in which module, carries each framework — consult it if you are trying to locate every place a given framework is applied.
 
-**Before you copy any prompt:** re-read the Safety & Compliance Note just below, and the Data Security Notes inside [Module 2](Module-02-Patient-Advocate-Case-Documentation.md) and [Module 3](Module-03-Extended-Patient-Advocate-Monitoring.md) if you are handling real patient or family data. Modules 1–4 are template-safe as written; Modules 5–7 require de-identified data only.
 
 ---
 
