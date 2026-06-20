@@ -1,8 +1,8 @@
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
-# Module 13 — Medication Reconciliation & Polypharmacy Audit
+# Module 13 — Medication Reconciliation & Polypharmacy
 
-**Objective:** Guide a medical student through a structured, patient-centred medication audit on a real or case-based patient on 5+ drugs — building the skills to identify drug-drug interactions, drug-disease conflicts, prescribing cascades, and practical adherence barriers through active reasoning, not passive receipt of answers.
+**Objective:** Guide a medical student through a structured, patient-centred medication on a real or case-based patient on 5+ drugs — building the skills to identify drug-drug interactions, drug-disease conflicts, prescribing cascades, and practical adherence barriers through active reasoning, not passive receipt of answers.
 
 **Indication:** Patient-centred learning sessions where the student is working with a real patient (under supervision) or a de-identified case and has access to a medication list; clerkship or bedside teaching preparation; PaJR WhatsApp group case reviews where the student is the active learner and a faculty teacher or senior student is facilitating; self-directed pharmacology revision on a complex multi-morbid case.
 
