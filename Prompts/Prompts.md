@@ -169,6 +169,9 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 9 | [N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) | Running the seven-stage research protocol on your own complex case |
 | 10 | [Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) | Vibe Rounds — Journal & Article Reading |
 | 11 | [Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) | Patient Education Query Intelligence |
+| 12 | [Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) | Differential Diagnosis Deepdive |
+| 13 | [Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) | Medication Reconciliation & Polypharmacy |
+| 14 | [Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) | Resource-Constrained Clinical Reasoning |
 
 
 ## 🧩 Supplementary Frameworks
