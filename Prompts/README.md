@@ -3,7 +3,7 @@
 
 # VibeRounds Prompt Modules
 
-### A Structured Directory for Bedside Reasoning
+### A Structured Directory for Clinical Reasoning
 
   **[Enter the Vibe Rounds Prompt Directory](Prompts.md)**
 
