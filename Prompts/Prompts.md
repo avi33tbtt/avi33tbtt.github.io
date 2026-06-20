@@ -6,6 +6,19 @@
 > All AI-generated outputs produced using these prompts — including but not limited to diagnostic suggestions, severity/priority ratings, drug-interaction flags, and registry-level or cross-case conclusions — **require independent clinical verification before being acted upon.** This document does not substitute for clinical judgment, professional medical advice, or established institutional safety protocols at any stage.
 
 ---
+> [!NOTE] **What this repository is and is not**
+> Vibe Rounds is a **patient-centred learning system** for medical students, learners, and patient advocates. Every module, prompt, and framework on this site is designed for one purpose: helping a learner reason better about a clinical case. No module is designed to execute, change, or directly inform patient care.
+>
+> Specifically:
+> - The AI in every prompt plays an **educational role** — Socratic teacher, documentation companion, reasoning partner, or adversarial challenger. It does not play a clinical role.
+> - All findings produced by these prompts — interaction flags, differential diagnoses, red flags, audit outputs — are **learning observations**, not clinical decisions. They describe what a learner noticed and reasoned through, not what should be done to a patient.
+> - Any concern a learner identifies using these prompts that has real-patient implications must be **raised with a supervising clinician** before any action is taken. The prompt is the start of that conversation, not a substitute for it.
+> - No output from any module in this repository is intended to be entered into a clinical record, a handover document, or a patient management plan without independent review and endorsement by a licensed clinician.
+>
+> If you are looking for a clinical decision support tool, a prescribing aid, or a diagnostic system — this is not that. If you are a learner trying to think more carefully about a case, or a patient advocate trying to understand and document your loved one's situation better — this is exactly that.
+
+---
+
 
 ## Authorship & Development
 This document (*Vibe Rounds Prompt Modules 1–10*) was developed by Avinash. 
