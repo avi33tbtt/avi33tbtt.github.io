@@ -139,6 +139,9 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 9** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 10** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 11** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 12** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 13** | 🟡 In Progress | Ready for ~~production~~ self learning use. |
+| **Module 14** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
 ## Prompts Analytics
@@ -170,6 +173,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 11 | [Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) | Patient Education Query Intelligence |
 | 12 | [Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) | Differential Diagnosis Deepdive |
 | 13 | [Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) | Medication Reconciliation & Polypharmacy |
+| 14 | [Resource-Constrained Clinical Reasoning](Module-14-global-health-resource-constrained-clinical-reasoning.md) | Resource-Constrained Clinical Reasoning |
 
 
 ## 🧩 Supplementary Frameworks
@@ -211,6 +215,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Module-11-Patient-Education-Query-Intelligence.md
 ├── Module-12-Differential-Diagnosis-Deepdive.md
 ├── Module-13-Medication-Reconciliation-Polypharmacy-Audit.md
+├── Module-14-global-health-resource-constrained-clinical-reasoning.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
