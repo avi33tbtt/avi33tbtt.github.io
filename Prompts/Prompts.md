@@ -194,6 +194,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Global Clinical Knowledge Architecture](VibeRounds_Repository_Scaling.md) | Global Clinical Knowledge Architecture |
 | -- | [Lightweight Disease-Specific Protocol](ViberRounds_directory_tb_lightweight_protocol.md) | Lightweight Disease-Specific Protocol |
 | -- | [Why Case Narratives Surpass Case Reports](VibeRounds_narrative_edge.md) | Why Case Narratives Surpass Case Reports |
+| -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
 
 
 ## 🧩 Supplementary Frameworks
