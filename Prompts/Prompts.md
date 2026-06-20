@@ -181,6 +181,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 21 | [Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) | Evidence Frontier Search |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
+| -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
+| -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
 
 
 ## 🧩 Supplementary Frameworks
@@ -232,6 +234,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Vibe_Rounds_Case_Walkthrough.md
 ├── Module-21-Evidence-Frontier-Search.md
 ├── EBM-Cycle-Cross-Reference.md
+├── VibeRounds-Combined-Modules-01-20.md
+├── Tagged-Case-History.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
