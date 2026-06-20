@@ -149,6 +149,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 8 | [Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) | A 12-point QA specification for authoring or revising any new Socratic-mode prompt |
 | 9 | [N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) | Running the seven-stage research protocol on your own complex case |
 | 10 | [Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) | Vibe Rounds — Journal & Article Reading |
+| 11 | [Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) | Patient Education Query Intelligence |
 
 
 ## 🧩 Supplementary Frameworks
