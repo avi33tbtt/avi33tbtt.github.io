@@ -191,6 +191,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief|
 | -- | [Master Case Analysis Protocol](VibeRounds-Master-Protocol.md) | Master Case Analysis Protocol|
 | -- | [Master Case Analysis: A Multi-Level Explainer](VibeRounds_case_analysis_explainer.md) | Master Case Analysis: A Multi-Level Explainer|
+| -- | [Global Clinical Knowledge Architecture](VibeRounds_Repository_Scaling.md) | Global Clinical Knowledge Architecture|
 
 
 ## 🧩 Supplementary Frameworks
