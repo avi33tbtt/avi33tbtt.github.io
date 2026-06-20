@@ -187,6 +187,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
 | -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
 | -- | [Clinical Importance Ranking](Clinical-Importance-Ranking.md) | Clinical Importance Ranking|
+| -- | [VibeRounds Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis|
 
 ## 🧩 Supplementary Frameworks
 
@@ -243,6 +244,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Top-Insights.md
 ├── Clinical-Importance-Ranking.md
 ├── VibeRounds-Methodology-and-Value.md
+├── Clinical-Importance-Ranking.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
