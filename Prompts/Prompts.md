@@ -1,3 +1,4 @@
+[← Back to README](README.md)
 # Disclosure Statement
 
 > [!IMPORTANT]
@@ -199,3 +200,4 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 
 ---
 *Vibe Rounds Prompt Modules.*
+[← Back to README](README.md)
