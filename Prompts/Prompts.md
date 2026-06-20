@@ -222,6 +222,14 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Module-12-Differential-Diagnosis-Deepdive.md
 ├── Module-13-Medication-Reconciliation-Polypharmacy-Audit.md
 ├── Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md
+├── Module-15-Illness-Script-Acquisition.md
+├── Module-16-Bidirectional-Basic-Science-Clinical-Integration.md
+├── Module-17-Semantic-Qualifiers-Problem-Representation.md
+├── Module-18-Causal-vs-Probabilistic-Network-Reasoning.md
+├── Module-19-Community-and-Social-Medicine-Insights.md
+├── Module-20-Recognition-Primed-Decision-Model.md
+├── Module-21-Evidence-Frontier-Search.md
+├── EBM-Cycle-Cross-Reference.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
