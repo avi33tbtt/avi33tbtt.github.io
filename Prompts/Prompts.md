@@ -179,6 +179,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 19 | [Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) | Community & Social Medicine Insights |
 | 20 | [Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) | Naturalistic Decision Making |
 | 21 | [Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) | Evidence Frontier Search |
+| -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 
 
@@ -228,6 +229,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Module-18-Causal-vs-Probabilistic-Network-Reasoning.md
 ├── Module-19-Community-and-Social-Medicine-Insights.md
 ├── Module-20-Recognition-Primed-Decision-Model.md
+├── Vibe_Rounds_Case_Walkthrough.md
 ├── Module-21-Evidence-Frontier-Search.md
 ├── EBM-Cycle-Cross-Reference.md
 ├── Framework-A-Humanistic-Persona.md
