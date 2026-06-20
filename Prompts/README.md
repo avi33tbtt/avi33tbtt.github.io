@@ -13,7 +13,7 @@ date: June 2026
 </div>
 
 > [!IMPORTANT] **Scope of this document**
-> This is an external structural evaluation of the Vibe Rounds Prompt Modules repository, written from a "learning stack" lens. It is not a clinical validation, peer review, or endorsement of clinical use. Read alongside the repository's own [Disclosure Statement](https://avi33tbtt.github.io/Prompts/) before drawing conclusions.
+> This is an external structural evaluation of the Vibe Rounds Prompt Modules repository, written from a "learning stack" lens. It is not a clinical validation, peer review, or endorsement of clinical use.
 
 ---
 
