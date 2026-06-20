@@ -184,6 +184,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
 | -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
 | -- | [Tagged Case History with answers](Tagged-Case-History1.md) | Tagged Case History with answers|
+| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
 
 
 ## 🧩 Supplementary Frameworks
@@ -238,6 +239,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Combined-Modules-01-20.md
 ├── Tagged-Case-History.md
 ├── Tagged-Case-History1.md
+├── Top-Insights.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
