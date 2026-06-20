@@ -36,8 +36,10 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 | File | Contents |
 |---|---|
 | [Vibe Rounds — Academic Evaluation](VibeRounds_Academic_Evaluation.md) | Conversation transcript with Claude | June 19, 2026
-| [Vibe Rounds — Demo Implementation - PaJR](pajr-viberounds-prompts.md) | Conversation transcript with Claude | June 19, 2026
-| [Vibe Rounds — Demo Implementation - CKD Class](CKD_Class_Tutorial.md) | Conversation transcript with Claude | June 19, 2026
+| [Vibe Rounds — Demo Implementation - PaJR](pajr-viberounds-prompts.md) | PaJR × Vibe Rounds — Prompts | June 19, 2026
+| [Vibe Rounds — Demo Implementation - CKD Class](CKD_Class_Tutorial.md) | CKD Class Tutorial — Socratic Clinical Reasoning | June 19, 2026
+| [Vibe Rounds — Demo Implementation - Clerkship Case Practice](VibeRounds_Case_Practice.md) | Vibe Rounds — Prompt Templates for Clerkship Case Practice | June 20, 2026 |
+
 
 ---
 
