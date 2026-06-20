@@ -1,3 +1,4 @@
+[← Back to README](README.md)
 # Vibe Rounds — Prompt Templates for Clerkship Case Practice
 
 *Five reusable setups for clerkship case-presentation practice with an AI patient + Socratic intern*
@@ -247,3 +248,4 @@ doctor needs to notice.
 - **Version 3** — Progressive vignette (fictional case) — best for staged reasoning practice with skip-ahead flexibility
 - **Version 4** — Built from a real case link, single reveal — best for assigned or specific cases
 - **Version 5** — Progressive vignette from a real case link — best for working through a real case the way it would actually unfold, with reasoning checkpoints along the way
+[← Back to README](README.md)
