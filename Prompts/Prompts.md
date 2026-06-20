@@ -259,6 +259,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds_Repository_Scaling.md
 ├── ViberRounds_directory_tb_lightweight_protocol.md
 ├── VibeRounds_narrative_edge.md
+├── VibeRounds-Professor-Briefing.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
