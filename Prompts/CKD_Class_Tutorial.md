@@ -1,6 +1,6 @@
 [← Back to README](README.md)
 
-# CKD Class Tutorial — Socratic Clinical Reasoning with Claude
+# CKD Class Tutorial — Socratic Clinical Reasoning
 **For: MBBS 4th Year Students**
 **Format: Live projector session, instructor-led, screen shared with class**
 
