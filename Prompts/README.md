@@ -1,5 +1,10 @@
 # Vibe Rounds — The Learning Stack, Evaluated
 
+
+# VibeRounds Prompt Modules
+
+### A Structured Directory for Bedside Reasoning
+
   **[Enter the Vibe Rounds Prompt Directory](Prompts.md)**
 
 ---
