@@ -187,8 +187,9 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
 | -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
 | -- | [Clinical Importance Ranking](Clinical-Importance-Ranking.md) | Clinical Importance Ranking|
-| -- | [VibeRounds Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis|
-| -- | [VibeRounds — CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief|
+| -- | [Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis|
+| -- | [CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief|
+| -- | [Master Case Analysis Protocol](VibeRounds-Master-Protocol.md) | Master Case Analysis Protocol|
 
 
 ## 🧩 Supplementary Frameworks
@@ -248,6 +249,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Methodology-and-Value.md
 ├── Clinical-Importance-Ranking.md
 ├── VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md
+├── VibeRounds-Master-Protocol.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
