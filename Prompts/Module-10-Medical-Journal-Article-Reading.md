@@ -1,4 +1,4 @@
-[← Back to README](https://avi33tbtt.github.io/Prompts/)
+[← Back to README](README.md)
 
 # Module 10 — Medical Journal & Article Reading
 
@@ -481,9 +481,9 @@ Five steps in this module ask the learner to paste a patient vignette. These slo
 
 **Previous:** [← Module 9 — N-of-1 Case Research Protocol](https://avi33tbtt.github.io/Prompts/VibeRounds_Module9_Research_Protocol.html)
 
-[← Back to README](https://avi33tbtt.github.io/Prompts/)
+[← Back to README](README.md)
 
 ---
 
-*Vibe Rounds Prompt Modules — Module 10, v3. Drafted June 2026.*
+*Vibe Rounds Prompt Modules — Module 10. Drafted June 2026.*
 *Authored in alignment with the VibeRounds paradigm — Dr. Avinash Kumar Gupta.*
