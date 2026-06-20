@@ -47,7 +47,7 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 
 # VibeRounds Prompt Modules
 
-### A Structured Directory for Bedside Reasoning, Case Documentation & Registry Analytics
+### A Structured Directory for Bedside Reasoning
 
 *Coined and developed by Dr. Avinash Kumar Gupta · Vibe Rounds, June 2026*
 **#VibeRounds — A Socratic AI Paradigm for Clinical Medicine**
