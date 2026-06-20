@@ -85,4 +85,3 @@ But it is, by its own disclosure, a **non-tested set** with several modules stil
 
 ---
 
-*This document is an independent structural evaluation and is not affiliated with, funded by, or reviewed by the authors of the Vibe Rounds Prompt Modules repository.*
