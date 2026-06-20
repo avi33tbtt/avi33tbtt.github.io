@@ -242,7 +242,6 @@ documentation note to accurately represent the diagnostic uncertainty
 that remains.
 ```
 
-> [!NOTE] **Application Note:** The one-sentence clinical safety statement at the end of this step is the module's most clinically actionable output. It is designed to be copied verbatim into a handover (SBAR) or clinical note — it communicates residual uncertainty in a format that is legible to any clinician receiving the case. See Module 4's Step 4.9 (Formal SBAR Handover) for the receiving structure this feeds into.
 
 ### Step 12.11: Difficulty Ratchet & Next Adversarial Session Calibration
 
