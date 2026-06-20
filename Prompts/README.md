@@ -1,8 +1,6 @@
 # Vibe Rounds — The Learning Stack, Evaluated
 
-<div align="center">
   **[Enter the Vibe Rounds Prompt Directory](Prompts.md)**
-</div>
 
 > [!IMPORTANT] **Scope of this document**
 > This is an external structural evaluation of the Vibe Rounds Prompt Modules repository, written from a "learning stack" lens. It is not a clinical validation, peer review, or endorsement of clinical use.
