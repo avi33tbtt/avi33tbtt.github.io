@@ -1,7 +1,8 @@
 # Vibe Rounds — The Learning Stack, Evaluated
 
 <div align="center">
-##| [Enter the Vibe Rounds Prompt Directory](Prompts.md) | 
+|---|
+| [Enter the Vibe Rounds Prompt Directory](Prompts.md) | 
 </div>
 
 > [!IMPORTANT] **Scope of this document**
