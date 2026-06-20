@@ -7,7 +7,7 @@
 ---
 
 ## Authorship & Development
-This document (*Vibe Rounds Prompt Modules 1–9*) was developed by `[team]`. 
+This document (*Vibe Rounds Prompt Modules 1–9*) was developed by Avinash. 
 * **Review Process:** No formal peer-review or institutional review process is done/documented yet.
 
 ## Funding & Conflicts of Interest
