@@ -8,7 +8,7 @@ date: June 2026
 
 <div align="center">
 
-## [→ Enter the Vibe Rounds Prompt Directory](https://avi33tbtt.github.io/Prompts/)
+## [→ Enter the Vibe Rounds Prompt Directory](https://avi33tbtt.github.io/Prompts/prompts.html)
 
 </div>
 
