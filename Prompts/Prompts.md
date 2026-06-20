@@ -183,7 +183,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
 | -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
-| -- | [Tagged Case History with answers](Tagged-Case-History (1).md) | Tagged Case History with answers|
+| -- | [Tagged Case History with answers](Tagged-Case-History1.md) | Tagged Case History with answers|
 
 
 ## 🧩 Supplementary Frameworks
@@ -237,7 +237,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── EBM-Cycle-Cross-Reference.md
 ├── VibeRounds-Combined-Modules-01-20.md
 ├── Tagged-Case-History.md
-├── Tagged-Case-History (1).md
+├── Tagged-Case-History1.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
