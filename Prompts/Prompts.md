@@ -172,6 +172,14 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 12 | [Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) | Differential Diagnosis Deepdive |
 | 13 | [Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) | Medication Reconciliation & Polypharmacy |
 | 14 | [Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) | Resource-Constrained Clinical Reasoning |
+| 15 | [Illness Script Acquisition](Module-15-Illness-Script-Acquisition.md) | Illness Script Acquisition |
+| 16 | [Basic Science ↔ Clinical Integration](Module-16-Bidirectional-Basic-Science-Clinical-Integration.md) | Basic Science ↔ Clinical Integration |
+| 17 | [Semantic Qualifiers & Problem Representation](Module-17-Semantic-Qualifiers-Problem-Representation.md) | Semantic Qualifiers & Problem Representation |
+| 18 | [Causal vs. Probabilistic (Network) Reasoning](Module-18-Causal-vs-Probabilistic-Network-Reasoning.md) | Causal vs. Probabilistic (Network) Reasoning |
+| 19 | [Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) | Community & Social Medicine Insights |
+| 20 | [Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) | Naturalistic Decision Making |
+| 21 | [Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) | Evidence Frontier Search |
+| -- | [Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) | Resource-Constrained Clinical Reasoning |
 
 
 ## 🧩 Supplementary Frameworks
