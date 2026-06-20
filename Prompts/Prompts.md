@@ -208,6 +208,9 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Module-08-Socratic-Mode-Design-Specification.md
 ├── Module-09-Case-Research_Protocol.md
 ├── Module-10-Medical-Journal-Article-Reading.md
+├── Module-11-Patient-Education-Query-Intelligence.md
+├── Module-12-Differential-Diagnosis-Deepdive.md
+├── Module-13-Medication-Reconciliation-Polypharmacy-Audit.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
