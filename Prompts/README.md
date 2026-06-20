@@ -3,7 +3,7 @@ title: Vibe Rounds — The Learning Stack, Evaluated
 subtitle: A structural review of the Vibe Rounds Prompt Modules as a Socratic AI paradigm for clinical medicine
 date: June 2026
 ---
-
+ 
 # Vibe Rounds — The Learning Stack, Evaluated
 
 <div align="center">
