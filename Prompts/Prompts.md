@@ -253,6 +253,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md
 ├── VibeRounds-Master-Protocol.md
 ├── VibeRounds_case_analysis_explainer.md
+├── VibeRounds_Repository_Scaling.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
