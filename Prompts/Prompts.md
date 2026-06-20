@@ -98,7 +98,7 @@ If you already know which module and step you need, skip straight there using th
 | N-of-1 Case Research Protocol | [Module 9 – N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) |
 | Journal & Article Reading | [Module 10 – Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) | 
 | Patient Education Query Intelligence | [Module 11 – Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) | 
-| Resource-Constrained Clinical Reasoning | [Module 12 – Resource-Constrained Clinical Reasoning](Module-12-Patient-Education-Query-Intelligence.md) | 
+| Differential Diagnosis Deepdive | [Module 12 – Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) | 
 | Medication Reconciliation & Polypharmacy | [Module 13 – Medication Reconciliation & Polypharmacy](Module-13-Patient-Education-Query-Intelligence.md) | 
 | Resource-Constrained Clinical Reasoning | [Module 14 – Resource-Constrained Clinical Reasoning](Module-14-Patient-Education-Query-Intelligence.md) | 
 
