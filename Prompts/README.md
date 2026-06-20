@@ -185,6 +185,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Module-06-Registry-Level-Analytics.md
 ├── Module-07-Longitudinal-and-Cross-Case-Learning.md
 ├── Module-08-Socratic-Mode-Design-Specification.md
+├── Module-09-VibeRounds_Module9_Research_Protocol.md
+├── Module-10-Medical-Journal-Article-Reading.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
