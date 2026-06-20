@@ -185,7 +185,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
 | -- | [Tagged Case History with answers](Tagged-Case-History1.md) | Tagged Case History with answers|
 | -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
-| -- | [What the Process Is, and What It's Worth](VibeRounds-Methodology-and-Value.md) | What the Process Is, and What It's Worth|
+| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2|
+| -- | [Clinical Importance Ranking](Clinical-Importance-Ranking.md) | Clinical Importance Ranking|
 
 ## 🧩 Supplementary Frameworks
 
@@ -240,6 +241,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Tagged-Case-History.md
 ├── Tagged-Case-History1.md
 ├── Top-Insights.md
+├── Clinical-Importance-Ranking.md
 ├── VibeRounds-Methodology-and-Value.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
