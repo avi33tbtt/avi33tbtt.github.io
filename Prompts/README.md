@@ -27,7 +27,7 @@ Its completeness, however, is currently uneven. Some components are mature and r
 
 ## 1. Pedagogical Frameworks — The Stack's Foundation Layer
 
-Four cross-cutting frameworks (lettered A–D) are not run on their own — they are woven into specific steps across Modules 0–8, giving every module access to the same underlying educational theory rather than each one inventing its own approach.
+Four cross-cutting frameworks (lettered A–D) are not run on their own — they are woven into specific steps across Modules 0–10, giving every module access to the same underlying educational theory rather than each one inventing its own approach.
 
 | Framework | What it does |
 |---|---|
