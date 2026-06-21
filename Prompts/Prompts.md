@@ -53,6 +53,7 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 | [Vibe Rounds — Demo Implementation - PaJR](pajr-viberounds-prompts.md) | PaJR × Vibe Rounds — Prompts | June 19, 2026
 | [Vibe Rounds — Demo Implementation - CKD Class](CKD_Class_Tutorial.md) | CKD Class Tutorial — Socratic Clinical Reasoning | June 19, 2026
 | [Vibe Rounds — Demo Implementation - Clerkship Case Practice](VibeRounds_Case_Practice.md) | Vibe Rounds — Prompt Templates for Clerkship Case Practice | June 20, 2026 |
+| [The Learning Stack - Analytics]([VibeRounds_Case_Practice.md](https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-Adult-ThyroidMass-SubclinicalHyper.html)) | The Learning Stack - Analytics | June 20, 2026 |
 
 
 ---
