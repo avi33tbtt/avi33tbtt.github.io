@@ -59,6 +59,8 @@ This is grounded in a specific concern: when students or clinicians can get a di
 
 ### 3. Five Academic Papers
 
+- **VibeRounds: A Structured Multi-Prompt Protocol for AI- Assisted Clinical Case Reasoning and Caregiver Education A Conceptual and Methodological Review** 
+**Preprint:** [ResearchGate](https://www.researchgate.net/publication/407429631_VibeRounds_A_Structured_Multi-Prompt_Protocol_for_AI-_Assisted_Clinical_Case_Reasoning_and_Caregiver_Education_A_Conceptual_and_Methodological_Review)
 - **DIAR (Dimensionally Isolated Asymmetric Retrieval):** Technical architecture proposal solving the "centroid drifting" problem in clinical RAG systems. When a 2,000-word clinical note is collapsed into a single embedding vector, routine narrative text drowns out rare but clinically critical secondary findings. DIAR maintains separate embedding vectors per clinical dimension, enabling targeted similarity searches.
 **Preprint:** [ResearchGate](https://www.researchgate.net/publication/407270508_DIMENSIONALLY_ISOLATED_ASYMMETRIC_RETRIEVAL_DIAR_Dimensionally_Isolated_Asymmetric_Retrieval_DIAR_A_Novel_Architecture_for_Multi-Vector_Similarity_Search_in_Unstructured_Clinical_Case_Registries)
 - **Cognitive Biases in AI-Assisted Clinical Reasoning: Mechanisms, Risks, and Mitigation Strategies:** We argue that epistemic transparency, adversarial self-querying, and structured closure protocols are essential safeguards for any clinical AI deployment.4
