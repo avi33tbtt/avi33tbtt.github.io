@@ -196,6 +196,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Why Case Narratives Surpass Case Reports](VibeRounds_narrative_edge.md) | Why Case Narratives Surpass Case Reports |
 | -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
 | -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
+| -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
 
 
 ## 🧩 Supplementary Frameworks
@@ -262,6 +263,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds_narrative_edge.md
 ├── VibeRounds-Professor-Briefing.md
 ├── VibeRounds-Dependency-Network-Map.md
+├── VibeRounds-Dashboard-DesignGuidelines.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
