@@ -195,6 +195,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Lightweight Disease-Specific Protocol](ViberRounds_directory_tb_lightweight_protocol.md) | Lightweight Disease-Specific Protocol |
 | -- | [Why Case Narratives Surpass Case Reports](VibeRounds_narrative_edge.md) | Why Case Narratives Surpass Case Reports |
 | -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
+| -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
 
 
 ## 🧩 Supplementary Frameworks
@@ -260,6 +261,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── ViberRounds_directory_tb_lightweight_protocol.md
 ├── VibeRounds_narrative_edge.md
 ├── VibeRounds-Professor-Briefing.md
+├── VibeRounds-Dependency-Network-Map.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
