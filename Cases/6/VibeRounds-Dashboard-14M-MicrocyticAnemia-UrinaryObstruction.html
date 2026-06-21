@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds Dashboard — 14M Microcytic Anemia / Urinary Obstruction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary:     #ffffff;
+    --bg-secondary:   #f8f9fa;
+    --bg-tertiary:    #f1f3f5;
+    --border:         #dee2e6;
+    --text-primary:   #1a1a2e;
+    --text-secondary: #6c757d;
+    --text-muted:     #adb5bd;
+    --accent:         #2563eb;
+    --accent-light:   #eff6ff;
+    --warning:        #d97706;
+    --warning-light:  #fffbeb;
+    --danger:         #dc2626;
+    --danger-light:   #fef2f2;
+    --success:        #16a34a;
+    --success-light:  #f0fdf4;
+    --score-high:     #dc2626;
+    --score-mid:      #d97706;
+    --score-low:      #16a34a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+  }
+
+  h1 { font-size: 1.5rem;  font-weight: 700; margin: 0; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin: 0 0 16px 0; }
+  h3 { font-size: 1rem;    font-weight: 600; margin: 0; }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  a { color: var(--accent); }
+
+  /* ===== Layout ===== */
+  header.app-header {
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 0 32px;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .case-id-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid #bfdbfe;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    width: fit-content;
+  }
+
+  .source-link {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+  .source-link a { color: var(--text-secondary); text-decoration: underline; }
+
+  .date-stamp {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .stat-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .stat-chip {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-primary);
+  }
+  .stat-chip .stat-icon { font-size: 0.85rem; color: var(--text-secondary); }
+  .stat-chip strong { font-weight: 700; }
+
+  /* ===== Tabs ===== */
+  nav.tab-strip {
+    display: flex;
+    gap: 4px;
+    padding: 32px 32px 0 32px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 10px 16px 12px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab-btn .tab-icon { font-size: 1rem; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active {
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  main {
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  section.tab-panel { display: none; }
+  section.tab-panel.active { display: block; }
+
+  footer.app-footer {
+    border-top: 1px solid var(--border);
+    padding: 16px 32px 48px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ===== Card base ===== */
+  .card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .card:hover { border-color: #c0c7ce; }
+
+  /* ===== Gap badge ===== */
+  .gap-badge {
+    display: inline-block;
+    background: var(--warning-light);
+    color: var(--warning);
+    border: 1px solid #fcd34d;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 5px;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+    margin-left: 6px;
+  }
+
+  /* ===== Tab 1: Case Summary ===== */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 760px) { .summary-grid { grid-template-columns: 1fr; } }
+
+  .summary-field .label { margin-bottom: 4px; display: block; }
+  .summary-field p { margin: 0; }
+
+  .timeline {
+    margin-top: 8px;
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+  }
+  .timeline-item { position: relative; padding-bottom: 16px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -20.5px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg-primary);
+  }
+  .timeline-time {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .timeline-event { margin-top: 2px; }
+  .timeline-event.flag { color: var(--danger); font-weight: 600; }
+
+  ul.findings-list, ul.dx-list { margin: 0; padding-left: 18px; }
+  ul.findings-list li, ul.dx-list li { margin-bottom: 4px; }
+
+  /* ===== Tab 2: Insight cards ===== */
+  .insight-card { cursor: pointer; }
+  .insight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .insight-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .insight-number { color: var(--text-muted); font-weight: 700; font-size: 0.9rem; }
+  .insight-title { font-weight: 600; font-size: 0.95rem; }
+
+  .score-dots { display: flex; gap: 3px; flex-shrink: 0; }
+  .score-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border);
+  }
+  .score-dot.filled.high { background: var(--score-high); }
+  .score-dot.filled.mid  { background: var(--score-mid); }
+  .score-dot.filled.low  { background: var(--score-low); }
+
+  .insight-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+  }
+  .insight-card.expanded .insight-body { max-height: 800px; }
+  .insight-body-inner { padding-top: 14px; }
+  .insight-body-inner .label { margin-bottom: 3px; display: block; margin-top: 12px; }
+  .insight-body-inner .label:first-child { margin-top: 0; }
+  .insight-body-inner p { margin: 0; }
+
+  .insight-caret { color: var(--text-muted); font-size: 0.75rem; transition: transform 0.2s ease; }
+  .insight-card.expanded .insight-caret { transform: rotate(90deg); }
+
+  /* ===== Tab 3: Investigations ===== */
+  .subtab-strip {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .subtab-btn {
+    background: none; border: none; font-family: inherit;
+    font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+    padding: 8px 14px 10px 14px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .subtab-btn:hover { color: var(--text-primary); }
+  .subtab-btn.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+
+  .subtab-panel { display: none; }
+  .subtab-panel.active { display: block; }
+
+  table.inv-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  table.inv-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  table.inv-table th.sortable:hover { color: var(--text-primary); }
+  table.inv-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.inv-table tbody tr:nth-child(odd) { background: var(--bg-secondary); }
+  table.inv-table tbody tr:nth-child(even) { background: var(--bg-primary); }
+
+  .score-badge {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: white;
+  }
+  .score-badge.s10 { background: var(--danger); }
+  .score-badge.s89 { background: var(--warning); }
+  .score-badge.slow { background: var(--success); }
+
+  .source-tag {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .sort-arrow { font-size: 0.7rem; margin-left: 3px; }
+
+  /* ===== Tab 4: Differentials ===== */
+  .dx-group {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .dx-group.most-likely { border-left-color: var(--accent); }
+  .dx-group.must-not-miss { border-left-color: var(--danger); }
+  .dx-group.benign { border-left-color: var(--success); }
+
+  .dx-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .dx-group.most-likely .dx-group-label { color: var(--accent); }
+  .dx-group.must-not-miss .dx-group-label { color: var(--danger); }
+  .dx-group.benign .dx-group-label { color: var(--success); }
+
+  .dx-entry { margin-bottom: 10px; }
+  .dx-entry:last-child { margin-bottom: 0; }
+  .dx-entry-name { font-weight: 700; }
+  .dx-entry-rationale { color: var(--text-secondary); font-size: 0.85rem; margin-top: 2px; }
+
+  /* ===== Tab 5: Action Plan ===== */
+  .action-plan-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+  .print-btn {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .print-btn:hover { border-color: var(--text-secondary); }
+
+  .action-plan {
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px;
+    background: var(--bg-primary);
+  }
+
+  .ap-rule { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  .ap-title { text-align: center; }
+  .ap-title h2 { margin-bottom: 4px; }
+  .ap-title .ap-meta { font-size: 0.78rem; color: var(--text-secondary); }
+
+  .ap-section { margin-bottom: 4px; }
+  .ap-section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+  .ap-clinical-summary { margin-bottom: 4px; }
+
+  .ap-checklist { list-style: none; padding: 0; margin: 0 0 8px 0; }
+  .ap-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .ap-checklist input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 15px; height: 15px;
+  }
+  .ap-checklist .ap-reason {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    display: block;
+  }
+
+  .ap-priority-item { margin-bottom: 12px; }
+  .ap-priority-item:last-child { margin-bottom: 0; }
+  .ap-priority-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .ap-priority-title { font-weight: 700; }
+  .ap-priority-just { color: var(--text-secondary); font-size: 0.85rem; margin-top: 2px; margin-left: 26px; }
+
+  .ap-footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    nav.tab-strip, .print-btn, footer.app-footer, header.app-header { display: none; }
+    body { font-size: 12px; color: #000; background: #fff; }
+    .card { border: 1px solid #ccc; page-break-inside: avoid; }
+    a { color: #000; text-decoration: none; }
+    main { padding: 0; max-width: 100%; }
+    section.tab-panel { display: none !important; }
+    #panel-action-plan { display: block !important; }
+    .action-plan { border: none; padding: 0; }
+    .action-plan-toolbar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-top">
+    <div class="header-meta">
+      <span class="case-id-badge" id="case-id-badge"></span>
+      <h1 id="case-title"></h1>
+      <span class="source-link" id="source-link"></span>
+    </div>
+    <span class="date-stamp" id="date-stamp"></span>
+  </div>
+  <div class="stat-bar" id="stat-bar"></div>
+</header>
+
+<nav class="tab-strip" id="tab-strip">
+  <button class="tab-btn active" data-tab="case-summary"><span class="tab-icon">◎</span> Case Summary</button>
+  <button class="tab-btn" data-tab="top-insights"><span class="tab-icon">✦</span> Top Insights</button>
+  <button class="tab-btn" data-tab="investigations"><span class="tab-icon">⊞</span> Investigations</button>
+  <button class="tab-btn" data-tab="differentials"><span class="tab-icon">⊕</span> Differentials</button>
+  <button class="tab-btn" data-tab="action-plan"><span class="tab-icon">▶</span> Action Plan</button>
+</nav>
+
+<main>
+
+  <section class="tab-panel active" id="panel-case-summary"></section>
+  <section class="tab-panel" id="panel-top-insights"></section>
+  <section class="tab-panel" id="panel-investigations"></section>
+  <section class="tab-panel" id="panel-differentials"></section>
+  <section class="tab-panel" id="panel-action-plan"></section>
+
+</main>
+
+<footer class="app-footer">
+  <span>VibeRounds v1.1 — Educational output only. Independent clinical verification required before acting on any content.</span>
+  <span>Not a clinical decision support tool.</span>
+</footer>
+
+<script>
+const DATA = {
+  meta: {
+    caseId: "14M-MicrocyticAnemia-UrinaryObstruction",
+    caseTitle: "14-Year-Old Male with Microcytic Anemia, Obstructive Urinary Symptoms, and Fever",
+    date: "Analysis generated 21 June 2026",
+    sourceUrl: "https://jayanth1802.blogspot.com/2021/03/unit-ii-admission-on-02032021-dr.html",
+    stats: {
+      gaps: 16,
+      prompts: 16,
+      criticalInvestigations: 4,
+      specialties: 5
+    }
+  },
+
+  caseSummary: {
+    chiefComplaint: "Pain abdomen ×1 month, loss of appetite ×1 month, poor urinary stream ×10 days, fever ×6 days",
+    duration: "1-month symptom course, 5-day documented inpatient admission",
+    keyFindings: [
+      "Pallor present; no icterus, cyanosis, clubbing, lymphadenopathy, or pedal edema",
+      "Peripheral smear: microcytic hypochromic anemia (day 1)",
+      "Serum LDH 154 (day 1)",
+      "Poor urinary stream with post-micturition dribbling, no dysuria — never examined with a focused GU exam",
+      "PR trended 92 → 120 → 118 → 106 bpm across days 0–4, persistently elevated",
+      "Initial CBC/Hb, urine routine, culture & sensitivity report, and ultrasound results not accessible (embedded images, source could not be fetched)"
+    ],
+    workingDiagnoses: [
+      "Day 0: \"? Anemia under evaluation\"",
+      "Day 1 onward: \"Iron Deficiency Anemia\" — relabeled within 24 hours, without iron studies or stool studies documented",
+      "Implied (not stated): possible urinary tract infection, inferred only from Norfloxacin started \"after getting c/s reports\""
+    ],
+    planStatus: "Unresolved at last documented entry (day 4) — fever spikes still present despite IV Artesunate and Norfloxacin; no discharge summary or final diagnosis available in the source record.",
+    timeline: [
+      { time: "~1 month before admission", event: "Abdominal pain onset, 2 episodes vomiting/loose stools, appetite loss begins", flag: false },
+      { time: "10 days before admission", event: "Poor urinary stream with post-micturition dribbling begins, no dysuria", flag: false },
+      { time: "6 days before admission", event: "Low-grade continuous fever begins, medication-responsive", flag: false },
+      { time: "2 days before admission", event: "Fever pattern evolves: evening rise with chills and rigors", flag: false },
+      { time: "Day 0 (02/03/2021)", event: "Admission. Pallor noted. Provisional dx \"? Anemia under evaluation.\" Pantoprazole, PCM started.", flag: false },
+      { time: "Day 1 (03/03/2021)", event: "Increased fever spikes overnight, dark stools reported. LDH 154. Smear shows microcytic hypochromic anemia. Diagnosis CHANGED to \"Iron Deficiency Anemia\" — no iron studies shown. Albendazole, IV Artesunate, IV Iron Sucrose started.", flag: true },
+      { time: "Day 2 (04/03/2021)", event: "Subjective improvement reported (appetite, pain, no urinary symptoms, no fever spikes). Tachycardia persists at 118/min. IDA label continues.", flag: false },
+      { time: "Day 3 (05/03/2021)", event: "Fever spikes recur. Norfloxacin started overnight \"after getting c/s reports\" — organism and specimen source not documented in visible text.", flag: true },
+      { time: "Day 4 (06/03/2021)", event: "Fever spikes still noted. Norfloxacin continued. Record ends here — no outcome documented.", flag: true }
+    ]
+  },
+
+  insights: [
+    {
+      number: 1,
+      title: "Diagnostic Anchoring on \"Iron Deficiency Anemia\" Without Confirmatory Iron Studies",
+      scoreLevel: "high",
+      finding: "The working diagnosis moved from \"anemia under evaluation\" to \"iron deficiency anemia\" within 24 hours, based on peripheral smear morphology (microcytic hypochromic) alone.",
+      significance: "This forecloses consideration of other microcytic causes (thalassemia trait, anemia of chronic disease) and risks treating with IV iron before the bleeding/loss source is identified.",
+      correctResponse: "Retain \"anemia under evaluation — microcytic, etiology pending iron studies and stool workup\" until ferritin/iron studies and stool occult blood/O&P results are available."
+    },
+    {
+      number: 2,
+      title: "The Urinary Symptom Was Never Integrated Into the Differential",
+      scoreLevel: "high",
+      finding: "A 10-day history of poor urinary stream and dribbling received no focused GU examination or documented urine study correlation in the visible record.",
+      significance: "In an adolescent male, this pattern is a recognized red flag for structural or neurogenic bladder outlet pathology and deserves its own differential, not silent coexistence with the anemia workup.",
+      correctResponse: "A focused GU exam (bladder palpation, external genital exam) and renal-bladder ultrasound with post-void residual should have been explicitly documented."
+    },
+    {
+      number: 3,
+      title: "Empirical Antimalarial Therapy Started Without a Visible Confirmatory Parasitological Result",
+      scoreLevel: "high",
+      finding: "IV Artesunate (severe malaria regimen) was committed to on a fever-with-rigors pattern; only RBC morphology, not parasite identification, appears in the text.",
+      significance: "Persistent fever spikes through day 3–4 should have prompted explicit re-confirmation of the diagnosis.",
+      correctResponse: "Document parasitological confirmation at initiation, and treat day-3 non-response as a defined escalation trigger to revisit the diagnosis."
+    },
+    {
+      number: 4,
+      title: "A Single Unifying Hypothesis (Chronic GU Process) Was Not Explicitly Tested",
+      scoreLevel: "mid",
+      finding: "Fever, anemia, and the urinary symptom were managed as three parallel problems rather than one process explored as a unifying hypothesis.",
+      significance: "A chronic partial obstruction or low-grade UTI could plausibly explain all three findings together, changing the diagnostic priority order.",
+      correctResponse: "Explicitly test and document for/against a single unifying GU explanation before pursuing three independent workups."
+    },
+    {
+      number: 5,
+      title: "The Norfloxacin Decision Is Undocumented in Its Reasoning",
+      scoreLevel: "mid",
+      finding: "Norfloxacin was started \"after getting c/s reports,\" but organism, specimen source, and sensitivity pattern are not shown in the visible text.",
+      significance: "Without this, the appropriateness of the antibiotic choice — and the implied shift toward a UTI diagnosis — cannot be independently verified.",
+      correctResponse: "The culture source and full sensitivity result should be explicitly documented in the clinical notes, not only implied by the treatment change."
+    },
+    {
+      number: 6,
+      title: "Pre-Admission Medication Use Is Undocumented",
+      scoreLevel: "mid",
+      finding: "The history twice references \"medication\" relieving abdominal pain and fever, without naming the drug, dose, or duration.",
+      significance: "Unspecified analgesic/antipyretic use (e.g., NSAIDs) over a month could itself contribute to GI blood loss or mask the fever pattern.",
+      correctResponse: "Explicitly elicit and document name, dose, frequency, and duration of all pre-admission medication use."
+    },
+    {
+      number: 7,
+      title: "Heart Rate Trend Suggests an Unresolved Physiological Stressor",
+      scoreLevel: "mid",
+      finding: "PR trended 92 → 120 → 118 → 106 bpm across days 0–4, remaining persistently elevated even when the patient was \"c/c\" and afebrile at spot-checks.",
+      significance: "Disproportionate tachycardia can indicate occult fever spikes between recordings, anemia-related compensation, or early sepsis physiology.",
+      correctResponse: "Tachycardia trends should be explicitly commented on in the daily assessment, not left as an unannotated vital sign."
+    },
+    {
+      number: 8,
+      title: "IV Iron Timing Relative to Active Febrile Illness Was Not Addressed",
+      scoreLevel: "low",
+      finding: "IV Iron Sucrose was initiated and continued through an active, unresolved febrile illness of uncertain etiology.",
+      significance: "Parenteral iron during unconfirmed/active infection is a recognized point of caution, as iron availability can theoretically favor bacterial proliferation.",
+      correctResponse: "Document an explicit risk-benefit note for proceeding with IV iron before the febrile illness etiology is confirmed."
+    },
+    {
+      number: 9,
+      title: "Stool/Occult Blood and Deworming Confirmation Were Implied but Not Closed",
+      scoreLevel: "low",
+      finding: "Empirical Albendazole was given, implying suspected helminthic infection as the anemia source, but no stool study result is visible in the text.",
+      significance: "The causal chain from \"worm burden\" to \"iron deficiency anemia\" remains an assumption rather than a documented finding.",
+      correctResponse: "Pair empirical deworming with an explicit stool study, and document the result even if treatment proceeds empirically in the interim."
+    },
+    {
+      number: 10,
+      title: "The Case Record Ends Without a Resolution or Discharge Summary",
+      scoreLevel: "low",
+      finding: "The available log ends on day 4 with fever spikes still occurring and no stated final diagnosis, discharge plan, or outcome.",
+      significance: "An unresolved case with ongoing fever despite dual empirical therapy is exactly the scenario that should prompt senior review or a documented diagnostic pivot.",
+      correctResponse: "Continuation notes or a discharge/outcome summary should be sought to close the educational loop."
+    }
+  ],
+
+  investigations: {
+    history: [
+      { score: 8, item: "Has the urinary stream problem (poor stream, dribbling) been re-checked or explained since admission, or has it simply stopped being mentioned?", whyItMatters: "Determines whether the original presenting urinary complaint was ever actually resolved or just dropped from documentation.", source: "Advocate Debrief — Inflection Point 5" },
+      { score: 7, item: "Name, dose, frequency, and duration of the unspecified pre-admission \"medication\" used for abdominal pain and fever", whyItMatters: "Identifies possible NSAID/analgesic contribution to GI blood loss or fever-pattern masking.", source: "Stage 1; Module 13" },
+      { score: 6, item: "Recent antibiotic exposure in the weeks prior to this admission", whyItMatters: "Relevant context for interpreting the later culture & sensitivity result and Norfloxacin choice.", source: "Stage 1 gap log" },
+      { score: 6, item: "Dietary history (iron intake, meal pattern, any pica)", whyItMatters: "Supports or weakens the nutritional-deficiency contribution to the anemia.", source: "Module 19" },
+      { score: 5, item: "Occupational/social/geographic background of the patient and family", whyItMatters: "Contextualizes endemic-disease risk (e.g., malaria, hookworm) and resource setting.", source: "Stage 1 — Demographics" },
+      { score: 5, item: "Direct caregiver/family account of the symptom course, in their own words", whyItMatters: "Captures the advocate's own observations and concerns, currently entirely absent from the record.", source: "Advocate Debrief — Inflection Point 1" },
+      { score: 4, item: "Prior episodes of similar urinary symptoms, or family history of urological/renal disease", whyItMatters: "Would support or weaken a congenital/structural cause for the urinary symptom.", source: "Module 12b" }
+    ],
+    examination: [
+      { score: 9, item: "Focused genitourinary exam: suprapubic/bladder palpation for distension, external genital exam, perineal sensation and anal tone if neurogenic cause suspected", whyItMatters: "Directly addresses the never-examined urinary complaint; distinguishes structural/obstructive from neurogenic causes. Zero-cost — requires no lab or imaging.", source: "Module 12b; Module 14 (highest zero-cost priority)" },
+      { score: 6, item: "Explicit re-examination of abdomen specifically correlated with the urinary symptom (palpable bladder, costovertebral angle tenderness)", whyItMatters: "Supports or refutes the unifying-GU-process hypothesis.", source: "Module 18" },
+      { score: 5, item: "Repeat, explicit clinical comment on the heart rate trend (92→120→118→106 bpm) in the daily assessment", whyItMatters: "Determines whether tachycardia reflects occult fever, anemia compensation, or another process.", source: "Module 5 / Insight 7" }
+    ],
+    investigations: [
+      { score: 10, item: "Iron studies: serum ferritin, serum iron, TIBC, transferrin saturation", whyItMatters: "Confirms or refutes \"iron deficiency anemia\" as the actual mechanism before the label is finalized — resolves the central unanswered diagnostic question. Note: under the rural-medical-college resource ceiling (Module 14), this likely sits in a turnaround queue and is not the fastest-acting priority despite being highest-yield in principle.", source: "Module 12 (Score 10); CARE 5c" },
+      { score: 9, item: "Malaria parasitological confirmation: peripheral smear for parasites, RDT, or QBC", whyItMatters: "Confirms or refutes the indication for IV Artesunate; explains persistent fever spikes if malaria is not actually present. Fast and low-cost at this facility tier — ranks as top actionable priority under Module 14.", source: "Module 20 (Score 9); CARE 5c; Module 14 ceiling-aware #1" },
+      { score: 9, item: "Full culture & sensitivity report: specimen source (blood vs urine), organism identified, sensitivity pattern", whyItMatters: "Verifies the rationale and appropriateness of the Norfloxacin decision; clarifies whether a UTI is the unifying explanation.", source: "Module 14 (Score 9); CARE 5c" },
+      { score: 9, item: "Renal and bladder ultrasound, including post-void residual volume", whyItMatters: "Assesses for obstructive uropathy or structural cause explaining the 10-day urinary symptom — central to the unifying-hypothesis question, and the most clinically neglected item in the documented course.", source: "Stage 1; Module 12b/18; CARE 5c" },
+      { score: 8, item: "Initial complete blood count with red cell indices (Hb, MCV, MCH, RDW), not just smear morphology", whyItMatters: "Quantifies anemia severity and confirms numerically what the smear suggested qualitatively.", source: "Stage 1; CARE 5c" },
+      { score: 8, item: "Urine routine and microscopy", whyItMatters: "Assesses for pyuria, hematuria, or proteinuria directly relevant to the urinary complaint.", source: "Stage 1; CARE 5c" },
+      { score: 7, item: "Stool examination for occult blood and ova/parasites", whyItMatters: "Confirms or refutes the GI/helminthic source implied by empirical Albendazole — fast, cheap, and actionable at this facility tier.", source: "Module 12/16; CARE 5c; Module 14 substitute test" },
+      { score: 6, item: "Inflammatory markers: CRP and/or ESR", whyItMatters: "Supports or weakens \"anemia of chronic disease\" secondary to a chronic GU process as the unifying explanation.", source: "Module 18 differential table" },
+      { score: 5, item: "Hemoglobin electrophoresis", whyItMatters: "Excludes thalassemia trait as an alternative explanation for the microcytic hypochromic picture. Lowest urgency — rarely on-site at this facility tier; reasonable to defer to outpatient follow-up.", source: "CARE differential table; Module 14 ceiling-aware #5" }
+    ]
+  },
+
+  differentials: {
+    mostLikely: [
+      { name: "Iron deficiency anemia (nutritional / GI blood loss)", rationale: "Microcytic hypochromic smear and empirical Albendazole given, but no iron studies or stool studies shown to confirm the mechanism." },
+      { name: "Urinary tract infection / obstructive uropathy", rationale: "10-day poor stream and dribbling; Norfloxacin started after a culture & sensitivity report, but no documented urine culture result or imaging confirms this." }
+    ],
+    mustNotMiss: [
+      { name: "Anemia of chronic disease secondary to a chronic GU infection or obstruction", rationale: "Could unify fever, urinary symptom, and anemia into one process; no CRP/ESR shown to support or refute it — this is the single best candidate for a missed unifying diagnosis." },
+      { name: "Malaria (treated empirically, never parasitologically confirmed in visible text)", rationale: "IV Artesunate — the severe-malaria regimen — was given on pattern alone; fever persisted to day 3–4 despite treatment, which is the exact signal that should trigger re-confirmation rather than continued assumption." },
+      { name: "Posterior urethral valves or other congenital urinary outlet obstruction", rationale: "A 14-year-old male with a new poor stream and dribbling, without dysuria, carries a real risk of an undiagnosed structural lesion with potential for silent, irreversible renal damage if left unexamined." }
+    ],
+    benign: [
+      { name: "Thalassemia trait", rationale: "Also produces a microcytic hypochromic picture; not specifically excluded or supported in the visible text. Low acute-management impact — reasonable to defer hemoglobin electrophoresis to outpatient follow-up." }
+    ]
+  },
+
+  actionPlan: {
+    clinicalSummary: "14-year-old boy with one month of abdominal pain and anorexia, 10 days of poor urinary stream with dribbling, and 6 days of fever evolving into evening rigors, found to have microcytic hypochromic anemia labeled \"iron deficiency anemia\" within 24 hours without confirmatory iron studies, treated empirically with IV Artesunate and later Norfloxacin, with fever spikes still unresolved at the last documented entry.",
+    immediateActions: [
+      "Perform and document a focused genitourinary exam (bladder palpation for distension, external genital exam) — zero-cost, not yet done in the visible record",
+      "Re-state the working diagnosis as \"anemia under evaluation — microcytic, etiology pending\" rather than a finalized \"iron deficiency anemia\" label",
+      "Explicitly document the day-3 fever non-response to antimalarial therapy as a recognized treatment-failure signal, not just an indication to add a second drug",
+      "Elicit and document the name, dose, and duration of the pre-admission \"medication\" referenced twice in the history"
+    ],
+    urgentInvestigations: [
+      { item: "Malaria parasitological confirmation (smear for parasites / RDT / QBC)", reason: "Fast, low-cost, and the only way to verify the indication for ongoing IV Artesunate" },
+      { item: "Iron studies (ferritin, serum iron, TIBC)", reason: "Resolves the central diagnostic question before the IDA label is finalized" },
+      { item: "Renal and bladder ultrasound with post-void residual", reason: "Most clinically neglected item in the case — assesses the 10-day urinary symptom directly" },
+      { item: "Full culture & sensitivity report review (specimen source, organism, sensitivity)", reason: "Verifies the rationale behind the Norfloxacin decision already made" }
+    ],
+    preOpChecklist: [],
+    referrals: [
+      "Pediatric Urology — if GU exam or ultrasound suggests structural or neurogenic cause",
+      "Hematology — if iron studies are equivocal or anemia fails to respond to repletion",
+      "Infectious Disease / Microbiology — to confirm organism and sensitivity behind the empirical antibiotic choice",
+      "Senior/Attending review — given fever spikes persisting beyond 72 hours of dual empirical therapy"
+    ],
+    top3Priorities: [
+      { item: "Iron studies (ferritin, serum iron, TIBC)", justification: "Directly tests the diagnosis already written into the chart on day 1 without confirmatory data. Every downstream decision about continuing IV iron and pursuing a bleeding source depends on whether this label is actually correct." },
+      { item: "Renal and bladder ultrasound with post-void residual", justification: "The item most likely to unify the entire case — if positive, it could explain the urinary symptom, contribute to the fever via recurrent infection, and explain a component of the anemia, turning three separate problems into one coherent diagnosis." },
+      { item: "Malaria parasitological confirmation", justification: "A full course of IV Artesunate was given without a visible confirmatory result, and fever did not resolve as expected — this is the largest single unverified treatment decision in the case and the fastest, cheapest item to act on." }
+    ]
+  }
+};
+
+// ---------- Rendering ----------
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : str;
+  return div.innerHTML;
+}
+
+function gapBadge() {
+  return '<span class="gap-badge">GAP</span>';
+}
+
+function renderHeader() {
+  document.getElementById('case-id-badge').textContent = DATA.meta.caseId;
+  document.getElementById('case-title').textContent = DATA.meta.caseTitle;
+  document.getElementById('date-stamp').textContent = DATA.meta.date;
+
+  const sourceEl = document.getElementById('source-link');
+  sourceEl.innerHTML = 'Source: <a href="' + escapeHtml(DATA.meta.sourceUrl) + '" target="_blank" rel="noopener">' + escapeHtml(DATA.meta.sourceUrl) + '</a>';
+
+  const s = DATA.meta.stats;
+  const statBar = document.getElementById('stat-bar');
+  statBar.innerHTML = [
+    ['◎', s.gaps, 'gaps logged'],
+    ['✦', s.prompts, 'prompts mapped'],
+    ['⚠', s.criticalInvestigations, 'critical investigations'],
+    ['⊞', s.specialties, 'specialties involved']
+  ].map(([icon, num, label]) =>
+    '<span class="stat-chip"><span class="stat-icon">' + icon + '</span><strong>' + num + '</strong> ' + escapeHtml(label) + '</span>'
+  ).join('');
+}
+
+function renderCaseSummary() {
+  const c = DATA.caseSummary;
+  const panel = document.getElementById('panel-case-summary');
+
+  const timelineHtml = c.timeline.map(t =>
+    '<div class="timeline-item">' +
+      '<div class="timeline-time">' + escapeHtml(t.time) + '</div>' +
+      '<div class="timeline-event' + (t.flag ? ' flag' : '') + '">' + escapeHtml(t.event) + '</div>' +
+    '</div>'
+  ).join('');
+
+  panel.innerHTML =
+    '<h2>Case Summary</h2>' +
+    '<div class="card">' +
+      '<div class="summary-grid">' +
+        '<div class="summary-field"><span class="label">Chief Complaint</span><p>' + escapeHtml(c.chiefComplaint) + '</p></div>' +
+        '<div class="summary-field"><span class="label">Duration</span><p>' + escapeHtml(c.duration) + '</p></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card">' +
+      '<span class="label">Key Findings</span>' +
+      '<ul class="findings-list">' + c.keyFindings.map(f => '<li>' + escapeHtml(f) + (f.toLowerCase().includes('not accessible') || f.toLowerCase().includes('not documented') ? gapBadge() : '') + '</li>').join('') + '</ul>' +
+    '</div>' +
+    '<div class="card">' +
+      '<span class="label">Working Diagnoses</span>' +
+      '<ul class="dx-list">' + c.workingDiagnoses.map(d => '<li>' + escapeHtml(d) + '</li>').join('') + '</ul>' +
+    '</div>' +
+    '<div class="card">' +
+      '<span class="label">Plan Status</span>' +
+      '<p>' + escapeHtml(c.planStatus) + gapBadge() + '</p>' +
+    '</div>' +
+    '<div class="card">' +
+      '<span class="label">Timeline</span>' +
+      '<div class="timeline">' + timelineHtml + '</div>' +
+    '</div>';
+}
+
+function renderInsights() {
+  const panel = document.getElementById('panel-top-insights');
+  const cardsHtml = DATA.insights.map(ins => {
+    const dotCount = ins.scoreLevel === 'high' ? 3 : ins.scoreLevel === 'mid' ? 2 : 1;
+    const dots = [1,2,3].map(i =>
+      '<span class="score-dot' + (i <= dotCount ? ' filled ' + ins.scoreLevel : '') + '"></span>'
+    ).join('');
+
+    return (
+      '<div class="card insight-card" data-idx="' + ins.number + '">' +
+        '<div class="insight-header">' +
+          '<div class="insight-header-left">' +
+            '<span class="insight-caret">▶</span>' +
+            '<span class="insight-number">#' + ins.number + '</span>' +
+            '<span class="insight-title">' + escapeHtml(ins.title) + '</span>' +
+          '</div>' +
+          '<div class="score-dots">' + dots + '</div>' +
+        '</div>' +
+        '<div class="insight-body"><div class="insight-body-inner">' +
+          '<span class="label">Finding</span><p>' + escapeHtml(ins.finding) + '</p>' +
+          '<span class="label">Significance</span><p>' + escapeHtml(ins.significance) + '</p>' +
+          '<span class="label">Correct Response</span><p>' + escapeHtml(ins.correctResponse) + '</p>' +
+        '</div></div>' +
+      '</div>'
+    );
+  }).join('');
+
+  panel.innerHTML = '<h2>Top 10 Clinical Insights</h2>' + cardsHtml;
+
+  panel.querySelectorAll('.insight-card').forEach(card => {
+    card.querySelector('.insight-header').addEventListener('click', () => {
+      card.classList.toggle('expanded');
+    });
+  });
+}
+
+function scoreClass(score) {
+  if (score === 10) return 's10';
+  if (score >= 8) return 's89';
+  return 'slow';
+}
+
+function renderInvTable(rows) {
+  return (
+    '<table class="inv-table">' +
+      '<thead><tr>' +
+        '<th class="sortable" data-sort="score">Score <span class="sort-arrow">↓</span></th>' +
+        '<th>Item</th>' +
+        '<th>Why It Matters</th>' +
+        '<th>Source</th>' +
+      '</tr></thead>' +
+      '<tbody>' +
+        rows.map(r =>
+          '<tr>' +
+            '<td><span class="score-badge ' + scoreClass(r.score) + '">' + r.score + '</span></td>' +
+            '<td>' + escapeHtml(r.item) + '</td>' +
+            '<td>' + escapeHtml(r.whyItMatters) + '</td>' +
+            '<td class="source-tag">' + escapeHtml(r.source) + '</td>' +
+          '</tr>'
+        ).join('') +
+      '</tbody>' +
+    '</table>'
+  );
+}
+
+const invState = { active: 'investigations', sortDir: { history: 'desc', examination: 'desc', investigations: 'desc' } };
+
+function sortedRows(key) {
+  const rows = DATA.investigations[key].slice();
+  rows.sort((a, b) => invState.sortDir[key] === 'desc' ? b.score - a.score : a.score - b.score);
+  return rows;
+}
+
+function renderInvestigations() {
+  const panel = document.getElementById('panel-investigations');
+  panel.innerHTML =
+    '<h2>Investigations</h2>' +
+    '<div class="subtab-strip" id="inv-subtab-strip">' +
+      '<button class="subtab-btn" data-sub="history">History</button>' +
+      '<button class="subtab-btn" data-sub="examination">Examination</button>' +
+      '<button class="subtab-btn active" data-sub="investigations">Investigations</button>' +
+    '</div>' +
+    '<div class="subtab-panel" id="sub-history">' + renderInvTable(sortedRows('history')) + '</div>' +
+    '<div class="subtab-panel" id="sub-examination">' + renderInvTable(sortedRows('examination')) + '</div>' +
+    '<div class="subtab-panel active" id="sub-investigations">' + renderInvTable(sortedRows('investigations')) + '</div>';
+
+  panel.querySelectorAll('.subtab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      panel.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+      panel.querySelectorAll('.subtab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.getAttribute('data-sub');
+      document.getElementById('sub-' + key).classList.add('active');
+      invState.active = key;
+    });
+  });
+
+  attachSortHandlers(panel);
+}
+
+function attachSortHandlers(panel) {
+  panel.querySelectorAll('.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = invState.active;
+      invState.sortDir[key] = invState.sortDir[key] === 'desc' ? 'asc' : 'desc';
+      document.getElementById('sub-' + key).innerHTML = renderInvTable(sortedRows(key));
+      attachSortHandlers(panel); // re-attach after re-render
+      const arrow = document.querySelector('#sub-' + key + ' .sort-arrow');
+      if (arrow) arrow.textContent = invState.sortDir[key] === 'desc' ? '↓' : '↑';
+    });
+  });
+}
+
+function renderDifferentials() {
+  const panel = document.getElementById('panel-differentials');
+  const d = DATA.differentials;
+
+  function group(title, cls, entries) {
+    return (
+      '<div class="dx-group ' + cls + '">' +
+        '<div class="dx-group-label">' + title + '</div>' +
+        entries.map((e, i) =>
+          '<div class="dx-entry">' +
+            '<div class="dx-entry-name">' + (i + 1) + '. ' + escapeHtml(e.name) + '</div>' +
+            '<div class="dx-entry-rationale">' + escapeHtml(e.rationale) + '</div>' +
+          '</div>'
+        ).join('') +
+      '</div>'
+    );
+  }
+
+  panel.innerHTML =
+    '<h2>Differential Diagnosis</h2>' +
+    group('Most Likely', 'most-likely', d.mostLikely) +
+    group('Must Not Miss', 'must-not-miss', d.mustNotMiss) +
+    group('Benign / Alternative', 'benign', d.benign);
+}
+
+function renderActionPlan() {
+  const panel = document.getElementById('panel-action-plan');
+  const ap = DATA.actionPlan;
+
+  const immediateHtml = ap.immediateActions.map((a, i) =>
+    '<li><input type="checkbox" id="imm-' + i + '"><label for="imm-' + i + '">' + (i + 1) + '. ' + escapeHtml(a) + '</label></li>'
+  ).join('');
+
+  const urgentHtml = ap.urgentInvestigations.map((u, i) =>
+    '<li><input type="checkbox" id="urg-' + i + '">' +
+      '<span><label for="urg-' + i + '">' + (i + 1) + '. ' + escapeHtml(u.item) + '</label>' +
+      '<span class="ap-reason">' + escapeHtml(u.reason) + '</span></span></li>'
+  ).join('');
+
+  const referralsHtml = ap.referrals.map((r, i) =>
+    '<li><input type="checkbox" id="ref-' + i + '"><label for="ref-' + i + '">' + escapeHtml(r) + '</label></li>'
+  ).join('');
+
+  const priorityHtml = ap.top3Priorities.map((p, i) =>
+    '<div class="ap-priority-item">' +
+      '<div><span class="ap-priority-num">' + (i + 1) + '</span><span class="ap-priority-title">' + escapeHtml(p.item) + '</span></div>' +
+      '<div class="ap-priority-just">' + escapeHtml(p.justification) + '</div>' +
+    '</div>'
+  ).join('');
+
+  panel.innerHTML =
+    '<div class="action-plan-toolbar"><button class="print-btn" id="print-btn">Print Report</button></div>' +
+    '<div class="action-plan">' +
+      '<div class="ap-title">' +
+        '<h2>Case Action Plan</h2>' +
+        '<div class="ap-meta">Generated: ' + escapeHtml(DATA.meta.date) + ' &nbsp;·&nbsp; Prepared by: Medical Student (VibeRounds)</div>' +
+        '<div class="ap-meta">Case: ' + escapeHtml(DATA.meta.caseId) + '</div>' +
+      '</div>' +
+      '<hr class="ap-rule">' +
+      '<div class="ap-section">' +
+        '<div class="ap-section-label">Clinical Summary</div>' +
+        '<p class="ap-clinical-summary">' + escapeHtml(ap.clinicalSummary) + '</p>' +
+      '</div>' +
+      '<hr class="ap-rule">' +
+      '<div class="ap-section">' +
+        '<div class="ap-section-label">Immediate Actions (do today — before any procedure)</div>' +
+        '<ul class="ap-checklist">' + immediateHtml + '</ul>' +
+      '</div>' +
+      '<div class="ap-section">' +
+        '<div class="ap-section-label">Urgent Investigations (within 48–72 hours)</div>' +
+        '<ul class="ap-checklist">' + urgentHtml + '</ul>' +
+      '</div>' +
+      '<div class="ap-section">' +
+        '<div class="ap-section-label">Specialist Referrals to Consider</div>' +
+        '<ul class="ap-checklist">' + referralsHtml + '</ul>' +
+      '</div>' +
+      '<hr class="ap-rule">' +
+      '<div class="ap-section">' +
+        '<div class="ap-section-label">Top 3 Diagnostic Priorities</div>' +
+        priorityHtml +
+      '</div>' +
+      '<hr class="ap-rule">' +
+      '<div class="ap-footer">' +
+        'PREPARED USING VibeRounds v1.1<br>' +
+        'Educational output only. Independent clinical verification required.' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById('print-btn').addEventListener('click', () => window.print());
+}
+
+function setupTabs() {
+  const tabMap = {
+    'case-summary': 'panel-case-summary',
+    'top-insights': 'panel-top-insights',
+    'investigations': 'panel-investigations',
+    'differentials': 'panel-differentials',
+    'action-plan': 'panel-action-plan'
+  };
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tabMap[btn.getAttribute('data-tab')]).classList.add('active');
+    });
+  });
+}
+
+function init() {
+  renderHeader();
+  renderCaseSummary();
+  renderInsights();
+  renderInvestigations();
+  renderDifferentials();
+  renderActionPlan();
+  setupTabs();
+}
+
+init();
+</script>
+</body>
+</html>
