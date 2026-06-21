@@ -197,7 +197,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
 | -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
 | -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
-| -- | [Research Article](VibeRounds-Research-Article.md) | Research Article |
+| -- | [Article](VibeRounds-Research-Article.md) | Article |
 | -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 
 
