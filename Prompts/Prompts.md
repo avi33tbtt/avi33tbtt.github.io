@@ -54,8 +54,6 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 | [Vibe Rounds — Demo Implementation - CKD Class](CKD_Class_Tutorial.md) | CKD Class Tutorial — Socratic Clinical Reasoning | June 19, 2026
 | [Vibe Rounds — Demo Implementation - Clerkship Case Practice](VibeRounds_Case_Practice.md) | Vibe Rounds — Prompt Templates for Clerkship Case Practice | June 20, 2026 |
 | [The Learning Stack - Analytics](https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-Adult-ThyroidMass-SubclinicalHyper.html) | The Learning Stack - Analytics | June 20, 2026 |
-| [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) |  Global Health Optimization Methodology | June 20, 2026 |
-
 
 ---
 
@@ -200,6 +198,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
 | -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
 | -- | [Research Article](VibeRounds-Research-Article.md) | Research Article |
+| -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 
 
 ## 🧩 Supplementary Frameworks
