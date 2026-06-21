@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Adult-ThyroidMass-SubclinicalHyper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary:     #ffffff;
+  --bg-secondary:   #f8f9fa;
+  --bg-tertiary:    #f1f3f5;
+  --border:         #dee2e6;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #6c757d;
+  --text-muted:     #adb5bd;
+  --accent:         #2563eb;
+  --accent-light:   #eff6ff;
+  --warning:        #d97706;
+  --warning-light:  #fffbeb;
+  --danger:         #dc2626;
+  --danger-light:   #fef2f2;
+  --success:        #16a34a;
+  --success-light:  #f0fdf4;
+  --score-high:     #dc2626;
+  --score-mid:      #d97706;
+  --score-low:      #16a34a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+h1 { font-size: 1.5rem; font-weight: 700; }
+h2 { font-size: 1.15rem; font-weight: 600; }
+h3 { font-size: 1rem; font-weight: 600; }
+
+.label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+/* HEADER */
+header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px 0;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid #bfdbfe;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+}
+.header-date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.stat-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  margin-top: 8px;
+}
+.stat-chip {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stat-chip .chip-icon { color: var(--accent); }
+.stat-chip .chip-num { font-weight: 700; }
+
+/* NAV TABS */
+nav.tab-strip {
+  display: flex;
+  gap: 0;
+  border-bottom: none;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* MAIN */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 32px 48px;
+}
+section { display: none; }
+section.active { display: block; }
+
+/* CARD */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.card:hover { border-color: #c0c7ce; }
+
+/* GAP BADGE */
+.gap-badge {
+  display: inline-block;
+  background: var(--warning-light);
+  color: var(--warning);
+  border: 1px solid #fcd34d;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+/* CASE SUMMARY TABLE */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.summary-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.summary-table tr:nth-child(even) td { background: var(--bg-tertiary); }
+.summary-table td:first-child {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  width: 200px;
+  white-space: nowrap;
+}
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  padding-left: 20px;
+  margin-top: 16px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 12px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -19px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg-primary);
+}
+.timeline-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.timeline-event { font-size: 0.875rem; }
+
+/* ACCORDION INSIGHT CARDS */
+.insight-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.insight-card:hover { border-color: #c0c7ce; }
+.insight-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.insight-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 10px;
+  min-width: 20px;
+}
+.insight-title { font-weight: 600; font-size: 0.9rem; flex: 1; }
+.insight-right { display: flex; align-items: center; gap: 10px; }
+.score-dots { display: flex; gap: 3px; }
+.score-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+}
+.score-dot.filled-high { background: var(--score-high); border-color: var(--score-high); }
+.score-dot.filled-mid  { background: var(--score-mid);  border-color: var(--score-mid); }
+.score-dot.filled-low  { background: var(--score-low);  border-color: var(--score-low); }
+.chevron {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s;
+  margin-left: 8px;
+}
+.insight-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+.insight-body-inner {
+  padding: 0 20px 16px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 12px;
+}
+.insight-card.expanded .insight-body { max-height: 800px; }
+.insight-card.expanded .chevron { transform: rotate(180deg); }
+.insight-section p { font-size: 0.875rem; color: var(--text-primary); margin-top: 4px; }
+
+/* INVESTIGATION TABS */
+.sub-tab-strip {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sub-tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s;
+}
+.sub-tab-btn:hover { color: var(--text-primary); }
+.sub-tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+.sub-panel { display: none; }
+.sub-panel.active { display: block; }
+
+/* INVESTIGATION TABLE */
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.inv-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+.inv-table th:hover { color: var(--text-primary); }
+.inv-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-size: 0.875rem;
+}
+.inv-table tr:nth-child(even) td { background: var(--bg-secondary); }
+.inv-table tr:nth-child(odd) td  { background: var(--bg-primary); }
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #fff;
+}
+.score-badge.high { background: var(--danger); }
+.score-badge.mid  { background: var(--warning); }
+.score-badge.low  { background: var(--success); }
+
+/* DIFFERENTIALS */
+.diff-group {
+  border-left: 4px solid;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.diff-group.likely { border-color: var(--accent); }
+.diff-group.miss   { border-color: var(--danger); }
+.diff-group.benign { border-color: var(--success); }
+.diff-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.diff-group.likely .diff-group-header { background: var(--accent-light); }
+.diff-group.miss   .diff-group-header { background: var(--danger-light); }
+.diff-group.benign .diff-group-header { background: var(--success-light); }
+.diff-group-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.diff-group.likely .diff-group-title { color: var(--accent); }
+.diff-group.miss   .diff-group-title { color: var(--danger); }
+.diff-group.benign .diff-group-title { color: var(--success); }
+.diff-body { display: none; padding: 4px 0 8px; background: var(--bg-secondary); }
+.diff-group.open .diff-body { display: block; }
+.diff-item {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+.diff-item:last-child { border-bottom: none; }
+.diff-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 18px;
+  padding-top: 2px;
+}
+.diff-name { font-weight: 600; font-size: 0.875rem; }
+.diff-rationale { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* ACTION PLAN */
+#action-plan {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.plan-print-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.print-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.print-btn:hover { background: var(--bg-tertiary); }
+.plan-rule {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 20px 0;
+}
+.plan-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+.plan-summary { font-size: 0.9rem; line-height: 1.7; }
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li input[type=checkbox] {
+  margin-top: 3px;
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.priority-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.priority-item:last-child { border-bottom: none; }
+.priority-label {
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin-bottom: 2px;
+}
+.priority-just { font-size: 0.8rem; color: var(--text-secondary); }
+.plan-footer {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* REFERRALS GRID */
+.referral-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.referral-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  font-size: 0.8rem;
+}
+.referral-chip input[type=checkbox] {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 16px 32px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-disc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.footer-link {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.footer-link:hover { text-decoration: underline; }
+
+/* SECTION HEADINGS */
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.section-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* PRINT */
+@media print {
+  nav, .tab-strip, .plan-print-bar, footer { display: none !important; }
+  body { font-size: 12px; color: #000; background: #fff; }
+  .card { border: 1px solid #ccc; page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  section:not(#action-plan) { display: none !important; }
+  #action-plan { display: block !important; }
+  header { padding-bottom: 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="header-meta" style="margin-bottom:6px;">
+        <span class="badge">VibeRounds v1.1</span>
+        <span class="badge" style="background:var(--bg-tertiary);color:var(--text-secondary);border-color:var(--border);">Case 5</span>
+        <span class="header-date">20 June 2026</span>
+      </div>
+      <h1>Adult with Thyroid Mass &amp; Subclinical Hyperthyroidism</h1>
+    </div>
+    <div style="font-size:0.75rem;color:var(--text-secondary);text-align:right;">
+      <div>Adult-ThyroidMass-SubclinicalHyper</div>
+      <a href="https://classworkdecjan.blogspot.com/2026/06/case-2-20-jun-2026.html" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.7rem;">Case source ↗</a>
+    </div>
+  </div>
+  <div class="stat-bar">
+    <div class="stat-chip"><span class="chip-icon">◎</span> <span class="chip-num">14</span> gaps logged</div>
+    <div class="stat-chip"><span class="chip-icon">✦</span> <span class="chip-num">21</span> prompts mapped</div>
+    <div class="stat-chip"><span class="chip-icon">⚠</span> <span class="chip-num">4</span> critical investigations</div>
+    <div class="stat-chip"><span class="chip-icon">⊞</span> <span class="chip-num">6</span> specialties involved</div>
+  </div>
+  <nav class="tab-strip">
+    <button class="tab-btn active" data-tab="case-summary">◎ Case Summary</button>
+    <button class="tab-btn" data-tab="top-insights">✦ Top Insights</button>
+    <button class="tab-btn" data-tab="investigations">⊞ Investigations</button>
+    <button class="tab-btn" data-tab="differentials">⊕ Differentials</button>
+    <button class="tab-btn" data-tab="action-plan">▶ Action Plan</button>
+  </nav>
+</header>
+
+<main>
+  <!-- TAB 1: CASE SUMMARY -->
+  <section id="case-summary" class="active">
+    <div class="section-heading">Case Summary</div>
+    <div class="section-sub">Structured case fields — documented findings and information gaps</div>
+
+    <div class="card">
+      <h2 style="margin-bottom:12px;">Clinical Data</h2>
+      <table class="summary-table" id="summary-table"></table>
+    </div>
+
+    <div class="card">
+      <h2>Symptom &amp; Event Timeline</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom:12px;">Working Diagnoses</h2>
+      <div id="working-dx"></div>
+    </div>
+  </section>
+
+  <!-- TAB 2: TOP INSIGHTS -->
+  <section id="top-insights">
+    <div class="section-heading">Top 10 Clinical Insights</div>
+    <div class="section-sub">Click any card to expand the full analysis. All accordions collapsed by default.</div>
+    <div id="insights-container"></div>
+  </section>
+
+  <!-- TAB 3: INVESTIGATIONS -->
+  <section id="investigations">
+    <div class="section-heading">Prioritised Investigations</div>
+    <div class="section-sub">Sorted by priority score (descending). Click score column header to toggle sort order.</div>
+    <div class="sub-tab-strip">
+      <button class="sub-tab-btn active" data-sub="hist">Further History</button>
+      <button class="sub-tab-btn" data-sub="exam">Further Examination</button>
+      <button class="sub-tab-btn" data-sub="inv">Investigations</button>
+    </div>
+    <div class="sub-panel active" id="panel-hist"><table class="inv-table" id="table-hist"></table></div>
+    <div class="sub-panel" id="panel-exam"><table class="inv-table" id="table-exam"></table></div>
+    <div class="sub-panel" id="panel-inv"><table class="inv-table" id="table-inv"></table></div>
+  </section>
+
+  <!-- TAB 4: DIFFERENTIALS -->
+  <section id="differentials">
+    <div class="section-heading">Differential Diagnosis</div>
+    <div class="section-sub">Three tiers — click each group header to expand or collapse.</div>
+    <div id="diff-container"></div>
+  </section>
+
+  <!-- TAB 5: ACTION PLAN -->
+  <section id="action-plan">
+    <div class="plan-print-bar">
+      <button class="print-btn" id="print-btn">🖨 Print Action Plan</button>
+    </div>
+    <div id="action-plan-content"></div>
+  </section>
+</main>
+
+<footer>
+  <span class="footer-disc">Educational output only. Independent clinical verification required before acting on any content. Not a clinical decision support tool. VibeRounds v1.1 — June 2026</span>
+  <a class="footer-link" href="https://classworkdecjan.blogspot.com/2026/06/case-2-20-jun-2026.html" target="_blank">Case source ↗</a>
+</footer>
+
+<script>
+const DATA = {
+  meta: {
+    caseId: "Adult-ThyroidMass-SubclinicalHyper",
+    caseTitle: "Adult with Recent Thyroid Mass, Pressure Symptoms, Loss of Appetite & Biochemical Subclinical Hyperthyroidism",
+    date: "20 June 2026",
+    sourceUrl: "https://classworkdecjan.blogspot.com/2026/06/case-2-20-jun-2026.html",
+    stats: { gaps: 14, prompts: 21, criticalInvestigations: 4, specialties: 6 }
+  },
+
+  caseSummary: {
+    fields: [
+      { label: "Demographics", value: null, gap: true, gapNote: "Age, sex, occupation, social/geographical background — all not documented" },
+      { label: "Chief Complaint", value: "Recent thyroid swelling with pressure symptoms" },
+      { label: "Mode of Presentation", value: "Outpatient / elective", gap: true, gapNote: "inferred — not explicitly documented" },
+      { label: "Duration of Swelling", value: "\"Recent\" — exact onset", gap: true, gapNote: "exact onset not documented" },
+      { label: "Loss of Appetite", value: "2 months" },
+      { label: "Pressure Symptoms", value: null, gap: true, gapNote: "Nature not documented — dysphagia? stridor? venous engorgement?" },
+      { label: "Adrenergic Signs", value: "Lid lag, tremors, tachycardia — present; duration not documented", gap: true },
+      { label: "Medications", value: null, gap: true, gapNote: "Not documented" },
+      { label: "Heart Rate", value: "Tachycardic — exact value not documented", gap: true },
+      { label: "BP / Temp / SpO2 / RR", value: null, gap: true, gapNote: "All not documented" },
+      { label: "Thyroid Examination", value: null, gap: true, gapNote: "Size, texture, mobility, tenderness, nodularity — all not documented" },
+      { label: "Eye Findings", value: "Lid lag: present" },
+      { label: "Neurological", value: "Tremors: present (type not documented)", gap: true },
+      { label: "CVS — Rhythm", value: null, gap: true, gapNote: "Sinus vs. AF not documented; ECG not documented" },
+      { label: "Lymph Nodes", value: null, gap: true, gapNote: "Not documented" },
+      { label: "TSH", value: "Suppressed (implied by subclinical hyperthyroidism — exact value not documented)", gap: true },
+      { label: "Free T3 / T4", value: "Normal (implied — exact values not documented)", gap: true },
+      { label: "Serum Calcitonin", value: null, gap: true, gapNote: "Not documented — critical pre-operative gap" },
+      { label: "Thyroid Antibodies", value: null, gap: true, gapNote: "TPO, TgAb — not documented" },
+      { label: "Thyroid Ultrasound", value: null, gap: true, gapNote: "Not performed" },
+      { label: "Thyroid Scintigraphy", value: null, gap: true, gapNote: "Not performed" },
+      { label: "ECG", value: null, gap: true, gapNote: "Not performed" },
+      { label: "Procedures Planned", value: "FNAC (not yet performed); Excision biopsy (planned)" },
+      { label: "Management Given", value: null, gap: true, gapNote: "Not documented" },
+      { label: "Outcome", value: "Case at point of investigation planning", gap: true }
+    ],
+    workingDiagnoses: [
+      "Suspected thyroid malignancy (subtype unspecified)",
+      "Biochemical subclinical hyperthyroidism with symptomatic adrenergic manifestations"
+    ],
+    timeline: [
+      { time: "2 months ago", event: "Loss of appetite begins" },
+      { time: "Recent (exact onset unknown)", event: "Thyroid swelling first noted" },
+      { time: "Concurrent with swelling", event: "Pressure symptoms develop (nature not documented)" },
+      { time: "Concurrent", event: "Lid lag, tremors, tachycardia identified clinically" },
+      { time: "20 June 2026", event: "Subclinical hyperthyroidism confirmed biochemically; FNAC and excision biopsy planned" },
+      { time: "Planned — next step", event: "Thyroid ultrasound + Doppler; 12-lead ECG; serum calcitonin; phaeochromocytoma screen" },
+      { time: "Planned — following imaging", event: "FNAC under ultrasound guidance (targeted to most suspicious nodule)" },
+      { time: "Planned — subsequent", event: "Excision biopsy / thyroidectomy (after pre-operative optimisation)" }
+    ]
+  },
+
+  insights: [
+    {
+      number: 1,
+      title: "Pressure Symptoms in a Thyroid Mass Are a Red Flag Requiring Urgent Anatomical Mapping",
+      scoreLevel: "high",
+      finding: "The patient presents with thyroid swelling accompanied by pressure symptoms. Loss of appetite for 2 months adds a systemic dimension. The exact nature of the pressure symptoms (dysphagia, stridor, venous engorgement) is not documented.",
+      significance: "Pressure symptoms indicate the mass has reached sufficient volume to compress adjacent structures — trachea, oesophagus, or recurrent laryngeal nerve. This is a stage-defining clinical feature narrowing the differential toward a functionally significant mass (multinodular goitre with dominant nodule, Hashimoto's with lymphocytic infiltration, or thyroid malignancy). Anaplastic thyroid cancer can present with rapid-onset compressive symptoms, and its prognosis is profoundly time-sensitive.",
+      correctResponse: "Urgent neck ultrasound with Doppler (characterise nodule — solid vs. cystic, microcalcifications, irregular margins, vascularity), followed by CT neck and chest without contrast (assess tracheal deviation, retrosternal extension, lymphadenopathy). FNAC should target the dominant or sonographically suspicious nodule under ultrasound guidance. Excision biopsy should be logged as a safety backstop, not a first-line histological route."
+    },
+    {
+      number: 2,
+      title: "Coexistence of a Suspicious Thyroid Mass with Biochemical Hyperthyroidism Creates a Dual Diagnostic Pathway",
+      scoreLevel: "high",
+      finding: "The patient has biochemical subclinical hyperthyroidism (suppressed TSH with normal free T3/T4) alongside physical signs of adrenergic excess — lid lag, tremors, and tachycardia.",
+      significance: "Two simultaneously active pathological processes must be considered: an autonomously functioning thyroid nodule (AFTN) producing excess hormone; a hyperfunctioning multinodular goitre; or a malignant nodule coexisting with separate thyroid autonomy. AFTNs are almost never malignant, but a cold (non-functioning) nodule in a gland with subclinical hyperthyroidism carries full malignancy risk. Imaging and isotope scanning are required to distinguish these.",
+      correctResponse: "Thyroid scintigraphy (Tc-99m pertechnetate scan) is mandatory to map nodule function. A hot nodule makes malignancy unlikely; a cold nodule in this clinical context should be treated as malignant until proven otherwise. Radioiodine ablation or surgery may serve dual therapeutic roles if hot nodule is confirmed."
+    },
+    {
+      number: 3,
+      title: "\"Subclinical\" Hyperthyroidism Is Not Clinically Silent in This Patient",
+      scoreLevel: "high",
+      finding: "The case reports lid lag, tremors, and tachycardia despite the label 'subclinical' (implying only a suppressed TSH with normal peripheral thyroid hormones).",
+      significance: "This is a critical semantic trap. 'Subclinical' is a biochemical label, not a clinical severity descriptor. This patient is symptomatic — adrenergic symptoms represent downstream end-organ sensitivity to thyroid hormone levels that, while within laboratory normal range, are clearly suprathreshold for this individual's cardiovascular and neuromuscular system. Persistent suppressed TSH, even with normal T4/T3, is associated with atrial fibrillation (2–3× higher risk), reduced bone mineral density, and adverse cardiovascular outcomes.",
+      correctResponse: "Obtain a 12-lead ECG immediately (risk of AF). Check resting heart rate and blood pressure formally. If sinus tachycardia is confirmed, a low-dose beta-blocker (propranolol 10–20 mg TDS) is appropriate for symptomatic control pending definitive management of the underlying cause. Do not dismiss lid lag and tremors as merely 'subclinical.'"
+    },
+    {
+      number: 4,
+      title: "Loss of Appetite for 2 Months Must Not Be Attributed to Hyperthyroidism Without Exclusion",
+      scoreLevel: "high",
+      finding: "Two months of anorexia is documented. While hyperthyroidism classically causes increased appetite, anorexia in an older or cachectic hyperthyroid patient is recognised — but it is also a constitutional B-symptom of malignancy.",
+      significance: "The overlap creates diagnostic ambiguity. Loss of appetite alongside a suspicious thyroid mass and pressure symptoms should prompt a full constitutional symptom screen: unintentional weight loss, night sweats, fatigue. These would raise suspicion for malignancy with systemic involvement or a paraneoplastic process. Medullary thyroid carcinoma specifically may present with diarrhoea due to calcitonin excess, but anorexia is non-specific.",
+      correctResponse: "Quantify weight loss (weigh the patient, compare with baseline). Ask specifically about night sweats and fatigue. Check serum calcitonin (if medullary thyroid cancer is in the differential), CEA, and LDH. If lymphoma is being considered, CT chest-abdomen-pelvis is warranted in addition to neck imaging."
+    },
+    {
+      number: 5,
+      title: "FNAC Alone Is Insufficient if Cytology Returns Bethesda III or IV — Molecular Testing Must Be Pre-Discussed",
+      scoreLevel: "high",
+      finding: "FNAC and excision biopsy are planned. The case does not document any pre-discussion of Bethesda classification reporting or contingency pathways depending on cytology result.",
+      significance: "Up to 25–30% of FNACs return indeterminate results (Bethesda III — atypia of undetermined significance; Bethesda IV — follicular neoplasm). In these categories, the next step is not automatic surgery — it is risk stratification using molecular testing (BRAF V600E, RAS, RET/PTC, NTRK fusions via ThyroSeq or Afirma panels). Without this pre-planned pathway, the team risks either over-operating on a benign nodule or under-staging a malignant one.",
+      correctResponse: "Before performing FNAC, brief the patient and family on the Bethesda classification system. Pre-authorise molecular testing on the aspirated sample if available. Document the decision pathway: Bethesda I → repeat FNAC; Bethesda II → clinical monitoring; Bethesda III/IV → molecular testing; Bethesda V/VI → surgery planning, staging, and MDT referral."
+    },
+    {
+      number: 6,
+      title: "Pre-operative Thyroid Status Must Be Optimised Before Any Surgical Intervention",
+      scoreLevel: "high",
+      finding: "Surgery (excision biopsy) is planned, but the patient currently has active symptoms of adrenergic excess (tachycardia, tremors).",
+      significance: "Surgery in a patient with uncontrolled hyperthyroidism carries a substantial risk of thyroid storm — a life-threatening hypermetabolic crisis with mortality up to 20–30% even with treatment. The cardinal triggers include surgery, infection, iodine load, and physiological stress. Even subclinical hyperthyroidism with symptomatic tachycardia increases anaesthetic risk. Any surgeon planning neck dissection must ensure biochemical and clinical euthyroidism before operating.",
+      correctResponse: "Pre-operative optimisation: beta-blockade (propranolol or atenolol) to control tachycardia and tremors; consider methimazole/carbimazole if free T3/T4 are elevated on repeat testing; Lugol's iodine 10 days pre-operatively if toxic goitre is confirmed (reduces vascularity, stabilises thyroid); confirm resting heart rate <80 bpm before listing for theatre. Anaesthesia team briefing is essential."
+    },
+    {
+      number: 7,
+      title: "Medullary Thyroid Carcinoma Must Be Excluded Before Any Surgery — Failure to Do So Is a Preventable Catastrophe",
+      scoreLevel: "high",
+      finding: "The malignancy workup as described does not mention calcitonin measurement or RET proto-oncogene mutation testing.",
+      significance: "Medullary thyroid carcinoma (MTC) accounts for ~5% of thyroid cancers but carries specific surgical implications. Unsuspected MTC not accompanied by central neck dissection leads to inadequate oncological clearance. MTC is associated with MEN2A and MEN2B syndromes; if MEN2 is present, the patient may have a concurrent phaeochromocytoma — operating with an undetected phaeochromocytoma causes a potentially fatal hypertensive crisis on anaesthetic induction.",
+      correctResponse: "Serum calcitonin must be measured before any thyroid surgery where malignancy is suspected. If calcitonin is elevated (>10 pg/mL), imaging for metastatic MTC and RET mutation testing are required. 24-hour urine catecholamines or plasma metanephrines must be checked to exclude phaeochromocytoma before listing for any elective surgery."
+    },
+    {
+      number: 8,
+      title: "Availability Bias Toward Papillary Thyroid Cancer May Delay Consideration of Rarer but More Urgent Subtypes",
+      scoreLevel: "high",
+      finding: "The working diagnosis notes 'suspected malignancy' without further subtype differentiation.",
+      significance: "Availability bias leads clinicians to default to papillary thyroid carcinoma (PTC), which is the most common (>85%) and generally excellent-prognosis. However, the clinical picture here — recent thyroid swelling with rapid-onset pressure symptoms, systemic loss of appetite — raises the possibility of anaplastic thyroid carcinoma (ATC) or primary thyroid lymphoma, both of which require completely different urgent management. ATC has a median survival of 3–5 months from diagnosis; lymphoma may respond dramatically to chemotherapy.",
+      correctResponse: "When reporting histology, explicitly request subtyping including poorly differentiated and anaplastic variants. If cytology or histology returns poorly differentiated or anaplastic features, immediate oncology MDT referral, palliative care involvement, and BRAF V600E testing (dabrafenib + trametinib approved for BRAF-mutant ATC) are required. Thyroid lymphoma should be considered if tissue shows diffuse large B-cell patterns."
+    },
+    {
+      number: 9,
+      title: "ECG and Cardiac Risk Assessment Are Missing — Tachycardia in a Pre-operative Patient Requires Formal Cardiac Workup",
+      scoreLevel: "high",
+      finding: "Tachycardia is documented clinically, but no ECG, no heart rate quantification, and no formal cardiac assessment is documented.",
+      significance: "Tachycardia could represent sinus tachycardia from the adrenergic hyperthyroid state; atrial fibrillation (risk significantly elevated with suppressed TSH); or a high-output state with early cardiac failure. AF in a patient with hyperthyroidism carries a thromboembolic risk requiring anticoagulation stratification (CHA₂DS₂-VASc score). Pre-operative tachycardia without an identified and managed cause significantly increases anaesthetic and post-operative cardiac risk.",
+      correctResponse: "12-lead ECG immediately. If AF confirmed: rate control (beta-blocker), anticoagulation assessment (CHA₂DS₂-VASc scoring), cardiology referral, and treatment of underlying hyperthyroidism before elective surgery. Echocardiogram if signs of cardiac failure or AF with rapid ventricular response. Refer to cardiology for pre-operative cardiac clearance."
+    },
+    {
+      number: 10,
+      title: "This Case Requires a Multidisciplinary Team (MDT) Approach — No Single Specialty Can Manage All Active Threads",
+      scoreLevel: "high",
+      finding: "The case spans endocrinology, surgical oncology, nuclear medicine, pathology, cardiology, and potentially oncology. No MDT discussion is documented.",
+      significance: "Fragmented management — where each specialist sees the patient in isolation — creates gaps between thyroid biochemistry management, surgical timing, anaesthetic risk, and oncological planning. The risk is that the surgeon operates before the endocrinologist has optimised the thyroid state, or that oncology is referred only after surgery rather than being involved in staging and planning pre-operatively.",
+      correctResponse: "Convene a thyroid MDT prior to excision biopsy. Minimum attendees: endocrinologist, head and neck/endocrine surgeon, radiologist (to review imaging), pathologist (to pre-plan tissue handling), anaesthetist (for pre-operative risk assessment). If malignancy is confirmed: add clinical oncologist and nuclear medicine physician. Document a single shared management plan with role assignments and review dates."
+    }
+  ],
+
+  investigations: {
+    history: [
+      { score: 10, item: "Exact duration and rate of growth of thyroid swelling", why: "Rate of growth is the single most discriminating historical feature for ATC (weeks) vs. PTC (months to years) vs. benign goitre (years). A rapidly growing mass demands immediate escalation of diagnostic urgency.", source: "S1, S4" },
+      { score: 10, item: "Nature of pressure symptoms", why: "Each symptom type points to different anatomical compression: dysphagia = oesophageal; stridor = tracheal (may require urgent airway assessment); hoarseness = RLN involvement (malignant invasion). Urgency of surgical intervention differs markedly.", source: "S1, S4, S6" },
+      { score: 10, item: "All current and recent medications", why: "Patient safety gap. Amiodarone causes thyroid dysfunction and alters scintigraphy results for months. Prior thionamides, beta-blockers, lithium, or iodine-containing agents directly affect workup and management.", source: "S1, S4" },
+      { score: 9, item: "Episodic flushing or palpitations", why: "Episodic flushing + hypertension + palpitations = phaeochromocytoma triad. If present, this changes the pre-operative workup from 'recommended' to 'emergency.'", source: "S4" },
+      { score: 9, item: "Family history of thyroid disease, MEN syndromes, or neck tumours", why: "25% of MTC cases are hereditary (MEN2A, MEN2B, FMTC) via autosomal dominant RET mutation. If a first-degree relative had thyroid cancer, phaeochromocytoma, or hyperparathyroidism, MEN2 workup is mandatory before any surgery.", source: "S1, S6" },
+      { score: 9, item: "Age and sex", why: "Thyroid cancer epidemiology, TI-RADS and ATA risk stratification, hormonal context (osteoporosis risk, reproductive considerations), and cardiovascular consequences of subclinical hyperthyroidism all depend on demographic data.", source: "S1" },
+      { score: 9, item: "Duration of loss of appetite and quantified weight loss", why: "Loss of appetite is subjective. A 10% body weight loss over 2 months is an objective constitutional symptom meeting oncological B-symptom criteria. Without a weight measurement, this symptom cannot be clinically graded.", source: "S1, S4" },
+      { score: 8, item: "Prior thyroid investigations or treatments", why: "Baseline TFTs establish whether this is a new or deteriorating endocrine state. Prior imaging allows nodule growth to be quantified. Prior FNAC with Bethesda result would be immediately relevant.", source: "S1" },
+      { score: 8, item: "Duration of lid lag, tremors, tachycardia", why: "Chronic symptoms (years) suggest a longstanding autonomous nodule; recent onset (weeks) implies a more acute or rapidly evolving process aligning with recent swelling and raising concern for a progressive thyroid pathology.", source: "S1, S4" },
+      { score: 8, item: "Diarrhoea", why: "Calcitonin excess in MTC causes secretory diarrhoea in ~30% of patients. Diarrhoea in a patient with a thyroid mass should prompt immediate serum calcitonin measurement and is a diagnostic pointer to MTC.", source: "S4" },
+      { score: 8, item: "Bone pain, headache, or dyspnoea", why: "These suggest metastatic disease. Thyroid cancer metastasises to bone (follicular > papillary), lung, and brain. If present, staging CT would be prioritised before any local surgical intervention.", source: "S4" },
+      { score: 7, item: "Occupation and social/geographical background", why: "Occupational radiation exposure is one of the strongest environmental risk factors for PTC. Iodine-deficient regions (relevant in South Asia) increase follicular thyroid cancer risk.", source: "S1" },
+      { score: 7, item: "Patient understanding and psychological state", why: "Informed consent for two invasive procedures requires the patient to understand 'suspected malignancy.' A patient who is overwhelmed by anxiety may not give genuine informed consent.", source: "S6" }
+    ],
+    examination: [
+      { score: 10, item: "Formal thyroid gland examination", why: "Size, consistency (soft/firm/hard), surface (smooth/nodular), mobility, tenderness, and palpable nodularity are first-line clinical staging. A hard, irregular, fixed mass is a major malignancy red flag. This examination is completely absent from the case record.", source: "S1, S4" },
+      { score: 10, item: "Cervical lymph node assessment", why: "Cervical lymphadenopathy is a staging criterion for thyroid malignancy (N1 disease). Palpable lateral neck nodes in a patient with suspected thyroid malignancy implies Stage IVA or higher. This assessment fundamentally changes the surgical approach.", source: "S1, S4" },
+      { score: 10, item: "Formal heart rate quantification", why: "A heart rate of 95 bpm vs. 130 bpm vs. 160 bpm carries entirely different urgency and management implications. Exact heart rate is needed for BWPS scoring, beta-blocker titration target, and pre-operative anaesthetic risk classification.", source: "S1, S4" },
+      { score: 9, item: "Voice quality — baseline hoarseness assessment", why: "Baseline hoarseness before surgery implies recurrent laryngeal nerve (RLN) involvement by tumour. This establishes a medico-legal baseline and alters the surgical approach (bilateral RLN assessment is required). Voice assessment takes 30 seconds.", source: "S4" },
+      { score: 9, item: "Signs of cardiac failure (JVP, peripheral oedema, basal crackles)", why: "Longstanding subclinical hyperthyroidism can cause a high-output state progressing to dilated cardiomyopathy. Pre-operative cardiac failure significantly increases anaesthetic risk and must be detected before theatre.", source: "S4" },
+      { score: 9, item: "Blood pressure (bilateral arms)", why: "Hypertension is a feature of phaeochromocytoma (which must be excluded). Bilateral BP also screens for superior vena cava syndrome or subclavian involvement from a large mediastinal/retrosternal goitre.", source: "S1" },
+      { score: 8, item: "Weight and nutritional status assessment", why: "2 months of anorexia without documented weight loss data is clinically incomplete. Anorexia is subjective; weight is objective. A 10% loss in 2 months meets B-symptom criteria for oncological staging.", source: "S1, S6" },
+      { score: 8, item: "Tracheal position", why: "Tracheal deviation clinically identifies retrosternal extension or significant goitre mass effect before imaging is available. Central trachea vs. deviated trachea carries anaesthetic airway implications.", source: "S4" }
+    ],
+    investigations: [
+      { score: 10, item: "Serum calcitonin", why: "Must be measured before any thyroid surgery. Undiagnosed MTC at surgery leads to inadequate oncological resection. Undiagnosed MEN2 with concurrent phaeochromocytoma causes intraoperative hypertensive crisis and death. A cheap, widely available blood test that prevents a preventable death.", source: "S1, S4, S6" },
+      { score: 10, item: "Plasma metanephrines or 24-hour urine catecholamines", why: "In any patient where MEN2 is a diagnostic possibility, phaeochromocytoma must be excluded before elective surgery. Adrenal phaeochromocytoma can be clinically silent until anaesthetic induction triggers a catecholamine surge causing fatal hypertensive crisis.", source: "S4, S6" },
+      { score: 10, item: "12-lead ECG", why: "Tachycardia is present but not formally quantified. AF is a well-established complication of subclinical hyperthyroidism (TSH <0.1 mIU/L). Undetected AF with anticoagulation omitted in the peri-operative period carries a material stroke risk. ECG is a mandatory pre-anaesthetic investigation.", source: "S1, S4, S6" },
+      { score: 10, item: "Thyroid ultrasound with Doppler", why: "FNAC without ultrasound guidance risks sampling the wrong nodule. Ultrasound provides nodule characterisation (TI-RADS score) that risk-stratifies malignancy probability before the needle is inserted. This investigation must precede FNAC, not follow it.", source: "S1, S4, S6" },
+      { score: 9, item: "Exact TSH, free T3, free T4 values", why: "The degree of TSH suppression matters: TSH 0.05–0.1 = mild subclinical; TSH <0.01 = overt suppression; elevated free T3/T4 reclassifies as overt hyperthyroidism. Without exact values, thionamide dosing cannot be calculated.", source: "S1, S4" },
+      { score: 9, item: "Tc-99m pertechnetate thyroid scintigraphy", why: "Scintigraphy maps nodule function (hot vs. cold). Essential to determine which pathological process is driving hyperthyroidism and the suspicious mass. A hot nodule is almost never malignant; a cold nodule carries full malignancy risk.", source: "S1, S4" },
+      { score: 9, item: "Anti-TPO and Anti-Tg antibodies", why: "Hashimoto's thyroiditis (TPO antibody positive) increases thyroid lymphoma risk by 6-fold. If significantly elevated in a patient with a rapidly growing thyroid mass, lymphoma workup (core needle biopsy, flow cytometry, CT staging) should be prioritised.", source: "S1, S4" },
+      { score: 9, item: "FBC, UEL, LFTs, calcium, PTH, coagulation screen", why: "Pre-operative baseline. Calcium and PTH establish parathyroid baseline before thyroid surgery (post-operative hypoparathyroidism is the most common surgical complication). LFTs required for thionamide prescribing (hepatotoxicity monitoring).", source: "S1, S6" },
+      { score: 8, item: "CT neck and chest (non-contrast)", why: "Once FNAC confirms malignancy, CT staging of neck and chest is required before surgical planning. Non-contrast preferred — iodinated contrast can precipitate thyroid storm in a hyperthyroid patient. Adequate staging for lymph node assessment and retrosternal extension.", source: "S4, S6" },
+      { score: 8, item: "TSH receptor antibodies (TRAB)", why: "If Graves' disease is in the differential, TRAB confirmation changes the treatment pathway. RAI, antithyroid drugs, or surgery for Graves' requires different pre-operative preparation and carries specific post-operative risks.", source: "S4" },
+      { score: 8, item: "Molecular testing panel (ThyroSeq v3 or Afirma GEC) on FNAC aspirate", why: "One in four FNAC results returns indeterminate (Bethesda III/IV). Pre-authorising molecular testing at FNAC avoids the need for a second invasive procedure. Afirma GEC has an NPV of ~95% for ruling out malignancy in Bethesda III/IV nodules.", source: "S4, S6" },
+      { score: 7, item: "Serum CEA", why: "Elevated CEA with elevated calcitonin is the biochemical signature of MTC. Provides an independent prognostic marker and treatment monitoring tool. Should follow immediately if calcitonin returns elevated.", source: "S4" },
+      { score: 7, item: "RET proto-oncogene mutation testing", why: "If serum calcitonin is elevated (MTC confirmed), RET testing identifies hereditary disease. All first-degree relatives of a patient with an RET mutation require prophylactic thyroidectomy. Clinical implications extend beyond the index patient.", source: "S4" },
+      { score: 7, item: "Echocardiogram", why: "If AF is confirmed on ECG, or if there are signs of cardiac failure, a formal echocardiogram is required to assess left ventricular function, valvular disease, and pulmonary arterial pressure. High-output state from longstanding hyperthyroidism can cause dilated cardiomyopathy.", source: "S4" },
+      { score: 7, item: "Chest X-ray", why: "CXR shows tracheal deviation, retrosternal goitre extension, mediastinal widening. Simple, widely available investigation that should precede CT in resource-limited settings.", source: "S4" }
+    ]
+  },
+
+  differentials: {
+    mostLikely: [
+      { name: "Toxic Multinodular Goitre (MNG) with dominant malignant nodule", rationale: "MNG is common; one nodule may degenerate malignantly. Explains both hyperthyroidism and the suspicious mass. Most likely single unifying diagnosis if scintigraphy shows mixed hot/cold pattern." },
+      { name: "Papillary Thyroid Carcinoma (PTC) coincident with a separate autonomous nodule", rationale: "PTC is the most common thyroid malignancy (80–85%). Coexisting autonomy may explain hyperthyroid biochemistry. The suspicious mass is cold on scintigraphy; another nodule is hot." },
+      { name: "Follicular Thyroid Carcinoma (FTC)", rationale: "Accounts for 10–15% of thyroid cancers; tends to present as a solitary encapsulated nodule; pressure symptoms consistent with size. Cannot be distinguished from follicular adenoma on FNAC (Bethesda IV) — requires surgical excision." }
+    ],
+    mustNotMiss: [
+      { name: "Anaplastic Thyroid Carcinoma (ATC)", rationale: "Rapidly growing, early pressure symptoms, constitutional symptoms (anorexia), may arise in prior differentiated cancer. Median survival months from diagnosis. BRAF V600E in ~40%. Urgent histology and oncology referral if suspected." },
+      { name: "Primary Thyroid Lymphoma (PTL)", rationale: "Typically presents on background of Hashimoto's thyroiditis (6× higher risk); rapid growth, pressure symptoms, systemic involvement. Responds dramatically to chemotherapy + radiotherapy, NOT surgery. Must not be mis-operated." },
+      { name: "Medullary Thyroid Carcinoma (MTC)", rationale: "Calcitonin-secreting C-cell tumour; 25% hereditary (RET mutation, MEN2A/2B); associated phaeochromocytoma is a surgical emergency if missed. Serum calcitonin is the mandatory screen." }
+    ],
+    benign: [
+      { name: "Autonomously Functioning Thyroid Nodule (AFTN) — Toxic Adenoma", rationale: "Benign; explains hyperthyroidism; hot on scintigraphy; FNAC almost always benign (Bethesda II). Management: radioiodine ablation or hemithyroidectomy. Malignancy in AFTNs is extremely rare." },
+      { name: "Multinodular Goitre without malignancy", rationale: "Common; may cause pressure symptoms from sheer volume; may suppress TSH. Management depends on symptoms and nodule characteristics. Benign on FNAC." },
+      { name: "Hashimoto's Thyroiditis", rationale: "Can cause mass effect; TPO antibodies elevated; initially hyperthyroid (hashitoxicosis) before progressing to hypothyroidism. Increases lymphoma risk — must not be dismissed." },
+      { name: "Thyroid Abscess / Suppurative Thyroiditis", rationale: "Acute; typically painful; fever — less likely given 2-month indolent course but cannot be dismissed without FBC and inflammatory markers." }
+    ]
+  },
+
+  actionPlan: {
+    clinicalSummary: "An adult patient with a recent-onset thyroid swelling associated with pressure symptoms and 2 months of loss of appetite. Biochemical subclinical hyperthyroidism (suppressed TSH) with clinical signs of adrenergic excess (lid lag, tremors, tachycardia) is identified. Thyroid malignancy is clinically suspected. FNAC and excision biopsy are planned, but multiple urgent pre-procedure investigations and pre-operative safety steps must be completed before any surgical intervention is undertaken.",
+    immediateActions: [
+      "Request 12-lead ECG today — tachycardia with suppressed TSH mandates AF exclusion before any surgical procedure",
+      "Order serum calcitonin — must be reported as normal before any thyroid surgery (MTC/phaeochromocytoma safety screen)",
+      "Order plasma metanephrines or 24-hour urine catecholamines to exclude phaeochromocytoma (MEN2 safety screen)",
+      "Commence beta-blockade for symptomatic control — propranolol 10–40 mg TDS (also reduces peripheral T4→T3 conversion); target resting HR <80 bpm before theatre",
+      "Obtain exact TSH, free T3, free T4 values (exact numeric values required for treatment dosing and BWPS score calculation)"
+    ],
+    urgentInvestigations: [
+      { item: "Thyroid ultrasound with Doppler", reason: "must precede FNAC; defines target nodule, TI-RADS score, and lymph node status" },
+      { item: "Tc-99m pertechnetate thyroid scintigraphy", reason: "maps nodule function (hot vs. cold); essential for dual-pathway diagnosis" },
+      { item: "FBC, UEL, LFTs, calcium, PTH, coagulation screen", reason: "pre-operative baseline; parathyroid and hepatic function before surgery and thionamide use" },
+      { item: "Anti-TPO and Anti-Tg antibodies", reason: "Hashimoto's raises lymphoma risk 6-fold; positive result changes FNAC interpretation" },
+      { item: "Chest X-ray", reason: "tracheal deviation, retrosternal extension, mediastinal widening — first-line imaging for pressure symptoms" }
+    ],
+    preOpChecklist: [
+      "Resting heart rate < 80 bpm confirmed on beta-blockade",
+      "Serum calcitonin reported as normal",
+      "Plasma metanephrines / urine catecholamines negative (phaeochromocytoma excluded)",
+      "ECG reviewed — rhythm confirmed (sinus tachycardia vs. AF documented)",
+      "Thyroid ultrasound reported — target nodule identified and characterised (TI-RADS documented)",
+      "Thyroid scintigraphy reported — hot vs. cold nodule documented",
+      "Thyroid function values (exact TSH, free T3, free T4) documented",
+      "Anaesthetist briefed on thyroid storm risk (BWPS score calculated)",
+      "Lugol's iodine 10 days pre-operatively started (if toxic goitre confirmed, after thionamide cover)",
+      "Voice quality baseline documented (RLN assessment)",
+      "Informed consent completed including Bethesda contingency pathway"
+    ],
+    referrals: [
+      "Endocrinology — optimisation of thyroid state pre-operatively; subclinical hyperthyroidism management",
+      "Cardiology — if AF confirmed on ECG or signs of cardiac failure present",
+      "Nuclear Medicine — Tc-99m pertechnetate thyroid scintigraphy",
+      "Pathology — pre-procedure briefing; pre-authorise molecular testing (ThyroSeq/Afirma) on FNAC aspirate",
+      "Clinical Oncology — if FNAC returns Bethesda V/VI, or if ATC/lymphoma suspected on rapid cytology",
+      "Thyroid MDT — convene before excision biopsy (endocrinologist + surgeon + radiologist + pathologist + anaesthetist)"
+    ],
+    top3Priorities: [
+      {
+        item: "Serum Calcitonin",
+        justification: "Serum calcitonin must be measured before any surgical procedure is performed on this thyroid. Medullary thyroid carcinoma (MTC) — when hereditary via RET mutation — is associated with phaeochromocytoma in up to 50% of MEN2 patients; operating on a patient with an undetected phaeochromocytoma can cause a fatal hypertensive crisis. No thyroid surgery should proceed without calcitonin being reported as normal."
+      },
+      {
+        item: "Thyroid Ultrasound with Doppler",
+        justification: "Ultrasound is the essential guide for targeted, diagnostically meaningful FNAC — without it, the needle may sample a benign nodule while a malignant one is missed. It provides TI-RADS risk stratification (echogenicity, margins, calcification pattern, vascularity) that determines where to target the needle and at what urgency. In a patient where malignancy is clinically suspected and two procedures are already planned, ultrasound is the navigation system without which those procedures lose precision."
+      },
+      {
+        item: "12-Lead ECG",
+        justification: "This patient has tachycardia, and in a patient with biochemical subclinical hyperthyroidism, tachycardia may represent atrial fibrillation — a rhythm abnormality that increases stroke risk in the peri-operative period if undetected and untreated. The ECG takes 5 minutes and answers multiple simultaneous clinical questions: rhythm, rate, and cardiac conduction. AF detected now gives time for rate control, anticoagulation initiation, and cardiology review before elective surgery; AF detected on the anaesthetic table creates an emergency."
+      }
+    ]
+  }
+};
+
+// ─── RENDER FUNCTIONS ────────────────────────────────────────────────
+
+function gapHtml(note) {
+  return `<span class="gap-badge">[GAP]</span>${note ? ' <span style="color:var(--text-secondary);font-size:0.8rem;">' + note + '</span>' : ''}`;
+}
+
+function renderCaseSummary() {
+  const table = document.getElementById('summary-table');
+  let rows = '';
+  DATA.caseSummary.fields.forEach(f => {
+    let val;
+    if (f.gap && !f.value) {
+      val = gapHtml(f.gapNote);
+    } else if (f.gap && f.value) {
+      val = f.value + ' ' + gapHtml(f.gapNote);
+    } else {
+      val = f.value;
+    }
+    rows += `<tr><td>${f.label}</td><td>${val}</td></tr>`;
+  });
+  table.innerHTML = rows;
+
+  const timeline = document.getElementById('timeline');
+  let tlHtml = '';
+  DATA.caseSummary.timeline.forEach(t => {
+    tlHtml += `<div class="timeline-item"><div class="timeline-time">${t.time}</div><div class="timeline-event">${t.event}</div></div>`;
+  });
+  timeline.innerHTML = tlHtml;
+
+  const dx = document.getElementById('working-dx');
+  let dxHtml = '';
+  DATA.caseSummary.workingDiagnoses.forEach((d, i) => {
+    dxHtml += `<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <span style="font-weight:700;color:var(--accent);min-width:20px;">${i+1}.</span>
+      <span>${d}</span>
+    </div>`;
+  });
+  dx.innerHTML = dxHtml;
+}
+
+function renderInsights() {
+  const container = document.getElementById('insights-container');
+  let html = '';
+  DATA.insights.forEach(ins => {
+    const colour = ins.scoreLevel === 'high' ? 'filled-high' : ins.scoreLevel === 'mid' ? 'filled-mid' : 'filled-low';
+    const dots = `<div class="score-dots">
+      <span class="score-dot ${colour}"></span>
+      <span class="score-dot ${colour}"></span>
+      <span class="score-dot ${colour}"></span>
+    </div>`;
+    html += `<div class="insight-card" id="insight-${ins.number}">
+      <div class="insight-header" onclick="toggleInsight(${ins.number})">
+        <span class="insight-num">#${ins.number}</span>
+        <span class="insight-title">${ins.title}</span>
+        <div class="insight-right">${dots}<span class="chevron">▼</span></div>
+      </div>
+      <div class="insight-body">
+        <div class="insight-body-inner">
+          <div class="insight-section">
+            <div class="label">Finding</div>
+            <p>${ins.finding}</p>
+          </div>
+          <div class="insight-section">
+            <div class="label">Significance</div>
+            <p>${ins.significance}</p>
+          </div>
+          <div class="insight-section">
+            <div class="label">Correct Response</div>
+            <p>${ins.correctResponse}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleInsight(num) {
+  const card = document.getElementById('insight-' + num);
+  card.classList.toggle('expanded');
+}
+
+function scoreBadgeHtml(score) {
+  let cls = score === 10 ? 'high' : score >= 8 ? 'mid' : 'low';
+  return `<span class="score-badge ${cls}">${score}</span>`;
+}
+
+function renderInvTable(tableId, data) {
+  const table = document.getElementById(tableId);
+  let rows = data.map(r => ({ ...r }));
+  // Sort descending by score by default
+  rows.sort((a, b) => b.score - a.score);
+
+  let sortDir = -1; // -1 = desc
+  const buildTable = (sorted) => {
+    let html = `<thead><tr>
+      <th id="${tableId}-score-th" style="width:60px;" onclick="sortTable('${tableId}', data)">Score ${sortDir === -1 ? '↓' : '↑'}</th>
+      <th>Item</th>
+      <th>Why It Matters</th>
+      <th style="width:60px;">Source</th>
+    </tr></thead><tbody>`;
+    sorted.forEach(r => {
+      html += `<tr><td>${scoreBadgeHtml(r.score)}</td><td><strong>${r.item}</strong></td><td style="color:var(--text-secondary);">${r.why}</td><td style="font-size:0.75rem;color:var(--text-muted);">${r.source}</td></tr>`;
+    });
+    html += '</tbody>';
+    table.innerHTML = html;
+  };
+
+  buildTable(rows);
+
+  // Sort on click
+  table.addEventListener('click', function(e) {
+    const th = e.target.closest('th');
+    if (!th || !th.id.includes('score-th')) return;
+    sortDir *= -1;
+    rows.sort((a, b) => sortDir === -1 ? b.score - a.score : a.score - b.score);
+    th.textContent = `Score ${sortDir === -1 ? '↓' : '↑'}`;
+    buildTable(rows);
+    table.querySelector('th').textContent = `Score ${sortDir === -1 ? '↓' : '↑'}`;
+  });
+}
+
+function renderDifferentials() {
+  const container = document.getElementById('diff-container');
+  const groups = [
+    { key: 'likely', cls: 'likely', icon: '◉', label: 'Most Likely', items: DATA.differentials.mostLikely },
+    { key: 'miss', cls: 'miss', icon: '⚠', label: 'Must Not Miss', items: DATA.differentials.mustNotMiss },
+    { key: 'benign', cls: 'benign', icon: '○', label: 'Benign / Alternative', items: DATA.differentials.benign }
+  ];
+  let html = '';
+  groups.forEach(g => {
+    let items = '';
+    g.items.forEach((item, i) => {
+      items += `<div class="diff-item">
+        <span class="diff-num">${i + 1}.</span>
+        <div>
+          <div class="diff-name">${item.name}</div>
+          <div class="diff-rationale">${item.rationale}</div>
+        </div>
+      </div>`;
+    });
+    html += `<div class="diff-group ${g.cls} open" id="diff-${g.key}">
+      <div class="diff-group-header" onclick="toggleDiff('${g.key}')">
+        <span class="diff-group-title">${g.icon} ${g.label}</span>
+        <span style="font-size:0.75rem;color:var(--text-secondary);">${g.items.length} diagnoses ▼</span>
+      </div>
+      <div class="diff-body">${items}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleDiff(key) {
+  document.getElementById('diff-' + key).classList.toggle('open');
+}
+
+function renderActionPlan() {
+  const ap = DATA.actionPlan;
+  const dateStr = DATA.meta.date;
+  let immediateHtml = ap.immediateActions.map((a, i) => `<li><input type="checkbox"> ${i+1}. ${a}</li>`).join('');
+  let urgentHtml = ap.urgentInvestigations.map((u, i) => `<li><input type="checkbox"> ${i+1}. <strong>${u.item}</strong> — ${u.reason}</li>`).join('');
+  let checklistHtml = ap.preOpChecklist.map(c => `<li><input type="checkbox"> ${c}</li>`).join('');
+  let referralHtml = `<div class="referral-grid">${ap.referrals.map(r => `<div class="referral-chip"><input type="checkbox"> ${r}</div>`).join('')}</div>`;
+  let top3Html = ap.top3Priorities.map((p, i) => `<div class="priority-item">
+    <div class="priority-label">${i+1}. ${p.item}</div>
+    <div class="priority-just">${p.justification}</div>
+  </div>`).join('');
+
+  document.getElementById('action-plan-content').innerHTML = `
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.15em;color:var(--text-secondary);margin-bottom:4px;">CASE ACTION PLAN</div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);">Generated: ${dateStr} &nbsp;|&nbsp; Prepared by: Medical Student (VibeRounds)</div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);">Case: ${DATA.meta.caseId}</div>
+    </div>
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Clinical Summary</div>
+    <p class="plan-summary">${ap.clinicalSummary}</p>
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Immediate Actions (Do Today — Before Any Procedure)</div>
+    <ul class="checklist">${immediateHtml}</ul>
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Urgent Investigations (Within 48–72 Hours)</div>
+    <ul class="checklist">${urgentHtml}</ul>
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Pre-Operative Safety Checklist</div>
+    <ul class="checklist">${checklistHtml}</ul>
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Specialist Referrals Required</div>
+    ${referralHtml}
+
+    <hr class="plan-rule">
+    <div class="plan-section-title">Top 3 Diagnostic Priorities</div>
+    ${top3Html}
+
+    <div class="plan-footer">
+      PREPARED USING VibeRounds v1.1 &nbsp;|&nbsp; Educational output only. Independent clinical verification required. &nbsp;|&nbsp; Not a substitute for licensed professional judgment.
+    </div>
+  `;
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('main > section').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById(this.dataset.tab).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('panel-' + this.dataset.sub).classList.add('active');
+  });
+});
+
+document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+
+renderCaseSummary();
+renderInsights();
+renderInvTable('table-hist', DATA.investigations.history);
+renderInvTable('table-exam', DATA.investigations.examination);
+renderInvTable('table-inv',  DATA.investigations.investigations);
+renderDifferentials();
+renderActionPlan();
+</script>
+</body>
+</html>
