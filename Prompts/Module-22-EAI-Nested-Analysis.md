@@ -6,6 +6,9 @@
 > **Clinical Disclaimer:** All AI-generated outputs produced using these prompts require independent clinical verification before being acted upon. This module is a learning and synthesis tool, not a clinical decision support system.
 
 ---
+## Dashboard
+| [Dashboard Demo](https://avi33tbtt.github.io/demo/lightweightgcka/eai.html) 
+
 
 ## Source
 
