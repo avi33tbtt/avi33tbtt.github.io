@@ -251,7 +251,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 38 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
 | 39 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
 | 40 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 41 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
+| 41 | [The Story Module](Story.md) | The Story Module |
 
 
 ## 🧩 Supplementary Frameworks
