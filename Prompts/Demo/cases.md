@@ -1,4 +1,4 @@
-[← Back](../Prompts/Prompts.md)
+[← Back](../Prompts.md)
 ## The Learning Stack - Full Analytics Demo
 
 | Title | Go to |
