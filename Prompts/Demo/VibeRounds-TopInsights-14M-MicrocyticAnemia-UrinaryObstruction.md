@@ -1,3 +1,4 @@
+[← Back](cases.md)
 # VibeRounds — Top Insights
 
 **Case link:** https://jayanth1802.blogspot.com/2021/03/unit-ii-admission-on-02032021-dr.html
