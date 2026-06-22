@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinical Case Analysis — Unit 6 & Unit 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-muted: #5c5c5c;
+    --rule: #d4d0c8;
+    --case1: #2e4a6b;
+    --case2: #5a2e1a;
+    --case3: #1a4a3a;
+    --case4: #4a1a4a;
+    --accent: #c94040;
+    --tag-bg: #f0ede6;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'IBM Plex Serif', serif;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 2.5rem 3rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem;
+  }
+  .header-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header-meta {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    line-height: 1.8;
+  }
+
+  /* OVERVIEW STRIP */
+  .overview-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--rule);
+  }
+  .strip-cell {
+    padding: 1.2rem 1.5rem;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .strip-cell:last-child { border-right: none; }
+  .strip-cell:hover { background: #eeebe3; }
+  .strip-num {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .strip-dx {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+  .strip-pt {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin-top: 0.25rem;
+  }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .dot-1 { background: var(--case1); }
+  .dot-2 { background: var(--case2); }
+  .dot-3 { background: var(--case3); }
+  .dot-4 { background: var(--case4); }
+
+  /* MAIN CONTENT */
+  main { padding: 3rem; max-width: 1100px; margin: 0 auto; }
+
+  /* CASE CARD */
+  .case-card {
+    margin-bottom: 4rem;
+    border-left: 3px solid var(--rule);
+    padding-left: 2rem;
+  }
+  .case-card.c1 { border-color: var(--case1); }
+  .case-card.c2 { border-color: var(--case2); }
+  .case-card.c3 { border-color: var(--case3); }
+  .case-card.c4 { border-color: var(--case4); }
+
+  .case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .case-num {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.3rem;
+  }
+  .case-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.45rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .case-date {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    background: var(--tag-bg);
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--rule);
+    white-space: nowrap;
+    margin-top: 0.4rem;
+  }
+
+  /* GRID LAYOUT FOR CASE DETAILS */
+  .case-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 680px) {
+    .case-grid { grid-template-columns: 1fr; }
+    main { padding: 1.5rem; }
+    header { padding: 1.5rem; grid-template-columns: 1fr; }
+    .overview-strip { grid-template-columns: 1fr 1fr; }
+  }
+
+  .info-block {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1.2rem 1.4rem;
+  }
+  .info-block h3 {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .info-block p, .info-block li {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  .info-block ul { padding-left: 1rem; }
+  .info-block li { margin-bottom: 0.2rem; }
+
+  /* VITALS TABLE */
+  .vitals-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+  .vital-chip {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--rule);
+    padding: 0.2rem 0.5rem;
+  }
+  .vital-label { color: var(--ink-muted); margin-right: 3px; }
+
+  /* DIAGNOSIS TAG */
+  .dx-block {
+    background: var(--ink);
+    color: #f7f6f2;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .dx-block .info-block { background: transparent; border: none; padding: 0; }
+  .dx-block h3 {
+    color: rgba(247,246,242,0.5);
+    border-color: rgba(247,246,242,0.15);
+  }
+  .dx-block p { font-size: 0.9rem; line-height: 1.6; color: #f7f6f2; }
+  .dx-final {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* ANALYSIS */
+  .analysis-block {
+    border: 1px solid var(--rule);
+    background: #faf9f5;
+    padding: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .analysis-block h3 {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .analysis-block p { font-size: 0.88rem; margin-bottom: 0.7rem; }
+  .analysis-block p:last-child { margin-bottom: 0; }
+
+  /* TREATMENT */
+  .tx-list { list-style: none; padding: 0; }
+  .tx-list li {
+    font-size: 0.83rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px dotted var(--rule);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .tx-list li:last-child { border-bottom: none; }
+  .tx-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    min-width: 1.5rem;
+    padding-top: 0.1rem;
+  }
+
+  /* DIVIDER */
+  .case-divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--rule), transparent);
+    margin: 0 0 4rem 0;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 2px solid var(--ink);
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+  }
+
+  /* ANCHOR offset for sticky nav */
+  .anchor { padding-top: 1rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="header-label">Medical Education E-Logbook · February 2021</p>
+    <h1>Four Clinical Cases<br><em>Nested Analysis</em></h1>
+  </div>
+  <div class="header-meta">
+    Kurnool Medical College<br>
+    Units 1 &amp; 6<br>
+    Module 22
+  </div>
+</header>
+
+<!-- Quick overview strip -->
+<nav class="overview-strip">
+  <div class="strip-cell" onclick="document.getElementById('case1').scrollIntoView({behavior:'smooth'})">
+    <div class="strip-num"><span class="dot dot-1"></span>Case 01</div>
+    <div class="strip-dx">?Leptospirosis with Thrombocytopenia &amp; Jaundice</div>
+    <div class="strip-pt">37 M · Daily Wage Labourer</div>
+  </div>
+  <div class="strip-cell" onclick="document.getElementById('case2').scrollIntoView({behavior:'smooth'})">
+    <div class="strip-num"><span class="dot dot-2"></span>Case 02</div>
+    <div class="strip-dx">Community-Acquired Pneumonia</div>
+    <div class="strip-pt">70 F · Post-party exposure</div>
+  </div>
+  <div class="strip-cell" onclick="document.getElementById('case3').scrollIntoView({behavior:'smooth'})">
+    <div class="strip-num"><span class="dot dot-3"></span>Case 03</div>
+    <div class="strip-dx">Wet Beri-Beri / Dilated Cardiomyopathy</div>
+    <div class="strip-pt">40 M · Lorry Driver · Alcoholic</div>
+  </div>
+  <div class="strip-cell" onclick="document.getElementById('case4').scrollIntoView({behavior:'smooth'})">
+    <div class="strip-num"><span class="dot dot-4"></span>Case 04</div>
+    <div class="strip-dx">LMN Facial Palsy (Bell's Palsy)</div>
+    <div class="strip-pt">16 M · House-Brackmann Grade 4</div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════════════════════ CASE 1 -->
+  <section class="case-card c1 anchor" id="case1">
+    <div class="case-header">
+      <div>
+        <div class="case-num"><span class="dot dot-1"></span>Case 01 · Unit 6 · 20 Feb 2021</div>
+        <div class="case-title">?Leptospirosis with Thrombocytopenia,<br>Jaundice &amp; Non-Oliguric Renal Failure</div>
+      </div>
+      <div class="case-date">Admitted: Feb 2021<br>Unit 6 Male Ward</div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Patient Profile</h3>
+        <ul>
+          <li><strong>Age / Sex:</strong> 37-year-old Male</li>
+          <li><strong>Occupation:</strong> Daily wage labourer</li>
+          <li><strong>Presenting complaints:</strong> Fever with chills ×5 days, generalised weakness, anorexia ×4 days</li>
+          <li><strong>Associated symptoms:</strong> Myalgia, 2 vomiting episodes, 3 loose stools (yesterday), no abdominal pain, no SOB, no pedal oedema</li>
+          <li><strong>Social history:</strong> Alcohol (180 ml/day ×15 yrs), tobacco chewing (2 packs/day)</li>
+          <li><strong>Relevant negatives:</strong> No HTN, DM, CVA, CAD, TB, asthma, epilepsy</li>
+        </ul>
+      </div>
+
+      <div class="info-block">
+        <h3>Vitals &amp; Examination</h3>
+        <div class="vitals-row">
+          <span class="vital-chip"><span class="vital-label">PR</span>76 bpm</span>
+          <span class="vital-chip"><span class="vital-label">BP</span>110/80 mmHg</span>
+        </div>
+        <ul style="margin-top:0.8rem">
+          <li>CVS: S1 S2 heard, normal</li>
+          <li>RS: Bilateral air entry clear</li>
+          <li>Chest: Barrel-shaped</li>
+          <li><strong>Petechiae present over upper limbs</strong></li>
+          <li>No pedal oedema, no icterus on presentation notes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dx-block">
+      <div class="info-block">
+        <h3>Provisional Diagnosis</h3>
+        <p>Differential included alcoholic hepatitis vs. leptospirosis. Clinical triad of <strong>fever + thrombocytopenia (petechiae) + occupational exposure (labourer, mud/water contact risk)</strong> raised strong suspicion for leptospirosis. Jaundice and non-oliguric renal failure developed, fitting Weil's disease spectrum.</p>
+        <p class="dx-final">? Leptospirosis with thrombocytopenia, jaundice &amp; non-oliguric renal failure (Weil's disease)</p>
+      </div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Treatment Summary (Days 1–3)</h3>
+        <ul class="tx-list">
+          <li><span class="tx-num">1.</span>Inj. Thiamine 1 amp in 100 ml NS IV TID (Wernicke prophylaxis given alcohol history)</li>
+          <li><span class="tx-num">2.</span>IVF: NS + RL / NS + DNS at 75 → 50 ml/hr (fluid resuscitation, renal perfusion)</li>
+          <li><span class="tx-num">3.</span>Inj. Ceftriaxone 1 g IV BD (added Day 2 — antibiotic for leptospirosis)</li>
+          <li><span class="tx-num">4.</span>Inj. Pantoprazole 40 mg IV OD (gastroprotection)</li>
+          <li><span class="tx-num">5.</span>Inj. Ondansetron 4 mg IV TID/SOS (antiemetic)</li>
+          <li><span class="tx-num">6.</span>Tab. Udiliv 300 mg PO OD (ursodeoxycholic acid — hepatoprotection)</li>
+          <li><span class="tx-num">7.</span>Strict I/O charting; monitor for bleeding manifestations</li>
+        </ul>
+      </div>
+
+      <div class="analysis-block">
+        <h3>Clinical Analysis</h3>
+        <p>The constellation of <strong>fever, myalgia, thrombocytopenia with petechiae, jaundice, and renal involvement</strong> in a manual labourer is the classic presentation of <em>Leptospira interrogans</em> infection (Weil's disease). Occupational exposure to contaminated water/soil is the key epidemiological link.</p>
+        <p>The co-existing <strong>barrel chest and heavy alcohol use</strong> (15 years) add complexity — alcoholic hepatitis must remain on the differential, but the thrombocytopenia with petechiae and non-oliguric renal failure point more specifically toward leptospirosis rather than pure alcohol-related liver disease.</p>
+        <p>Ceftriaxone is appropriate empiric antibiotic therapy. Thiamine supplementation is essential given the chronic alcohol intake and risk of Wernicke's encephalopathy. Fluid management and close monitoring of renal output are critical in non-oliguric renal failure.</p>
+        <p><em>Key learning point:</em> Always screen for occupational and environmental exposure in febrile illness with multi-organ involvement. The leptospira IgM MAT (microscopic agglutination test) or ELISA should be ordered for confirmation.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════ CASE 2 -->
+  <section class="case-card c2 anchor" id="case2">
+    <div class="case-header">
+      <div>
+        <div class="case-num"><span class="dot dot-2"></span>Case 02 · Unit 6 · 19 Feb 2021</div>
+        <div class="case-title">70-Year-Old Female<br>with Community-Acquired Pneumonia</div>
+      </div>
+      <div class="case-date">Admitted: 19 Feb 2021<br>Unit 6</div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Patient Profile</h3>
+        <ul>
+          <li><strong>Age / Sex:</strong> 70-year-old Female</li>
+          <li><strong>Presenting complaints:</strong> Sudden-onset SOB (since the previous night), fever ×2 days, cough ×2 days, vomiting ×1 day (3 episodes total)</li>
+          <li><strong>History:</strong> Attended a party, consumed cold drinks; developed fever and cough next morning, then sudden-onset SOB at 8 PM, which worsened by the next morning</li>
+          <li><strong>Progression:</strong> Went to RMP, took medications, had temporary relief; SOB returned and worsened, prompting hospital admission</li>
+        </ul>
+      </div>
+
+      <div class="info-block">
+        <h3>Key Clinical Notes</h3>
+        <ul>
+          <li>Elderly female — reduced respiratory reserve</li>
+          <li>Party/cold drink exposure — aspiration risk or environmental trigger</li>
+          <li>Sudden-onset SOB raises pulmonary oedema vs. pneumonia</li>
+          <li>Cough + fever ×2 days preceding SOB suggests infectious aetiology</li>
+          <li>Vomiting adds aspiration pneumonia to the differential</li>
+          <li>Age-related immunosenescence increases susceptibility to atypical organisms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dx-block">
+      <div class="info-block">
+        <h3>Probable Diagnosis</h3>
+        <p>Given the clinical timeline — fever + cough preceding respiratory distress in an elderly woman with possible aspiration risk — the most likely diagnosis is <strong>Community-Acquired Pneumonia (CAP)</strong>, with aspiration pneumonia as an important consideration. The CXR (available in original post as images) would be decisive.</p>
+        <p class="dx-final">Community-Acquired Pneumonia / Aspiration Pneumonia in an elderly female</p>
+      </div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Expected Management</h3>
+        <ul class="tx-list">
+          <li><span class="tx-num">1.</span>Oxygen supplementation to maintain SpO₂ &gt; 94%</li>
+          <li><span class="tx-num">2.</span>IV antibiotics: Ceftriaxone ± Azithromycin (CAP coverage); add Metronidazole for aspiration</li>
+          <li><span class="tx-num">3.</span>IV fluids with caution (risk of pulmonary oedema in elderly)</li>
+          <li><span class="tx-num">4.</span>Antipyretics, antiemetics PRN</li>
+          <li><span class="tx-num">5.</span>CXR, CBC, sputum culture, blood cultures, procalcitonin</li>
+          <li><span class="tx-num">6.</span>ECG to rule out cardiac cause of SOB</li>
+          <li><span class="tx-num">7.</span>Respiratory physiotherapy; semi-recumbent positioning</li>
+        </ul>
+      </div>
+
+      <div class="analysis-block">
+        <h3>Clinical Analysis</h3>
+        <p>This case illustrates a classic presentation of <strong>CAP in the elderly</strong>. The sequential timeline — cold drink exposure at a party → fever + cough → vomiting → sudden worsening SOB — suggests an infectious trigger with secondary aspiration potential.</p>
+        <p>In a 70-year-old, the differential is broad: CAP due to typical organisms (<em>S. pneumoniae, H. influenzae</em>), atypical organisms (<em>Legionella, Mycoplasma</em>), or aspiration pneumonia following vomiting episodes.</p>
+        <p><strong>The CURB-65 score</strong> should be calculated to risk-stratify and determine whether inpatient vs. ICU care is warranted. In an elderly patient with sudden SOB and multi-day fever, a score ≥ 3 would indicate high severity.</p>
+        <p><em>Key learning point:</em> Elderly patients often present atypically — vomiting and sudden SOB may dominate over classic pneumonia symptoms. A high index of suspicion and prompt empiric therapy are essential.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════ CASE 3 -->
+  <section class="case-card c3 anchor" id="case3">
+    <div class="case-header">
+      <div>
+        <div class="case-num"><span class="dot dot-3"></span>Case 03 · Unit 6 · 21 Feb 2021</div>
+        <div class="case-title">40-Year-Old Male with Pedal Oedema,<br>Abdominal Distension &amp; Dyspnoea</div>
+      </div>
+      <div class="case-date">Admitted: 06 Feb 2021<br>Unit 6 Male Ward</div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Patient Profile</h3>
+        <ul>
+          <li><strong>Age / Sex:</strong> 40-year-old Male</li>
+          <li><strong>Occupation:</strong> Lorry driver</li>
+          <li><strong>Presenting complaints:</strong> Bilateral pedal oedema ×5–6 days, abdominal distension ×5–6 days, cough with white sputum ×6 days, SOB (NYHA Grade 2→4 over 1 week), orthopnoea, constipation ×1 month</li>
+          <li><strong>Alcohol:</strong> 360 ml/day, 3–4 times/week ×7 years</li>
+          <li><strong>Past history:</strong> Right heart failure / Wet Beri-Beri (1 year ago); ?AIDP / Dry Beri-Beri (8 months ago)</li>
+          <li><strong>Family history:</strong> Father with DM</li>
+        </ul>
+      </div>
+
+      <div class="info-block">
+        <h3>Vitals &amp; Examination</h3>
+        <div class="vitals-row">
+          <span class="vital-chip"><span class="vital-label">BP</span>140/90 mmHg</span>
+          <span class="vital-chip"><span class="vital-label">PR</span>94 bpm</span>
+          <span class="vital-chip"><span class="vital-label">RR</span>24 cpm</span>
+          <span class="vital-chip"><span class="vital-label">SpO₂</span>98% RA</span>
+          <span class="vital-chip"><span class="vital-label">GRBS</span>90 mg/dL</span>
+          <span class="vital-chip"><span class="vital-label">Wt</span>72 kg</span>
+        </div>
+        <ul style="margin-top:0.8rem">
+          <li>B/L pedal oedema +</li>
+          <li>CVS: S1 S2 +, <strong>Loud S1 in tricuspid area</strong>, raised JVP</li>
+          <li>RS: Dyspnoea grade II→IV, orthopnoea +</li>
+          <li>Abdomen: Soft, tenderness RIF</li>
+          <li>CNS: Knee &amp; ankle reflexes absent bilaterally (LMN pattern)</li>
+          <li>No pallor, icterus, cyanosis, clubbing, lymphadenopathy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dx-block">
+      <div class="info-block">
+        <h3>Provisional Diagnosis</h3>
+        <p>The combination of <strong>bilateral pedal oedema, raised JVP, loud S1 in tricuspid area, orthopnoea, and a prior admission for right heart failure with wet beri-beri</strong> in a chronic alcoholic strongly points toward recurrent <strong>thiamine-deficiency cardiomyopathy (wet beri-beri)</strong> / dilated cardiomyopathy. The absent knee and ankle reflexes suggest concurrent peripheral neuropathy (dry beri-beri component).</p>
+        <p class="dx-final">Wet Beri-Beri (Thiamine-Deficiency Cardiomyopathy) with Peripheral Neuropathy — Recurrent, on background of chronic alcoholism</p>
+      </div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Expected Management</h3>
+        <ul class="tx-list">
+          <li><span class="tx-num">1.</span>IV Thiamine 100 mg TID (before any glucose infusion to prevent Wernicke's)</li>
+          <li><span class="tx-num">2.</span>Diuretics: Furosemide IV for fluid overload / oedema</li>
+          <li><span class="tx-num">3.</span>Spironolactone for right heart failure</li>
+          <li><span class="tx-num">4.</span>ACE inhibitor / ARB for cardiac remodelling (if BP tolerates)</li>
+          <li><span class="tx-num">5.</span>Strict alcohol abstinence counselling</li>
+          <li><span class="tx-num">6.</span>Echo: assess LV/RV function, cardiomegaly</li>
+          <li><span class="tx-num">7.</span>NCS/EMG for peripheral neuropathy characterisation</li>
+          <li><span class="tx-num">8.</span>Daily weight, I/O charting; low-salt diet</li>
+        </ul>
+      </div>
+
+      <div class="analysis-block">
+        <h3>Clinical Analysis</h3>
+        <p>This case is a compelling study in <strong>recurrent thiamine deficiency</strong> due to sustained alcoholism. Thiamine (Vitamin B1) is essential for cardiac myocyte energy metabolism. Deficiency leads to high-output cardiac failure with peripheral vasodilation, the hallmark of wet beri-beri.</p>
+        <p>The <strong>loud S1 in the tricuspid area</strong> and raised JVP are consistent with right-sided heart failure. The progression from NYHA Grade 2 to Grade 4 in one week indicates acute decompensation. The bilateral absent knee and ankle reflexes, in the context of prior ?AIDP/?dry beri-beri, suggests a <strong>mixed neuropathy</strong> — thiamine-deficient peripheral neuropathy vs. AIDP.</p>
+        <p><strong>Critical clinical rule:</strong> Always give IV thiamine <em>before</em> glucose in suspected Wernicke's or wet beri-beri. Glucose administration depletes residual thiamine and can precipitate acute Wernicke's encephalopathy.</p>
+        <p><em>Key learning point:</em> Chronic alcoholism with recurrent cardiac failure and peripheral neuropathy = thiamine deficiency until proven otherwise. Echocardiography will differentiate thiamine-responsive cardiomyopathy (potentially reversible) from fixed DCM.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="case-divider"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════ CASE 4 -->
+  <section class="case-card c4 anchor" id="case4">
+    <div class="case-header">
+      <div>
+        <div class="case-num"><span class="dot dot-4"></span>Case 04 · Unit 1 · 22–23 Feb 2021</div>
+        <div class="case-title">16-Year-Old Male with<br>LMN Facial Palsy (Right-Sided)</div>
+      </div>
+      <div class="case-date">Admitted: 22 Feb 2021<br>Unit 1</div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Patient Profile</h3>
+        <ul>
+          <li><strong>Age / Sex:</strong> 16-year-old Male</li>
+          <li><strong>Presenting complaints:</strong> Deviation of mouth to the left ×5 days, inability to close right eyelid ×5 days</li>
+          <li><strong>Onset:</strong> Mouth deviation noticed first; right eye inability to close followed 12 hours later</li>
+          <li><strong>Predisposing factor:</strong> Cold exposure (sleeping outside) ×10 days</li>
+          <li><strong>Associated:</strong> Difficulty chewing</li>
+          <li><strong>Negatives:</strong> No fever, no loss of taste, no ear discharge, no hearing loss, no limb weakness, lacrimation and salivation unaffected</li>
+        </ul>
+      </div>
+
+      <div class="info-block">
+        <h3>Cranial Nerve VII Examination</h3>
+        <ul>
+          <li><strong>Motor:</strong> Absent eyebrow raising (right), loss of forehead wrinkles (right), incomplete eye closure (right), mouth deviation to left, unable to blow cheeks, unable to whistle</li>
+          <li><strong>Sensory:</strong> Taste sensation intact (anterior 2/3 tongue)</li>
+          <li><strong>Secretory:</strong> Lacrimation unaffected; salivation unaffected</li>
+          <li><strong>Reflexes:</strong> Corneal + bilaterally; all limb reflexes 1+ bilaterally; power 5/5 all limbs</li>
+          <li><strong>House-Brackmann Grade:</strong> <strong>Grade 4</strong> (moderately severe dysfunction)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dx-block">
+      <div class="info-block">
+        <h3>Diagnosis</h3>
+        <p>Complete LMN pattern (involving upper and lower face on the same side), intact taste and lacrimation, no otological symptoms, and cold exposure history are characteristic of <strong>idiopathic Bell's palsy</strong>. The involvement of <em>all ipsilateral CN VII motor branches</em> (frontalis, orbicularis oculi, orbicularis oris, buccinator) confirms LMN localisation.</p>
+        <p class="dx-final">Idiopathic LMN Facial Palsy (Bell's Palsy) — Right-sided, House-Brackmann Grade 4</p>
+      </div>
+    </div>
+
+    <div class="case-grid">
+      <div class="info-block">
+        <h3>Treatment Instituted</h3>
+        <ul class="tx-list">
+          <li><span class="tx-num">1.</span>Tab. Zincovit (multivitamin/nerve support)</li>
+          <li><span class="tx-num">2.</span>Physiotherapy (facial exercises — active and passive)</li>
+          <li><span class="tx-num">3.</span>Eye patch for right eye (corneal protection — lagophthalmos)</li>
+        </ul>
+        <p style="margin-top:0.8rem; font-size:0.82rem; color:var(--ink-muted)">
+          Standard additional treatment (per guidelines): Oral Prednisolone (1 mg/kg/day ×1 week, taper) initiated within 72 hours of onset for best outcomes. Antiviral (Acyclovir) if Ramsay Hunt suspected. Artificial tears and eye lubricant for corneal protection.
+        </p>
+      </div>
+
+      <div class="analysis-block">
+        <h3>Clinical Analysis</h3>
+        <p>This is a classic case of <strong>Bell's palsy</strong> — the most common cause of acute unilateral LMN facial paralysis, accounting for ~70% of cases. The key distinguishing feature from UMN (central) palsy is involvement of the <strong>upper face</strong> (forehead sparing in UMN lesions; forehead affected in LMN lesions), which is clearly present here.</p>
+        <p>The <strong>sequential onset</strong> (mouth first, then eye 12 hours later) and <strong>cold exposure</strong> history are consistent with Bell's palsy, possibly triggered by reactivation of latent HSV-1. Taste being intact suggests the lesion is distal to the chorda tympani branch junction, which is a favourable prognostic sign.</p>
+        <p><strong>House-Brackmann Grade 4</strong> implies moderately severe dysfunction with visible but not full movement. With appropriate treatment, ~70% of Grade 4 patients recover to Grade 1 (normal) within 6 months.</p>
+        <p><em>Key learning point:</em> In young patients with Bell's palsy, always rule out Lyme disease (endemic area history), Ramsay Hunt syndrome (ear vesicles, severe pain), and parotid tumour. Steroids are the cornerstone of treatment and must be started early.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVE SUMMARY -->
+  <section style="margin-top:3rem; border-top: 2px solid var(--ink); padding-top:2rem;">
+    <div class="case-num" style="margin-bottom:0.5rem;">Nested Analysis Summary</div>
+    <h2 style="font-family:var(--serif); font-weight:300; font-size:1.6rem; margin-bottom:1.5rem; letter-spacing:-0.01em;">Cross-Case Themes &amp; Learning Points</h2>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+      <div class="info-block">
+        <h3>Alcohol as a Common Thread</h3>
+        <p style="font-size:0.88rem">Cases 1 and 3 both involve <strong>chronic alcoholism</strong> as a major complicating factor. In Case 1, alcohol complicates the differential (alcoholic hepatitis vs. leptospirosis) and necessitates thiamine prophylaxis. In Case 3, chronic alcohol use has directly caused recurrent thiamine-deficiency cardiomyopathy and peripheral neuropathy. This underscores the systemic, multi-organ consequences of prolonged alcohol consumption.</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Thiamine (Vitamin B1) Across Cases</h3>
+        <p style="font-size:0.88rem">Thiamine features prominently in Cases 1 and 3. In Case 1, it is given prophylactically for an alcoholic patient. In Case 3, it is the <em>primary treatment</em> for a potentially life-threatening thiamine-deficiency cardiomyopathy. The clinical spectrum of thiamine deficiency spans cardiac failure (wet beri-beri), peripheral neuropathy (dry beri-beri), and Wernicke's encephalopathy.</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Age &amp; Vulnerability</h3>
+        <p style="font-size:0.88rem">The four patients span a wide age range: 16 (Bell's palsy), 37 (leptospirosis), 40 (beri-beri), and 70 (pneumonia). Cases at the extremes — the young patient with Bell's palsy and the elderly patient with pneumonia — reflect how age-related factors (immunosenescence in the elderly; possible viral triggers in the young) shape disease expression and severity.</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Occupational &amp; Environmental Exposure</h3>
+        <p style="font-size:0.88rem">Cases 1 (daily wage labourer → leptospirosis), 3 (lorry driver → irregular diet/alcohol), and 4 (cold exposure → Bell's palsy) all highlight the role of <strong>environmental and occupational factors</strong> in disease causation. A thorough social and occupational history is indispensable in reaching the correct diagnosis.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section style="background:var(--ink); color:#f7f6f2; padding:2rem 3rem;">
+  <p style="font-family:var(--mono); font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,246,242,0.45); margin-bottom:1.2rem;">Source E-Logbooks</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem;">
+    <a href="https://swarna46.blogspot.com/2021/02/dengue-feverleptispirosis-alcoholic.html" target="_blank" rel="noopener"
+       style="display:block; border:1px solid rgba(247,246,242,0.15); padding:1rem 1.2rem; text-decoration:none; transition:background 0.15s;"
+       onmouseover="this.style.background='rgba(247,246,242,0.07)'" onmouseout="this.style.background='transparent'">
+      <span style="font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:rgba(247,246,242,0.4); display:block; margin-bottom:0.4rem;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--case1);margin-right:6px;vertical-align:middle;"></span>CASE 01</span>
+      <span style="font-family:var(--sans); font-size:0.82rem; font-weight:500; color:#f7f6f2; display:block; line-height:1.35; margin-bottom:0.4rem;">?Leptospirosis with Thrombocytopenia, Jaundice &amp; Renal Failure</span>
+      <span style="font-family:var(--mono); font-size:0.62rem; color:rgba(247,246,242,0.4);">swarna46.blogspot.com</span>
+    </a>
+    <a href="https://sowmyakota.blogspot.com/2021/02/a-70-yr-old-male-with-pneumonia.html" target="_blank" rel="noopener"
+       style="display:block; border:1px solid rgba(247,246,242,0.15); padding:1rem 1.2rem; text-decoration:none; transition:background 0.15s;"
+       onmouseover="this.style.background='rgba(247,246,242,0.07)'" onmouseout="this.style.background='transparent'">
+      <span style="font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:rgba(247,246,242,0.4); display:block; margin-bottom:0.4rem;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--case2);margin-right:6px;vertical-align:middle;"></span>CASE 02</span>
+      <span style="font-family:var(--sans); font-size:0.82rem; font-weight:500; color:#f7f6f2; display:block; line-height:1.35; margin-bottom:0.4rem;">70-Year-Old Female with Community-Acquired Pneumonia</span>
+      <span style="font-family:var(--mono); font-size:0.62rem; color:rgba(247,246,242,0.4);">sowmyakota.blogspot.com</span>
+    </a>
+    <a href="https://manivarma7.blogspot.com/2021/02/this-is-online-e-log-book-to-discuss.html" target="_blank" rel="noopener"
+       style="display:block; border:1px solid rgba(247,246,242,0.15); padding:1rem 1.2rem; text-decoration:none; transition:background 0.15s;"
+       onmouseover="this.style.background='rgba(247,246,242,0.07)'" onmouseout="this.style.background='transparent'">
+      <span style="font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:rgba(247,246,242,0.4); display:block; margin-bottom:0.4rem;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--case3);margin-right:6px;vertical-align:middle;"></span>CASE 03</span>
+      <span style="font-family:var(--sans); font-size:0.82rem; font-weight:500; color:#f7f6f2; display:block; line-height:1.35; margin-bottom:0.4rem;">40M with Pedal Oedema, Abdominal Distension &amp; Wet Beri-Beri</span>
+      <span style="font-family:var(--mono); font-size:0.62rem; color:rgba(247,246,242,0.4);">manivarma7.blogspot.com</span>
+    </a>
+    <a href="https://sravyakandala.blogspot.com/2021/02/16-yo-male-with-lmn-facial-palsy.html" target="_blank" rel="noopener"
+       style="display:block; border:1px solid rgba(247,246,242,0.15); padding:1rem 1.2rem; text-decoration:none; transition:background 0.15s;"
+       onmouseover="this.style.background='rgba(247,246,242,0.07)'" onmouseout="this.style.background='transparent'">
+      <span style="font-family:var(--mono); font-size:0.58rem; letter-spacing:0.1em; color:rgba(247,246,242,0.4); display:block; margin-bottom:0.4rem;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--case4);margin-right:6px;vertical-align:middle;"></span>CASE 04</span>
+      <span style="font-family:var(--sans); font-size:0.82rem; font-weight:500; color:#f7f6f2; display:block; line-height:1.35; margin-bottom:0.4rem;">16-Year-Old Male with LMN Facial Palsy (Bell's Palsy)</span>
+      <span style="font-family:var(--mono); font-size:0.62rem; color:rgba(247,246,242,0.4);">sravyakandala.blogspot.com</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>Kurnool Medical College · E-Logbook · Module 22 · February 2021</p>
+  <p>De-identified patient data · Educational purposes only</p>
+</footer>
+
+</body>
+</html>
