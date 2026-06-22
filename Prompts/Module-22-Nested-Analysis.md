@@ -1,10 +1,3 @@
----
-title: Module 22 — Nested Analysis
-layout: default
----
-
-# [Dr. Avinash Kumar Gupta](https://avi33tbtt.github.io/)
-
 [← Back to Prompt Directory](https://avi33tbtt.github.io/Prompts/Prompts.html)
 
 # Module 22 — Nested Analysis
