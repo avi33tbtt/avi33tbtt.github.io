@@ -1,4 +1,4 @@
-# Module 23 — Thematic Analysis
+# Module 25 — Thematic Analysis
 
 **Objective:** Extract, name, and interrogate the recurring clinical, cognitive, and systemic themes within a case or across a set of cases — moving beyond the individual finding to the pattern that the findings collectively reveal.
 
