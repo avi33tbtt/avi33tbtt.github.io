@@ -1,14 +1,6 @@
----
-layout: default
-title: Module 22 — Bias Auditing | VibeRounds
-canonical: https://avi33tbtt.github.io/Prompts/Module-22-Bias-Auditing.html
----
-
-# [Dr. Avinash kumar gupta](https://avi33tbtt.github.io/)
-
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
-# Module 22 — Bias Auditing
+# Module 26 — Bias Auditing
 
 **Objective:** Train the discipline of deliberately surfacing and naming the cognitive biases that have shaped — or may have distorted — clinical reasoning on a case, *after* the reasoning has already occurred. Where [Module 1](https://avi33tbtt.github.io/Prompts/Module-01-Socratic-Clinical-Reasoning.html) builds reasoning forward from available evidence, Module 22 audits that reasoning retrospectively, asking not *what did you conclude* but *what warped the path to that conclusion*. The output is not a different diagnosis — it is a structured bias inventory and a set of corrective reasoning moves.
 
