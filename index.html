@@ -2236,26 +2236,6 @@
 </script>
 
 
-
-  <h2>Vibe Rounds - PubReads</h2>
-  <p style="margin: 0;"> Stop reading papers—start questioning them.🧠</p>
-  <p style="margin: 0;"> Experience how the Vibe Rounds philosophy is implemented in the PubRead app to transform research reading from passive consumption into active, critical thinking. This video demonstrates the Socratic Co-pilot, an AI mentor designed not to give answers, but to challenge your clinical reasoning and sharpen your cognitive work.</p>
-  <div class="video-wrap">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fdxDy6GvOMw?si=AcUuh8lfwmPYwl4C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-</div>
-
-
-
-
- <h2>Vibe Rounds - EMRs</h2>
-  <p>Is your EMR just a database, or is it a clinical partner?</p>
-<p>Discover how the Vibe Rounds philosophy brings a Socratic AI Mentor directly into the Electronic Medical Record (EMR) environment. This video explores a future where the EMR does more than store data—it acts as a cognitive scaffold to enhance clinical reasoning and improve patient safety.</p>
-<p><strong>The Core Philosophy:</strong> Consistent with the Vibe Rounds mission, this EMR integration focuses on AI that questions, not just AI that answers. By acting as a Socratic partner, the AI helps clinicians surface hidden assumptions and navigate common reasoning biases, ensuring that the human remains the final decision-maker.</p>
-<p>Enhance your clinical workflow. Sharpen your reasoning. Redefine the EMR.</p>
-   <div class="video-wrap">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tm28PXxYoss?si=yE0hZwW2S2J4g8Zg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>  </div>
-
-
   <main>
   <h3 class="instructions">Click any persona to reveal its command → copy → paste into any LLM as your opening prompt. It will help you DIY your own Vibe Rounds for learning purpose. Modify the prompt as you need.</h3>
   <h3 class="instructions"><strong>Disclaimer -</strong>To be used on personal responsibility and only for learning. Not be used for clinical purpose.</h3>
@@ -2550,101 +2530,6 @@
   Associate Professor, Department of Anatomy<br>
   AIIMS, Raipur</p>
 </div>
-
-
- <h2>Educator App</h2>
-<p>AI Educator Persona Creator: The video illustrates how teachers can build/use standalone learning tools by defining specialized mentors. It highlights the use of custom LLM Prompt System Instructions to dictate specific teaching styles, such as forcing Socratic reasoning and step-by-step guidance.</p>
-  <div class="video-wrap">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UjfkW53OWcQ?si=8OYRYgzMKbWCsN6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-  </div>
-
-
- <h2>Educator App Demo</h2>
-<div class="carousel-wrap">
-  <div class="carousel-stage" id="stage">
-
-    <button class="nav-btn prev" onclick="move(-1)" aria-label="Previous">&#8249;</button>
-    <button class="nav-btn next" onclick="move(1)"  aria-label="Next">&#8250;</button>
-
-    <!-- Slide 1 — replace src with your image URL or path -->
-    <div class="slide active" id="s0">
-      <img src="./Images/1.png" alt="Vibe Rounds Educator App screenshot 1 of 6" loading="lazy" />
-      <div class="slide-caption">1</div>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="slide" id="s1">
-      <img src="./Images/2.png" alt="Vibe Rounds Educator App screenshot 2 of 6" loading="lazy" />
-      <div class="slide-caption">2</div>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="slide" id="s2">
-      <img src="./Images/3.png" alt="Vibe Rounds Educator App screenshot 3 of 6" loading="lazy" />
-      <div class="slide-caption">3</div>
-    </div>
-
-    <!-- Slide 4 -->
-    <div class="slide" id="s3">
-      <img src="./Images/4.png" alt="Vibe Rounds Educator App screenshot 4 of 6" loading="lazy" />
-      <div class="slide-caption">4</div>
-    </div>
-
-    <!-- Slide 5 -->
-    <div class="slide" id="s4">
-      <img src="./Images/5.png" alt="Vibe Rounds Educator App screenshot 5 of 6" loading="lazy" />
-      <div class="slide-caption">5</div>
-    </div>
-
-    <!-- Slide 6 -->
-    <div class="slide" id="s5">
-      <img src="./Images/6.png" alt="Vibe Rounds Educator App screenshot 6 of 6" loading="lazy" />
-      <div class="slide-caption">6</div>
-    </div>
-
-  </div>
-
-  <div class="dots" id="dots"></div>
-  <p class="counter" id="counter">1 / 6</p>
-</div>
-
-<script>
-  let cur = 0;
-  const total = 6;
-  const dotsEl = document.getElementById('dots');
-
-  for (let i = 0; i < total; i++) {
-    const d = document.createElement('button');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-    d.onclick = () => goTo(i);
-    dotsEl.appendChild(d);
-  }
-
-  function goTo(n) {
-    document.getElementById('s' + cur).classList.remove('active');
-    document.querySelectorAll('.dot')[cur].classList.remove('active');
-    cur = (n + total) % total;
-    document.getElementById('s' + cur).classList.add('active');
-    document.querySelectorAll('.dot')[cur].classList.add('active');
-    document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
-  }
-
-  function move(dir) { goTo(cur + dir); }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') move(-1);
-    if (e.key === 'ArrowRight') move(1);
-  });
-
-  let startX = 0;
-  const stage = document.getElementById('stage');
-  stage.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-  stage.addEventListener('touchend', e => {
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) move(diff > 0 ? 1 : -1);
-  });
-</script>
 
 
 
