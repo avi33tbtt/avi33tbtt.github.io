@@ -219,6 +219,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Article](VibeRounds-Research-Article.md) | Article |
 | -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 | 22 | [Nested Analysis](Module-22-Nested-Analysis.md) | Nested Analysis |
+| -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
 
 
 ## 🧩 Supplementary Frameworks
@@ -287,6 +288,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Dependency-Network-Map.md
 ├── VibeRounds-Dashboard-DesignGuidelines.md
 ├── Module-22-Nested-Analysis.md
+├── VibeRounds_How_This_Can_Happen.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
