@@ -1,9 +1,3 @@
----
-title: Module 22 — Nested Analysis · Erythema ab Igne Case Series
-layout: default
----
-
-# Module 22 — Nested Analysis
 ## Erythema ab Igne: A 5-Case Nested Analysis
 
 **Applying the #VibeRounds Nested Analysis Framework (Module 22)**
