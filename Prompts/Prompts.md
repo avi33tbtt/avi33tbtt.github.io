@@ -170,7 +170,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ## ⚠️ Safety & Compliance Note
 
 > [!IMPORTANT]
-> All modules tested on de-identified case logs; before reuse, confirm that any `[paste...]` placeholder is filled with de-identified data only.
+> All modules tested on de-identified case logs; before reuse, confirm that any `[paste...]` placeholder is filled with de-identified data only at your individual capacity with patient consent and in accordance with your local law. 
 
 ---
 
