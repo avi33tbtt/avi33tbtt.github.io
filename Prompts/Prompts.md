@@ -112,6 +112,12 @@ If you already know which module and step you need, skip straight there using th
 | Naturalistic Decision Making | [Module 20 – Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) |
 | Evidence Frontier Search | [Module 21 – Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) |
 | Nested Analysis | [Module 22 — Nested Analysis](Module-22-Nested-Analysis.md) |
+| Counterfactual Analysis | [Module 23 — Counterfactual Analysis](Module-23-Counterfactual-Analysis.md) |
+| Nested Analysis | [Module 24 — Nested Analysis](Module-22-Nested-Analysis.md) |
+| Nested Analysis | [Module 25 — Nested Analysis](Module-22-Nested-Analysis.md) |
+| Nested Analysis | [Module 26 — Nested Analysis](Module-22-Nested-Analysis.md) |
+| Nested Analysis | [Module 27 — Nested Analysis](Module-22-Nested-Analysis.md) |
+| Nested Analysis | [Module 28 — Nested Analysis](Module-22-Nested-Analysis.md) |
 
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
@@ -161,6 +167,11 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 20** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 21** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 22** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 23** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 24** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 25** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 26** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 27** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
 ## Prompts Analytics
@@ -222,6 +233,11 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 | 22 | [Nested Analysis](Module-22-Nested-Analysis.md) | Nested Analysis |
 | -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
+| 23 | [Counterfactual Analysis](Module-23-Counterfactual-Analysis.md) | Counterfactual Analysis |
+| 24 | [Heuristic Analysis](Module-24-Heuristic-Analysis.md) | Heuristic Analysis |
+| 25 | [Thematic Analysis](Module-25-Thematic-Analysis.md) | Thematic Analysis |
+| 26 | [Bias Auditing](Module-26-Bias-Auditing.md) | Bias Auditing |
+| 27 | [Clinical Cognition Loop](Module-27-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
 
 
 ## 🧩 Supplementary Frameworks
@@ -291,6 +307,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Dashboard-DesignGuidelines.md
 ├── Module-22-Nested-Analysis.md
 ├── VibeRounds_How_This_Can_Happen.md
+Module-23-Counterfactual-Analysis.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
