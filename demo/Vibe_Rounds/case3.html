@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Module 1: Thyroid Malignancy with Subclinical Hyperthyroidism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary:     #ffffff;
+  --bg-secondary:   #f8f9fa;
+  --bg-tertiary:    #f1f3f5;
+  --border:         #dee2e6;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #6c757d;
+  --text-muted:     #adb5bd;
+  --accent:         #2563eb;
+  --accent-light:   #eff6ff;
+  --warning:        #d97706;
+  --warning-light:  #fffbeb;
+  --danger:         #dc2626;
+  --danger-light:   #fef2f2;
+  --success:        #16a34a;
+  --success-light:  #f0fdf4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+h1 { font-size: 1.5rem; font-weight: 700; }
+h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 16px; }
+h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+
+.label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.gap-badge {
+  background: var(--warning-light);
+  color: var(--warning);
+  border: 1px solid #fcd34d;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+}
+
+.phase-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+/* HEADER */
+header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 32px 20px;
+}
+.header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.header-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.badge {
+  display: inline-block;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+.badge-accent { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+/* STAT BAR */
+.stat-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+.stat-item {
+  flex: 1;
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-top: 2px; }
+
+/* TAB STRIP */
+.tab-strip {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-primary);
+  overflow-x: auto;
+  padding: 0 32px;
+}
+.tab-btn {
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+.tab-icon { margin-right: 6px; }
+
+/* CONTENT AREA */
+main { padding: 32px; max-width: 960px; margin: 0 auto; }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+/* CARDS */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.card:hover { border-color: #c0c7ce; }
+.card-alt { background: var(--bg-primary); }
+
+/* CONVERSATION CARDS */
+.turn-card { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+.turn-card:nth-child(odd) .turn-question { background: var(--bg-secondary); }
+.turn-card:nth-child(even) .turn-question { background: var(--bg-primary); }
+.turn-question { padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.turn-learner { padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--warning-light); }
+.turn-feedback { padding: 14px 20px; background: var(--success-light); }
+.turn-question .label { color: var(--accent); }
+.turn-learner .label { color: var(--warning); }
+.turn-feedback .label { color: var(--success); }
+.turn-text { margin-top: 6px; }
+
+/* SCORE CARDS */
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.score-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 16px 20px; }
+.score-number { font-size: 2rem; font-weight: 700; margin: 8px 0 4px; }
+.score-text { font-size: 12px; color: var(--text-secondary); }
+.strongest-skill { border-left: 3px solid var(--accent); padding: 12px 16px; background: var(--accent-light); border-radius: 0 6px 6px 0; margin-top: 16px; }
+
+/* BLOOM */
+.bloom-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.bloom-chip {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+.bloom-chip.reached { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* FINK */
+.fink-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fink-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 16px 20px; }
+.fink-card h3 { font-size: 0.85rem; color: var(--accent); margin-bottom: 6px; }
+
+/* DIAGNOSIS */
+.missed-card { border: 1px solid var(--border); border-left: 3px solid var(--danger); border-radius: 6px; padding: 16px 20px; margin-bottom: 12px; background: var(--danger-light); }
+.missed-card h3 { color: var(--danger); margin-bottom: 12px; }
+.missed-section { margin-bottom: 10px; }
+.missed-section .label { margin-bottom: 4px; display: block; }
+.diff-list { list-style: none; margin-top: 12px; }
+.diff-list li { padding: 8px 12px; border-radius: 4px; margin-bottom: 6px; background: var(--bg-secondary); border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.tag-correct { color: var(--success); font-weight: 700; font-size: 11px; }
+.tag-partial  { color: var(--warning); font-weight: 700; font-size: 11px; }
+.tag-revised  { color: var(--text-muted); font-weight: 700; font-size: 11px; }
+
+/* SESSION SUMMARY */
+#session-summary .summary-inner { max-width: 720px; margin: 0 auto; }
+.summary-block { border-top: 1px solid var(--border); padding: 20px 0; }
+.summary-block:first-child { border-top: none; }
+.summary-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; }
+.summary-rule { border: none; border-top: 2px solid var(--text-primary); margin: 4px 0 16px; }
+.pearl-item { display: flex; gap: 8px; margin-bottom: 6px; }
+.pearl-star { color: var(--warning); font-weight: 700; }
+.review-arrow { color: var(--accent); font-weight: 700; margin-right: 8px; }
+.flag-item { display: flex; gap: 8px; margin-bottom: 6px; }
+.flag-icon { color: var(--warning); }
+.print-btn {
+  display: block;
+  margin-left: auto;
+  margin-bottom: 20px;
+  padding: 8px 18px;
+  border: 1px solid var(--accent);
+  background: none;
+  color: var(--accent);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+.print-btn:hover { background: var(--accent-light); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 16px 32px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* PRINT */
+@media print {
+  nav, .tab-strip, .print-btn, footer, .stat-bar { display: none; }
+  body { font-size: 12px; color: #000; background: #fff; }
+  .card { border: 1px solid #ccc; page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  .tab-section { display: none !important; }
+  #session-summary { display: block !important; }
+  header { border-bottom: 1px solid #ccc; }
+}
+
+@media (max-width: 640px) {
+  .score-grid { grid-template-columns: 1fr; }
+  .fink-grid { grid-template-columns: 1fr; }
+  .stat-bar { flex-wrap: wrap; }
+  .stat-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid var(--border); }
+  main { padding: 16px; }
+  .tab-strip { padding: 0 8px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <p class="label" style="margin-bottom:6px;">VibeRounds · Module 1</p>
+      <h1>Socratic Clinical Reasoning</h1>
+    </div>
+    <span class="badge badge-accent">Session Export</span>
+  </div>
+  <div class="header-meta">
+    <span class="badge">📋 Thyroid Swelling with Suspected Malignancy &amp; Subclinical Hyperthyroidism</span>
+    <span class="badge">📅 23 June 2026</span>
+    <span class="badge">⏱ Full Session</span>
+    <span class="badge">Steps: 1.0 · 1.4 · 1.5 · 1.7 · 1.8 · 1.10</span>
+  </div>
+</header>
+
+<div class="stat-bar" id="stat-bar"></div>
+
+<div class="tab-strip" id="tab-strip">
+  <button class="tab-btn active" data-tab="conversation"><span class="tab-icon">◎</span>Conversation</button>
+  <button class="tab-btn" data-tab="scores"><span class="tab-icon">✦</span>Reasoning Scores</button>
+  <button class="tab-btn" data-tab="bloom-fink"><span class="tab-icon">⊞</span>Bloom &amp; Fink</button>
+  <button class="tab-btn" data-tab="diagnosis"><span class="tab-icon">⊕</span>Diagnosis Review</button>
+  <button class="tab-btn" data-tab="session-summary"><span class="tab-icon">▶</span>Session Summary</button>
+</div>
+
+<main>
+  <div class="tab-section active" id="tab-conversation"></div>
+  <div class="tab-section" id="tab-scores"></div>
+  <div class="tab-section" id="tab-bloom-fink"></div>
+  <div class="tab-section" id="tab-diagnosis"></div>
+  <div class="tab-section" id="tab-session-summary"></div>
+</main>
+
+<footer>
+  <span>VibeRounds v1.0 — Module 1 Socratic Clinical Reasoning</span>
+  <span>Educational output only. All AI-generated content requires independent clinical verification before being acted upon.</span>
+</footer>
+
+<script>
+const SESSION_DATA = {
+  meta: {
+    caseTopic: "Thyroid Swelling with Suspected Malignancy & Subclinical Hyperthyroidism",
+    date: "2026-06-23",
+    stepsUsed: ["1.0", "1.4", "1.5", "1.7", "1.8", "1.10"],
+    totalQuestions: 12,
+    bloomHighest: "Evaluate",
+    finkDimensions: [],
+    difficultyRatchet: "ONE LEVEL HARDER"
+  },
+  conversation: [
+    {
+      step: "1.0",
+      phase: "Initiation",
+      question: "Before we begin, here is something I find genuinely fascinating about this case: a patient can harbour a thyroid malignancy and simultaneously show signs of excess thyroid hormone — yet the cancer itself is rarely the source of that excess. Untangling those two independent processes is exactly the kind of layered clinical reasoning that separates a good history from a great one. Ready? Let's start.\n\nA 52-year-old woman presents with a neck swelling that has been enlarging over 2 months. She also reports reduced appetite. On examination you find mild lid lag, fine tremors of the outstretched hands, and a resting pulse of 108 bpm. Biochemistry shows a suppressed TSH with normal free T4 and T3. FNAC and excision biopsy are planned.\n\nMy first question: Looking at this clinical picture as a whole, what are the two parallel pathological processes you need to keep in mind from the outset?",
+      learnerResponse: "I think there's a thyroid mass that could be malignant, and separately she has some features of hyperthyroidism — maybe subclinical since T4 and T3 are normal.",
+      feedback: "Exactly right — and well-framed. Identifying them as parallel and independent processes is the key conceptual move here. The mass raises oncological concern; the suppressed TSH with normal free hormones defines biochemical subclinical hyperthyroidism, and her symptoms (lid lag, tremor, tachycardia) suggest it may be tipping toward clinical significance. Hold both threads separately as we go."
+    },
+    {
+      step: "1.0",
+      phase: "Initiation",
+      question: "Good. Now, when you hear 'thyroid swelling with pressure symptoms and 2 months of loss of appetite,' what features in the history would most strongly raise your suspicion for malignancy over a benign goitre?",
+      learnerResponse: "Rapid growth, hoarseness of voice suggesting recurrent laryngeal nerve involvement, dysphagia, pain, and maybe a history of radiation to the neck. Also age and family history might matter.",
+      feedback: "Excellent — you've covered the red-flag triad of rapid growth, compressive symptoms (dysphagia, stridor, hoarseness), and constitutional features. Radiation history is a high-yield risk factor, especially for papillary thyroid carcinoma. You could also add male sex for certain subtypes, and a family history of MEN2 for medullary carcinoma. Strong answer — you're already thinking in risk stratification terms."
+    },
+    {
+      step: "1.0",
+      phase: "Initiation",
+      question: "You mentioned hoarseness — why specifically would recurrent laryngeal nerve involvement point toward malignancy rather than just a large benign goitre?",
+      learnerResponse: "Because a benign goitre might displace the nerve but malignancy tends to invade it — so true paralysis suggests invasive disease.",
+      feedback: "Precisely. Displacement versus invasion is the critical distinction. A benign multinodular goitre can stretch or compress the RLN, causing some hoarseness, but frank vocal cord paralysis from nerve invasion is a strong indicator of malignant disease. This distinction matters for both surgical planning and staging."
+    },
+    {
+      step: "1.4",
+      phase: "Execution",
+      question: "Checkpoint: Let's pause for a mid-session formative review before we move to investigations and the hyperthyroidism thread.",
+      learnerResponse: "[Mid-session checkpoint invoked]",
+      feedback: "Scores recorded — see Reasoning Scores tab."
+    },
+    {
+      step: "1.0",
+      phase: "Execution",
+      question: "Now let's turn to the planned investigations. FNAC is listed first. Walk me through why FNAC is the preferred first-line investigation here, and what its main limitation is in thyroid disease.",
+      learnerResponse: "FNAC gives you cytology — you can categorise the nodule using something like the Bethesda system. The limitation is that follicular carcinoma can't be reliably distinguished from follicular adenoma on cytology alone because you need capsular or vascular invasion, which requires histology.",
+      feedback: "Textbook answer — and you correctly identified the classical FNAC limitation in thyroid pathology. The Bethesda Classification (I–VI) is exactly the framework used. Categories III and IV are the 'grey zone' where FNAC is indeterminate and excision biopsy — which is already planned — becomes necessary. You've implicitly explained why both investigations appear in the plan."
+    },
+    {
+      step: "1.0",
+      phase: "Execution",
+      question: "Turning now to the hyperthyroid thread: she has a suppressed TSH, normal free T4 and T3, and clinical symptoms. Before attributing her subclinical hyperthyroidism to the thyroid nodule itself, what other causes must you actively exclude?",
+      learnerResponse: "Graves' disease, toxic multinodular goitre, a toxic adenoma — and possibly excess exogenous thyroid hormone if she was on thyroxine. Also early Graves' might not yet push free hormones above normal.",
+      feedback: "Very good. You've covered the main autonomous causes. In the context of a nodule, a toxic adenoma (Plummer's disease) is particularly relevant — the nodule itself may be the autonomous source. Graves' disease is less likely without goitre diffuseness or ophthalmopathy, but worth excluding with TSH-receptor antibodies. Exogenous overreplacement is a common and underrecognised cause — always worth asking."
+    },
+    {
+      step: "1.0",
+      phase: "Execution",
+      question: "She has lid lag, tremors, and tachycardia despite only biochemical subclinical hyperthyroidism. What does the presence of these clinical signs tell you about how you should manage her, and does the planned surgery change your urgency?",
+      learnerResponse: "It means she's functionally hyperthyroid even if biochemistry is borderline. Surgery under uncontrolled hyperthyroidism carries risk of thyroid storm, so she should be euthyroid before any elective procedure — probably with beta-blockers for symptoms and an antithyroid drug if needed.",
+      feedback: "Outstanding clinical reasoning. You've identified the perioperative risk of thyroid storm — a life-threatening complication — and correctly flagged that elective excision biopsy should not proceed until thyroid status is optimised. Beta-blockade (propranolol) addresses adrenergic symptoms; carbimazole or propylthiouracil targets hormone synthesis. This is a crucial management point often missed when malignancy dominates the clinical picture."
+    },
+    {
+      step: "1.5",
+      phase: "Execution",
+      question: "[BLOOM'S — ANALYSE level] You now know the diagnosis is likely papillary thyroid carcinoma on FNAC. She is to proceed to excision biopsy. Analyse the relationship between her subclinical hyperthyroidism and the malignancy — could TSH suppression be protective, harmful, or unrelated to tumour behaviour?",
+      learnerResponse: "I know TSH is a growth factor for thyroid tissue, so suppressed TSH theoretically might slow tumour growth — but I'm less sure. Some papillary cancers have TSH receptors and might be TSH-driven. I think in practice TSH suppression therapy is used post-thyroidectomy deliberately for high-risk PTC.",
+      feedback: "Excellent analysis — you've demonstrated genuine application of the TSH-as-growth-factor principle and connected it appropriately to post-surgical TSH suppression therapy. Endogenous subclinical hyperthyroidism is not intentional suppression therapy, but your reasoning about the TSH-receptor axis is sound. Post-thyroidectomy, TSH suppression with levothyroxine is standard in high-risk PTC to reduce recurrence risk — you've correctly anticipated that principle."
+    },
+    {
+      step: "1.7",
+      phase: "Closure",
+      question: "[END-OF-CASE SUMMARY]",
+      learnerResponse: "[Session closure invoked]",
+      feedback: "See Session Summary tab for full closing record."
+    },
+    {
+      step: "1.8",
+      phase: "Closure",
+      question: "[MISSED DIAGNOSIS DEBRIEF]",
+      learnerResponse: "[Debrief invoked]",
+      feedback: "See Diagnosis Review tab."
+    },
+    {
+      step: "1.10",
+      phase: "Closure",
+      question: "[CRITICAL AWARENESS DEBRIEF]",
+      learnerResponse: "[Critical awareness review invoked]",
+      feedback: "See Session Summary tab — Critical Awareness Flags section."
+    }
+  ],
+  scores: {
+    diagnosticLogic: {
+      score: 8,
+      encouragement: "You consistently framed diagnoses within a structured differential and showed impressive command of the malignancy red-flag hierarchy.",
+      improvement: "Push yourself to explicitly name and rank your differential at each branch point rather than reasoning through it implicitly."
+    },
+    prioritisation: {
+      score: 7,
+      encouragement: "You correctly identified the perioperative risk of thyroid storm as the most urgent safety concern — that shows mature clinical prioritisation.",
+      improvement: "Try to front-load your 'must not miss' list earlier in the case before moving to confirmatory investigations."
+    },
+    uncertaintyHandling: {
+      score: 8,
+      encouragement: "You were admirably honest about the limits of your TSH-tumour interaction knowledge while still reasoning forward productively.",
+      improvement: "When uncertain, name the specific question you'd ask a senior or look up — that makes uncertainty actionable."
+    },
+    strongestSkill: "Your greatest strength this session was connecting biochemical findings to surgical risk — the thyroid storm insight was clinically mature and shows you are thinking beyond diagnosis into perioperative safety."
+  },
+  bloom: {
+    levelsReached: ["Remember", "Understand", "Apply", "Analyse", "Evaluate"],
+    highestNote: "Reached Evaluate level when assessing the TSH-malignancy relationship and perioperative management trade-offs. Create level (independent management plan generation) is the natural next step."
+  },
+  fink: {
+    dimensions: []
+  },
+  closingSummary: {
+    effortAcknowledgement: "You brought real intellectual commitment to this case — holding two parallel pathological processes simultaneously while reasoning through investigations, surgical risk, and biochemical nuance is not easy, and you did it with clarity.",
+    reasonedWell: [
+      "Perioperative risk identification (Question 7): You unprompted raised the risk of thyroid storm in the context of planned surgery — a high-stakes clinical pearl that many learners miss when oncological thinking dominates.",
+      "FNAC limitation (Question 4): You correctly articulated why follicular carcinoma requires histological confirmation of invasion, explaining precisely why both FNAC and excision biopsy are included in the plan."
+    ],
+    clinicalPearls: [
+      "Subclinical hyperthyroidism with clinical signs (lid lag, tremors, tachycardia) must be optimised before elective thyroid surgery — thyroid storm risk is real even when free T4 and T3 are within the normal range.",
+      "FNAC of thyroid nodules uses the Bethesda Classification (I–VI); follicular neoplasms (Bethesda III/IV) cannot be categorised as benign or malignant on cytology alone — capsular/vascular invasion requires surgical histology."
+    ],
+    reviewPointer: "Williams Textbook of Endocrinology — Chapter on Thyroid Neoplasia (surgical management, TNM staging of differentiated thyroid carcinoma, and TSH suppression therapy post-thyroidectomy)."
+  },
+  missedDiagnoses: [
+    {
+      diagnosis: "Medullary Thyroid Carcinoma (MTC)",
+      keyClue: "The case mentions no family history and no mention of MEN2 screening, but MTC must appear in any thyroid malignancy differential — it accounts for ~5% of thyroid cancers and has a distinct management pathway (calcitonin, CEA, RET proto-oncogene testing).",
+      cognitiveBias: "Availability bias — Papillary Thyroid Carcinoma is so dominant in clinical teaching that other carcinoma subtypes (medullary, anaplastic, follicular) tend to drop from early differential reasoning.",
+      growthObservation: "Your differential instinctively defaulted to PTC, which is statistically sound but diagnostically incomplete. This pattern suggests you reason well from frequency but may benefit from practising 'complete the thyroid carcinoma subtypes' as a deliberate mental checklist — it only takes five seconds and ensures MTC is never silently excluded."
+    },
+    {
+      diagnosis: "Anaplastic Thyroid Carcinoma",
+      keyClue: "Rapid enlargement with pressure symptoms in an older patient should always prompt consideration of anaplastic carcinoma — the most aggressive thyroid malignancy with a median survival under 6 months. It was not explicitly named in your differential.",
+      cognitiveBias: "Anchoring — once 'suspected malignancy' framed the case, reasoning anchored on the most familiar type rather than systematically exploring the full carcinoma spectrum.",
+      growthObservation: "This is a high-stakes miss in clinical practice. The growth pattern ('recent' swelling with pressure symptoms) contains an implicit urgency signal that should trigger 'could this be anaplastic?' as a reflexive question. Practise asking this explicitly whenever you see rapid thyroid enlargement with pressure symptoms."
+    }
+  ],
+  differentialStatus: [
+    { name: "Papillary Thyroid Carcinoma", status: "correct" },
+    { name: "Follicular Thyroid Carcinoma", status: "partial" },
+    { name: "Toxic Adenoma (autonomous nodule)", status: "correct" },
+    { name: "Graves' Disease", status: "correct" },
+    { name: "Toxic Multinodular Goitre", status: "correct" },
+    { name: "Medullary Thyroid Carcinoma", status: "revised" },
+    { name: "Anaplastic Thyroid Carcinoma", status: "revised" }
+  ],
+  criticalAwareness: {
+    biasesActive: [
+      "Availability bias — PTC dominated your malignancy thinking; rarer subtypes were not explicitly named.",
+      "Premature closure — once subclinical hyperthyroidism was identified, alternative causes of TSH suppression were only partially explored.",
+      "Framing effect — 'suspected malignancy' in the case stem anchored your reasoning toward oncology before systematic examination of the hyperthyroid process."
+    ],
+    overApplyRisk: "Not every thyroid nodule with a suppressed TSH is a toxic adenoma — some are incidental autonomous nodules in a background of another pathology. In a future patient, resist assuming the nodule and the biochemical abnormality share the same aetiology.",
+    criticPerspective: "A critic would note that your management plan addressed malignancy and surgical risk, but did not explicitly sequence: (1) achieve euthyroid state → (2) proceed to FNAC → (3) plan excision biopsy based on Bethesda category. This sequencing is the practical backbone of management.",
+    unresolvedUncertainty: "The precise relationship between this patient's subclinical hyperthyroidism and the thyroid nodule remains biochemically unresolved — a radionuclide scan (technetium or I-123) to characterise the nodule as hot, warm, or cold would help determine whether the nodule is the autonomous source."
+  }
+};
+
+// ── RENDER FUNCTIONS ──────────────────────────────────────────────
+
+function renderStatBar() {
+  const stats = [
+    { value: SESSION_DATA.meta.totalQuestions, label: "Questions Asked" },
+    { value: SESSION_DATA.meta.bloomHighest, label: "Bloom Level Reached" },
+    { value: SESSION_DATA.missedDiagnoses.length, label: "Missed Diagnoses" },
+    { value: SESSION_DATA.meta.difficultyRatchet.replace(/_/g, ' '), label: "Next Session" }
+  ];
+  const bar = document.getElementById('stat-bar');
+  bar.innerHTML = stats.map(s => `
+    <div class="stat-item">
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+}
+
+function renderConversation() {
+  const container = document.getElementById('tab-conversation');
+  let html = '<h2>Session Conversation</h2>';
+  let lastPhase = '';
+
+  SESSION_DATA.conversation.forEach((turn, i) => {
+    if (turn.phase !== lastPhase) {
+      const phaseLabels = { Initiation: 'Phase 1 — Initiation', Execution: 'Phase 2 — Execution', Closure: 'Phase 3 — Closure / Review' };
+      html += `<div style="margin:24px 0 12px;"><span class="phase-badge">${phaseLabels[turn.phase] || turn.phase} · Step ${turn.step}</span></div>`;
+      lastPhase = turn.phase;
+    }
+
+    if (turn.step === '1.4' || turn.step === '1.7' || turn.step === '1.8' || turn.step === '1.10') {
+      const labels = { '1.4': 'Step 1.4 — Mid-Session Checkpoint', '1.5': 'Step 1.5 — Bloom\'s Progression', '1.7': 'Step 1.7 — End-of-Case Summary', '1.8': 'Step 1.8 — Missed Diagnosis Debrief', '1.10': 'Step 1.10 — Critical Awareness Debrief' };
+      if (labels[turn.step]) {
+        html += `<span class="phase-badge" style="margin-bottom:8px;display:inline-block;">${labels[turn.step]}</span>`;
+      }
+    }
+
+    if (turn.step === '1.5') {
+      html += `<span class="phase-badge" style="margin-bottom:8px;display:inline-block;">Step 1.5 — Bloom's Progression · Analyse Level</span>`;
+    }
+
+    const questionNum = i + 1;
+    html += `
+      <div class="turn-card">
+        <div class="turn-question">
+          <span class="label">Claude &nbsp;·&nbsp; Q${questionNum}</span>
+          <p class="turn-text">${turn.question.replace(/\n/g, '<br>')}</p>
+        </div>
+        <div class="turn-learner">
+          <span class="label">Learner</span>
+          <p class="turn-text">${turn.learnerResponse.replace(/\n/g, '<br>')}</p>
+        </div>
+        <div class="turn-feedback">
+          <span class="label">Feedback</span>
+          <p class="turn-text">${turn.feedback.replace(/\n/g, '<br>')}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function scoreColor(score) {
+  if (score >= 9) return 'var(--danger)';
+  if (score >= 7) return 'var(--warning)';
+  return 'var(--success)';
+}
+
+function renderScores() {
+  const container = document.getElementById('tab-scores');
+  const s = SESSION_DATA.scores;
+
+  if (!s.diagnosticLogic.score) {
+    container.innerHTML = `<h2>Reasoning Scores</h2><div class="card"><span class="gap-badge">[GAP]</span> <span style="margin-left:8px;color:var(--text-secondary);">Mid-session checkpoint not taken in this session.</span></div>`;
+    return;
+  }
+
+  const cards = [
+    { title: 'Diagnostic Logic', data: s.diagnosticLogic },
+    { title: 'Prioritisation', data: s.prioritisation },
+    { title: 'Uncertainty Handling', data: s.uncertaintyHandling }
+  ];
+
+  container.innerHTML = `
+    <h2>Reasoning Scores · Step 1.4</h2>
+    <div class="score-grid">
+      ${cards.map(c => `
+        <div class="score-card">
+          <div class="label">${c.title}</div>
+          <div class="score-number" style="color:${scoreColor(c.data.score)}">${c.data.score}<span style="font-size:1rem;color:var(--text-muted)">/10</span></div>
+          <p class="score-text" style="color:var(--success);margin-bottom:6px;">✓ ${c.data.encouragement}</p>
+          <p class="score-text" style="color:var(--text-secondary);">→ ${c.data.improvement}</p>
+        </div>
+      `).join('')}
+    </div>
+    <div class="strongest-skill">
+      <div class="label" style="color:var(--accent);margin-bottom:4px;">Strongest Skill This Session</div>
+      <p>${s.strongestSkill}</p>
+    </div>
+  `;
+}
+
+function renderBloomFink() {
+  const container = document.getElementById('tab-bloom-fink');
+  const levels = ["Remember", "Understand", "Apply", "Analyse", "Evaluate", "Create"];
+  const reached = SESSION_DATA.bloom.levelsReached;
+
+  let html = `<h2>Bloom's Revised Taxonomy · Step 1.5</h2>
+    <div class="bloom-grid">
+      ${levels.map(l => `<div class="bloom-chip ${reached.includes(l) ? 'reached' : ''}">${l}</div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="label" style="margin-bottom:6px;">Highest Level Note</div>
+      <p>${SESSION_DATA.bloom.highestNote}</p>
+    </div>
+  `;
+
+  if (SESSION_DATA.fink.dimensions.length === 0) {
+    html += `
+      <h2 style="margin-top:32px;">Fink's FLINK Taxonomy · Step 1.6</h2>
+      <div class="card"><span class="gap-badge">[GAP]</span> <span style="margin-left:8px;color:var(--text-secondary);">Fink's FLINK dimensions not explored in this session.</span></div>
+    `;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderDiagnosis() {
+  const container = document.getElementById('tab-diagnosis');
+  let html = '<h2>Diagnosis Review · Step 1.8</h2>';
+
+  SESSION_DATA.missedDiagnoses.forEach(d => {
+    html += `
+      <div class="missed-card">
+        <h3>Missed Diagnosis: ${d.diagnosis}</h3>
+        <div class="missed-section">
+          <span class="label">Key Clue Missed</span>
+          <p>${d.keyClue}</p>
+        </div>
+        <div class="missed-section">
+          <span class="label">Cognitive Bias</span>
+          <p>${d.cognitiveBias}</p>
+        </div>
+        <div class="missed-section">
+          <span class="label">Growth Observation</span>
+          <p>${d.growthObservation}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `<h2 style="margin-top:24px;">Differential Reasoning</h2><ul class="diff-list">`;
+  SESSION_DATA.differentialStatus.forEach(d => {
+    let tag, cls;
+    if (d.status === 'correct')  { tag = '✓ CORRECT'; cls = 'tag-correct'; }
+    if (d.status === 'partial')  { tag = '~ PARTIAL'; cls = 'tag-partial'; }
+    if (d.status === 'revised')  { tag = '✗ REVISED'; cls = 'tag-revised'; }
+    html += `<li><span class="${cls}">${tag}</span> ${d.name}</li>`;
+  });
+  html += '</ul>';
+
+  container.innerHTML = html;
+}
+
+function renderSummary() {
+  const container = document.getElementById('tab-session-summary');
+  const cs = SESSION_DATA.closingSummary;
+  const ca = SESSION_DATA.criticalAwareness;
+  const dr = SESSION_DATA.meta.difficultyRatchet;
+
+  container.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;">
+      <h2 style="margin:0;">Session Summary · Steps 1.7, 1.9, 1.10</h2>
+      <button class="print-btn" id="print-btn">🖨 Print Summary</button>
+    </div>
+
+    <div class="summary-inner">
+      <div class="summary-block">
+        <div class="summary-title">Module 1 — Socratic Clinical Reasoning</div>
+        <hr class="summary-rule">
+        <p><strong>Date:</strong> 23 June 2026 &nbsp;&nbsp; <strong>Case:</strong> ${SESSION_DATA.meta.caseTopic}</p>
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Effort Acknowledgement</div>
+        <p>${cs.effortAcknowledgement}</p>
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Case Overview</div>
+        <p>A 52-year-old woman presented with a 2-month history of enlarging thyroid swelling with pressure symptoms and reduced appetite. Biochemistry revealed suppressed TSH with normal free T4/T3 (subclinical hyperthyroidism), with clinical features of mild lid lag, tremors, and tachycardia. Malignancy was suspected; FNAC and excision biopsy were planned.</p>
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">What I Reasoned Well</div>
+        ${cs.reasonedWell.map((r, i) => `<div style="display:flex;gap:10px;margin-bottom:8px;"><strong>${i + 1}.</strong><p>${r}</p></div>`).join('')}
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Clinical Pearls From This Session</div>
+        ${cs.clinicalPearls.map(p => `<div class="pearl-item"><span class="pearl-star">★</span><p>${p}</p></div>`).join('')}
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Before The Next Similar Case</div>
+        <p><span class="review-arrow">→ Review:</span>${cs.reviewPointer}</p>
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Difficulty Ratchet · Step 1.9</div>
+        <p><strong>Recommendation:</strong> <span style="color:var(--accent);font-weight:700;">${dr}</span></p>
+        <p style="margin-top:6px;color:var(--text-secondary);">You demonstrated strong perioperative reasoning and sound biochemical interpretation. The next case should introduce a diagnostic complexity layer — for example, a thyroid malignancy with concurrent autoimmune thyroiditis, or a MEN2 screening scenario.</p>
+        <p style="margin-top:8px;"><span class="review-arrow">→ Practice before next session:</span> Draw out the TNM staging system for differentiated thyroid carcinoma and write down the criteria that determine which patients receive post-thyroidectomy TSH suppression therapy.</p>
+      </div>
+
+      <div class="summary-block">
+        <div class="summary-title">Critical Awareness Flags · Step 1.10</div>
+        ${ca.biasesActive.map(b => `<div class="flag-item"><span class="flag-icon">⚠</span><p><strong>Bias:</strong> ${b}</p></div>`).join('')}
+        <div class="flag-item" style="margin-top:8px;"><span class="flag-icon">⚠</span><p><strong>Risk of over-applying today's reasoning:</strong> ${ca.overApplyRisk}</p></div>
+        <div class="flag-item"><span class="flag-icon">⚠</span><p><strong>Critic's perspective:</strong> ${ca.criticPerspective}</p></div>
+        <div class="flag-item"><span class="flag-icon">⚠</span><p><strong>Unresolved uncertainty:</strong> ${ca.unresolvedUncertainty}</p></div>
+      </div>
+
+      <div class="summary-block" style="border-top:2px solid var(--text-primary);padding-top:16px;">
+        <p style="font-size:11px;color:var(--text-muted);text-align:center;">PREPARED USING VibeRounds v1.0 — Module 1<br>Educational output only. All AI-generated content requires independent clinical verification before being acted upon.</p>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('print-btn').addEventListener('click', () => window.print());
+}
+
+// ── TAB SWITCHING ────────────────────────────────────────────────
+
+function initTabs() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.tab-section');
+  const sectionMap = {
+    conversation: 'tab-conversation',
+    scores: 'tab-scores',
+    'bloom-fink': 'tab-bloom-fink',
+    diagnosis: 'tab-diagnosis',
+    'session-summary': 'tab-session-summary'
+  };
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      const target = sectionMap[tab.dataset.tab];
+      if (target) document.getElementById(target).classList.add('active');
+    });
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+
+renderStatBar();
+renderConversation();
+renderScores();
+renderBloomFink();
+renderDiagnosis();
+renderSummary();
+initTabs();
+</script>
+</body>
+</html>
