@@ -1,4 +1,4 @@
-# VibeRounds — Module 22: The Story Module
+# VibeRounds — Module : The Story Module
 ### *Real Case Narratives for the Clinical Mind*
 
 **Module Type:** Reflective / Narrative  
