@@ -107,6 +107,7 @@ If you already know which module and step you need, skip straight there using th
 | Community & Social Medicine Insights | [Module 19 – Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) |
 | Naturalistic Decision Making | [Module 20 – Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) |
 | Evidence Frontier Search | [Module 21 – Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) |
+| Nested Analysis | [Module 22 — Nested Analysis](Module-22-Nested-Analysis.md) |
 
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
@@ -155,6 +156,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 19** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 20** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 21** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 22** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
 ## Prompts Analytics
@@ -214,6 +216,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
 | -- | [Article](VibeRounds-Research-Article.md) | Article |
 | -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
+| 22 | [Nested Analysis](Module-22-Nested-Analysis.md) | Nested Analysis |
 
 
 ## 🧩 Supplementary Frameworks
@@ -281,6 +284,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Professor-Briefing.md
 ├── VibeRounds-Dependency-Network-Map.md
 ├── VibeRounds-Dashboard-DesignGuidelines.md
+├── Module-22-Nested-Analysis.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
