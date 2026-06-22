@@ -170,7 +170,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ## ⚠️ Safety & Compliance Note
 
 > [!IMPORTANT]
-> Modules 1–4 are template prompts containing no patient data and are safe to use as-is in any LLM. Modules 5–7 were tested against real, de-identified case logs; before reuse, confirm that any `[paste...]` placeholder is filled with de-identified data only.
+> All modules tested on de-identified case logs; before reuse, confirm that any `[paste...]` placeholder is filled with de-identified data only.
 
 ---
 
