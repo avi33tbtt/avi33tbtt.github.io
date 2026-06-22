@@ -1,6 +1,4 @@
-[← Back to README](README.md)
-
-## Full analytics
+## The Learning Stack - Full Analytics Demo
 
 | Title | Go to |
 |---|---|
