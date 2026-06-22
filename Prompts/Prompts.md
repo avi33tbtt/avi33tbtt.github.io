@@ -238,6 +238,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 25 | [Thematic Analysis](Module-25-Thematic-Analysis.md) | Thematic Analysis |
 | 26 | [Bias Auditing](Module-26-Bias-Auditing.md) | Bias Auditing |
 | 27 | [Clinical Cognition Loop](Module-27-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
+| 28 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
 
 
 ## 🧩 Supplementary Frameworks
