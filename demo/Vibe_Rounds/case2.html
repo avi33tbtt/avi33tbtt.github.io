@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Module 1: 76F Toxic Multinodular Goitre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary:     #ffffff;
+  --bg-secondary:   #f8f9fa;
+  --bg-tertiary:    #f1f3f5;
+  --border:         #dee2e6;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #6c757d;
+  --text-muted:     #adb5bd;
+  --accent:         #2563eb;
+  --accent-light:   #eff6ff;
+  --warning:        #d97706;
+  --warning-light:  #fffbeb;
+  --danger:         #dc2626;
+  --danger-light:   #fef2f2;
+  --success:        #16a34a;
+  --success-light:  #f0fdf4;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+h1 { font-size: 1.5rem; font-weight: 700; }
+h2 { font-size: 1.15rem; font-weight: 600; }
+h3 { font-size: 1rem; font-weight: 600; }
+.label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+/* HEADER */
+.site-header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.site-header h1 { color: var(--text-primary); }
+.site-header .meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px; }
+.duration-badge {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  align-self: center;
+}
+/* STAT BAR */
+.stat-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+.stat-item {
+  flex: 1;
+  padding: 12px 20px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-value { font-size: 1.4rem; font-weight: 700; color: var(--accent); display: block; }
+.stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); }
+/* TAB STRIP */
+.tab-strip {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-primary);
+  padding: 0 32px;
+  overflow-x: auto;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-weight: 600;
+}
+/* CONTENT */
+.content-area { padding: 28px 32px; max-width: 1100px; }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+/* CARDS */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.card:hover { border-color: #c0c7ce; }
+.card.alt { background: var(--bg-primary); }
+/* PHASE BADGE */
+.phase-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+/* TURN CARD */
+.turn-card { margin-bottom: 16px; }
+.turn-row { padding: 12px 16px; border: 1px solid var(--border); }
+.turn-row:first-child { border-radius: 6px 6px 0 0; border-bottom: none; }
+.turn-row:last-child { border-radius: 0 0 6px 6px; }
+.turn-row.claude-row { background: var(--bg-secondary); }
+.turn-row.learner-row { background: var(--warning-light); }
+.turn-row.feedback-row { background: var(--success-light); }
+.turn-row-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 4px; }
+.turn-row-label.claude-lbl { color: var(--accent); }
+.turn-row-label.learner-lbl { color: var(--warning); }
+.turn-row-label.feedback-lbl { color: var(--success); }
+.turn-row p { font-size: 0.88rem; line-height: 1.65; }
+/* SCORE CARDS */
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 640px) { .score-grid { grid-template-columns: 1fr; } }
+.score-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 20px 16px; text-align: center; }
+.score-num { font-size: 2.2rem; font-weight: 700; line-height: 1; margin: 8px 0; }
+.score-card h3 { font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); }
+.score-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; text-align: left; }
+.strongest-skill {
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  background: var(--accent-light);
+  border-radius: 0 6px 6px 0;
+  margin-top: 8px;
+}
+/* BLOOM CHIPS */
+.bloom-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.bloom-chip {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+.bloom-chip.reached { background: var(--success-light); color: var(--success); border-color: var(--success); }
+.bloom-chip.not-reached { background: var(--bg-tertiary); color: var(--text-muted); border-color: var(--border); }
+/* FINK CARDS */
+.fink-card { margin-bottom: 12px; }
+/* DIAGNOSIS CARD */
+.diag-card { border-left: 3px solid var(--danger); border-radius: 0 6px 6px 0; background: var(--danger-light); padding: 16px 20px; margin-bottom: 12px; }
+.diag-section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--danger); margin-bottom: 4px; }
+.diag-section-label.warning { color: var(--warning); }
+.diff-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 1px 7px; border-radius: 3px; margin-right: 6px; }
+.diff-tag.correct { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+.diff-tag.partial { background: var(--warning-light); color: var(--warning); border: 1px solid #fcd34d; }
+.diff-tag.revised { background: var(--bg-tertiary); color: var(--text-muted); border: 1px solid var(--border); }
+.diff-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+.diff-row:last-child { border-bottom: none; }
+/* GAP BADGE */
+.gap-badge { background: var(--warning-light); color: var(--warning); border: 1px solid #fcd34d; border-radius: 3px; font-size: 0.65rem; font-weight: 600; padding: 1px 5px; }
+/* SESSION SUMMARY (Tab 5) */
+.summary-wrap { max-width: 720px; margin: 0 auto; }
+.summary-divider { border: none; border-top: 2px solid var(--border); margin: 20px 0; }
+.summary-block { margin-bottom: 20px; }
+.summary-block h3 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+.pearl-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 0.9rem; }
+.pearl-star { color: var(--warning); font-weight: 700; flex-shrink: 0; }
+.awareness-item { display: flex; gap: 8px; margin-bottom: 6px; font-size: 0.88rem; }
+.awareness-icon { color: var(--warning); flex-shrink: 0; }
+.print-btn { float: right; background: none; border: 1px solid var(--border); border-radius: 4px; padding: 6px 16px; font-family: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text-secondary); }
+.print-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 16px 32px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 40px;
+}
+/* PRINT */
+@media print {
+  nav, .tab-strip, .print-btn, footer, .stat-bar { display: none; }
+  body { font-size: 12px; color: #000; background: #fff; }
+  .card { border: 1px solid #ccc; page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  .tab-section { display: none !important; }
+  #tab-summary { display: block !important; }
+  .site-header { border-bottom: 2px solid #000; }
+  .summary-wrap { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <h1>Module 1 — Socratic Clinical Reasoning</h1>
+    <div class="meta" id="header-meta"></div>
+  </div>
+  <span class="duration-badge" id="duration-badge"></span>
+</header>
+
+<div class="stat-bar" id="stat-bar"></div>
+
+<div class="tab-strip" id="tab-strip"></div>
+
+<div class="content-area">
+  <div class="tab-section active" id="tab-conversation"></div>
+  <div class="tab-section" id="tab-scores"></div>
+  <div class="tab-section" id="tab-bloom"></div>
+  <div class="tab-section" id="tab-diagnosis"></div>
+  <div class="tab-section" id="tab-summary"></div>
+</div>
+
+<footer>
+  <span>VibeRounds v1.0 — Module 1 Shadow Export · Educational output only.</span>
+  <span>All AI-generated content requires independent clinical verification before being acted upon.</span>
+</footer>
+
+<script>
+const SESSION_DATA = {
+  meta: {
+    caseTopic: "76F Toxic Multinodular Goitre — Dysphagia, Dyspnea, Telangana",
+    date: "2026-06-19 to 2026-06-22",
+    sessionLabel: "19–22 Jun 2026",
+    stepsUsed: ["1.0", "1.1", "S.0 (PaJR IMRAD)", "1.8", "1.10"],
+    totalQuestions: 6,
+    bloomHighest: "Analyse",
+    finkDimensions: [],
+    difficultyRatchet: "ONE LEVEL HARDER",
+    llm: "Claude (PaJR Health bot) + Claude (PNE student session)"
+  },
+  conversation: [
+    {
+      step: "S.0 — IMRAD Summary",
+      phase: "Initiation",
+      question: "Would you like to provide an IMRAD summary, keywords, thematic analysis of the case and Socratic questions for further actioning? (Dr. Rakesh Biswas)",
+      learnerResponse: "[Case data submitted by PaJR Health bot from patient record]",
+      feedback: "IMRAD confirmed: 76F, 3-year hypertension, 2-month progressive right neck swelling, dysphagia, SOB, weight loss. TSH <0.01, T3/T4 normal → subclinical hyperthyroidism. Clinical Dx: Multinodular Goitre. Plan: Carbimazole 5mg BD + FNAC referral. Themes: diagnostic urgency, medical vs surgical management, risk stratification in a frail elderly patient."
+    },
+    {
+      step: "1.1 — Socratic Question 1",
+      phase: "Execution",
+      question: "Would you like to rule out pheochromocytoma in this patient before you take her up for thyroid biopsy? (Dr. Rakesh Biswas)",
+      learnerResponse: "Query raised: adrenergic symptoms (hypertension, tachycardia) could overlap with phaeochromocytoma, especially if MTC + MEN2A is in the differential.",
+      feedback: "Excellent clinical thinking. Hyperthyroidism alone sufficiently explains her adrenergic state. The key MEN2A link is MTC → phaeochromocytoma. Correct sequence: FNAC first. If cytology shows MTC → mandatory phaeochromocytoma screen (plasma/urinary metanephrines) BEFORE any thyroid surgery. Operating on a thyroid in an undiagnosed phaeochromocytoma patient risks fatal hypertensive crisis. Safe to defer phaeochromocytoma workup until post-FNAC."
+    },
+    {
+      step: "1.1 — Socratic Question 2",
+      phase: "Execution",
+      question: "Again, would you like to take a thyroid scan first and avoid needle biopsy if the nodule is hot? (Dr. Rakesh Biswas)",
+      learnerResponse: "Rationale: hot nodule on scan = toxic adenoma = low malignancy risk (<1%), potentially avoiding biopsy.",
+      feedback: "Sharp principle — but this is a MULTINODULAR goitre, not a solitary nodule. A hot area does not clear other nodules of suspicion. Red flag symptoms (dysphagia, SOB, rapid growth) demand cytological diagnosis. ATA guidelines: for MNG with suppressed TSH and suspicious clinical features, FNAC is warranted regardless of scan findings. Scan gives functional data; FNAC gives structural/cellular data. FNAC remains the definitive next step."
+    },
+    {
+      step: "1.1 — Socratic Question 3",
+      phase: "Execution",
+      question: "At the age of 76 how common would it be to have Medullary Thyroid Carcinoma with pheochromocytoma? (Dr. Rakesh Biswas)",
+      learnerResponse: "Query about epidemiology and age of onset of MEN2A.",
+      feedback: "New diagnosis of MTC + phaeochromocytoma at 76 = extremely rare. MEN2A is a genetic syndrome with average diagnosis age: MTC ~29y, Phaeochromocytoma ~37y, Hyperparathyroidism ~36y (Howe et al., 1993 — Surgery 114(6):1070–77). Late-onset MEN2A in a 76-year-old is a significant epidemiological outlier. Clinical picture (suppressed TSH, MNG) points strongly to toxic MNG. Probability of MEN2A is exceptionally low. Diagnostic plan correctly prioritises most likely, most urgent diagnosis first."
+    },
+    {
+      step: "1.1 — Socratic Question 4 (FNAC results)",
+      phase: "Execution",
+      question: "Cytology images shared — follicular cells with background colloid + colloid-laden macrophages (foam cells). What is the likely pathophysiology of this patient's multinodular goitre? (Dr. Rakesh Biswas)",
+      learnerResponse: "Hypothesis: follicular hyperplasia triggered by local T4 reduction → TSH stimulation → colloid accumulation → cystic degeneration → macrophage clean-up of degenerated colloid.",
+      feedback: "Excellent interpretation. Colloid-laden macrophages = foam cells = hallmark of benign long-standing degenerating colloid nodule. Their presence is a very strong indicator of a BENIGN process, pointing away from malignancy. Overall two-phase pathophysiology confirmed: Phase 1 (decades) — silent benign MNG formation; Phase 2 (recent) — some nodules become autonomous → produce thyroid hormone independently → suppress TSH → thyrotoxicosis (Plummer's Disease). This single diagnosis explains ALL symptoms: compressive (dysphagia, SOB) from physical goitre size; metabolic (tachycardia, tremors) from recent toxic switch."
+    },
+    {
+      step: "1.10 — Critical Awareness",
+      phase: "Closure",
+      question: "Vibe Rounds trial update: the PaJR bot (with age-gender context) recognised that the thyroid scan and adrenal workup were unnecessary for this patient — textbook redundancies can be optimised by context. A student's Claude session highlighted: 'a negative FNAC does not rule out follicular carcinoma.' What does a negative FNAC mean? (Discussion)",
+      learnerResponse: "Query from Aditya sir: What does a negative FNAC mean? Observation that the LLM simulation initially missed the patient's age and gender, leading to over-investigation recommendations.",
+      feedback: "Critical awareness lesson: LLMs without age-gender context apply first-world textbook protocols that may over-investigate. Contextualising the query (76F, Telangana, resource-aware setting) correctly deprioritised phaeochromocytoma screen and scan. KEY PEARL: A 'negative' (benign) FNAC does NOT exclude follicular carcinoma — follicular carcinoma is diagnosed by capsular/vascular invasion on histology, not cytology alone. This is a fundamental limitation of FNAC for follicular lesions."
+    }
+  ],
+  scores: {
+    diagnosticLogic:     { score: null, encouragement: "", improvement: "" },
+    prioritisation:      { score: null, encouragement: "", improvement: "" },
+    uncertaintyHandling: { score: null, encouragement: "", improvement: "" },
+    strongestSkill: ""
+  },
+  bloom: {
+    levelsReached: ["Remember", "Understand", "Apply", "Analyse"],
+    notReached: ["Evaluate", "Create"],
+    highestNote: "The discussion reached Analyse level — participants dissected competing diagnostic pathways, weighed epidemiological probabilities, and interrogated the limitations of investigations. The session did not formally reach Evaluate (critiquing management plans) or Create (generating an independent management hypothesis), though the pathophysiology synthesis touched the boundary of Evaluate."
+  },
+  fink: null,
+  closingSummary: {
+    effortAcknowledgement: "This was a richly collaborative bedside-style discussion that combined real cytology images, epidemiological reasoning, and resource-aware clinical decision-making across multiple participants.",
+    reasonedWell: [
+      "Correctly sequenced FNAC before phaeochromocytoma workup — recognising the conditional dependency (MTC → MEN2A → phaeochromocytoma screen) rather than ordering all tests simultaneously.",
+      "Integrated the FNAC microscopy findings (colloid-laden macrophages, background colloid) to confirm benign pathophysiology and synthesised a two-phase disease narrative for Plummer's Disease."
+    ],
+    clinicalPearls: [
+      "In a multinodular goitre, a 'hot' area on thyroid scan does NOT clear other nodules of malignancy — FNAC remains mandatory when compressive red flags are present (ATA guidelines).",
+      "A 'negative' (benign) FNAC does not exclude follicular carcinoma — capsular and vascular invasion required for diagnosis can only be assessed on surgical histology, not cytology."
+    ],
+    reviewPointer: "Review: Williams Textbook of Endocrinology — Chapter on Thyroid Nodules and MNG; ATA 2015 Guidelines for Adult Patients with Thyroid Nodules and Differentiated Thyroid Cancer (especially the role of scintigraphy vs FNAC in MNG); Robbins & Cotran — follicular carcinoma vs follicular adenoma (histological criteria)."
+  },
+  missedDiagnoses: [
+    {
+      diagnosis: "Follicular Carcinoma (not excluded by FNAC)",
+      keyClue: "The Bethesda category for follicular lesions on FNAC cannot distinguish follicular adenoma from follicular carcinoma — only histological capsular/vascular invasion can.",
+      cognitiveBias: "Anchoring bias — once FNAC was labelled 'benign/colloid nodule', attention closed on malignancy without flagging the specific blind spot for follicular carcinoma.",
+      growthObservation: "This reflects a common and understandable pattern: trusting the cytology report at face value. The growth opportunity is to always ask 'which malignancy CANNOT be excluded by this test?' for any negative biopsy."
+    },
+    {
+      diagnosis: "Over-investigation bias (LLM without patient context)",
+      keyClue: "Without age and gender context, the LLM (and student simulation) recommended thyroid scan + adrenal workup that clinical context made unnecessary for a 76-year-old with classic Plummer's Disease.",
+      cognitiveBias: "Availability/protocol bias — default first-world textbook algorithm applied without contextualising to patient age, epidemiology, and resource setting.",
+      growthObservation: "Providing complete patient context (age, gender, geography, comorbidities) to LLM prompts significantly improves clinical relevance of AI-generated plans. This is a transferable skill for AI-assisted clinical reasoning."
+    }
+  ],
+  differentialStatus: [
+    { name: "Toxic Multinodular Goitre (Plummer's Disease)", status: "correct" },
+    { name: "Malignant transformation within MNG", status: "partial" },
+    { name: "Medullary Thyroid Carcinoma + MEN2A", status: "revised" },
+    { name: "Primary hypertension causing tachycardia", status: "revised" },
+    { name: "Solitary toxic adenoma (hot nodule)", status: "revised" },
+    { name: "Follicular carcinoma (not excluded)", status: "partial" }
+  ],
+  criticalAwareness: {
+    biasesActive: [
+      "Anchoring — early framing as 'MNG + hyperthyroidism' may have de-prioritised malignancy workup in other contexts.",
+      "Protocol bias — LLM without patient context defaulted to first-world over-investigation algorithms.",
+      "Availability bias — MEN2A / phaeochromocytoma considered because it was raised, not because it was likely."
+    ],
+    overApplyRisk: "This patient's benign FNAC in a resource-limited setting correctly led to conservative management. A younger patient, rapidly enlarging nodule, or Bethesda IV/V cytology would demand different thresholds — do not generalise the 'skip the scan' decision without reassessing context.",
+    criticPerspective: "A critic might argue that surgical histology (hemithyroidectomy) should have been recommended earlier given the compressive symptoms, rather than relying on FNAC alone — particularly to definitively exclude follicular carcinoma.",
+    unresolvedUncertainty: "Whether the autonomous nodules within this patient's MNG will respond adequately to Carbimazole long-term, or whether surgery remains inevitable given the compressive symptoms and her overall frailty (40kg, 76F, hypertension, tachycardia)."
+  }
+};
+
+// ─── Render helpers ───────────────────────────────────────────────
+function gapBadge() {
+  return '<span class="gap-badge">[GAP]</span>';
+}
+function scoreColor(s) {
+  if (s >= 9) return 'var(--danger)';
+  if (s >= 7) return 'var(--warning)';
+  return 'var(--success)';
+}
+
+// ─── Header ───────────────────────────────────────────────────────
+document.getElementById('header-meta').innerHTML =
+  `<strong>${SESSION_DATA.meta.caseTopic}</strong> &nbsp;·&nbsp; ${SESSION_DATA.meta.sessionLabel} &nbsp;·&nbsp; LLM: ${SESSION_DATA.meta.llm}`;
+document.getElementById('duration-badge').textContent = 'Multi-session PaJR discussion';
+
+// ─── Stat bar ─────────────────────────────────────────────────────
+const stats = [
+  { value: SESSION_DATA.meta.totalQuestions, label: 'Questions / Exchanges' },
+  { value: SESSION_DATA.meta.bloomHighest, label: "Highest Bloom's Level" },
+  { value: SESSION_DATA.missedDiagnoses.length, label: 'Diagnosis Gaps Identified' },
+  { value: SESSION_DATA.meta.difficultyRatchet, label: 'Difficulty Ratchet' }
+];
+document.getElementById('stat-bar').innerHTML = stats.map(s =>
+  `<div class="stat-item"><span class="stat-value">${s.value}</span><span class="stat-label">${s.label}</span></div>`
+).join('');
+
+// ─── Tab strip ────────────────────────────────────────────────────
+const tabs = [
+  { id: 'tab-conversation', icon: '◎', label: 'Conversation' },
+  { id: 'tab-scores',       icon: '✦', label: 'Reasoning Scores' },
+  { id: 'tab-bloom',        icon: '⊞', label: "Bloom & Fink" },
+  { id: 'tab-diagnosis',    icon: '⊕', label: 'Diagnosis Review' },
+  { id: 'tab-summary',      icon: '▶', label: 'Session Summary' }
+];
+const strip = document.getElementById('tab-strip');
+tabs.forEach((t, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+  btn.innerHTML = `${t.icon} ${t.label}`;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(t.id).classList.add('active');
+  });
+  strip.appendChild(btn);
+});
+
+// ─── TAB 1 — CONVERSATION ─────────────────────────────────────────
+const convEl = document.getElementById('tab-conversation');
+convEl.innerHTML = '<h2 style="margin-bottom:20px;">Session Transcript</h2>';
+SESSION_DATA.conversation.forEach((ex, idx) => {
+  const isAlt = idx % 2 === 1;
+  convEl.innerHTML += `
+    <span class="phase-badge">${ex.step.toUpperCase()}</span>
+    <div class="turn-card">
+      <div class="turn-row claude-row">
+        <div class="turn-row-label claude-lbl">Claude / Educator &nbsp; Q${idx+1}</div>
+        <p>${ex.question}</p>
+      </div>
+      <div class="turn-row learner-row">
+        <div class="turn-row-label learner-lbl">Learner / Participant</div>
+        <p>${ex.learnerResponse}</p>
+      </div>
+      <div class="turn-row feedback-row">
+        <div class="turn-row-label feedback-lbl">Feedback / Teaching Point</div>
+        <p>${ex.feedback}</p>
+      </div>
+    </div>`;
+});
+
+// ─── TAB 2 — REASONING SCORES ─────────────────────────────────────
+const scoresEl = document.getElementById('tab-scores');
+const s = SESSION_DATA.scores;
+if (s.diagnosticLogic.score === null) {
+  scoresEl.innerHTML = `
+    <h2 style="margin-bottom:16px;">Reasoning Scores</h2>
+    <div class="card">
+      <span class="gap-badge">[GAP]</span>
+      <span style="margin-left:10px;color:var(--text-secondary);font-size:0.88rem;">Mid-session checkpoint (Step 1.4) was not formally taken in this session. This was a collegial multi-participant group discussion rather than a one-on-one Socratic session with explicit scoring.</span>
+    </div>
+    <div class="card" style="margin-top:8px;">
+      <p style="font-size:0.88rem;color:var(--text-secondary);">
+        <strong>Qualitative observation:</strong> Participants demonstrated strong diagnostic logic in correctly sequencing FNAC before adrenal workup, and sound uncertainty handling by acknowledging the FNAC limitation for follicular carcinoma. Prioritisation was appropriate given resource and patient context.
+      </p>
+    </div>`;
+} else {
+  const cards = [
+    { label: 'Diagnostic Logic', key: 'diagnosticLogic' },
+    { label: 'Prioritisation', key: 'prioritisation' },
+    { label: 'Uncertainty Handling', key: 'uncertaintyHandling' }
+  ];
+  scoresEl.innerHTML = `<h2 style="margin-bottom:16px;">Reasoning Scores</h2><div class="score-grid">`;
+  cards.forEach(c => {
+    const sc = s[c.key];
+    scoresEl.innerHTML += `
+      <div class="score-card">
+        <h3>${c.label}</h3>
+        <div class="score-num" style="color:${scoreColor(sc.score)}">${sc.score}/10</div>
+        <div class="score-note">${sc.encouragement}</div>
+        <div class="score-note" style="margin-top:4px;"><em>${sc.improvement}</em></div>
+      </div>`;
+  });
+  scoresEl.innerHTML += `</div>`;
+  if (s.strongestSkill) {
+    scoresEl.innerHTML += `<div class="strongest-skill"><span class="label">Strongest Skill This Session</span><p style="margin-top:4px;">${s.strongestSkill}</p></div>`;
+  }
+}
+
+// ─── TAB 3 — BLOOM & FINK ─────────────────────────────────────────
+const bloomEl = document.getElementById('tab-bloom');
+bloomEl.innerHTML = `<h2 style="margin-bottom:16px;">Bloom's Taxonomy & Fink FLINK</h2>`;
+
+const allBloom = ["Remember","Understand","Apply","Analyse","Evaluate","Create"];
+bloomEl.innerHTML += `<h3 style="margin-bottom:10px;">Bloom's Taxonomy Progression</h3>`;
+const chipsHtml = allBloom.map(level => {
+  const reached = SESSION_DATA.bloom.levelsReached.includes(level);
+  return `<span class="bloom-chip ${reached ? 'reached' : 'not-reached'}">${reached ? '✓' : '–'} ${level}</span>`;
+}).join('');
+bloomEl.innerHTML += `<div class="bloom-chips">${chipsHtml}</div>`;
+bloomEl.innerHTML += `<div class="card"><p style="font-size:0.88rem;">${SESSION_DATA.bloom.highestNote}</p></div>`;
+
+bloomEl.innerHTML += `<h3 style="margin:20px 0 10px;">Fink FLINK Dimensions</h3>`;
+if (!SESSION_DATA.fink) {
+  bloomEl.innerHTML += `<div class="card"><span class="gap-badge">[GAP]</span> <span style="margin-left:8px;color:var(--text-secondary);font-size:0.88rem;">Step 1.6 (Fink FLINK) was not formally used in this session. The group discussion naturally touched on <em>Foundational Knowledge</em> (thyroid pathophysiology) and <em>Application</em> (diagnostic sequencing), but was not structured around Fink's six dimensions.</span></div>`;
+}
+
+// ─── TAB 4 — DIAGNOSIS REVIEW ─────────────────────────────────────
+const diagEl = document.getElementById('tab-diagnosis');
+diagEl.innerHTML = `<h2 style="margin-bottom:16px;">Diagnosis Review</h2>`;
+
+diagEl.innerHTML += `<h3 style="margin-bottom:12px;">Gaps & Missed Diagnoses (Step 1.8)</h3>`;
+SESSION_DATA.missedDiagnoses.forEach(md => {
+  diagEl.innerHTML += `
+    <div class="diag-card">
+      <div class="diag-section-label">Missed / Under-emphasised Diagnosis</div>
+      <p style="font-weight:600;font-size:0.95rem;margin-bottom:12px;">${md.diagnosis}</p>
+      <div class="diag-section-label" style="margin-top:8px;">Key Clue Missed</div>
+      <p style="font-size:0.88rem;margin-bottom:8px;">${md.keyClue}</p>
+      <div class="diag-section-label warning">Cognitive Bias</div>
+      <p style="font-size:0.88rem;margin-bottom:8px;">${md.cognitiveBias}</p>
+      <div class="diag-section-label" style="color:var(--success);">Growth Observation</div>
+      <p style="font-size:0.88rem;">${md.growthObservation}</p>
+    </div>`;
+});
+
+diagEl.innerHTML += `<h3 style="margin:20px 0 12px;">Differential Reasoning Status</h3>`;
+const diffWrap = document.createElement('div');
+diffWrap.className = 'card';
+SESSION_DATA.differentialStatus.forEach(d => {
+  const tagClass = d.status === 'correct' ? 'correct' : d.status === 'partial' ? 'partial' : 'revised';
+  const tagLabel = d.status === 'correct' ? '✓ CORRECT' : d.status === 'partial' ? '~ PARTIAL' : '✗ REVISED';
+  diffWrap.innerHTML += `
+    <div class="diff-row">
+      <span class="diff-tag ${tagClass}">${tagLabel}</span>
+      <span>${d.name}</span>
+    </div>`;
+});
+diagEl.appendChild(diffWrap);
+
+// ─── TAB 5 — SESSION SUMMARY ──────────────────────────────────────
+const sumEl = document.getElementById('tab-summary');
+const cs = SESSION_DATA.closingSummary;
+const ca = SESSION_DATA.criticalAwareness;
+
+sumEl.innerHTML = `
+  <div class="summary-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <h2>Session Record — Printable Summary</h2>
+      <button class="print-btn" id="print-btn" onclick="window.print()">⎙ Print</button>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-block">
+      <h3>Module &amp; Session</h3>
+      <p><strong>Module:</strong> 1 — Socratic Clinical Reasoning</p>
+      <p><strong>Date:</strong> ${SESSION_DATA.meta.sessionLabel}</p>
+      <p><strong>Case:</strong> ${SESSION_DATA.meta.caseTopic}</p>
+      <p><strong>LLM:</strong> ${SESSION_DATA.meta.llm}</p>
+      <p><strong>Steps used:</strong> ${SESSION_DATA.meta.stepsUsed.join(', ')}</p>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-block">
+      <h3>Case Overview</h3>
+      <p style="font-size:0.9rem;">${cs.effortAcknowledgement} A 76-year-old woman with 3-year hypertension presented with 2-month progressive right neck swelling, dysphagia, shortness of breath, and 40kg body weight. TSH was suppressed (&lt;0.01 uIU/mL) with normal T3/T4. FNAC showed follicular cells with background colloid and colloid-laden macrophages, confirming a long-standing benign toxic multinodular goitre (Plummer's Disease). She was started on Carbimazole 5mg BD and is under surveillance.</p>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-block">
+      <h3>What Was Reasoned Well</h3>
+      <div class="pearl-item"><span class="pearl-star">1.</span><span>${cs.reasonedWell[0]}</span></div>
+      <div class="pearl-item"><span class="pearl-star">2.</span><span>${cs.reasonedWell[1]}</span></div>
+    </div>
+    <div class="summary-block">
+      <h3>Clinical Pearls From This Session</h3>
+      <div class="pearl-item"><span class="pearl-star">★</span><span>${cs.clinicalPearls[0]}</span></div>
+      <div class="pearl-item"><span class="pearl-star">★</span><span>${cs.clinicalPearls[1]}</span></div>
+    </div>
+    <div class="summary-block">
+      <h3>Before the Next Similar Case — Review</h3>
+      <p style="font-size:0.9rem;">→ ${cs.reviewPointer}</p>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-block">
+      <h3>Difficulty Ratchet (Step 1.9)</h3>
+      <p><strong>Recommendation:</strong> <span style="color:var(--accent);font-weight:700;">${SESSION_DATA.meta.difficultyRatchet}</span></p>
+      <p style="margin-top:4px;font-size:0.88rem;">Justification: The group correctly navigated all primary diagnostic questions and integrated cytology findings. The next session should present a case with a Bethesda III/IV FNAC result (follicular lesion of undetermined significance) to stress-test the FNAC limitation pearl and require a formal surgical decision framework.</p>
+      <p style="margin-top:6px;font-size:0.88rem;"><strong>Practice before next session:</strong> Read the Bethesda System for Reporting Thyroid Cytopathology (2nd edition) — specifically categories III and IV — and map each category to its recommended management pathway.</p>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-block">
+      <h3>Critical Awareness Flags (Step 1.10)</h3>
+      ${ca.biasesActive.map(b => `<div class="awareness-item"><span class="awareness-icon">⚠</span><span>${b}</span></div>`).join('')}
+      <div class="awareness-item" style="margin-top:8px;"><span class="awareness-icon">⚠</span><span><strong>Risk of over-applying today's reasoning:</strong> ${ca.overApplyRisk}</span></div>
+      <div class="awareness-item"><span class="awareness-icon">⚠</span><span><strong>Critic's perspective:</strong> ${ca.criticPerspective}</span></div>
+      <div class="awareness-item"><span class="awareness-icon">⚠</span><span><strong>Unresolved uncertainty:</strong> ${ca.unresolvedUncertainty}</span></div>
+    </div>
+    <hr class="summary-divider">
+    <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;">PREPARED USING VibeRounds v1.0 — Module 1 Shadow Export<br>Educational output only. All AI-generated content requires independent clinical verification before being acted upon.</p>
+  </div>`;
+</script>
+</body>
+</html>
