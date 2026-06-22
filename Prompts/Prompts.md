@@ -96,9 +96,18 @@ If you already know which module and step you need, skip straight there using th
 | Mining the registry for cross-case learning | [Module 7 – Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) |
 | Authoring or QA-checking a new Socratic prompt | [Module 8 – Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) |
 | N-of-1 Case Research Protocol | [Module 9 – N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) |
-| Journal & Article Reading | [Module 10 – Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) | 
+| Journal & Article Reading | [Module 10 – Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) |
 | Patient Education Query Intelligence | [Module 11 – Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) |
-
+| Differential Diagnosis Deepdive | [Module 12 – Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) |
+| Medication Reconciliation & Polypharmacy | [Module 13 – Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) |
+| Resource-Constrained Clinical Reasoning | [Module 14 – Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) |
+| Illness Script Acquisition | [Module 15 – Illness Script Acquisition](Module-15-Illness-Script-Acquisition.md) |
+| Basic Science ↔ Clinical Integration | [Module 16 – Basic Science ↔ Clinical Integration](Module-16-Bidirectional-Basic-Science-Clinical-Integration.md) |
+| Semantic Qualifiers & Problem Representation | [Module 17 – Semantic Qualifiers & Problem Representation](Module-17-Semantic-Qualifiers-Problem-Representation.md) |
+| Causal vs. Probabilistic (Network) Reasoning | [Module 18 – Causal vs. Probabilistic (Network) Reasoning](Module-18-Causal-vs-Probabilistic-Network-Reasoning.md) |
+| Community & Social Medicine Insights | [Module 19 – Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) |
+| Naturalistic Decision Making | [Module 20 – Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) |
+| Evidence Frontier Search | [Module 21 – Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) |
 
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
@@ -133,13 +142,20 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 5** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 6** | 🔴 Primitive | Experimental / Alpha stage. |
 | **Module 7** | 🔴 Primitive | Experimental / Alpha stage. |
-| **Module 8** | 🟡 In Progress | Ready for ~~production~~ self learning use. |
+| **Module 8** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 9** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 10** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 11** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 12** | 🟢 Mature | Ready for ~~production~~ self learning use. |
-| **Module 13** | 🟡 In Progress | Ready for ~~production~~ self learning use. |
+| **Module 13** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 14** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 15** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 16** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 17** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 18** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 19** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 20** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 21** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
 ## Prompts Analytics
