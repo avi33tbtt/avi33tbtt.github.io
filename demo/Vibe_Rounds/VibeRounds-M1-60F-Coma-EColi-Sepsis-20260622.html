@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds M1 — 60F Coma, E. Coli Sepsis, UMN Signs, Albumino-Cytological Dissociation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary:     #ffffff;
+  --bg-secondary:   #f8f9fa;
+  --bg-tertiary:    #f1f3f5;
+  --border:         #dee2e6;
+  --text-primary:   #1a1a2e;
+  --text-secondary: #6c757d;
+  --text-muted:     #adb5bd;
+  --accent:         #2563eb;
+  --accent-light:   #eff6ff;
+  --warning:        #d97706;
+  --warning-light:  #fffbeb;
+  --danger:         #dc2626;
+  --danger-light:   #fef2f2;
+  --success:        #16a34a;
+  --success-light:  #f0fdf4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+h1 { font-size: 1.5rem; font-weight: 700; }
+h2 { font-size: 1.15rem; font-weight: 600; }
+h3 { font-size: 1rem; font-weight: 600; }
+.label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.card:hover { border-color: #c0c7ce; }
+
+/* HEADER */
+header {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 32px 16px;
+}
+header h1 { color: var(--text-primary); margin-bottom: 4px; }
+.header-meta { color: var(--text-secondary); font-size: 0.85rem; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.session-badge {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+}
+
+/* STAT BAR */
+.stat-bar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 32px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-value { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+
+/* TAB STRIP */
+.tab-strip {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+/* CONTENT */
+.content { padding: 24px 32px; max-width: 960px; }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+/* PHASE BADGE */
+.phase-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+/* TURN CARDS */
+.turn-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.turn-card:nth-child(even) { background: var(--bg-primary); }
+.turn-card:nth-child(odd) { background: var(--bg-secondary); }
+.turn-row { padding: 12px 20px; border-bottom: 1px solid var(--border); }
+.turn-row:last-child { border-bottom: none; }
+.turn-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.label-claude { color: var(--accent); }
+.label-learner { color: var(--warning); }
+.label-feedback { color: var(--success); }
+
+/* SCORE CARDS */
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 600px) { .score-grid { grid-template-columns: 1fr; } }
+.score-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 20px;
+  text-align: center;
+}
+.score-number { font-size: 2rem; font-weight: 700; }
+.score-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+.score-text { font-size: 0.8rem; color: var(--text-secondary); margin-top: 8px; }
+.score-high { color: var(--danger); }
+.score-mid { color: var(--warning); }
+.score-low { color: var(--success); }
+.strongest-skill {
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  background: var(--accent-light);
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  margin-top: 12px;
+}
+
+/* BLOOM */
+.bloom-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.bloom-chip {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+.bloom-reached { background: var(--success-light); color: var(--success); border-color: var(--success); }
+.bloom-not { background: var(--bg-tertiary); color: var(--text-muted); border-color: var(--border); }
+
+/* FINK */
+.fink-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 16px 20px; margin-bottom: 10px; }
+.fink-dim { font-weight: 600; color: var(--accent); margin-bottom: 4px; font-size: 0.85rem; }
+.fink-q { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; font-style: italic; }
+.fink-r { font-size: 0.85rem; }
+
+/* DIAGNOSIS */
+.missed-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--danger);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.missed-title { font-weight: 700; color: var(--danger); margin-bottom: 12px; font-size: 0.9rem; }
+.missed-section { margin-bottom: 10px; }
+.missed-section-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2px; }
+.diff-list { list-style: none; padding: 0; }
+.diff-list li { padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.diff-list li:last-child { border-bottom: none; }
+.tag { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 3px; }
+.tag-correct { background: var(--success-light); color: var(--success); border: 1px solid var(--success); }
+.tag-partial { background: var(--warning-light); color: var(--warning); border: 1px solid var(--warning); }
+.tag-revised { background: var(--bg-tertiary); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* SESSION SUMMARY */
+#session-summary { max-width: 720px; }
+.summary-divider { border: none; border-top: 2px solid var(--border); margin: 20px 0; }
+.summary-section { margin-bottom: 20px; }
+.summary-section h3 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+.summary-item { display: flex; gap: 8px; margin-bottom: 6px; font-size: 0.88rem; }
+.summary-icon { flex-shrink: 0; }
+.critical-flag { background: var(--warning-light); border: 1px solid #fcd34d; border-radius: 4px; padding: 8px 12px; margin-bottom: 8px; font-size: 0.85rem; }
+.print-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  float: right;
+}
+.print-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* GAP BADGE */
+.gap-badge {
+  background: var(--warning-light);
+  color: var(--warning);
+  border: 1px solid #fcd34d;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+}
+
+/* FOOTER */
+footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 12px 32px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media print {
+  nav, .tab-strip, .stat-bar, .print-btn, footer { display: none !important; }
+  body { font-size: 12px; color: #000; background: #fff; }
+  .card { border: 1px solid #ccc; page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  .tab-section { display: none !important; }
+  #session-summary { display: block !important; }
+  header { border-bottom: 2px solid #000; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">VibeRounds · Module 1 — Socratic Clinical Reasoning</div>
+  <h1>60F: Coma, MDR E. Coli Sepsis, UMN Signs &amp; Albumino-Cytological Dissociation in CSF</h1>
+  <div class="header-meta">
+    <span>📅 22 June 2026</span>
+    <span>⏱ Full Session</span>
+    <span class="session-badge">STEPS 1.0 → 1.10</span>
+    <span class="session-badge">MODULE 22 BIAS AUDIT INTEGRATED</span>
+  </div>
+</header>
+
+<div class="stat-bar">
+  <div class="stat-item"><div class="stat-value">12</div><div class="stat-label">Questions Asked</div></div>
+  <div class="stat-item"><div class="stat-value">Analyse</div><div class="stat-label">Bloom's Highest</div></div>
+  <div class="stat-item"><div class="stat-value">2</div><div class="stat-label">Missed Diagnoses</div></div>
+  <div class="stat-item"><div class="stat-value">One Level Harder</div><div class="stat-label">Difficulty Ratchet</div></div>
+  <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Fink Dimensions</div></div>
+</div>
+
+<div class="tab-strip" id="tab-strip">
+  <button class="tab-btn active" data-tab="conversation">◎ Conversation</button>
+  <button class="tab-btn" data-tab="scores">✦ Reasoning Scores</button>
+  <button class="tab-btn" data-tab="bloom">⊞ Bloom &amp; Fink</button>
+  <button class="tab-btn" data-tab="diagnosis">⊕ Diagnosis Review</button>
+  <button class="tab-btn" data-tab="session-summary">▶ Session Summary</button>
+</div>
+
+<div class="content">
+
+  <!-- TAB 1: CONVERSATION -->
+  <div id="conversation" class="tab-section active"></div>
+
+  <!-- TAB 2: SCORES -->
+  <div id="scores" class="tab-section"></div>
+
+  <!-- TAB 3: BLOOM & FINK -->
+  <div id="bloom" class="tab-section"></div>
+
+  <!-- TAB 4: DIAGNOSIS REVIEW -->
+  <div id="diagnosis" class="tab-section"></div>
+
+  <!-- TAB 5: SESSION SUMMARY -->
+  <div id="session-summary" class="tab-section"></div>
+
+</div>
+
+<footer>
+  <span>VibeRounds v1.0 — Module 1 | Educational output only. All AI-generated content requires independent clinical verification before being acted upon. #VibeRounds</span>
+</footer>
+
+<script>
+const SESSION_DATA = {
+  meta: {
+    caseTopic: "60F with Coma, MDR E. Coli Sepsis, UMN Signs, Albumino-Cytological Dissociation in CSF",
+    date: "2026-06-22",
+    stepsUsed: ["1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","1.10"],
+    totalQuestions: 12,
+    bloomHighest: "Analyse",
+    finkDimensions: ["Foundational Knowledge","Application","Integration","Human Dimension","Caring"],
+    difficultyRatchet: "ONE LEVEL HARDER"
+  },
+  conversation: [
+    {
+      step: "1.0",
+      phase: "STEP 1.0 — SESSION SETUP",
+      question: "Welcome to Module 1 — Socratic Clinical Reasoning. Today's case: A 60-year-old woman presents in coma. Her family reports an 18-year history of a neck problem for which baclofen was prescribed. Four months ago her symptoms accelerated. She is now on a ventilator with MDR E. coli sepsis, pancytopenia, a stony hard spleen, ascites, soft hepatomegaly, normocytic anaemia (Hb 5.6–5.7 despite transfusions), hypokalemia, UMN signs, and a CSF showing elevated protein with near-normal cell count (albumino-cytological dissociation). She passed away. Before we explore the reasoning, tell me: what is the single most puzzling feature of this case to you, and why?",
+      learnerResponse: "The most puzzling feature to me is the albumino-cytological dissociation in CSF — raised protein with only 5 cells. This is classically Guillain-Barré but she has upper motor neuron signs, not lower. So GBS doesn't fit. That mismatch is what I find hardest to reconcile.",
+      feedback: "Excellent starting point. You've identified the key paradox: the CSF finding points to a certain class of pathology, yet the neurological examination contradicts the expected pattern. That tension is the engine of this case. Hold that paradox — we will return to it. Let's begin building your differential systematically."
+    },
+    {
+      step: "1.1",
+      phase: "STEP 1.1 — PROBLEM REPRESENTATION",
+      question: "Construct a one-sentence problem representation: a [patient demographic] with [core syndrome/s] and [key discriminating features]. What is yours?",
+      learnerResponse: "A 60-year-old woman with an 18-year history of cervical myelopathy (UMN signs) now presenting with septic encephalopathy (coma, MDR E. coli bacteraemia), pancytopenia with stony hard splenomegaly, normocytic anaemia refractory to transfusion, and albumino-cytological dissociation in CSF — asking: what unifies the neurological and haematological findings?",
+      feedback: "Well-constructed. You have correctly identified two parallel problem streams — neurological and haematological — and crucially asked the right integration question. 'What unifies them?' is the question that separates a list of diagnoses from a coherent clinical model. Before we proceed, notice what you included and what you left out: you did not mention the Hb that barely moved despite 3 units of blood, the hypothermia (Temp 95°F), the Type II respiratory failure on ABG, or the UGI bleed signs (melaena, rectal bleeding, H. pylori ulcers). Do any of those change your representation?"
+    },
+    {
+      step: "1.2",
+      phase: "STEP 1.2 — ILLNESS SCRIPT ACTIVATION",
+      question: "The combination of stony hard splenomegaly + pancytopenia + normocytic anaemia refractory to transfusion in a 60-year-old woman — activate the illness scripts in your mind. What are the top three broad categories this pattern fits, ranked by prior probability in this demographic?",
+      learnerResponse: "1. Haematological malignancy — myeloproliferative neoplasm (MPN) like myelofibrosis or CML given the stony hard spleen and pancytopenia with erythroid hyperplasia on bone marrow. 2. Chronic infection/infiltration — disseminated tuberculosis causing reactive haematophagia and granulomatous splenomegaly. 3. Chronic liver disease with hypersplenism — though the absence of obvious varices and the stony (not soft) spleen make this less likely.",
+      feedback: "Sound reasoning. Your top pick — MPN/myelofibrosis — is well-supported: stony hard spleen, pancytopenia, and erythroid hyperplasia (bone marrow biopsy showed erythroid hyperplasia, not the leukoerythroblastic picture of overt myelofibrosis, but that does not exclude early or pre-fibrotic MPN). Disseminated TB is an excellent second: remember the ADA (adenosine deaminase) in the CSF was elevated — TB can cause spinal cord disease, meningeal disease with falsely low cells in an immunosuppressed host, and pancytopenia via marrow infiltration or haemophagocytic lymphohistiocytosis. Now, how does the neurological picture — long-standing UMN signs with CSF albumino-cytological dissociation — fit into each of these three categories?"
+    },
+    {
+      step: "1.2",
+      phase: "STEP 1.2 — INTEGRATION PROBE",
+      question: "Walk me through the possible explanations for elevated CSF protein with minimal cells AND upper motor neuron signs. Give me at least four distinct mechanisms.",
+      learnerResponse: "1. Cord compression — extradural mass compressing the cervical cord causes UMN signs below the block; elevated protein due to spinal block (Froin's syndrome). 2. Paraneoplastic myelopathy — in haematological malignancy, antibody-mediated cord damage with UMN signs; CSF shows elevated protein with few cells. 3. Tuberculous arachnoiditis/myelitis — TB causes cord inflammation and CSF protein elevation with paradoxically low cells in immunosuppressed patients. 4. NMO (Neuromyelitis Optica) / demyelinating disease — though no mention of optic nerve involvement. 5. Carcinomatous meningitis — elevated protein, normal cells in early or immunosuppressed phase.",
+      feedback: "Comprehensive list. You have covered the mechanistic spectrum well. Critically, you have correctly flagged that in a pancytopenic patient, CSF cell count may be falsely low — the inflammatory cellular response is blunted. This is a key insight that was raised by the clinicians who reviewed this case in real time. The 'albumino-cytological dissociation' here may therefore be an artefact of immunosuppression rather than a true Guillain-Barré-type pattern. This reframes the CSF result entirely. What does that do to your differential?"
+    },
+    {
+      step: "1.3",
+      phase: "STEP 1.3 — HYPOTHESIS TESTING",
+      question: "Let's stress-test the most likely unifying diagnosis. If you had to choose ONE diagnosis that explains: UMN signs for 18 years + stony hard spleen + pancytopenia + erythroid hyperplasia on BM biopsy + MDR E. coli sepsis + CSF protein elevation + hypothermia + Type II respiratory failure — what is it, and what evidence is for and against?",
+      learnerResponse: "My primary unifying diagnosis: Myeloproliferative Neoplasm (likely myelofibrosis or pre-fibrotic MPN) PLUS longstanding degenerative cervical myelopathy as a coincident but separate condition. The MPN explains: stony spleen, pancytopenia, erythroid hyperplasia (reactive in marrow), susceptibility to MDR sepsis (neutrophil dysfunction), refractory anaemia. The cervical myelopathy (degenerative/structural) explains the 18-year UMN course managed with baclofen. The CSF protein elevation could be from: spinal cord compression effect, or carcinomatous/leukaemic meningeal spread. Against this: no leukoerythroblastic smear mentioned, MRI cervical spine near normal (so cord compression minor), no explicit JAK2 mutation testing documented.",
+      feedback: "Well-reasoned. You have correctly resisted the temptation to force a single diagnosis onto a complex case and instead built a two-stream model with intersections. The key move you made — separating the neurological and haematological streams while identifying where they interact — is exactly the reasoning pattern experienced clinicians use. Now let us apply the Mid-Session Checkpoint."
+    },
+    {
+      step: "1.4",
+      phase: "STEP 1.4 — MID-SESSION CHECKPOINT",
+      question: "Checkpoint — three rapid-fire assessments. For each, give a number 1–10 and one sentence of justification. (A) How rigorously did you interrogate the haematological differential? (B) How well did you use the temporal course (18-year history) as a diagnostic tool? (C) How adequately did you handle diagnostic uncertainty — naming what you do NOT know?",
+      learnerResponse: "(A) Haematological differential interrogation: 7/10 — I covered MPN, TB, CLD but did not specifically mention haemophagocytic lymphohistiocytosis (HLH) which could explain pancytopenia + hepatosplenomegaly + sepsis trigger. (B) Temporal course use: 8/10 — I recognised the 18-year stable course as pointing to a degenerative/structural cervical lesion, not a rapidly progressive one, which helped separate it from acute inflammatory myelopathy. (C) Uncertainty handling: 7/10 — I named missing investigations (JAK2, peripheral smear morphology, LFTs, MRI films) but did not explicitly state the probability of my leading hypothesis.",
+      feedback: "Honest and calibrated self-assessment. Your identification of HLH as a missed possibility is important — MDR E. coli sepsis is a classic trigger for reactive HLH, and in that setting pancytopenia, hepatosplenomegaly, and elevated ferritin (not documented here but should be sought) would fit. Your strongest performance was temporal reasoning. Your growth edge is making uncertainty explicit — restating probability estimates at each new data point forces more rigorous updating."
+    },
+    {
+      step: "1.5",
+      phase: "STEP 1.5 — BLOOM'S PROGRESSION",
+      question: "Let's escalate to Bloom's Analyse level. The ABG shows Type II respiratory failure (rising PCO₂, falling pH, normal bicarbonate — no metabolic compensation yet). The patient is on a ventilator but has a baseline RR of 16 by herself. Which of the following mechanisms is the most parsimonious explanation for the Type II respiratory failure in this patient, and how do you reason between them? Options: (A) High cervical cord dysfunction impairing diaphragmatic drive (phrenic nerve C3-C5), (B) Sepsis-induced respiratory muscle fatigue, (C) Baclofen toxicity causing CNS/respiratory depression, (D) Aspiration pneumonia reducing respiratory reserve.",
+      learnerResponse: "Most parsimonious: (C) Baclofen toxicity, secondarily compounded by (A). Reasoning: She dramatically increased baclofen use over 4 months, from 2-3 doses/week to twice daily. Baclofen toxicity causes CNS depression, loss of consciousness, hyporeflexia, and — critically — respiratory depression with CO₂ retention. This is dose-related. Baclofen withdrawal can also cause confusion. The hypothermia (Temp 95°F) further supports CNS/autonomic depression. The near-normal ABG lactate argues against pure septic shock as the primary respiratory driver. High cervical cord disease could contribute to diaphragmatic weakness but would not fully explain the acute deterioration. Septic muscle fatigue is a contributor but not the lead driver given the baclofen escalation history.",
+      feedback: "Excellent analytical reasoning. Baclofen toxicity is under-recognised in this setting — clinicians often anchor on the infections and haematological findings and miss the iatrogenic contribution. You correctly triangulated: rising dose → known pharmacological effect → consistent clinical picture (coma + hypothermia + type II RF). This is a high-yield clinical pearl. The one refinement: in chronic cord disease, the cervical myelopathy at high levels (C3-C5 phrenic input) could have chronically reduced respiratory reserve, meaning the threshold for baclofen-induced respiratory failure was much lower than in a neurologically intact patient. The two mechanisms are multiplicative, not additive."
+    },
+    {
+      step: "1.6",
+      phase: "STEP 1.6 — FINK DIMENSIONS",
+      question: "Fink — Human Dimension. This patient's family delayed hospitalisation multiple times, managed her at home with a nasogastric tube, gave blood at home on a doctor's advice, and watched her deteriorate over weeks. What does understanding this add to your clinical model — not of the disease, but of the case?",
+      learnerResponse: "It adds the dimension of constrained decision-making under resource scarcity. The family were not neglectful — they were doing what they could within their means and the advice they were given. The repeated home management of a ventilator-dependent, septic, anaemic patient reflects a system failure, not a family failure. For my clinical model, it means: (1) the disease had more time to progress than if early ICU admission had occurred; (2) the home blood transfusion without monitoring likely introduced risk of transfusion reactions or infection; (3) the nasogastric feeding with 'packet juice' and diarrhoea episode suggests aspiration risk and gut dysbiosis that may have contributed to the E. coli bacteraemia; and (4) the bed sores on admission indicate prolonged immobility at home — a compounding factor.",
+      feedback: "This is the kind of integration that distinguishes a clinician from a diagnostician. You have moved from 'what is the disease?' to 'how did the disease-in-this-person-in-this-context produce this outcome?' The NG tube + pomegranate juice + diarrhoea → gut dysbiosis → translocation of enteric bacteria (E. coli) → bacteraemia pathway is a plausible mechanistic chain that is grounded in the history. Well done."
+    },
+    {
+      step: "1.6",
+      phase: "STEP 1.6 — FINK: CARING DIMENSION",
+      question: "Fink — Caring. The patient died. The case was posted online by the treating team as a learning case. Is there anything about how you've engaged with this case that feels different knowing the outcome? What does that ask of you as a clinician?",
+      learnerResponse: "Yes — knowing she died changes the register. I am not just solving a puzzle; I am reconstructing the reasoning around a real person's death. That asks me to hold two things simultaneously: intellectual rigour in the analysis (to extract learning) and respect for the fact that the 'case' was someone's mother-in-law. It also asks me to be honest about what was missed — not to protect a diagnosis, but because that honesty is what this patient's death could still teach us. If baclofen toxicity contributed and was not identified, naming that clearly is part of the duty of care owed retrospectively.",
+      feedback: "Beautifully expressed. The discipline of caring without losing analytical clarity is one of the hardest things to maintain in medicine. Your framing — 'her death can still teach' — is the ethical foundation of clinical case review. Let us now move to the closing phase."
+    },
+    {
+      step: "1.7",
+      phase: "STEP 1.7 — CLOSING SUMMARY",
+      question: "Synthesise: in 3 sentences, state the most likely unified diagnosis or diagnostic framework for this case, the primary missed or underweighted opportunity, and the one clinical pearl you will carry forward.",
+      learnerResponse: "Most likely framework: A 60-year-old woman with longstanding degenerative cervical myelopathy (structural UMN signs) who developed a myeloproliferative or infiltrative disorder (stony splenomegaly, pancytopenia, erythroid hyperplasia) causing progressive immunosuppression, superimposed MDR E. coli sepsis (possibly via enteric translocation from NG-tube feeding complications), and acute respiratory decompensation from baclofen toxicity on a background of chronic cervical respiratory vulnerability, with CSF albumino-cytological dissociation representing immunosuppression-blunted inflammatory response rather than a primary demyelinating process. Primary missed opportunity: Baclofen toxicity as a contributor to the acute deterioration — dose escalation over 4 months was documented but the pharmacological consequence was not pursued. Clinical pearl: In a pancytopenic patient, 'albumino-cytological dissociation' in CSF may be artefactual — the cell response is blunted by bone marrow failure, so the classic pattern cannot be interpreted in the same way as in an immunocompetent host.",
+      feedback: "Outstanding synthesis. Your three-sentence summary captures the full clinical arc. The CSF interpretation pearl — that pancytopenia blunts the cellular response and therefore the 'dissociation' may not mean what it normally means — is a genuine teaching point that the original clinical team debated in real time. You have arrived at it independently through reasoning. Excellent work."
+    },
+    {
+      step: "1.8",
+      phase: "STEP 1.8 — MISSED DIAGNOSIS DEBRIEF",
+      question: "Two diagnoses were underweighted in this case. First: Haemophagocytic Lymphohistiocytosis (HLH) — a hyperinflammatory syndrome triggered by MDR sepsis in an immunosuppressed host, causing pancytopenia, hepatosplenomegaly, and escalating organ failure. Second: Baclofen toxicity as a primary contributor to the acute deterioration. For each, name the key clue that was present but not weighted, and the cognitive bias that may explain its underweighting.",
+      learnerResponse: "HLH: Key clue missed — the combination of MDR bacterial sepsis (a known HLH trigger) + pancytopenia + hepatosplenomegaly + worsening despite antibiotics should have triggered ferritin measurement and HScore calculation. Cognitive bias: availability bias — HLH is associated mentally with viral triggers (EBV, CMV) so bacterial-triggered HLH in an adult was less cognitively available. Baclofen toxicity: Key clue missed — the documented escalation from PRN use to twice daily over 4 months, in a patient who then develops coma + hypothermia + Type II RF. Cognitive bias: anchoring — the team anchored on sepsis as the explanation for deterioration and did not update the probability of an iatrogenic contributor.",
+      feedback: "Precise and accurate bias identification. Anchoring on 'sepsis explains everything' is one of the most common reasoning errors in multi-problem patients — sepsis becomes a diagnosis that absorbs all deterioration, leaving iatrogenic contributors invisible. Your recognition that HLH should be screened in any septic patient with unexplained cytopenias and organomegaly is a transferable principle."
+    },
+    {
+      step: "1.10",
+      phase: "STEP 1.10 — CRITICAL AWARENESS DEBRIEF",
+      question: "Final step — critical awareness. What biases were active in your own reasoning today, and what is the risk of over-applying what you learned from this case to the next similar patient?",
+      learnerResponse: "Biases active: (1) Availability bias — I initially reached for myelofibrosis because of the stony spleen + erythroid hyperplasia pattern, which I recently read about. (2) Premature closure — after building the two-stream MPN + cervical myelopathy model, I was satisfied and initially did not probe the baclofen toxicity angle until prompted. (3) Hindsight bias risk — knowing she died may have made my reasoning appear more complete than it would have been prospectively. Risk of over-application: Not every pancytopenic patient with splenomegaly has MPN — TB, CLD, HLH, SLE, and medications (baclofen, broad-spectrum antibiotics causing marrow suppression) all mimic this picture. The CSF pearl about immunosuppression blunting cellularity is a principle, not a rule — it should not lead me to dismiss cell count findings without first verifying the peripheral count.",
+      feedback: "This is a mature and honest critical awareness debrief. Your naming of hindsight bias is particularly important — in retrospective case analysis, it is easy to confuse 'I reasoned well' with 'I knew the answer.' The real test is whether this reasoning would have been available to you prospectively, in real time, without the case notes in front of you. The safeguard you identified — verifying peripheral counts before interpreting CSF cellularity — is precisely the kind of calibrated rule that converts a single case learning into generalizable clinical reasoning. Session complete."
+    }
+  ],
+  scores: {
+    diagnosticLogic:     { score: 8, encouragement: "Strong differential construction with good mechanistic grounding.", improvement: "Make probability estimates explicit at each data update." },
+    prioritisation:      { score: 7, encouragement: "Correctly prioritised MPN and baclofen toxicity after prompting.", improvement: "Lead with the iatrogenic hypothesis earlier in complex deterioration." },
+    uncertaintyHandling: { score: 8, encouragement: "Named missing investigations and flagged what could not be concluded.", improvement: "State your confidence level numerically — forces you to notice when you're more certain than the evidence warrants." },
+    strongestSkill: "Temporal reasoning — using the 18-year stable history to correctly distinguish the neurological stream from the acute haematological and septic streams."
+  },
+  bloom: {
+    levelsReached: ["Remember","Understand","Apply","Analyse"],
+    highestNote: "Analyse level reached at Step 1.5 — the learner successfully reasoned between competing mechanisms for Type II respiratory failure, triangulated pharmacological, anatomical, and physiological contributors, and identified Baclofen toxicity as the most parsimonious explanation using multi-point evidence integration."
+  },
+  fink: [
+    { name: "Foundational Knowledge", question: "What are the mechanisms producing albumino-cytological dissociation in CSF?", response: "Cord compression (spinal block), paraneoplastic myelopathy, TB arachnoiditis, demyelination, carcinomatous meningitis — and crucially, immunosuppression artefactually blunting the cellular response in pancytopenic patients." },
+    { name: "Application", question: "How do you apply the CSF protein interpretation rule in a pancytopenic host?", response: "Standard interpretation cannot be used — the cellular response is blunted by bone marrow failure. The 'dissociation' may be artefactual. Ferritin, TB-PCR, and CSF cytology should be sought before concluding a demyelinating or protein-only process." },
+    { name: "Integration", question: "How does the haematological finding connect to the neurological presentation?", response: "Via two pathways: immunosuppression from MPN/HLH enabling sepsis and meningeal involvement; and separately, if TB is the unifying cause, it can explain both the spinal cord disease (tuberculous myelitis/arachnoiditis) and the haematological findings (marrow infiltration)." },
+    { name: "Human Dimension", question: "What does understanding the family's decisions add to the clinical model?", response: "The repeated home management under resource constraints gave the disease extra time to progress. The NG tube feeding complications are a plausible route for enteric bacterial translocation. Bed sores add further septic portal risk. The clinical model must account for the illness trajectory shaped by the social and resource context." },
+    { name: "Caring", question: "What does knowing she died ask of you as a learner engaging with this case?", response: "To hold intellectual rigour and human respect simultaneously. To name what was missed honestly, because that honesty is the retrospective duty of care her death still makes possible. To never reduce a complex patient to a puzzle to be solved." }
+  ],
+  closingSummary: {
+    effortAcknowledgement: "You engaged with a genuinely complex case with multiple intersecting pathologies and arrived at a nuanced synthesis through systematic reasoning, honest self-assessment, and careful attention to the temporal and social context of the illness.",
+    reasonedWell: [
+      "Temporal reasoning — correctly used the 18-year stable history to separate the chronic structural cervical myelopathy from the acute haematological and septic syndrome.",
+      "CSF re-interpretation — independently arrived at the key insight that albumino-cytological dissociation in a pancytopenic patient may be artefactual, not a primary diagnostic finding."
+    ],
+    clinicalPearls: [
+      "Baclofen toxicity: a documented dose escalation from PRN → twice daily in a patient who subsequently develops coma + hypothermia + Type II respiratory failure should trigger a pharmacological screen before ascribing all deterioration to sepsis.",
+      "CSF cellularity in the immunosuppressed: pancytopenia blunts the inflammatory cell response. A 'normal' or near-normal CSF cell count in this context does not exclude meningeal TB, fungal meningitis, or carcinomatous meningitis — pursue ADA, TB-PCR, India ink, and cytology regardless."
+    ],
+    reviewPointer: "Review: (1) HLH diagnostic criteria and HScore calculation; (2) Baclofen toxidrome — clinical features and management; (3) Approach to CSF interpretation in immunocompromised patients; (4) Myeloproliferative neoplasms — diagnostic workup including JAK2 V617F, LDH, peripheral smear morphology."
+  },
+  missedDiagnoses: [
+    {
+      diagnosis: "Haemophagocytic Lymphohistiocytosis (HLH)",
+      keyClue: "MDR E. coli sepsis (a recognised HLH trigger) + pancytopenia + hepatosplenomegaly + escalating organ failure despite antibiotics — ferritin was never measured, HScore never calculated.",
+      cognitiveBias: "Availability bias — HLH is mentally associated with viral triggers (EBV, CMV, herpes), making bacterial-triggered HLH in an elderly patient less cognitively available. The pattern was present; the category was under-populated.",
+      growthObservation: "This learner independently identified HLH as a missed possibility during the checkpoint step — demonstrating active differential updating rather than passive pattern matching. The next step is making ferritin a reflex investigation in any septic patient with unexplained organomegaly and cytopenias."
+    },
+    {
+      diagnosis: "Baclofen Toxicity (Iatrogenic contributor to acute decompensation)",
+      keyClue: "Documented escalation from 2-3 doses/week → twice daily over 4 months; patient subsequently develops coma, hypothermia (95°F), and Type II respiratory failure. Baclofen toxicity causes all three.",
+      cognitiveBias: "Anchoring — 'sepsis explains everything' became the dominant frame, making the iatrogenic contributor invisible. Once a unifying acute diagnosis (MDR sepsis) is established, the tendency is to attribute all deterioration to it without revisiting the medication list.",
+      growthObservation: "The learner flagged baclofen toxicity as the most parsimonious explanation for Type II respiratory failure when prompted to analyse mechanisms — showing that the reasoning capacity was present. The growth area is making the medication review reflex earlier, before anchoring on the acute diagnosis."
+    }
+  ],
+  differentialStatus: [
+    { name: "Degenerative Cervical Myelopathy", status: "correct" },
+    { name: "Myeloproliferative Neoplasm (MPN/Myelofibrosis)", status: "partial" },
+    { name: "Disseminated Tuberculosis", status: "partial" },
+    { name: "MDR E. coli Sepsis (primary)", status: "correct" },
+    { name: "Baclofen Toxicity contributing to decompensation", status: "partial" },
+    { name: "Haemophagocytic Lymphohistiocytosis (HLH)", status: "revised" },
+    { name: "Chronic Liver Disease with Hypersplenism", status: "revised" },
+    { name: "Guillain-Barré Syndrome", status: "revised" }
+  ],
+  criticalAwareness: {
+    biasesActive: ["Availability bias (MPN from recent reading)", "Premature closure (satisfied with two-stream model before baclofen explored)", "Potential hindsight bias in retrospective analysis"],
+    overApplyRisk: "Not every pancytopenic patient with splenomegaly has MPN — TB, CLD, HLH, SLE, and drug-induced marrow suppression all share the same surface pattern. The CSF pearl (immunosuppression blunting cellularity) is a principle to be applied with verification of the peripheral count, not a rule that excuses dismissing the cell count.",
+    criticPerspective: "A critical observer would note: the learner reached the correct mechanistic conclusions for baclofen and CSF interpretation only after being prompted, not spontaneously. Prospective reasoning would need to be demonstrated on a new case without the Socratic scaffold before claiming these as embedded skills.",
+    unresolvedUncertainty: "The ultimate unifying diagnosis — what caused the stony splenomegaly and erythroid hyperplasia — remains unresolved. MPN, infiltrative TB, and HLH all remain plausible. Peripheral smear morphology, JAK2 status, ferritin, LDH, and LFTs were not documented in the available record. Autopsy findings were not available."
+  }
+};
+
+// ─── RENDER FUNCTIONS ───────────────────────────────────────────────────────
+
+function renderConversation() {
+  const el = document.getElementById('conversation');
+  let html = '<h2 style="margin-bottom:16px;">Full Session Transcript</h2>';
+  let lastPhase = '';
+  SESSION_DATA.conversation.forEach((turn, i) => {
+    if (turn.phase !== lastPhase) {
+      html += `<div class="phase-badge">${turn.phase}</div>`;
+      lastPhase = turn.phase;
+    }
+    const bg = i % 2 === 0 ? 'var(--bg-secondary)' : 'var(--bg-primary)';
+    html += `
+      <div class="turn-card" style="background:${bg}">
+        <div class="turn-row">
+          <div class="turn-label label-claude">◎ Claude — Question ${i + 1}</div>
+          <div>${turn.question}</div>
+        </div>
+        <div class="turn-row">
+          <div class="turn-label label-learner">◈ Learner Response</div>
+          <div>${turn.learnerResponse}</div>
+        </div>
+        <div class="turn-row">
+          <div class="turn-label label-feedback">✓ Feedback</div>
+          <div>${turn.feedback}</div>
+        </div>
+      </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function renderScores() {
+  const el = document.getElementById('scores');
+  const s = SESSION_DATA.scores;
+  const colorClass = (n) => n >= 9 ? 'score-high' : n >= 7 ? 'score-mid' : 'score-low';
+  el.innerHTML = `
+    <h2 style="margin-bottom:16px;">Step 1.4 — Mid-Session Reasoning Scores</h2>
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-title">Diagnostic Logic</div>
+        <div class="score-number ${colorClass(s.diagnosticLogic.score)}">${s.diagnosticLogic.score}<span style="font-size:1rem;color:var(--text-muted)">/10</span></div>
+        <div class="score-text">${s.diagnosticLogic.encouragement}</div>
+        <div class="score-text" style="margin-top:6px;color:var(--warning)">→ ${s.diagnosticLogic.improvement}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-title">Prioritisation</div>
+        <div class="score-number ${colorClass(s.prioritisation.score)}">${s.prioritisation.score}<span style="font-size:1rem;color:var(--text-muted)">/10</span></div>
+        <div class="score-text">${s.prioritisation.encouragement}</div>
+        <div class="score-text" style="margin-top:6px;color:var(--warning)">→ ${s.prioritisation.improvement}</div>
+      </div>
+      <div class="score-card">
+        <div class="score-title">Uncertainty Handling</div>
+        <div class="score-number ${colorClass(s.uncertaintyHandling.score)}">${s.uncertaintyHandling.score}<span style="font-size:1rem;color:var(--text-muted)">/10</span></div>
+        <div class="score-text">${s.uncertaintyHandling.encouragement}</div>
+        <div class="score-text" style="margin-top:6px;color:var(--warning)">→ ${s.uncertaintyHandling.improvement}</div>
+      </div>
+    </div>
+    <div class="strongest-skill">
+      <div class="label" style="margin-bottom:4px;">Strongest Skill This Session</div>
+      <div style="font-size:0.88rem;">${s.strongestSkill}</div>
+    </div>`;
+}
+
+function renderBloom() {
+  const el = document.getElementById('bloom');
+  const levels = ["Remember","Understand","Apply","Analyse","Evaluate","Create"];
+  const reached = SESSION_DATA.bloom.levelsReached;
+  const chips = levels.map(l =>
+    `<span class="bloom-chip ${reached.includes(l) ? 'bloom-reached' : 'bloom-not'}">${l} ${reached.includes(l) ? '✓' : '–'}</span>`
+  ).join('');
+  const finkHtml = SESSION_DATA.fink.map(f => `
+    <div class="fink-card">
+      <div class="fink-dim">⊞ ${f.name}</div>
+      <div class="fink-q">"${f.question}"</div>
+      <div class="fink-r">${f.response}</div>
+    </div>`).join('');
+  el.innerHTML = `
+    <h2 style="margin-bottom:16px;">Step 1.5 — Bloom's Taxonomy</h2>
+    <div class="bloom-chips">${chips}</div>
+    <div class="card" style="margin-bottom:24px;">${SESSION_DATA.bloom.highestNote}</div>
+    <h2 style="margin-bottom:16px;">Step 1.6 — Fink FLINK Dimensions</h2>
+    ${finkHtml}`;
+}
+
+function renderDiagnosis() {
+  const el = document.getElementById('diagnosis');
+  const missed = SESSION_DATA.missedDiagnoses.map(m => `
+    <div class="missed-card">
+      <div class="missed-title">⚑ MISSED DIAGNOSIS: ${m.diagnosis}</div>
+      <div class="missed-section"><div class="missed-section-label">Key Clue Missed</div><div>${m.keyClue}</div></div>
+      <div class="missed-section"><div class="missed-section-label">Cognitive Bias</div><div>${m.cognitiveBias}</div></div>
+      <div class="missed-section"><div class="missed-section-label">Growth Observation</div><div style="color:var(--success)">${m.growthObservation}</div></div>
+    </div>`).join('');
+  const tagMap = { correct: ['tag-correct','✓ CORRECT'], partial: ['tag-partial','~ PARTIAL'], revised: ['tag-revised','✗ REVISED'] };
+  const diffHtml = SESSION_DATA.differentialStatus.map(d => {
+    const [cls, label] = tagMap[d.status];
+    return `<li><span class="tag ${cls}">${label}</span> ${d.name}</li>`;
+  }).join('');
+  el.innerHTML = `
+    <h2 style="margin-bottom:16px;">Step 1.8 — Missed Diagnosis Debrief</h2>
+    ${missed}
+    <h2 style="margin-bottom:12px;margin-top:8px;">Differential Reasoning Summary</h2>
+    <div class="card"><ul class="diff-list">${diffHtml}</ul></div>`;
+}
+
+function renderSummary() {
+  const el = document.getElementById('session-summary');
+  const cs = SESSION_DATA.closingSummary;
+  const ca = SESSION_DATA.criticalAwareness;
+  const dr = SESSION_DATA.meta.difficultyRatchet;
+  const biases = ca.biasesActive.map(b => `<div class="critical-flag">⚠ ${b}</div>`).join('');
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+      <div>
+        <div class="label" style="margin-bottom:4px;">VibeRounds · Module 1 — Session Record</div>
+        <h2 style="font-size:1.1rem;">Session Summary &amp; Printable Record</h2>
+        <div style="color:var(--text-secondary);font-size:0.82rem;margin-top:4px;">Date: ${SESSION_DATA.meta.date} &nbsp;|&nbsp; Case: ${SESSION_DATA.meta.caseTopic}</div>
+      </div>
+      <button class="print-btn" id="print-btn">🖨 Print</button>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-section">
+      <h3>Case Overview</h3>
+      <p style="font-size:0.88rem;">${cs.effortAcknowledgement} The case involved a 60-year-old woman with an 18-year history of cervical myelopathy who developed MDR E. coli sepsis, pancytopenia with stony splenomegaly, refractory normocytic anaemia, and an albumino-cytological dissociation in CSF — raising questions about myeloproliferative disease, disseminated TB, HLH, and iatrogenic baclofen toxicity as intersecting contributors to her final deterioration.</p>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-section">
+      <h3>What I Reasoned Well</h3>
+      ${cs.reasonedWell.map((r,i) => `<div class="summary-item"><span class="summary-icon" style="color:var(--success)">✓</span><span>${i+1}. ${r}</span></div>`).join('')}
+    </div>
+    <div class="summary-section">
+      <h3>Clinical Pearls From This Session</h3>
+      ${cs.clinicalPearls.map(p => `<div class="summary-item"><span class="summary-icon" style="color:var(--accent)">★</span><span>${p}</span></div>`).join('')}
+    </div>
+    <div class="summary-section">
+      <h3>Before the Next Similar Case</h3>
+      <div class="summary-item"><span class="summary-icon">→</span><span>${cs.reviewPointer}</span></div>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-section">
+      <h3>Difficulty Ratchet</h3>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:4px;">Recommendation: ${dr}</div>
+        <div style="font-size:0.85rem;">This case required multi-stream reasoning across haematology, neurology, infectious disease, and pharmacology simultaneously. The learner managed the complexity well but required Socratic prompting to surface baclofen toxicity and HLH. The next case should present a similarly multi-problem patient where the iatrogenic contributor must be independently identified without prompting.</div>
+        <div style="margin-top:8px;font-size:0.85rem;color:var(--accent);">Practice before next session: For any patient on a CNS-active drug who deteriorates acutely, complete a structured medication review and document whether the dose has changed in the preceding 3 months.</div>
+      </div>
+    </div>
+    <hr class="summary-divider">
+    <div class="summary-section">
+      <h3>Critical Awareness Flags</h3>
+      ${biases}
+      <div class="critical-flag">⚠ Risk of over-applying today's reasoning: ${ca.overApplyRisk}</div>
+      <div class="critical-flag">⚠ Unresolved uncertainty: ${ca.unresolvedUncertainty}</div>
+    </div>
+    <hr class="summary-divider">
+    <div style="color:var(--text-muted);font-size:0.72rem;line-height:1.8;">
+      PREPARED USING VibeRounds v1.0 — Module 1 | Shadow Module Export<br>
+      Educational output only. All AI-generated content requires independent clinical verification before being acted upon.<br>
+      #VibeRounds — A Socratic AI Paradigm for Clinical Medicine · Dr. Avinash Kumar Gupta, 2026
+    </div>`;
+  document.getElementById('print-btn').addEventListener('click', () => window.print());
+}
+
+// ─── TAB SWITCHING ──────────────────────────────────────────────────────────
+function initTabs() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+renderConversation();
+renderScores();
+renderBloom();
+renderDiagnosis();
+renderSummary();
+initTabs();
+</script>
+</body>
+</html>
