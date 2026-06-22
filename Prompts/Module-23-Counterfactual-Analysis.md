@@ -1,4 +1,4 @@
-# Module 22 — Counterfactual Analysis
+# Module 23 — Counterfactual Analysis
 
 **Objective:** Interrogate what *would have changed* if key clinical variables had been different — systematically surfacing causal assumptions, decision sensitivity, and the hidden leverage points in a case that retrospective review alone cannot reveal.
 
