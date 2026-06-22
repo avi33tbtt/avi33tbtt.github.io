@@ -54,6 +54,7 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 | [Vibe Rounds — Demo Implementation - Clerkship Case Practice](VibeRounds_Case_Practice.md) | Vibe Rounds — Prompt Templates for Clerkship Case Practice | June 20, 2026 |
 | [The Learning Stack - Demo 1](https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-Adult-ThyroidMass-SubclinicalHyper.html) | The Learning Stack - Demo 1 | June 20, 2026 |
 | [The Learning Stack - Demo 2](https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-14M-MicrocyticAnemia-UrinaryObstruction.html) | The Learning Stack - Demo 2 | June 20, 2026 |
+| [The Learning Stack - Full Anlytics Demo](Prompts/Demo/cases.md) | The Learning Stack - Full Anlytics Demo  | June 22, 2026 |
 
 ---
 
