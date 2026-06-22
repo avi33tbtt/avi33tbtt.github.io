@@ -243,7 +243,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 
 ## 🧩 Supplementary Frameworks
 
-*Not standalone modules — each is layered into specific steps across Modules 0–8. See the [Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md) for exactly where.*
+*Not standalone modules — each is layered into specific steps across Modules 0–28. See the [Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md) for exactly where.*
 
 | Letter | Framework | What it does |
 |---|---|---|
