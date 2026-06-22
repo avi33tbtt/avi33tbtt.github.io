@@ -1,0 +1,784 @@
+---
+layout: default
+title: Module 22 — Nested Analysis | Erythema ab Igne | VibeRounds
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 22 — Nested Analysis · Erythema ab Igne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary:      #ffffff;
+    --bg-secondary:    #f8f7f4;
+    --bg-tertiary:     #f1efe8;
+    --text-primary:    #1a1a18;
+    --text-secondary:  #5f5e5a;
+    --text-muted:      #888780;
+    --border:          rgba(0,0,0,0.12);
+    --border-emphasis: rgba(0,0,0,0.22);
+
+    --layer1-fill:   #EEEDFE;
+    --layer1-border: #534AB7;
+    --layer1-text:   #3C3489;
+
+    --layer2-fill:   #E1F5EE;
+    --layer2-border: #0F6E56;
+    --layer2-text:   #085041;
+
+    --layer3-fill:   #FAEEDA;
+    --layer3-border: #854F0B;
+    --layer3-text:   #633806;
+
+    --danger-fill:   #FAECE7;
+    --danger-border: #993C1D;
+    --danger-text:   #712B13;
+
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary:      #1e1e1c;
+      --bg-secondary:    #252522;
+      --bg-tertiary:     #2c2c2a;
+      --text-primary:    #f0ede6;
+      --text-secondary:  #b4b2a9;
+      --text-muted:      #888780;
+      --border:          rgba(255,255,255,0.10);
+      --border-emphasis: rgba(255,255,255,0.20);
+      --layer1-fill:   #26215C;
+      --layer1-border: #AFA9EC;
+      --layer1-text:   #CECBF6;
+      --layer2-fill:   #04342C;
+      --layer2-border: #5DCAA5;
+      --layer2-text:   #9FE1CB;
+      --layer3-fill:   #412402;
+      --layer3-border: #EF9F27;
+      --layer3-text:   #FAC775;
+      --danger-fill:   #4A1B0C;
+      --danger-border: #F0997B;
+      --danger-text:   #F5C4B3;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  h1 { font-size: 22px; font-weight: 500; }
+  h2 { font-size: 18px; font-weight: 500; margin-top: 2rem; margin-bottom: 0.5rem; }
+  h3 { font-size: 16px; font-weight: 500; margin-top: 1.5rem; margin-bottom: 0.4rem; }
+  h4 { font-size: 15px; font-weight: 500; margin-top: 1rem; margin-bottom: 0.3rem; }
+  p  { margin-bottom: 0.8rem; color: var(--text-secondary); }
+  strong { font-weight: 500; color: var(--text-primary); }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    padding-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border-emphasis);
+    margin-bottom: 2rem;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .back-link {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 0.6rem;
+  }
+  .back-link:hover { color: var(--text-secondary); }
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    border: 0.5px solid var(--border);
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+  }
+
+  /* ── DISCLAIMER ─────────────────────────────────────── */
+  .disclaimer {
+    background: var(--danger-fill);
+    border: 0.5px solid var(--danger-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    color: var(--danger-text);
+    margin-bottom: 2rem;
+  }
+
+  /* ── CASE TABLE ──────────────────────────────────────── */
+  .case-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  thead tr {
+    background: var(--bg-secondary);
+  }
+  th {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    border-bottom: 0.5px solid var(--border-emphasis);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.6rem 0.8rem;
+    vertical-align: top;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--text-secondary);
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--bg-secondary); }
+
+  /* ── TAB NAV ────────────────────────────────────────── */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 0.5px solid var(--border);
+    overflow-x: auto;
+    margin-bottom: 0;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.65rem 1.1rem;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -0.5px;
+  }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active-1 { color: var(--text-primary); border-bottom-color: var(--layer1-border); }
+  .tab-btn.active-2 { color: var(--text-primary); border-bottom-color: var(--layer2-border); }
+  .tab-btn.active-3 { color: var(--text-primary); border-bottom-color: var(--layer3-border); }
+
+  /* ── TAB PANELS ─────────────────────────────────────── */
+  .tab-panel { display: none; padding-top: 1.5rem; }
+  .tab-panel.active { display: block; }
+
+  /* ── LAYER BADGES ───────────────────────────────────── */
+  .layer-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+  .layer-label-1 { background: var(--layer1-fill); color: var(--layer1-text); border: 0.5px solid var(--layer1-border); }
+  .layer-label-2 { background: var(--layer2-fill); color: var(--layer2-text); border: 0.5px solid var(--layer2-border); }
+  .layer-label-3 { background: var(--layer3-fill); color: var(--layer3-text); border: 0.5px solid var(--layer3-border); }
+
+  /* ── CASE CARDS ─────────────────────────────────────── */
+  .case-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1rem;
+    background: var(--bg-secondary);
+    transition: border-color 0.15s;
+  }
+  .case-card:hover { border-color: var(--border-emphasis); }
+  .case-card h3 { margin-top: 0; color: var(--text-primary); }
+  .prediction {
+    margin-top: 0.8rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--layer1-fill);
+    border-left: 3px solid var(--layer1-border);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 13.5px;
+    color: var(--layer1-text);
+  }
+
+  /* ── GROUP ANALYSIS BLOCKS ──────────────────────────── */
+  .analysis-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1rem;
+    background: var(--bg-secondary);
+  }
+  .analysis-block h3 {
+    margin-top: 0;
+    font-size: 14px;
+    color: var(--layer2-text);
+    border-bottom: 0.5px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 0.5rem;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 2px 9px;
+    background: var(--layer2-fill);
+    color: var(--layer2-text);
+    border: 0.5px solid var(--layer2-border);
+    border-radius: 20px;
+  }
+  .outlier-flag {
+    background: var(--layer3-fill);
+    border: 0.5px solid var(--layer3-border);
+    border-radius: var(--radius-md);
+    padding: 0.7rem 1rem;
+    font-size: 13.5px;
+    color: var(--layer3-text);
+  }
+
+  /* ── SYNTHESIS CARDS ─────────────────────────────────── */
+  .synthesis-card {
+    border: 0.5px solid var(--layer3-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1rem;
+    background: var(--layer3-fill);
+  }
+  .synthesis-card h3 { margin-top: 0; color: var(--layer3-text); }
+  .syn-section {
+    margin-bottom: 0.75rem;
+  }
+  .syn-section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--layer3-border);
+    margin-bottom: 0.2rem;
+  }
+  .syn-section p { color: var(--layer3-text); font-size: 14px; margin-bottom: 0; }
+  .prediction-review {
+    background: rgba(255,255,255,0.35);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.8rem;
+    font-size: 13.5px;
+    color: var(--layer3-text);
+    margin-top: 0.5rem;
+  }
+
+  /* ── DISCUSSION BOX ─────────────────────────────────── */
+  .discussion-box {
+    border: 1.5px solid var(--layer3-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.6rem;
+    margin-top: 1.5rem;
+    background: var(--bg-primary);
+  }
+  .discussion-box h2 {
+    margin-top: 0;
+    font-size: 15px;
+    color: var(--layer3-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .discussion-box p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-primary);
+    margin-bottom: 0;
+  }
+
+  /* ── COPY BUTTON ─────────────────────────────────────── */
+  .copy-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.2rem;
+  }
+  .copy-btn {
+    background: none;
+    border: 0.5px solid var(--border-emphasis);
+    border-radius: var(--radius-md);
+    padding: 5px 14px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .copy-btn:hover { color: var(--text-primary); border-color: var(--border-emphasis); }
+
+  /* ── STEP 22.1 TABLE SECTION ─────────────────────────── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── PHASE DIVIDER ───────────────────────────────────── */
+  .phase-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 2rem 0 1.25rem;
+  }
+  .phase-divider span {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .phase-divider hr {
+    flex: 1;
+    border: none;
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* ── CLUSTER GRID ────────────────────────────────────── */
+  .cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .cluster-item {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 0.9rem;
+  }
+  .cluster-item h4 {
+    font-size: 13px;
+    color: var(--layer2-text);
+    margin: 0 0 0.3rem;
+  }
+  .cluster-item p { font-size: 13px; margin: 0; }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  footer p { color: var(--text-muted); font-size: 12.5px; margin-bottom: 0.3rem; }
+  footer a { color: var(--text-muted); }
+
+  @media (max-width: 600px) {
+    body { padding: 1.25rem 1rem 3rem; }
+    h1 { font-size: 19px; }
+    .tab-btn { padding: 0.55rem 0.8rem; font-size: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<header>
+  <a href="https://avi33tbtt.github.io/Prompts/Prompts.html" class="back-link">← Prompt directory</a>
+  <div class="header-top">
+    <div>
+      <h1>Module 22 — Nested Analysis</h1>
+      <p class="subtitle">Erythema ab Igne · 5 published case reports · #VibeRounds · June 2026</p>
+    </div>
+    <span class="badge">🟣 New · June 2026</span>
+  </div>
+</header>
+
+<!-- ── DISCLAIMER ─────────────────────────────────────── -->
+<div class="disclaimer">
+  <strong>Clinical disclaimer:</strong> All AI-generated outputs require independent clinical verification before being acted upon. This is a learning and synthesis tool, not a clinical decision support system.
+</div>
+
+<!-- ── STEP 22.1 — CASE TABLE ─────────────────────────── -->
+<div class="phase-divider"><span>Phase 1 · Case structuring</span><hr></div>
+<p class="section-label">Step 22.1 — structured case list</p>
+<p>Five published EAI cases extracted from three source papers (Aria et al. Cureus 2018; Ravindran BMJ Case Rep 2017; Scurtu et al. Life 2025).</p>
+
+<div class="case-table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Case</th>
+        <th>Primary variable</th>
+        <th>Secondary variables</th>
+        <th>Distinguishing feature</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>C1</strong><br>76F · back pain</td>
+        <td>EAI, cape-like back distribution; 12-month heating pad use</td>
+        <td>Bedridden; ≥6 h/day; no identifiable pain cause; full resolution at 18 months</td>
+        <td>Exposure was passive — she lay on the pad because she could not rise, not by choice</td>
+      </tr>
+      <tr>
+        <td><strong>C2</strong><br>52F · uterine fibroids</td>
+        <td>EAI, lower abdomen + upper thighs; >8 h/day for 3 years</td>
+        <td>Brain abscess; post-craniotomy; impaired consciousness; history from husband only</td>
+        <td>Diagnosed purely on morphology — no patient history available; longest exposure in the series</td>
+      </tr>
+      <tr>
+        <td><strong>C3</strong><br>50F · lower back pain</td>
+        <td>EAI incidental; lower back; weekly use ≥6 months</td>
+        <td>Pain had resolved months earlier; patient unaware of lesions; found on routine skin check</td>
+        <td>Heat source already ceased before diagnosis — lesion was residual, not active</td>
+      </tr>
+      <tr>
+        <td><strong>C4</strong><br>28M · T1DM, gastroparesis</td>
+        <td>EAI, abdomen; hot water bottle for gastroparesis pain</td>
+        <td>T1DM; hyperglycaemia at admission; lesion began fading during hospitalisation</td>
+        <td>Only male; youngest patient; pain severity of gastroparesis drove behaviour regardless of demography</td>
+      </tr>
+      <tr>
+        <td><strong>C5</strong><br>33F · deep endometriosis</td>
+        <td>EAI, lower abdomen + thighs; 4–5 h/day incl. overnight; biopsy-confirmed</td>
+        <td>ENZIAN A2B2C2FA; adenomyosis; bilateral endometriomas; refractory NSAIDs; dyspareunia</td>
+        <td>EAI preceded confirmed gynaecological diagnosis — skin was the first externally visible signal of undiagnosed DE</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── TAB NAVIGATION ─────────────────────────────────── -->
+<div class="phase-divider"><span>Phase 2 · Execution</span><hr></div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active-1" role="tab" aria-selected="true"  aria-controls="panel-1" id="tab-1" onclick="switchTab(1)">Layer 1 — Individual profiles</button>
+  <button class="tab-btn"          role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" onclick="switchTab(2)">Layer 2 — Group analysis</button>
+  <button class="tab-btn"          role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" onclick="switchTab(3)">Layer 3 — Synthesis</button>
+</div>
+
+<!-- ══ LAYER 1 ═══════════════════════════════════════════ -->
+<div id="panel-1" class="tab-panel active" role="tabpanel" aria-labelledby="tab-1">
+  <span class="layer-label layer-label-1">Layer 1 · Zoom in</span>
+  <p>Each case is treated as if it is the only case. No cross-case comparison is made here.</p>
+
+  <div class="case-card">
+    <h3>C1 — 76F, intractable generalised pain</h3>
+    <p>A 76-year-old Caucasian woman presented with reticulated reddish-brown patches in a cape-like dorsal distribution. She had used an electrical heating pad for 12 months for pain with no identifiable cause, progressing to lying on it for at least six consecutive hours daily as she became bedridden. Lesions were asymptomatic and first noticed by her husband. At 18-month follow-up after cessation, lesions had fully resolved. The distribution mapped directly to the surface on which she lay. The case illustrates EAI as the dermatological footprint of functional decline: the longer she was immobile, the greater the infrared exposure.</p>
+    <div class="prediction"><strong>The detail most likely to matter later is:</strong> the exposure was passive, not active — she lay on the pad because she could not rise, meaning exposure duration escalated by incapacity, not choice.</div>
+  </div>
+
+  <div class="case-card">
+    <h3>C2 — 52F, uterine fibroids + concurrent brain abscess</h3>
+    <p>A 52-year-old Caucasian woman was seen as an inpatient consult post-craniotomy. Her mental status was impaired and no history could be taken. EAI was diagnosed on morphology alone — lace-like hyperpigmented patches on the lower abdomen and upper thighs — before any causative information was available. Her husband later confirmed more than eight hours of daily heating pad use for three years, the longest confirmed exposure in the series. The gynaecological pain — not the neurological admission — drove the behaviour. The brain abscess was a coincidental backdrop.</p>
+    <div class="prediction"><strong>The detail most likely to matter later is:</strong> the diagnosis was made without a patient history, relying entirely on pattern recognition — this case tests whether EAI's morphological signature can stand alone as a diagnostic tool.</div>
+  </div>
+
+  <div class="case-card">
+    <h3>C3 — 50F, resolved lower back pain</h3>
+    <p>A 50-year-old Caucasian woman attended for a routine full-body skin check. Reticulated hyperpigmented patches on the lower back were noted incidentally. She was unaware of the lesions. She had used a heating pad weekly for at least six months for lower back pain, but the pain had resolved several months before her visit and she had spontaneously discontinued heat use. This is the most clinically benign presentation in the series: lowest frequency (weekly), shortest window (six months minimum), spontaneous pain resolution before diagnosis, and patient unaware of any change. The lesion was caught entirely by chance.</p>
+    <div class="prediction"><strong>The detail most likely to matter later is:</strong> the exposure had already ceased — the lesion was residual, not active, demonstrating that EAI morphology persists beyond the active heat-exposure window.</div>
+  </div>
+
+  <div class="case-card">
+    <h3>C4 — 28M, type 1 diabetes, gastroparesis</h3>
+    <p>A 28-year-old man with Type 1 diabetes and gastroparesis presented with vomiting, abdominal pain, and hyperglycaemia. Examination revealed erythematous, reticulated, non-blanchable macular pigmentation on the abdomen. He had been applying hot water bottles for chronic abdominal pain. During admission, the lesion began to fade — hospitalisation removed access to the heat source, providing an in-vivo natural experiment confirming causal attribution. He was the only male and the youngest patient in the series. Gastroparesis-driven pain is characteristically severe and pharmacologically refractory.</p>
+    <div class="prediction"><strong>The detail most likely to matter later is:</strong> he was young and male — two features atypical of EAI epidemiology — suggesting that pain severity from gastroparesis overrides the usual demographic profile of the condition.</div>
+  </div>
+
+  <div class="case-card">
+    <h3>C5 — 33F, deep endometriosis (surgically confirmed)</h3>
+    <p>A 33-year-old nulliparous woman presented with dysmenorrhea since age 18, progressive worsening over 15 years, and chronic pelvic pain refractory to NSAIDs for two years. She had adopted continuous heating pad use (4–5 h daily, including during sleep) to manage pain. EAI affecting the lower abdomen and upper thighs had been present for 10 months. Biopsy confirmed EAI. Imaging and surgical staging revealed deep endometriosis (ENZIAN A2B2C2FA): bilateral ovarian endometriomas, adenomyosis, obliterated pouch of Douglas, and rectal involvement. Laparoscopic excision resolved pain, ending heat-seeking behaviour, and pigmentation ameliorated with topical treatment.</p>
+    <div class="prediction"><strong>The detail most likely to matter later is:</strong> the endometriosis was not diagnosed at the time EAI developed — the skin lesion preceded the gynaecological diagnosis, making EAI a potential cutaneous sentinel for underlying pelvic pathology not yet formally established.</div>
+  </div>
+
+  <div class="copy-bar"><button class="copy-btn" onclick="copyPanel('panel-1', this)">Copy Layer 1</button></div>
+</div>
+
+<!-- ══ LAYER 2 ═══════════════════════════════════════════ -->
+<div id="panel-2" class="tab-panel" role="tabpanel" aria-labelledby="tab-2">
+  <span class="layer-label layer-label-2">Layer 2 · Zoom out</span>
+  <p>Look across all five cases together. Describe the group, not the individuals. Variance is not explained here — that is Layer 3.</p>
+
+  <div class="analysis-block">
+    <h3>(a) Shared features — present in ≥ 4 of 5 cases</h3>
+    <div class="tag-list">
+      <span class="tag">Asymptomatic lesion</span>
+      <span class="tag">Reticulated hyperpigmentation</span>
+      <span class="tag">Distribution maps to heat source</span>
+      <span class="tag">Female sex (4/5)</span>
+      <span class="tag">Chronic pain as direct driver</span>
+      <span class="tag">Resolution after cessation</span>
+    </div>
+    <p style="margin-top:0.5rem">EAI itself caused no discomfort in any case. Lesion morphology and anatomical distribution were consistent across all cases. Every case had an identifiable underlying chronic pain condition driving heat-seeking behaviour.</p>
+  </div>
+
+  <div class="analysis-block">
+    <h3>(b) Central tendency — the typical case</h3>
+    <p>A middle-aged woman with chronic pain from an identifiable anatomical cause (gynaecological, musculoskeletal, or visceral) uses a heating pad or hot water bottle daily for months to years. The EAI is asymptomatic and is noted incidentally — by a partner, during a routine examination, or by a clinician examining for an unrelated reason. The lesion maps anatomically to the heat source. Cessation is the primary treatment; lesions generally resolve within months to years. Diagnosis is clinical; biopsy is reserved for atypical or non-resolving presentations.</p>
+  </div>
+
+  <div class="analysis-block">
+    <h3>(c) Range and clusters</h3>
+    <div class="cluster-grid">
+      <div class="cluster-item">
+        <h4>By exposure duration</h4>
+        <p>6 months weekly (C3) → 3 years daily (C2). Cluster of 6–12 months daily: C1, C4, C5.</p>
+      </div>
+      <div class="cluster-item">
+        <h4>By age</h4>
+        <p>28 (C4) → 33 (C5) → 50 (C3) → 52 (C2) → 76 (C1). Younger visceral cluster (C4, C5); older heterogeneous cluster (C1–C3).</p>
+      </div>
+      <div class="cluster-item">
+        <h4>By diagnostic circumstance</h4>
+        <p>Incidental/proxy: C1, C2, C3. Clinically pursued: C4, C5.</p>
+      </div>
+      <div class="cluster-item">
+        <h4>By underlying cause</h4>
+        <p>Musculoskeletal/idiopathic: C1, C3. Gynaecological: C2, C5. Visceral/metabolic: C4.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis-block">
+    <h3>(d) Outlier flag</h3>
+    <div class="outlier-flag">
+      <strong>C5 stands structurally apart.</strong> In every other case, the underlying diagnosis was known before or at the time EAI was identified. In C5, the skin finding preceded the formal establishment of the cause — inverting the usual diagnostic sequence and elevating EAI from a passive marker to an active clinical signal.
+    </div>
+  </div>
+
+  <div class="copy-bar"><button class="copy-btn" onclick="copyPanel('panel-2', this)">Copy Layer 2</button></div>
+</div>
+
+<!-- ══ LAYER 3 ═══════════════════════════════════════════ -->
+<div id="panel-3" class="tab-panel" role="tabpanel" aria-labelledby="tab-3">
+  <span class="layer-label layer-label-3">Layer 3 · Synthesis</span>
+  <p>Connect the individual (Layer 1) to the group (Layer 2) by explaining variance. This is not a summary.</p>
+
+  <div class="synthesis-card">
+    <h3>C1 — 76F, passive exposure escalation</h3>
+    <div class="syn-section">
+      <div class="syn-section-label">Comparison to group</div>
+      <p>Aligns with the central tendency on cause, distribution, and outcome; deviates on the mechanism of exposure escalation.</p>
+    </div>
+    <div class="syn-section">
+      <div class="syn-section-label">Mechanism</div>
+      <p>Functional decline acted as a force multiplier on exposure duration. The pain that caused EAI was the same pain that prevented the behaviour modification that would have limited it — a self-reinforcing loop absent in all other cases.</p>
+    </div>
+    <div class="prediction-review">
+      <strong>Prediction review:</strong> confirmed. Passivity of exposure was the key variable. The observation adds precision: in elderly bedridden patients, lesion extent may serve as a surrogate marker of functional limitation, not only pain management behaviour.
+    </div>
+    <div class="syn-section" style="margin-top:0.75rem">
+      <div class="syn-section-label">Discussion implication</div>
+      <p>EAI in a bedridden patient should prompt assessment of functional status, not only heat-exposure counselling.</p>
+    </div>
+  </div>
+
+  <div class="synthesis-card">
+    <h3>C2 — 52F, diagnosis without history</h3>
+    <div class="syn-section">
+      <div class="syn-section-label">Comparison to group</div>
+      <p>Aligns on every clinical variable (cause, distribution, severity, duration); deviates structurally on the diagnostic pathway.</p>
+    </div>
+    <div class="syn-section">
+      <div class="syn-section-label">Mechanism</div>
+      <p>Coincidental neurological compromise removed the patient's ability to provide history at the moment of consultation, forcing the diagnosis to rest entirely on morphological pattern recognition — a capability the condition possesses but that is rarely exercised in isolation.</p>
+    </div>
+    <div class="prediction-review">
+      <strong>Prediction review:</strong> confirmed. Once the history was obtained via proxy, it proved the most extreme exposure in the series (3 years, >8 h/day), validating the morphological reasoning retrospectively.
+    </div>
+    <div class="syn-section" style="margin-top:0.75rem">
+      <div class="syn-section-label">Discussion implication</div>
+      <p>EAI has sufficient morphological specificity to be diagnosed in the absence of patient history — a finding with direct clinical relevance in cognitively impaired or non-communicating patients.</p>
+    </div>
+  </div>
+
+  <div class="synthesis-card">
+    <h3>C3 — 50F, residual lesion after cessation</h3>
+    <div class="syn-section">
+      <div class="syn-section-label">Comparison to group</div>
+      <p>Below the central tendency in every measure of exposure severity; the only case where cause, behaviour, and diagnosis were temporally dissociated.</p>
+    </div>
+    <div class="syn-section">
+      <div class="syn-section-label">Mechanism</div>
+      <p>Spontaneous pain resolution eliminated the heat-seeking behaviour before clinical recognition occurred. The lesion visible at consultation was a residual imprint, not a current finding, demonstrating that EAI morphology persists beyond active exposure.</p>
+    </div>
+    <div class="prediction-review">
+      <strong>Prediction review:</strong> confirmed. Lesion persistence after exposure cessation was the diagnostic and clinical teaching point.
+    </div>
+    <div class="syn-section" style="margin-top:0.75rem">
+      <div class="syn-section-label">Discussion implication</div>
+      <p>The absence of ongoing heat use does not exclude EAI; clinicians should consider resolved exposure in the differential when the pattern is present.</p>
+    </div>
+  </div>
+
+  <div class="synthesis-card">
+    <h3>C4 — 28M, demographic outlier, pain-severity driver</h3>
+    <div class="syn-section">
+      <div class="syn-section-label">Comparison to group</div>
+      <p>The sole male and youngest patient — both significantly outside the central tendency. Aligns with the group on morphology, distribution, and behavioural driver.</p>
+    </div>
+    <div class="syn-section">
+      <div class="syn-section-label">Mechanism</div>
+      <p>Disease severity overrode demographic predictors. Gastroparesis-associated visceral pain is pharmacologically refractory and severe enough to generate heat-seeking behaviour irrespective of age and sex, placing C4 outside the typical profile by cause, not by coincidence.</p>
+    </div>
+    <div class="prediction-review">
+      <strong>Prediction review:</strong> confirmed and extended. The in-hospital fading of the lesion provided an unplanned natural experiment, directly confirming causal attribution — an additional layer of evidence absent in other cases.
+    </div>
+    <div class="syn-section" style="margin-top:0.75rem">
+      <div class="syn-section-label">Discussion implication</div>
+      <p>Male sex and young age should not reduce clinical suspicion for EAI; they should instead prompt direct enquiry into the severity of the underlying pain condition.</p>
+    </div>
+  </div>
+
+  <div class="synthesis-card">
+    <h3>C5 — 33F, inverted diagnostic sequence</h3>
+    <div class="syn-section">
+      <div class="syn-section-label">Comparison to group</div>
+      <p>Conforms to the central tendency on morphology, distribution, behaviour, and trigger. Deviates structurally on diagnostic timing: EAI preceded the confirmed underlying diagnosis.</p>
+    </div>
+    <div class="syn-section">
+      <div class="syn-section-label">Mechanism</div>
+      <p>Chronic pain normalisation combined with inadequate prior gynaecological workup allowed severe pelvic disease to progress untreated while the patient managed symptoms with heat — until the heat left its mark on the skin. The skin lesion arrived before the formal diagnosis.</p>
+    </div>
+    <div class="prediction-review">
+      <strong>Prediction review:</strong> confirmed. EAI served as the temporal sentinel. The prediction was the core finding of the case.
+    </div>
+    <div class="syn-section" style="margin-top:0.75rem">
+      <div class="syn-section-label">Discussion implication</div>
+      <p>In a reproductive-age woman with pelvic EAI and a history of dysmenorrhea or CPP, the skin lesion should prompt systematic gynaecological evaluation — it may be the first externally visible sign of significant internal pathology not yet formally established.</p>
+    </div>
+  </div>
+
+  <!-- ── DISCUSSION PARAGRAPH ── -->
+  <div class="discussion-box">
+    <h2>Discussion paragraph</h2>
+    <p>The most important finding that emerges from the pattern of deviations across this case set is not the clinical heterogeneity of EAI's underlying causes — that is expected and unremarkable. It is the <em>diagnostic function</em> that EAI performs in each case, which varies systematically and reveals something neither any individual case nor the average alone could have shown. In the typical EAI case, the skin finding is passive: it trails behind a known diagnosis and a known behaviour. But across these five cases, EAI occupies at least three distinct diagnostic roles — a marker of functional incapacity (C1), a diagnostic anchor when history is unavailable (C2), and a temporal sentinel that precedes the underlying diagnosis (C5). The cases that deviate most sharply from the central tendency — C4 by demography, C5 by diagnostic timing — share a common mechanism: the severity of the underlying condition drove pain management behaviour to an extreme that left an externally visible mark before the condition itself was formally established. The clinical teaching that emerges is not the morphology of EAI, which is well described, but its <em>diagnostic timing</em>: a systematic clinical response to EAI should include not only cessation of the heat source but a structured enquiry into whether the pain driving the behaviour has itself been adequately investigated — because in the most important case in this series, the skin was the first available clue that it had not.</p>
+  </div>
+
+  <div class="copy-bar"><button class="copy-btn" onclick="copyPanel('panel-3', this)">Copy Layer 3</button></div>
+</div>
+
+<!-- ── PHASE 3 ─────────────────────────────────────────── -->
+<div class="phase-divider"><span>Phase 3 · Closure</span><hr></div>
+
+<h2>Variance interrogation (Step 22.5)</h2>
+
+<div class="case-table-wrap">
+  <table>
+    <thead>
+      <tr><th>Case</th><th>Alternative explanation</th><th>Distinguishing evidence</th><th>Missing variable</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>C1</strong></td>
+        <td>Cape-like distribution attributable to pad model/technique rather than bedridden status</td>
+        <td>Functional mobility documentation during the 12-month exposure period</td>
+        <td>Functional status rating or physiotherapy records</td>
+      </tr>
+      <tr>
+        <td><strong>C4</strong></td>
+        <td>Male sex reflects reporting bias or gastroparesis-specific niche rather than a true demographic exception</td>
+        <td>Population-level EAI sex ratios stratified by underlying diagnosis</td>
+        <td>Pain severity score (VAS) at time of heat use</td>
+      </tr>
+      <tr>
+        <td><strong>C5</strong></td>
+        <td>Endometriosis may have been clinically suspected but not formally investigated, making the delay diagnostic rather than causal</td>
+        <td>Prior consultation records and any previous pelvic ultrasound or gynaecology referral</td>
+        <td>Timeline of prior medical contacts for dysmenorrhea before EAI presentation</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>Quality check (Step 22.6)</h2>
+<div class="analysis-block" style="margin-top:0.5rem">
+  <h3>Coverage</h3>
+  <p>All five cases received individual profiles and variance explanations. C3 is the thinnest (minimal frequency data, no follow-up documented) but sufficient given its distinctive residual-lesion feature.</p>
+  <h3>Specificity</h3>
+  <p>The group central tendency is concrete enough to measure each case against: middle-aged woman, chronic anatomical pain, daily heating pad use for months to years, incidental asymptomatic discovery, resolution after cessation. C4 and C5 deviate measurably on demography and diagnostic timing respectively.</p>
+  <h3>Discussion value</h3>
+  <p>The Discussion Paragraph arises from the pattern of deviations and could not have been written from any individual case or from the average alone. The observation that EAI occupies different diagnostic roles across cases is only visible when all five are examined together.</p>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <p>Module 22 — Nested Analysis · Vibe Rounds Prompt Modules · Dr. Avinash Kumar Gupta · June 2026 · #VibeRounds</p>
+  <p>Source: <a href="https://classworkdecjan.blogspot.com/2026/06/erythema-ab-igne.html" target="_blank">classworkdecjan.blogspot.com — Erythema ab Igne</a></p>
+  <p>All AI-generated outputs require independent clinical verification before being acted upon. This module is a learning tool, not a clinical decision support system.</p>
+</footer>
+
+<script>
+  function switchTab(n) {
+    // deactivate all
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.className = 'tab-btn';
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+    // activate chosen
+    const btn   = document.getElementById('tab-' + n);
+    const panel = document.getElementById('panel-' + n);
+    btn.classList.add('active-' + n);
+    btn.setAttribute('aria-selected', 'true');
+    panel.classList.add('active');
+  }
+
+  function copyPanel(id, btn) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = orig; }, 1800);
+    }).catch(() => {
+      btn.textContent = 'Copy failed';
+      setTimeout(() => { btn.textContent = orig; }, 1800);
+    });
+  }
+</script>
+</body>
+</html>
