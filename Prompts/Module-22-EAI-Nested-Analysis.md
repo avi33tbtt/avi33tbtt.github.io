@@ -9,10 +9,7 @@
 
 ## Source
 
-Cases extracted from: [classworkdecjan.blogspot.com — Erythema ab Igne](https://classworkdecjan.blogspot.com/2026/06/erythema-ab-igne.html)
-
-Published cases sourced from: Aria et al. (Cureus 2018); Ravindran (BMJ Case Rep 2017); Scurtu et al. (Life 2025)
-
+Cases extracted from: Text of 5 Cases from Pubmed out of 57 in case reports full text articles.
 ---
 
 ## Step 22.1 — Case List Structure
