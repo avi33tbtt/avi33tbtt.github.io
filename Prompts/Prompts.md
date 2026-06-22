@@ -21,7 +21,7 @@
 
 
 ## Authorship & Development
-This document (*Vibe Rounds Prompt Modules 1–10*) was developed by Avinash. 
+This document (*Vibe Rounds Prompt Modules 1–21*) was developed by Avinash. 
 * **Review Process:** No formal peer-review or institutional review process is done/documented yet.
 
 ## Funding & Conflicts of Interest
@@ -38,7 +38,6 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 
 | Aspect | Status & Context |
 | :--- | :--- |
-| **"Validated Environment" (Modules 1–8)** | Indicates **only** that a prompt was run, informally and without a comparator condition or outcome measure, in the named environment against typically one case or one testing session. It does *not* mean the output was verified against clinical ground truth, peer-reviewed, or shown to improve any outcome. |
 | **Module 9** | Derived from a single *n-of-1* case-report preprint and inherits that source's evidentiary limitations. |
 | **Evidence Hierarchy Rating** | By the *Oxford Centre for Evidence-Based Medicine* hierarchy, the entire evidence base underlying this document sits at the **case-report / expert-opinion level — the lowest tier of clinical evidence** — and should be treated accordingly. |
 
@@ -71,7 +70,7 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 
 This repository organizes a Non-tested set of large-language-model prompts the way a clinical procedure manual organizes bedside techniques — by objective, indication, and step sequence, rather than by who happened to write each one down.
 
-It contains **10 modules** each a self-contained prompt workflow with its own lifecycle, and **4 supplementary frameworks** (A–D) that are layered into specific steps across those modules rather than run on their own.
+It contains **21 modules** each a self-contained prompt workflow with its own lifecycle, and **4 supplementary frameworks** (A–D) that are layered into specific steps across those modules rather than run on their own.
 
 ---
 
@@ -111,7 +110,7 @@ If you already know which module and step you need, skip straight there using th
 
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
-**Cross-cutting frameworks:** Frameworks A–D are not separate modules to run on their own — they are layered into specific steps throughout Modules 0–8. **[Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md)** is the master index of exactly which step, in which module, carries each framework — consult it if you are trying to locate every place a given framework is applied.
+**Cross-cutting frameworks:** Frameworks A–D are not separate modules to run on their own — they are layered into specific steps throughout Modules 0–21. **[Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md)** is the master index of exactly which step, in which module, carries each framework — consult it if you are trying to locate every place a given framework is applied.
 
 
 ---
