@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Module 23 — Operational & Throughput Strategist
+title: Module 40 — Operational & Throughput Strategist
 ---
 
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
