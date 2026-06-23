@@ -178,55 +178,59 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 
 ---
 
+Here is the updated module index with the assigned category tags integrated into a new column.
+
+*Note: I categorized Module 0 under "Framework Architecture & Meta-Design" as it serves as a structural routing system.*
+
 ## 🗂️ Module Index
 
-| # | Module | What it does |
-|---|---|---|
-| 0 | [Cold-Start Orientation](Module-00-Cold-Start-Orientation.md) | Pre-module entry point — identifies a new user's role and goal and routes them to the right module |
-| 1 | [Socratic Clinical Reasoning](Module-01-Socratic-Clinical-Reasoning.md) | Pushes a learner to reason through a case actively rather than passively receive the answer |
-| 2 | [Patient-Advocate Case Documentation](Module-02-Patient-Advocate-Case-Documentation.md) | A 4-step workflow for a family member to build a structured case record with an AI documentation companion |
-| 3 | [Extended Patient-Advocate Monitoring](Module-03-Extended-Patient-Advocate-Monitoring.md) | Longitudinal domain tracking (lifestyle, mood, medication, red flags) that extends Module 2 |
-| 4 | [Peer-Level Ward Round Preparation](Module-04-Peer-Level-Ward-Round-Preparation.md) | Rehearses rounds, admissions, pre-op clearance, polypharmacy screening, and overnight triage |
-| 5 | [Real-Time Case Review & Data Audit](Module-05-Real-Time-Case-Review-and-Data-Audit.md) | Queries and cleans a single patient's live case log during active management |
-| 6 | [Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) | Queries an entire case registry across nine escalating levels of analytic depth |
-| 7 | [Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) | Turns the registry itself into a cross-case, cross-time learning system *(proposed; not yet validated live)* |
-| 8 | [Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) | A 12-point QA specification for authoring or revising any new Socratic-mode prompt |
-| 9 | [N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) | Running the seven-stage research protocol on your own complex case |
-| 10 | [Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) | Vibe Rounds — Journal & Article Reading |
-| 11 | [Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) | Patient Education Query Intelligence |
-| 12 | [Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) | Differential Diagnosis Deepdive |
-| 13 | [Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) | Medication Reconciliation & Polypharmacy |
-| 14 | [Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) | Resource-Constrained Clinical Reasoning |
-| 15 | [Illness Script Acquisition](Module-15-Illness-Script-Acquisition.md) | Illness Script Acquisition |
-| 16 | [Basic Science ↔ Clinical Integration](Module-16-Bidirectional-Basic-Science-Clinical-Integration.md) | Basic Science ↔ Clinical Integration |
-| 17 | [Semantic Qualifiers & Problem Representation](Module-17-Semantic-Qualifiers-Problem-Representation.md) | Semantic Qualifiers & Problem Representation |
-| 18 | [Causal vs. Probabilistic (Network) Reasoning](Module-18-Causal-vs-Probabilistic-Network-Reasoning.md) | Causal vs. Probabilistic (Network) Reasoning |
-| 19 | [Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) | Community & Social Medicine Insights |
-| 20 | [Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) | Naturalistic Decision Making |
-| 21 | [Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) | Evidence Frontier Search |
-| 22 | [Nested Analysis](Module-22-Nested-Analysis.md) | Nested Analysis |
-| 23 | [Counterfactual Analysis](Module-23-Counterfactual-Analysis.md) | Counterfactual Analysis |
-| 24 | [Heuristic Analysis](Module-24-Heuristic-Analysis.md) | Heuristic Analysis |
-| 25 | [Thematic Analysis](Module-25-Thematic-Analysis.md) | Thematic Analysis |
-| 26 | [Bias Auditing](Module-26-Bias-Auditing.md) | Bias Auditing |
-| 27 | [Time-Series & Velocity Analyzer](Module-27-Time-Series-Velocity-Analyzer.md) | Time-Series & Velocity Analyzer |
-| 28 | [Diagnostic Time-Out](Module-28-Diagnostic-Time-Out.md) | Diagnostic Time-Out |
-| 29 | [he Iatrogenic Domino Effect](Module-29-Iatrogenic-Domino-Effect.md) | he Iatrogenic Domino Effect |
-| 30 | [The "Diagnostic Anchor" Extractor](Module-30-Diagnostic-Anchor-Extractor.md) | The "Diagnostic Anchor" Extractor |
-| 31 | [First-Principles Pathophysiology Mapping](Module-31-First-Principles-Pathophysiology-Mapping.md) | First-Principles Pathophysiology Mapping |
-| 32 | [Clinical Cognition Loop](Module-32-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
-| 33 | [The "Why Now?" (Precipitant) Hunter](Module-33-Why-Now-Precipitant-Hunter.md) | The "Why Now?" (Precipitant) Hunter |
-| 34 | [The High-Value Care (HVC) Auditor](Module-34-High-Value-Care-Auditor.md) | The High-Value Care (HVC) Auditor |
-| 35 | [Epistemic Certainty Mapping & Calibration](Module-35-Epistemic-Certainty-Mapping-Calibration.md) | Epistemic Certainty Mapping & Calibration |
-| 36 | [The Bayesian Probability / Likelihood Ratio Engine](Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.md) | The Bayesian Probability / Likelihood Ratio Engine |
-| 37 | [Red Herring / Signal-to-Noise Drill](Module-37-Red-Herring-Signal-to-Noise-Drill.md) | Red Herring / Signal-to-Noise Drill |
-| 38 | [Poly-Crisis & Cascading Failure Simulator](Module-38-Poly-Crisis-Cascading-Failure-Simulator.md) | Poly-Crisis & Cascading Failure Simulator |
-| 39 | [The "Global Knowledge Network" Diagnostic Matrix](Module-39-Global-Knowledge-Network-Diagnostic-Matrix.md) | The "Global Knowledge Network" Diagnostic Matrix |
-| 40 | [The Operational & Throughput Strategist](Module-40-Operational-Throughput-Strategist.md) | The Operational & Throughput Strategist |
-| 41 | [Clinical Workflow Implementation Science](Module-41-Clinical-Workflow-Implementation-Science.md) | Clinical Workflow Implementation Science |
-| 42 | [Clinical Pre-Mortem](Module-42-Clinical-Pre-Mortem.md) | Clinical Pre-Mortem |
-| 43 | [Health Economics & Value-Based Care Alignment](Module-43-Health-Economics-Value-Based-Care-Alignment.md) | Health Economics & Value-Based Care Alignment |
-| 44 | [Module 1 - Shadow Module](Module-01-Shadow-Module.md) | Module 1 - Shadow Module |
+| # | Module | Category | What it does |
+| --- | --- | --- | --- |
+| 0 | [Cold-Start Orientation](https://www.google.com/search?q=Module-00-Cold-Start-Orientation.md) | Framework Architecture & Meta-Design | Pre-module entry point — identifies a new user's role and goal and routes them to the right module |
+| 1 | [Socratic Clinical Reasoning](https://www.google.com/search?q=Module-01-Socratic-Clinical-Reasoning.md) | Clinical Reasoning & Cognitive Frameworks | Pushes a learner to reason through a case actively rather than passively receive the answer |
+| 2 | [Patient-Advocate Case Documentation](https://www.google.com/search?q=Module-02-Patient-Advocate-Case-Documentation.md) | Patient Advocacy & Individual Care Management | A 4-step workflow for a family member to build a structured case record with an AI documentation companion |
+| 3 | [Extended Patient-Advocate Monitoring](https://www.google.com/search?q=Module-03-Extended-Patient-Advocate-Monitoring.md) | Patient Advocacy & Individual Care Management | Longitudinal domain tracking (lifestyle, mood, medication, red flags) that extends Module 2 |
+| 4 | [Peer-Level Ward Round Preparation](https://www.google.com/search?q=Module-04-Peer-Level-Ward-Round-Preparation.md) | Medical Education, Literature & Basic Science | Rehearses rounds, admissions, pre-op clearance, polypharmacy screening, and overnight triage |
+| 5 | [Real-Time Case Review & Data Audit](https://www.google.com/search?q=Module-05-Real-Time-Case-Review-and-Data-Audit.md) | Data Analytics & Analytical Methodologies | Queries and cleans a single patient's live case log during active management |
+| 6 | [Registry-Level Analytics](https://www.google.com/search?q=Module-06-Registry-Level-Analytics.md) | Data Analytics & Analytical Methodologies | Queries an entire case registry across nine escalating levels of analytic depth |
+| 7 | [Longitudinal & Cross-Case Learning](https://www.google.com/search?q=Module-07-Longitudinal-and-Cross-Case-Learning.md) | Data Analytics & Analytical Methodologies | Turns the registry itself into a cross-case, cross-time learning system *(proposed; not yet validated live)* |
+| 8 | [Socratic-Mode Design Specification](https://www.google.com/search?q=Module-08-Socratic-Mode-Design-Specification.md) | Framework Architecture & Meta-Design | A 12-point QA specification for authoring or revising any new Socratic-mode prompt |
+| 9 | [N-of-1 Case Research Protocol](https://www.google.com/search?q=Module-09-Case-Research_Protocol.md) | Patient Advocacy & Individual Care Management | Running the seven-stage research protocol on your own complex case |
+| 10 | [Journal & Article Reading](https://www.google.com/search?q=Module-10-Medical-Journal-Article-Reading.md) | Medical Education, Literature & Basic Science | Vibe Rounds — Journal & Article Reading |
+| 11 | [Patient Education Query Intelligence](https://www.google.com/search?q=Module-11-Patient-Education-Query-Intelligence.md) | Patient Advocacy & Individual Care Management | Patient Education Query Intelligence |
+| 12 | [Differential Diagnosis Deepdive](https://www.google.com/search?q=Module-12-Differential-Diagnosis-Deepdive.md) | Clinical Reasoning & Cognitive Frameworks | Differential Diagnosis Deepdive |
+| 13 | [Medication Reconciliation & Polypharmacy](https://www.google.com/search?q=Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) | Patient Advocacy & Individual Care Management | Medication Reconciliation & Polypharmacy |
+| 14 | [Resource-Constrained Clinical Reasoning](https://www.google.com/search?q=Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) | Clinical Reasoning & Cognitive Frameworks | Resource-Constrained Clinical Reasoning |
+| 15 | [Illness Script Acquisition](https://www.google.com/search?q=Module-15-Illness-Script-Acquisition.md) | Clinical Reasoning & Cognitive Frameworks | Illness Script Acquisition |
+| 16 | [Basic Science ↔ Clinical Integration](https://www.google.com/search?q=Module-16-Bidirectional-Basic-Science-Clinical-Integration.md) | Medical Education, Literature & Basic Science | Basic Science ↔ Clinical Integration |
+| 17 | [Semantic Qualifiers & Problem Representation](https://www.google.com/search?q=Module-17-Semantic-Qualifiers-Problem-Representation.md) | Clinical Reasoning & Cognitive Frameworks | Semantic Qualifiers & Problem Representation |
+| 18 | [Causal vs. Probabilistic (Network) Reasoning](https://www.google.com/search?q=Module-18-Causal-vs-Probabilistic-Network-Reasoning.md) | Clinical Reasoning & Cognitive Frameworks | Causal vs. Probabilistic (Network) Reasoning |
+| 19 | [Community & Social Medicine Insights](https://www.google.com/search?q=Module-19-Community-and-Social-Medicine-Insights.md) | Health Operations, Systems & Economics | Community & Social Medicine Insights |
+| 20 | [Naturalistic Decision Making](https://www.google.com/search?q=Module-20-Recognition-Primed-Decision-Model.md) | Clinical Reasoning & Cognitive Frameworks | Naturalistic Decision Making |
+| 21 | [Evidence Frontier Search](https://www.google.com/search?q=Module-21-Evidence-Frontier-Search.md) | Medical Education, Literature & Basic Science | Evidence Frontier Search |
+| 22 | [Nested Analysis](https://www.google.com/search?q=Module-22-Nested-Analysis.md) | Data Analytics & Analytical Methodologies | Nested Analysis |
+| 23 | [Counterfactual Analysis](https://www.google.com/search?q=Module-23-Counterfactual-Analysis.md) | Data Analytics & Analytical Methodologies | Counterfactual Analysis |
+| 24 | [Heuristic Analysis](https://www.google.com/search?q=Module-24-Heuristic-Analysis.md) | Data Analytics & Analytical Methodologies | Heuristic Analysis |
+| 25 | [Thematic Analysis](https://www.google.com/search?q=Module-25-Thematic-Analysis.md) | Data Analytics & Analytical Methodologies | Thematic Analysis |
+| 26 | [Bias Auditing](https://www.google.com/search?q=Module-26-Bias-Auditing.md) | Patient Safety, Risk & Systems Failure | Bias Auditing |
+| 27 | [Time-Series & Velocity Analyzer](https://www.google.com/search?q=Module-27-Time-Series-Velocity-Analyzer.md) | Data Analytics & Analytical Methodologies | Time-Series & Velocity Analyzer |
+| 28 | [Diagnostic Time-Out](https://www.google.com/search?q=Module-28-Diagnostic-Time-Out.md) | Clinical Reasoning & Cognitive Frameworks | Diagnostic Time-Out |
+| 29 | [The Iatrogenic Domino Effect](https://www.google.com/search?q=Module-29-Iatrogenic-Domino-Effect.md) | Patient Safety, Risk & Systems Failure | The Iatrogenic Domino Effect |
+| 30 | [The "Diagnostic Anchor" Extractor](https://www.google.com/search?q=Module-30-Diagnostic-Anchor-Extractor.md) | Clinical Reasoning & Cognitive Frameworks | The "Diagnostic Anchor" Extractor |
+| 31 | [First-Principles Pathophysiology Mapping](https://www.google.com/search?q=Module-31-First-Principles-Pathophysiology-Mapping.md) | Medical Education, Literature & Basic Science | First-Principles Pathophysiology Mapping |
+| 32 | [Clinical Cognition Loop](https://www.google.com/search?q=Module-32-Clinical-Cognition-Loop.md) | Clinical Reasoning & Cognitive Frameworks | Clinical Cognition Loop |
+| 33 | [The "Why Now?" (Precipitant) Hunter](https://www.google.com/search?q=Module-33-Why-Now-Precipitant-Hunter.md) | Clinical Reasoning & Cognitive Frameworks | The "Why Now?" (Precipitant) Hunter |
+| 34 | [The High-Value Care (HVC) Auditor](https://www.google.com/search?q=Module-34-High-Value-Care-Auditor.md) | Health Operations, Systems & Economics | The High-Value Care (HVC) Auditor |
+| 35 | [Epistemic Certainty Mapping & Calibration](https://www.google.com/search?q=Module-35-Epistemic-Certainty-Mapping-Calibration.md) | Clinical Reasoning & Cognitive Frameworks | Epistemic Certainty Mapping & Calibration |
+| 36 | [The Bayesian Probability / Likelihood Ratio Engine](https://www.google.com/search?q=Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.md) | Clinical Reasoning & Cognitive Frameworks | The Bayesian Probability / Likelihood Ratio Engine |
+| 37 | [Red Herring / Signal-to-Noise Drill](https://www.google.com/search?q=Module-37-Red-Herring-Signal-to-Noise-Drill.md) | Clinical Reasoning & Cognitive Frameworks | Red Herring / Signal-to-Noise Drill |
+| 38 | [Poly-Crisis & Cascading Failure Simulator](https://www.google.com/search?q=Module-38-Poly-Crisis-Cascading-Failure-Simulator.md) | Patient Safety, Risk & Systems Failure | Poly-Crisis & Cascading Failure Simulator |
+| 39 | [The "Global Knowledge Network" Diagnostic Matrix](https://www.google.com/search?q=Module-39-Global-Knowledge-Network-Diagnostic-Matrix.md) | Medical Education, Literature & Basic Science | The "Global Knowledge Network" Diagnostic Matrix |
+| 40 | [The Operational & Throughput Strategist](https://www.google.com/search?q=Module-40-Operational-Throughput-Strategist.md) | Health Operations, Systems & Economics | The Operational & Throughput Strategist |
+| 41 | [Clinical Workflow Implementation Science](https://www.google.com/search?q=Module-41-Clinical-Workflow-Implementation-Science.md) | Health Operations, Systems & Economics | Clinical Workflow Implementation Science |
+| 42 | [Clinical Pre-Mortem](https://www.google.com/search?q=Module-42-Clinical-Pre-Mortem.md) | Patient Safety, Risk & Systems Failure | Clinical Pre-Mortem |
+| 43 | [Health Economics & Value-Based Care Alignment](https://www.google.com/search?q=Module-43-Health-Economics-Value-Based-Care-Alignment.md) | Health Operations, Systems & Economics | Health Economics & Value-Based Care Alignment |
+| 44 | [Module 1 - Shadow Module](https://www.google.com/search?q=Module-01-Shadow-Module.md) | Framework Architecture & Meta-Design | Module 1 - Shadow Module |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
