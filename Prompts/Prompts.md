@@ -226,7 +226,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 41 | [Clinical Workflow Implementation Science](Module-41-Clinical-Workflow-Implementation-Science.md) | Clinical Workflow Implementation Science |
 | 42 | [Clinical Pre-Mortem](Module-42-Clinical-Pre-Mortem.md) | Clinical Pre-Mortem |
 | 43 | [Health Economics & Value-Based Care Alignment](Module-43-Health-Economics-Value-Based-Care-Alignment.md) | Health Economics & Value-Based Care Alignment |
-| 44 | [Shadow Module](Module-01-Shadow-Module.md) | Shadow Module |
+| 44 | [Module 1 - Shadow Module](Module-01-Shadow-Module.md) | Module 1 - Shadow Module |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
