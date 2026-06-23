@@ -1,4 +1,4 @@
-# Module 23 — Clinical Pre-Mortem
+# Module 42 — Clinical Pre-Mortem
 
 **Objective:** Prospectively imagine that the current management plan has failed — then work backwards to identify the most likely reasons why, before the failure actually occurs.
 
