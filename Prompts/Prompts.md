@@ -86,39 +86,6 @@ If you already know which module and step you need, skip straight there using th
 
 ---
 
-## Finding what you need
-
-| If you are... | Go to |
-|---|---|
-| New to Vibe Rounds, not sure where to start | [Module 0 – Cold-Start Orientation](Module-00-Cold-Start-Orientation.md) |
-| Teaching or learning through a single case | [Module 1 – Socratic Clinical Reasoning](Module-01-Socratic-Clinical-Reasoning.md) |
-| A family member building a case record | [Module 2](Module-02-Patient-Advocate-Case-Documentation.md) and [Module 3](Module-03-Extended-Patient-Advocate-Monitoring.md) |
-| Prepping for or running ward rounds | [Module 4 – Peer-Level Ward Round Preparation](Module-04-Peer-Level-Ward-Round-Preparation.md) |
-| Auditing a live patient log | [Module 5 – Real-Time Case Review & Data Audit](Module-05-Real-Time-Case-Review-and-Data-Audit.md) |
-| Running registry-level analytics | [Module 6 – Registry-Level Analytics](Module-06-Registry-Level-Analytics.md) |
-| Mining the registry for cross-case learning | [Module 7 – Longitudinal & Cross-Case Learning](Module-07-Longitudinal-and-Cross-Case-Learning.md) |
-| Authoring or QA-checking a new Socratic prompt | [Module 8 – Socratic-Mode Design Specification](Module-08-Socratic-Mode-Design-Specification.md) |
-| N-of-1 Case Research Protocol | [Module 9 – N-of-1 Case Research Protocol](Module-09-Case-Research_Protocol.md) |
-| Journal & Article Reading | [Module 10 – Journal & Article Reading](Module-10-Medical-Journal-Article-Reading.md) |
-| Patient Education Query Intelligence | [Module 11 – Patient Education Query Intelligence](Module-11-Patient-Education-Query-Intelligence.md) |
-| Differential Diagnosis Deepdive | [Module 12 – Differential Diagnosis Deepdive](Module-12-Differential-Diagnosis-Deepdive.md) |
-| Medication Reconciliation & Polypharmacy | [Module 13 – Medication Reconciliation & Polypharmacy](Module-13-Medication-Reconciliation-Polypharmacy-Audit.md) |
-| Resource-Constrained Clinical Reasoning | [Module 14 – Resource-Constrained Clinical Reasoning](Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.md) |
-| Illness Script Acquisition | [Module 15 – Illness Script Acquisition](Module-15-Illness-Script-Acquisition.md) |
-| Basic Science ↔ Clinical Integration | [Module 16 – Basic Science ↔ Clinical Integration](Module-16-Bidirectional-Basic-Science-Clinical-Integration.md) |
-| Semantic Qualifiers & Problem Representation | [Module 17 – Semantic Qualifiers & Problem Representation](Module-17-Semantic-Qualifiers-Problem-Representation.md) |
-| Causal vs. Probabilistic (Network) Reasoning | [Module 18 – Causal vs. Probabilistic (Network) Reasoning](Module-18-Causal-vs-Probabilistic-Network-Reasoning.md) |
-| Community & Social Medicine Insights | [Module 19 – Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) |
-| Naturalistic Decision Making | [Module 20 – Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) |
-| Evidence Frontier Search | [Module 21 – Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) |
-| Nested Analysis | [Module 22 — Nested Analysis](Module-22-Nested-Analysis.md) |
-| Counterfactual Analysis | [Module 23 — Counterfactual Analysis](Module-23-Counterfactual-Analysis.md) |
-| Nested Analysis | [Module 24 — Nested Analysis](Module-22-Nested-Analysis.md) |
-| Nested Analysis | [Module 25 — Nested Analysis](Module-22-Nested-Analysis.md) |
-| Nested Analysis | [Module 26 — Nested Analysis](Module-22-Nested-Analysis.md) |
-| Nested Analysis | [Module 27 — Nested Analysis](Module-22-Nested-Analysis.md) |
-| Nested Analysis | [Module 28 — Nested Analysis](Module-22-Nested-Analysis.md) |
-
 **Reading order:** Modules are independent entry points — jump straight to the one you need. Within a module, work the numbered steps (Step X.0, X.1, X.2…) in order; the three lifecycle phases (Initiation → Execution → Closure/Review) are designed to run in sequence, not be skipped around.
 
 **Cross-cutting frameworks:** Frameworks A–D are not separate modules to run on their own — they are layered into specific steps throughout Modules 0–21. **[Lifecycle Coverage Summary](Lifecycle-Coverage-Summary.md)** is the master index of exactly which step, in which module, carries each framework — consult it if you are trying to locate every place a given framework is applied.
@@ -172,7 +139,32 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 25** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 26** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 | **Module 27** | 🟢 Mature | Ready for ~~production~~ self learning use. |
-
+| **Module 18** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 19** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 20** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 21** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 22** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 23** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 24** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 25** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 26** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 27** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 28** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 29** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 30** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 31** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 32** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 33** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 34** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 35** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 36** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 37** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 38** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 39** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 40** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 41** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 42** | 🟢 Mature | Ready for ~~production~~ self learning use. |
+| **Module 43** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 ---
 ## Prompts Analytics
 
@@ -323,7 +315,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── VibeRounds-Dashboard-DesignGuidelines.md
 ├── Module-22-Nested-Analysis.md
 ├── VibeRounds_How_This_Can_Happen.md
-Module-23-Counterfactual-Analysis.md
+├── Module-23-Counterfactual-Analysis.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
 ├── Framework-C-Blooms-Taxonomy.md
