@@ -237,13 +237,13 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 24 | [Heuristic Analysis](Module-24-Heuristic-Analysis.md) | Heuristic Analysis |
 | 25 | [Thematic Analysis](Module-25-Thematic-Analysis.md) | Thematic Analysis |
 | 26 | [Bias Auditing](Module-26-Bias-Auditing.md) | Bias Auditing |
-| 27 | [Clinical Cognition Loop](Module-27-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
-| 28 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 29 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 30 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 31 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 32 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 33 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
+| 27 | [Time-Series & Velocity Analyzer](Module-27-Time-Series-Velocity-Analyzer.md) | Time-Series & Velocity Analyzer |
+| 28 | [Diagnostic Time-Out](Module-28-Diagnostic-Time-Out.md) | Diagnostic Time-Out |
+| 29 | [he Iatrogenic Domino Effect](Module-29-Iatrogenic-Domino-Effect.md) | he Iatrogenic Domino Effect |
+| 30 | [The "Diagnostic Anchor" Extractor](Module-30-Diagnostic-Anchor-Extractor.md) | The "Diagnostic Anchor" Extractor |
+| 31 | [First-Principles Pathophysiology Mapping](Module-31-First-Principles-Pathophysiology-Mapping.md) | First-Principles Pathophysiology Mapping |
+| 32 | [Clinical Cognition Loop](Module-32-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
+| 33 | [The "Why Now?" (Precipitant) Hunter](Module-33-Why-Now-Precipitant-Hunter.md) | The "Why Now?" (Precipitant) Hunter |
 | 34 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
 | 35 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
 | 36 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
