@@ -1,4 +1,4 @@
-# Module 28 — First-Principles Pathophysiology Mapping
+# Module 30 — First-Principles Pathophysiology Mapping
 
 **Objective:** Reconstruct the mechanistic chain linking a patient's underlying pathology to their clinical findings — from molecular or cellular disruption, through organ dysfunction, to the symptoms and signs that brought them to clinical attention — without relying on memorised associations.
 
