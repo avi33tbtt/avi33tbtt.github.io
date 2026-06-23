@@ -1,4 +1,4 @@
-# Module 24 — Red Herring / Signal-to-Noise Drill
+# Module 37 — Red Herring / Signal-to-Noise Drill
 
 **Objective:** Train a learner to discriminate between clinically meaningful findings (signal) and incidental, misleading, or contextually irrelevant findings (noise) in a complex case — and to resist the pull of compelling but diagnostically unhelpful data.
 
