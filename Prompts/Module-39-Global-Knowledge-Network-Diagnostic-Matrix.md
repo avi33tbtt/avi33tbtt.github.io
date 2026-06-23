@@ -1,11 +1,6 @@
----
-layout: default
-title: Module 24 — Global Knowledge Network Diagnostic Matrix
----
-
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
-# Module 24 — The "Global Knowledge Network" Diagnostic Matrix
+# Module 39 — The "Global Knowledge Network" Diagnostic Matrix
 
 **Objective:** Train the clinician to solve outlier cases not by reasoning harder from the same local knowledge base, but by structuring access to *distributed* global intelligence — international specialist communities, AI-searchable rare-disease databases, crowdsourced diagnostic platforms, research cohorts, and anonymised case registries. The hardest cases are rarely solved by one brain; they are solved by effectively leveraging global, distributed intelligence. This module teaches the modern reality of crowdsourced medicine: how to anonymise, tokenise, and format a patient's data for distribution across international knowledge nodes; how to design a systematic data-mining strategy for outlier cases; and how to critically evaluate what comes back. The AI acts as a query-design architect and critical appraisal partner, not a source of answers.
 
