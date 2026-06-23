@@ -1,4 +1,4 @@
-# Module 24 — Poly-Crisis & Cascading Failure Simulator
+# Module 38 — Poly-Crisis & Cascading Failure Simulator
 
 **Objective:** Train the discipline of reasoning through clinical situations in which multiple simultaneous crises interact, amplify, and cascade — not the single-problem case, but the scenario in which two, three, or more deteriorating processes compete for attention, where intervening on one may worsen another, and where the standard sequential reasoning approach breaks down under time, cognitive, and resource pressure. This module is specifically designed to develop robustness under complexity, not competence under ideal conditions.
 
