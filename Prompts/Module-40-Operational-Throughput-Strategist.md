@@ -1,8 +1,3 @@
----
-layout: default
-title: Module 40 — Operational & Throughput Strategist
----
-
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
 # Module 23 — The Operational & Throughput Strategist (Healthcare Management)
