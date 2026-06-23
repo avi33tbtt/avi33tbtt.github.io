@@ -1,4 +1,4 @@
-# Module 25 — Epistemic Certainty Mapping & Calibration
+# Module 35 — Epistemic Certainty Mapping & Calibration
 
 **Objective:** Train the discipline of explicitly tracking, labelling, and communicating the certainty level of every clinical claim — distinguishing between what is known, what is inferred, what is assumed, and what is unknown, and doing so with calibrated confidence that matches the actual strength of the underlying evidence. This module addresses a root cause that runs through almost every diagnostic and management error: not knowing what you do not know, or communicating uncertainty as if it were certainty.
 
