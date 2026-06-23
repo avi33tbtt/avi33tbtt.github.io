@@ -1,4 +1,4 @@
-# Module 25 — The Bayesian Probability / Likelihood Ratio Engine
+# Module 36 — The Bayesian Probability / Likelihood Ratio Engine
 
 **Objective:** Build the habit of updating diagnostic probability estimates explicitly and sequentially as new findings emerge — using pre-test probability, likelihood ratios, and Bayes' theorem as a structured thinking scaffold, not just a statistical exercise.
 
