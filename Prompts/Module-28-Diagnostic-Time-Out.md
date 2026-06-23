@@ -1,4 +1,4 @@
-# Module 29 — Diagnostic Time-Out
+# Module 28 — Diagnostic Time-Out
 
 **Objective:** Force a deliberate pause at a high-stakes decision point to surface assumptions, blind spots, and premature closures before a diagnostic or management commitment is made.
 
