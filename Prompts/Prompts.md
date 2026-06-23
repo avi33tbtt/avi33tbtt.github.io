@@ -204,28 +204,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 19 | [Community & Social Medicine Insights](Module-19-Community-and-Social-Medicine-Insights.md) | Community & Social Medicine Insights |
 | 20 | [Naturalistic Decision Making](Module-20-Recognition-Primed-Decision-Model.md) | Naturalistic Decision Making |
 | 21 | [Evidence Frontier Search](Module-21-Evidence-Frontier-Search.md) | Evidence Frontier Search |
-| -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
-| -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
-| -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
-| -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
-| -- | [Tagged Case History with answers](Tagged-Case-History1.md) | Tagged Case History with answers |
-| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2 |
-| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2 |
-| -- | [Clinical Importance Ranking](Clinical-Importance-Ranking.md) | Clinical Importance Ranking |
-| -- | [Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis |
-| -- | [CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief |
-| -- | [Master Case Analysis Protocol](VibeRounds-Master-Protocol.md) | Master Case Analysis Protocol |
-| -- | [Master Case Analysis: A Multi-Level Explainer](VibeRounds_case_analysis_explainer.md) | Master Case Analysis: A Multi-Level Explainer |
-| -- | [Global Clinical Knowledge Architecture](VibeRounds_Repository_Scaling.md) | Global Clinical Knowledge Architecture |
-| -- | [Lightweight Disease-Specific Protocol](ViberRounds_directory_tb_lightweight_protocol.md) | Lightweight Disease-Specific Protocol |
-| -- | [Why Case Narratives Surpass Case Reports](VibeRounds_narrative_edge.md) | Why Case Narratives Surpass Case Reports |
-| -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
-| -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
-| -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
-| -- | [Article](VibeRounds-Research-Article.md) | Article |
-| -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 | 22 | [Nested Analysis](Module-22-Nested-Analysis.md) | Nested Analysis |
-| -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
 | 23 | [Counterfactual Analysis](Module-23-Counterfactual-Analysis.md) | Counterfactual Analysis |
 | 24 | [Heuristic Analysis](Module-24-Heuristic-Analysis.md) | Heuristic Analysis |
 | 25 | [Thematic Analysis](Module-25-Thematic-Analysis.md) | Thematic Analysis |
@@ -248,6 +227,28 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 42 | [Clinical Pre-Mortem](Module-42-Clinical-Pre-Mortem.md) | Clinical Pre-Mortem |
 | 43 | [Health Economics & Value-Based Care Alignment](Module-43-Health-Economics-Value-Based-Care-Alignment.md) | Health Economics & Value-Based Care Alignment |
 | 44 | [Shadow Module](Module-01-Shadow-Module.md) | Shadow Module |
+| -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
+| -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
+| -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
+| -- | [Tagged Case History](Tagged-Case-History.md) | Tagged Case History |
+| -- | [Tagged Case History with answers](Tagged-Case-History1.md) | Tagged Case History with answers |
+| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2 |
+| -- | [Top Insight — Points 1 & 2](Top-Insights.md) | Top Insight — Points 1 & 2 |
+| -- | [Clinical Importance Ranking](Clinical-Importance-Ranking.md) | Clinical Importance Ranking |
+| -- | [Clinical Case Analysis](Clinical-Importance-Ranking.md) | VibeRounds Clinical Case Analysis |
+| -- | [CARE Case Report & Advocate Debrief](VibeRounds-CARE-AdvocateDebrief-60F-EColi-Sepsis.md) | VibeRounds — CARE Case Report & Advocate Debrief |
+| -- | [Master Case Analysis Protocol](VibeRounds-Master-Protocol.md) | Master Case Analysis Protocol |
+| -- | [Master Case Analysis: A Multi-Level Explainer](VibeRounds_case_analysis_explainer.md) | Master Case Analysis: A Multi-Level Explainer |
+| -- | [Global Clinical Knowledge Architecture](VibeRounds_Repository_Scaling.md) | Global Clinical Knowledge Architecture |
+| -- | [Lightweight Disease-Specific Protocol](ViberRounds_directory_tb_lightweight_protocol.md) | Lightweight Disease-Specific Protocol |
+| -- | [Why Case Narratives Surpass Case Reports](VibeRounds_narrative_edge.md) | Why Case Narratives Surpass Case Reports |
+| -- | [Final Briefing](VibeRounds-Professor-Briefing.md) | Final Briefing |
+| -- | [Protocol Dependency & Network Map](VibeRounds-Dependency-Network-Map.md) | Protocol Dependency & Network Map |
+| -- | [Dashboard — Design Guidelines](VibeRounds-Dashboard-DesignGuidelines.md) | Dashboard — Design Guidelines |
+| -- | [Article](VibeRounds-Research-Article.md) | Article |
+| -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
+| -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
+
 
 
 
