@@ -1,4 +1,4 @@
-# Module 26 — The High-Value Care (HVC) Auditor
+# Module 34 — The High-Value Care (HVC) Auditor
 
 **Objective:** Interrogate a proposed workup or management plan for investigations, interventions, and referrals that are low-value, redundant, potentially harmful, or inconsistent with the principle of delivering the maximum benefit per unit of clinical resource and patient burden.
 
