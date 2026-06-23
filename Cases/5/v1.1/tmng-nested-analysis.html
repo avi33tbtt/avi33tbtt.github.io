@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMNG · Module 22 Nested Analysis</title>
+<style>
+  /* ── tokens ── */
+  :root {
+    --ink:       #1a1917;
+    --ink-2:     #4a4845;
+    --ink-3:     #888780;
+    --rule:      #e2e0d8;
+    --surface:   #f7f5f0;
+    --white:     #ffffff;
+    --teal:      #1D9E75;
+    --teal-l:    #E1F5EE;
+    --teal-d:    #085041;
+    --coral:     #D85A30;
+    --coral-l:   #FAECE7;
+    --coral-d:   #712B13;
+    --purple:    #7F77DD;
+    --purple-l:  #EEEDFE;
+    --purple-d:  #3C3489;
+    --amber:     #EF9F27;
+    --amber-l:   #FAEEDA;
+    --amber-d:   #633806;
+    --gray:      #888780;
+    --gray-l:    #F1EFE8;
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:    'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--white);
+  }
+
+  /* ── masthead ── */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 2.5rem 3rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem;
+  }
+  .masthead-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.4rem;
+    font-family: var(--font-body);
+  }
+  .masthead-title {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: normal;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .masthead-sub {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 0.5rem;
+  }
+  .masthead-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--ink-3);
+    line-height: 1.8;
+  }
+
+  /* ── layout ── */
+  .page { max-width: 1040px; margin: 0 auto; padding: 0 3rem 4rem; }
+
+  /* ── section heads ── */
+  .section-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 1.5rem;
+  }
+  .section-rule-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .section-rule-line {
+    flex: 1;
+    height: 0.5px;
+    background: var(--rule);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: normal;
+    margin-bottom: 0.4rem;
+  }
+  .section-intro {
+    font-size: 14px;
+    color: var(--ink-2);
+    max-width: 680px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── layer badge ── */
+  .layer-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .lt-1 { background: var(--purple-l); color: var(--purple-d); }
+  .lt-2 { background: var(--teal-l);   color: var(--teal-d);   }
+  .lt-3 { background: var(--amber-l);  color: var(--amber-d);  }
+
+  /* ── case cards ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .case-card {
+    border: 0.5px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    background: var(--white);
+    position: relative;
+  }
+  .case-card-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 10px 0 0 10px;
+  }
+  .acc-teal   { background: var(--teal);   }
+  .acc-coral  { background: var(--coral);  }
+  .acc-purple { background: var(--purple); }
+  .acc-amber  { background: var(--amber);  }
+  .acc-gray   { background: var(--gray);   }
+
+  .case-letter {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--rule);
+    position: absolute;
+    top: 0.6rem; right: 1rem;
+    line-height: 1;
+  }
+  .case-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+    padding-right: 2rem;
+  }
+  .case-meta {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-bottom: 0.7rem;
+  }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.75rem; }
+  .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .bd-teal   { background: var(--teal-l);   color: var(--teal-d);   }
+  .bd-coral  { background: var(--coral-l);  color: var(--coral-d);  }
+  .bd-purple { background: var(--purple-l); color: var(--purple-d); }
+  .bd-amber  { background: var(--amber-l);  color: var(--amber-d);  }
+  .bd-gray   { background: var(--gray-l);   color: #444441;         }
+
+  .case-body { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+  .case-distinctive {
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 0.5px solid var(--rule);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+  .case-distinctive strong { color: var(--ink-2); font-weight: 500; }
+
+  /* ── group analysis metrics ── */
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+    margin: 1rem 0 1.5rem;
+  }
+  .metric {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+  .metric-label { font-size: 11px; color: var(--ink-3); margin-bottom: 3px; }
+  .metric-val   { font-size: 22px; font-weight: 500; color: var(--ink); line-height: 1; }
+
+  .synth-box {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    margin-bottom: 1rem;
+  }
+  .synth-box strong { color: var(--ink); font-weight: 600; }
+
+  /* ── variance cards ── */
+  .variance-card {
+    border-left: 3px solid;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0 8px 8px 0;
+    background: var(--surface);
+  }
+  .vc-teal   { border-color: var(--teal);   }
+  .vc-coral  { border-color: var(--coral);  }
+  .vc-purple { border-color: var(--purple); }
+  .vc-amber  { border-color: var(--amber);  }
+  .vc-teal2  { border-color: #3B6D11; }
+
+  .vc-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .vc-body  { font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+
+  /* ── svg trajectory panels ── */
+  .svg-panel {
+    border: 0.5px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: var(--white);
+    padding: 1.25rem;
+  }
+  .svg-panel-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.5rem;
+  }
+  .svg-panel svg { width: 100%; height: auto; display: block; }
+
+  /* ── note box ── */
+  .note-box {
+    border: 0.5px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    background: var(--white);
+  }
+  .note-box strong { color: var(--ink); font-weight: 600; }
+
+  /* ── footer ── */
+  footer {
+    border-top: 0.5px solid var(--rule);
+    margin-top: 3rem;
+    padding: 1.5rem 3rem;
+    font-size: 12px;
+    color: var(--ink-3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ── print ── */
+  @media print {
+    .masthead { padding: 1.5rem 0 1rem; }
+    .page { padding: 0 0 2rem; }
+    .svg-panel { page-break-inside: avoid; }
+    .case-card  { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 640px) {
+    .masthead { padding: 1.5rem 1.25rem 1rem; grid-template-columns: 1fr; }
+    .masthead-meta { text-align: left; }
+    .page { padding: 0 1.25rem 3rem; }
+    footer { padding: 1.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div>
+    <div class="masthead-eyebrow">Module 22 · Nested Analysis · #VibeRounds · June 2026</div>
+    <h1 class="masthead-title">Toxic Multinodular Goiter<br>Six Cases</h1>
+    <p class="masthead-sub">Individual profiles → group analysis → variance explained → trajectory</p>
+  </div>
+  <div class="masthead-meta">
+    Cases: A–F<br>
+    Countries: 4<br>
+    Age range: 16–76<br>
+    Publications: 2011–2026
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══════════════════════════════════════════
+     LAYER 1 — INDIVIDUAL PROFILES
+══════════════════════════════════════════ -->
+<div class="section-rule">
+  <span class="section-rule-label">Layer 1</span>
+  <div class="section-rule-line"></div>
+</div>
+<div class="layer-tag lt-1">Zoom in · Individual profiles</div>
+<h2 class="section-title">Each case on its own terms</h2>
+<p class="section-intro">No cross-case comparison at this layer — only the facts, trajectory, and one or two features that make each case distinctive.</p>
+
+<div class="card-grid">
+
+  <!-- Case A -->
+  <div class="case-card">
+    <div class="case-card-accent acc-coral"></div>
+    <span class="case-letter">A</span>
+    <div class="case-title">Giant toxic MNG with dyspnea</div>
+    <div class="case-meta">Alaguvelsamy et al. · Int J Surg Case Rep, 2020 · Chennai, India</div>
+    <div class="badge-row">
+      <span class="badge bd-coral">47 F</span>
+      <span class="badge bd-amber">10-yr known MNG</span>
+      <span class="badge bd-teal">Total thyroidectomy</span>
+      <span class="badge bd-coral">Bilateral RLN neuropraxia</span>
+    </div>
+    <div class="case-body">
+      A 47-year-old woman with a decade-long known toxic MNG presented with rapid enlargement over 2 years, palpitations, dyspnea, and tachycardia. CT showed bilateral lobes each ~9.5–9.6 cm, tracheal compression, supraglottic oedema, and posterolateral displacement of carotid vessels. TSH normalised pre-operatively after anti-thyroid treatment. FNAC showed adenomatous nodules; histology confirmed toxic changes. Total thyroidectomy required sacrifice of both superior laryngeal nerves due to adhesions. Despite intact intra-operative RLN signals, the patient developed bilateral abductor vocal cord paresis on post-operative day 1, requiring emergency tracheostomy. Tracheostomy decannulated at day 20; voice normalised by one month. Transient hypocalcaemia also occurred.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> Bilateral RLN neuropraxia despite nerve monitoring — the nerve was anatomically preserved yet physiologically stunned, underscoring the gap between structural and functional nerve integrity in giant goitre surgery.</div>
+  </div>
+
+  <!-- Case B -->
+  <div class="case-card">
+    <div class="case-card-accent acc-teal"></div>
+    <span class="case-letter">B</span>
+    <div class="case-title">Giant toxic MNG → retropharyngeal space</div>
+    <div class="case-meta">Tola et al. · Int J Surg Case Rep, 2023 · Jimma, Ethiopia</div>
+    <div class="badge-row">
+      <span class="badge bd-coral">30 F</span>
+      <span class="badge bd-amber">15-yr duration</span>
+      <span class="badge bd-teal">Near-total thyroidectomy</span>
+      <span class="badge bd-teal">Uncomplicated neurologically</span>
+    </div>
+    <div class="case-body">
+      A 30-year-old woman from an iodine-deficient region presented with a 15-year-old neck mass that had reached 17×17×15 cm, extending into the retropharyngeal space up to the C1 vertebral body and nasopharynx — an anatomical trajectory almost never documented. TSH was suppressed despite the patient appearing clinically euthyroid. CT confirmed complete visceral space encirclement with tracheal narrowing; FNAC showed nodular colloid goiter. After 3 months of PTU to achieve euthyroidism, a 35 cm cervical incision was used. The left RLN was found displaced anteromedially due to mass effect. The resected specimen weighed 2.5 kg. Post-operative course was remarkable only for transient asymptomatic hypocalcaemia, now resolved.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> Retropharyngeal and retroesophageal extension reaching C1/nasopharynx — an exceptionally rare growth trajectory driven by superior resistance of fascial attachments rather than the usual inferior mediastinal route.</div>
+  </div>
+
+  <!-- Case C -->
+  <div class="case-card">
+    <div class="case-card-accent acc-purple"></div>
+    <span class="case-letter">C</span>
+    <div class="case-title">Toxic MNG with low radioactive iodine uptake</div>
+    <div class="case-meta">Kahara et al. · Intern Med, 2011 · Toyama, Japan</div>
+    <div class="badge-row">
+      <span class="badge bd-gray">74 F</span>
+      <span class="badge bd-amber">Dx at 44, relapse at 74</span>
+      <span class="badge bd-teal">Partial thyroidectomy</span>
+      <span class="badge bd-purple">RAIU 4.5% — paradox</span>
+    </div>
+    <div class="case-body">
+      A 74-year-old woman first treated for goiter/thyrotoxicosis at age 44 (thiamazole discontinued due to drug eruption) re-presented at 74 with a large right-dominant goiter and persistent thyrotoxicosis. Crucially, TSH was suppressed but the gland was not detectable on 99mTc scintigraphy, and 123I uptake was only 4.5% at 24 hours (normal 10–40%) — a paradox. All thyroid autoantibodies were negative. Thyroid biopsy showed no lymphocytic infiltration or follicular destruction. SPECT (123I) eventually revealed inhomogeneous uptake at 10.1%. Histopathology post-partial thyroidectomy showed adenomatous goiter with hyperplastic columnar epithelium and marginal vacuolisation, without features of malignancy or thyroiditis. Immunostaining confirmed thyroglobulin overproduction rather than destructive release.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> True toxic MNG causing genuine hyperthyroidism (increased synthesis) yet with near-absent radioiodine uptake — a rare combination that initially obscured the diagnosis and precluded first-line radioiodine therapy.</div>
+  </div>
+
+  <!-- Case D -->
+  <div class="case-card">
+    <div class="case-card-accent acc-teal"></div>
+    <span class="case-letter">D</span>
+    <div class="case-title">Toxic MNG — a surprising finding at age 16</div>
+    <div class="case-meta">Rodrigues et al. · BMJ Case Reports, 2017 · Braga, Portugal</div>
+    <div class="badge-row">
+      <span class="badge bd-teal">16 M</span>
+      <span class="badge bd-amber">Incidental — lymphadenopathy screen</span>
+      <span class="badge bd-purple">Surgical resection</span>
+      <span class="badge bd-gray">Paediatric rarity</span>
+    </div>
+    <div class="case-body">
+      A 16-year-old asymptomatic male was referred for cervical lymphadenopathy workup, during which cervical ultrasound incidentally revealed multiple thyroid nodules. He denied any thyroid symptoms (no weight loss, palpitations, or sweating). TSH was &lt;0.01 uUI/mL with elevated FT3 (7.27 pg/mL) and FT4 (2.02 ng/dL) — overt hyperthyroidism. Ultrasound showed an enlarged right lobe with three nodules (largest 5 cm, predominantly cystic). Thyroid scintigraphy confirmed autonomous hot nodules on the right lobe consistent with TMNG. FNA was non-diagnostic. Given non-diagnostic cytology, nodule size &gt;4 cm, and compressive concern, surgery was chosen over radioiodine per paediatric guidelines. Thiamazole used to achieve euthyroidism pre-operatively.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> TMNG in a 16-year-old — a condition almost exclusive to adults — detected entirely by chance during lymphadenopathy evaluation, with overt (not subclinical) biochemical hyperthyroidism in a symptom-free patient.</div>
+  </div>
+
+  <!-- Case E -->
+  <div class="case-card">
+    <div class="case-card-accent acc-purple"></div>
+    <span class="case-letter">E</span>
+    <div class="case-title">Toxic MNG cured by immune checkpoint inhibitors</div>
+    <div class="case-meta">Dupuis et al. · Eur Thyroid J, 2022 · Lille, France</div>
+    <div class="badge-row">
+      <span class="badge bd-gray">72 M</span>
+      <span class="badge bd-amber">ICI for metastatic melanoma</span>
+      <span class="badge bd-teal">Levothyroxine (long-term)</span>
+      <span class="badge bd-purple">Nodules involuted — no surgery</span>
+    </div>
+    <div class="case-body">
+      A 72-year-old man with incidentally detected mild hyperthyroidism was found to have a 51.6 mL MNG with five nodules (including a left lobe hot nodule on 123I scintigraphy). He was started on ipilimumab + nivolumab for metastatic melanoma. Two days after the first infusion, thyrotoxicosis worsened; carbimazole was initiated. Six weeks after ICI initiation, profound hypothyroidism developed (TSH 15→29 mU/L, FT4 undetectable). Carbimazole was stopped but hypothyroidism persisted — levothyroxine was required at 1.8 µg/kg/day. At 5 months, ultrasound showed marked thyroid atrophy with &gt;75% volume reduction: all right lobe nodules had disappeared; the previously hot left lobe nodule was inactive. 123I scintigraphy confirmed a destructive mechanism.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> ICI-induced destructive thyroiditis that inadvertently ablated a toxic nodule — the first reported case of a TMNG being effectively "cured" by immunotherapy, converting a surgical candidate into a medically managed patient.</div>
+  </div>
+
+  <!-- Case F -->
+  <div class="case-card">
+    <div class="case-card-accent acc-amber"></div>
+    <span class="case-letter">F</span>
+    <div class="case-title">Compressive toxic MNG in a frail 76-year-old</div>
+    <div class="case-meta">Gupta · PaJR / UDLCO draft · Telangana, India · Unpublished</div>
+    <div class="badge-row">
+      <span class="badge bd-coral">76 F</span>
+      <span class="badge bd-amber">2-month rapid progression</span>
+      <span class="badge bd-teal">Carbimazole + pending FNAC</span>
+      <span class="badge bd-amber">Resource-constrained</span>
+    </div>
+    <div class="case-body">
+      A 76-year-old frail woman (40 kg, hypertensive) presented with a 2-month history of rapidly enlarging right-sided neck swelling, dysphagia, and dyspnea — a triad of "red flag" compressive symptoms. BP 170/90, HR 100; hand tremors and lid lag noted. TSH suppressed (&lt;0.01 uIU/mL), T3 and T4 within normal limits — subclinical hyperthyroidism. FNAC planned but not yet reported. Carbimazole 5 mg BD was started. The clinical team deliberated (via the PaJR/UDLCO platform) on whether to screen pre-emptively for pheochromocytoma (MEN-2/MTC association) and concluded this was low-yield before FNAC confirmation of medullary histology.
+    </div>
+    <div class="case-distinctive"><strong>Distinctive feature:</strong> The only case in this series where the primary tension is epistemic rather than anatomical or surgical — the management debate between AI-suggested thoroughness and pragmatic resource stewardship is itself the clinical case.</div>
+  </div>
+
+</div><!-- /card-grid -->
+
+
+<!-- ══════════════════════════════════════════
+     LAYER 2 — GROUP ANALYSIS
+══════════════════════════════════════════ -->
+<div class="section-rule">
+  <span class="section-rule-label">Layer 2</span>
+  <div class="section-rule-line"></div>
+</div>
+<div class="layer-tag lt-2">Group analysis · Central tendency</div>
+<h2 class="section-title">Where the group clusters</h2>
+<p class="section-intro">What do these six cases share? What is the central tendency? Where does the group cluster, and where does it fracture?</p>
+
+<div class="metric-row">
+  <div class="metric"><div class="metric-label">Cases</div><div class="metric-val">6</div></div>
+  <div class="metric"><div class="metric-label">Age range</div><div class="metric-val">16–76</div></div>
+  <div class="metric"><div class="metric-label">Female</div><div class="metric-val">4 of 6</div></div>
+  <div class="metric"><div class="metric-label">Compressive Sx</div><div class="metric-val">4 of 6</div></div>
+  <div class="metric"><div class="metric-label">Surgical Rx</div><div class="metric-val">4 of 6</div></div>
+  <div class="metric"><div class="metric-label">Countries</div><div class="metric-val">4</div></div>
+</div>
+
+<div class="synth-box">
+  <strong>Shared features:</strong> All six patients have a toxic (autonomous) multinodular goiter with suppressed or undetectable TSH. All are cases where initial clinical expectation was disrupted — by atypical scintigraphy (C), unusual patient age (D), unexpected treatment consequence (E), exceptional anatomical trajectory (B), procedural complication despite technical success (A), or an explicit conflict between AI-generated and clinician-generated reasoning (F).<br><br>
+  <strong>Central tendency:</strong> The "typical" TMNG case in this set is a middle-aged or older woman in an iodine-deficient region, with a slowly enlarging goiter that has now caused compressive symptoms, managed surgically after anti-thyroid drug pre-treatment, with transient post-operative hypocalcaemia as the most consistent complication. This matches Cases A and B most closely.<br><br>
+  <strong>Where the group diverges:</strong> Cases diverge across four principal axes: (1) age at presentation (16 vs 30–76); (2) mechanism of thyrotoxicosis resolution (surgery vs immunotherapy-induced ablation vs still-pending); (3) diagnostic tractability (straightforward scintigraphy vs paradoxical low RAIU); and (4) resource context and the role of AI as a clinical reasoning interlocutor.
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LAYER 3 — SYNTHESIS / VARIANCE
+══════════════════════════════════════════ -->
+<div class="section-rule">
+  <span class="section-rule-label">Layer 3</span>
+  <div class="section-rule-line"></div>
+</div>
+<div class="layer-tag lt-3">Synthesis · Explaining the variance</div>
+<h2 class="section-title">Why each case diverges from the group</h2>
+<p class="section-intro">This layer earns its place only by drawing directly from both layers above. For each case, the explanation connects the individual profile to the group pattern and names the mechanism of divergence.</p>
+
+<div class="variance-card vc-coral">
+  <div class="vc-title">Case A — Diverges on: procedural outcome</div>
+  <p class="vc-body">Case A follows the group template most closely in every way except the post-operative complication. The group norm (Cases B, D) is uneventful neurological recovery. In Case A, the divergence is explained by three compounding factors: (1) the pyramidal lobe had extended into the pre-epiglottic space, creating unusual traction vectors on both superior and recurrent laryngeal nerves; (2) adhesion of both sternocleidomastoid and strap muscles to the thyroid forced sacrifice of both SLNs; (3) bilateral IJV compression added vascular complexity. Each factor alone might be tolerated; together they created a perioperative injury environment where neuropraxia occurred despite structural nerve preservation and confirmed normal intra-operative monitoring signals. The lesson is that nerve monitoring confirms anatomy, not physiology — stretch, thermal, and ischaemic injury to intact nerves remains possible and is predictable in the presence of these anatomical co-morbidities.</p>
+</div>
+
+<div class="variance-card vc-teal">
+  <div class="vc-title">Case B — Diverges on: anatomical trajectory</div>
+  <p class="vc-body">Case B is the most extreme in the series by absolute size (2.5 kg, 17 cm) yet has the best post-operative neurological outcome. The variance is in two directions: (i) the growth direction (retropharyngeal to C1, not retrosternal — the far commoner pathway) and (ii) the clean recovery despite complexity. Both are mechanistically linked. The retropharyngeal trajectory can be explained by fascial resistance: the pre-tracheal fascia's inferior communication with the mediastinum is more compliant than the superior attachment constraining upward growth; when the superior route does open, it releases into a large retropharyngeal space without the rigid mediastinal structures that would otherwise compress the goiter — paradoxically allowing enormous growth with relatively preserved tissue planes. This may be why RLN dissection was clean: less fibrous adhesion around the nerves despite greater tumour size. The lesson is that trajectory and size are independent predictors of surgical difficulty.</p>
+</div>
+
+<div class="variance-card vc-purple">
+  <div class="vc-title">Case C — Diverges on: diagnostic pattern (low RAIU)</div>
+  <p class="vc-body">The group norm for TMNG scintigraphy is heterogeneous but elevated uptake with identifiable hot nodules. Case C diverges radically: nearly absent uptake (4.5% at 24 h on 123I planar; undetectable on 99mTc) despite persistent biochemical thyrotoxicosis. The mechanism of this paradox is the key learning: true hyperthyroidism requires iodine trapping to synthesise excess thyroid hormone, yet here uptake was negligible. The resolution came from SPECT, which identified inhomogeneous uptake hidden from planar imaging by the dominant cold regions of a very large gland. The net 24-hour uptake was low because suppressed normal tissue dominated the arithmetic. RAIU is not a single-tissue measurement in a multinodular gland — it is a weighted average. Large nodular goitres with many cold regions will always dilute the signal from hyperactive foci. SPECT should be standard, not optional, when planar imaging conflicts with biochemistry.</p>
+</div>
+
+<div class="variance-card vc-teal2">
+  <div class="vc-title">Case D — Diverges on: patient age and presentation route</div>
+  <p class="vc-body">TMNG is a disease of the 4th–6th decade; Case D presents at 16. This is not simply an earlier occurrence of the same pathology — it is a genuinely different epidemiological and genetic environment. In adults, TMNG evolves over years via progressive autonomy of nodules driven by iodine variation, TSH stimulation cycles, and acquired somatic mutations in the TSH receptor or Gsα pathway. In a 16-year-old with no family history and a suppressed TSH, the same endpoint was reached far more rapidly, suggesting either a germline susceptibility or a particularly aggressive somatic mutation. The divergence in management is equally instructive: surgical guidelines for children diverge from adults at two decision points — non-diagnostic FNA and nodule size &gt;4 cm both weight decisively toward surgery in paediatric patients, partly because radioiodine in a growing thyroid with uncertain cytology carries greater long-term uncertainty.</p>
+</div>
+
+<div class="variance-card vc-purple">
+  <div class="vc-title">Case E — Diverges on: mechanism of thyrotoxicosis resolution</div>
+  <p class="vc-body">In every other case, treatment of the TMNG is either surgical (A, B, D) or medically bridge-pending-procedure (C, F). Case E is the only case where an intervention undertaken for an entirely separate indication (metastatic melanoma) inadvertently resolved the TMNG. The mechanism is ICI-induced T-cell-mediated destructive thyroiditis — the same immunological process that causes thyroid atrophy in ~50% of patients treated with combined CTLA-4 + PD-1 blockade. When destructive thyroiditis replaced the entire gland's parenchyma, it also eliminated the autonomous nodules that were the substrate of the TMNG. The synthesising lesson: the "toxic" part of TMNG depends on viable autonomous follicular cells — any mechanism that destroys those cells, including inflammatory, can achieve functional cure. This argues against withholding ICIs from patients with pre-existing TMNG, a previously uncertain clinical decision.</p>
+</div>
+
+<div class="variance-card vc-amber" style="border-color:var(--amber)">
+  <div class="vc-title">Case F — Diverges on: the nature of the clinical problem itself</div>
+  <p class="vc-body">Cases A–E all present TMNG as a solved or resolving clinical problem. Case F diverges structurally: it is a case-in-progress where the primary clinical tension is not anatomical or therapeutic but epistemic — what is the right order of investigations given limited resources, patient frailty, and a probabilistic prior (very low chance of MEN-2 in a de novo 76-year-old MNG)? Three factors explain why this case hits differently: (1) the patient's frailty and age push the risk-benefit calculation of surgery to an extreme not seen in the other cases; (2) the resource context makes low-yield investigations genuinely harmful; and (3) a generative AI was a named interlocutor in the clinical reasoning, making the contrast between AI-generated and clinician-generated reasoning an explicit, auditable artefact. Not what was done, but how the decision was made and checked.</p>
+</div>
+
+<div class="synth-box" style="margin-top:1.5rem">
+  <strong>Cross-cutting synthesis — what the variance reveals about TMNG as a clinical category:</strong><br><br>
+  Taken together, the six cases show that "toxic multinodular goiter" is a unifying biochemical label that conceals enormous variance in almost every clinically important dimension: age (16–76), anatomy (typical cervical to retropharyngeal to involuting), scintigraphic pattern (hot nodules to paradoxically absent uptake), resolution mechanism (surgery, immunotherapy, awaited), setting (high-income tertiary to rural low-resource), and the very nature of the clinical challenge (procedural risk vs. diagnostic paradox vs. resource stewardship vs. AI-augmented reasoning).<br><br>
+  The variance is not noise — it is signal. Case C reveals that RAIU is a population average in a nodular gland; Case D reveals that the disease can precede its expected demographic by decades; Case E reveals that the autonomous tissue substrate can be destroyed by mechanisms other than those we intend; Cases A and B reveal that the expected relationship between surgical difficulty and post-operative neurology is mediated by anatomy-specific factors not fully captured by tumour size alone; Case F reveals that the framework for what counts as "good clinical reasoning" is itself a variable.
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TRAJECTORY — ZOOM IN
+══════════════════════════════════════════ -->
+<div class="section-rule">
+  <span class="section-rule-label">Trajectory</span>
+  <div class="section-rule-line"></div>
+</div>
+<h2 class="section-title">Trajectory of cases</h2>
+<p class="section-intro">Three views of the same six cases at different resolutions: individual timelines, the group average arc, then all cases plotted against that average to make the divergence spatial.</p>
+
+<div class="svg-panel">
+  <div class="svg-panel-label">Zoom in — individual case trajectories</div>
+  <svg viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <defs>
+      <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <text x="40" y="28" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Zoom in — individual case trajectories</text>
+
+    <text x="40"  y="52" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Onset / discovery</text>
+    <text x="248" y="52" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Diagnosis confirmed</text>
+    <text x="440" y="52" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Intervention</text>
+    <text x="586" y="52" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Final state</text>
+
+    <line x1="40" y1="58" x2="640" y2="58" stroke="#e2e0d8" stroke-width="0.5"/>
+    <line x1="40"  y1="58" x2="40"  y2="536" stroke="#e2e0d8" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="242" y1="58" x2="242" y2="536" stroke="#e2e0d8" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="436" y1="58" x2="436" y2="536" stroke="#e2e0d8" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="580" y1="58" x2="580" y2="536" stroke="#e2e0d8" stroke-width="0.5" stroke-dasharray="3 4"/>
+
+    <!-- Case A -->
+    <text x="40" y="78" font-size="12" font-weight="500" fill="#D85A30" font-family="system-ui,sans-serif">A · 47F Chennai · 10-yr known MNG, rapid 2-yr growth</text>
+    <line x1="40" y1="92" x2="240" y2="92" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="92" r="4" fill="#D85A30"/>
+    <rect x="242" y="80" width="110" height="24" rx="4" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+    <text x="297" y="92" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#712B13" font-family="system-ui,sans-serif">Toxic MNG + compressive</text>
+    <line x1="352" y1="92" x2="434" y2="92" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/>
+    <rect x="436" y="80" width="96" height="24" rx="4" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+    <text x="484" y="92" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#712B13" font-family="system-ui,sans-serif">Total thyroidectomy</text>
+    <line x1="532" y1="92" x2="578" y2="92" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/>
+    <rect x="580" y="80" width="82" height="24" rx="4" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+    <text x="621" y="92" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#712B13" font-family="system-ui,sans-serif">Bil. RLN paresis</text>
+    <text x="54" y="112" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Emergency tracheostomy → decannulated day 20 → voice normal by 1 month</text>
+
+    <line x1="40" y1="126" x2="640" y2="126" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- Case B -->
+    <text x="40" y="146" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">B · 30F Jimma · 15-yr mass, retropharyngeal extension to C1</text>
+    <line x1="40" y1="160" x2="240" y2="160" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="160" r="4" fill="#1D9E75"/>
+    <rect x="242" y="148" width="124" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="304" y="160" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">Giant MNG to C1/nasopharynx</text>
+    <line x1="366" y1="160" x2="434" y2="160" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <rect x="436" y="148" width="106" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="489" y="160" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">Near-total thyroidectomy</text>
+    <line x1="542" y1="160" x2="578" y2="160" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <rect x="580" y="148" width="80" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="620" y="160" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">Transient hypoCa</text>
+    <text x="54" y="180" font-size="11" fill="#888780" font-family="system-ui,sans-serif">2.5 kg specimen · RLN displaced but preserved · voice intact from day 0</text>
+
+    <line x1="40" y1="194" x2="640" y2="194" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- Case C -->
+    <text x="40" y="214" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">C · 74F Toyama · Thyrotoxicosis from age 44; relapse at 74 with RAIU paradox</text>
+    <line x1="40" y1="228" x2="240" y2="228" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="228" r="4" fill="#7F77DD"/>
+    <rect x="242" y="216" width="114" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="299" y="228" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">Low RAIU paradox</text>
+    <line x1="356" y1="228" x2="434" y2="228" stroke="#7F77DD" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 3"/>
+    <text x="395" y="222" text-anchor="middle" font-size="10" fill="#534AB7" font-family="system-ui,sans-serif">SPECT resolves</text>
+    <rect x="436" y="216" width="100" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="486" y="228" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">Partial thyroidectomy</text>
+    <line x1="536" y1="228" x2="578" y2="228" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/>
+    <rect x="580" y="216" width="82" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="621" y="228" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">Hypothyroid → LT4</text>
+    <text x="54" y="248" font-size="11" fill="#888780" font-family="system-ui,sans-serif">No malignancy · no thyroiditis · hormone overproduction confirmed on immunostaining</text>
+
+    <line x1="40" y1="262" x2="640" y2="262" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- Case D -->
+    <text x="40" y="282" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">D · 16M Braga · Incidental MNG on lymphadenopathy screen; overt hyperthyroidism</text>
+    <line x1="40" y1="296" x2="240" y2="296" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="296" r="4" fill="#1D9E75"/>
+    <rect x="242" y="284" width="122" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="303" y="296" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">TMNG · non-diagnostic FNA</text>
+    <line x1="364" y1="296" x2="434" y2="296" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <rect x="436" y="284" width="98" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="485" y="296" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">Surgical resection</text>
+    <line x1="534" y1="296" x2="578" y2="296" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"/>
+    <rect x="580" y="284" width="82" height="24" rx="4" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="621" y="296" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#085041" font-family="system-ui,sans-serif">Euthyroid post-op</text>
+    <text x="54" y="316" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Paediatric guidelines: nodule &gt;4 cm + non-diagnostic FNA → surgery preferred over radioiodine</text>
+
+    <line x1="40" y1="330" x2="640" y2="330" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- Case E -->
+    <text x="40" y="350" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">E · 72M Lille · Mild hyperthyroidism + MNG; ICI for metastatic melanoma</text>
+    <line x1="40" y1="364" x2="240" y2="364" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="364" r="4" fill="#7F77DD"/>
+    <rect x="242" y="352" width="120" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="302" y="364" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">Hot nodule · MNG 51.6 mL</text>
+    <line x1="362" y1="364" x2="434" y2="364" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/>
+    <rect x="436" y="352" width="112" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="492" y="364" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">ICI → destructive thyroiditis</text>
+    <line x1="548" y1="364" x2="578" y2="364" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"/>
+    <rect x="580" y="352" width="82" height="24" rx="4" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="621" y="364" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#3C3489" font-family="system-ui,sans-serif">Atrophy + LT4</text>
+    <text x="54" y="384" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Nodules involuted · hot nodule ablated · &gt;75% volume reduction · no surgery ever needed</text>
+
+    <line x1="40" y1="398" x2="640" y2="398" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- Case F -->
+    <text x="40" y="418" font-size="12" font-weight="500" fill="#854F0B" font-family="system-ui,sans-serif">F · 76F Telangana · 2-month rapid enlargement; frail 40 kg; subclinical hyperthyroidism</text>
+    <line x1="40" y1="432" x2="240" y2="432" stroke="#EF9F27" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="432" r="4" fill="#EF9F27"/>
+    <rect x="242" y="420" width="116" height="24" rx="4" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="300" y="432" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#633806" font-family="system-ui,sans-serif">Compressive Sx · TSH &lt;0.01</text>
+    <line x1="358" y1="432" x2="434" y2="432" stroke="#EF9F27" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 3"/>
+    <text x="396" y="426" text-anchor="middle" font-size="10" fill="#854F0B" font-family="system-ui,sans-serif">FNAC pending</text>
+    <rect x="436" y="420" width="100" height="24" rx="4" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="486" y="432" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#633806" font-family="system-ui,sans-serif">Carbimazole started</text>
+    <line x1="536" y1="432" x2="578" y2="432" stroke="#EF9F27" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 3"/>
+    <rect x="580" y="420" width="82" height="24" rx="4" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="621" y="432" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#633806" font-family="system-ui,sans-serif">Awaiting FNAC</text>
+    <text x="54" y="452" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Malignancy to exclude · surgical risk extreme · resource stewardship debate ongoing</text>
+
+    <line x1="40" y1="466" x2="640" y2="466" stroke="#e2e0d8" stroke-width="0.5"/>
+
+    <!-- legend -->
+    <text x="40" y="488" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">Legend</text>
+    <rect x="40" y="496" width="9" height="9" rx="2" fill="#D85A30"/>
+    <text x="54" y="505" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">Surgery — complicated</text>
+    <rect x="186" y="496" width="9" height="9" rx="2" fill="#1D9E75"/>
+    <text x="200" y="505" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">Surgery — uncomplicated</text>
+    <rect x="370" y="496" width="9" height="9" rx="2" fill="#7F77DD"/>
+    <text x="384" y="505" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">Non-surgical resolution</text>
+    <rect x="530" y="496" width="9" height="9" rx="2" fill="#EF9F27"/>
+    <text x="544" y="505" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">In progress</text>
+    <line x1="40" y1="522" x2="78" y2="522" stroke="#888780" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <text x="84" y="526" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Dashed = diagnostic delay or pending step</text>
+  </svg>
+</div><!-- /svg-panel -->
+
+
+<!-- Average arc -->
+<div class="svg-panel">
+  <div class="svg-panel-label">Average — the canonical TMNG arc (5 of 6 cases)</div>
+  <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <defs>
+      <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <text x="340" y="22" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Average — the canonical TMNG arc (5 of 6 cases)</text>
+    <text x="340" y="38" text-anchor="middle" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Middle-aged woman · iodine-deficient region · compressive symptoms · surgery · transient hypocalcaemia</text>
+
+    <!-- row 1 nodes -->
+    <rect x="40" y="58" width="88" height="52" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+    <text x="84" y="77" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Slow growth</text>
+    <text x="84" y="95" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="system-ui,sans-serif">years–decades</text>
+    <line x1="128" y1="84" x2="148" y2="84" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="150" y="58" width="100" height="52" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+    <text x="200" y="77" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Presentation</text>
+    <text x="200" y="95" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="system-ui,sans-serif">dyspnea/dysphagia</text>
+    <line x1="250" y1="84" x2="268" y2="84" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="270" y="58" width="108" height="52" rx="6" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="324" y="77" text-anchor="middle" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">Biochemistry</text>
+    <text x="324" y="95" text-anchor="middle" font-size="11" fill="#534AB7" font-family="system-ui,sans-serif">TSH suppressed</text>
+    <line x1="378" y1="84" x2="396" y2="84" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="398" y="58" width="100" height="52" rx="6" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="448" y="77" text-anchor="middle" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">Imaging + FNA</text>
+    <text x="448" y="95" text-anchor="middle" font-size="11" fill="#534AB7" font-family="system-ui,sans-serif">CT · US · scintigraphy</text>
+    <line x1="498" y1="84" x2="514" y2="84" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="516" y="58" width="96" height="52" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="564" y="77" text-anchor="middle" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">ATD pre-Rx</text>
+    <text x="564" y="95" text-anchor="middle" font-size="11" fill="#0F6E56" font-family="system-ui,sans-serif">carbimazole / PTU</text>
+
+    <!-- down arrow -->
+    <line x1="564" y1="110" x2="564" y2="130" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <!-- row 2 -->
+    <rect x="398" y="132" width="214" height="52" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="505" y="151" text-anchor="middle" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">Definitive therapy</text>
+    <text x="505" y="169" text-anchor="middle" font-size="11" fill="#0F6E56" font-family="system-ui,sans-serif">total / near-total thyroidectomy (4/6)</text>
+    <line x1="398" y1="158" x2="380" y2="158" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="40" y="132" width="338" height="52" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+    <text x="209" y="151" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Post-operative state</text>
+    <text x="209" y="169" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="system-ui,sans-serif">transient hypoCa · voice intact · LT4 replacement</text>
+    <line x1="209" y1="184" x2="209" y2="204" stroke="#888780" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+    <rect x="130" y="206" width="158" height="44" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+    <text x="209" y="228" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Euthyroid on LT4</text>
+
+    <text x="340" y="272" text-anchor="middle" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Most common complication: transient hypocalcaemia · Most common long-term need: levothyroxine</text>
+    <text x="340" y="288" text-anchor="middle" font-size="11" fill="#888780" font-family="system-ui,sans-serif">5 of 6 cases reach resolution · Case F still in diagnostic phase</text>
+  </svg>
+</div><!-- /svg-panel -->
+
+
+<!-- Zoom out / divergence map -->
+<div class="svg-panel">
+  <div class="svg-panel-label">Zoom out — all six cases mapped against the group average</div>
+  <svg viewBox="0 0 680 590" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+    <defs>
+      <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+    <text x="340" y="20" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">Zoom out — where each case diverges from the average</text>
+
+    <line x1="40" y1="30" x2="640" y2="30" stroke="#e2e0d8" stroke-width="0.5"/>
+    <text x="60"  y="47" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Onset</text>
+    <text x="196" y="47" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Biochemistry</text>
+    <text x="322" y="47" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Imaging / cytology</text>
+    <text x="468" y="47" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Intervention</text>
+    <text x="586" y="47" font-size="11" fill="#888780" font-family="system-ui,sans-serif">Resolution</text>
+
+    <!-- spine -->
+    <line x1="40" y1="290" x2="640" y2="290" stroke="#4a4845" stroke-width="1.5"/>
+    <text x="340" y="280" text-anchor="middle" font-size="11" fill="#888780" font-family="system-ui,sans-serif">— group average arc —</text>
+    <circle cx="80"  cy="290" r="5" fill="#888780"/>
+    <circle cx="222" cy="290" r="5" fill="#888780"/>
+    <circle cx="360" cy="290" r="5" fill="#888780"/>
+    <circle cx="500" cy="290" r="5" fill="#888780"/>
+    <circle cx="620" cy="290" r="5" fill="#888780"/>
+
+    <!-- B — above, at intervention -->
+    <rect x="436" y="120" width="172" height="48" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="522" y="138" text-anchor="middle" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">B · Retropharyngeal</text>
+    <text x="522" y="156" text-anchor="middle" font-size="11" fill="#0F6E56" font-family="system-ui,sans-serif">2.5 kg · RLN intact · clean</text>
+    <line x1="500" y1="290" x2="522" y2="170" stroke="#1D9E75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="508" y="240" font-size="10" fill="#0F6E56" font-family="system-ui,sans-serif">Anatomy: up not down</text>
+
+    <!-- A — below, at intervention -->
+    <rect x="436" y="360" width="172" height="48" rx="6" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+    <text x="522" y="378" text-anchor="middle" font-size="12" font-weight="500" fill="#712B13" font-family="system-ui,sans-serif">A · Giant MNG Chennai</text>
+    <text x="522" y="396" text-anchor="middle" font-size="11" fill="#993C1D" font-family="system-ui,sans-serif">Bilateral RLN neuropraxia</text>
+    <line x1="500" y1="290" x2="522" y2="358" stroke="#D85A30" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="508" y="332" font-size="10" fill="#993C1D" font-family="system-ui,sans-serif">Outcome: monitoring ≠ physiology</text>
+
+    <!-- D — above, at biochemistry -->
+    <rect x="158" y="120" width="168" height="48" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text x="242" y="138" text-anchor="middle" font-size="12" font-weight="500" fill="#085041" font-family="system-ui,sans-serif">D · Age 16 paediatric</text>
+    <text x="242" y="156" text-anchor="middle" font-size="11" fill="#0F6E56" font-family="system-ui,sans-serif">Incidental · overt Sx</text>
+    <line x1="222" y1="290" x2="242" y2="170" stroke="#1D9E75" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="148" y="246" font-size="10" fill="#0F6E56" font-family="system-ui,sans-serif">Demographics: TMNG at 16</text>
+
+    <!-- C — below, at imaging -->
+    <rect x="285" y="370" width="174" height="48" rx="6" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="372" y="388" text-anchor="middle" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">C · Low RAIU paradox</text>
+    <text x="372" y="406" text-anchor="middle" font-size="11" fill="#534AB7" font-family="system-ui,sans-serif">Dx delayed · SPECT rescues</text>
+    <line x1="360" y1="290" x2="372" y2="368" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="295" y="340" font-size="10" fill="#534AB7" font-family="system-ui,sans-serif">Scintigraphy: RAIU &lt;5%</text>
+
+    <!-- E — below, at biochemistry -->
+    <rect x="44" y="370" width="196" height="48" rx="6" fill="#EEEDFE" stroke="#7F77DD" stroke-width="0.5"/>
+    <text x="142" y="388" text-anchor="middle" font-size="12" font-weight="500" fill="#3C3489" font-family="system-ui,sans-serif">E · ICI accidental ablation</text>
+    <text x="142" y="406" text-anchor="middle" font-size="11" fill="#534AB7" font-family="system-ui,sans-serif">Melanoma Rx → atrophy</text>
+    <line x1="222" y1="290" x2="142" y2="368" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="46" y="336" font-size="10" fill="#534AB7" font-family="system-ui,sans-serif">Intervention: no surgery needed</text>
+
+    <!-- F — above, at imaging -->
+    <rect x="286" y="120" width="178" height="48" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="375" y="138" text-anchor="middle" font-size="12" font-weight="500" fill="#633806" font-family="system-ui,sans-serif">F · Frail 76F Telangana</text>
+    <text x="375" y="156" text-anchor="middle" font-size="11" fill="#854F0B" font-family="system-ui,sans-serif">Epistemic tension · FNAC pending</text>
+    <line x1="360" y1="290" x2="375" y2="170" stroke="#EF9F27" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr3)"/>
+    <text x="468" y="216" font-size="10" fill="#854F0B" font-family="system-ui,sans-serif">Problem type: reasoning is the case</text>
+
+    <!-- legend bottom -->
+    <line x1="40" y1="454" x2="640" y2="454" stroke="#e2e0d8" stroke-width="0.5"/>
+    <text x="40" y="472" font-size="11" font-weight="500" fill="#1a1917" font-family="system-ui,sans-serif">What the divergence map reveals</text>
+    <rect x="40" y="482" width="8" height="8" rx="2" fill="#D85A30"/>
+    <text x="54" y="490" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">A diverges at outcome — adhesion + anatomy drove neuropraxia despite intact monitoring</text>
+    <rect x="40" y="498" width="8" height="8" rx="2" fill="#1D9E75"/>
+    <text x="54" y="506" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">B diverges at anatomy — superior fascial route; paradoxically cleaner dissection despite larger mass</text>
+    <rect x="40" y="514" width="8" height="8" rx="2" fill="#7F77DD"/>
+    <text x="54" y="522" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">C diverges at imaging — RAIU is a gland-wide average; cold background suppresses hot-nodule signal</text>
+    <rect x="40" y="530" width="8" height="8" rx="2" fill="#1D9E75"/>
+    <text x="54" y="538" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">D diverges at demographics — same biochemical disease, different biological substrate at age 16</text>
+    <rect x="40" y="546" width="8" height="8" rx="2" fill="#7F77DD"/>
+    <text x="54" y="554" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">E diverges at intervention — ICI for melanoma inadvertently ablated autonomous thyroid tissue</text>
+    <rect x="40" y="562" width="8" height="8" rx="2" fill="#EF9F27"/>
+    <text x="54" y="570" font-size="11" fill="#4a4845" font-family="system-ui,sans-serif">F diverges at problem type — the tension is epistemic: what to investigate, in what order, given frailty</text>
+  </svg>
+</div><!-- /svg-panel -->
+
+
+<!-- ── disclaimer ── -->
+<div class="note-box" style="margin-top:2rem">
+  <strong>Clinical disclaimer:</strong> All AI-generated outputs produced using Module 22 require independent clinical verification before being acted upon. This analysis is a learning and synthesis tool, not a clinical decision support system. No output should enter a clinical record or management plan without endorsement by a licensed clinician. — Module 22 · Vibe Rounds · Dr. Avinash Kumar Gupta, June 2026
+</div>
+
+</div><!-- /page -->
+
+<footer>
+  <span>Module 22 · Nested Analysis · #VibeRounds · June 2026</span>
+  <span>Cases: Kahara 2011 · Rodrigues 2017 · Alaguvelsamy 2020 · Dupuis 2022 · Tola 2023 · Gupta 2026</span>
+</footer>
+
+</body>
+</html>
