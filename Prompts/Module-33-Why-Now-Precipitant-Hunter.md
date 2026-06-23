@@ -1,4 +1,4 @@
-# Module 27 — The "Why Now?" (Precipitant) Hunter
+# Module 33 — The "Why Now?" (Precipitant) Hunter
 
 **Objective:** Systematically identify the precipitating factor — the acute change in a patient's stable baseline — that converted a chronic disease or vulnerability into an acute presentation requiring clinical attention.
 
