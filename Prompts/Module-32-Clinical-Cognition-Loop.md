@@ -1,6 +1,6 @@
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
-# Module 27 — Clinical Cognition Loop
+# Module 32 — Clinical Cognition Loop
 
 **Objective:** Build the discipline of structured, iterative clinical reasoning by running every case through a defined five-stage cognition loop: **Observe → Cluster → Hypothesize → Test → Update**. Where other modules in this stack target specific reasoning skills (differential generation in [Module 12](https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html), illness scripts in [Module 15](https://avi33tbtt.github.io/Prompts/Module-15-Illness-Script-Acquisition.html), causal networks in [Module 18](https://avi33tbtt.github.io/Prompts/Module-18-Causal-vs-Probabilistic-Network-Reasoning.html)), Module 23 provides the *overarching loop architecture* within which all those skills are deployed — a repeatable reasoning engine rather than a one-pass diagnostic pass. The loop is explicitly iterative: after each Update, a new cycle begins, allowing clinical reasoning to evolve as findings accumulate.
 
