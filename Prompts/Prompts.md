@@ -244,14 +244,16 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 31 | [First-Principles Pathophysiology Mapping](Module-31-First-Principles-Pathophysiology-Mapping.md) | First-Principles Pathophysiology Mapping |
 | 32 | [Clinical Cognition Loop](Module-32-Clinical-Cognition-Loop.md) | Clinical Cognition Loop |
 | 33 | [The "Why Now?" (Precipitant) Hunter](Module-33-Why-Now-Precipitant-Hunter.md) | The "Why Now?" (Precipitant) Hunter |
-| 34 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 35 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 36 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 37 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 38 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 39 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 40 | [Module 1 — Shadow Module](Module-01-Shadow-Module.md) | Module 1 — Shadow Module |
-| 41 | [The Story Module](Story.md) | The Story Module |
+| 34 | [The High-Value Care (HVC) Auditor](Module-34-High-Value-Care-Auditor.md) | The High-Value Care (HVC) Auditor |
+| 35 | [Epistemic Certainty Mapping & Calibration](Module-35-Epistemic-Certainty-Mapping-Calibration.md) | Epistemic Certainty Mapping & Calibration |
+| 36 | [The Bayesian Probability / Likelihood Ratio Engine](Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.md) | The Bayesian Probability / Likelihood Ratio Engine |
+| 37 | [Red Herring / Signal-to-Noise Drill](Module-37-Red-Herring-Signal-to-Noise-Drill.md) | Red Herring / Signal-to-Noise Drill |
+| 38 | [Poly-Crisis & Cascading Failure Simulator](Module-38-Poly-Crisis-Cascading-Failure-Simulator.md) | Poly-Crisis & Cascading Failure Simulator |
+| 39 | [The "Global Knowledge Network" Diagnostic Matrix](Module-39-Global-Knowledge-Network-Diagnostic-Matrix.md) | The "Global Knowledge Network" Diagnostic Matrix |
+| 40 | [The Operational & Throughput Strategist](Module-40-Operational-Throughput-Strategist.md) | The Operational & Throughput Strategist |
+| 41 | [Clinical Workflow Implementation Science](Module-41-Clinical-Workflow-Implementation-Science.md) | Clinical Workflow Implementation Science |
+| 42 | [Clinical Pre-Mortem](Module-42-Clinical-Pre-Mortem.md) | Clinical Pre-Mortem |
+| 43 | [Health Economics & Value-Based Care Alignment](Module-43-Health-Economics-Value-Based-Care-Alignment.md) | Health Economics & Value-Based Care Alignment |
 
 
 ## 🧩 Supplementary Frameworks
