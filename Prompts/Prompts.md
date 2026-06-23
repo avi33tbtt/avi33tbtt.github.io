@@ -250,7 +250,13 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
 
 
-
+* **Clinical Reasoning & Cognitive Frameworks:** 1, 12, 14, 15, 17, 18, 20, 28, 30, 32, 33, 35, 36, 37
+* **Patient Advocacy & Individual Care Management:** 2, 3, 9, 11, 13
+* **Data Analytics & Analytical Methodologies:** 5, 6, 7, 22, 23, 24, 25, 27
+* **Patient Safety, Risk & Systems Failure:** 26, 29, 38, 42
+* **Medical Education, Literature & Basic Science:** 4, 10, 16, 21, 31, 39
+* **Health Operations, Systems & Economics:** 19, 34, 40, 41, 43
+* **Framework Architecture & Meta-Design:** 8, 44
 
 ## 🧩 Supplementary Frameworks
 
