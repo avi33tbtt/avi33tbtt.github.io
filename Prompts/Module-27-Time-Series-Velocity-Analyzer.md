@@ -1,11 +1,6 @@
----
-layout: default
-title: Module 22 — Time-Series & Velocity Analyzer
----
-
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
-# Module 22 — Time-Series & Velocity Analyzer (Clinical Analytics)
+# Module 27 — Time-Series & Velocity Analyzer (Clinical Analytics)
 
 **Objective:** Train the clinician to read a patient's trajectory, not just their current snapshot — by applying time-series thinking and rate-of-change analysis to clinical data. Most bedside teaching focuses on the value at a single time-point: a creatinine of 3.2, an SpO₂ of 88%, a GCS of 14. This module trains the discipline of asking *how fast did we get here*, *is this stabilising or accelerating*, and *what does the velocity of this parameter tell me that the value alone does not*. The AI acts as a clinical trend analyst, prompting the learner to derive trajectory-based clinical reasoning from longitudinal data.
 
