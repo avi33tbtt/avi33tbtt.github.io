@@ -1,4 +1,4 @@
-# Module 22 — Health Economics & Value-Based Care Alignment
+# Module 43 — Health Economics & Value-Based Care Alignment
 
 **Objective:** Train the discipline of evaluating clinical decisions not only through the lens of efficacy and safety, but through the lens of economic value, resource allocation, and system-level sustainability. This module develops the learner's ability to ask "what does this cost, and is it worth it?" alongside "does this work?" — integrating health-economic literacy into bedside reasoning rather than treating cost as an afterthought or an administrative concern separate from clinical medicine.
 
