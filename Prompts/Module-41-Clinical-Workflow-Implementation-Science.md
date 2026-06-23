@@ -1,4 +1,4 @@
-# Module 23 — Clinical Workflow Implementation Science
+# Module 41 — Clinical Workflow Implementation Science
 
 **Objective:** Train the discipline of translating evidence-based interventions into actual clinical practice — closing the well-documented gap between what research shows works and what consistently happens at the bedside. This module addresses the "implementation gap" as a learnable, structured problem: not a matter of individual willingness but a system-design and behaviour-change challenge with its own theory, methods, and failure modes.
 
