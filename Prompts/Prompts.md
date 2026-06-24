@@ -49,6 +49,10 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 |---|---|
 | [Vibe Rounds — Evaluation & Demos](./Demo/demos.md) | Vibe Rounds — Evaluation & Demos | 
 
+## Prompts Analytics
+
+| Check analytics - Traditional Ai , Socratic Ai, Devil's advocate Ai, Brainstorming AI| [Check analytics](VibeRounds_Prompt_Directory.md) |
+
 # VibeRounds Prompt Modules
 
 ### A Structured Directory for Clinical Reasoning
@@ -155,9 +159,6 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | **Module 43** | 🟢 Mature | Ready for ~~production~~ self learning use. |
 
 ---
-## Prompts Analytics
-
-| Check analytics - Traditional Ai , Socratic Ai, Devil's advocate Ai, Brainstorming AI| [Check analytics](VibeRounds_Prompt_Directory.md) |
 
 ## ⚠️ Safety & Compliance Note
 
