@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VibeRounds Guided Discovery Plan — DFU + Suspected PE</title>
+<style>
+  :root {
+    --bg:       #f6f8fa;
+    --surface:  #ffffff;
+    --surface2: #f0f2f5;
+    --border:   #d0d7de;
+    --accent:   #0969da;
+    --accent2:  #1a7f37;
+    --amber:    #9a6700;
+    --red:      #cf222e;
+    --purple:   #7c3aed;
+    --text:     #1f2328;
+    --muted:    #656d76;
+    --star3:    #b08800;
+    --star2:    #656d76;
+    --star1:    #8c959f;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); min-height: 100vh; }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0;
+  }
+  .site-name { font-weight: 600; font-size: 15px; color: var(--text); }
+  .site-sub  { font-size: 12px; color: var(--muted); margin-left: auto; font-family: 'SFMono-Regular', Consolas, monospace; }
+
+  /* ── HERO ────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(180deg, #eaf1fb 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .case-id {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 11px; color: var(--muted);
+    letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero h1 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .hero .sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .stat-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 12px; color: var(--muted);
+  }
+  .stat-pill .icon { font-size: 13px; }
+  .stat-pill .val  { font-weight: 600; color: var(--text); }
+
+  /* ── NAV TABS ───────────────────────────────────── */
+  .tabs-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .tabs {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; gap: 0; overflow-x: auto;
+  }
+  .tab {
+    padding: 12px 18px; font-size: 13px; font-weight: 500;
+    color: var(--muted); cursor: pointer; border: none;
+    background: none; white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .tab:hover   { color: var(--text); }
+  .tab.active  { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── LAYOUT ─────────────────────────────────────── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── CARDS ───────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 13px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: .06em; margin-bottom: 14px;
+  }
+  .card-title .icon { margin-right: 6px; }
+
+  /* ── FINGERPRINT GRID ────────────────────────────── */
+  .fp-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media(max-width:620px){ .fp-grid { grid-template-columns: 1fr; } }
+  .fp-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .fp-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  .fp-value { font-size: 13px; color: var(--text); font-weight: 500; }
+  .fp-list  { margin: 0; padding-left: 16px; }
+  .fp-list li { font-size: 12px; color: var(--text); margin-bottom:3px; }
+  .fp-full  { grid-column: 1 / -1; }
+
+  /* ── FLAG BADGES ─────────────────────────────────── */
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 12px; margin: 2px 2px 2px 0;
+  }
+  .badge-red    { background: #ffebe9; color: var(--red);    border: 1px solid #ffcecb; }
+  .badge-amber  { background: #fff8c5; color: var(--amber);  border: 1px solid #f0c000; }
+  .badge-blue   { background: #ddf4ff; color: var(--accent); border: 1px solid #80ccff; }
+  .badge-green  { background: #dafbe1; color: var(--accent2);border: 1px solid #82e3a0; }
+  .badge-purple { background: #f3e8ff; color: var(--purple); border: 1px solid #c4a0f8; }
+
+  /* ── MODULE ROWS ─────────────────────────────────── */
+  .mod-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .mod-row:last-child { border-bottom: none; }
+  .mod-stars { font-size: 14px; flex-shrink: 0; width: 52px; }
+  .mod-num {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 11px; color: var(--muted); flex-shrink: 0; width: 70px; padding-top: 2px;
+  }
+  .mod-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .mod-reason { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .tier-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; padding: 6px 0 4px;
+    border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .tier-core    { color: var(--star3); }
+  .tier-support { color: var(--star2); }
+  .tier-enrich  { color: var(--star1); }
+
+  /* ── PIPELINE ────────────────────────────────────── */
+  .pipeline-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: 16px; overflow: hidden;
+  }
+  .pipeline-header {
+    background: var(--surface);
+    padding: 12px 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .pipeline-header:hover { background: #f6f8fa; }
+  .pipeline-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .pipeline-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .pipeline-chevron { font-size: 12px; color: var(--muted); transition: transform .2s; }
+  .pipeline-card.open .pipeline-chevron { transform: rotate(180deg); }
+  .pipeline-body { display: none; padding: 16px; }
+  .pipeline-card.open .pipeline-body { display: block; }
+  .phase-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .1em; margin: 14px 0 6px;
+    padding: 3px 8px; border-radius: 4px; display: inline-block;
+  }
+  .phase-init    { background: #ddf4ff; color: var(--accent); }
+  .phase-exec    { background: #dafbe1; color: var(--accent2); }
+  .phase-closure { background: #fff8c5; color: var(--amber); }
+  .pipeline-step {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .pipeline-step:last-child { border-bottom: none; }
+  .pipe-arrow { color: var(--accent); font-size: 12px; flex-shrink: 0; padding-top: 2px; }
+  .pipe-mod   { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; color: var(--purple); flex-shrink:0; width: 75px; padding-top:2px; }
+  .pipe-desc  { font-size: 13px; color: var(--text); }
+
+  /* ── DISCOVERY POINTS ────────────────────────────── */
+  .dp-module-block { margin-bottom: 20px; }
+  .dp-module-title {
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    margin-bottom: 8px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dp-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 10px; border-radius: 6px; margin-bottom: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+  }
+  .dp-code {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 10px; color: var(--purple); flex-shrink: 0;
+    width: 58px; padding-top: 2px;
+  }
+  .dp-q { font-size: 13px; color: var(--text); }
+
+  /* ── SESSION EXPECTATIONS ────────────────────────── */
+  .exp-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 12px; border-radius: 6px; margin-bottom: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+  }
+  .exp-mod {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 11px; color: var(--accent2); flex-shrink: 0;
+    width: 68px; padding-top: 2px;
+  }
+  .exp-text { font-size: 13px; color: var(--text); }
+  .exp-text strong { color: var(--accent2); }
+
+  /* ── ROUTING NOTE ────────────────────────────────── */
+  .routing-note {
+    background: linear-gradient(135deg, #eaf1fb 0%, #eafbee 100%);
+    border: 1px solid #80ccff; border-radius: 10px; padding: 20px;
+  }
+  .routing-note p { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+  .routing-note p:last-child { margin-bottom: 0; }
+
+  /* ── SOAP INPUT ──────────────────────────────────── */
+  .soap-section { margin-bottom: 20px; }
+  .soap-letter {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; font-weight: 700;
+    font-size: 13px; margin-right: 8px; flex-shrink: 0;
+  }
+  .soap-s { background: #ddf4ff; color: var(--accent); border: 1px solid #80ccff; }
+  .soap-o { background: #dafbe1; color: var(--accent2); border: 1px solid #82e3a0; }
+  .soap-a { background: #fff8c5; color: var(--amber); border: 1px solid #f0c000; }
+  .soap-p { background: #f3e8ff; color: var(--purple); border: 1px solid #c4a0f8; }
+  .soap-head {
+    display: flex; align-items: center; font-size: 14px;
+    font-weight: 700; color: var(--text); margin-bottom: 8px;
+  }
+  .soap-body { font-size: 13px; color: var(--muted); padding-left: 36px; }
+  .soap-body ul { padding-left: 16px; }
+  .soap-body li { margin-bottom: 4px; color: var(--text); }
+  .soap-body b  { color: var(--text); }
+
+  /* ── DISCLAIMER ──────────────────────────────────── */
+  .disclaimer {
+    margin-top: 32px; padding: 14px 18px;
+    background: #fff8c5; border: 1px solid #f0c000;
+    border-radius: 8px; font-size: 12px; color: var(--amber);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .disclaimer .icon { flex-shrink: 0; font-size: 16px; }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  footer {
+    text-align: center; padding: 24px;
+    font-size: 11px; color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="case-id">◎ Case Input → Guided Discovery Plan Output</div>
+  <h1>Diabetic Foot Osteomyelitis + Suspected PE</h1>
+  <p class="sub">53-year-old female · Poly-crisis · Guided Discovery Plan · Modules 0–42 + Frameworks A–D</p>
+  <div class="stat-row">
+    <div class="stat-pill"><span class="icon">⚡</span><span class="val">Poly-crisis</span><span>Complexity</span></div>
+    <div class="stat-pill"><span class="icon">⏱</span><span class="val">Acute-on-Chronic</span><span>Timeline</span></div>
+    <div class="stat-pill"><span class="icon">★★★</span><span class="val">6 Core</span><span>Modules</span></div>
+    <div class="stat-pill"><span class="icon">⚠</span><span class="val">7 Red Flags</span><span>Cognitive</span></div>
+    <div class="stat-pill"><span class="icon">◎</span><span class="val">9 Key Gaps</span><span>Data</span></div>
+    <div class="stat-pill"><span class="icon">✦</span><span class="val">3 Pipelines</span><span>Sessions</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('input',this)">◎ Case Input</button>
+    <button class="tab" onclick="switchTab('fingerprint',this)">✦ Fingerprint</button>
+    <button class="tab" onclick="switchTab('modules',this)">⊞ Modules</button>
+    <button class="tab" onclick="switchTab('pipelines',this)">▶ Pipelines</button>
+    <button class="tab" onclick="switchTab('discovery',this)">⊕ Discovery Points</button>
+    <button class="tab" onclick="switchTab('expectations',this)">◈ Session Goals</button>
+    <button class="tab" onclick="switchTab('routing',this)">⇢ Learner Note</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ SECTION: CASE INPUT ══ -->
+  <div id="sec-input" class="section active">
+    <div class="card">
+      <div class="card-title"><span class="icon">◎</span>Case Input — SOAP Note</div>
+
+      <div class="soap-section">
+        <div class="soap-head"><span class="soap-letter soap-s">S</span>Subjective</div>
+        <div class="soap-body">
+          Patient is a <b>53-year-old female</b> with a known <b>12-year history of diabetes</b>. She presented with a <b>non-healing ulcer on her right foot</b> which has been present for approximately <b>one month</b>. The primary acute complaint is <b>new-onset shortness of breath (dyspnea)</b>, requiring supplemental oxygen.
+        </div>
+      </div>
+
+      <div class="soap-section">
+        <div class="soap-head"><span class="soap-letter soap-o">O</span>Objective</div>
+        <div class="soap-body">
+          <ul>
+            <li><b>Vitals:</b> SpO₂ 95% on 3 L/hr O₂ via nasal cannula · HR 100 bpm · BP 115/66 mmHg</li>
+            <li><b>Right great toe:</b> Non-healing ulcer with surrounding abscess; osteomyelitis confirmed on imaging</li>
+            <li><b>Left foot:</b> Bandaged (undescribed)</li>
+            <li><b>Chest X-Ray:</b> Clear — no infiltrates, no effusion, no pulmonary oedema</li>
+            <li><b>Venous Doppler (right LL):</b> No DVT; confirmed abscess with likely osteomyelitis of distal phalanx</li>
+            <li><b>Random BGL:</b> Extreme variability — 108 to 514 mg/dL</li>
+            <li><b>D-dimer:</b> Elevated — in the thousands</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="soap-section">
+        <div class="soap-head"><span class="soap-letter soap-a">A</span>Assessment</div>
+        <div class="soap-body">
+          <ul>
+            <li><b>Acute Hypoxic Respiratory Failure:</b> Working Dx — Pulmonary Embolism (PE). Basis: acute hypoxia + clear CXR + elevated D-dimer. DVT not identified on right lower limb Doppler.</li>
+            <li><b>Uncontrolled DM2:</b> Infected Diabetic Foot Ulcer with confirmed osteomyelitis (likely source of hypercoagulable state). Severe glycaemic variability — failing insulin regimen.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="soap-section">
+        <div class="soap-head"><span class="soap-letter soap-p">P</span>Plan</div>
+        <div class="soap-body">
+          <ul>
+            <li><b>PE:</b> Start LMWH (Enoxaparin 1 mg/kg q12h) after checking renal function. Arrange STAT CTPA. Supplemental O₂ to maintain SpO₂ &gt;94%.</li>
+            <li><b>Infection/Sepsis:</b> Urgent surgical/orthopaedic consult for debridement. Broad-spectrum IV antibiotics with bone penetration.</li>
+            <li><b>Diabetes:</b> Convert to basal-bolus insulin from sliding scale. Consider endocrinology consult.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <span class="icon">⚠</span>
+      <span>This SOAP note was submitted to the VibeRounds Guided Discovery Agent for <strong>educational reasoning analysis only</strong>. All AI-generated outputs require independent clinical verification before any patient-care action. This is not a clinical decision-support tool. — <em>Dr. Avinash Kumar Gupta · VibeRounds</em></span>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: FINGERPRINT ══ -->
+  <div id="sec-fingerprint" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">✦</span>Section A — Case Fingerprint</div>
+      <div class="fp-grid">
+        <div class="fp-cell">
+          <div class="fp-label">Complexity</div>
+          <div class="fp-value"><span class="badge badge-red">Poly-crisis</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">PE + osteomyelitis/sepsis + uncontrolled DM2 — three simultaneously life-threatening threads</div>
+        </div>
+        <div class="fp-cell">
+          <div class="fp-label">Timeline</div>
+          <div class="fp-value"><span class="badge badge-amber">Acute-on-Chronic</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">1-month ulcer, 12-year DM; acute hypoxic respiratory failure superimposed</div>
+        </div>
+        <div class="fp-cell">
+          <div class="fp-label">Learner</div>
+          <div class="fp-value"><span class="badge badge-blue">Not Stated</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">Module 0 will clarify role and learning goal</div>
+        </div>
+        <div class="fp-cell">
+          <div class="fp-label">Data State</div>
+          <div class="fp-value"><span class="badge badge-amber">Evolving / Incomplete</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">CTPA pending; renal function not reported; cultures pending; left foot undescribed</div>
+        </div>
+        <div class="fp-cell">
+          <div class="fp-label">Setting</div>
+          <div class="fp-value"><span class="badge badge-green">High-resource Inpatient</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">CTPA, LMWH, IV antibiotics, and surgical consult all presupposed as available</div>
+        </div>
+        <div class="fp-cell">
+          <div class="fp-label">Anchor Dx</div>
+          <div class="fp-value"><span class="badge badge-red">Pulmonary Embolism</span></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">Stated as primary diagnosis before CTPA confirmed — anchoring bias risk DETECTED</div>
+        </div>
+
+        <div class="fp-cell fp-full">
+          <div class="fp-label" style="margin-bottom:10px;">⚠ Red Flags — Cognitive &amp; Clinical</div>
+          <ul class="fp-list">
+            <li>CTPA not yet performed — PE is presumed, not confirmed; anticoagulation already initiated</li>
+            <li>D-dimer "in the thousands" in a patient with active infection and osteomyelitis — near-zero specificity in this inflammatory context; evidential weight overstated</li>
+            <li>HR 100 + BP 115/66 — does not distinguish submassive PE from early septic shock</li>
+            <li>Left foot is bandaged and completely uncharacterised — bilateral lower-limb disease unexplored</li>
+            <li>Right lower limb DVT negative — source of PE (if confirmed) unlocated; pelvic/upper-extremity/in-situ thrombosis not considered</li>
+            <li>Glycaemic range 108–514 mg/dL — cause vs. consequence of acute deterioration not formally attributed</li>
+            <li>No renal function, no blood cultures, no CRP/procalcitonin/WBC documented — significant data void</li>
+          </ul>
+        </div>
+
+        <div class="fp-cell fp-full">
+          <div class="fp-label" style="margin-bottom:10px;">◎ Key Gaps — Missing Data</div>
+          <ul class="fp-list">
+            <li>CTPA (confirmatory imaging for PE)</li>
+            <li>eGFR/creatinine — required before LMWH dosing</li>
+            <li>Blood cultures × 2 prior to antibiotics</li>
+            <li>HbA1c (long-term glycaemic control)</li>
+            <li>Inflammatory markers (CRP, WBC, procalcitonin, ESR)</li>
+            <li>Left foot — clinical description, imaging, severity staging</li>
+            <li>Echocardiogram — RV strain assessment; baseline cardiac function</li>
+            <li>Antibiotic identity, dosing, and duration plan</li>
+            <li>DVT search extended to pelvis and upper limbs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: MODULES ══ -->
+  <div id="sec-modules" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">⊞</span>Section B — Recommended Modules (Ranked)</div>
+
+      <div class="tier-label tier-core">★★★ Core Modules</div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 0</div>
+        <div>
+          <div class="mod-name">Cold-Start Orientation</div>
+          <div class="mod-reason">Always first — learner role and session goal not stated; must orient before any reasoning begins</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 1</div>
+        <div>
+          <div class="mod-name">Socratic Clinical Reasoning</div>
+          <div class="mod-reason">Active diagnostic question: PE presumed but unconfirmed; sepsis vs. PE vs. combined physiology not yet separated</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 12</div>
+        <div>
+          <div class="mod-name">Differential Diagnosis Deepdive</div>
+          <div class="mod-reason">Leading diagnosis anchored before confirmatory imaging; differential for acute hypoxia in this host has not been formally ranked</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 28</div>
+        <div>
+          <div class="mod-name">Diagnostic Time-Out</div>
+          <div class="mod-reason"><span class="badge badge-red">Anchoring Bias Detected</span> D-dimer in an inflamed host used as near-confirmatory PE evidence before CTPA</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 33</div>
+        <div>
+          <div class="mod-name">"Why Now?" Precipitant Hunter</div>
+          <div class="mod-reason">12-year DM + 1-month ulcer → acute decompensation today; the infection→PE causal chain is asserted, not interrogated</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star3)">★★★</div>
+        <div class="mod-num">Module 38</div>
+        <div>
+          <div class="mod-name">Poly-Crisis &amp; Cascading Failure Simulator</div>
+          <div class="mod-reason">Three simultaneous life-threatening problems with bidirectional interactions; single-problem reasoning frameworks are insufficient</div>
+        </div>
+      </div>
+
+      <div class="tier-label tier-support" style="margin-top:16px;">★★ Supportive Modules</div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star2)">★★</div>
+        <div class="mod-num">Module 18</div>
+        <div>
+          <div class="mod-name">Causal vs. Probabilistic Reasoning</div>
+          <div class="mod-reason">D-dimer specificity in active infection must be quantified, not assumed; base-rate reasoning absent from plan</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star2)">★★</div>
+        <div class="mod-num">Module 26</div>
+        <div>
+          <div class="mod-name">Bias Auditing</div>
+          <div class="mod-reason">At least three active biases: anchoring (PE), premature closure (before CTPA), search satisfaction (stopped at PE)</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star2)">★★</div>
+        <div class="mod-num">Module 31</div>
+        <div>
+          <div class="mod-name">First-Principles Pathophysiology Mapping</div>
+          <div class="mod-reason">Virchow's Triad → PE link is asserted; unpacking mechanistically exposes alternative explanations</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star2)">★★</div>
+        <div class="mod-num">Module 13</div>
+        <div>
+          <div class="mod-name">Medication Reconciliation &amp; Polypharmacy</div>
+          <div class="mod-reason">Insulin unnamed; antibiotics unspecified; enoxaparin dose requires renal function not yet reported</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star2)">★★</div>
+        <div class="mod-num">Module 42</div>
+        <div>
+          <div class="mod-name">Clinical Pre-Mortem</div>
+          <div class="mod-reason">High-stakes: anticoagulation in active septic focus, surgical timing, glycaemic instability — compounding failure paths</div>
+        </div>
+      </div>
+
+      <div class="tier-label tier-enrich" style="margin-top:16px;">★ Enrichment Modules</div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star1)">★</div>
+        <div class="mod-num">Module 5</div>
+        <div>
+          <div class="mod-name">Real-Time Case Review &amp; Data Audit</div>
+          <div class="mod-reason">Multiple data gaps; structured audit pass surfaces which decisions rest on incomplete information</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star1)">★</div>
+        <div class="mod-num">Module 35</div>
+        <div>
+          <div class="mod-name">Epistemic Certainty Mapping &amp; Calibration</div>
+          <div class="mod-reason">Plan proceeds with high confidence on presumptive diagnosis; explicit certainty stratification would prevent premature commitment</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star1)">★</div>
+        <div class="mod-num">Module 36</div>
+        <div>
+          <div class="mod-name">Bayesian Probability / Likelihood Ratio Engine</div>
+          <div class="mod-reason">Wells PE score, pre-test probability, and D-dimer LR not formally calculated or stated anywhere in the plan</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star1)">★</div>
+        <div class="mod-num">Module 14</div>
+        <div>
+          <div class="mod-name">Resource-Constrained Clinical Reasoning</div>
+          <div class="mod-reason">If setting is lower-resource or patient requires transfer, the plan needs a viable alternative to CTPA + LMWH</div>
+        </div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-stars" style="color:var(--star1)">★</div>
+        <div class="mod-num">Module 16</div>
+        <div>
+          <div class="mod-name">Basic Science ↔ Clinical Integration</div>
+          <div class="mod-reason">DM-related hypercoagulability, endothelial dysfunction, and impaired immunity are foundational to understanding why this patient is here</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; padding: 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px;">
+        <div class="fp-label" style="margin-bottom:8px;">Frameworks to Activate</div>
+        <div>
+          <span class="badge badge-blue">Framework A — Humanistic Persona</span>
+          <span class="badge badge-amber">Framework C — Bloom's Revised Taxonomy</span>
+          <span class="badge badge-red">Framework D — Critical Awareness Framework</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px;">Framework D is the primary active framework — anchoring bias in the Anchor Dx is the dominant cognitive hazard in this case.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: PIPELINES ══ -->
+  <div id="sec-pipelines" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">▶</span>Section C — Guided Discovery Pipelines</div>
+
+      <!-- Pipeline 1 -->
+      <div class="pipeline-card open">
+        <div class="pipeline-header" onclick="togglePipeline(this)">
+          <div>
+            <div class="pipeline-title">Pipeline 1 — Session 1</div>
+            <div class="pipeline-sub">Orientation &amp; Primary Diagnostic Reasoning · Recommended starting point</div>
+          </div>
+          <span class="pipeline-chevron">▲</span>
+        </div>
+        <div class="pipeline-body">
+          <span class="phase-label phase-init">Initiation</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 0</span>
+            <span class="pipe-desc">Confirm learner role (student / resident / self-directed); confirm de-identification; establish session goal — is this about PE diagnosis, diabetic foot management, or the poly-crisis interaction?</span>
+          </div>
+          <span class="phase-label phase-exec">Execution</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 1</span>
+            <span class="pipe-desc">Socratic reasoning — BEFORE looking at the Assessment, construct an independent differential for acute hypoxia + clear CXR + elevated D-dimer in a 53-year-old with active osteomyelitis and uncontrolled DM. Rank and weight each item.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 12</span>
+            <span class="pipe-desc">Differential Deepdive — take the top three diagnoses and assign pre-test probabilities; identify the single discriminating test for each.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 28</span>
+            <span class="pipe-desc">Diagnostic Time-Out — freeze before accepting PE as confirmed; audit the strength of evidence for and against in this specific inflammatory host.</span>
+          </div>
+          <span class="phase-label phase-closure">Closure / Review</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 1</span>
+            <span class="pipe-desc">Compare learner's pre-CTPA differential against the plan's working diagnosis; identify the single highest-yield missing data point; set difficulty ratchet for Session 2.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline 2 -->
+      <div class="pipeline-card">
+        <div class="pipeline-header" onclick="togglePipeline(this)">
+          <div>
+            <div class="pipeline-title">Pipeline 2 — Session 2</div>
+            <div class="pipeline-sub">Poly-Crisis Reasoning &amp; Bias Correction · Data scrutiny</div>
+          </div>
+          <span class="pipeline-chevron">▼</span>
+        </div>
+        <div class="pipeline-body">
+          <span class="phase-label phase-init">Initiation</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 33</span>
+            <span class="pipe-desc">"Why Now?" Precipitant Hunter — map the sequence from DM → foot ulcer → osteomyelitis → hypercoagulability → acute decompensation. Where is the causal chain weakest?</span>
+          </div>
+          <span class="phase-label phase-exec">Execution</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 38</span>
+            <span class="pipe-desc">Poly-Crisis Simulator — model bidirectional interactions: how does anticoagulation affect the septic focus? How does surgical debridement timing interact with PE management? How does glycaemic instability alter both?</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 18</span>
+            <span class="pipe-desc">Causal vs. Probabilistic Reasoning — what is the actual positive predictive value of a D-dimer "in the thousands" in a patient with osteomyelitis and uncontrolled DM?</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 26</span>
+            <span class="pipe-desc">Bias Audit — name and neutralise the active biases: anchoring, premature closure, search satisfaction.</span>
+          </div>
+          <span class="phase-label phase-closure">Closure / Review</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Synthesis</span>
+            <span class="pipe-desc">Produce a revised, probability-weighted differential holding PE, sepsis-driven hypoxia, and mixed aetiology as simultaneous live hypotheses until CTPA result is known.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline 3 -->
+      <div class="pipeline-card">
+        <div class="pipeline-header" onclick="togglePipeline(this)">
+          <div>
+            <div class="pipeline-title">Pipeline 3 — Session 3</div>
+            <div class="pipeline-sub">Evidence, Safety &amp; Management Synthesis · Optional/Advanced</div>
+          </div>
+          <span class="pipeline-chevron">▼</span>
+        </div>
+        <div class="pipeline-body">
+          <span class="phase-label phase-init">Initiation</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 13</span>
+            <span class="pipe-desc">Medication Reconciliation — audit enoxaparin dosing against renal function; identify the current insulin regimen; flag antibiotic selection against likely organisms in diabetic osteomyelitis.</span>
+          </div>
+          <span class="phase-label phase-exec">Execution</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 42</span>
+            <span class="pipe-desc">Clinical Pre-Mortem — walk forward three plausible failure scenarios from today's plan and design a safety checklist for each.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 31</span>
+            <span class="pipe-desc">First-Principles Pathophysiology Mapping — reconstruct the mechanistic link between DM2, immune dysfunction, infection, hypercoagulability, and PE; identify one point in the chain where earlier intervention would have prevented today's crisis.</span>
+          </div>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 35</span>
+            <span class="pipe-desc">Epistemic Certainty Mapping — for each item in the management plan, assign a certainty level (confirmed / probable / speculative) so clinical decisions are transparently stratified.</span>
+          </div>
+          <span class="phase-label phase-closure">Closure / Review</span>
+          <div class="pipeline-step">
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-mod">Module 9</span>
+            <span class="pipe-desc">Synthesise a one-page case summary suitable for handover or N-of-1 write-up if warranted; identify two evidence gaps as the basis for a literature search.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: DISCOVERY POINTS ══ -->
+  <div id="sec-discovery" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">⊕</span>Section D — Discovery Point Plan</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px;">All questions are anchored to specific findings from this case — not generic prompts.</p>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 1 — Socratic Clinical Reasoning</div>
+        <div class="dp-item"><span class="dp-code">DP-1.1</span><span class="dp-q">Before you read the Assessment: a 53-year-old with active osteomyelitis, glucose up to 514, HR 100, BP 115/66, and SpO₂ 95% on 3 L O₂ — what are your top five diagnoses for this acute hypoxia picture, and in what order do you rank them before knowing the D-dimer?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-1.2</span><span class="dp-q">The chest X-ray is clear. Does a clear CXR make PE more likely, or does it simply eliminate some alternatives? Which diagnoses does it rule OUT versus which does it merely fail to rule IN?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-1.3</span><span class="dp-q">Heart rate is 100 and BP is 115/66 — what is the hemodynamic significance of this combination? Does this picture fit uncomplicated PE, submassive PE, or early septic shock — and what clinical signs would distinguish them at the bedside right now?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-1.4</span><span class="dp-q">The right lower limb DVT is negative. Does this make PE less likely, or equally likely, or does it shift your thinking about the source of any clot? Name two anatomical sources of PE other than the lower limb veins.</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 12 — Differential Diagnosis Deepdive</div>
+        <div class="dp-item"><span class="dp-code">DP-12.1</span><span class="dp-q">D-dimer is "in the thousands." In a patient with active bone infection, soft-tissue abscess, uncontrolled hyperglycaemia, and likely systemic inflammation — what is your estimate of the probability that this D-dimer elevation is due to PE specifically, versus a non-specific pro-inflammatory state?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-12.2</span><span class="dp-q">Construct a differential for acute hypoxia with a clear CXR in this patient. Rank: PE, sepsis-related V/Q mismatch, early ARDS from sepsis, acute cardiac event, and aspiration. Assign a probability estimate for each before the CTPA result.</span></div>
+        <div class="dp-item"><span class="dp-code">DP-12.3</span><span class="dp-q">If the CTPA comes back NEGATIVE for PE, what is your revised working diagnosis, and what investigations would you immediately add?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 28 — Diagnostic Time-Out <span class="badge badge-red">Anchoring Triggered</span></div>
+        <div class="dp-item"><span class="dp-code">DP-28.1</span><span class="dp-q">The plan commits to therapeutic anticoagulation BEFORE the CTPA is reported. Name the clinical and safety consequences if the CTPA is negative and the true diagnosis is septic emboli, Gram-negative sepsis, or cardiac event. Was the decision to anticoagulate first justified?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-28.2</span><span class="dp-q">The Assessment explicitly states "the negative DVT study does not rule out PE." True — but does the negative DVT study LOWER your post-test probability for PE at all? How should it recalibrate the anchor?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-28.3</span><span class="dp-q">Has the Wells PE Score been formally calculated for this patient? Walk through each Wells criterion using the data in the SOAP note and compute the score. Does the result support or challenge the current anchor?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 33 — "Why Now?" Precipitant Hunter</div>
+        <div class="dp-item"><span class="dp-code">DP-33.1</span><span class="dp-q">This patient has had diabetes for 12 years and the foot ulcer for one month. The acute respiratory crisis is presenting now. What event or tipping point in the past 24–72 hours would explain today's acute decompensation? Generate three plausible precipitating timelines.</span></div>
+        <div class="dp-item"><span class="dp-code">DP-33.2</span><span class="dp-q">The glycaemic range spans 108 to 514 mg/dL. Is this variability the cause of the acute deterioration, a consequence of the physiological stress response, or both? Mechanistically, how does extreme glycaemic variability interact with coagulation, immune function, and wound healing simultaneously?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-33.3</span><span class="dp-q">The left foot is bandaged and undescribed. Could pathology in the left foot be contributing to the clinical picture? What would a "Why Now?" analysis require you to know about the left foot before closing this question?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 38 — Poly-Crisis &amp; Cascading Failure Simulator</div>
+        <div class="dp-item"><span class="dp-code">DP-38.1</span><span class="dp-q">You are anticoagulating a patient who has an active abscess with osteomyelitis. Map the second- and third-order consequences: how does therapeutic anticoagulation affect surgical management? What is the threshold for bridging or reversing anticoagulation if urgent surgery is needed?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-38.2</span><span class="dp-q">Sepsis and PE are both live hypotheses requiring different therapeutic priorities. If you optimise for PE and delay surgery, what is the risk? If you prioritise surgery and hold anticoagulation, what is the risk? How do you hold both imperatives simultaneously?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-38.3</span><span class="dp-q">In a patient simultaneously managing presumed PE and active osteomyelitis, what is the target glucose range for the next 48 hours, and why is BOTH hypoglycaemia AND hyperglycaemia dangerous in this specific context?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 18 — Causal vs. Probabilistic Reasoning</div>
+        <div class="dp-item"><span class="dp-code">DP-18.1</span><span class="dp-q">The causal chain asserted is: DM2 → DFU → osteomyelitis → hypercoagulability → PE. Evaluate each arrow: which links are mechanistically established, which are plausible but assumed, and which are speculative?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-18.2</span><span class="dp-q">Using a probabilistic lens: what is the base rate of PE in a 53-year-old hospitalised female with active infection and immobility? Now apply the likelihood ratio of a D-dimer "in the thousands" in that specific inflammatory context. Does the posterior probability justify the presumptive diagnosis?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 26 — Bias Auditing</div>
+        <div class="dp-item"><span class="dp-code">DP-26.1</span><span class="dp-q">Identify the primary cognitive bias in this SOAP note. The D-dimer result appears in the labs, and within one section the diagnosis shifts to PE. Name this bias pattern and describe precisely how it is operating in this case.</span></div>
+        <div class="dp-item"><span class="dp-code">DP-26.2</span><span class="dp-q">The plan lists three problems but only PE receives an urgent diagnostic workup. Could premature closure on the PE label be suppressing a concurrent diagnosis — such as early septic shock or demand ischaemia — that has equal or greater immediate mortality risk?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 42 — Clinical Pre-Mortem</div>
+        <div class="dp-item"><span class="dp-code">DP-42.1</span><span class="dp-q">It is 72 hours from now. This patient has deteriorated. Imagine three distinct pathways: one where PE was correct but undertreated; one where PE was wrong and anticoagulation caused harm; one where the foot was the primary driver and source control was delayed. What early warning signs, available now, could have signalled each path?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-42.2</span><span class="dp-q">Enoxaparin requires renal dosing adjustment. Renal function has not been reported. Walk through the consequence of administering 1 mg/kg BD to a patient with unrecognised renal impairment from 12 years of DM2 — what adverse event are you pre-empting, and what is your safety check before the first dose?</span></div>
+      </div>
+
+      <div class="dp-module-block">
+        <div class="dp-module-title">Module 13 — Medication Reconciliation</div>
+        <div class="dp-item"><span class="dp-code">DP-13.1</span><span class="dp-q">The plan converts the patient from "sliding scale" to basal-bolus insulin but does not name the current regimen or doses. What information is needed before safely initiating a new insulin regimen in a patient who is NPO-risk (potential surgical candidate) and haemodynamically borderline?</span></div>
+        <div class="dp-item"><span class="dp-code">DP-13.2</span><span class="dp-q">The antibiotics are described as "broad-spectrum IV with good bone penetration" but are not named. What are the two or three first-line regimens for diabetic foot osteomyelitis, and what interactions or renal dose adjustments do they require alongside enoxaparin and insulin?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: SESSION EXPECTATIONS ══ -->
+  <div id="sec-expectations" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">◈</span>Section E — Session Expectations (Bloom's Revised Taxonomy)</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px;">After each module session, the learner will be able to:</p>
+
+      <div class="exp-item"><span class="exp-mod">Module 0</span><span class="exp-text"><strong>UNDERSTAND</strong> the contract between learner, AI, and case data, and <strong>APPLY</strong> de-identification standards before any prompt is submitted.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 1</span><span class="exp-text"><strong>CONSTRUCT</strong> an independent ranked differential for acute hypoxia with clear CXR in a diabetic with active osteomyelitis without AI cueing, and <strong>EVALUATE</strong> where reasoning diverged from the Socratic debrief.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 12</span><span class="exp-text"><strong>EVALUATE</strong> the pre-test probability of PE versus sepsis-driven hypoxia in this specific inflammatory host, and <strong>APPLY</strong> likelihood ratios to a D-dimer result in the context of active infection.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 28</span><span class="exp-text"><strong>EVALUATE</strong> whether anchoring bias distorted diagnostic closure before confirmatory imaging, and <strong>REORDER</strong> the differential to hold PE, septic physiology, and cardiac aetiology as simultaneous live hypotheses.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 33</span><span class="exp-text"><strong>ANALYSE</strong> the 12-year disease trajectory to identify the precipitating cascade that converted chronic disease into acute poly-crisis, and <strong>GENERATE</strong> three plausible "why now?" timelines grounded in the case data.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 38</span><span class="exp-text"><strong>ANALYSE</strong> the bidirectional interactions between simultaneous management of presumed PE and active osteomyelitis, and <strong>CREATE</strong> a decision matrix for anticoagulation-vs-surgery timing that accounts for glycaemic instability.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 18</span><span class="exp-text"><strong>COMPARE</strong> the outputs of causal (mechanism-first) and probabilistic (base-rate-first) reasoning applied to this case, and <strong>EVALUATE</strong> which links in the infection-to-PE causal chain are established versus assumed.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 26</span><span class="exp-text"><strong>CREATE</strong> a named inventory of the cognitive biases active in this SOAP note (anchoring, premature closure, search satisfaction) and <strong>DESIGN</strong> one mitigation strategy per bias applicable at the bedside.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 42</span><span class="exp-text"><strong>EVALUATE</strong> three plausible deterioration pathways from the current management plan and <strong>GENERATE</strong> a pre-emptive safety checklist specific to anticoagulation in active sepsis, surgical timing, and renal-adjusted dosing.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 13</span><span class="exp-text"><strong>APPLY</strong> a structured polypharmacy lens to identify the highest-priority medication risk (enoxaparin dosing without confirmed renal function) and <strong>SYNTHESISE</strong> a safe reconciliation checklist before the next prescribing decision.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 31</span><span class="exp-text"><strong>CONSTRUCT</strong> a first-principles pathophysiology map linking DM2 → endothelial dysfunction → hypercoagulability → thromboembolism, and <strong>IDENTIFY</strong> the mechanistic step most amenable to earlier clinical intervention.</span></div>
+      <div class="exp-item"><span class="exp-mod">Module 35</span><span class="exp-text"><strong>CREATE</strong> a certainty-level table (confirmed / probable / speculative) for each diagnosis and management decision in the plan, and <strong>EVALUATE</strong> which decisions are being made on speculative foundations.</span></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: LEARNER ROUTING NOTE ══ -->
+  <div id="sec-routing" class="section">
+    <div class="card">
+      <div class="card-title"><span class="icon">⇢</span>Section F — Learner Routing Note</div>
+      <div class="routing-note">
+        <p>This case is high-yield precisely because it is <strong>seductive</strong> — the D-dimer is elevated, the CXR is clear, and PE fits neatly. That seductive clarity is the learning hazard. Your first priority is <strong>Modules 1, 12, and 28</strong>: build your differential independently, then run the Diagnostic Time-Out before you accept the anchor.</p>
+        <p><strong>Module 33 ("Why Now?") is your second essential stop</strong> because this case contains a 12-year backstory compressed into one acute presentation. Understanding the precipitant cascade is what separates reactive management from true clinical reasoning.</p>
+        <p><strong>If your time is limited, run Module 1 → Module 28 → Module 38 in a single session.</strong> Those three will expose the highest-stakes reasoning gaps. Module 42 (Pre-Mortem) should be non-negotiable before this patient goes to the ward — the anticoagulation-in-active-sepsis tension and the missing renal function data are genuine safety concerns that the pre-mortem will surface explicitly.</p>
+        <p><strong>Module 13 (Medication Reconciliation) is a mandatory safety stop</strong> before any prescribing decision in this case — enoxaparin dosing, the unspecified antibiotic regimen, and the unnamed insulin protocol all require reconciliation against data not yet in the chart.</p>
+        <p>Session 3 (Evidence + Pre-Mortem + Synthesis) is recommended if you want to convert this case into a structured presentation or N-of-1 write-up. The intersection of sepsis, hypercoagulability, and DM2 in a younger woman is a publishable clinical vignette.</p>
+      </div>
+
+      <div class="disclaimer" style="margin-top:20px;">
+        <span class="icon">⚠</span>
+        <span>All outputs above are <strong>learning observations</strong> generated for clinical reasoning training under the VibeRounds Socratic AI Paradigm. Every finding, suggested question, and module recommendation requires independent clinical verification by a supervising clinician before being acted upon. This is not a clinical decision-support tool. — <em>VibeRounds Guided Discovery Agent · authored by Dr. Avinash Kumar Gupta</em></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  VibeRounds Guided Discovery Agent · CASE ID: VR-GDA-DFU-PE-2026 · Modules 0–42 + Frameworks A–D<br>
+  Educational output only. All findings require independent clinical verification. · <a href="https://avi33tbtt.github.io/Prompts/" style="color:var(--accent);text-decoration:none;">VibeRounds Module Directory ↗</a>
+</footer>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('sec-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  function togglePipeline(header) {
+    const card = header.closest('.pipeline-card');
+    const chevron = header.querySelector('.pipeline-chevron');
+    const isOpen = card.classList.toggle('open');
+    chevron.textContent = isOpen ? '▲' : '▼';
+  }
+</script>
+</body>
+</html>
