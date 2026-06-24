@@ -1872,6 +1872,129 @@
 #clinical-learning .row-label { font-size: 9px; }
 #clinical-learning .tip-box { padding: 20px; }
 #clinical-learning .scenario .scenario-body, #clinical-learning .scenario .scenario-header { padding: 14px 16px; }}
+
+
+
+
+
+
+
+/* Module Map Grid Layout */
+        .map-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stack-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: var(--panel-shadow);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stack-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--panel-hover-shadow);
+        }
+
+        /* Specific Stack Top Borders */
+        .stack-teal { border-top: 4px solid var(--clinical-teal); }
+        .stack-purple { border-top: 4px solid var(--academic-purple); }
+        .stack-amber { border-top: 4px solid var(--discovery-amber); }
+
+        .stack-title {
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stack-teal .stack-title { color: var(--clinical-teal); }
+        .stack-purple .stack-title { color: var(--academic-purple); }
+        .stack-amber .stack-title { color: var(--discovery-amber); }
+
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .module-item {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid var(--border-light);
+            padding: 0.85rem 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .module-item:hover {
+            background: #ffffff;
+            border-color: #cbd5e1;
+            transform: translateX(3px);
+        }
+
+        .module-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Badge Color Variants */
+        .badge-teal { background: rgba(13, 148, 136, 0.08); color: var(--clinical-teal); border: 1px solid rgba(13, 148, 136, 0.2); }
+        .badge-purple { background: rgba(124, 58, 237, 0.08); color: var(--academic-purple); border: 1px solid rgba(124, 58, 237, 0.2); }
+        .badge-amber { background: rgba(217, 119, 6, 0.08); color: var(--discovery-amber); border: 1px solid rgba(217, 119, 6, 0.2); }
+
+        .module-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .module-item:hover .module-name {
+            color: var(--text-main);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+  
+
+
+
+
+
+
+    
 /* ════════════════════════════════════════════
      PEDAGOGICAL SPECTRUM (interactive, CSS-only tabs)
   ════════════════════════════════════════════ */
