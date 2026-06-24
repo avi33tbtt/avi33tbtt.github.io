@@ -242,7 +242,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
 | -- | [Guided Discovery Agent](VibeRounds_Guided_Discovery_Agent.md) | Guided Discovery Agent |
 | -- | [Patient Needs Assessment](Module-PN-Patient-Needs-Assessment.md) | Patient Needs Assessment |
-| -- | [Adaptive Guided Discovery Agent](VibeRounds_Adaptive_Discovery_Agent.md) | Adaptive Guided Discovery Agent |
+| -- | [Socratic Question Generator](Socratic_Question_Generator.md) | Socratic Question Generator |
 
 
 * **Clinical Reasoning & Cognitive Frameworks:** 1, 12, 14, 15, 17, 18, 20, 28, 30, 32, 33, 35, 36, 37
