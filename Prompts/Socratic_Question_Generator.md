@@ -1,4 +1,4 @@
-# VibeRounds Module 25 — Socratic Question Generator
+# VibeRounds — Socratic Question Generator
 ## Bloom's Taxonomy-Mapped Question Bank from a Patient Case
 
 **Author:** Dr. Avinash Kumar Gupta  
