@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds Module 25 | 53F Diabetic Foot + PE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg:          #0f1117;
+    --surface:     #181c27;
+    --surface2:    #1e2334;
+    --border:      #2a3050;
+    --text:        #d8dff0;
+    --muted:       #6b7699;
+    --accent:      #4f8ef7;
+    --accent2:     #e05c5c;
+    --accent3:     #f0a500;
+    --accent4:     #3ecf8e;
+    --accent5:     #c07cf8;
+    --accent6:     #f76c4f;
+
+    /* level colors */
+    --l1: #3ecf8e;
+    --l2: #4f8ef7;
+    --l3: #f0a500;
+    --l4: #e05c5c;
+    --l5: #c07cf8;
+    --l6: #f76c4f;
+    --lp: #5dd8d0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+  }
+  .site-header .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .site-header .module-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 56px 48px 40px;
+    border-bottom: 1px solid var(--border);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .hero .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 640px;
+  }
+
+  /* ── CASE SUMMARY ── */
+  .case-summary {
+    margin: 36px auto;
+    max-width: 960px;
+    padding: 0 48px;
+  }
+  .case-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 24px 28px;
+  }
+  .case-box .cs-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .case-box p { color: var(--text); line-height: 1.7; margin-bottom: 8px; }
+  .case-box p:last-child { margin-bottom: 0; }
+
+  /* ── NAV PILLS ── */
+  .level-nav {
+    max-width: 960px;
+    margin: 0 auto 32px;
+    padding: 0 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .level-nav a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 1px solid;
+    transition: background 0.15s;
+  }
+  .level-nav a:hover { filter: brightness(1.2); }
+  .pill-l1 { color: var(--l1); border-color: var(--l1); }
+  .pill-l1:hover { background: color-mix(in srgb, var(--l1) 15%, transparent); }
+  .pill-l2 { color: var(--l2); border-color: var(--l2); }
+  .pill-l2:hover { background: color-mix(in srgb, var(--l2) 15%, transparent); }
+  .pill-l3 { color: var(--l3); border-color: var(--l3); }
+  .pill-l3:hover { background: color-mix(in srgb, var(--l3) 15%, transparent); }
+  .pill-l4 { color: var(--l4); border-color: var(--l4); }
+  .pill-l4:hover { background: color-mix(in srgb, var(--l4) 15%, transparent); }
+  .pill-l5 { color: var(--l5); border-color: var(--l5); }
+  .pill-l5:hover { background: color-mix(in srgb, var(--l5) 15%, transparent); }
+  .pill-l6 { color: var(--l6); border-color: var(--l6); }
+  .pill-l6:hover { background: color-mix(in srgb, var(--l6) 15%, transparent); }
+  .pill-lp { color: var(--lp); border-color: var(--lp); }
+  .pill-lp:hover { background: color-mix(in srgb, var(--lp) 15%, transparent); }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  /* ── LEVEL SECTION ── */
+  .level-section {
+    margin-bottom: 52px;
+  }
+  .level-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .level-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .level-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .level-target {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 18px;
+    padding-left: 2px;
+  }
+  .level-descriptor {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 22px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 4px;
+    border-left: 3px solid;
+  }
+
+  /* level-specific theming */
+  .l1 .level-badge { background: color-mix(in srgb, var(--l1) 18%, transparent); color: var(--l1); }
+  .l1 .level-descriptor { border-color: var(--l1); }
+  .l2 .level-badge { background: color-mix(in srgb, var(--l2) 18%, transparent); color: var(--l2); }
+  .l2 .level-descriptor { border-color: var(--l2); }
+  .l3 .level-badge { background: color-mix(in srgb, var(--l3) 18%, transparent); color: var(--l3); }
+  .l3 .level-descriptor { border-color: var(--l3); }
+  .l4 .level-badge { background: color-mix(in srgb, var(--l4) 18%, transparent); color: var(--l4); }
+  .l4 .level-descriptor { border-color: var(--l4); }
+  .l5 .level-badge { background: color-mix(in srgb, var(--l5) 18%, transparent); color: var(--l5); }
+  .l5 .level-descriptor { border-color: var(--l5); }
+  .l6 .level-badge { background: color-mix(in srgb, var(--l6) 18%, transparent); color: var(--l6); }
+  .l6 .level-descriptor { border-color: var(--l6); }
+  .lp .level-badge { background: color-mix(in srgb, var(--lp) 18%, transparent); color: var(--lp); }
+  .lp .level-descriptor { border-color: var(--lp); }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    transition: border-color 0.15s;
+  }
+  .q-card:hover { border-color: #3a4568; }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .q-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 36px;
+    padding-top: 2px;
+    color: var(--muted);
+  }
+  .q-text {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .q-context {
+    margin-left: 50px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 4px;
+    border-left: 3px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .q-context .ctx-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: inherit;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  /* level-tinted q-num */
+  .l1 .q-num { color: var(--l1); opacity: 0.8; }
+  .l2 .q-num { color: var(--l2); opacity: 0.8; }
+  .l3 .q-num { color: var(--l3); opacity: 0.8; }
+  .l4 .q-num { color: var(--l4); opacity: 0.8; }
+  .l5 .q-num { color: var(--l5); opacity: 0.8; }
+  .l6 .q-num { color: var(--l6); opacity: 0.8; }
+  .lp .q-num { color: var(--lp); opacity: 0.8; }
+
+  /* ── FACULTY NOTES ── */
+  .faculty-notes {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent3);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-top: 52px;
+  }
+  .faculty-notes .fn-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .fn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .fn-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .fn-item .fi-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .fn-item p { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .fn-item strong { color: #fff; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin: 28px 0 36px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat .sv {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat .sl {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 700px) {
+    .site-header, .hero, .case-summary, .level-nav, .content { padding-left: 20px; padding-right: 20px; }
+    .fn-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 18px; }
+    .hero h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <a class="brand" href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Modules</a>
+  <span class="module-tag">Module 25 — Socratic Question Generator</span>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="eyebrow">Module 25 Output &nbsp;·&nbsp; Bloom's L1 → L6</div>
+  <h1>53F · Diabetic Foot Osteomyelitis → Pulmonary Embolism</h1>
+  <p class="subtitle">A complete Bloom's Taxonomy-stratified Socratic question bank generated from this patient case — from first-year recall to physician-scientist synthesis.</p>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="sv">57</span><span class="sl">Total questions</span></div>
+    <div class="stat"><span class="sv">6</span><span class="sl">Bloom's levels</span></div>
+    <div class="stat"><span class="sv">5</span><span class="sl">Patient perspective</span></div>
+    <div class="stat"><span class="sv">4</span><span class="sl">Faculty notes</span></div>
+  </div>
+</section>
+
+<!-- ── CASE SUMMARY ── -->
+<section class="case-summary">
+  <div class="case-box">
+    <div class="cs-label">Case Synthesis</div>
+    <p>A 53-year-old woman with 12 years of poorly controlled type 2 diabetes presents with a one-month history of a non-healing right great toe ulcer that has progressed to deep osteomyelitis of the distal phalanx, establishing a chronic infective-inflammatory state. Superimposed on this, she has developed acute hypoxic respiratory failure requiring supplemental oxygen, with a clear chest X-ray and a markedly elevated D-dimer — a clinical picture diagnostic of pulmonary embolism, most plausibly arising from a hypercoagulable state driven by the ongoing infection and hyperglycaemia, despite a negative right lower limb Doppler.</p>
+    <p>Her glycaemic profile reveals catastrophic variability (108–514 mg/dL), indicating that the insulin regimen has failed and that the metabolic milieu actively impairs both wound healing and immune defence. The convergence of three simultaneously life- and limb-threatening problems — PE, osteomyelitis, and uncontrolled diabetes — makes this case a teaching model of diabetic systemic complexity.</p>
+  </div>
+</section>
+
+<!-- ── NAV ── -->
+<nav class="level-nav" aria-label="Jump to level">
+  <a class="level-nav a pill-l1" href="#l1">L1 Remember</a>
+  <a class="level-nav a pill-l2" href="#l2">L2 Understand</a>
+  <a class="level-nav a pill-l3" href="#l3">L3 Apply</a>
+  <a class="level-nav a pill-l4" href="#l4">L4 Analyze</a>
+  <a class="level-nav a pill-l5" href="#l5">L5 Evaluate</a>
+  <a class="level-nav a pill-l6" href="#l6">L6 Create</a>
+  <a class="level-nav a pill-lp" href="#lp">Patient Perspective</a>
+  <a class="level-nav a" style="color:var(--accent3);border-color:var(--accent3);" href="#faculty">Faculty Notes</a>
+</nav>
+
+<!-- ── CONTENT ── -->
+<main class="content">
+
+  <!-- ─────────── L1 ─────────── -->
+  <section class="level-section l1" id="l1">
+    <div class="level-header">
+      <span class="level-badge">L1 · Remember</span>
+      <span class="level-title">Foundational Recall</span>
+    </div>
+    <p class="level-target">Target: 1st–2nd Year Preclinical Students</p>
+    <p class="level-descriptor">What foundational facts does this case require the learner to have stored?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.1</span><span class="q-text">Name the bones of the foot and identify the distal phalanx of the great toe — the site of osteomyelitis in this patient.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The surgeon debating between conservative debridement and ray amputation must know exactly which bony structure is infected. Misidentifying the distal from the proximal phalanx on a radiograph leads to under-resection and recurrent osteomyelitis.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.2</span><span class="q-text">State the normal resting SpO₂ range in an adult, and at what SpO₂ threshold is supplemental oxygen typically indicated?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient's SpO₂ is 95% on 3 L/hr O₂. Knowing the normal range (95–100%) and the intervention threshold enables the nurse and junior doctor to recognise deterioration immediately and escalate appropriately.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.3</span><span class="q-text">Define D-dimer: what is it, what process produces it, and what is the approximate upper limit of normal?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient's D-dimer is elevated "in the thousands." Without knowing the normal threshold (typically &lt;500 ng/mL FEU), a trainee cannot appreciate the magnitude of the elevation or why it supports — though does not confirm — a PE diagnosis.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.4</span><span class="q-text">What is the definition of osteomyelitis, and name the two most common causative organisms in diabetic foot osteomyelitis?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Antibiotic selection in this patient — specifically the requirement for agents with good bone penetration — begins with naming what organism is most likely being treated: Staphylococcus aureus (including MRSA) and polymicrobial gram-negative bacilli.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.5</span><span class="q-text">State the normal fasting blood glucose and the diagnostic threshold for diabetes mellitus (WHO criteria).</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient's glucose ranged from 108 to 514 mg/dL. To contextualise the 514 mg/dL reading as critically dangerous — not merely "high" — the learner must know that the normal fasting threshold is &lt;100 mg/dL and the diagnostic threshold is ≥126 mg/dL.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.6</span><span class="q-text">Name the drug used for anticoagulation in this patient (Enoxaparin) and classify it: what class of anticoagulant is it, and what coagulation factor does it primarily inhibit?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Enoxaparin is a low-molecular-weight heparin acting primarily via anti-Xa activity. A prescriber who cannot classify it cannot predict its reversal agent (protamine, partially effective) or monitor its activity (anti-Xa levels, not APTT).</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.7</span><span class="q-text">What does CTPA stand for, and what does it image?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient is being sent for a STAT CTPA. A student who cannot explain CT Pulmonary Angiography to the patient — "a scan of the blood vessels in your lungs" — creates anxiety and reduces consent quality.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.8</span><span class="q-text">What does a chest X-ray showing no infiltrates, effusion, or oedema in a hypoxic patient suggest as a diagnostic category?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The clear chest X-ray in the context of acute hypoxia is the classical radiographic signature of PE — a "see nothing, but patient is sick" pattern. Recognising this as a distinct diagnostic category prevents the default attribution of any hypoxia to "chest infection."</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.9</span><span class="q-text">State Virchow's triad and identify which two components are clearly active in this patient.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient has active infection (endothelial activation/inflammation → hypercoagulability) and likely immobility from a foot ulcer (stasis). Mapping her clinical features onto Virchow's triad builds the mechanistic narrative for why she developed PE.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.10</span><span class="q-text">What is the Enoxaparin dose prescribed for this patient (1 mg/kg every 12 hours), and what is its route of administration?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Enoxaparin is given subcutaneously. A nurse administering it intravenously causes haematoma, unpredictable pharmacokinetics, and potentially dosing errors. Route of administration is basic recall with direct patient-safety consequences.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.11</span><span class="q-text">Name the two insulin types used in a basal-bolus regimen (as planned for this patient) and state their approximate durations of action.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Converting this patient from a sliding scale to basal-bolus requires knowing that the basal insulin (e.g., glargine, detemir — 18–24 hours) provides background coverage and that rapid-acting insulin (e.g., aspart, lispro — 3–5 hours) covers meals. Without this, the switch cannot be explained to the patient or nursing staff.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q1.12</span><span class="q-text">What is heart rate tachycardia defined as, and state this patient's heart rate?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient's HR is 100 bpm — the exact threshold of tachycardia. In the Wells PE score, HR &gt;100 contributes 1.5 points. Knowing the threshold and recognising this patient is right at it is the first step in using clinical prediction tools correctly.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── L2 ─────────── -->
+  <section class="level-section l2" id="l2">
+    <div class="level-header">
+      <span class="level-badge">L2 · Understand</span>
+      <span class="level-title">Conceptual Comprehension</span>
+    </div>
+    <p class="level-target">Target: 3rd–4th Year Students, Interns</p>
+    <p class="level-descriptor">Can the learner explain the mechanism behind what they see in this case?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.1</span><span class="q-text">Explain why this patient's chest X-ray is clear despite her being hypoxic enough to require supplemental oxygen.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The key concept is V/Q mismatch — a PE obstructs perfusion while ventilation is preserved, creating dead space and hypoxia without producing a radiographic opacity. Failing to understand this causes the team to search for pneumonia or pulmonary oedema on a normal film and miss the real diagnosis.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.2</span><span class="q-text">Explain the pathophysiological link between this patient's diabetic foot osteomyelitis and her pulmonary embolism.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Chronic infection activates systemic inflammatory pathways (IL-6, tissue factor, platelet activation), creating a prothrombotic state. Hyperglycaemia further impairs fibrinolysis and endothelial function. Understanding this causal chain makes source control of the foot — not just anticoagulation — a PE treatment priority.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.3</span><span class="q-text">Why does a negative lower limb Doppler ultrasound not rule out pulmonary embolism in this patient?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>PE can originate from pelvic veins, upper limb veins, the right heart, or can arise de novo from the coagulation state — all undetected by a lower limb Doppler. Additionally, a clot may have fully embolised, leaving no residual thrombus. This patient's management hinges on understanding that the DVT test and the PE test are not interchangeable.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.4</span><span class="q-text">Explain why severe glycaemic variability (108–514 mg/dL) impairs this patient's wound healing and immune defence simultaneously.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Hyperglycaemia impairs neutrophil chemotaxis, phagocytosis, and oxidative killing; promotes bacterial proliferation; and disrupts angiogenesis required for wound healing. Hypoglycaemic episodes blunt counter-regulatory responses. Both extremes compound osteomyelitis severity and make antibiotic therapy less effective.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.5</span><span class="q-text">Describe why a "sliding scale" insulin regimen is inferior to a basal-bolus regimen in a hospitalised patient with this degree of glycaemic variability.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Sliding scale insulin is reactive, not proactive — it treats hyperglyaemia only after it occurs and provides no background basal coverage between measurements. In a patient with glucose swings of 406 mg/dL, this creates a continuous oscillation of hyperglycaemia and correction-induced hypoglycaemia, neither of which is therapeutic.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.6</span><span class="q-text">Explain the mechanism by which Enoxaparin prevents clot extension in this patient's PE, and why it does not dissolve the existing clot.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>LMWH inhibits Factor Xa and thrombin, preventing new thrombin generation and therefore preventing clot propagation. It has no thrombolytic activity — the endogenous plasminogen system dissolves the existing clot over weeks to months. Patients and families frequently ask "why isn't the blood thinner dissolving the clot?" — this is the explanation.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.7</span><span class="q-text">Why is it essential to check renal function before dosing Enoxaparin in this patient, given her 12-year history of diabetes?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Enoxaparin is renally cleared. Diabetic nephropathy affects approximately 40% of patients with 12-year T2DM. A reduced GFR causes Enoxaparin accumulation, dramatically increasing bleeding risk. This patient's apparent haemodynamic compromise (BP 115/66) may also reflect reduced renal perfusion. The plan correctly flags renal function check first.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.8</span><span class="q-text">Explain why "broad-spectrum IV antibiotics with good bone penetration" are specifically required for osteomyelitis — why would oral antibiotics or soft-tissue agents be insufficient?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Bone has a poor vascular supply compared with soft tissue, limiting antibiotic delivery. Biofilm formation in chronic osteomyelitis further reduces penetration. Agents with documented bone penetration (fluoroquinolones, clindamycin, rifampicin in combination) achieve therapeutic bone concentrations; standard beta-lactams alone at normal doses often do not.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.9</span><span class="q-text">Describe how 12 years of diabetes leads to the peripheral neuropathy that allowed this foot ulcer to develop unnoticed for one month.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Advanced glycation end-products and oxidative stress damage peripheral sensory neurons, causing a length-dependent, stocking-glove sensory neuropathy. The patient loses protective pain sensation — a minor mechanical injury is not felt, goes unattended, and progresses to a full-thickness ulcer over weeks. This is the Achilles' heel of diabetic foot surveillance.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q2.10</span><span class="q-text">Explain what the Wells PE score measures and why it is used before ordering a CTPA in a patient like this.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The Wells score estimates pre-test probability of PE. In a high-probability patient like this one, a positive D-dimer adds little — the clinical picture already mandates CTPA. However, formal scoring prevents both under-investigation of low-risk patients who get unnecessary radiation and contrast exposure, and over-investigation that delays care in high-risk patients.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── L3 ─────────── -->
+  <section class="level-section l3" id="l3">
+    <div class="level-header">
+      <span class="level-badge">L3 · Apply</span>
+      <span class="level-title">Clinical Application</span>
+    </div>
+    <p class="level-target">Target: Final Year, Interns, Junior Residents</p>
+    <p class="level-descriptor">Can the learner use knowledge to act correctly in this case?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.1</span><span class="q-text">Using the Wells PE Criteria, calculate a score for this patient: HR 100 bpm, no alternative diagnosis more likely, no signs of DVT on Doppler, no prior PE/DVT, no haemoptysis, no malignancy. What does the score predict, and what is the next step?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>HR exactly 100 bpm is the Wells threshold — this is an on-the-knife-edge decision. The correct score depends on clinical judgment: "no alternative diagnosis more likely" (3 points) is supported by the clear CXR and elevated D-dimer. Using the score incorrectly here risks both under-investigating a true PE and over-investigating a mimicker.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.2</span><span class="q-text">This patient weighs 68 kg. Calculate her Enoxaparin dose using the prescribed regimen of 1 mg/kg every 12 hours.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The correct dose is 68 mg SC every 12 hours. Rounding to 70 mg (nearest available syringe) is acceptable; rounding to 80 mg (a common error) is a 17% overdose in a patient with potentially compromised renal function — increasing major bleeding risk significantly.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.3</span><span class="q-text">Using the Cockcroft-Gault formula, calculate the creatinine clearance for this patient if her serum creatinine comes back at 130 µmol/L (age 53, female, weight 68 kg). Does this creatinine clearance require Enoxaparin dose adjustment?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>CrCl = [(140–53) × 68 × 0.85] / [72 × 1.47] ≈ 48 mL/min. At CrCl &lt;30 mL/min, dose reduction or switch to UFH is required; at 30–50 mL/min, enhanced monitoring with anti-Xa levels is indicated. This patient is in the caution zone — standard dosing without monitoring risks accumulation.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.4</span><span class="q-text">Interpret this patient's SpO₂ of 95% on 3 L/hr nasal cannula in terms of approximate FiO₂, and state the management target.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>3 L/hr nasal cannula delivers approximately FiO₂ 32%. Achieving only 95% at this FiO₂ suggests significant impairment of gas exchange — consistent with a moderate PE with large dead-space effect. The target SpO₂ &gt;94% is correct per the plan. Failure to reach target on current flow is a warning sign requiring escalation of oxygen delivery.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.5</span><span class="q-text">Apply the ABCDE approach to this patient's acute presentation. For each component, state the finding and the immediate action.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>A: patent; B: RR not stated — measure immediately, SpO₂ 95% on 3 L — maintain O₂; C: BP 115/66, HR 100 — borderline haemodynamically stable, start anticoagulation urgently, do not delay for CTPA; D: GCS not stated — assess; E: foot ulcer and osteomyelitis — source of sepsis driving coagulopathy. Structured application prevents the team from fixating on the foot and missing the life-threatening PE.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.6</span><span class="q-text">Construct the sequence of blood tests you would order immediately for this patient, with the clinical rationale for each.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Minimum: FBC (anaemia worsens hypoxia; thrombocytopenia affects anticoagulation safety), U&amp;E/creatinine (Enoxaparin dosing), coagulation screen (baseline before anticoagulation), LFTs (drug metabolism), blood cultures (2 sets before antibiotics), HbA1c (severity of chronic glycaemic control), CRP/ESR (infection severity marker). Each test directly changes a management decision in this case.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.7</span><span class="q-text">Using the diabetic foot ulcer Wagner Grade classification, estimate the grade of this patient's ulcer and state the clinical implication for management.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Wagner Grade 3 (deep ulcer with abscess or osteomyelitis) or Grade 4 (gangrene of toe) — the osteomyelitis confirmation by imaging places this at minimum Grade 3. Grade 3 and above mandates hospitalisation, IV antibiotics, surgical consultation, and aggressive glycaemic control. Using this scale communicates severity consistently between surgical and medical teams.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.8</span><span class="q-text">This patient has a blood pressure of 115/66 mmHg and HR of 100 bpm. Apply the haemodynamic criteria for massive versus sub-massive PE and classify her presentation.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Massive PE = haemodynamic instability (SBP &lt;90 mmHg, MAP &lt;65, cardiac arrest, or vasopressor requirement). This patient has SBP 115 mmHg — technically stable, but low. Sub-massive PE involves right ventricular dysfunction with preserved BP. Classification matters because massive PE may require systemic thrombolysis, which carries major bleeding risk in a patient with active osteomyelitis and infected foot — a clinical dilemma that makes correct classification life-critical.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.9</span><span class="q-text">Describe step by step how you would transition this patient from her current sliding-scale insulin to a basal-bolus regimen during this admission.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Step 1: Calculate total daily dose (TDD) from the previous 24h insulin use or estimate 0.3–0.5 units/kg/day. Step 2: Give 50% as basal (long-acting, once daily at night). Step 3: Divide remaining 50% into three pre-meal rapid-acting doses. Step 4: Add correction scale. Step 5: Monitor glucose QID and titrate. An error in this transition — e.g., converting without overlap, causing a gap in coverage overnight — can precipitate DKA or severe hyperglycaemia in a critically ill septic patient.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q3.10</span><span class="q-text">This patient is about to undergo CTPA. State two contraindications or precautions you would check before the scan, given her clinical profile.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>First: renal function — IV contrast is nephrotoxic; diabetic nephropathy significantly raises the risk of contrast-induced AKI. Second: metformin use — must be withheld 48 hours after contrast due to lactic acidosis risk if AKI develops. Both checks are easy to overlook in the urgency of a suspected PE — yet both are directly relevant to a 12-year diabetic presenting with possible renal impairment.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── L4 ─────────── -->
+  <section class="level-section l4" id="l4">
+    <div class="level-header">
+      <span class="level-badge">L4 · Analyze</span>
+      <span class="level-title">Clinical Pattern Recognition</span>
+    </div>
+    <p class="level-target">Target: Residents, Senior Residents, Registrars</p>
+    <p class="level-descriptor">Can the learner deconstruct what is unusual, complex, or multi-layered in this case?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.1</span><span class="q-text">Analyse the differential diagnosis for acute hypoxia with a clear chest X-ray in this patient. What features of this case make PE the most probable diagnosis over each alternative?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Differentials include PE, early ARDS, pulmonary hypertension, intracardiac shunt, and high-altitude. In this patient: the markedly elevated D-dimer, the acute onset, the prothrombotic state from infection, and the absence of bilateral infiltrates (ARDS) or cardiac history all favour PE. Systematic elimination prevents anchoring on the first diagnosis generated.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.2</span><span class="q-text">Analyse why this patient's blood pressure of 115/66 mmHg, whilst technically above the 90/60 mmHg shock threshold, should be interpreted with caution in the context of PE.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>A patient with chronic hypertension (common in 12-year diabetes) may have a baseline SBP of 150–160 mmHg. A current SBP of 115 mmHg may represent relative hypotension — a 30–40 mmHg drop — even though the absolute value appears "stable." This analysis changes the haemodynamic classification from sub-massive to functionally massive, altering the threshold for considering thrombolysis or catheter-directed therapy.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.3</span><span class="q-text">The left foot is bandaged. Analyse the clinical significance of this finding in a patient with bilateral diabetic foot disease and a new PE.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Bilateral foot involvement suggests advanced peripheral vascular disease and neuropathy. It raises the question of whether thrombolysis or surgical intervention on one limb could destabilise the other. It also signals severe systemic metabolic disease — not a single foot ulcer. If the left foot also has osteomyelitis or ischaemia, the infection burden and prothrombotic drive are doubled, and amputation risk is higher than appreciated from the right foot alone.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.4</span><span class="q-text">Analyse the tension between anticoagulating this patient for PE and the risk of anticoagulation in a patient with an active infected foot ulcer and osteomyelitis requiring surgical debridement.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Full therapeutic anticoagulation risks perioperative haemorrhage during debridement. Withholding anticoagulation in an untreated PE carries a 30-day mortality risk of 25–30%. This is a genuine clinical dilemma: the management plan must coordinate with the surgical team on timing — anticoagulate now, plan surgery within 24–48 hours, bridge perioperatively — rather than treating each problem in isolation.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.5</span><span class="q-text">Analyse the glycaemic range of 108–514 mg/dL. What does this pattern of variability tell you about the failure mode of her current regimen — and what specific pathophysiological processes does each extreme represent?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The 514 mg/dL peak reflects absolute insulin insufficiency — likely from infection-driven counter-regulatory hormone surge (cortisol, adrenaline, glucagon) overwhelming a fixed sliding-scale dose. The 108 mg/dL nadir reflects over-correction or missed meals. The variability itself — independent of mean glucose — is an independent predictor of hospital mortality and wound healing failure.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.6</span><span class="q-text">Compare the diagnostic performance of D-dimer versus CTPA in this specific patient. Given her clinical profile, should the D-dimer result change your decision to proceed with CTPA?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>D-dimer has high sensitivity (~96%) but very low specificity in hospitalised, infected patients — active infection, surgery, inflammation all elevate it. In this patient with osteomyelitis, the D-dimer is expected to be elevated regardless of PE. Its role here is not confirmation (which it cannot provide) but as additional support for a high pre-test probability case already destined for CTPA. Understanding this prevents over-reliance on a non-specific test.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.7</span><span class="q-text">Analyse the systems-level question: why did three major complications — PE, osteomyelitis, and severe glycaemic variability — converge in this patient simultaneously, and what is the shared upstream driver?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The shared driver is uncontrolled diabetes over 12 years: neuropathy removed protective sensation → ulcer developed unnoticed → infection established → chronic inflammatory-prothrombotic state activated → PE occurred. Simultaneously, hyperglycaemia impaired immune response → infection deepened to osteomyelitis → insulin requirements escalated beyond a failing regimen. These are not coincident events — they are a domino chain from a single inadequately managed upstream cause.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q4.8</span><span class="q-text">Analyse what additional investigations are needed that are NOT mentioned in the current management plan, and justify each.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Missing investigations: (1) Echocardiogram — to assess right ventricular strain from PE, which reclassifies haemodynamic severity; (2) HbA1c — to quantify chronic glycaemic control, which guides long-term insulin strategy; (3) Deep wound swab/bone biopsy — to culture the specific organism before antibiotics are escalated; (4) Lipid profile and microalbuminuria — to complete the cardiovascular risk profile. Each omission represents a clinical gap in this plan.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── L5 ─────────── -->
+  <section class="level-section l5" id="l5">
+    <div class="level-header">
+      <span class="level-badge">L5 · Evaluate</span>
+      <span class="level-title">Critical Judgment</span>
+    </div>
+    <p class="level-target">Target: Fellows, Senior Registrars, Consultants</p>
+    <p class="level-descriptor">Can the learner judge, critique, and defend decisions in this case?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.1</span><span class="q-text">Evaluate the decision to start Enoxaparin before confirming PE with CTPA. Is this the correct sequence? Defend or challenge it using the evidence.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>ESC and ACCP guidelines recommend immediate anticoagulation in intermediate-high or high-probability PE even before CTPA confirmation, provided no absolute contraindication exists. The mortality cost of delayed anticoagulation in confirmed PE is measurable; the risk of one dose of Enoxaparin in a suspected PE that turns out to be negative is low. The plan is guideline-concordant and defensible — but the evaluative exercise demands the trainee know this justification explicitly.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.2</span><span class="q-text">Critically evaluate whether systemic thrombolysis should be considered in this patient, and identify the specific feature of her case that creates the most significant absolute contraindication.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Systemic thrombolysis is indicated in massive PE with haemodynamic collapse. This patient is borderline haemodynamically. However, her active infected diabetic foot ulcer with osteomyelitis represents an active serious infection and a non-compressible wound — both considered absolute or strong relative contraindications to thrombolysis. The evaluation here is the core of PE triage: the physician who cannot identify this contraindication may administer thrombolysis into a patient who will exsanguinate from her foot.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.3</span><span class="q-text">Evaluate the management plan's approach to the diabetic foot: is requesting a surgical consultation sufficient, or does the plan underweight the urgency of source control in the context of sepsis-driven PE?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Source control in osteomyelitis with suspected sepsis-driven thromboembolism is not elective. Inadequate source control perpetuates the prothrombotic inflammatory state, increases anticoagulation failure risk, and extends hospitalisation. The plan uses the word "urgent" but does not specify a timeline. A consultant-level evaluation would demand same-day surgical review with a clear decision on debridement versus amputation within 24 hours, not an open-ended consultation request.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.4</span><span class="q-text">Evaluate the strength of the evidence behind LMWH versus direct oral anticoagulants (DOACs) for PE treatment in a patient with active infection and a diabetic foot ulcer.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>DOACs (rivaroxaban, apixaban) are now first-line for PE in haemodynamically stable patients per ESC 2019 guidelines — superior convenience, non-inferior efficacy. However, in the context of active serious infection with potential need for urgent surgery, LMWH has practical advantages: reversibility is more predictable (anti-Xa monitoring possible), and it can be held perioperatively with known pharmacokinetics. The plan's choice of LMWH is defensible but should be re-evaluated once surgical timing is clear.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.5</span><span class="q-text">Evaluate how you would communicate prognosis to this patient and her family. What are the three key prognostic determinants in this case, and how do they interact?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Three determinants: (1) PE clot burden — unknown until CTPA; right ventricular strain increases 30-day mortality 5–10-fold; (2) Osteomyelitis response — bone infection that requires amputation carries higher anaesthetic/surgical risk in a compromised host; (3) Glycaemic control trajectory — if glucose cannot be stabilised, wound healing and infection clearance will both fail, regardless of antibiotic and anticoagulation quality. Communicating these interactions honestly — not catastrophising, not minimising — is the hallmark of consultant-level prognostic reasoning.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q5.6</span><span class="q-text">Evaluate whether an endocrinology consultation is truly indicated, or whether this patient's glycaemic variability can be managed by the admitting team with a structured basal-bolus protocol.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>A glucose range of 108–514 mg/dL in a critically ill patient with active sepsis, corticosteroid exposure potential (from infection stress), and a prior failing regimen is beyond the scope of routine insulin dose adjustment. Endocrinology consultation is indicated to assess whether she has LADA (Latent Autoimmune Diabetes in Adults — misclassified T2DM), evaluate C-peptide reserve, consider continuous glucose monitoring, and design a discharge insulin plan that prevents a third hospitalisation for the same cause.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── L6 ─────────── -->
+  <section class="level-section l6" id="l6">
+    <div class="level-header">
+      <span class="level-badge">L6 · Create</span>
+      <span class="level-title">Physician-Scientist Synthesis</span>
+    </div>
+    <p class="level-target">Target: Consultants, Fellows, Clinician-Scientists</p>
+    <p class="level-descriptor">Can the learner generate something new from this case?</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q6.1</span><span class="q-text">Construct a mechanistic hypothesis explaining why patients with chronic osteomyelitis of the foot are at elevated risk of pulmonary embolism, incorporating at least three distinct molecular pathways beyond simple stasis.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This patient's PE may be mechanistically distinct from a post-surgical or immobilisation PE. A clinician-scientist who maps the infection → NET formation → neutrophil extracellular traps → platelet aggregation pathway, alongside LPS-driven tissue factor expression and hyperglycaemia-mediated impairment of protein C/S activity, builds a hypothesis testable with existing biomarkers (NETs, citrullinated histone H3, thrombin-antithrombin complexes). This could form the basis of an N-of-1 case report with mechanistic biomarker analysis.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q6.2</span><span class="q-text">Design an N-of-1 study protocol for this patient that would longitudinally characterise the relationship between glycaemic variability (measured by continuous glucose monitoring) and coagulation biomarkers during this admission.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Serial sampling of D-dimer, thrombin generation assay, and fibrinogen alongside CGM-derived time-in-range and glucose variability index over 5–7 days of insulin optimisation could demonstrate within-patient covariation between glycaemic stability and prothrombotic drive. Published in the VibeRounds N-of-1 methodology, this case could contribute directly to the mechanistic understanding of diabetic thromboembolism. The ethical framework is straightforward: all investigations are clinically indicated; no additional procedures are required.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q6.3</span><span class="q-text">Propose a redesigned diabetic foot surveillance system — at the primary care level — that would have identified this patient's ulcer before osteomyelitis developed, specifying the screening tool, interval, and escalation pathway.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The one-month history of unnoticed ulcer is a systems failure, not just a patient failure. A redesigned surveillance system would include: annual (or 6-monthly in high-risk) monofilament testing + Doppler ABI at primary care level; a stratified risk score (IWGDF Risk Classification) triggering referral to a specialist foot clinic at Risk Category 2 or above; and a validated patient-reported tool (e.g., photograph-based app) for interim self-monitoring. This redesign prevents the next patient from arriving with osteomyelitis and PE simultaneously.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q6.4</span><span class="q-text">This case features a diagnostic tension central to emergency medicine: a normal lower limb Doppler in a patient with high clinical suspicion for PE. Formulate a research question and outline a study design to determine the sensitivity of lower limb Doppler ultrasound in detecting the DVT source of PE in patients with chronic lower limb infection.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>The clinical question is whether chronic infection of the distal limb alters the thrombotic pattern — potentially causing a higher rate of non-DVT-source PE (pelvic, upper limb, in-situ pulmonary artery thrombus) compared with standard PE populations. A prospective cohort study in diabetic foot osteomyelitis patients presenting with PE, using CTPA-confirmed PE as outcome and lower limb Doppler as index test, would directly answer whether the current diagnostic algorithm needs a pelvic or upper limb Doppler extension in this specific population.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">Q6.5</span><span class="q-text">Create a personalised long-term management framework for this patient post-discharge, integrating anticoagulation duration, glycaemic optimisation, limb salvage follow-up, and secondary prevention of recurrent thromboembolism.</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Standard unprovoked PE anticoagulation lasts 3–6 months, but if the PE is "provoked" by ongoing infection/hypercoagulability, the threshold for prolonged anticoagulation depends on whether the provoking factor has resolved. The framework must specify: (1) CTPA at 3 months to assess resolution; (2) HbA1c target ≤7% with structured CGM; (3) Podiatry/vascular surgery follow-up at 2 and 6 weeks post-discharge; (4) LMWH-to-DOAC transition once surgical wounds are stable; (5) Thrombophilia screen if PE recurs. This is a post-discharge plan, not an inpatient one — a genuinely creative clinical synthesis.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── LP ─────────── -->
+  <section class="level-section lp" id="lp">
+    <div class="level-header">
+      <span class="level-badge">QP · Patient Perspective</span>
+      <span class="level-title">Anchoring Cognition to the Person</span>
+    </div>
+    <p class="level-target">For Any Level — Insert at Any Point in the Teaching Session</p>
+    <p class="level-descriptor">These questions are inserted to ensure clinical reasoning never becomes purely cognitive.</p>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">QP.1</span><span class="q-text">This patient has had a non-healing ulcer for one month before seeking help. What does that tell you about her illness beliefs, her access to care, or her understanding of diabetic foot risk — and how does your answer change the discharge plan?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>A one-month delay suggests either that she normalised the ulcer ("this happens with diabetes"), lacked access to primary care, feared amputation, or had previously received inadequate diabetic foot education. Understanding which of these is true changes whether discharge planning needs patient education, social work involvement, or a referral to a community health navigator.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">QP.2</span><span class="q-text">This patient is receiving a new diagnosis of pulmonary embolism on top of an existing diabetic foot infection. What is she most likely afraid of right now — and is that the same thing the medical team is most worried about?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>She may be most afraid of amputation (a visible, concrete fear) while the team is most concerned about haemodynamic collapse from PE (an invisible, immediate threat). Bridging this fear gap — "we are treating a clot in your lung right now, which is the most dangerous thing today, and we have a plan for your foot too" — is not soft communication. It is the difference between a patient who cooperates with the O₂ mask and anticoagulation, and one who tries to leave the ward.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">QP.3</span><span class="q-text">Twelve years of diabetes suggests this patient has been in the healthcare system for over a decade. Ask: what has been the biggest barrier to glycaemic control in those twelve years — medication cost, diet, healthcare access, health literacy, or psychological insulin resistance?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Glucose of 514 mg/dL on an existing insulin regimen is not a pharmacological failure alone. It may be a self-management failure driven by poverty (insulin cost), dietary constraints, or needle phobia. Identifying the true barrier during this admission — and addressing it in the discharge plan — prevents re-admission number four for the same cause.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">QP.4</span><span class="q-text">The left foot is also bandaged. Who is caring for both feet at home, and what burden does this illness place on that caregiver?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>Bilateral lower limb wounds in a hospitalised patient raise the question of mobility and independence. If she is returning home to a caregiver who is also managing her insulin, wound dressings, and appointments, caregiver burnout is a real discharge risk. Social work and district nursing involvement — absent from the current plan — may be the difference between a successful discharge and a readmission within two weeks.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header"><span class="q-num">QP.5</span><span class="q-text">When you explain to this patient that she needs a CT scan with contrast, she says "last time I had a scan my kidneys got worse." How do you respond?</span></div>
+      <div class="q-context"><div class="ctx-label">Patient context</div>This is the most important piece of history you will elicit in the next 10 minutes. Prior contrast-induced AKI in a diabetic patient with probable nephropathy changes the risk-benefit calculation for urgent CTPA. It may prompt consideration of V/Q scan instead, pre-hydration, CO₂ angiography, or empirical anticoagulation with deferral of imaging. Dismissing the patient's past experience to proceed rapidly with CTPA would be a consent failure and a patient safety failure simultaneously.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── FACULTY NOTES ─────────── -->
+  <section class="faculty-notes" id="faculty">
+    <div class="fn-title">▸ Teaching Faculty Notes</div>
+    <div class="fn-grid">
+      <div class="fn-item">
+        <div class="fi-label">Recommended Session Flow (30 min)</div>
+        <p>Open with <strong>Q1.9</strong> (Virchow's triad) to establish the mechanistic anchor. Move to <strong>Q2.1</strong> (clear CXR + hypoxia) for the diagnostic pivot. Apply <strong>Q3.1</strong> (Wells score) using live case data. Push to <strong>Q4.4</strong> (anticoagulation vs. surgical risk) for registrar-level tension. Close with <strong>QP.2</strong> (patient's fear vs. team's concern) to humanise the case before the student leaves the bedside.</p>
+      </div>
+      <div class="fn-item">
+        <div class="fi-label">Pivotal Question of This Case</div>
+        <p><strong>Q4.4</strong> — The anticoagulation-versus-surgery tension. This question cannot be answered from a textbook alone; it requires real-time clinical judgment, multidisciplinary negotiation, and evidence evaluation simultaneously. It is the moment where all six Bloom's levels converge.</p>
+      </div>
+      <div class="fn-item">
+        <div class="fi-label">Diagnostic Trap for Trainees</div>
+        <p><strong>Q2.3</strong> — The negative DVT Doppler falsely reassuring the trainee that PE is ruled out. This is the most common cognitive error in PE workup and the most dangerous one in this case. The trap should be set deliberately: ask the trainee to interpret the Doppler before they have seen the D-dimer, then reveal the D-dimer and watch whether they update their reasoning.</p>
+      </div>
+      <div class="fn-item">
+        <div class="fi-label">Extension → Publishable Angle</div>
+        <p><strong>Q6.2</strong> — The N-of-1 protocol linking CGM-derived glycaemic variability to serial coagulation biomarkers. This is a feasible, ethical, clinically relevant research design requiring no additional patient procedures. It is publishable as a hypothesis-generating case report in a diabetes-cardiovascular intersection journal, and it is directly addressable within this admission if serial bloods are banked prospectively from day 1.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Modules</a> &nbsp;·&nbsp; Module 25 — Socratic Question Generator &nbsp;·&nbsp; Dr. Avinash Kumar Gupta &nbsp;·&nbsp; DOI: 10.5281/zenodo.20622693
+</footer>
+
+</body>
+</html>
