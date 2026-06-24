@@ -1,21 +1,3 @@
----
-canonical: https://avi33tbtt.github.io/Prompts/Module-PN-Patient-Needs-Assessment.html
-meta-description: Avinash Kumar Gupta
-meta-generator: Jekyll v3.10.0
-meta-og:description: Avinash Kumar Gupta
-meta-og:locale: en_US
-meta-og:site_name: Dr. Avinash kumar gupta
-meta-og:title: Dr. Avinash kumar gupta
-meta-og:type: website
-meta-og:url: https://avi33tbtt.github.io/Prompts/Module-PN-Patient-Needs-Assessment.html
-meta-twitter:card: summary
-meta-twitter:title: Dr. Avinash kumar gupta
-meta-viewport: width=device-width, initial-scale=1
-title: Dr. Avinash kumar gupta | Avinash Kumar Gupta
----
-
-# [Dr. Avinash kumar gupta](https://avi33tbtt.github.io/)
-
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
 # Module PN — Patient Needs Assessment (Exhaustive Framework)
