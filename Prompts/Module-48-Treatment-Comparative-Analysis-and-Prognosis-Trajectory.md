@@ -1,4 +1,4 @@
-# Module 44 — Treatment Comparative Analysis & Evidence-Informed Prognosis Trajectory
+# Module 48 — Treatment Comparative Analysis & Evidence-Informed Prognosis Trajectory
 
 *Modeled on the VibeRounds Prompt Module format (Dr. Avinash Kumar Gupta, [avi33tbtt.github.io/Prompts](https://avi33tbtt.github.io/Prompts/)). Proposed as a new module candidate — not yet part of the published, numbered repository, and not validated live.*
 
