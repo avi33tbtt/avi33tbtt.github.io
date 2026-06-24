@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Module 11 — Patient Education Query Intelligence | Vibe Rounds</title>
+<style>
+  /* ── Base reset & tokens ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:          #ffffff;
+    --surface:     #f6f8fa;
+    --border:      #d0d7de;
+    --text:        #1f2328;
+    --muted:       #656d76;
+    --accent:      #0969da;
+    --accent-soft: #ddf4ff;
+    --warn-bg:     #fff8c5;
+    --warn-border: #d4a72c;
+    --note-bg:     #ddf4ff;
+    --note-border: #54aeff;
+    --danger-bg:   #FFEBE9;
+    --danger-border:#cf222e;
+    --tip-bg:      #dafbe1;
+    --tip-border:  #1a7f37;
+    --tag-pe:      #cf222e;
+    --tag-dm:      #9a6700;
+    --tag-infx:    #0550ae;
+    --nav-bg:      #24292f;
+    --nav-text:    #f0f6fc;
+    --heading-font:'Georgia', 'Times New Roman', serif;
+    --body-font:   -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono-font:   'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --radius:      6px;
+    --shadow:      0 1px 3px rgba(0,0,0,0.12);
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body-font);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+
+  /* ── Nav ── */
+  nav {
+    background: var(--nav-bg);
+    color: var(--nav-text);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav .brand { font-weight: 600; font-size: 0.95rem; color: var(--nav-text); text-decoration: none; }
+  nav .back  { font-size: 0.82rem; color: #8b949e; text-decoration: none; }
+  nav .back:hover { color: var(--nav-text); }
+
+  /* ── Layout ── */
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Page header ── */
+  .page-header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 32px; }
+  .page-header .eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-family: var(--mono-font); }
+  .page-header h1 { font-family: var(--heading-font); font-size: 1.75rem; margin: 8px 0 6px; line-height: 1.3; }
+  .page-header .subtitle { color: var(--muted); font-size: 0.93rem; }
+
+  /* ── Clinical banner ── */
+  .clinical-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 36px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .clinical-banner strong { color: var(--text); }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: var(--mono-font);
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .tag-pe   { background: #FFEBE9; color: var(--tag-pe); }
+  .tag-dm   { background: #FFF8C5; color: var(--tag-dm); }
+  .tag-infx { background: #DDF4FF; color: var(--tag-infx); }
+
+  /* ── Section headings ── */
+  .step-label {
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-family: var(--heading-font);
+    font-size: 1.3rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+    margin-top: 40px;
+  }
+  h3 {
+    font-size: 0.97rem;
+    font-weight: 600;
+    margin: 20px 0 8px;
+    color: var(--text);
+  }
+  p { margin-bottom: 12px; }
+
+  /* ── Callouts ── */
+  .callout {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 0.9rem;
+  }
+  .callout-warn   { background: var(--warn-bg);   border-left: 4px solid var(--warn-border); }
+  .callout-note   { background: var(--note-bg);   border-left: 4px solid var(--note-border); }
+  .callout-danger { background: var(--danger-bg); border-left: 4px solid var(--danger-border); }
+  .callout-tip    { background: var(--tip-bg);    border-left: 4px solid var(--tip-border); }
+  .callout .callout-title { font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing:.06em; margin-bottom: 4px; }
+
+  /* ── Question cards ── */
+  .q-group { margin-bottom: 28px; }
+  .q-group-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 8px;
+  }
+  .q-card .q-text { font-weight: 600; font-size: 0.93rem; color: var(--text); margin-bottom: 4px; }
+  .q-card .q-why { font-size: 0.83rem; color: var(--muted); }
+
+  /* ── Tables ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  th { background: var(--surface); border: 1px solid var(--border); padding: 10px 14px; text-align: left; font-weight: 600; }
+  td { border: 1px solid var(--border); padding: 10px 14px; vertical-align: top; }
+  tr:hover td { background: #f6f8fa; }
+
+  /* ── Red-flag lists ── */
+  .rf-block { margin-bottom: 20px; }
+  .rf-block h3 { display: flex; align-items: center; gap: 8px; }
+  .rf-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .rf-dot.red    { background: #cf222e; }
+  .rf-dot.orange { background: #d4a72c; }
+  .rf-dot.blue   { background: var(--accent); }
+  ul.rf-list { list-style: none; padding: 0; }
+  ul.rf-list li {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+  ul.rf-list li.red    { background: #FFEBE9; border-left: 3px solid #cf222e; }
+  ul.rf-list li.orange { background: #fff8c5; border-left: 3px solid #d4a72c; }
+  ul.rf-list li.blue   { background: var(--accent-soft); border-left: 3px solid var(--accent); }
+  ul.rf-list li .rf-reason { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 3px; font-style: italic; }
+
+  /* ── Family quotes ── */
+  .quote-card {
+    border-left: 4px solid var(--border);
+    padding: 10px 16px;
+    margin: 8px 0;
+    background: var(--surface);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+    font-size: 0.91rem;
+    color: #444d56;
+  }
+
+  /* ── Lifestyle grid ── */
+  .ls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+  .ls-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+  .ls-card h4 { font-size: 0.84rem; text-transform: uppercase; letter-spacing:.05em; color: var(--muted); margin-bottom: 6px; font-weight: 700; }
+  .ls-card p  { font-size: 0.87rem; margin: 0; }
+  .ls-card .individualised { font-size: 0.76rem; color: var(--accent); margin-top: 6px; font-weight: 600; }
+
+  /* ── Insight cards ── */
+  .insight-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .insight-card .ins-number { font-family: var(--mono-font); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing:.1em; margin-bottom: 6px; }
+  .insight-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .insight-card .ins-row { display: grid; grid-template-columns: 90px 1fr; gap: 6px; font-size: 0.87rem; margin-bottom: 4px; }
+  .insight-card .ins-key { font-weight: 600; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing:.05em; padding-top: 1px; }
+
+  /* ── Education card ── */
+  .edu-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .edu-card-header {
+    background: var(--nav-bg);
+    color: var(--nav-text);
+    padding: 12px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .edu-card-body { padding: 18px; }
+  .edu-section { margin-bottom: 20px; }
+  .edu-section h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing:.07em; color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 10px; }
+  .edu-section ul { padding-left: 18px; font-size: 0.9rem; }
+  .edu-section ul li { margin-bottom: 5px; }
+  .draft-stamp {
+    display: inline-block;
+    border: 2px solid var(--warn-border);
+    color: var(--warn-border);
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 600px) {
+    .page-header h1 { font-size: 1.35rem; }
+    h2 { font-size: 1.1rem; }
+    .ls-grid { grid-template-columns: 1fr; }
+    .insight-card .ins-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a class="brand" href="https://avi33tbtt.github.io/">Dr. Avinash Kumar Gupta</a>
+  <a class="back" href="https://avi33tbtt.github.io/Prompts/">← Back to README</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="eyebrow">#VibeRounds · Module 11 — Patient Education Query Intelligence</div>
+    <h1>Diabetic Foot Ulcer with Osteomyelitis &amp; Suspected Pulmonary Embolism</h1>
+    <div class="subtitle">
+      53-year-old female · 12-year history of Type 2 Diabetes Mellitus · Acute hypoxic respiratory failure
+      &nbsp;
+      <span class="tag tag-pe">PE</span>
+      <span class="tag tag-dm">Uncontrolled DM</span>
+      <span class="tag tag-infx">Osteomyelitis</span>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="callout callout-warn">
+    <div class="callout-title">⚠️ Clinical Disclaimer &amp; Independent Verification Required</div>
+    All AI-generated outputs in this module — including patient concern summaries, lay explanations, red-flag lists, and counselling scripts — <strong>require independent clinical verification before being acted upon or shared with a patient.</strong> This module is an educational scaffold for students, not a substitute for clinical judgment, institutional communication protocols, or the clinician–patient relationship.
+  </div>
+
+  <!-- ══ STEP 11.1 ══ -->
+  <div class="step-label">Step 11.1</div>
+  <h2>The Patient's Inner Question List</h2>
+  <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">Questions this patient is most likely carrying silently — organised by the five domains of patient information need.</p>
+
+  <div class="q-group">
+    <div class="q-group-title">1 · "What is happening to my body?" — Disease understanding</div>
+    <div class="q-card"><div class="q-text">Why am I suddenly struggling to breathe when my problem was always my foot?</div><div class="q-why">Patients rarely understand how a foot wound can affect the lungs; the causal chain (infection → clotting → embolism) is medically non-intuitive, so they feel confused and alarmed.</div></div>
+    <div class="q-card"><div class="q-text">Has my diabetes done this — is this my fault?</div><div class="q-why">Many patients internalise guilt about long-standing diabetes complications, yet fear being judged by clinicians if they voice it.</div></div>
+    <div class="q-card"><div class="q-text">What exactly is osteomyelitis — does it mean my bone is dying?</div><div class="q-why">The word "bone infection" sounds catastrophic; patients often imagine rapid, irreversible destruction and are too frightened to clarify.</div></div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">2 · "What will happen to me?" — Prognosis &amp; trajectory</div>
+    <div class="q-card"><div class="q-text">Am I going to lose my foot?</div><div class="q-why">Amputation is a deeply feared outcome for diabetic foot disease patients; they frequently avoid asking because they are not sure they can handle the answer.</div></div>
+    <div class="q-card"><div class="q-text">Is the clot in my lungs life-threatening? Could I die from this?</div><div class="q-why">Fear of death from PE is high but patients hesitate to ask because the question feels "too dramatic" or they fear alarming their family.</div></div>
+    <div class="q-card"><div class="q-text">How long will I need to stay in hospital?</div><div class="q-why">Concerns about income, caregiving duties at home, and social obligations make duration of admission an urgent but rarely voiced priority.</div></div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">3 · "What do I need to do?" — Self-management</div>
+    <div class="q-card"><div class="q-text">What should I eat to help my blood sugar stop going so high — or so low?</div><div class="q-why">Wide glucose swings are distressing; patients sense something is wrong with their diet or insulin but don't know where to start and fear appearing non-compliant.</div></div>
+    <div class="q-card"><div class="q-text">Do I need to inject insulin myself, and what do I do if the dose seems wrong?</div><div class="q-why">Insulin regimen changes are intimidating; patients worry about getting it wrong at home but may not admit this to avoid seeming incompetent.</div></div>
+    <div class="q-card"><div class="q-text">How do I look after my other foot to stop the same thing happening?</div><div class="q-why">Patients with one ulcer know the other foot is at risk, but daily foot care is rarely explained concretely and they feel unsure who to ask.</div></div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">4 · "What can go wrong?" — Worry &amp; safety</div>
+    <div class="q-card"><div class="q-text">The blood thinner I'm getting — can it cause me to bleed internally?</div><div class="q-why">Anticoagulant therapy is frightening; patients hear about bleeding risk but don't know how to weigh it, so the worry sits unaddressed.</div></div>
+    <div class="q-card"><div class="q-text">What signs of danger should I watch for so I can call for help in time?</div><div class="q-why">Patients want a personalised warning list but assume the team will proactively give them one — they rarely receive it clearly before discharge.</div></div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">5 · "What does this mean for my life?" — Functional impact</div>
+    <div class="q-card"><div class="q-text">Will I be able to walk normally again?</div><div class="q-why">Mobility and independence are central to self-image; patients fear but rarely voice concerns about permanent disability from foot disease.</div></div>
+    <div class="q-card"><div class="q-text">Can I go back to work, and if so, when?</div><div class="q-why">Financial and occupational concerns are urgent but patients suppress them in clinical encounters, believing they are not "medical" questions.</div></div>
+    <div class="q-card"><div class="q-text">Who will help me at home when I am discharged, and am I safe to be alone?</div><div class="q-why">Social isolation is common but patients are embarrassed to reveal limited support networks, fearing it will complicate or delay discharge.</div></div>
+  </div>
+
+  <!-- ══ STEP 11.2 ══ -->
+  <div class="step-label">Step 11.2</div>
+  <h2>Plain-Language Explainer</h2>
+  <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;">Written at approximately a Grade 8 reading level. Medical terms are defined in brackets on first use.</p>
+
+  <h3>(a) What is happening in your body — using an analogy</h3>
+  <p>Diabetes, when it is not well-controlled for a long time, slowly damages the blood vessels and nerves in the feet. Think of those blood vessels as irrigation pipes. Years of high sugar gradually corrode the pipes, reducing the water pressure (blood flow) reaching the toes. Nerves stop sending pain signals correctly, so a sore can develop without you even noticing. Without good blood flow, the body cannot fight infection effectively, so a wound on your toe became infected, spread to the bone (this is called <strong>osteomyelitis</strong> — a bone infection), and created a pocket of pus called an <strong>abscess</strong>.</p>
+  <p>A serious infection also puts your blood into a "sticky" state — it clots more easily than normal. One of those clots may have broken off and travelled through the bloodstream to land in the blood vessels of your lungs. This is called a <strong>pulmonary embolism (PE)</strong> — "pulmonary" means lung, and "embolism" means a travelling blockage. Like a kink in a garden hose, the clot reduces blood flow through the lungs, making it harder to get enough oxygen into the body. That is why you are short of breath and need the oxygen mask.</p>
+
+  <h3>(b) What your test results mean</h3>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Test</th><th>Result</th><th>What it means in plain language</th></tr>
+      <tr><td>SpO₂ 95% on oxygen</td><td>Low-normal</td><td>Your blood is carrying less oxygen than it should; the extra oxygen you are getting is helping but your lungs are still struggling.</td></tr>
+      <tr><td>Heart rate 100 bpm</td><td>Slightly fast</td><td>Your heart is beating a little faster than usual — the body's way of trying to pump more oxygen around despite the blockage.</td></tr>
+      <tr><td>Chest X-Ray — clear</td><td>Normal</td><td>No pneumonia or fluid in the lungs — which is important because it points toward a blood clot (PE) rather than an infection as the cause of the breathing difficulty.</td></tr>
+      <tr><td>D-dimer — very elevated</td><td>Abnormal</td><td>D-dimer is a breakdown product released when clots dissolve in the body. A very high level is a strong signal that significant clotting has occurred.</td></tr>
+      <tr><td>Leg Doppler — no DVT</td><td>Negative</td><td>No clot was found in the leg veins, but this does not rule out a clot in the lungs — the clot may have already moved up or started from another site.</td></tr>
+      <tr><td>Blood glucose 108–514 mg/dL</td><td>Dangerously variable</td><td>Blood sugar should stay in a much narrower range (roughly 80–180 mg/dL). These swings mean the current insulin programme is not keeping sugar stable, which slows wound healing and weakens your immune system.</td></tr>
+      <tr><td>Foot imaging</td><td>Osteomyelitis confirmed</td><td>The infection has reached the bone of your big toe. This needs urgent surgical cleaning and antibiotics to clear it.</td></tr>
+    </table>
+  </div>
+
+  <h3>(c) What your treatments are doing and why they matter</h3>
+  <ul style="padding-left:20px;font-size:0.9rem;">
+    <li style="margin-bottom:8px;"><strong>Oxygen via nasal cannula:</strong> Gives your body extra oxygen while the clot is being treated, preventing organ damage from low oxygen levels.</li>
+    <li style="margin-bottom:8px;"><strong>Enoxaparin (blood thinner injection):</strong> Prevents the existing clot from growing larger and stops new clots forming. It does not dissolve the current clot immediately — your body's own clot-busting system does that over weeks — but it gives your system a chance to do so safely.</li>
+    <li style="margin-bottom:8px;"><strong>CT Pulmonary Angiogram (CTPA) scan:</strong> A special scan using dye to take detailed pictures of the blood vessels in your lungs. It will confirm whether a clot is present and show how large it is, guiding further treatment decisions.</li>
+    <li style="margin-bottom:8px;"><strong>IV antibiotics:</strong> Strong antibiotics delivered directly into the vein reach the bone more effectively than tablets, fighting the infection at its source.</li>
+    <li style="margin-bottom:8px;"><strong>Basal-bolus insulin regimen:</strong> A twice-daily background insulin (basal) plus small doses at meal times (bolus) mimics how a healthy pancreas works, keeping your sugar far more stable than the current sliding-scale approach and supporting wound healing.</li>
+  </ul>
+
+  <!-- ══ STEP 11.3 ══ -->
+  <div class="step-label">Step 11.3</div>
+  <h2>The Family Member Perspective</h2>
+
+  <h3>(a) The 5 most urgent questions a family member would ask</h3>
+  <div class="quote-card">"Is she going to be okay — I need someone to tell me honestly whether her life is in danger right now."</div>
+  <div class="quote-card">"Will she lose her foot? We've been worried about this for years and I need to know if surgery is going to happen."</div>
+  <div class="quote-card">"The blood thinner they are giving her — is it safe? I heard that can cause bleeding. Who is monitoring that?"</div>
+  <div class="quote-card">"Her blood sugar has been all over the place for months — why is it only being sorted out now, and will this new insulin fix it for good?"</div>
+  <div class="quote-card">"When she comes home, what do I need to do to care for her foot and her injections? I've never done this before."</div>
+
+  <h3>(b) Fears the family may not express to the team</h3>
+  <div class="quote-card">"I'm terrified that if I wasn't there to bring her in, she would have quietly got worse and we wouldn't have noticed until it was too late."</div>
+  <div class="quote-card">"I'm scared we won't be able to manage all this at home — the injections, the wound dressing, the follow-up appointments — and something will go wrong again."</div>
+
+  <h3>(c) A practical home concern the team may not have asked about</h3>
+  <div class="quote-card">"I work full-time and I'm the only one at home who can help her. I honestly don't know how I'll manage the insulin injections and wound care on top of everything else. Has anyone thought about whether we need a home nurse?"</div>
+
+  <!-- ══ STEP 11.4 ══ -->
+  <div class="step-label">Step 11.4</div>
+  <h2>Medication Literacy Check</h2>
+  <div class="tbl-wrap">
+    <table>
+      <tr>
+        <th>Medication</th>
+        <th>Patient Question</th>
+        <th>Plain-Language Answer</th>
+        <th>Why This Question Matters</th>
+      </tr>
+      <tr>
+        <td><strong>Enoxaparin</strong><br>(Low-molecular-weight heparin injection)</td>
+        <td>Will this injection make me bleed everywhere — even inside?</td>
+        <td>Enoxaparin reduces your blood's clotting ability, so you may bruise more easily or take longer to stop bleeding from a small cut. However, serious internal bleeding is uncommon at the correct dose and with careful monitoring. Tell the team immediately if you notice unusual bruising, blood in your urine, or black stools.</td>
+        <td>Fear of bleeding is the single biggest barrier to anticoagulant adherence; an informed patient will monitor themselves rather than secretly stopping the medication.</td>
+      </tr>
+      <tr>
+        <td><strong>Enoxaparin</strong> (continued)</td>
+        <td>Do I need to give this injection to myself at home?</td>
+        <td>If your doctor decides you need to continue this medication at home, the nursing team will teach you — or a family member — how to inject it safely under the skin of the abdomen. It is simpler than it sounds, and a nurse will practice with you before you leave.</td>
+        <td>Patients feel anxiety about self-injection; early counselling reduces non-adherence after discharge.</td>
+      </tr>
+      <tr>
+        <td><strong>Basal-Bolus Insulin</strong><br>(e.g., Glargine + rapid-acting)</td>
+        <td>I'm already on insulin — how is this different from what I was doing before?</td>
+        <td>A sliding scale only gives insulin when your sugar is already high — it is reactive. A basal-bolus plan gives a steady background dose at night plus a small dose before each meal, keeping your sugar in a healthier range throughout the day and helping your wound heal faster.</td>
+        <td>Patients may not continue the new regimen after discharge if they don't understand why it is better than their previous one.</td>
+      </tr>
+      <tr>
+        <td><strong>Basal-Bolus Insulin</strong> (continued)</td>
+        <td>Can I get dangerously low blood sugar (a hypo) from this?</td>
+        <td>Yes — low blood sugar (called <em>hypoglycaemia</em>) is a risk with insulin, especially if you skip a meal. You should always eat around the time of your meal-time dose. Carry glucose tablets or a sugary drink. Signs of a low include shakiness, sweating, and confusion — treat immediately with sugar and tell your team.</td>
+        <td>Hypoglycaemia fear causes patients to under-dose insulin, perpetuating poor control and delayed healing.</td>
+      </tr>
+      <tr>
+        <td><strong>IV Antibiotics</strong><br>(broad-spectrum, bone-penetrating)</td>
+        <td>Will the antibiotics make me feel sick to my stomach?</td>
+        <td>Some antibiotics can cause nausea, loose stools, or a rash. Tell your nurse straight away if this happens — there are anti-nausea medicines and, if needed, the antibiotic can be reviewed. Never stop an antibiotic course early because you feel better; bone infections need the full course to clear completely.</td>
+        <td>Early antibiotic discontinuation is the most common cause of treatment failure in osteomyelitis; patients need to understand why the full course matters.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ══ STEP 11.5 ══ -->
+  <div class="step-label">Step 11.5</div>
+  <h2>Red-Flag Awareness Guide</h2>
+
+  <div class="rf-block">
+    <h3><span class="rf-dot red"></span>&nbsp; Seek emergency care immediately (go to hospital now)</h3>
+    <ul class="rf-list">
+      <li class="red">Sudden severe shortness of breath — especially if worse than on admission, or if you feel faint or your lips/fingers go blue.<span class="rf-reason">Teaching note: Suggests worsening PE, haemodynamic compromise, or right heart strain — a clinical emergency requiring immediate re-evaluation.</span></li>
+      <li class="red">Coughing up blood, or blood in your stools / urine (black, tarry, or red stools).<span class="rf-reason">Teaching note: May signal major anticoagulant-related bleeding — GI haemorrhage or haemoptysis from infarction — requiring anticoagulant reversal.</span></li>
+      <li class="red">Sudden confusion, severe headache, or difficulty speaking.<span class="rf-reason">Teaching note: Possible intracranial bleed on anticoagulation, or septic encephalopathy from uncontrolled infection — both time-critical emergencies.</span></li>
+      <li class="red">Rapidly spreading redness, heat, or blackening of the foot or leg, especially if accompanied by high fever and shaking chills.<span class="rf-reason">Teaching note: Signs of necrotising fasciitis or septic progression — surgical emergency; delay in debridement dramatically worsens outcome.</span></li>
+      <li class="red">Blood sugar below 70 mg/dL with shakiness, confusion, or loss of consciousness despite sugar intake.<span class="rf-reason">Teaching note: Severe hypoglycaemia with neuroglycopenia — risk of seizure and permanent neurological damage; requires IV dextrose.</span></li>
+    </ul>
+  </div>
+
+  <div class="rf-block">
+    <h3><span class="rf-dot orange"></span>&nbsp; Call your doctor within 24 hours (do not wait)</h3>
+    <ul class="rf-list">
+      <li class="orange">Breathlessness that is gradually getting worse over a day, even if it doesn't feel like an emergency yet.<span class="rf-reason">Teaching note: Gradual worsening may indicate clot extension or inadequate anticoagulation — warrants dose adjustment or repeat imaging.</span></li>
+      <li class="orange">Foot wound discharge that increases, changes colour to green or brown, or develops a very bad smell.<span class="rf-reason">Teaching note: Suggests polymicrobial progression or antibiotic failure; may require surgical reassessment and microbiological review.</span></li>
+      <li class="orange">Blood sugar consistently above 300 mg/dL on more than two readings despite taking insulin as instructed.<span class="rf-reason">Teaching note: Indicates poor glycaemic control with risk of hyperosmolar state; impairs immune function and wound healing — regimen adjustment needed urgently.</span></li>
+      <li class="orange">Pain, swelling, or warmth developing in the other leg.<span class="rf-reason">Teaching note: New DVT — hypercoagulable state from infection increases bilateral risk; needs Doppler confirmation and possible dose escalation.</span></li>
+    </ul>
+  </div>
+
+  <div class="rf-block">
+    <h3><span class="rf-dot blue"></span>&nbsp; Monitor at home (watch and record)</h3>
+    <ul class="rf-list">
+      <li class="blue">Blood sugar readings: Check before each meal and at bedtime. Record in a notebook. Aim to keep readings between 80 and 180 mg/dL.</li>
+      <li class="blue">Oxygen saturation (SpO₂): If given a home pulse oximeter, readings below 94% at rest should prompt you to seek urgent review.</li>
+      <li class="blue">Wound appearance: Check the dressing daily. Note any bleeding through the dressing, new swelling, or redness spreading beyond the wound edges.</li>
+      <li class="blue">Temperature: If you feel hot and shivery, take your temperature. A reading above 38°C (100.4°F) warrants a call to your doctor.</li>
+    </ul>
+  </div>
+
+  <!-- ══ STEP 11.6 ══ -->
+  <div class="step-label">Step 11.6</div>
+  <h2>Lifestyle, Diet &amp; Daily Living</h2>
+  <div class="ls-grid">
+    <div class="ls-card">
+      <h4>🥗 Diet &amp; Nutrition</h4>
+      <p>Focus on low-glycaemic-index foods (lentils, wholegrains, non-starchy vegetables). Avoid sugary drinks, white rice in large quantities, and sweetened snacks. Eat regular meals at consistent times to work with the new insulin regimen.</p>
+      <div class="individualised">⚑ Individualise: portion size and carbohydrate targets depend on weight and kidney function — dietitian referral recommended.</div>
+    </div>
+    <div class="ls-card">
+      <h4>🏃 Physical Activity</h4>
+      <p>Complete rest from weight-bearing on the right foot until the wound and bone infection are under control. Light upper-body movement in bed is encouraged to reduce DVT risk. No walking on the ulcerated foot until cleared by the surgical team.</p>
+      <div class="individualised">⚑ Individualise: mobility plan depends on surgical debridement outcome and wound healing status.</div>
+    </div>
+    <div class="ls-card">
+      <h4>😴 Sleep &amp; Rest</h4>
+      <p>Prioritise sleep — the body heals most effectively during rest. Keep the foot elevated on a pillow while in bed to reduce swelling. Discomfort and hospital noise can disrupt sleep; ask the nurse about positioning aids.</p>
+    </div>
+    <div class="ls-card">
+      <h4>💼 Work &amp; Occupation</h4>
+      <p>Return to work is not appropriate until the PE is treated, the wound is healing, and glucose is stable. Timeline is likely several weeks to months depending on surgical outcome and anticoagulation duration.</p>
+      <div class="individualised">⚑ Individualise: occupation type (standing vs. seated) significantly affects return-to-work timing.</div>
+    </div>
+    <div class="ls-card">
+      <h4>🚗 Driving</h4>
+      <p>Not advisable during hospital admission. After discharge, driving on anticoagulants is generally permitted once stable, but the patient should check with her doctor if she takes high-dose insulin, as significant hypoglycaemia poses a driving risk.</p>
+      <div class="individualised">⚑ Individualise: local road-authority guidance on insulin-treated diabetes and driving applies.</div>
+    </div>
+    <div class="ls-card">
+      <h4>🍺 Alcohol</h4>
+      <p>Avoid during the acute admission. After discharge, alcohol lowers blood sugar unpredictably, especially with insulin, and can interact with some antibiotics (e.g., metronidazole). Moderation is advised once clinically stable.</p>
+    </div>
+    <div class="ls-card">
+      <h4>🧹 Foot Monitoring at Home</h4>
+      <p>Daily inspection of both feet using a mirror if needed. Look for new cuts, redness, blisters, or changes in skin colour. Never walk barefoot. Keep feet clean and dry. Moisturise the skin but avoid between the toes.</p>
+    </div>
+    <div class="ls-card">
+      <h4>📊 Home Glucose Monitoring</h4>
+      <p>A glucometer and logbook are essential. Blood glucose should be checked 4 times daily (before meals and bedtime) until the regimen is stable. Record readings and bring the logbook to every clinic visit.</p>
+      <div class="individualised">⚑ Individualise: if continuous glucose monitoring (CGM) is accessible, this significantly reduces the burden of finger-prick testing.</div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 11.7 ══ -->
+  <div class="step-label">Step 11.7</div>
+  <h2>The Unasked Question — Patient Insight Mining</h2>
+
+  <div class="insight-card">
+    <div class="ins-number">Insight 01</div>
+    <h4>The foot you can't feel is more dangerous than the one that hurts</h4>
+    <div class="ins-row"><span class="ins-key">What it is</span><span>Diabetic neuropathy means nerve damage has probably reduced sensation in both feet. This patient may have no warning pain from a new wound on the left foot — yet that foot is equally at risk. Many patients believe that "if it doesn't hurt, it's fine." The opposite is true in diabetic neuropathy: silence is the danger signal.</span></div>
+    <div class="ins-row"><span class="ins-key">Why missed</span><span>Pain is the body's intuitive alarm system; patients naturally use pain as their primary health monitor and don't think to check for wounds that cause no discomfort.</span></div>
+    <div class="ins-row"><span class="ins-key">How to introduce</span><span>During the foot-care counselling session, say: "Can you feel me touching this part of your foot right now?" — then demonstrate the sensation deficit and directly link it to why daily visual inspection matters more than waiting for pain.</span></div>
+  </div>
+
+  <div class="insight-card">
+    <div class="ins-number">Insight 02</div>
+    <h4>Stopping the blood thinner early because you "feel better" is one of the most dangerous things you can do</h4>
+    <div class="ins-row"><span class="ins-key">What it is</span><span>Most patients feel significantly better within a few days of anticoagulation. The natural human instinct is to conclude the clot has gone and to stop the injection — especially if it is painful or expensive. In reality, the clot dissolves slowly over weeks, and stopping early allows it to re-expand or for a new clot to form, with risk of sudden death.</span></div>
+    <div class="ins-row"><span class="ins-key">Why missed</span><span>Patients equate symptom resolution with disease cure — a logical but dangerous heuristic for PE, where the underlying hypercoagulable state (from active infection) persists independently of symptoms.</span></div>
+    <div class="ins-row"><span class="ins-key">How to introduce</span><span>At the point of prescribing: "You are going to feel much better on this medicine within a day or two — but I need to tell you that feeling better does not mean the clot has gone. If you stop the injections early, the clot can come back, sometimes much more seriously. The full course is non-negotiable."</span></div>
+  </div>
+
+  <div class="insight-card">
+    <div class="ins-number">Insight 03</div>
+    <h4>Getting the infection under control is just as important as treating the clot — possibly more so</h4>
+    <div class="ins-row"><span class="ins-key">What it is</span><span>The underlying driver of both the PE and the glycaemic chaos in this patient is the active bone infection. As long as the osteomyelitis remains uncontrolled, the body stays in an inflammatory, hypercoagulable, and insulin-resistant state. Blood thinners manage the PE; only surgical source control and antibiotics remove the root cause. Many patients focus entirely on the more dramatic diagnosis (PE) and deprioritise wound care and surgical follow-up after discharge.</span></div>
+    <div class="ins-row"><span class="ins-key">Why missed</span><span>The breathing difficulty is the frightening, visible crisis; the foot wound, present for a month, has become normalised background noise for both patient and family.</span></div>
+    <div class="ins-row"><span class="ins-key">How to introduce</span><span>Explicitly name the causal chain: "Your breathing problem started because of your foot — if we fix the breathing but leave the foot infection untreated, the clot can come back. Every wound dressing, every antibiotic dose, every surgical review appointment is also protecting your lungs."</span></div>
+  </div>
+
+  <!-- ══ STEP 11.9 ══ -->
+  <div class="step-label">Step 11.9</div>
+  <h2>Patient Education Summary Card</h2>
+
+  <div class="edu-card">
+    <div class="edu-card-header">
+      <span>Patient Take-Home Information Card</span>
+      <span class="draft-stamp">Student Draft — Requires Clinician Review</span>
+    </div>
+    <div class="edu-card-body">
+
+      <div class="edu-section">
+        <h4>Your Diagnoses</h4>
+        <p><strong>1. Suspected Pulmonary Embolism (PE)</strong> — a blood clot in the blood vessels of your lungs, making it harder to breathe. It is being treated with blood-thinning injections and further scans to confirm.</p>
+        <p><strong>2. Diabetic Foot Ulcer with Bone Infection (Osteomyelitis)</strong> — a long-standing wound on your right big toe has become infected, reaching the bone. This requires strong antibiotics and likely a surgical procedure to clean the area.</p>
+        <p><strong>3. Uncontrolled Diabetes Mellitus</strong> — your blood sugar has been swinging dangerously high and low. A new insulin plan will give you much more stable sugar levels.</p>
+      </div>
+
+      <div class="edu-section">
+        <h4>Your Medicines</h4>
+        <div class="tbl-wrap">
+          <table>
+            <tr><th>Medicine</th><th>What it does</th><th>When to take it</th><th>One thing to remember</th></tr>
+            <tr><td>Enoxaparin injection</td><td>Prevents the clot in your lungs from growing</td><td>Twice daily under the skin of the abdomen — as instructed by your nurse</td><td>Never skip a dose, and don't stop without doctor approval — even if you feel better</td></tr>
+            <tr><td>Basal insulin (e.g., Glargine)</td><td>Keeps background blood sugar stable overnight and between meals</td><td>Once daily, usually at bedtime</td><td>Take it at the same time every night even if you didn't eat much</td></tr>
+            <tr><td>Rapid-acting insulin</td><td>Covers the rise in sugar after meals</td><td>Before each main meal — only if you plan to eat</td><td>If you skip a meal, skip this dose — it prevents dangerous low blood sugar</td></tr>
+            <tr><td>IV antibiotics (hospital) → oral/home course</td><td>Kill the bacteria infecting your bone</td><td>As prescribed — IV in hospital, tablets at home</td><td>Complete the full course even when you feel well; stopping early lets the infection return</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="edu-section">
+        <h4>⚠️ Warning Signs — Seek Emergency Help Immediately If:</h4>
+        <ul>
+          <li>Sudden severe breathlessness, chest pain, or blue lips/fingers</li>
+          <li>Coughing up blood, or black/red stools</li>
+          <li>High fever with shaking chills AND worsening redness spreading up your leg</li>
+          <li>Confusion, severe headache, or difficulty speaking</li>
+          <li>Blood sugar below 70 mg/dL with shaking or confusion that doesn't improve with sugar</li>
+        </ul>
+      </div>
+
+      <div class="edu-section">
+        <h4>What You Can Do at Home</h4>
+        <ul>
+          <li>Check your blood sugar 4 times a day (before each meal and before bed) and record every reading in your logbook.</li>
+          <li>Inspect both feet every day — use a mirror for the soles. Report any new wound, redness, or swelling immediately.</li>
+          <li>Eat regular meals at consistent times to help your insulin work properly.</li>
+          <li>Keep the bandage/dressing clean and dry; change it as taught by the wound-care nurse.</li>
+          <li>Do not walk barefoot, ever.</li>
+        </ul>
+      </div>
+
+      <div class="edu-section">
+        <h4>Your Next Steps</h4>
+        <ul>
+          <li><strong>CTPA scan</strong> (arranged as an inpatient) — to confirm the clot in your lungs and guide your blood-thinner duration.</li>
+          <li><strong>Surgical / orthopaedic review</strong> — for wound debridement and bone infection management.</li>
+          <li><strong>Endocrinology / Diabetes outpatient clinic</strong> — within 2 weeks of discharge for insulin regimen review.</li>
+          <li><strong>Wound care nurse / podiatry</strong> — for ongoing dressing changes and foot education.</li>
+          <li><strong>Blood tests</strong> — kidney function (affects blood-thinner dose) and HbA1c (3-month average blood sugar) at first outpatient visit.</li>
+        </ul>
+      </div>
+
+      <div class="edu-section">
+        <h4>Questions to Ask Your Doctor Next Time</h4>
+        <ul>
+          <li>"How long will I need to take the blood-thinning injection, and will I need to switch to tablets eventually?"</li>
+          <li>"Will my right big toe heal without amputation, and what will determine that decision?"</li>
+          <li>"Is my insulin dose correct, and what should I do if my readings stay above 300 mg/dL despite taking my insulin?"</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ STEP 11.10 ══ -->
+  <div class="step-label">Step 11.10</div>
+  <h2>Critical Awareness Debrief — Patient Education Lens</h2>
+
+  <div class="callout callout-note">
+    <div class="callout-title">1 · Health literacy assumptions</div>
+    The AI assumed basic literacy, the ability to self-monitor blood glucose, and access to a glucometer. It also assumed the patient understands what a "clot" means. In practice, 12 years of diabetes does not guarantee health literacy — the severity of the current crisis suggests possible gaps in self-management education that should have been addressed years earlier. Verify before assuming familiarity with any monitoring device.
+  </div>
+
+  <div class="callout callout-note">
+    <div class="callout-title">2 · Cultural, linguistic, and socioeconomic factors</div>
+    The clinical input gives no information about language, cultural health beliefs, or financial capacity. In many contexts, insulin cost, injection stigma, and distrust of surgical intervention are significant barriers that would fundamentally alter how information should be framed and prioritised. The family's caregiving capacity (one working adult, no home nurse mentioned) is a real socioeconomic constraint that could compromise post-discharge safety.
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">3 · Where the AI output may be overconfident or incomplete</div>
+    The module assumes the PE diagnosis is confirmed — it has not yet been. The CTPA is still pending. All patient education on PE should be delivered conditionally ("we suspect a clot and are treating for it while we confirm"). Additionally, antibiotic choice and duration for osteomyelitis have not been specified; the medication table covers the principle but cannot give the patient accurate specific instructions.
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">4 · What AI analysis cannot tell you</div>
+    No AI module can tell you how this patient feels emotionally about the possibility of losing her foot, how much support she has at home, what her previous experience of healthcare has been, whether she trusts you, or what her personal goals and priorities are. The most important next step is to sit with the patient (and family, with her consent) and ask: <em>"What is worrying you most right now, and what do you most want to understand before we go further?"</em> Her answer will tell you more than any generated output can.
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <em>Vibe Rounds Prompt Modules — Module 11 · Patient Education Query Intelligence</em><br>
+    Coined and developed by Dr. Avinash Kumar Gupta · Vibe Rounds, June 2026<br>
+    #VibeRounds — A Socratic AI Paradigm for Clinical Medicine<br><br>
+    <strong>This document is a student-generated educational draft and requires clinician review before use in any clinical setting.</strong>
+  </footer>
+
+</div>
+</body>
+</html>
