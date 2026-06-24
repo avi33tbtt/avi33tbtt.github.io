@@ -3084,21 +3084,170 @@
     </div>
   </div>
 
-  <div class="section">
-    <div class="eyebrow" style="margin-bottom:8px">Master Case Analysis Protocol</div>
-    <h2>Seven stages, four outputs</h2>
-    <p class="lead">Run a case link through every module in one orchestrated pipeline. Each stage hands off explicitly to the next — no gaps fall through.</p>
-    <div class="pipeline-stages">
-      <div class="stage"><div class="stage-num">1</div><div><h3>Case Ingestion</h3><p>Extracts a structured clinical record from the case source. Every absent field is explicitly marked <code>[NOT DOCUMENTED]</code> — gaps become visible artefacts, not silent omissions.</p></div></div>
-      <div class="stage"><div class="stage-num">2</div><div><h3>Prompt Mapping</h3><p>Matches the case's clinical features against the module set. Minimum 8–15 usable prompts identified, preventing the model from defaulting to a single familiar lens.</p></div></div>
-      <div class="stage"><div class="stage-num">3</div><div><h3>Prompt Ranking</h3><p>Scores every mapped prompt 1–10 on whether answering it would change clinical management. Separates high-stakes reasoning from completeness for its own sake.</p></div></div>
-      <div class="stage"><div class="stage-num">4</div><div><h3>High-Value Prompt Execution</h3><p>Full clinical-depth answers to every prompt scored 8–10. Patient-specific — no generic textbook content. Each answer tags information gaps for Stage 7.</p></div></div>
-      <div class="stage"><div class="stage-num">5</div><div><h3>Insight Synthesis</h3><p>Top 10 clinical insights extracted by convergence — findings that multiple structurally distinct modules independently surfaced, not findings any single prompt flagged alone.</p><span class="stage-output">→ File 1: TopInsights.md</span></div></div>
-      <div class="stage"><div class="stage-num">6</div><div><h3>CARE Report + Advocate Debrief</h3><p>A full 12-field CARE-format case report plus a structured "what did the family caregiver need to know, and when" debrief with minimum 5 inflection points.</p><span class="stage-output">→ Files 2 & 3: CaseAnalysis.md · CARE-AdvocateDebrief.md</span></div></div>
-      <div class="stage"><div class="stage-num">7</div><div><h3>Further Information Synthesis</h3><p>Pools every flagged information gap from Stages 1, 4, and 6 into one deduplicated, prioritised "what to ask / examine / order next" list — the single most actionable output of the pipeline.</p><span class="stage-output">→ File 4: FurtherInfo.md</span></div></div>
-    </div>
-  </div>
+  
+  
+  <div class="map-container">
 
+        <!-- Top Right: Socratic & Case Stack -->
+        <div class="stack-panel stack-teal">
+            <div class="stack-title">Clinical Core &amp; Advocacy <span>🩻</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">1</div>
+                    <div class="module-name">Socratic Clinical Reasoning</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">2</div>
+                    <div class="module-name">Patient-Advocate Case Documentation</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">3</div>
+                    <div class="module-name">Extended Patient-Advocate Monitoring</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">4</div>
+                    <div class="module-name">Peer-Level Ward Round Preparation</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Top Center: Registry & Analytics -->
+        <div class="stack-panel stack-purple">
+            <div class="stack-title">Registry &amp; Audit Analytics <span>📊</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">5</div>
+                    <div class="module-name">Real-Time Case Review &amp; Data Audit</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">5</div>
+                    <div class="module-name">Registry-Level Analytics</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">9</div>
+                    <div class="module-name">N-of-1 Research</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Deep Analytical Stack -->
+        <div class="stack-panel stack-teal">
+            <div class="stack-title">Deep Analytical Stack <span>⚡</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">22</div>
+                    <div class="module-name">Nested</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">23</div>
+                    <div class="module-name">Counterfactual</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">24</div>
+                    <div class="module-name">Heuristic</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">25</div>
+                    <div class="module-name">Thematic</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">26</div>
+                    <div class="module-name">Bias Auditing</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">27</div>
+                    <div class="module-name">Time-Series</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">35</div>
+                    <div class="module-name">Certainty Mapping</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">36</div>
+                    <div class="module-name">Bayesian Engine</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Central Diagnostic Hub -->
+        <div class="stack-panel stack-amber">
+            <div class="stack-title">Diagnostic Hub <span>🎯</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-amber">13</div>
+                    <div class="module-name">Medication Reconciliation &amp; Polypharmacy</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-amber">28</div>
+                    <div class="module-name">Diagnostic Time-Out</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-amber">30</div>
+                    <div class="module-name">The "Diagnostic Anchor" Extractor</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-amber">37</div>
+                    <div class="module-name">Red Herring / Signal-To-Noise Drill</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Clinical Cognition & Pathophysiology Loop -->
+        <div class="stack-panel stack-teal">
+            <div class="stack-title">Clinical Cognition Loop <span>🔄</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">12</div>
+                    <div class="module-name">Differential Diagnosis Deepdive</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">14</div>
+                    <div class="module-name">Resource-Constrained Clinical Reasoning</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">15</div>
+                    <div class="module-name">Illness Script Acquisition</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">16</div>
+                    <div class="module-name">Basic Science ↔ Clinical Integration</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">17</div>
+                    <div class="module-name">Semantic Qualifiers</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">31</div>
+                    <div class="module-name">First-Principles Pathophysiology Mapping</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-teal">32</div>
+                    <div class="module-name">Clinical Cognition Loop</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Infrastructure & Simulation -->
+        <div class="stack-panel stack-purple">
+            <div class="stack-title">Global Network &amp; Systems <span>🌐</span></div>
+            <div class="modules-list">
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">38</div>
+                    <div class="module-name">Complex Case Simulator</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">39</div>
+                    <div class="module-name">Global Knowledge Network</div>
+                </a>
+                <a href="https://avi33tbtt.github.io/Prompts/" class="module-item">
+                    <div class="module-badge badge-purple">41</div>
+                    <div class="module-name">Workflow Implementation</div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+  
   <div class="section" style="padding-top:8px;">
     <div class="cta-section">
       <h2>Start with Module 0</h2>
