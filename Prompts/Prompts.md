@@ -241,7 +241,6 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Global Health Optimization Methodology](VibeRounds-GlobalHealthOptimizationMethodology-v1.0.md) | Global Health Optimization Methodology |
 | -- | [How This Can Happen](VibeRounds_How_This_Can_Happen.md) | How This Can Happen |
 | -- | [Guided Discovery Agent](VibeRounds_Guided_Discovery_Agent.md) | Guided Discovery Agent |
-| -- | [Patient Advocate Guided Discovery Agent](PatientAdvocate_GuidedDiscovery_Agent.md) | Patient Advocate Guided Discovery Agent |
 
 
 * **Clinical Reasoning & Cognitive Frameworks:** 1, 12, 14, 15, 17, 18, 20, 28, 30, 32, 33, 35, 36, 37
