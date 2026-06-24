@@ -1,1 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds Dashboard — Diabetic Foot Osteomyelitis + Suspected PE (EBM Analysis)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary:     #ffffff;
+    --bg-secondary:   #f8f9fa;
+    --bg-tertiary:    #f1f3f5;
+    --border:         #dee2e6;
+    --text-primary:   #1a1a2e;
+    --text-secondary: #6c757d;
+    --text-muted:     #adb5bd;
+    --accent:         #2563eb;
+    --accent-light:   #eff6ff;
+    --warning:        #d97706;
+    --warning-light:  #fffbeb;
+    --danger:         #dc2626;
+    --danger-light:   #fef2f2;
+    --success:        #16a34a;
+    --success-light:  #f0fdf4;
+    --score-high:     #dc2626;
+    --score-mid:      #d97706;
+    --score-low:      #16a34a;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+  }
+
+  h1 { font-size: 1.5rem;  font-weight: 700; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 12px; }
+  h3 { font-size: 1rem;    font-weight: 600; }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 4px;
+    margin-top: 12px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px 0;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .case-id-badge {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid #bfdbfe;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .stat-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .stat-chip {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .stat-chip span { color: var(--text-primary); }
+
+  /* TAB STRIP */
+  .tab-strip {
+    display: flex;
+    gap: 0;
+    border-bottom: none;
+    margin-top: 8px;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--text-primary); }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  /* MAIN */
+  main {
+    padding: 32px 32px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+
+  .card:hover { border-color: #c0c7ce; }
+
+  /* CASE SUMMARY */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+
+  .field-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .field-value {
+    font-weight: 400;
+    color: var(--text-primary);
+  }
+
+  .soap-block {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+
+  .soap-block h3 {
+    margin-bottom: 8px;
+    color: var(--accent);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .soap-block ul {
+    padding-left: 16px;
+  }
+
+  .soap-block ul li {
+    margin-bottom: 4px;
+  }
+
+  /* GAP BADGE */
+  .gap-badge {
+    display: inline-block;
+    background: var(--warning-light);
+    color: var(--warning);
+    border: 1px solid #fcd34d;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 5px;
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+
+  /* INSIGHT CARDS */
+  .insight-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .insight-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .insight-header:hover { background: var(--bg-tertiary); }
+
+  .insight-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .insight-number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    min-width: 20px;
+  }
+
+  .insight-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .score-dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .dot.filled-high { background: var(--score-high); }
+  .dot.filled-mid  { background: var(--score-mid); }
+  .dot.filled-low  { background: var(--score-low); }
+
+  .insight-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .insight-body.expanded { max-height: 600px; }
+
+  .insight-body-inner {
+    padding: 4px 20px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* SHADOW CHALLENGE */
+  .shadow-block {
+    margin-top: 12px;
+    background: var(--danger-light);
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+
+  .shadow-block .shadow-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--danger);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .verdict-tag {
+    display: inline-block;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    letter-spacing: 0.04em;
+    margin-top: 6px;
+  }
+
+  .verdict-held    { background: var(--danger-light);  color: var(--danger);  border: 1px solid #fca5a5; }
+  .verdict-partial { background: var(--warning-light); color: var(--warning); border: 1px solid #fcd34d; }
+  .verdict-over    { background: var(--success-light); color: var(--success); border: 1px solid #86efac; }
+
+  /* INVESTIGATIONS TAB */
+  .sub-tab-strip {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .sub-tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s;
+    margin-bottom: -1px;
+  }
+
+  .sub-tab-btn.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .sub-section { display: none; }
+  .sub-section.active { display: block; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  th:hover { color: var(--text-primary); }
+
+  td {
+    padding: 10px 12px;
+    vertical-align: top;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) td { background: var(--bg-secondary); }
+  tr:nth-child(odd)  td { background: var(--bg-primary); }
+
+  .score-badge {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: white;
+  }
+
+  .score-10 { background: var(--danger); }
+  .score-9  { background: var(--danger); }
+  .score-8  { background: var(--warning); }
+  .score-7  { background: var(--warning); }
+  .score-low-bg { background: var(--success); }
+
+  /* DIFFERENTIALS */
+  .diff-group {
+    margin-bottom: 16px;
+    border-left: 3px solid var(--border);
+    border-radius: 0 6px 6px 0;
+    overflow: hidden;
+  }
+
+  .diff-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .diff-group-header:hover { background: var(--bg-tertiary); }
+
+  .diff-group-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .diff-group-body.expanded { max-height: 800px; }
+
+  .diff-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .diff-item:last-child { border-bottom: none; }
+
+  .diff-num {
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    min-width: 18px;
+    margin-top: 2px;
+  }
+
+  .diff-name { font-weight: 600; }
+  .diff-rationale { color: var(--text-secondary); font-size: 0.85rem; }
+
+  .group-most-likely  { border-left-color: var(--accent); }
+  .group-must-not-miss { border-left-color: var(--danger); }
+  .group-benign       { border-left-color: var(--success); }
+
+  .group-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .label-most-likely   { background: var(--accent-light);   color: var(--accent); }
+  .label-must-not-miss { background: var(--danger-light);   color: var(--danger); }
+  .label-benign        { background: var(--success-light);  color: var(--success); }
+
+  /* ACTION PLAN */
+  .action-plan-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .action-plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .print-btn {
+    border: 1px solid var(--border);
+    background: white;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: border-color 0.15s;
+  }
+
+  .print-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .plan-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .plan-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .clinical-summary-box {
+    background: var(--accent-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .checklist-item input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .priority-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+  }
+
+  .priority-num {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+
+  /* EBM GRADE TABLE */
+  .grade-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  .grade-table th { background: var(--bg-tertiary); }
+  .grade-table td, .grade-table th { border: 1px solid var(--border); padding: 7px 10px; font-size: 0.82rem; }
+
+  .grade-high   { color: var(--success); font-weight: 700; }
+  .grade-mod    { color: var(--warning); font-weight: 700; }
+  .grade-low    { color: var(--danger);  font-weight: 700; }
+  .grade-vlow   { color: var(--danger);  font-weight: 700; }
+
+  /* SHADOW INVENTORY TABLE */
+  .inventory-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 0.82rem; }
+  .inventory-table th { background: var(--bg-tertiary); font-size: 0.7rem; }
+  .inventory-table td, .inventory-table th { border: 1px solid var(--border); padding: 8px 10px; vertical-align: top; }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border);
+    padding: 12px 32px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* PRINT */
+  @media print {
+    nav, .tab-strip, .print-btn, footer { display: none !important; }
+    body { font-size: 12px; color: #000; background: #fff; }
+    .card { border: 1px solid #ccc; page-break-inside: avoid; }
+    a { color: #000; text-decoration: none; }
+    .section:not(#section-action-plan) { display: none !important; }
+    #section-action-plan { display: block !important; }
+    header { padding-bottom: 12px; }
+    .stat-bar { display: none; }
+  }
+
+  .toggle-arrow { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; }
+  .expanded-arrow { transform: rotate(180deg); }
+
+  .info-row { display: flex; gap: 6px; margin-bottom: 4px; align-items: flex-start; }
+  .info-bullet { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* responsive */
+  @media (max-width: 700px) {
+    main { padding: 20px 16px 48px; }
+    header { padding: 16px 16px 0; }
+    .header-top { flex-direction: column; gap: 8px; }
+    .tab-btn { padding: 8px 10px; font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <h1>Diabetic Foot Osteomyelitis + Suspected PE</h1>
+      <div style="color:var(--text-secondary);font-size:0.85rem;margin-top:4px;">
+        53-year-old female &mdash; EBM Analysis &bull; Module 45 + Shadow Module 45
+      </div>
+    </div>
+    <div class="case-id-badge">CASE&nbsp;ID: VR-DFU-PE-2026</div>
+  </div>
+  <div class="stat-bar">
+    <div class="stat-chip">◎ Gaps logged: <span>3</span></div>
+    <div class="stat-chip">✦ EBM Steps: <span>10</span></div>
+    <div class="stat-chip">⚠ Critical flags: <span>4</span></div>
+    <div class="stat-chip">⊞ Specialties: <span>5</span></div>
+    <div class="stat-chip">⊕ Shadow challenges: <span>8</span></div>
+  </div>
+  <div class="tab-strip" id="mainTabStrip">
+    <button class="tab-btn active" data-tab="section-case">◎&nbsp; Case Summary</button>
+    <button class="tab-btn" data-tab="section-insights">✦&nbsp; EBM Insights</button>
+    <button class="tab-btn" data-tab="section-investigations">⊞&nbsp; Investigations</button>
+    <button class="tab-btn" data-tab="section-differentials">⊕&nbsp; Differentials</button>
+    <button class="tab-btn" data-tab="section-action-plan">▶&nbsp; Action Plan</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- TAB 1: CASE SUMMARY -->
+  <div class="section active" id="section-case">
+    <h2>Case Summary</h2>
+    <div class="summary-grid">
+      <div class="card">
+        <span class="label">Demographics</span>
+        <div class="field-value">53-year-old female</div>
+        <span class="label">Diabetes History</span>
+        <div class="field-value">12-year history of Type 2 Diabetes Mellitus</div>
+        <span class="label">Primary Acute Complaint</span>
+        <div class="field-value">New-onset shortness of breath (dyspnea) requiring supplemental oxygen</div>
+        <span class="label">Secondary Complaint</span>
+        <div class="field-value">Non-healing ulcer on right great toe — present ~1 month</div>
+      </div>
+      <div class="card">
+        <span class="label">Vitals</span>
+        <div class="info-row"><span class="info-bullet">·</span><span>SpO₂ 95% on 3 L/hr O₂ via nasal cannula</span></div>
+        <div class="info-row"><span class="info-bullet">·</span><span>HR 100 bpm</span></div>
+        <div class="info-row"><span class="info-bullet">·</span><span>BP 115/66 mmHg</span></div>
+        <span class="label">Hemodynamic Status</span>
+        <div class="field-value">Intermediate-risk picture — not hemodynamically unstable/shocked</div>
+        <span class="label">Allergies / Social Hx</span>
+        <div class="field-value"><span class="gap-badge">GAP</span> Not documented</div>
+      </div>
+    </div>
+
+    <div class="soap-block">
+      <h3>S — Subjective</h3>
+      <p>53-year-old female with a known 12-year history of diabetes. Presented with a non-healing ulcer on her right foot present for approximately one month. Primary acute complaint is new-onset shortness of breath (dyspnea) requiring supplemental oxygen.</p>
+    </div>
+
+    <div class="soap-block">
+      <h3>O — Objective</h3>
+      <ul>
+        <li><strong>SpO₂:</strong> 95% on 3 L/hr O₂ via nasal cannula | <strong>HR:</strong> 100 bpm | <strong>BP:</strong> 115/66 mmHg</li>
+        <li><strong>Right great toe:</strong> Non-healing ulcer with surrounding abscess; deep infection confirmed as osteomyelitis on imaging</li>
+        <li><strong>Left foot:</strong> Bandaged (baseline foot disease)</li>
+        <li><strong>Chest X-Ray:</strong> Clear — no infiltrates, no effusion, no pulmonary oedema</li>
+        <li><strong>Venous Doppler (right lower limb):</strong> No DVT; confirmed abscess with likely osteomyelitis of distal phalanx, right great toe</li>
+        <li><strong>Random blood glucose:</strong> Extreme variability — 108 to 514 mg/dL</li>
+        <li><strong>D-dimer:</strong> Elevated — in the thousands <span style="color:var(--warning);font-weight:600;">(⚠ See EBM critique — non-interpretable in osteomyelitis context)</span></li>
+        <li><strong>Renal function (eGFR):</strong> <span class="gap-badge">GAP</span> Not yet checked — critical for LMWH dosing</li>
+        <li><strong>Patient values / consent:</strong> <span class="gap-badge">GAP</span> Not documented in SOAP note</li>
+      </ul>
+    </div>
+
+    <div class="soap-block">
+      <h3>A — Assessment</h3>
+      <ul>
+        <li><strong>Acute Hypoxic Respiratory Failure:</strong> Working diagnosis — Pulmonary Embolism (PE). Basis: acute hypoxia + clear CXR + elevated D-dimer. DVT not identified on right lower limb Doppler (clot may have embolized or originated elsewhere).</li>
+        <li><strong>Uncontrolled Diabetes Mellitus (T2DM):</strong> Infected Diabetic Foot Ulcer with confirmed osteomyelitis (likely source of hypercoagulable state). Severe glycemic variability (108–514 mg/dL) — failing insulin regimen.</li>
+      </ul>
+    </div>
+
+    <div class="soap-block">
+      <h3>P — Plan</h3>
+      <ul>
+        <li><strong>PE:</strong> Start LMWH (Enoxaparin 1 mg/kg q12h) after checking renal function. Arrange STAT CTPA to confirm diagnosis. Supplemental O₂ to maintain SpO₂ &gt;94%.</li>
+        <li><strong>Infection/Sepsis:</strong> Urgent surgical/orthopaedic consult for debridement. Broad-spectrum IV antibiotics with bone penetration.</li>
+        <li><strong>Diabetes:</strong> Convert to basal-bolus insulin from sliding scale. Consider endocrinology consult.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TAB 2: EBM INSIGHTS -->
+  <div class="section" id="section-insights">
+    <h2>EBM Insights — Module 45 + Shadow Module 45</h2>
+    <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:20px;">Each card shows the Module 45 EBM finding and the Shadow Module 45 adversarial challenge. Click to expand.</p>
+    <div id="insightCards"></div>
+  </div>
+
+  <!-- TAB 3: INVESTIGATIONS -->
+  <div class="section" id="section-investigations">
+    <h2>Investigations &amp; Evidence Hierarchy</h2>
+    <div class="sub-tab-strip" id="subTabStrip">
+      <button class="sub-tab-btn active" data-sub="sub-history">History Gaps</button>
+      <button class="sub-tab-btn" data-sub="sub-exam">Examination</button>
+      <button class="sub-tab-btn" data-sub="sub-inv">Investigations</button>
+    </div>
+
+    <div class="sub-section active" id="sub-history">
+      <table id="table-history">
+        <thead>
+          <tr>
+            <th data-col="score" style="width:60px;">Score ↓</th>
+            <th data-col="item">History Gap</th>
+            <th data-col="why">Why It Matters</th>
+            <th data-col="source">EBM Source</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="sub-section" id="sub-exam">
+      <table id="table-exam">
+        <thead>
+          <tr>
+            <th data-col="score" style="width:60px;">Score ↓</th>
+            <th data-col="item">Examination Finding</th>
+            <th data-col="why">Why It Matters</th>
+            <th data-col="source">EBM Source</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="sub-section" id="sub-inv">
+      <table id="table-inv">
+        <thead>
+          <tr>
+            <th data-col="score" style="width:60px;">Score ↓</th>
+            <th data-col="item">Investigation</th>
+            <th data-col="why">Why It Matters (EBM)</th>
+            <th data-col="source">CEBM Level / Source</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 4: DIFFERENTIALS -->
+  <div class="section" id="section-differentials">
+    <h2>Differential Diagnosis</h2>
+    <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:20px;">Grouped by likelihood tier. Click group header to expand.</p>
+    <div id="diffGroups"></div>
+    <div class="card" style="margin-top:20px;">
+      <span class="label">GRADE Certainty Summary</span>
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>Clinical Question</th>
+            <th>CEBM Level</th>
+            <th>GRADE</th>
+            <th>Dominant Downgrade Factor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LMWH in confirmed PE (general population)</td>
+            <td>1b (RCTs)</td>
+            <td class="grade-mod">Moderate</td>
+            <td>Serious indirectness — osteomyelitis/DM excluded from trials</td>
+          </tr>
+          <tr>
+            <td>Empiric anticoagulation before CTPA in this patient</td>
+            <td>4–5 (extrapolation)</td>
+            <td class="grade-vlow">Very Low</td>
+            <td>No direct RCT; severe indirectness; high imprecision (×3 downgrade)</td>
+          </tr>
+          <tr>
+            <td>D-dimer for PE diagnosis in osteomyelitis</td>
+            <td>5 (expert opinion)</td>
+            <td class="grade-vlow">Very Low</td>
+            <td>Near-zero specificity in infectious states — not validated</td>
+          </tr>
+          <tr>
+            <td>Basal-bolus vs sliding scale (inpatient glycemia)</td>
+            <td>1b (RCTs — RABBIT-2)</td>
+            <td class="grade-high">High</td>
+            <td>None — direct evidence, strong recommendation</td>
+          </tr>
+          <tr>
+            <td>Surgical debridement for osteomyelitis source control</td>
+            <td>2b (cohort / expert consensus)</td>
+            <td class="grade-mod">Moderate</td>
+            <td>No RCT on timing in concurrent PE</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 5: ACTION PLAN -->
+  <div class="section" id="section-action-plan">
+    <div class="action-plan-wrapper">
+      <div class="action-plan-header">
+        <div>
+          <h2 style="margin-bottom:4px;">Case Action Plan</h2>
+          <div class="plan-meta">Generated: June 2026 &nbsp;&bull;&nbsp; Prepared by: Medical Student (VibeRounds)</div>
+          <div class="plan-meta">Case: VR-DFU-PE-2026 &nbsp;&bull;&nbsp; Modules: 45 + Shadow 45 (EBM Analysis)</div>
+        </div>
+        <button class="print-btn" id="print-btn">🖨 Print Report</button>
+      </div>
+
+      <hr class="divider">
+
+      <div class="clinical-summary-box">
+        <strong>Clinical Summary:</strong> A 53-year-old woman with 12-year T2DM presents with acute hypoxia (SpO₂ 95% on 3L O₂, HR 100, BP 115/66) and a clear chest X-ray alongside severe glycemic variability and confirmed right great toe osteomyelitis. PE is the working diagnosis; empiric LMWH is planned pending CTPA confirmation, but critical EBM analysis reveals the D-dimer is non-interpretable in active osteomyelitis, renal function is unknown (affecting LMWH dosing safety), and patient values have not been documented.
+      </div>
+
+      <hr class="divider">
+      <div class="plan-section-title">⚠ Immediate Actions — Before Any Procedure</div>
+      <div id="immediate-actions"></div>
+
+      <hr class="divider">
+      <div class="plan-section-title">Urgent Investigations (within 24–48 hours)</div>
+      <div id="urgent-investigations"></div>
+
+      <hr class="divider">
+      <div class="plan-section-title">Pre-Anticoagulation Safety Checklist</div>
+      <div id="preop-checklist"></div>
+
+      <hr class="divider">
+      <div class="plan-section-title">Specialist Referrals Required</div>
+      <div id="referrals"></div>
+
+      <hr class="divider">
+      <div class="plan-section-title">Top 3 Diagnostic Priorities</div>
+      <div id="top-priorities"></div>
+
+      <hr class="divider">
+      <div class="plan-section-title">Shadow Module 45 — Critical Challenge Inventory</div>
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Claim Challenged</th>
+            <th>Shadow Objection</th>
+            <th>Verdict</th>
+            <th>Change to Plan</th>
+          </tr>
+        </thead>
+        <tbody id="shadow-inventory"></tbody>
+      </table>
+
+      <hr class="divider">
+      <div style="font-size:0.75rem;color:var(--text-secondary);text-align:center;padding:8px 0;">
+        PREPARED USING VibeRounds v1.0 — Module 45 + Shadow Module 45<br>
+        Educational output only. Independent clinical verification required before any patient use.<br>
+        <em>Not a clinical decision support tool.</em>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>⚠ Educational output only. Not a clinical decision support tool. All findings require independent verification.</span>
+  <span style="color:var(--text-muted);">VibeRounds Dashboard v1.0 &mdash; Dr. Avinash Kumar Gupta</span>
+</footer>
+
+<script>
+const DATA = {
+  insights: [
+    {
+      number: 1,
+      title: "PICO Frame — Comparison Arm Misspecified",
+      scoreLevel: "high",
+      finding: "The SOAP plan frames the comparison as 'empiric LMWH now' vs. 'withhold anticoagulation,' implying indefinite non-treatment as the alternative.",
+      significance: "The realistic clinical comparator is an imaging-first strategy with a defined short delay (hours), not indefinite withholding. Framing delay as the alternative inflates the moral urgency of immediate treatment and selects evidence that systematically favors intervention.",
+      correctResponse: "Respecify the Comparison arm as: 'short imaging-confirmed strategy (CTPA within 2–4 hours).' This changes the risk-benefit calculus and better represents real clinical decision-making.",
+      shadowChallenge: "The single most consequential framing choice: the Outcome column also risks surrogate substitution — 'confirmed PE on CTPA' is a stepping-stone, not the patient-important outcome (mortality reduction, bleeding avoidance).",
+      verdict: "partial"
+    },
+    {
+      number: 2,
+      title: "D-Dimer — Non-Interpretable in Osteomyelitis",
+      scoreLevel: "high",
+      finding: "The Assessment cites markedly elevated D-dimer as supporting evidence for PE ('significantly elevated D-dimer'). The entire diagnostic chain — elevated D-dimer → therefore PE — rests on this biomarker.",
+      significance: "D-dimer has CEBM 1b validation for ruling OUT PE at low pre-test probability (high sensitivity, low specificity). In active infection/osteomyelitis, D-dimer is expected to be markedly elevated from the inflammatory process alone. Specificity for PE approaches zero in this context. There is no validated D-dimer threshold for PE diagnosis in septic patients.",
+      correctResponse: "Remove D-dimer from the confirmatory evidence list. The decision to pursue CTPA is defensible on the basis of unexplained hypoxia + clear CXR alone — and that argument is stronger and more honest than invoking an uninterpretable biomarker.",
+      shadowChallenge: "Cross-examination target: The entire diagnostic chain collapses if D-dimer is non-interpretable. The CTPA remains indicated and defensible — but the framing in the Assessment overstates the D-dimer's diagnostic contribution.",
+      verdict: "partial"
+    },
+    {
+      number: 3,
+      title: "LMWH Dosing — Renal Safety Gap",
+      scoreLevel: "high",
+      finding: "The plan orders Enoxaparin 1 mg/kg q12h after 'checking baseline renal function' but does not specify the eGFR threshold for dose adjustment or switching to UFH.",
+      significance: "In a patient with 12-year T2DM, diabetic nephropathy with CKD Stage 3b–4 is prevalent. Standard LMWH dosing in eGFR <30 mL/min causes drug accumulation and significantly elevated major bleeding risk. This is a patient-safety item, not merely a methodological footnote.",
+      correctResponse: "Specify in the plan: if eGFR <30 mL/min, switch to IV Unfractionated Heparin (UFH) or use anti-Xa-monitored reduced-dose LMWH. Do not start Enoxaparin until eGFR is confirmed. This must precede anticoagulation, not run concurrently.",
+      shadowChallenge: "Shadow holds this challenge firmly. The plan's appraisal of its own intervention is incomplete at a patient-safety level. A critical appraisal that approves the intervention without specifying the renal adjustment threshold has failed the appraisal.",
+      verdict: "held"
+    },
+    {
+      number: 4,
+      title: "GRADE Indirectness — Evidence Borrowed From Wrong Population",
+      scoreLevel: "high",
+      finding: "The plan invokes ESC 2019 Class I, Level A recommendations and landmark LMWH RCTs as supporting evidence for this patient. These trials had narrow eligibility criteria and excluded patients with active osteomyelitis, severe glycemic instability, and concurrent sepsis.",
+      significance: "GRADE indirectness applies when the study population, intervention, or outcomes differ substantially from the clinical question at hand. The GRADE certainty for LMWH in confirmed PE drops from High (general population) to Moderate for this patient. For the specific question of empiric anticoagulation before CTPA in a patient with osteomyelitis, GRADE is Very Low.",
+      correctResponse: "Name the indirectness explicitly when documenting the clinical reasoning. The plan is directionally correct but epistemic honesty requires acknowledging the evidence gap. This matters for trainee learning, audit, and medicolegal documentation.",
+      shadowChallenge: "The dominant downgrading factor — indirectness — was not named anywhere in the SOAP Assessment or Plan. Rating by design label (RCT = high certainty) without applying it to this patient is the exact failure Shadow Step S45.5 targets.",
+      verdict: "held"
+    },
+    {
+      number: 5,
+      title: "Hemodynamic Risk Tier — Plan Urgency Exceeds Evidence",
+      scoreLevel: "mid",
+      finding: "The plan presents anticoagulation with urgency consistent with high-risk (massive) PE. The actual hemodynamics: SpO₂ 95% on 3L, HR 100, BP 115/66 — no shock, no hypotension below 90 systolic.",
+      significance: "The mortality benefit of anticoagulation in PE is most robust in high-risk PE (hemodynamically unstable). For intermediate-risk PE, the NNT is substantially less favorable and the NNH from major bleeding becomes a more significant part of the calculation. The plan inherits the urgency framing from high-risk PE literature without acknowledging the risk tier.",
+      correctResponse: "Explicitly risk-stratify this patient as intermediate-risk PE (if confirmed). Reframe the NNT/NNH discussion accordingly. This does not necessarily change the decision to anticoagulate — but it should change the urgency language and the shared decision-making conversation.",
+      shadowChallenge: "Relative-benefit-without-absolute-harm framing distortion: NNT for preventing recurrent VTE is ~33–67; NNH for major bleeding in osteomyelitis/sepsis co-presentation has no direct evidence — this gap should be named, not silently glossed over.",
+      verdict: "held"
+    },
+    {
+      number: 6,
+      title: "Patient Values — Operationally Absent",
+      scoreLevel: "high",
+      finding: "The SOAP plan proceeds to 'immediately start' therapeutic anticoagulation without documenting patient preference exploration, informed consent for bleeding risk, or acknowledgment that the patient has capacity to make this decision.",
+      significance: "Sackett's three-circle model assigns equal standing to patient values alongside research evidence and clinical expertise. A plan that proceeds to immediate action on a moderate-to-high bleeding-risk intervention without any values documentation has collapsed the three circles to one. This is both an ethical and practical failure — patients with active foot disease may have very different risk tolerances.",
+      correctResponse: "Document: (1) patient capacity confirmed, (2) anticoagulation risks and benefits discussed including major bleeding in the context of osteomyelitis, (3) patient preference noted, (4) shared decision made. This should precede the order, not follow it.",
+      shadowChallenge: "Most clinically significant challenge in the entire consult. The patient-values circle was structurally absent — the evidence circle did all the work. The plan reads as clinician-decided, not shared-decided.",
+      verdict: "held"
+    },
+    {
+      number: 7,
+      title: "Alternative Hypoxia Etiology — Diagnostic Anchoring",
+      scoreLevel: "mid",
+      finding: "The Assessment anchors immediately on PE as the 'primary diagnosis.' An equally valid hypothesis — sepsis-related hemodynamic and ventilatory compromise from the infected foot — is not considered in the differential for the hypoxia.",
+      significance: "Septic physiology from osteomyelitis/bacteremia can cause tachycardia (HR 100), relative hypotension (BP 115/66), and hypoxia through distributive shock and V/Q mismatch mechanisms that mimic PE. The two are not mutually exclusive, but management priorities differ meaningfully: sepsis management requires aggressive source control and may alter anticoagulation timing.",
+      correctResponse: "The Assessment should explicitly list sepsis-related hypoxia as a concurrent or alternative cause, not only PE. The plan for CTPA addresses this — but the clinical reasoning should acknowledge both pathways rather than anchoring on PE before imaging confirms it.",
+      shadowChallenge: "Framing the SOAP note as 'PE first' biased which evidence looked relevant in the entire EBM consult. Under a 'sepsis-related respiratory compromise' PICO, different evidence, different urgency, different monitoring targets.",
+      verdict: "partial"
+    },
+    {
+      number: 8,
+      title: "Guideline Strength vs. Certainty — ESC Class I ≠ High Certainty for This Patient",
+      scoreLevel: "mid",
+      finding: "ESC 2019 PE Guideline recommendation for LMWH in intermediate-risk PE carries Class I, Level A label. This is a strong recommendation on high-certainty evidence — for the populations studied.",
+      significance: "GRADE explicitly allows strong recommendations on lower-certainty evidence when stakes of inaction are high. The inverse is also important: a Class I, Level A recommendation issued for typical PE populations does not automatically carry that certainty level when applied to a patient who would have been excluded from the underlying trials. Strength-of-recommendation labels are frequently heard downstream as strength-of-evidence labels — they are not the same.",
+      correctResponse: "When documenting or teaching this case, explicitly note: 'The ESC Class I/A recommendation for LMWH applies to typical PE populations; certainty for this specific patient (osteomyelitis, severe glycemic instability) is downgraded to Moderate–Very Low by indirectness.' This is a teaching move, not a reason to withhold treatment.",
+      shadowChallenge: "COI disclosure for ESC panel not mentioned in the original plan appraisal. Absence of disclosure check is itself a finding — guideline panels in anticoagulation medicine have had documented industry conflicts.",
+      verdict: "partial"
+    },
+    {
+      number: 9,
+      title: "Effect-Size Translation — NNT Without NNH",
+      scoreLevel: "mid",
+      finding: "The plan does not translate the effect size of LMWH into absolute numbers for this patient. Only the relative indication ('therapeutic anticoagulation is indicated') is communicated.",
+      significance: "NNT to prevent one recurrent VTE from LMWH in PE: approximately 33–67 (derived from general PE trials — applies directionally, not precisely, to this patient). NNH for major bleeding in a patient with concurrent osteomyelitis/sepsis: no direct data. Presenting NNT without NNH in a high-bleeding-risk patient is a framing distortion that systematically oversells the net benefit.",
+      correctResponse: "At minimum, document: 'LMWH has an NNT of ~33–67 for VTE prevention in typical PE; NNH for major bleeding in concurrent osteomyelitis is unknown and should be considered elevated above baseline.' This anchors clinical documentation in numbers, not only direction.",
+      shadowChallenge: "Composite-outcome check: the 'PE management' framing imports urgency from high-risk PE mortality data (where absolute numbers strongly favor treatment) and applies it to an intermediate-risk patient where the numbers look quite different.",
+      verdict: "partial"
+    },
+    {
+      number: 10,
+      title: "Critical Awareness — Unverified Numerics",
+      scoreLevel: "low",
+      finding: "The EBM analysis cites NNT ranges, GRADE ratings, and trial names (MATISSE-PE, Columbus Trial, RABBIT-2) as part of its educational analysis.",
+      significance: "LLM-generated EBM content carries a well-documented risk of confident-sounding citations that are subtly wrong or contain inaccurate numbers. Specificity does not correlate with accuracy in AI outputs. Any numeric finding, trial name, or guideline citation in this dashboard should be independently verified against primary sources before any clinical or educational use.",
+      correctResponse: "All numeric estimates in this dashboard (NNT ~33–67, GRADE ratings, trial names) are directional and educational. Verify against: Cochrane Library, ESC 2019 PE Guidelines full text, ADA inpatient glycemia guidelines, and original trial publications before citing in any clinical document.",
+      shadowChallenge: "This is the highest-stakes check in the Shadow Module. Named as an explicit risk in Module 45, Step 45.10, Question 3. The Shadow flags this closure-phase item as requiring user action, not AI assurance.",
+      verdict: "held"
+    }
+  ],
+
+  historyGaps: [
+    { score: 10, item: "Renal function (eGFR / creatinine)", why: "Determines LMWH safety vs. UFH switch. Diabetic nephropathy common at 12 years T2DM. Critical before anticoagulation.", source: "ESC 2019 PE Guidelines" },
+    { score: 10, item: "Patient values and anticoagulation preferences", why: "Required for informed consent and shared decision-making. Active bleeding risk in osteomyelitis makes this non-optional.", source: "Sackett Three-Circle Model" },
+    { score: 9,  item: "Functional baseline of both feet", why: "Left foot bandaged — prior disease extent unclear. Affects surgical planning and prognosis.", source: "IDSA DFU Guidelines" },
+    { score: 9,  item: "Current antibiotic exposure / cultures", why: "Prior antibiotics may mask culture results; affects bone-penetrating antibiotic selection.", source: "IDSA Osteomyelitis Guidelines" },
+    { score: 8,  item: "Duration and severity of glycemic uncontrol", why: "Extreme variability (108–514) suggests failing regimen; duration affects HbA1c, immune competence, wound healing.", source: "ADA Inpatient Glycemia Standards" },
+    { score: 7,  item: "Prior anticoagulation history / bleeding events", why: "Affects NNH calculation and risk stratification for current anticoagulation decision.", source: "EBM — patient-specific NNH" }
+  ],
+
+  examItems: [
+    { score: 10, item: "Hemodynamic stability assessment (shock index, MAP)", why: "Determines PE risk tier (high vs. intermediate vs. low). Changes urgency and NNT/NNH framing.", source: "ESC 2019 PE Risk Stratification" },
+    { score: 10, item: "Extent of right foot infection — Wagner Grade", why: "Wagner Grade drives surgical decision (debridement vs. amputation) and source-control urgency.", source: "IDSA DFU Classification" },
+    { score: 9,  item: "Signs of sepsis (SIRS/qSOFA)", why: "Sepsis-related distributive hypoxia is a concurrent / alternative diagnosis to PE. Must be formally assessed.", source: "Sepsis-3 Criteria" },
+    { score: 8,  item: "JVP / signs of right heart strain", why: "Right heart strain on exam supports PE and may indicate high-risk tier (thrombolysis threshold).", source: "ESC 2019 PE Guidelines" },
+    { score: 7,  item: "Peripheral perfusion — capillary refill, left foot pulses", why: "Peripheral vascular disease common in T2DM; affects healing prognosis and anaesthetic risk.", source: "IDSA DFU / Vascular Surgery" }
+  ],
+
+  invItems: [
+    { score: 10, item: "STAT CTPA (CT Pulmonary Angiogram)", why: "Definitive PE confirmation / exclusion. Mandatory before long-term anticoagulation in intermediate-risk patient. Also excludes aortic pathology.", source: "ESC 2019, CEBM 1b (diagnostic accuracy)" },
+    { score: 10, item: "eGFR / Serum Creatinine", why: "Determines LMWH safety. eGFR <30 requires UFH or dose-adjusted LMWH with anti-Xa monitoring. Patient-safety critical.", source: "Enoxaparin prescribing guidelines" },
+    { score: 10, item: "Blood cultures (×2 sets before antibiotics)", why: "Osteomyelitis source control requires organism identification. Guides bone-penetrating antibiotic selection.", source: "IDSA Osteomyelitis Guidelines" },
+    { score: 9,  item: "ECG (12-lead)", why: "PE may show S1Q3T3, right heart strain, sinus tachycardia. Baseline before anticoagulation. Excludes dysrhythmia causing hypoxia.", source: "ESC 2019 PE" },
+    { score: 9,  item: "HbA1c", why: "Quantifies duration of glycemic uncontrol. Guides insulin regimen intensity. Correlates with infection severity and healing prognosis.", source: "ADA Standards of Care 2024" },
+    { score: 9,  item: "Troponin + BNP/NT-proBNP", why: "Right ventricular strain markers — elevate intermediate-risk PE to intermediate-high, potentially changing anticoagulation strategy.", source: "ESC 2019 PE Risk Stratification" },
+    { score: 8,  item: "FBC (CBC) with differential", why: "Leukocytosis supports infection/sepsis. Thrombocytopenia would increase NNH for anticoagulation. Anaemia affects tissue oxygenation.", source: "Standard sepsis workup" },
+    { score: 8,  item: "Bone biopsy / deep tissue culture (surgical)", why: "Gold standard for osteomyelitis organism identification. Required for targeted IV antibiotic therapy with bone penetration.", source: "IDSA Osteomyelitis — CEBM 2b" },
+    { score: 7,  item: "Echocardiography (bedside TTE)", why: "Right ventricular dysfunction on echo upgrades intermediate-risk PE. Excludes structural cardiac cause of hypoxia.", source: "ESC 2019 PE — CEBM 2b" },
+    { score: 7,  item: "Anti-Xa level monitoring (if LMWH used)", why: "Required if renal function is borderline or patient is at extremes of weight. Ensures therapeutic dosing without accumulation.", source: "LMWH prescribing guidelines" }
+  ],
+
+  differentials: {
+    mostLikely: [
+      { name: "Pulmonary Embolism (PE)", rationale: "Acute hypoxia + clear CXR = classic presentation. Working diagnosis. Requires CTPA confirmation — D-dimer non-interpretable in osteomyelitis context." },
+      { name: "Sepsis-Related Hypoxia (Distributive)", rationale: "Active osteomyelitis with abscess provides a septic source. HR 100, BP 115/66 consistent with early/warm sepsis. Can coexist with PE or be the sole cause of hypoxia." }
+    ],
+    mustNotMiss: [
+      { name: "Massive / High-Risk PE with Impending Arrest", rationale: "If hemodynamics deteriorate — systolic <90 — management escalates to thrombolysis consideration. Current picture is intermediate-risk; continuous monitoring required." },
+      { name: "Infective Endocarditis with Septic Emboli", rationale: "IV drug use background (not documented = GAP) or bacteremia from osteomyelitis can seed valves. Would change anticoagulation approach and antibiotic duration significantly." },
+      { name: "Diabetic Ketoacidosis (DKA) / HHS", rationale: "Glucose 514 mg/dL documented. DKA/HHS with severe dehydration can cause tachycardia, hypoxia, and metabolic acidosis mimicking or complicating PE." }
+    ],
+    benign: [
+      { name: "Atelectasis", rationale: "Common in hospitalised / immobile patients. Would not fully explain SpO₂ 95% without significant dependent collapse — CXR clear reduces likelihood." },
+      { name: "Anxiety-Related Hyperventilation", rationale: "SpO₂ 95% on 3L makes this insufficient as sole explanation. Diagnosis of exclusion after PE and sepsis addressed." }
+    ]
+  },
+
+  actionPlan: {
+    immediateActions: [
+      "Check eGFR/creatinine NOW — before ordering Enoxaparin. If eGFR <30, switch to IV UFH.",
+      "Document patient capacity and conduct informed consent discussion — anticoagulation bleeding risk vs. PE mortality risk, specific to osteomyelitis co-presentation.",
+      "Formally risk-stratify PE tier: calculate Wells Score, assess hemodynamic stability (MAP, shock index). Document intermediate vs. high-risk classification.",
+      "Order 12-lead ECG and bedside troponin + BNP to risk-stratify PE and detect RV strain.",
+      "Draw blood cultures ×2 before antibiotic escalation."
+    ],
+    urgentInvestigations: [
+      { item: "STAT CTPA", reason: "Definitive PE diagnosis / exclusion. Do not delay for D-dimer — non-interpretable here." },
+      { item: "eGFR + Creatinine", reason: "Determines LMWH vs. UFH decision. Patient-safety critical." },
+      { item: "Troponin + BNP/NT-proBNP", reason: "PE risk tier. Elevation → intermediate-high → changes monitoring intensity." },
+      { item: "HbA1c + fasting glucose", reason: "Baseline for insulin regimen conversion and prognosis." },
+      { item: "Bone biopsy / deep wound culture (surgical)", reason: "Organism ID required for targeted bone-penetrating antibiotic therapy." }
+    ],
+    preOpChecklist: [
+      "eGFR confirmed > 30 mL/min (or UFH substituted if <30)",
+      "Blood cultures ×2 drawn before antibiotic dose",
+      "CTPA reported — PE confirmed or excluded",
+      "Informed consent documented — anticoagulation risks discussed",
+      "PE risk tier documented (intermediate vs. high-risk)",
+      "Troponin and BNP resulted — RV strain assessed",
+      "Surgical team consulted — debridement/source control plan confirmed",
+      "Endocrinology/diabetes team aware — basal-bolus regimen initiated",
+      "Anaesthetic team briefed if operative debridement planned — DM, cardiac status"
+    ],
+    referrals: [
+      "Vascular Surgery / Orthopaedics — urgent debridement, osteomyelitis source control",
+      "Haematology / Thrombosis Service — anticoagulation management in concurrent sepsis",
+      "Endocrinology — inpatient insulin regimen conversion (basal-bolus)",
+      "Infectious Diseases — bone-penetrating antibiotic selection and duration",
+      "Respiratory Medicine / PE Team — CTPA interpretation, post-CTPA risk stratification"
+    ],
+    top3Priorities: [
+      { item: "Confirm or exclude PE with CTPA", justification: "D-dimer is non-interpretable in osteomyelitis. Clinical decision to anticoagulate must rest on imaging confirmation, not biomarker inference. CTPA is the standard-of-care confirmatory test." },
+      { item: "Establish renal function before LMWH", justification: "12-year T2DM carries high risk of diabetic nephropathy. Standard Enoxaparin dosing in eGFR <30 causes drug accumulation and life-threatening bleeding. This check must precede the first anticoagulant dose." },
+      { item: "Source control for osteomyelitis — surgical consultation today", justification: "The infected foot is the likely driver of hypercoagulable state, glycemic uncontrol, and systemic sepsis. Without source control, all other interventions (anticoagulation, insulin regimen) are compromised by ongoing septic physiology." }
+    ]
+  },
+
+  shadowInventory: [
+    { claim: "PICO Comparison arm: 'withhold anticoagulation'", objection: "Realistic comparator is hours-limited imaging-first strategy, not indefinite withholding", verdict: "partial", change: "Comparison respecified as 'CTPA-confirmed strategy within 2–4 hours'" },
+    { claim: "D-dimer cited as supporting PE evidence", objection: "Near-zero specificity in osteomyelitis/sepsis — uninterpretable; entire diagnostic chain at risk", verdict: "partial", change: "D-dimer removed from confirmatory evidence; CTPA decision based on hypoxia + clear CXR" },
+    { claim: "LMWH 1mg/kg q12h after 'checking renal function'", objection: "No eGFR threshold specified; no UFH fallback defined — patient-safety gap", verdict: "held", change: "eGFR threshold (<30 → UFH) made explicit as a pre-anticoagulation requirement" },
+    { claim: "GRADE not applied in SOAP plan", objection: "Indirectness never named; Level A evidence borrowed from non-osteomyelitis populations", verdict: "held", change: "GRADE explicit; certainty downgraded to Moderate (LMWH in PE) and Very Low (empiric pre-CTPA)" },
+    { claim: "Plan urgency matches high-risk PE framing", objection: "Hemodynamics (SpO₂ 95%, HR 100, BP 115/66) = intermediate-risk; NNT/NNH calculation differs", verdict: "held", change: "Risk tier documented; urgency language recalibrated to intermediate-risk" },
+    { claim: "Patient values not documented", objection: "Immediate anticoagulation ordered without consent, preference, or capacity documentation", verdict: "held", change: "Informed consent step added as an immediate pre-anticoagulation action" },
+    { claim: "PE as sole diagnostic anchor for hypoxia", objection: "Sepsis-related distributive hypoxia is a concurrent / alternative etiology not considered", verdict: "partial", change: "Sepsis-related hypoxia added as concurrent differential in Assessment" },
+    { claim: "ESC Class I / Level A label applied to this patient", objection: "Strength-of-recommendation ≠ certainty-of-evidence for this excluded population; COI not checked", verdict: "partial", change: "Indirectness noted in documentation; COI check flagged for guideline appraisal" }
+  ]
+};
+
+// ─── TAB SWITCHING ───────────────────────────────────────────────────────────
+document.getElementById('mainTabStrip').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+});
+
+// ─── SUB-TAB SWITCHING ────────────────────────────────────────────────────────
+document.getElementById('subTabStrip').addEventListener('click', e => {
+  const btn = e.target.closest('.sub-tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sub-section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.sub).classList.add('active');
+});
+
+// ─── INSIGHT CARDS ────────────────────────────────────────────────────────────
+function scoreDots(level) {
+  const cls = level === 'high' ? 'filled-high' : level === 'mid' ? 'filled-mid' : 'filled-low';
+  const n = level === 'high' ? 3 : level === 'mid' ? 2 : 1;
+  return Array.from({length:3}, (_,i) => `<div class="dot ${i < n ? cls : ''}"></div>`).join('');
+}
+
+function verdictTag(v) {
+  if (v === 'held')    return '<span class="verdict-tag verdict-held">⚑ Shadow Held</span>';
+  if (v === 'partial') return '<span class="verdict-tag verdict-partial">◑ Partially Held</span>';
+  return '<span class="verdict-tag verdict-over">✓ Overturned</span>';
+}
+
+const container = document.getElementById('insightCards');
+DATA.insights.forEach(ins => {
+  const card = document.createElement('div');
+  card.className = 'insight-card';
+  card.innerHTML = `
+    <div class="insight-header">
+      <div class="insight-title-row">
+        <span class="insight-number">#${ins.number}</span>
+        <span class="insight-title">${ins.title}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="score-dots">${scoreDots(ins.scoreLevel)}</div>
+        <span class="toggle-arrow">▾</span>
+      </div>
+    </div>
+    <div class="insight-body">
+      <div class="insight-body-inner">
+        <span class="label">Finding</span>
+        <p>${ins.finding}</p>
+        <span class="label">Significance</span>
+        <p>${ins.significance}</p>
+        <span class="label">Correct Response</span>
+        <p>${ins.correctResponse}</p>
+        <div class="shadow-block">
+          <span class="shadow-label">⚔ Shadow Module 45 — Adversarial Challenge</span>
+          <p>${ins.shadowChallenge}</p>
+          ${verdictTag(ins.verdict)}
+        </div>
+      </div>
+    </div>
+  `;
+  card.querySelector('.insight-header').addEventListener('click', () => {
+    const body = card.querySelector('.insight-body');
+    const arrow = card.querySelector('.toggle-arrow');
+    body.classList.toggle('expanded');
+    arrow.classList.toggle('expanded-arrow');
+  });
+  container.appendChild(card);
+});
+
+// ─── TABLES ──────────────────────────────────────────────────────────────────
+function scoreBadgeClass(s) {
+  if (s >= 10) return 'score-10';
+  if (s >= 8)  return 'score-8';
+  return 'score-low-bg';
+}
+
+function buildTable(tableId, rows) {
+  const tbody = document.querySelector(`#${tableId} tbody`);
+  const sorted = [...rows].sort((a,b) => b.score - a.score);
+  sorted.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="score-badge ${scoreBadgeClass(r.score)}">${r.score}</span></td>
+      <td><strong>${r.item}</strong></td>
+      <td>${r.why}</td>
+      <td style="color:var(--text-secondary);font-size:0.8rem;">${r.source}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  let asc = false;
+  document.querySelector(`#${tableId} th`).addEventListener('click', () => {
+    asc = !asc;
+    const rows2 = [...tbody.querySelectorAll('tr')];
+    rows2.sort((a,b) => {
+      const va = parseInt(a.querySelector('.score-badge').textContent);
+      const vb = parseInt(b.querySelector('.score-badge').textContent);
+      return asc ? va - vb : vb - va;
+    });
+    rows2.forEach(r => tbody.appendChild(r));
+    document.querySelector(`#${tableId} th`).textContent = `Score ${asc ? '↑' : '↓'}`;
+  });
+}
+
+buildTable('table-history', DATA.historyGaps);
+buildTable('table-exam', DATA.examItems);
+buildTable('table-inv', DATA.invItems);
+
+// ─── DIFFERENTIALS ───────────────────────────────────────────────────────────
+function buildDiffGroup(groupEl, items, groupClass, labelClass, labelText) {
+  groupEl.className = `diff-group ${groupClass}`;
+  const header = document.createElement('div');
+  header.className = 'diff-group-header';
+  header.innerHTML = `<span>${labelText}</span><span class="group-label ${labelClass}">${labelText.split(' — ')[1]}</span>`;
+  const body = document.createElement('div');
+  body.className = 'diff-group-body';
+  items.forEach((it, i) => {
+    const div = document.createElement('div');
+    div.className = 'diff-item';
+    div.innerHTML = `<span class="diff-num">${i+1}.</span><div><div class="diff-name">${it.name}</div><div class="diff-rationale">${it.rationale}</div></div>`;
+    body.appendChild(div);
+  });
+  header.addEventListener('click', () => {
+    body.classList.toggle('expanded');
+    header.querySelector('.group-label').style.opacity = body.classList.contains('expanded') ? '0.6' : '1';
+  });
+  groupEl.appendChild(header);
+  groupEl.appendChild(body);
+}
+
+const diffContainer = document.getElementById('diffGroups');
+const groups = [
+  { items: DATA.differentials.mostLikely,  gc: 'group-most-likely',   lc: 'label-most-likely',   lt: 'Group A — Most Likely' },
+  { items: DATA.differentials.mustNotMiss, gc: 'group-must-not-miss', lc: 'label-must-not-miss', lt: 'Group B — Must Not Miss' },
+  { items: DATA.differentials.benign,      gc: 'group-benign',        lc: 'label-benign',        lt: 'Group C — Benign / Alternative' }
+];
+groups.forEach(g => {
+  const el = document.createElement('div');
+  buildDiffGroup(el, g.items, g.gc, g.lc, g.lt);
+  el.querySelector('.diff-group-body').classList.add('expanded');
+  diffContainer.appendChild(el);
+});
+
+// ─── ACTION PLAN ─────────────────────────────────────────────────────────────
+const ap = DATA.actionPlan;
+
+const immEl = document.getElementById('immediate-actions');
+ap.immediateActions.forEach((a, i) => {
+  const div = document.createElement('div');
+  div.className = 'checklist-item';
+  div.innerHTML = `<input type="checkbox"><span><strong>${i+1}.</strong> ${a}</span>`;
+  immEl.appendChild(div);
+});
+
+const urgEl = document.getElementById('urgent-investigations');
+ap.urgentInvestigations.forEach(u => {
+  const div = document.createElement('div');
+  div.className = 'checklist-item';
+  div.innerHTML = `<input type="checkbox"><span><strong>${u.item}</strong> — ${u.reason}</span>`;
+  urgEl.appendChild(div);
+});
+
+const preEl = document.getElementById('preop-checklist');
+ap.preOpChecklist.forEach(c => {
+  const div = document.createElement('div');
+  div.className = 'checklist-item';
+  div.innerHTML = `<input type="checkbox"><span>${c}</span>`;
+  preEl.appendChild(div);
+});
+
+const refEl = document.getElementById('referrals');
+ap.referrals.forEach(r => {
+  const div = document.createElement('div');
+  div.className = 'checklist-item';
+  div.innerHTML = `<input type="checkbox"><span>${r}</span>`;
+  refEl.appendChild(div);
+});
+
+const topEl = document.getElementById('top-priorities');
+ap.top3Priorities.forEach((p, i) => {
+  const div = document.createElement('div');
+  div.className = 'priority-item';
+  div.innerHTML = `<div class="priority-num">${i+1}. ${p.item}</div><div style="margin-top:4px;color:var(--text-secondary);font-size:0.85rem;">${p.justification}</div>`;
+  topEl.appendChild(div);
+});
+
+const siEl = document.getElementById('shadow-inventory');
+DATA.shadowInventory.forEach(s => {
+  const tr = document.createElement('tr');
+  const vTag = s.verdict === 'held' ? '<span class="verdict-tag verdict-held">Held</span>' :
+               s.verdict === 'partial' ? '<span class="verdict-tag verdict-partial">Partial</span>' :
+               '<span class="verdict-tag verdict-over">Overturned</span>';
+  tr.innerHTML = `<td>${s.claim}</td><td>${s.objection}</td><td>${vTag}</td><td>${s.change}</td>`;
+  siEl.appendChild(tr);
+});
+
+// ─── PRINT ───────────────────────────────────────────────────────────────────
+document.getElementById('print-btn').addEventListener('click', () => window.print());
+</script>
+</body>
+</html>
