@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds Case Analysis — Diabetic Foot + PE | Rural Medical College</title>
+<style>
+  /* ── DESIGN TOKENS ─────────────────────────────────── */
+  :root {
+    --ink:        #0d1117;
+    --ink-mid:    #374151;
+    --ink-light:  #6b7280;
+    --paper:      #f8f7f4;
+    --surface:    #ffffff;
+    --line:       #e5e2db;
+
+    --crimson:    #b91c1c;
+    --crimson-lt: #fef2f2;
+    --amber:      #b45309;
+    --amber-lt:   #fffbeb;
+    --teal:       #0f766e;
+    --teal-lt:    #f0fdfa;
+    --indigo:     #3730a3;
+    --indigo-lt:  #eef2ff;
+    --slate:      #475569;
+    --slate-lt:   #f1f5f9;
+
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:    'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── MASTHEAD ───────────────────────────────────────── */
+  .masthead {
+    background: var(--ink);
+    color: #fff;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 52px;
+    border-bottom: 3px solid var(--crimson);
+  }
+  .masthead-logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: .04em;
+    font-weight: normal;
+    color: #fff;
+    text-decoration: none;
+  }
+  .masthead-logo span { color: #f87171; }
+  .masthead-tag {
+    margin-left: auto;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #9ca3af;
+  }
+
+  /* ── HERO ───────────────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 3.5rem 2rem 3rem;
+    border-bottom: 1px solid #1f2937;
+  }
+  .hero-eyebrow {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: #f87171;
+    margin-bottom: .9rem;
+    font-family: var(--font-body);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    line-height: 1.18;
+    font-weight: normal;
+    max-width: 780px;
+    margin-bottom: 1.2rem;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    font-size: .78rem;
+    color: #9ca3af;
+  }
+  .hero-meta strong { color: #d1d5db; }
+
+  .alert-banner {
+    background: #7f1d1d;
+    border-left: 4px solid #f87171;
+    color: #fecaca;
+    padding: .75rem 1.25rem;
+    font-size: .8rem;
+    line-height: 1.5;
+  }
+
+  /* ── LAYOUT ─────────────────────────────────────────── */
+  .page-wrap { max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  /* ── MODULE NAV ─────────────────────────────────────── */
+  .mod-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .mod-nav a {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .35rem .85rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink-mid);
+    text-decoration: none;
+    background: var(--surface);
+    transition: background .15s, color .15s;
+  }
+  .mod-nav a:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* ── SECTION HEADERS ────────────────────────────────── */
+  .mod-section {
+    margin-bottom: 3.5rem;
+    scroll-margin-top: 2rem;
+  }
+  .mod-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .mod-number {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    letter-spacing: .08em;
+    background: var(--ink);
+    color: #fff;
+    padding: .25rem .55rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: .2rem;
+  }
+  .mod-title { font-family: var(--font-display); font-size: 1.35rem; font-weight: normal; }
+  .mod-subtitle { font-size: .8rem; color: var(--ink-light); margin-top: .25rem; }
+
+  /* ── CARDS ──────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .card-title {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-light);
+    margin-bottom: .8rem;
+  }
+
+  /* ── URGENCY TAGS ───────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    font-size: .68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .2rem .6rem;
+    border-radius: 3px;
+    margin-right: .3rem;
+  }
+  .tag-red   { background: var(--crimson-lt); color: var(--crimson); border: 1px solid #fca5a5; }
+  .tag-amber { background: var(--amber-lt);   color: var(--amber);   border: 1px solid #fcd34d; }
+  .tag-green { background: var(--teal-lt);    color: var(--teal);    border: 1px solid #5eead4; }
+  .tag-blue  { background: var(--indigo-lt);  color: var(--indigo);  border: 1px solid #a5b4fc; }
+
+  /* ── NEED MATRIX ────────────────────────────────────── */
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+    margin-bottom: 1rem;
+  }
+  .matrix-table th {
+    background: var(--ink);
+    color: #fff;
+    text-align: left;
+    padding: .55rem .8rem;
+    font-weight: 600;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .matrix-table td {
+    padding: .6rem .8rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .matrix-table tr:nth-child(even) td { background: var(--slate-lt); }
+  .matrix-table tr:last-child td { border-bottom: none; }
+
+  /* ── DOMAIN BLOCKS ──────────────────────────────────── */
+  .domain-block {
+    border-left: 3px solid var(--line);
+    padding-left: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .domain-block.urgent { border-left-color: var(--crimson); }
+  .domain-block.short  { border-left-color: var(--amber); }
+  .domain-block.long   { border-left-color: var(--teal); }
+
+  .domain-label {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--ink-light);
+    margin-bottom: .3rem;
+  }
+  .domain-title {
+    font-weight: 600;
+    font-size: .95rem;
+    margin-bottom: .4rem;
+  }
+  .domain-body { font-size: .88rem; color: var(--ink-mid); }
+
+  /* ── DISCOVERY QUESTIONS ────────────────────────────── */
+  .dq-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+  .dq-list li {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    gap: .5rem;
+    align-items: baseline;
+    font-size: .88rem;
+  }
+  .dq-num {
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    color: var(--ink-light);
+    padding-top: .1rem;
+  }
+
+  /* ── EBM INSIGHT BRIEF ──────────────────────────────── */
+  .ebm-brief {
+    background: var(--ink);
+    color: #e5e7eb;
+    border-radius: 6px;
+    padding: 1.6rem 1.8rem;
+    font-size: .86rem;
+    margin-bottom: 1.2rem;
+  }
+  .ebm-brief h4 {
+    color: #f87171;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .3rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+  }
+  .ebm-brief .row {
+    margin-bottom: .85rem;
+    padding-bottom: .85rem;
+    border-bottom: 1px solid #374151;
+  }
+  .ebm-brief .row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .ebm-grade {
+    display: inline-block;
+    padding: .15rem .5rem;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: .75rem;
+    margin-left: .4rem;
+  }
+  .grade-mod  { background: #92400e; color: #fef3c7; }
+  .grade-low  { background: #7f1d1d; color: #fee2e2; }
+  .grade-hi   { background: #064e3b; color: #d1fae5; }
+
+  /* ── PIPELINE ────────────────────────────────────────── */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.4rem;
+  }
+  .pipeline-step {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 1.1rem;
+  }
+  .pipeline-step::before {
+    content: '';
+    position: absolute;
+    left: 3.3rem;
+    top: 1.4rem;
+    bottom: 0;
+    width: 2px;
+    background: var(--line);
+  }
+  .pipeline-step:last-child::before { display: none; }
+  .p-phase {
+    font-size: .63rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-light);
+    text-align: right;
+    padding-top: .05rem;
+    line-height: 1.4;
+  }
+  .p-node {
+    display: flex;
+    gap: .7rem;
+    align-items: flex-start;
+  }
+  .p-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ink);
+    flex-shrink: 0;
+    margin-top: .4rem;
+  }
+  .p-dot.red   { background: var(--crimson); }
+  .p-dot.amber { background: #d97706; }
+  .p-dot.teal  { background: var(--teal); }
+  .p-content { font-size: .88rem; }
+  .p-module { font-weight: 600; color: var(--ink); font-size: .82rem; }
+  .p-desc   { color: var(--ink-mid); font-size: .82rem; margin-top: .1rem; }
+
+  /* ── GLOBAL HEALTH SECTION ─────────────────────────── */
+  .ceiling-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+    margin-bottom: 1rem;
+  }
+  .ceiling-table th {
+    background: #1e293b;
+    color: #e2e8f0;
+    text-align: left;
+    padding: .5rem .75rem;
+    font-weight: 600;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+  .ceiling-table td {
+    padding: .55rem .75rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .ceiling-table tr:nth-child(even) td { background: var(--slate-lt); }
+  .ceiling-icon { font-size: 1rem; }
+
+  /* ── TOP-THREE NEEDS ────────────────────────────────── */
+  .top-need {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  .top-need-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--line);
+    line-height: 1;
+    font-weight: normal;
+  }
+  .top-need.n1 .top-need-num { color: #fca5a5; }
+  .top-need.n2 .top-need-num { color: #fcd34d; }
+  .top-need.n3 .top-need-num { color: #5eead4; }
+  .top-need-title { font-weight: 700; font-size: .95rem; margin-bottom: .3rem; }
+  .top-need-domain { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-light); margin-bottom: .5rem; }
+  .top-need-body { font-size: .85rem; color: var(--ink-mid); }
+  .top-need-action {
+    margin-top: .7rem;
+    padding-top: .7rem;
+    border-top: 1px solid var(--line);
+    font-size: .82rem;
+  }
+  .top-need-action strong { color: var(--crimson); }
+
+  /* ── FINGERPRINT ────────────────────────────────────── */
+  .fingerprint-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: .8rem;
+    margin-bottom: 1.2rem;
+  }
+  .fp-item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: .8rem 1rem;
+  }
+  .fp-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-light); margin-bottom: .3rem; }
+  .fp-value { font-size: .9rem; font-weight: 600; }
+
+  /* ── SOAP BOX ────────────────────────────────────────── */
+  .soap-section {
+    border-left: 4px solid var(--ink);
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    margin-bottom: .9rem;
+  }
+  .soap-label { font-family: var(--font-mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-light); margin-bottom: .4rem; }
+  .soap-body { font-size: .88rem; color: var(--ink-mid); }
+
+  /* ── WORKAROUND ENTRY ───────────────────────────────── */
+  .workaround {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1rem 1.2rem;
+    margin-bottom: .9rem;
+    background: var(--surface);
+  }
+  .workaround-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem; }
+  .workaround-head .tag { flex-shrink: 0; }
+  .workaround-name { font-weight: 600; font-size: .9rem; }
+  .workaround-rows { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .8rem; font-size: .82rem; margin-top: .5rem; }
+  .workaround-row-label { font-size: .67rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-light); }
+  .threshold-box {
+    grid-column: 1 / -1;
+    background: var(--crimson-lt);
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    padding: .5rem .8rem;
+    font-size: .8rem;
+    color: var(--crimson);
+    margin-top: .3rem;
+  }
+  .threshold-box strong { font-weight: 700; }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  .site-footer {
+    background: var(--ink);
+    color: #6b7280;
+    padding: 2rem;
+    font-size: .75rem;
+    text-align: center;
+    line-height: 1.8;
+    margin-top: 4rem;
+  }
+  .site-footer a { color: #9ca3af; text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .mod-header { flex-direction: column; gap: .5rem; }
+    .workaround-rows { grid-template-columns: 1fr; }
+    .top-need { grid-template-columns: 2.2rem 1fr; }
+    .top-need-num { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <a class="masthead-logo" href="https://avi33tbtt.github.io/Prompts/">Vibe<span>Rounds</span></a>
+  <span class="masthead-tag">VibeRounds Integrated Case Analysis</span>
+</header>
+
+<!-- ALERT -->
+<div class="alert-banner">
+  ⚠️ <strong>Clinical Disclaimer:</strong> All outputs are educational and require independent clinical verification before being acted upon. This document does not constitute clinical advice or substitute for licensed professional judgment.
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">VibeRounds · Poly-Crisis Case · Rural District Hospital, India</p>
+  <h1 class="hero-title">53-year-old Female · Diabetic Foot Osteomyelitis + Suspected Pulmonary Embolism</h1>
+  <div class="hero-meta">
+    <span><strong>Modules applied:</strong> PN · Guided Discovery Agent · 45 · Global Health v1.0</span>
+    <span><strong>Setting:</strong> Rural Medical College, Lumbini / District-level, India</span>
+    <span><strong>Date:</strong> June 24, 2026</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- MODULE NAV -->
+  <nav class="mod-nav">
+    <a href="#soap">SOAP Summary</a>
+    <a href="#fingerprint">Case Fingerprint</a>
+    <a href="#pn">Module PN — Patient Needs</a>
+    <a href="#top3">Top 3 Urgent Needs</a>
+    <a href="#discovery">Guided Discovery</a>
+    <a href="#ebm">Module 45 — EBM Insights</a>
+    <a href="#global">Global Health Optimization</a>
+    <a href="#handover">Handover Brief</a>
+  </nav>
+
+  <!-- ═══════════════ SOAP SUMMARY ════════════════════ -->
+  <section class="mod-section" id="soap">
+    <div class="mod-header">
+      <span class="mod-number">SOAP</span>
+      <div>
+        <div class="mod-title">Source SOAP Note — Case at a Glance</div>
+        <div class="mod-subtitle">Presented for structural context before module outputs</div>
+      </div>
+    </div>
+
+    <div class="soap-section"><div class="soap-label">S — Subjective</div><div class="soap-body">53-year-old female, 12-year diabetes history. Non-healing right foot ulcer ×1 month. <strong>New acute complaint: dyspnea requiring supplemental oxygen.</strong></div></div>
+    <div class="soap-section"><div class="soap-label">O — Objective</div><div class="soap-body">SpO₂ 95% on 3 L/min O₂. HR 100. BP 115/66. Right great toe ulcer with abscess + osteomyelitis (imaging confirmed). Left foot bandaged. CXR clear. Doppler: no DVT, abscess confirmed. RBG 108–514 mg/dL. D-dimer markedly elevated (thousands).</div></div>
+    <div class="soap-section"><div class="soap-label">A — Assessment</div><div class="soap-body"><strong>1.</strong> Acute Hypoxic Respiratory Failure — presumed PE (acute hypoxia + clear CXR + markedly elevated D-dimer; negative DVT does not exclude PE). <strong>2.</strong> Uncontrolled DM + Infected Diabetic Foot Ulcer + confirmed osteomyelitis + severe glycemic variability. PE source likely hypercoagulable state from ongoing infection/sepsis.</div></div>
+    <div class="soap-section"><div class="soap-label">P — Plan</div><div class="soap-body"><strong>PE:</strong> Enoxaparin 1 mg/kg q12h after renal check; CTPA for confirmation; O₂ titration. <strong>Infection:</strong> Urgent surgical consult + debridement; broad-spectrum IV antibiotics (bone penetration). <strong>DM:</strong> Basal-bolus insulin; endocrinology consult.</div></div>
+  </section>
+
+  <!-- ═══════════════ CASE FINGERPRINT ════════════════ -->
+  <section class="mod-section" id="fingerprint">
+    <div class="mod-header">
+      <span class="mod-number">GDA</span>
+      <div>
+        <div class="mod-title">Case Fingerprint — Guided Discovery Agent</div>
+        <div class="mod-subtitle">Automated case tagging driving module selection</div>
+      </div>
+    </div>
+
+    <div class="fingerprint-grid">
+      <div class="fp-item"><div class="fp-label">Complexity</div><div class="fp-value">Poly-crisis</div></div>
+      <div class="fp-item"><div class="fp-label">Timeline</div><div class="fp-value">Acute on Chronic</div></div>
+      <div class="fp-item"><div class="fp-label">Data State</div><div class="fp-value">Incomplete / Evolving</div></div>
+      <div class="fp-item"><div class="fp-label">Setting</div><div class="fp-value">Low-resource (Rural India)</div></div>
+      <div class="fp-item"><div class="fp-label">Anchor Dx</div><div class="fp-value">Suspected PE</div></div>
+      <div class="fp-item"><div class="fp-label">Learner</div><div class="fp-value">Clinical Team / Resident</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔴 Red Flags — Features Demanding Urgent Cognitive Attention</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">R1</span>Acute hypoxia (SpO₂ 95% on 3 L) with clear CXR = textbook PE until proven otherwise — anchor risk: team may under-weight this because DVT was negative</li>
+        <li><span class="dq-num">R2</span>D-dimer in the "thousands" — markedly elevated, but D-dimer is non-specific in the context of active infection/sepsis; CTPA is mandatory</li>
+        <li><span class="dq-num">R3</span>BP 115/66 — borderline hemodynamic compromise; must exclude sub-massive or massive PE</li>
+        <li><span class="dq-num">R4</span>RBG swings 108–514 — extreme glycemic variability worsens wound healing, immune function, coagulopathy, and antibiotic efficacy</li>
+        <li><span class="dq-num">R5</span>Left foot also bandaged — bilateral lower limb pathology underdocumented; dual source of infection/thrombosis risk not fully evaluated</li>
+        <li><span class="dq-num">R6</span>Osteomyelitis = bone source of sustained bacteremia → potential septic emboli (alternative or co-existing diagnosis to PE)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 Key Gaps — Missing Data</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">G1</span>No renal function (eGFR/creatinine) — required before Enoxaparin dosing</li>
+        <li><span class="dq-num">G2</span>No echocardiogram — right heart strain would confirm hemodynamic PE significance</li>
+        <li><span class="dq-num">G3</span>No HbA1c — cannot quantify chronicity of dyscontrol</li>
+        <li><span class="dq-num">G4</span>Blood cultures not documented — critical in osteomyelitis/sepsis workup</li>
+        <li><span class="dq-num">G5</span>Left foot status undescribed — bilateral disease risk unquantified</li>
+        <li><span class="dq-num">G6</span>No troponin or BNP — right ventricular strain markers absent</li>
+        <li><span class="dq-num">G7</span>CTPA not yet done — diagnosis presumed, not confirmed</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════ MODULE PN — PATIENT NEEDS ════════ -->
+  <section class="mod-section" id="pn">
+    <div class="mod-header">
+      <span class="mod-number">MOD PN</span>
+      <div>
+        <div class="mod-title">Patient Needs Assessment — Eight-Domain Sweep</div>
+        <div class="mod-subtitle">Module PN · Exhaustive framework applied across all domains</div>
+      </div>
+    </div>
+
+    <!-- Domain 1 -->
+    <div class="domain-block urgent">
+      <div class="domain-label"><span class="tag tag-red">🔴 Immediate</span> Domain 1 — Physical</div>
+      <div class="domain-title">Symptom Burden &amp; Medication Needs</div>
+      <div class="domain-body">
+        <strong>Inadequately controlled symptoms:</strong> Dyspnea (only partially corrected on 3 L O₂). Pain from foot ulcer/osteomyelitis not documented — likely present and undertreated.<br><br>
+        <strong>Undocumented physical needs:</strong> Nutritional status (poor wound healing in diabetes correlates with protein-calorie deficiency). Pressure area assessment for immobilised patient. Contralateral foot skin integrity. Bowel/bladder function if mobility restricted.<br><br>
+        <strong>Medication needs:</strong> Enoxaparin (pending renal function — must not delay >2–4 hours once eGFR confirmed). IV antibiotics with bone penetration. Conversion from sliding-scale to basal-bolus insulin. Analgesia not yet addressed in plan.
+      </div>
+    </div>
+
+    <!-- Domain 2 -->
+    <div class="domain-block urgent">
+      <div class="domain-label"><span class="tag tag-red">🔴 Immediate</span> Domain 2 — Psychological &amp; Emotional</div>
+      <div class="domain-title">Distress, Fear, and Coping</div>
+      <div class="domain-body">
+        No psychological or emotional assessment documented in the SOAP note. A 53-year-old woman experiencing acute breathlessness with a suspected life-threatening clot, on top of a non-healing infected foot, faces compounding fear: fear of dying from PE, fear of amputation, fear of losing function. None of these fears are documented as having been acknowledged or screened for.<br><br>
+        <strong>Gap:</strong> No distress screening, no acknowledgment of psychological burden, no chaplaincy or social-emotional support mentioned.
+      </div>
+    </div>
+
+    <!-- Domain 3 -->
+    <div class="domain-block short">
+      <div class="domain-label"><span class="tag tag-amber">🟡 Short-term</span> Domain 3 — Social &amp; Relational</div>
+      <div class="domain-title">Support Network &amp; Caregiver Status</div>
+      <div class="domain-body">
+        Completely absent from documentation. In a rural Indian context this is critical: who accompanied the patient? Who is primary decision-maker if she deteriorates? Are there children, a spouse, extended family? Who will manage wound care after discharge? Caregiver literacy about diabetes and wound management is unknown. Rural distance may limit family visits and follow-up compliance.
+      </div>
+    </div>
+
+    <!-- Domain 4 -->
+    <div class="domain-block short">
+      <div class="domain-label"><span class="tag tag-amber">🟡 Short-term</span> Domain 4 — Functional &amp; Rehabilitative</div>
+      <div class="domain-title">Activities of Daily Living &amp; Rehabilitation Goal</div>
+      <div class="domain-body">
+        Pre-admission functional baseline not documented. Current mobility is almost certainly impaired (bilateral foot pathology + acute dyspnea). No physiotherapy, occupational therapy, or dietitian referral documented. The patient needs a formal functional assessment to plan realistic rehabilitation. Has the patient been asked what recovery means to her?
+      </div>
+    </div>
+
+    <!-- Domain 5 -->
+    <div class="domain-block urgent">
+      <div class="domain-label"><span class="tag tag-red">🔴 Immediate</span> Domain 5 — Informational &amp; Health Literacy</div>
+      <div class="domain-title">Informed Consent &amp; Disease Understanding</div>
+      <div class="domain-body">
+        The diagnosis of PE has not yet been confirmed (CTPA pending) but anticoagulation is being initiated. Patient's understanding of why she is receiving blood-thinning injections, the bleeding risks, and what CTPA involves is undocumented. Glycemic management failure over 12 years suggests either poor health literacy, inadequate education, socioeconomic barriers, or an unsupported insulin regimen — all unaddressed in the plan. Language and literacy level unknown.
+      </div>
+    </div>
+
+    <!-- Domain 6 -->
+    <div class="domain-block short">
+      <div class="domain-label"><span class="tag tag-amber">🟡 Short-term</span> Domain 6 — Spiritual, Cultural &amp; Existential</div>
+      <div class="domain-title">Goals of Care &amp; Meaning</div>
+      <div class="domain-body">
+        Not documented. Given the severity and the setting (rural medical college in Nepal/India border region), cultural and religious beliefs may significantly shape what this patient wants from care — including views on amputation, blood products, and end-of-life preferences. A goals-of-care conversation has not been held. If she deteriorates acutely overnight, the team does not know what she would want.
+      </div>
+    </div>
+
+    <!-- Domain 7 -->
+    <div class="domain-block long">
+      <div class="domain-label"><span class="tag tag-green">🟢 Long-term</span> Domain 7 — Environmental &amp; Safety</div>
+      <div class="domain-title">In-Hospital Safety &amp; Discharge Environment</div>
+      <div class="domain-body">
+        <strong>In-hospital:</strong> Fall risk elevated (acute dyspnea + foot pathology + possible hypotension). Delirium prevention not mentioned. Nutritional monitoring likely absent. Pressure area care for immobilised patient undocumented.<br><br>
+        <strong>Discharge:</strong> Home environment entirely unknown. Rural living likely means limited access to dressing supplies, podiatry, endocrinology follow-up, or laboratory monitoring. Discharge readiness framework not in place.
+      </div>
+    </div>
+
+    <!-- Domain 8 -->
+    <div class="domain-block short">
+      <div class="domain-label"><span class="tag tag-amber">🟡 Short-term</span> Domain 8 — Systems, Navigation &amp; Advocacy</div>
+      <div class="domain-title">Access, Cost Barriers &amp; Advocacy Gaps</div>
+      <div class="domain-body">
+        CTPA, if available at this institution, may carry out-of-pocket costs the family cannot meet. Enoxaparin in India requires refrigeration and skilled injection technique — both may be barriers post-discharge. Endocrinology consult may not exist at a rural medical college. Orthopedic/vascular surgical capacity for osteomyelitis debridement needs confirmation. No social worker mentioned. The patient's silence in the documentation may reflect cultural deference rather than absence of need.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TOP 3 URGENT NEEDS ══════════════ -->
+  <section class="mod-section" id="top3">
+    <div class="mod-header">
+      <span class="mod-number">PN.10</span>
+      <div>
+        <div class="mod-title">Top 3 Unmet Needs — Greatest Impact on Safety &amp; Outcome</div>
+        <div class="mod-subtitle">Spanning at minimum two domains per Module PN Step PN.10</div>
+      </div>
+    </div>
+
+    <div class="top-need n1">
+      <div class="top-need-num">1</div>
+      <div>
+        <div class="top-need-domain">Domain 1 — Physical · Domain 8 — Systems</div>
+        <div class="top-need-title">Therapeutic anticoagulation must begin NOW — renal function is the rate-limiting step, not a reason to wait</div>
+        <div class="top-need-body">Every hour without Enoxaparin in a suspected PE with hemodynamic borderline status (BP 115/66, HR 100) increases risk of clot propagation, right heart failure, and sudden death. At this rural facility, the gap is systems-level: does the lab result return quickly enough? Is Enoxaparin on formulary? Who checks the creatinine urgently?</div>
+        <div class="top-need-action"><strong>Next action:</strong> Stat creatinine/eGFR. If eGFR >30, initiate Enoxaparin 1 mg/kg SC within 30 minutes. Assign named physician to confirm this has happened. Do not wait for CTPA result to anticoagulate.</div>
+      </div>
+    </div>
+
+    <div class="top-need n2">
+      <div class="top-need-num">2</div>
+      <div>
+        <div class="top-need-domain">Domain 5 — Informational · Domain 6 — Existential</div>
+        <div class="top-need-title">Patient has not been informed of her diagnosis, the reasoning behind treatment, or what comes next</div>
+        <div class="top-need-body">The SOAP note is clinically complete but patient-blind. She is receiving injections, oxygen, and imaging without documentation of any explanation given. In a rural setting with possible low health literacy and a life-threatening working diagnosis, the failure to inform is itself a safety risk — she may remove IV lines, refuse procedures, or be unable to alert staff to new symptoms she doesn't understand.</div>
+        <div class="top-need-action"><strong>Next action:</strong> Bedside 5-minute explanation (in her language) of what PE means, why anticoagulation is being given, and what CTPA is. Written consent obtained. Family member included if present.</div>
+      </div>
+    </div>
+
+    <div class="top-need n3">
+      <div class="top-need-num">3</div>
+      <div>
+        <div class="top-need-domain">Domain 1 — Physical · Domain 4 — Functional</div>
+        <div class="top-need-title">Source control for osteomyelitis is not a secondary priority — it is driving the hypercoagulable state and the glycemic chaos</div>
+        <div class="top-need-body">The infected bone is maintaining the systemic inflammatory state that elevated D-dimer, destabilised glycaemia, and likely precipitated the coagulopathy causing PE. Antibiotics alone do not achieve source control in confirmed osteomyelitis. Without surgical debridement, every other intervention operates against a continuing driver of harm. The surgical consult must happen on the same day as anticoagulation initiation — these are parallel priorities, not sequential ones.</div>
+        <div class="top-need-action"><strong>Next action:</strong> Same-day surgical/orthopedic consult. If surgical capacity is unavailable at this facility, activate referral pathway to district/tertiary hospital within 24 hours. IV antibiotics (piperacillin-tazobactam or equivalent, bone-penetrating) start today without waiting for surgical plan.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ GUIDED DISCOVERY ════════════════ -->
+  <section class="mod-section" id="discovery">
+    <div class="mod-header">
+      <span class="mod-number">GDA</span>
+      <div>
+        <div class="mod-title">Guided Discovery Plan — Module Pipeline &amp; Discovery Points</div>
+        <div class="mod-subtitle">VibeRounds Guided Discovery Agent · Poly-crisis | Acute-on-chronic | Low-resource</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recommended Module Pipeline</div>
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <span class="p-phase">Initiation</span>
+          <div class="p-node"><span class="p-dot red"></span><div class="p-content"><div class="p-module">★★★ Module 0 — Cold-Start Orientation</div><div class="p-desc">Establish learner role, de-identification, and session goals before any case data is submitted.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot red"></span><div class="p-content"><div class="p-module">★★★ Module 1 — Socratic Clinical Reasoning</div><div class="p-desc">Active differential construction: PE vs. septic emboli vs. pneumonia vs. ARDS from sepsis.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot red"></span><div class="p-content"><div class="p-module">★★★ Module 12 — Differential Diagnosis Deepdive</div><div class="p-desc">D-dimer in sepsis vs. PE: pre-test probability, Wells score, imaging decision tree.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot red"></span><div class="p-content"><div class="p-module">★★★ Module 14 — Resource-Constrained Reasoning</div><div class="p-desc">CTPA may be unavailable; construct empirical management pathway without CT confirmation.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot amber"></span><div class="p-content"><div class="p-module">★★ Module 28 — Diagnostic Time-Out</div><div class="p-desc">Check anchoring: is the team over-invested in PE and missing septic emboli from osteomyelitis?</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot amber"></span><div class="p-content"><div class="p-module">★★ Module 38 — Poly-Crisis &amp; Cascading Failure Simulator</div><div class="p-desc">What happens if she bleeds from anticoagulation while anticoagulated for PE? Cascade map.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Execution</span>
+          <div class="p-node"><span class="p-dot amber"></span><div class="p-content"><div class="p-module">★★ Module 13 — Medication Reconciliation</div><div class="p-desc">Enoxaparin + antibiotics + insulin: interactions, renal dose adjustment, monitoring.</div></div></div>
+        </div>
+        <div class="pipeline-step">
+          <span class="p-phase">Closure</span>
+          <div class="p-node"><span class="p-dot teal"></span><div class="p-content"><div class="p-module">★ Module 42 — Clinical Pre-Mortem</div><div class="p-desc">Name the three most plausible ways this patient deteriorates in the next 24 hours and pre-empt each.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Discovery Point Plan — Case-Specific Socratic Questions</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">DP-1.1</span>The DVT Doppler is negative, but you are still calling this PE. Walk me through the anatomy of why a clot can embolise to the lungs without a detectable DVT — and which source would be most likely in this patient's specific clinical picture.</li>
+        <li><span class="dq-num">DP-1.2</span>D-dimer is elevated in the thousands — but this patient also has active osteomyelitis and systemic infection. How much of that D-dimer elevation is attributable to inflammation alone, and how does that change your pre-test probability for PE?</li>
+        <li><span class="dq-num">DP-1.3</span>BP is 115/66 with HR 100. Before you label this "hemodynamically stable," what criteria define sub-massive PE, and does this patient meet them? What would change in your management if she did?</li>
+        <li><span class="dq-num">DP-12.1</span>Osteomyelitis of the great toe with confirmed abscess. Generate three mechanisms by which this infection could cause lung pathology other than pulmonary embolism — which is most likely, and how would you distinguish it from PE at the bedside without CTPA?</li>
+        <li><span class="dq-num">DP-12.2</span>The chest X-ray is described as clear. What specific CXR findings would you have expected to see in each of your differential diagnoses, and what does their absence mean for each one?</li>
+        <li><span class="dq-num">DP-28.1</span>The plan is written as if PE is confirmed. What is the single strongest argument against PE in this case, and if that argument were correct, how would it change the plan for the next 6 hours?</li>
+        <li><span class="dq-num">DP-38.1</span>You start therapeutic Enoxaparin for PE. Twenty-four hours later the wound begins to bleed heavily. Walk me through the cascading decisions you now face — anticoagulation for life-threatening PE versus bleeding risk from a surgically amenable wound.</li>
+        <li><span class="dq-num">DP-14.1</span>CTPA is not available at your rural medical college tonight. What is your empirical management threshold — at what point of clinical deterioration do you start anticoagulation without imaging confirmation, and what is your safety threshold for stopping?</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════ MODULE 45 — EBM ═════════════════ -->
+  <section class="mod-section" id="ebm">
+    <div class="mod-header">
+      <span class="mod-number">MOD 45</span>
+      <div>
+        <div class="mod-title">Evidence-Based Medicine Insights — Three Priority Questions</div>
+        <div class="mod-subtitle">Module 45 · EBM Expert Advisor · Sackett's five-step cycle applied</div>
+      </div>
+    </div>
+
+    <!-- EBM Brief 1 -->
+    <div class="ebm-brief">
+      <div class="row">
+        <h4>PICO Question 1 — Anticoagulation Without CTPA Confirmation</h4>
+        <p><strong>P:</strong> Adults with clinically suspected PE (acute hypoxia, clear CXR, elevated D-dimer) in resource-limited settings where CTPA is unavailable<br>
+        <strong>I:</strong> Empirical therapeutic anticoagulation initiated without imaging confirmation<br>
+        <strong>C:</strong> Withholding anticoagulation until imaging is confirmed<br>
+        <strong>O:</strong> 30-day mortality, recurrent VTE, major bleeding</p>
+      </div>
+      <div class="row">
+        <h4>Evidence Summary</h4>
+        Clinical prediction tools (Wells Score, Geneva Score) combined with elevated D-dimer carry sufficient pre-test probability to justify empirical anticoagulation when imaging is unavailable. ESC 2019 PE Guidelines support this for intermediate-high probability cases. This patient's Wells Score is ≥5 (alternative diagnosis less likely than PE + HR>100 = high probability without DVT). GRADE certainty: <span class="ebm-grade grade-mod">Moderate</span> — evidence derives from cohort data extrapolated from high-resource settings.
+      </div>
+      <div class="row">
+        <h4>Effect in Plain Numbers</h4>
+        In high-probability clinical PE without anticoagulation: 30-day mortality ~15–25% (observational). With anticoagulation: ~2–8%. Absolute risk reduction approximately 12–17 lives per 100 patients. NNT ≈ 6–8. <strong>This is a high-magnitude, time-critical benefit.</strong>
+      </div>
+      <div class="row">
+        <h4>Three-Circle Integration</h4>
+        Research: strong signal for treat empirically. Clinical expertise: confirm Wells ≥5 clinically before administering. Patient values: anticoagulation with a concurrent infected wound creates real bleeding risk — discuss this tradeoff at the bedside before first dose.
+      </div>
+    </div>
+
+    <!-- EBM Brief 2 -->
+    <div class="ebm-brief">
+      <div class="row">
+        <h4>PICO Question 2 — Antibiotic Choice in Diabetic Foot Osteomyelitis</h4>
+        <p><strong>P:</strong> Adult with confirmed osteomyelitis (distal phalanx) complicating a diabetic foot ulcer<br>
+        <strong>I:</strong> Broad-spectrum IV antibiotics with proven bone penetration (piperacillin-tazobactam, or fluoroquinolone + anti-MRSA agent)<br>
+        <strong>C:</strong> Narrow-spectrum agents or oral antibiotics at initiation<br>
+        <strong>O:</strong> Remission of osteomyelitis, avoidance of amputation, bacteremia clearance</p>
+      </div>
+      <div class="row">
+        <h4>Evidence Summary</h4>
+        IDSA 2012 Diabetic Foot Infection guidelines (updated 2023) recommend empirical broad-spectrum IV therapy covering Gram-negatives, anaerobes, and MRSA when systemic infection is present. Fluoroquinolones (ciprofloxacin/levofloxacin) have good bone penetration and oral bioavailability but increasing resistance limits empirical use. In an Indian setting MRSA prevalence is high; vancomycin + piperacillin-tazobactam is a reasonable empirical choice where cultures are pending. GRADE certainty: <span class="ebm-grade grade-mod">Moderate</span>
+      </div>
+      <div class="row">
+        <h4>Surrogate Warning</h4>
+        Most osteomyelitis trials use "remission" at 6 months as the outcome — a surrogate for the patient-important outcome of amputation avoidance and functional foot preservation. Evidence for long-term amputation-free survival is <span class="ebm-grade grade-low">Low certainty</span>.
+      </div>
+    </div>
+
+    <!-- EBM Brief 3 -->
+    <div class="ebm-brief">
+      <div class="row">
+        <h4>PICO Question 3 — Basal-Bolus vs. Sliding Scale Insulin in Hospital</h4>
+        <p><strong>P:</strong> Hospitalised adult with uncontrolled T2DM (RBG 108–514 mg/dL)<br>
+        <strong>I:</strong> Structured basal-bolus insulin regimen<br>
+        <strong>C:</strong> Reactive sliding-scale insulin<br>
+        <strong>O:</strong> Mean glucose, hypoglycemia events, infection outcomes, wound healing</p>
+      </div>
+      <div class="row">
+        <h4>Evidence Summary</h4>
+        The RABBIT-2 trial (Umpierrez et al. 2007, Diabetes Care) demonstrated that basal-bolus regimen (glargine + glulisine) achieved significantly better glucose control vs. sliding scale (mean glucose 166 vs 193 mg/dL) with lower composite complications without increased severe hypoglycemia. GRADE certainty: <span class="ebm-grade grade-hi">High</span> for glucose control; <span class="ebm-grade grade-mod">Moderate</span> for clinical infection outcomes.
+      </div>
+      <div class="row">
+        <h4>Effect in Plain Numbers</h4>
+        Basal-bolus reduces post-prandial hyperglycemic excursions by approximately 27 mg/dL on average. In wound-healing contexts, maintaining glucose &lt;180 mg/dL reduces surgical site infection risk by ~35% (relative). NNT for complication avoidance ≈ 8–10. At this facility: does insulin glargine exist in formulary? Alternatives if not are addressed in the Global Health module below.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Critical Awareness Debrief (Step 45.10)</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">CA1</span>The PE diagnosis is presumed not confirmed — all EBM evidence above applies to confirmed PE. The moment CTPA is done (or definitively unavailable), re-apply the evidence with the actual diagnosis, not the working hypothesis.</li>
+        <li><span class="dq-num">CA2</span>D-dimer elevation in the thousands is being interpreted as PE signal — it is equally valid as a sepsis/inflammation signal. The pre-test probability tools (Wells) are the corrective lens; make sure the team scores Wells formally, not gestalt.</li>
+        <li><span class="dq-num">CA3</span>RABBIT-2 trial data is from a US academic setting — insulin glargine availability in rural India is limited. The EBM translates, but the formulation may require adaptation (NPH insulin as basal substitute is the evidence-based alternative in LMIC settings).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════ GLOBAL HEALTH ════════════════════ -->
+  <section class="mod-section" id="global">
+    <div class="mod-header">
+      <span class="mod-number">GHOM v1.0</span>
+      <div>
+        <div class="mod-title">Global Health Optimization — Rural Medical College, India</div>
+        <div class="mod-subtitle">Re-grounding the fully-resourced plan against a stated district-hospital ceiling</div>
+      </div>
+    </div>
+
+    <!-- Stage 2: Ceiling Table -->
+    <div class="card">
+      <div class="card-title">Stage 2 — Local Resource Ceiling Table</div>
+      <table class="ceiling-table">
+        <thead>
+          <tr><th>Resource</th><th>Plan Assumed</th><th>Local Reality (Rural MC)</th><th>Severity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CTPA</td><td>STAT availability</td><td>Likely unavailable or requires transfer</td><td><span class="tag tag-red">Not Available</span></td></tr>
+          <tr><td>Echocardiogram</td><td>To assess RV strain</td><td>Operator-dependent, not 24/7</td><td><span class="tag tag-amber">Referral/Delay</span></td></tr>
+          <tr><td>Enoxaparin (LMWH)</td><td>Standard formulary</td><td>May be available; verify stock</td><td><span class="tag tag-amber">Slower</span></td></tr>
+          <tr><td>Insulin Glargine</td><td>Basal-bolus protocol</td><td>Often unavailable; NPH is substitute</td><td><span class="tag tag-amber">Substitute Available</span></td></tr>
+          <tr><td>Orthopedic Surgeon</td><td>Urgent debridement</td><td>May not be on-site; visiting schedule</td><td><span class="tag tag-red">Referral Dependent</span></td></tr>
+          <tr><td>Endocrinology Consult</td><td>Recommended</td><td>Not available at rural MC</td><td><span class="tag tag-red">Not Available</span></td></tr>
+          <tr><td>Blood Cultures</td><td>Standard pre-antibiotic</td><td>Likely available; delay risk</td><td><span class="tag tag-amber">Slower</span></td></tr>
+          <tr><td>Troponin / BNP</td><td>PE severity stratification</td><td>Often unavailable</td><td><span class="tag tag-red">Not Available</span></td></tr>
+          <tr><td>Vascular Surgery</td><td>If limb salvage needed</td><td>Tertiary referral only</td><td><span class="tag tag-red">Tertiary Only</span></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.8rem;color:var(--ink-light)"><strong>Highest-consequence gap:</strong> Absence of CTPA forces empirical anticoagulation — which simultaneously creates risk in a patient with an infected, potentially surgically amenable wound. This single gap cascades into every downstream safety decision in this case.</p>
+    </div>
+
+    <!-- Stage 4: Workarounds -->
+    <div class="card">
+      <div class="card-title">Stage 4 — Substitutes &amp; Workarounds (Test-by-Test)</div>
+
+      <div class="workaround">
+        <div class="workaround-head"><span class="tag tag-red">Critical</span><span class="workaround-name">CTPA → Clinical + Wells + Bedside Echo (if available)</span></div>
+        <div class="workaround-rows">
+          <div><div class="workaround-row-label">Substitute</div>Wells Score (formal calculation) + respiratory response to O₂ + clinical exam + any available portable US for RV assessment</div>
+          <div><div class="workaround-row-label">Limitation vs. Gold Standard</div>Clinical probability tools have sensitivity ~83%, specificity ~50% — significant miss rate for small or sub-massive PE</div>
+          <div class="threshold-box"><strong>Safety Threshold:</strong> If Wells ≥5 + D-dimer markedly elevated + SpO₂ does not improve with O₂ ≥6 L/min → empirical anticoagulate and arrange urgent transfer for CTPA. Do not continue empirical management beyond 48 hours without imaging confirmation.</div>
+        </div>
+      </div>
+
+      <div class="workaround">
+        <div class="workaround-head"><span class="tag tag-amber">Important</span><span class="workaround-name">Insulin Glargine → NPH Insulin (Intermediate-acting)</span></div>
+        <div class="workaround-rows">
+          <div><div class="workaround-row-label">Substitute</div>NPH 0.3 units/kg at bedtime as "basal"; regular insulin with meals as "bolus" — a validated LMIC adaptation of basal-bolus</div>
+          <div><div class="workaround-row-label">Limitation</div>NPH has unpredictable peak at 4–8 hours; higher nocturnal hypoglycemia risk than glargine; requires glucose check at 2–3 AM initially</div>
+          <div class="threshold-box"><strong>Safety Threshold:</strong> Any RBG &lt;70 mg/dL requires protocol adjustment and review. If glucose &gt;400 persists >12 hours despite NPH-based regimen, switch to IV insulin infusion protocol.</div>
+        </div>
+      </div>
+
+      <div class="workaround">
+        <div class="workaround-head"><span class="tag tag-amber">Important</span><span class="workaround-name">Orthopedic Surgeon → General Surgeon + Wound Care Team + Antibiotics</span></div>
+        <div class="workaround-rows">
+          <div><div class="workaround-row-label">Substitute</div>General surgery consult for initial debridement if orthopaedics unavailable; aggressive wound care; wound swab + bone biopsy attempt if feasible</div>
+          <div><div class="workaround-row-label">Limitation</div>Phalangeal osteomyelitis with abscess requires bone-level debridement — general surgery without orthopedic training may achieve incomplete source control</div>
+          <div class="threshold-box"><strong>Safety Threshold:</strong> If wound shows spreading cellulitis, new systemic signs of sepsis, or failure to improve in 48–72 hours → mandatory transfer to tertiary centre for orthopedic intervention regardless of distance or cost.</div>
+        </div>
+      </div>
+
+      <div class="workaround">
+        <div class="workaround-head"><span class="tag tag-red">Critical</span><span class="workaround-name">Troponin/BNP (PE Severity) → Clinical Hemodynamic Assessment</span></div>
+        <div class="workaround-rows">
+          <div><div class="workaround-row-label">Substitute</div>Serial BP, HR, oxygen requirement trend, JVP assessment, and clinical signs of RV failure (raised JVP, hypotension, tachycardia progression)</div>
+          <div><div class="workaround-row-label">Limitation</div>Clinical assessment misses early subclinical RV strain; no quantification of clot burden</div>
+          <div class="threshold-box"><strong>Safety Threshold:</strong> New hypotension (SBP &lt;90), HR >120, or SpO₂ falling despite ≥8 L O₂ = massive/sub-massive PE requiring emergency referral for thrombolysis or interventional therapy. This is not manageable at a rural MC.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 5: Empirical Plan -->
+    <div class="card">
+      <div class="card-title">Stage 5 — Ceiling-Aware Empirical Management Plan</div>
+      <div class="domain-block urgent" style="margin-bottom:.9rem">
+        <div class="domain-label">Phase 1 — Hour 0–4 (All locally executable)</div>
+        <div class="domain-body" style="font-size:.88rem">
+          1. Stat creatinine/eGFR (confirm available in lab)<br>
+          2. Formal Wells Score calculation (documented in notes)<br>
+          3. If Wells ≥5 + eGFR >30: Enoxaparin 1 mg/kg SC stat<br>
+          4. Blood cultures ×2 before antibiotics (if not already taken)<br>
+          5. IV piperacillin-tazobactam 4.5 g q8h (or local equivalent with bone penetration)<br>
+          6. O₂ titration to SpO₂ ≥94%<br>
+          7. NPH insulin initiation: 0.3 units/kg bedtime dose; pre-meal regular insulin<br>
+          8. Bedside patient explanation (5 minutes, in patient's language, family present)
+        </div>
+      </div>
+      <div class="domain-block short" style="margin-bottom:.9rem">
+        <div class="domain-label">Phase 2 — Hour 4–24</div>
+        <div class="domain-body" style="font-size:.88rem">
+          1. Surgical consult (general surgery if orthopedic unavailable) for wound assessment<br>
+          2. Glucose monitoring q4h; adjust insulin per response<br>
+          3. Serial vitals q2h — watch for hemodynamic deterioration<br>
+          4. CTPA referral arranged (patient/family counselled on transfer need, costs addressed with social worker if available)<br>
+          5. Document goals-of-care conversation: escalation wishes if she deteriorates
+        </div>
+      </div>
+      <div class="domain-block long">
+        <div class="domain-label">Exit Criterion — When Empirical Local Plan Has Failed</div>
+        <div class="domain-body" style="font-size:.88rem">
+          Mandatory tertiary transfer if: SBP &lt;90 OR SpO₂ &lt;90% on ≥8 L O₂ OR spreading limb infection at 48h OR glucose not controllable with NPH regimen. <em>This list is the clinical safety net — it must be written in the notes and communicated to nursing staff tonight.</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 7: Missed low-cost clues -->
+    <div class="card">
+      <div class="card-title">Stage 7 — Missed Low-Cost Clues (Zero-Cost, High-Yield)</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">LC1</span><strong>Left foot status:</strong> Described as "bandaged" — what is underneath? Bilateral diabetic foot disease changes infection source assessment, DVT risk stratification, and surgical planning. A 30-second physical exam is the substitute for advanced imaging of the contralateral limb.</li>
+        <li><span class="dq-num">LC2</span><strong>Fever / temperature:</strong> Not documented. In a case being worked up for PE vs. septic emboli from osteomyelitis, the presence or absence of fever is a zero-cost discriminator that belongs in every set of vitals.</li>
+        <li><span class="dq-num">LC3</span><strong>Duration and character of dyspnea:</strong> Sudden onset vs. gradual worsening differentiates embolic event from evolving sepsis/ARDS. Not documented. This history is obtainable at the bedside in 2 minutes.</li>
+        <li><span class="dq-num">LC4</span><strong>JVP assessment:</strong> A clinical marker of right heart strain — the free substitute for echo and BNP in this setting. Documented nowhere in the SOAP note.</li>
+        <li><span class="dq-num">LC5</span><strong>Pleuritic chest pain:</strong> Classic PE symptom. Its presence or absence is a zero-cost pre-test probability modifier. Not asked or documented.</li>
+      </ul>
+    </div>
+
+    <!-- Stage 8: Critical awareness -->
+    <div class="card">
+      <div class="card-title">Stage 8 — System-Level Critical Awareness</div>
+      <ul class="dq-list">
+        <li><span class="dq-num">S8.1</span><strong>Shortcuts to unlearn:</strong> Empirical anticoagulation without imaging is appropriate here, but this pattern normalised over time creates a facility culture where PE is never imaged — which leads to missed alternative diagnoses and missed sub-massive cases needing thrombolysis. The habit needs a formal audit trigger.</li>
+        <li><span class="dq-num">S8.2</span><strong>Silent failure risk:</strong> NPH insulin can cause nocturnal hypoglycemia with no warning symptom in a sleeping, dyspneic patient — this is the most likely way the glycemic substitution plan fails silently and causes harm before morning rounds.</li>
+        <li><span class="dq-num">S8.3</span><strong>Strongest criticism of this approach:</strong> An anticoagulated patient with an infected, debrided wound is being managed at a facility without surgical backup, imaging confirmation, or hemodynamic monitoring infrastructure. The empirical plan is clinically sound but the safety margin is thin — transfer should be the default, not the exception, for a case this complex.</li>
+        <li><span class="dq-num">S8.4</span><strong>Irreducible uncertainty:</strong> Whether this is PE or septic emboli cannot be resolved without CTPA. The clinical management overlaps significantly (antibiotics, source control) but anticoagulation in septic emboli from endocarditis carries specific risks not present in bland PE. This ambiguity cannot be managed away — it must be named in the handover.</li>
+      </ul>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--ink-mid)">
+        <strong>Structural gap for escalation:</strong> A rural medical college in India managing poly-crisis cases (PE + osteomyelitis + uncontrolled T2DM) without on-site CTPA, orthopedic surgery, or endocrinology represents a system-level gap that exceeds individual case management. This case should be flagged to hospital administration as evidence that CTPA or a formal rapid-transfer pathway to a tertiary centre is required as a facility-level resource — not absorbed silently into the care of this one patient.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ HANDOVER BRIEF ═══════════════════ -->
+  <section class="mod-section" id="handover">
+    <div class="mod-header">
+      <span class="mod-number">PN.11</span>
+      <div>
+        <div class="mod-title">Needs Continuity Brief — Handover-Ready</div>
+        <div class="mod-subtitle">Module PN Step 11 · Max 200 words · Readable in 60 seconds · Action-immediate</div>
+      </div>
+    </div>
+
+    <div style="background:var(--ink);color:#e5e7eb;border-radius:6px;padding:1.8rem 2rem;font-size:.88rem;line-height:1.75">
+      <p style="margin-bottom:1rem"><span style="background:#b91c1c;color:#fff;padding:.15rem .5rem;border-radius:2px;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700">URGENT</span></p>
+      <p style="margin-bottom:.8rem"><strong style="color:#f9fafb">Patient:</strong> 53F, DM ×12 years. Admitted: suspected PE + osteomyelitis R great toe + uncontrolled T2DM.</p>
+      <p style="margin-bottom:.8rem"><strong style="color:#f9fafb">Two most urgent unmet needs:</strong><br>
+      (1) <strong style="color:#f87171">Anticoagulation status:</strong> Confirm Enoxaparin has been given — check notes for eGFR result and first dose time. If not yet administered, this is the immediate action.<br>
+      (2) <strong style="color:#fbbf24">Patient has not been informed</strong> of working diagnosis or treatment rationale in her own language — before morning rounds, confirm this conversation has happened.</p>
+      <p style="margin-bottom:.8rem"><strong style="color:#f9fafb">Not yet assessed:</strong> Psychological/emotional state; goals of care; left foot detailed exam; JVP; fever documented; family support network.</p>
+      <p style="margin-bottom:.8rem"><strong style="color:#f9fafb">Non-negotiable escalation triggers tonight:</strong> SBP &lt;90 | SpO₂ &lt;90% on ≥8L O₂ | spreading cellulitis | nocturnal hypoglycemia (2–3 AM glucose check mandatory on NPH).</p>
+      <p style="color:#9ca3af;font-size:.78rem">CTPA pending / not yet confirmed available. Diagnosis of PE remains presumed. Septic emboli from osteomyelitis remains on differential. Name this ambiguity at handover.</p>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<footer class="site-footer">
+  <p>VibeRounds Integrated Case Analysis · Modules PN, Guided Discovery Agent, 45, Global Health Optimization v1.0</p>
+  <p>Authored in the <a href="https://avi33tbtt.github.io/Prompts/" target="_blank">VibeRounds Socratic AI Paradigm</a> · Dr. Avinash Kumar Gupta</p>
+  <p>⚠️ All AI-generated outputs require independent clinical verification before being acted upon. This document is for educational use only and does not constitute clinical advice.</p>
+</footer>
+
+</body>
+</html>
