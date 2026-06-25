@@ -220,6 +220,13 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 46 | [Evidence-Based Medicine Insights](Module-45-Evidence-Based-Medicine-Insights.md) | Evidence-Based Medicine Insights |
 | 47 | [Shadow Module 47 — Evidence-Based Medicine Adversarial Counterpart](Shadow-Module-45-EBM-Adversarial-Counterpart.md) | Shadow Module 47 — Evidence-Based Medicine Adversarial Counterpart |
 | 48 | [Treatment Comparative Analysis & Evidence-Informed Prognosis Trajectory](Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.md) | Treatment Comparative Analysis & Evidence-Informed Prognosis Trajectory |
+| 49 | [FMEA Analysis](Module-49-FMEA-Analysis-and-Insights.md) | FMEA Analysis |
+| 50 | [Diagnostic Reasoning Map](Module-50-DRM-Diagnostic-Reasoning-Map.md) | Diagnostic Reasoning Map |
+| 51 | [Systems-Based Clinical Analysis](Module-51-Systems-Based-Clinical-Analysis-and-Insights.md) | Systems-Based Clinical Analysis |
+| 52 | [Clinical Pearls Distillation](Module-52-CP-Clinical-Pearls.md) | Clinical Pearls Distillation |
+| 53 | [Clinical Guideline Intelligence Navigator](Module-53-Clinical-Guideline-Intelligence-Navigator.md) | Clinical Guideline Intelligence Navigator |
+| 54 | [System 1 & System 2 Thinking Question Generator](Module-54-System1-System2-Question-Generator.md) | System 1 & System 2 Thinking Question Generator |
+| 55 | [Patient Needs Assessment](Module-55-Patient-Needs-Assessment.md) | Patient Needs Assessment |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
