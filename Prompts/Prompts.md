@@ -168,6 +168,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 54 | [System 1 & System 2 Thinking Question Generator](Module-54-System1-System2-Question-Generator.md) | System 1 & System 2 Thinking Question Generator |
 | 55 | [Patient Needs Assessment](Module-55-Patient-Needs-Assessment.md) | Patient Needs Assessment |
 | 56 | [Hypothetico-Deductive Reasoning](Module-HDM-Hypothetico-Deductive-Model.md) | Hypothetico-Deductive Reasoning |
+| 57 | [Clinical Cognition Deep Dive](Module-CC-Clinical-Cognition-Deep-Dive.md) | Clinical Cognition Deep Dive |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
@@ -192,6 +193,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Guided Discovery Agent](VibeRounds_Guided_Discovery_Agent.md) | Guided Discovery Agent |
 | -- | [Patient Needs Assessment](Module-PN-Patient-Needs-Assessment.md) | Patient Needs Assessment |
 | -- | [Socratic Question Generator](Socratic_Question_Generator.md) | Socratic Question Generator |
+
 
 
 * **Clinical Reasoning & Cognitive Frameworks:** 1, 12, 14, 15, 17, 18, 20, 28, 30, 32, 33, 35, 36, 37
