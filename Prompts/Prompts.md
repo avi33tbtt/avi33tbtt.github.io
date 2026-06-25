@@ -227,6 +227,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | 53 | [Clinical Guideline Intelligence Navigator](Module-53-Clinical-Guideline-Intelligence-Navigator.md) | Clinical Guideline Intelligence Navigator |
 | 54 | [System 1 & System 2 Thinking Question Generator](Module-54-System1-System2-Question-Generator.md) | System 1 & System 2 Thinking Question Generator |
 | 55 | [Patient Needs Assessment](Module-55-Patient-Needs-Assessment.md) | Patient Needs Assessment |
+| 56 | [Hypothetico-Deductive Reasoning](Module-HDM-Hypothetico-Deductive-Model.md) | Hypothetico-Deductive Reasoning |
 | -- | [Vibe Rounds in Practice: A Case Walkthrough](Vibe_Rounds_Case_Walkthrough.md) | Vibe Rounds in Practice: A Case Walkthrough |
 | -- | [Sackett EBM Cycle Cross-Reference](EBM-Cycle-Cross-Reference.md) | Sackett EBM Cycle Cross-Reference |
 | -- | [VibeRounds — Combined Module Reference](VibeRounds-Combined-Modules-01-20.md) | VibeRounds — Combined Module Reference |
