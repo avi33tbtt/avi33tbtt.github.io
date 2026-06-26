@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 49 — Disease & Treatment Velocity · 60F E.Coli Sepsis · VibeRounds</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKEN SYSTEM ── */
+  :root {
+    --bg:          #0d0f14;
+    --bg-card:     #13161e;
+    --bg-card2:    #191c26;
+    --bg-card3:    #1e2230;
+    --border:      #252a38;
+    --border-hi:   #2e3448;
+    --text-pri:    #e8eaf0;
+    --text-sec:    #8b91a8;
+    --text-ter:    #555d78;
+    --accent-v:    #c0392b;   /* velocity red */
+    --accent-b:    #1a6eb5;   /* brake blue */
+    --accent-g:    #1e8a5e;   /* green / positive */
+    --accent-a:    #b8860b;   /* amber / warning */
+    --accent-p:    #7c4dff;   /* purple / module */
+    --accent-t:    #00bcd4;   /* teal / treatment */
+    --high:        #ff5252;
+    --mod:         #ff9800;
+    --low:         #66bb6a;
+    --fixed:       #ef5350;
+    --modif:       #42a5f5;
+    --active-br:   #26c6da;
+    --inactive-br: #ff7043;
+    --font-display: 'Fraunces', serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'IBM Plex Mono', monospace;
+    --r:           6px;
+    --r-lg:        12px;
+  }
+  .light-mode {
+    --bg:          #f4f5f9;
+    --bg-card:     #ffffff;
+    --bg-card2:    #f0f2f8;
+    --bg-card3:    #e8ebf4;
+    --border:      #d4d8e8;
+    --border-hi:   #b8bdd4;
+    --text-pri:    #1a1d2e;
+    --text-sec:    #4a5070;
+    --text-ter:    #8890b0;
+    --accent-v:    #c0392b;
+    --accent-b:    #1a6eb5;
+    --accent-g:    #1e8a5e;
+    --accent-a:    #b8860b;
+    --accent-p:    #6200ea;
+    --accent-t:    #0097a7;
+    --high:        #d32f2f;
+    --mod:         #e65100;
+    --low:         #388e3c;
+    --fixed:       #c62828;
+    --modif:       #1565c0;
+    --active-br:   #00838f;
+    --inactive-br: #bf360c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-pri);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
+    transition: background .3s, color .3s;
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent-p);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-pri);
+    max-width: 760px;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent-v); }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-sec);
+    font-family: var(--font-mono);
+    line-height: 1.8;
+  }
+  .hero-sub a { color: var(--accent-t); text-decoration: none; border-bottom: 1px solid transparent; }
+  .hero-sub a:hover { border-color: var(--accent-t); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: color-mix(in srgb, var(--accent-a) 10%, var(--bg-card));
+    border-left: 3px solid var(--accent-a);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text-sec);
+    margin-bottom: 40px;
+  }
+  .disclaimer strong { color: var(--accent-a); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px; right: 20px;
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-sec);
+    cursor: pointer;
+    z-index: 100;
+    letter-spacing: .08em;
+    transition: all .2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent-p); color: var(--accent-p); }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 50;
+    padding: 10px 0;
+    margin: 0 -24px 36px;
+    padding-left: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-pills { display: flex; gap: 6px; white-space: nowrap; }
+  .nav-pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    text-decoration: none;
+    transition: all .2s;
+    letter-spacing: .04em;
+  }
+  .nav-pill:hover { border-color: var(--accent-p); color: var(--accent-p); }
+
+  /* ── SECTION HEADERS ── */
+  .section { margin-bottom: 48px; scroll-margin-top: 60px; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: var(--accent-p);
+    background: color-mix(in srgb, var(--accent-p) 12%, var(--bg-card));
+    border: 1px solid color-mix(in srgb, var(--accent-p) 30%, transparent);
+    padding: 3px 9px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-pri);
+  }
+
+  /* ── CASE SUMMARY ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px;
+  }
+  .summary-card .card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--text-ter);
+    margin-bottom: 8px;
+  }
+  .summary-card .card-content {
+    font-size: 13.5px;
+    color: var(--text-sec);
+    line-height: 1.6;
+  }
+  .summary-card .card-content strong { color: var(--text-pri); }
+  .findings-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .finding-chip {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-hi);
+    color: var(--text-sec);
+    background: var(--bg-card2);
+  }
+  .finding-chip.critical { border-color: color-mix(in srgb, var(--accent-v) 50%, transparent); color: var(--accent-v); background: color-mix(in srgb, var(--accent-v) 8%, var(--bg-card)); }
+  .finding-chip.warn { border-color: color-mix(in srgb, var(--accent-a) 50%, transparent); color: var(--accent-a); background: color-mix(in srgb, var(--accent-a) 8%, var(--bg-card)); }
+  .finding-chip.info { border-color: color-mix(in srgb, var(--accent-t) 50%, transparent); color: var(--accent-t); background: color-mix(in srgb, var(--accent-t) 8%, var(--bg-card)); }
+
+  /* ── THREE-PROCESS STRIP ── */
+  .process-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 680px) { .process-strip { grid-template-columns: 1fr; } }
+  .process-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .process-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .process-card.acute::before  { background: var(--accent-v); }
+  .process-card.chronic::before{ background: var(--accent-a); }
+  .process-card.systemic::before{ background: var(--accent-p); }
+  .process-card .proc-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-ter);
+    margin-bottom: 6px;
+  }
+  .process-card .proc-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-pri);
+  }
+  .process-card .proc-vel {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+  }
+  .vel-fast   { color: var(--high); }
+  .vel-mod    { color: var(--mod); }
+  .vel-slow   { color: var(--low); }
+
+  /* ── VELOCITY TIMELINE VISUAL ── */
+  .timeline-visual {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .timeline-visual h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--text-ter);
+    margin-bottom: 24px;
+  }
+  .timeline-tracks { display: flex; flex-direction: column; gap: 22px; min-width: 560px; }
+  .track { display: flex; align-items: center; gap: 14px; }
+  .track-label {
+    font-size: 12px;
+    font-weight: 500;
+    width: 130px;
+    flex-shrink: 0;
+    color: var(--text-sec);
+    text-align: right;
+    font-family: var(--font-mono);
+  }
+  .track-bar-wrap {
+    flex: 1;
+    position: relative;
+    height: 28px;
+    background: var(--bg-card3);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .track-bar {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    white-space: nowrap;
+    color: rgba(255,255,255,.9);
+    transition: width .8s ease;
+  }
+  .track-bar.fast    { background: linear-gradient(90deg, #c0392b, #e74c3c); width: 95%; }
+  .track-bar.mod-hi  { background: linear-gradient(90deg, #c0392b88, #e74c3c88); width: 65%; }
+  .track-bar.slow    { background: linear-gradient(90deg, #1a6eb5, #2980b9); width: 30%; }
+  .track-bar.chronic { background: linear-gradient(90deg, #b8860b, #f39c12); width: 40%; }
+  .track-bar.accel   { background: linear-gradient(90deg, #e67e22, #f39c12); width: 80%; }
+  .track-bar.treat   { background: linear-gradient(90deg, #1e8a5e, #27ae60); width: 45%; animation: pulse-bar 2s ease-in-out infinite; }
+  .track-bar.zero    { background: linear-gradient(90deg, #555, #777); width: 15%; }
+  @keyframes pulse-bar { 0%,100% { opacity: 1; } 50% { opacity: .65; } }
+
+  .timeline-axis {
+    display: flex;
+    margin-left: 144px;
+    margin-top: 16px;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-ter);
+  }
+
+  /* ── TABLES ── */
+  .vr-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-ter);
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card2);
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-sec);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-card2); }
+  td strong { color: var(--text-pri); }
+
+  /* ── VELOCITY BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .badge-high   { background: color-mix(in srgb, var(--high) 15%, transparent); color: var(--high); border: 1px solid color-mix(in srgb, var(--high) 35%, transparent); }
+  .badge-mod    { background: color-mix(in srgb, var(--mod) 15%, transparent); color: var(--mod); border: 1px solid color-mix(in srgb, var(--mod) 35%, transparent); }
+  .badge-low    { background: color-mix(in srgb, var(--low) 15%, transparent); color: var(--low); border: 1px solid color-mix(in srgb, var(--low) 35%, transparent); }
+  .badge-fixed  { background: color-mix(in srgb, var(--fixed) 12%, transparent); color: var(--fixed); border: 1px solid color-mix(in srgb, var(--fixed) 30%, transparent); }
+  .badge-modif  { background: color-mix(in srgb, var(--modif) 12%, transparent); color: var(--modif); border: 1px solid color-mix(in srgb, var(--modif) 30%, transparent); }
+  .badge-active { background: color-mix(in srgb, var(--active-br) 12%, transparent); color: var(--active-br); border: 1px solid color-mix(in srgb, var(--active-br) 30%, transparent); }
+  .badge-inact  { background: color-mix(in srgb, var(--inactive-br) 12%, transparent); color: var(--inactive-br); border: 1px solid color-mix(in srgb, var(--inactive-br) 30%, transparent); }
+
+  /* ── FORCE BALANCE VISUAL ── */
+  .force-balance {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 640px) { .force-balance { grid-template-columns: 1fr; } }
+  .force-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px;
+  }
+  .force-col.accel-col { border-top: 3px solid var(--accent-v); }
+  .force-col.brake-col { border-top: 3px solid var(--accent-b); }
+  .force-col h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 14px;
+  }
+  .accel-col h4 { color: var(--accent-v); }
+  .brake-col h4 { color: var(--accent-b); }
+  .force-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.5;
+  }
+  .force-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .accel-col .force-dot { background: var(--high); }
+  .brake-col .force-dot.active { background: var(--active-br); }
+  .brake-col .force-dot.inactive { background: var(--inactive-br); border: 1px dashed var(--inactive-br); background: transparent; }
+  .force-mid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    gap: 12px;
+  }
+  .velocity-arrow {
+    writing-mode: vertical-rl;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-v);
+    letter-spacing: .05em;
+  }
+  .net-vel-badge {
+    background: color-mix(in srgb, var(--accent-v) 15%, var(--bg-card));
+    border: 1px solid var(--accent-v);
+    border-radius: var(--r);
+    padding: 10px 14px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-v);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* ── TIPPING POINTS ── */
+  .tipping-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .tipping-card {
+    background: var(--bg-card);
+    border: 1px solid color-mix(in srgb, var(--accent-v) 30%, var(--border));
+    border-radius: var(--r);
+    padding: 16px;
+    position: relative;
+  }
+  .tipping-card::before {
+    content: '⚠';
+    position: absolute;
+    top: 12px; right: 14px;
+    font-size: 14px;
+    color: var(--accent-v);
+    opacity: .6;
+  }
+  .tipping-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-pri);
+    margin-bottom: 6px;
+  }
+  .tipping-horizon {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-v);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .tipping-desc { font-size: 12.5px; color: var(--text-sec); line-height: 1.5; }
+
+  /* ── TREATMENT TIMELINE ── */
+  .treatment-timelines { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+  .treat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+  }
+  .treat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .treat-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text-pri);
+  }
+  .treat-verdict {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: .05em;
+  }
+  .tv-critical { background: color-mix(in srgb, var(--accent-v) 15%, transparent); color: var(--accent-v); border: 1px solid var(--accent-v); }
+  .tv-ok       { background: color-mix(in srgb, var(--accent-g) 15%, transparent); color: var(--accent-g); border: 1px solid var(--accent-g); }
+  .tv-zero     { background: color-mix(in srgb, #666 15%, transparent); color: #999; border: 1px solid #555; }
+  .tv-bridge   { background: color-mix(in srgb, var(--accent-a) 15%, transparent); color: var(--accent-a); border: 1px solid var(--accent-a); }
+
+  .waypoints { display: flex; gap: 0; position: relative; }
+  .waypoints::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: 16px; right: 16px;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .waypoint {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .wp-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .wp-dot.active { background: var(--accent-t); color: #000; }
+  .wp-dot.warn   { background: var(--accent-v); color: #fff; }
+  .wp-dot.dim    { background: var(--bg-card3); color: var(--text-ter); border: 1px solid var(--border); }
+  .wp-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-align: center;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .wp-time {
+    font-size: 11.5px;
+    text-align: center;
+    color: var(--text-sec);
+    line-height: 1.4;
+    padding: 0 4px;
+  }
+
+  /* ── SCENARIOS ── */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .scenario-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+  }
+  .scenario-card.sc-a { border-top: 3px solid var(--accent-v); }
+  .scenario-card.sc-b { border-top: 3px solid var(--accent-g); }
+  .scenario-card.sc-c { border-top: 3px solid var(--accent-a); }
+  .sc-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 6px;
+  }
+  .sc-a .sc-label { color: var(--accent-v); }
+  .sc-b .sc-label { color: var(--accent-g); }
+  .sc-c .sc-label { color: var(--accent-a); }
+  .sc-title { font-size: 14px; font-weight: 600; color: var(--text-pri); margin-bottom: 12px; }
+  .sc-horizon { font-family: var(--font-mono); font-size: 10px; color: var(--text-ter); text-transform: uppercase; letter-spacing: .1em; margin-top: 10px; margin-bottom: 4px; }
+  .sc-text { font-size: 13px; color: var(--text-sec); line-height: 1.55; }
+  .sc-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-style: italic;
+  }
+  .sc-a .sc-note { background: color-mix(in srgb, var(--accent-v) 8%, var(--bg-card2)); color: var(--accent-v); }
+  .sc-b .sc-note { background: color-mix(in srgb, var(--accent-g) 8%, var(--bg-card2)); color: var(--accent-g); }
+  .sc-c .sc-note { background: color-mix(in srgb, var(--accent-a) 8%, var(--bg-card2)); color: var(--accent-a); }
+
+  /* ── TEMPORAL NARRATIVE ── */
+  .narrative-box {
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-p);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 28px 28px 28px 24px;
+    margin-bottom: 28px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-sec);
+  }
+  .narrative-box strong {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--text-pri);
+  }
+  .narrative-box p + p { margin-top: 14px; }
+
+  /* ── CRITICAL AWARENESS ── */
+  .awareness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .awareness-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px;
+  }
+  .awareness-verdict {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    letter-spacing: .06em;
+  }
+  .av-yes  { background: color-mix(in srgb, var(--accent-v) 15%, transparent); color: var(--accent-v); }
+  .av-part { background: color-mix(in srgb, var(--accent-a) 15%, transparent); color: var(--accent-a); }
+  .awareness-title { font-size: 13.5px; font-weight: 600; color: var(--text-pri); margin-bottom: 8px; }
+  .awareness-text { font-size: 13px; color: var(--text-sec); line-height: 1.55; }
+
+  /* ── VELOCITY SUMMARY CARD ── */
+  .summary-card-full {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-p);
+    border-radius: var(--r-lg);
+    padding: 28px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: var(--text-sec);
+    margin-bottom: 28px;
+  }
+  .summary-card-full .sc-header {
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .summary-card-full .sc-header .mod-label {
+    font-size: 11px;
+    color: var(--accent-p);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .summary-card-full .sc-header .case-id {
+    font-size: 13px;
+    color: var(--text-pri);
+    margin-top: 4px;
+  }
+  .sc-section { margin-bottom: 16px; }
+  .sc-section-label {
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .sc-section-body { color: var(--text-sec); }
+  .sc-section-body .hi  { color: var(--high); font-weight: 600; }
+  .sc-section-body .ok  { color: var(--low); font-weight: 600; }
+  .sc-section-body .crit { color: var(--accent-v); font-weight: 600; }
+  .sc-section-body .info { color: var(--accent-t); }
+  .sc-section-body .warn { color: var(--accent-a); font-weight: 600; }
+  .sc-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+  .intersection-box {
+    background: color-mix(in srgb, var(--accent-v) 10%, var(--bg-card2));
+    border: 1px solid color-mix(in srgb, var(--accent-v) 40%, transparent);
+    border-radius: var(--r);
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-sec);
+  }
+  .intersection-box .int-headline {
+    color: var(--accent-v);
+    font-weight: 700;
+    font-size: 12.5px;
+    margin-bottom: 4px;
+  }
+
+  /* ── RETROSPECTIVE LEARNING ── */
+  .retro-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .retro-item { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .retro-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .retro-item h4 { font-size: 14px; font-weight: 600; color: var(--text-pri); margin-bottom: 6px; }
+  .retro-item p { font-size: 13.5px; color: var(--text-sec); line-height: 1.6; }
+  .pipeline-strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .pipe-mod {
+    background: var(--bg-card2);
+    border: 1px solid var(--border-hi);
+    border-radius: 4px;
+    padding: 4px 10px;
+    color: var(--accent-p);
+  }
+  .pipe-mod.active { border-color: var(--accent-p); background: color-mix(in srgb, var(--accent-p) 10%, var(--bg-card2)); }
+  .pipe-arrow { color: var(--text-ter); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--bg-card2);
+    border-left: 3px solid var(--accent-t);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-sec);
+    margin: 14px 0;
+    line-height: 1.6;
+  }
+  .callout strong { color: var(--text-pri); }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-ter);
+    line-height: 1.9;
+    text-align: center;
+  }
+  .footer a { color: var(--accent-p); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ── MISC ── */
+  .prose { font-size: 14px; color: var(--text-sec); line-height: 1.7; margin-bottom: 16px; }
+  .prose strong { color: var(--text-pri); }
+  .prose em { color: var(--accent-t); font-style: italic; }
+  hr.section-rule { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  @media (max-width: 540px) {
+    .waypoints { flex-direction: column; }
+    .waypoints::before { display: none; }
+    .waypoint { flex-direction: row; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="document.body.classList.toggle('light-mode')" aria-label="Toggle theme">◐ THEME</button>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow">#VibeRounds · Module 49 · Disease &amp; Treatment Velocity</div>
+    <h1>The Temporal Picture Ahead<br><em>60F · MDR E. Coli Sepsis</em></h1>
+    <div class="hero-sub">
+      Cervical Myelopathy · Pancytopenia · Coma · Type 2 Respiratory Failure<br>
+      Dr. Avinash Kumar Gupta · <a href="https://avi33tbtt.github.io/Prompts/" target="_blank">avi33tbtt.github.io/Prompts</a> · DOI: <a href="https://doi.org/10.5281/zenodo.20622693" target="_blank">10.5281/zenodo.20622693</a><br>
+      Source: <a href="http://classworkdecjan.blogspot.com/2016/12/60f-with-coma-e-coli-sepsis-and-upper.html" target="_blank">classworkdecjan.blogspot.com · December 2016</a>
+    </div>
+  </header>
+
+  <div class="disclaimer">
+    <strong>⚠ Learning artifact only.</strong> All outputs are educational reasoning exercises per the VibeRounds clinical disclaimer. This is retrospective case analysis; the patient passed away during the acute illness. De-identified open patient record — HIPAA-compliant, patient consent documented at source.
+  </div>
+
+  <!-- STICKY NAV -->
+  <nav class="sticky-nav">
+    <div class="nav-pills">
+      <a class="nav-pill" href="#summary">Case</a>
+      <a class="nav-pill" href="#setup">49.0 Setup</a>
+      <a class="nav-pill" href="#velocity">49.1 Velocity</a>
+      <a class="nav-pill" href="#accelerators">49.2 Accelerators</a>
+      <a class="nav-pill" href="#brakes">49.3 Brakes</a>
+      <a class="nav-pill" href="#netvel">49.4 Net Velocity</a>
+      <a class="nav-pill" href="#treatment">49.5 Treatment</a>
+      <a class="nav-pill" href="#scenarios">49.6 Scenarios</a>
+      <a class="nav-pill" href="#narrative">49.7 Narrative</a>
+      <a class="nav-pill" href="#awareness">49.8 Awareness</a>
+      <a class="nav-pill" href="#card">49.9 Card</a>
+      <a class="nav-pill" href="#retro">Retrospective</a>
+    </div>
+  </nav>
+
+  <!-- CASE SUMMARY -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <span class="step-badge">Case Input</span>
+      <h2 class="section-title">Case Summary — De-identified</h2>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="card-label">Demographics &amp; Background</div>
+        <div class="card-content">
+          <strong>~60F.</strong> No DM, No HTN. Non-smoker household.<br>
+          Coal-mining area exposure until 18 years prior.<br>
+          18-year history of cervical myelopathy — managed conservatively with Baclofen after surgery was declined.
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-label">4-Month Acceleration Phase</div>
+        <div class="card-content">
+          Escalating neck pain, electric shocks throughout body, headache, nausea, vertigo, vomiting, random fevers, breathlessness.<br>
+          <strong>Loss of sensation: ring &amp; little fingers (C8/T1).</strong><br>
+          Surgery cancelled pre-op due to pancytopenia. H. Pylori ulcers found. Sacral bed sores Grade 2.
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-label">Outcome</div>
+        <div class="card-content">
+          Patient <strong>died</strong> during this acute admission.<br>
+          Case documented 23 December 2016 via Tabula Rasa peer discussion network.
+        </div>
+      </div>
+    </div>
+
+    <div class="findings-list">
+      <span class="finding-chip critical">MDR E. Coli Sepsis</span>
+      <span class="finding-chip critical">Coma / non-responsive</span>
+      <span class="finding-chip critical">Ventilator-dependent</span>
+      <span class="finding-chip critical">Temp 95°F (hypothermia)</span>
+      <span class="finding-chip critical">Hb 5.6–5.7 g/dL (refractory)</span>
+      <span class="finding-chip critical">Type 2 Resp Failure</span>
+      <span class="finding-chip warn">Pancytopenia</span>
+      <span class="finding-chip warn">Stony Splenomegaly</span>
+      <span class="finding-chip warn">Soft Hepatomegaly</span>
+      <span class="finding-chip warn">Ascites</span>
+      <span class="finding-chip warn">Active GI Haemorrhage</span>
+      <span class="finding-chip warn">Hypokalemia</span>
+      <span class="finding-chip warn">Bed Sores Grade 2 (sacral)</span>
+      <span class="finding-chip info">ACD in CSF (protein↑, cells 5)</span>
+      <span class="finding-chip info">BM: Erythroid Hyperplasia</span>
+      <span class="finding-chip info">CT Brain: Normal</span>
+      <span class="finding-chip info">Cervical MRI: Near-normal</span>
+      <span class="finding-chip info">H. Pylori +ve</span>
+      <span class="finding-chip info">Vit D deficiency</span>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.0 -->
+  <section class="section" id="setup">
+    <div class="section-header">
+      <span class="step-badge">Step 49.0</span>
+      <h2 class="section-title">Session Setup — Three Concurrent Processes</h2>
+    </div>
+    <p class="prose">Velocity reasoning must hold all three simultaneously — they are not independent, they interact and amplify each other.</p>
+    <div class="process-strip">
+      <div class="process-card acute">
+        <div class="proc-label">Process 1 · Acute</div>
+        <div class="proc-title">MDR E. Coli Sepsis</div>
+        <div class="proc-vel vel-fast">FAST — dominant — immediately lethal</div>
+      </div>
+      <div class="process-card chronic">
+        <div class="proc-label">Process 2 · Chronic → Acute</div>
+        <div class="proc-title">Cervical Myelopathy</div>
+        <div class="proc-vel vel-mod">18yr slow → 4mo FAST acceleration</div>
+      </div>
+      <div class="process-card systemic">
+        <div class="proc-label">Process 3 · Chronic</div>
+        <div class="proc-title">Primary Systemic Illness</div>
+        <div class="proc-vel vel-slow">TB / Malignancy / CLD / Autoimmune — UNDIAGNOSED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 49.1 VELOCITY -->
+  <section class="section" id="velocity">
+    <div class="section-header">
+      <span class="step-badge">Step 49.1</span>
+      <h2 class="section-title">Baseline Velocity Estimation</h2>
+    </div>
+
+    <div class="timeline-visual">
+      <h3>Velocity across timescales and processes</h3>
+      <div class="timeline-tracks">
+        <div class="track">
+          <div class="track-label">Sepsis · Acute</div>
+          <div class="track-bar-wrap"><div class="track-bar fast">FAST — CRITICAL</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Sepsis · Subacute</div>
+          <div class="track-bar-wrap"><div class="track-bar mod-hi">FAST → TERMINAL</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Myelopathy · Chronic</div>
+          <div class="track-bar-wrap"><div class="track-bar slow">VERY SLOW (17 yrs)</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Myelopathy · Subacute</div>
+          <div class="track-bar-wrap"><div class="track-bar accel">FAST (4mo acceleration)</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Systemic · Chronic</div>
+          <div class="track-bar-wrap"><div class="track-bar chronic">MODERATE — INDOLENT</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Treatment (ABx)</div>
+          <div class="track-bar-wrap"><div class="track-bar treat">IF SENSITIVE: 24–48h onset</div></div>
+        </div>
+        <div class="track">
+          <div class="track-label">Transfusion</div>
+          <div class="track-bar-wrap"><div class="track-bar zero">ZERO net effect — source uncontrolled</div></div>
+        </div>
+      </div>
+      <div class="timeline-axis">
+        <span>Hours</span><span>24h</span><span>48h</span><span>Days</span><span>Weeks</span><span>Months</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Velocity anchor — ABG trajectory:</strong> Serial pH fall with rising PaCO₂ and normal HCO₃ = evolving type 2 respiratory failure (not yet compensated). Driven by respiratory muscle fatigue or central depression from septic encephalopathy, not metabolic acidosis. Lactate "not too bad" is a partial reassurance but does not override the respiratory trajectory.
+    </div>
+    <div class="callout">
+      <strong>4-month myelopathy acceleration signal:</strong> The progression from Baclofen PRN → daily → BD, combined with complete loss of ambulation and dysphagia requiring NGT, represents a high-velocity myelopathy progression that preceded the acute sepsis and was independently important. Something changed 4 months before admission — decompensation of a static structural lesion, new malignant/TB cord compression, demyelination, or paraneoplastic process.
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.2 ACCELERATORS -->
+  <section class="section" id="accelerators">
+    <div class="section-header">
+      <span class="step-badge">Step 49.2</span>
+      <h2 class="section-title">Accelerators and Catalysts</h2>
+    </div>
+
+    <p class="prose"><strong>Domain 1: Biological Accelerators</strong></p>
+    <div class="vr-table-wrap">
+      <table>
+        <thead><tr><th>Accelerator</th><th>Impact</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Pancytopenia — immunosuppression</strong><br><span style="font-size:12px;color:var(--text-ter)">Removes primary biological brake on bacterial proliferation. MDR E. Coli in pancytopenia: mortality substantially higher than the 20–30% immunocompetent baseline.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-fixed">FIXED</span></td></tr>
+          <tr><td><strong>Severe anaemia (Hb 5.6–5.7 g/dL)</strong><br><span style="font-size:12px;color:var(--text-ter)">Impairs O₂ delivery to spinal cord, brain, and respiratory muscles. At this level even modest haemodynamic compromise produces tissue hypoxia.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">PARTIAL</span></td></tr>
+          <tr><td><strong>Type 2 Respiratory Failure</strong><br><span style="font-size:12px;color:var(--text-ter)">CO₂ narcosis worsens encephalopathy. Respiratory muscle fatigue in a myelopathic patient has no reserve. Approaching irreversibility threshold.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Hypothermia (95°F / 35°C)</strong><br><span style="font-size:12px;color:var(--text-ter)">Paradoxical hypothermia in sepsis = high-mortality sign. Impairs antibiotic pharmacokinetics and immune function.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Hypokalemia</strong><br><span style="font-size:12px;color:var(--text-ter)">Worsens respiratory muscle function; impairs cardiac conduction.</span></td><td><span class="badge badge-mod">MODERATE</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Vitamin D deficiency</strong></td><td><span class="badge badge-low">LOW-MOD</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="prose"><strong>Domain 2: Disease-State Accelerators</strong></p>
+    <div class="vr-table-wrap">
+      <table>
+        <thead><tr><th>Accelerator</th><th>Impact</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>MDR E. Coli</strong><br><span style="font-size:12px;color:var(--text-ter)">Constrains antibiotic options. Sensitivity data not documented in case record — this is the most critical missing data point.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE*</span></td></tr>
+          <tr><td><strong>Unknown primary diagnosis</strong><br><span style="font-size:12px;color:var(--text-ter)">Stony splenomegaly + pancytopenia + refractory anaemia — aetiology unestablished. Principal immunosuppressive driver cannot be treated without diagnosis.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Albuminocytological dissociation in CSF</strong><br><span style="font-size:12px;color:var(--text-ter)">Leaves open a treatable CNS process. Falsely low cells (Kaushik Sundar's insight) — CNS velocity may be higher than CSF cell count suggests.</span></td><td><span class="badge badge-mod">MOD-HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Active GI haemorrhage</strong> (rectal fistula + melaena + H. Pylori)<br><span style="font-size:12px;color:var(--text-ter)">Explains transfusion-refractory anaemia. Independent mortality driver.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">MODIFIABLE†</span></td></tr>
+          <tr><td><strong>Bed sores Grade 2 — sacral</strong></td><td><span class="badge badge-mod">MODERATE</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="prose"><strong>Domain 3: Treatment-Related (Iatrogenic) Accelerators</strong></p>
+    <div class="vr-table-wrap">
+      <table>
+        <thead><tr><th>Accelerator</th><th>Impact</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Surgery cancellation → 4-month delay</strong><br><span style="font-size:12px;color:var(--text-ter)">May have allowed myelopathy to advance beyond a reversible threshold — iatrogenic contribution by inaction.</span></td><td><span class="badge badge-mod">MODERATE</span></td><td><span class="badge badge-fixed">HISTORICAL</span></td></tr>
+          <tr><td><strong>Baclofen escalation (PRN → BD)</strong><br><span style="font-size:12px;color:var(--text-ter)">Baclofen can cause respiratory depression in a patient approaching respiratory failure.</span></td><td><span class="badge badge-low">LOW-MOD</span></td><td><span class="badge badge-modif">MODIFIABLE</span></td></tr>
+          <tr><td><strong>Diagnostic lag — primary illness unestablished</strong></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-modif">PARTIAL</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="prose"><strong>Domain 4: Contextual Accelerators</strong></p>
+    <div class="vr-table-wrap">
+      <table>
+        <thead><tr><th>Accelerator</th><th>Impact</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Resource-constrained setting</strong> — no MRI at primary centre, 3 hospital transfers<br><span style="font-size:12px;color:var(--text-ter)">Each transfer = a period of suboptimal care; weeks of diagnostic delay.</span></td><td><span class="badge badge-high">HIGH</span></td><td><span class="badge badge-fixed">SYSTEMS</span></td></tr>
+          <tr><td><strong>Home management between hospitalisations</strong><br><span style="font-size:12px;color:var(--text-ter)">NGT-fed, bed-sore-developing, severely anaemic patient managed by family caregiver — this is where diarrhoea occurred and next acute deterioration began.</span></td><td><span class="badge badge-mod">MODERATE</span></td><td><span class="badge badge-fixed">HISTORICAL</span></td></tr>
+          <tr><td><strong>Caregiver-reported history only</strong> (patient comatose)</td><td><span class="badge badge-low">LOW-MOD</span></td><td><span class="badge badge-modif">PARTIAL</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.3 BRAKES -->
+  <section class="section" id="brakes">
+    <div class="section-header">
+      <span class="step-badge">Step 49.3</span>
+      <h2 class="section-title">Brakes and Decelerators</h2>
+    </div>
+
+    <div class="force-balance">
+      <div class="force-col accel-col">
+        <h4>⬆ Active Accelerators</h4>
+        <div class="force-item"><div class="force-dot"></div>Pancytopenia — immunosuppression [HIGH / FIXED]</div>
+        <div class="force-item"><div class="force-dot"></div>MDR organism — sensitivity unconfirmed [HIGH / MODIF*]</div>
+        <div class="force-item"><div class="force-dot"></div>Active GI haemorrhage uncontrolled [HIGH / MODIF]</div>
+        <div class="force-item"><div class="force-dot"></div>Type 2 respiratory failure [HIGH / MODIF]</div>
+        <div class="force-item"><div class="force-dot"></div>Primary diagnosis unknown [HIGH / MODIF]</div>
+        <div class="force-item"><div class="force-dot"></div>Hypothermia — shock physiology [HIGH / MODIF]</div>
+      </div>
+      <div class="force-mid">
+        <div class="net-vel-badge">NET<br>VELOCITY<br>⬇<br>FAST<br>ACCELERATING</div>
+      </div>
+      <div class="force-col brake-col">
+        <h4>⬇ Brakes (Active &amp; Inactive)</h4>
+        <div class="force-item"><div class="force-dot active"></div>Ventilatory support [ACTIVE — bridge only]</div>
+        <div class="force-item"><div class="force-dot active"></div>Normal CT Brain [ACTIVE — reversible aetiology implied]</div>
+        <div class="force-item"><div class="force-dot active"></div>Erythroid hyperplasia [ACTIVE — marrow responding]</div>
+        <div class="force-item"><div class="force-dot inactive"></div>Antibiotic-matched source control [INACTIVE†]</div>
+        <div class="force-item"><div class="force-dot inactive"></div>GI haemorrhage control [INACTIVE†]</div>
+        <div class="force-item"><div class="force-dot inactive"></div>Primary diagnosis + targeted Rx [INACTIVE†]</div>
+      </div>
+    </div>
+
+    <p class="prose" style="font-size:12px; color: var(--text-ter)">● Active brake &nbsp;|&nbsp; ○ Inactive brake (not yet activated — these are the intervention opportunities)</p>
+
+    <p class="prose" style="margin-top:16px"><strong>Potential Brakes Not Yet Activated:</strong></p>
+    <div class="vr-table-wrap">
+      <table>
+        <thead><tr><th>Inactive Brake</th><th>Activation Pathway</th><th>Magnitude</th></tr></thead>
+        <tbody>
+          <tr><td><strong>MDR E. Coli source control</strong> — identify primary septic source (UTI? GI translocation? Bed sore? Lung?)</td><td>Blood cultures done; source imaging incomplete</td><td><span class="badge badge-high">HIGH</span></td></tr>
+          <tr><td><strong>GI haemorrhage correction</strong> — H. Pylori eradication + fistula management</td><td>GI endoscopy + surgical evaluation — not feasible in current state</td><td><span class="badge badge-high">HIGH</span></td></tr>
+          <tr><td><strong>Hypokalemia correction</strong></td><td>IV replacement</td><td><span class="badge badge-mod">MODERATE</span></td></tr>
+          <tr><td><strong>Primary systemic illness diagnosis</strong> — TB PCR in CSF, BM cultures, CECT abdomen, serology (ANA, dsDNA, Sjogrens Ab)</td><td>Multiple investigations required; days to result</td><td><span class="badge badge-high">HIGH</span></td></tr>
+          <tr><td><strong>Warming + haemodynamic optimisation</strong></td><td>External warming; vasopressor support if indicated</td><td><span class="badge badge-mod">MODERATE</span></td></tr>
+          <tr><td><strong>Nutritional support + Vitamin D</strong></td><td>NGT feeding protocol; IV Vitamin D</td><td><span class="badge badge-low">LOW-MOD</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.4 NET VELOCITY -->
+  <section class="section" id="netvel">
+    <div class="section-header">
+      <span class="step-badge">Step 49.4</span>
+      <h2 class="section-title">Net Velocity Assessment — The Disease Force Balance</h2>
+    </div>
+
+    <div class="callout" style="border-left-color: var(--accent-v); font-size:14px; font-style:italic;">
+      <em>"This patient is advancing rapidly toward respiratory failure–driven cardiac arrest, with bacteraemic shock as the proximate driver and a backdrop of undiagnosed primary systemic illness and transfusion-refractory haemorrhagic anaemia removing the possibility of biological recovery without definitive diagnosis and source control. At current velocity, the horizon is <strong>hours to days.</strong>"</em>
+    </div>
+
+    <p class="prose" style="margin-top:20px"><strong>Three Simultaneous Tipping Points — All in Proximity:</strong></p>
+    <div class="tipping-grid">
+      <div class="tipping-card">
+        <div class="tipping-name">Ventilatory Failure</div>
+        <div class="tipping-horizon">⏱ Hours to 1–2 days</div>
+        <div class="tipping-desc">PaCO₂ rising with falling pH; bicarbonate not yet rising (no compensation established). Serial ABG was the proximate warning signal.</div>
+      </div>
+      <div class="tipping-card">
+        <div class="tipping-name">Bacteraemic Shock</div>
+        <div class="tipping-horizon">⏱ Hours to days</div>
+        <div class="tipping-desc">Hypothermia already present (shock physiology). Any further vasodilation or cardiac suppression from sepsis crosses the threshold. Hypothermia in sepsis = near-tipping-point signal.</div>
+      </div>
+      <div class="tipping-card">
+        <div class="tipping-name">Haemorrhagic Shock</div>
+        <div class="tipping-horizon">⏱ Days</div>
+        <div class="tipping-desc">Hb 5.6–5.7 despite 3 units. Cardiovascular compensation threshold far lower in a septic, myelopathic, ventilated patient. Rate of Hb drop per unit indicates large ongoing haemorrhagic loss.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Leverage Point:</strong> Antibiotic sensitivity confirmation → agent adjustment if needed. Force-balance logic: every other modifiable factor (transfusion, ventilation, warming, K⁺ correction) is a supportive brake — none eliminates the primary accelerator. The MDR E. Coli is the current primary engine of velocity. Confirming sensitivity is the one action that could change the vector from accelerating to potentially stable.
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.5 TREATMENT VELOCITY -->
+  <section class="section" id="treatment">
+    <div class="section-header">
+      <span class="step-badge">Step 49.5</span>
+      <h2 class="section-title">Treatment Velocity — The Benefit Timeline</h2>
+    </div>
+
+    <div class="treatment-timelines">
+
+      <!-- Treatment 1: Antibiotics -->
+      <div class="treat-card">
+        <div class="treat-header">
+          <div class="treat-name">Antibiotics for MDR E. Coli</div>
+          <div class="treat-verdict tv-critical">SENSITIVITY UNKNOWN — CRITICAL GAP</div>
+        </div>
+        <div class="waypoints">
+          <div class="waypoint">
+            <div class="wp-dot active">①</div>
+            <div class="wp-label">Onset</div>
+            <div class="wp-time">6–24h<br><span style="color:var(--text-ter)">IF sensitive agent</span></div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot active">②</div>
+            <div class="wp-label">Early Signal</div>
+            <div class="wp-time">24–48h<br><span style="color:var(--text-ter)">Temp normalisation, BP stability</span></div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot active">③</div>
+            <div class="wp-label">Peak Effect</div>
+            <div class="wp-time">72–96h<br><span style="color:var(--text-ter)">Blood culture clearance, ABG stabilisation</span></div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot dim">④</div>
+            <div class="wp-label">Maintenance</div>
+            <div class="wp-time">7–14 days<br><span style="color:var(--text-ter)">IV therapy</span></div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot warn">!</div>
+            <div class="wp-label">Intersection</div>
+            <div class="wp-time" style="color:var(--accent-v)">24–48h onset vs. &lt;24–48h tipping — <strong>RACE CONDITION</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment 2: Ventilation -->
+      <div class="treat-card">
+        <div class="treat-header">
+          <div class="treat-name">Mechanical Ventilatory Support</div>
+          <div class="treat-verdict tv-bridge">BRIDGE — NO INTRINSIC CURE VELOCITY</div>
+        </div>
+        <div class="waypoints">
+          <div class="waypoint">
+            <div class="wp-dot active">①</div>
+            <div class="wp-label">Onset</div>
+            <div class="wp-time">Immediate<br><span style="color:var(--text-ter)">Buys time, does not treat</span></div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot dim">②</div>
+            <div class="wp-label">Early Signal</div>
+            <div class="wp-time">Stabilisation of PaCO₂ rise rate; FiO₂ requirements</div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot dim">③</div>
+            <div class="wp-label">Peak Effect</div>
+            <div class="wp-time">None intrinsic — depends on cause resolution</div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot active">!</div>
+            <div class="wp-label">Intersection</div>
+            <div class="wp-time">Extends the window hours–days for antibiotics to work. Not curative.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment 3: Transfusion -->
+      <div class="treat-card">
+        <div class="treat-header">
+          <div class="treat-name">Blood Transfusion</div>
+          <div class="treat-verdict tv-zero">ZERO NET EFFECT — SOURCE UNCONTROLLED</div>
+        </div>
+        <div class="waypoints">
+          <div class="waypoint">
+            <div class="wp-dot active">①</div>
+            <div class="wp-label">Onset</div>
+            <div class="wp-time">1–4h per unit</div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot warn">②</div>
+            <div class="wp-label">Early Signal</div>
+            <div class="wp-time" style="color:var(--accent-v)">Expected: +1 g/dL per unit<br>Achieved: +0.1 g/dL — haemorrhage &gt; infusion rate</div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot warn">③</div>
+            <div class="wp-label">Peak Effect</div>
+            <div class="wp-time" style="color:var(--accent-v)">NOT ACHIEVED<br>Transfusion-refractory state</div>
+          </div>
+          <div class="waypoint">
+            <div class="wp-dot warn">!</div>
+            <div class="wp-label">Intersection</div>
+            <div class="wp-time" style="color:var(--accent-v)">NEGATIVE — not reducing velocity because source is uncontrolled. Treatment velocity failure.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment 4: H. Pylori -->
+      <div class="treat-card">
+        <div class="treat-header">
+          <div class="treat-name">H. Pylori Eradication</div>
+          <div class="treat-verdict tv-zero">ABSENT — NOT DELIVERABLE IN CURRENT STATE</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sec); margin-top:4px">Triple/quadruple therapy requires 7–14 days minimum and cannot be administered to a comatose, ventilated patient. This belongs to the recovery phase only — velocity benefit is deferred indefinitely.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.6 SCENARIOS -->
+  <section class="section" id="scenarios">
+    <div class="section-header">
+      <span class="step-badge">Step 49.6</span>
+      <h2 class="section-title">Comparative Velocity Scenarios</h2>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card sc-a">
+        <div class="sc-label">Scenario A — Current Path</div>
+        <div class="sc-title">Unchanged treatment, no new diagnostics</div>
+        <div class="sc-horizon">Short term (days)</div>
+        <div class="sc-text">Progressive type 2 respiratory failure with CO₂ narcosis deepening. Hb remaining critically low. Septic encephalopathy maintaining coma. Cardiovascular collapse from one of the three tipping points within 24–72 hours.</div>
+        <div class="sc-horizon">Medium term (weeks)</div>
+        <div class="sc-text">Not reached at this trajectory.</div>
+        <div class="sc-note">⚑ This is the scenario that occurred. The patient did not survive.</div>
+      </div>
+      <div class="scenario-card sc-b">
+        <div class="sc-label">Scenario B — Maximum Brake Activation</div>
+        <div class="sc-title">Sensitivity-matched antibiotic + GI control + full workup</div>
+        <div class="sc-horizon">Short term</div>
+        <div class="sc-text">If antibiotic active and started within 12h: bacteraemia clearing at 24–48h. Hb stabilising if haemorrhagic source controlled. Respiratory acidosis beginning to improve.</div>
+        <div class="sc-horizon">Medium term (weeks)</div>
+        <div class="sc-text">Recovery to stable ventilatory status — uncertain given myelopathy. Weaning from ventilator would be complex and prolonged. If primary is diagnosed and treatable, medium-term survival window opens.</div>
+        <div class="sc-horizon">Long term</div>
+        <div class="sc-text">Entirely dependent on primary: TB → potentially reversible (6mo DOTS). Haematological malignancy → stage/type defined. CLD → limited by liver reserve.</div>
+        <div class="sc-note">◈ Counterfactual teaching construct — not a realistic expectation of what was achievable in this clinical reality.</div>
+      </div>
+      <div class="scenario-card sc-c">
+        <div class="sc-label">Scenario C — Treatment Failure</div>
+        <div class="sc-title">Antibiotic not active against this MDR isolate</div>
+        <div class="sc-horizon">Detection window</div>
+        <div class="sc-text">24–36 hours: blood cultures fail to clear, temperature does not trend, haemodynamics worsen despite antibiotic coverage.</div>
+        <div class="sc-horizon">Clinical signals</div>
+        <div class="sc-text">Worsening hypothermia, rising vasopressor requirement, further pH fall, clinical deterioration despite 36h therapy.</div>
+        <div class="sc-horizon">Decision trigger</div>
+        <div class="sc-text">At 36–48h: if ABG shows continued deterioration, antibiogram must be reviewed urgently and coverage broadened — colistin or carbapenem-sparing combinations in this resource-constrained 2016 context.</div>
+        <div class="sc-note">⚠ Case record does not document what antibiotic was used or whether sensitivity testing informed the choice. If the wrong antibiotic was used empirically, treatment velocity was ZERO.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.7 NARRATIVE -->
+  <section class="section" id="narrative">
+    <div class="section-header">
+      <span class="step-badge">Step 49.7</span>
+      <h2 class="section-title">Temporal Narrative — The Picture Ahead in Plain Language</h2>
+    </div>
+
+    <div class="narrative-box">
+      <p>This patient — a 60-year-old woman who had managed a slow, quiet neurological illness for nearly two decades — arrived at her final crisis not from a single catastrophic event, but from the convergence of forces that had been building for years and months, each one small enough to be managed separately, <strong>impossible together.</strong></p>
+
+      <p><strong>Where she was</strong> at admission: not at the beginning of a crisis but near its end. The chronic foundation — an undiagnosed systemic illness suppressing her blood cell production for an unknown period, a slowly progressing spinal cord problem her body had compensated for with remarkable tenacity, a stomach ulcer and a bleeding fistula eroding her haemoglobin — had finally been joined by an acute predator, a drug-resistant bloodstream infection, in a host who had <strong>no immune army left to fight it.</strong></p>
+
+      <p><strong>The forces pushing her forward toward death:</strong> A drug-resistant bacterium multiplying in her blood with no effective antibiotic confirmed to be working. A haemoglobin so low her heart, lungs, and spinal cord were receiving barely enough oxygen to function, and dropping further despite blood transfusions because the source of bleeding was never controlled. A body temperature below 35°C — not a benign finding, but a sign that the thermoregulatory system was itself failing. A CO₂ building in her blood as her breathing muscles, already compromised by the neck lesion and now exhausted by the infection, lost their ability to clear it.</p>
+
+      <p><strong>The forces that might have slowed it:</strong> A ventilator buying hours. A bone marrow that was still trying to make red blood cells. A brain scan that was normal — meaning the coma, in theory, could still be reversible if the infection was controlled.</p>
+
+      <p><strong>The treatment that mattered most</strong> was the antibiotic. If it was active against this specific E. Coli, there was a 24–48 hour window in which the bacteraemia might begin to clear, the temperature might begin to normalise, and the respiratory muscles might begin to recover. If the antibiotic was not active — then every other intervention was extending time but not changing direction.</p>
+
+      <p><strong>The honest range:</strong> At best, a slow, difficult climb toward stable ventilation, followed by weeks of intensive management with the outcome entirely defined by a primary diagnosis that was never made. At worst — and this is the scenario that occurred — the disease velocity had already passed the point where available treatment velocity could arrive in time. The temporal picture ahead, at the moment this case was documented on 23 December 2016, was measured in <strong>hours to days</strong> — and the narrowness of that window was not primarily a failure of any individual treatment decision, but the accumulated velocity of forces that had been building for months and years, arriving together in a patient whose reserves to resist them had already been exhausted.</p>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.8 AWARENESS -->
+  <section class="section" id="awareness">
+    <div class="section-header">
+      <span class="step-badge">Step 49.8</span>
+      <h2 class="section-title">Critical Awareness — Velocity Reasoning Failure Modes</h2>
+    </div>
+
+    <div class="awareness-grid">
+      <div class="awareness-card">
+        <span class="awareness-verdict av-yes">APPLIES — YES</span>
+        <div class="awareness-title">1. Velocity Anchoring</div>
+        <div class="awareness-text">The Tabula Rasa discussion focused primarily on the acute presentation without fully weighting the 4-month subacute myelopathy acceleration as a velocity signal in its own right. This module attempts to hold both timescales simultaneously. The acute crisis appropriately dominated immediate clinical discussion, but the myelopathy acceleration question was independently important and remained unanswered.</div>
+      </div>
+      <div class="awareness-card">
+        <span class="awareness-verdict av-yes">APPLIES — YES</span>
+        <div class="awareness-title">2. Accelerator Omission</div>
+        <div class="awareness-text">Contextual accelerators were underweighted: the 7-day gap between surgery cancellation and re-referral; the home management period with family caregiver; and — most importantly — the diagnostic lag for the primary systemic illness. A patient with stony splenomegaly and transfusion-refractory anaemia reaching this stage without a confirmed aetiology is a systems-level failure, not just an acute bedside problem.</div>
+      </div>
+      <div class="awareness-card">
+        <span class="awareness-verdict av-part">APPLIES — PARTLY</span>
+        <div class="awareness-title">3. Treatment Optimism Bias</div>
+        <div class="awareness-text">Scenario B (maximum brake activation) is a teaching construct, not a realistic expectation of what was achievable. GI source control in a ventilated comatose patient is high-risk. The full diagnostic workup requires days. The reader should not interpret Scenario B as a claim that these interventions were feasible in the clinical reality described.</div>
+      </div>
+      <div class="awareness-card">
+        <span class="awareness-verdict av-yes">APPLIES — YES</span>
+        <div class="awareness-title">4. Tipping-Point Overconfidence</div>
+        <div class="awareness-text">"Hours to 1–2 days" is based on qualitative ABG trajectory description — no specific numeric values per time point were available. The estimate is direction-correct but the precision of the timeline is lower than the language implies. Treat all tipping-point estimates as indicative ranges, not clinical predictions.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- STEP 49.9 SUMMARY CARD -->
+  <section class="section" id="card">
+    <div class="section-header">
+      <span class="step-badge">Step 49.9</span>
+      <h2 class="section-title">Velocity Summary Card — Handover-Ready</h2>
+    </div>
+
+    <div class="summary-card-full">
+      <div class="sc-header">
+        <div class="mod-label">#VibeRounds · Module 49 · Disease &amp; Treatment Velocity</div>
+        <div class="case-id">60F · MDR E.Coli Sepsis · Cervical Myelopathy · Pancytopenia · December 2016</div>
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Disease Velocity</div>
+        <div class="sc-section-body"><span class="hi">FAST — ACCELERATING</span></div>
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Three Simultaneous Velocity Processes</div>
+        <div class="sc-section-body">
+          1. MDR E. Coli Sepsis &nbsp;→&nbsp; <span class="hi">FAST, acute, dominant</span><br>
+          2. Cervical Myelopathy &nbsp;→&nbsp; <span class="warn">Chronic slow → Subacute FAST (4mo)</span><br>
+          3. Primary Systemic Illness &nbsp;→&nbsp; <span class="info">Chronic moderate, permissive, UNDIAGNOSED</span>
+        </div>
+      </div>
+
+      <hr class="sc-divider">
+
+      <div class="sc-section">
+        <div class="sc-section-label">Top Accelerators (* = modifiable)</div>
+        <div class="sc-section-body">
+          · Pancytopenia-driven immunosuppression <span class="hi">[HIGH / FIXED]</span><br>
+          · MDR organism — antibiotic sensitivity unconfirmed* <span class="hi">[HIGH]</span><br>
+          · Active GI haemorrhage uncontrolled* <span class="hi">[HIGH]</span><br>
+          · Type 2 respiratory failure — dual aetiology* <span class="hi">[HIGH]</span><br>
+          · Diagnostic lag — primary illness undiagnosed* <span class="hi">[HIGH]</span><br>
+          · Hypothermia (95°F / septic shock physiology)* <span class="hi">[HIGH]</span>
+        </div>
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Top Brakes († = inactive — not yet activated)</div>
+        <div class="sc-section-body">
+          · Ventilatory support <span class="ok">[ACTIVE / bridge only]</span><br>
+          · Blood transfusion <span class="warn">[ACTIVE / refractory — brake not holding]</span><br>
+          · Normal CT Brain <span class="ok">[ACTIVE / reversible encephalopathy implied]</span><br>
+          · Antibiotic-matched source control† <span class="crit">[CRITICAL / activation unknown]</span><br>
+          · GI haemorrhage control† <span class="hi">[HIGH magnitude / not activated]</span><br>
+          · Primary diagnosis + targeted treatment† <span class="hi">[HIGH / not activated]</span>
+        </div>
+      </div>
+
+      <hr class="sc-divider">
+
+      <div class="sc-section">
+        <div class="sc-section-label">Tipping Points (three, simultaneous, proximate)</div>
+        <div class="sc-section-body">
+          1. Ventilatory failure &nbsp;→&nbsp; <span class="crit">Hours to 1–2 days</span><br>
+          2. Bacteraemic shock &nbsp;→&nbsp; <span class="crit">Hours to days (hypothermia present)</span><br>
+          3. Haemorrhagic shock &nbsp;→&nbsp; <span class="warn">Days (transfusion-refractory)</span>
+        </div>
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Treatment Velocity</div>
+        <div class="sc-section-body">
+          · Antibiotics: benefit onset <span class="info">24–48h IF sensitive</span><br>
+          · First detectable signal: temperature normalisation + ABG stabilisation<br>
+          · Ventilation: <span class="warn">immediate bridge, no intrinsic cure velocity</span><br>
+          · Transfusion: <span class="hi">ZERO net velocity change — source uncontrolled</span>
+        </div>
+      </div>
+
+      <div class="intersection-box">
+        <div class="int-headline">VELOCITY INTERSECTION — RACE CONDITION</div>
+        Treatment benefit (24–48h IF antibiotic active) arrives CONCURRENT WITH OR AFTER the respiratory tipping point.<br>
+        → The race condition is extremely narrow. If antibiotic is not active against this MDR isolate, treatment velocity is ZERO and disease velocity wins.
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Leverage Point</div>
+        <div class="sc-section-body"><span class="info">Antibiotic sensitivity confirmation → agent adjustment if needed</span><br>Expected velocity change: LARGE if active agent, ZERO if not</div>
+      </div>
+
+      <div class="sc-section">
+        <div class="sc-section-label">Monitoring Triggers</div>
+        <div class="sc-section-body">
+          <span class="hi">→ DETERIORATING:</span> Temp &lt;36°C + PaCO₂ still rising at 24h → antibiotic non-response; escalate coverage urgently<br>
+          <span class="ok">→ STABILISING:</span> Temp trending febrile + PaCO₂ plateau at 24h → antibiotic working; maintain and investigate primary<br>
+          <span class="crit">→ CRITICAL:</span> Hb not rising despite transfusion → active haemorrhage uncontrolled; GI team regardless of systemic state
+        </div>
+      </div>
+
+      <hr class="sc-divider">
+
+      <div class="sc-section">
+        <div class="sc-section-label">Primary Unknown (unresolved, high impact)</div>
+        <div class="sc-section-body">
+          Aetiology of stony splenomegaly + pancytopenia<br>
+          <span class="info">(TB / haematological malignancy / CLD / autoimmune)</span><br>
+          → This is the dominant medium-term velocity determinant
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- RETROSPECTIVE -->
+  <section class="section" id="retro">
+    <div class="section-header">
+      <span class="step-badge">Retrospective</span>
+      <h2 class="section-title">Learning Notes — Post-Case Analysis</h2>
+    </div>
+
+    <div class="retro-box">
+      <div class="retro-item">
+        <h4>Three tipping points arrived simultaneously</h4>
+        <p>In most critical illness, one system fails and others compensate. In this case, the haemorrhagic, immunological, and respiratory systems were all at or near their tipping points concurrently — a poly-crisis (Module 38 territory) rather than a single-organ failure. This is the structural reason individually reasonable interventions each produced limited effect.</p>
+      </div>
+      <div class="retro-item">
+        <h4>The primary diagnosis was never established</h4>
+        <p>The stony splenomegaly + pancytopenia + transfusion-refractory anaemia + erythroid hyperplasia (BM) + high ADA (CSF) constellation was discussed extensively but a diagnostic conclusion was not reached before death. This is the most significant modifiable accelerator — not in the acute phase, but in the weeks and months before admission. Earlier diagnosis might have prevented the immunosuppressed state that permitted MDR E. Coli bacteraemia to become fatal.</p>
+      </div>
+      <div class="retro-item">
+        <h4>The CSF ACD question — Kaushik Sundar's insight validated</h4>
+        <p>Falsely low cells due to peripheral pancytopenia: the apparent reassurance of "albumino-cytological dissociation rather than pleocytosis" may have been an analytical artefact of the pancytopenic state rather than a true absence of CNS inflammation. If this is correct, the CNS velocity was higher than the CSF cell count suggested. This is a specific velocity-reasoning insight that the Module 49 framework formally names.</p>
+      </div>
+      <div class="retro-item">
+        <h4>Recommended Module 49 Pipeline — Retrospective</h4>
+        <div class="pipeline-strip">
+          <span class="pipe-mod">Module 38</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-mod">Module 33</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-mod active">Module 49</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-mod">Module 42</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-mod">Module 9</span>
+        </div>
+        <p style="font-size:12px; color:var(--text-ter); margin-top:10px">Poly-Crisis → Why Now? (4-month acceleration) → Velocity (this module) → Pre-Mortem → N-of-1 Research</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>Module 49 — Disease Velocity &amp; Treatment Velocity · Applied to 60F E.Coli Sepsis Case</div>
+    <div>VibeRounds Socratic AI Paradigm · <a href="https://avi33tbtt.github.io/Prompts/" target="_blank">avi33tbtt.github.io/Prompts</a></div>
+    <div>Dr. Avinash Kumar Gupta · Coined June 2026 · DOI: <a href="https://doi.org/10.5281/zenodo.20622693" target="_blank">10.5281/zenodo.20622693</a></div>
+    <div style="margin-top:8px; color:var(--text-ter)">#VibeRounds — A Socratic AI Paradigm for Clinical Medicine</div>
+  </footer>
+
+</div>
+</body>
+</html>
