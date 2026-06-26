@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module CC — Post-COVID Bilateral Hydropneumothorax · VibeRounds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7fafc;
+    --bg-deep:#0a121f;
+    --bg-deep-2:#0f1f30;
+    --panel:#ffffff;
+    --panel-soft:#f1f6f8;
+    --border:#dde6ea;
+    --border-soft:#e7eef1;
+    --ink:#0b1b24;
+    --ink-soft:#4b6270;
+    --ink-faint:#86969e;
+    --accent:#0891b2;
+    --accent-light:#22b6d4;
+    --accent-dark:#0e7490;
+    --accent-50:#ecfeff;
+    --accent-100:#cffafe;
+    --amber:#b45309;
+    --amber-bg:#fffaf0;
+    --amber-border:#f3c98b;
+    --green:#15803d;
+    --green-bg:#f0fdf4;
+    --blue:#1d4ed8;
+    --blue-bg:#eff6ff;
+    --rose:#b91c1c;
+    --rose-bg:#fff1f2;
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(10,30,40,.04), 0 8px 24px -12px rgba(10,30,40,.10);
+    --maxw: 1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none !important; animation:none !important;} }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:var(--sans); color:var(--ink); line-height:1.22; margin:0;}
+  p{margin:0 0 .9em 0;}
+  a{color:var(--accent-dark); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  ul,ol{margin:.2em 0 1em 0; padding-left:1.3em;}
+  li{margin-bottom:.32em;}
+  strong{color:var(--ink); font-weight:650;}
+  em{color:var(--ink-soft);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;}
+
+  /* ---------- progress bar ---------- */
+  .progress{position:fixed; top:0; left:0; height:3px; width:0%; z-index:200;
+    background:linear-gradient(90deg,var(--accent),var(--accent-light)); transition:width .08s linear;}
+
+  /* ---------- topbar ---------- */
+  .topbar{position:sticky; top:0; z-index:100; background:rgba(255,255,255,.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border-soft);}
+  .topbar__inner{max-width:var(--maxw); margin:0 auto; padding:11px 24px; display:flex; align-items:center;
+    justify-content:space-between; gap:16px;}
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
+  .brand__mark{width:30px; height:30px; border-radius:8px; background:linear-gradient(145deg,var(--accent),var(--accent-dark));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--mono); font-weight:700;
+    font-size:12px; flex:none;}
+  .brand__text{display:flex; flex-direction:column; line-height:1.15; min-width:0;}
+  .brand__top{font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--accent-dark); text-transform:uppercase;}
+  .brand__bottom{font-size:14px; font-weight:650; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .pipeline-chip{font-family:var(--mono); font-size:11.5px; color:var(--accent-dark); background:var(--accent-50);
+    border:1px solid var(--accent-100); border-radius:100px; padding:5px 11px; white-space:nowrap; flex:none;}
+  .mobile-jump{display:none;}
+  @media (max-width:1023px){
+    .mobile-jump{display:block; flex:none;}
+    .pipeline-chip{display:none;}
+  }
+  .mobile-jump select{font-family:var(--sans); font-size:13px; color:var(--ink); background:var(--panel-soft);
+    border:1px solid var(--border); border-radius:9px; padding:7px 10px;}
+
+  /* ---------- hero ---------- */
+  .hero{background:radial-gradient(ellipse 900px 500px at 18% -10%, #123a49 0%, var(--bg-deep) 55%), var(--bg-deep);
+    color:#eaf6f8; position:relative; overflow:hidden;}
+  .hero::after{content:""; position:absolute; inset:0; background:
+    linear-gradient(180deg, transparent 0%, rgba(10,18,31,0) 70%, var(--bg) 100%);}
+  .hero__inner{max-width:var(--maxw); margin:0 auto; padding:64px 24px 56px; position:relative; z-index:2;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12.5px;
+    letter-spacing:.04em; color:var(--accent-light); border:1px solid rgba(34,182,212,.35); background:rgba(34,182,212,.08);
+    border-radius:100px; padding:6px 14px; margin-bottom:22px;}
+  .hero h1{font-size:clamp(2.2rem, 5vw, 3.4rem); font-weight:800; color:#fff; letter-spacing:-.01em;}
+  .hero h1 em{color:var(--accent-light); font-style:normal; font-weight:800;}
+  .hero .sub{font-size:clamp(1.05rem,2vw,1.3rem); color:#bfe3ea; margin-top:10px; font-weight:500;}
+  .hero .meta{margin-top:6px; color:#7fa3ad; font-size:14.5px;}
+  .stat-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:32px;}
+  .stat{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:12px;
+    padding:13px 18px; min-width:128px;}
+  .stat__num{font-family:var(--mono); font-size:22px; font-weight:700; color:#fff;}
+  .stat__label{font-size:12px; color:#8fb4bc; margin-top:2px; letter-spacing:.02em;}
+  .hero__note{margin-top:30px; font-size:13.5px; color:#6e919a; max-width:680px; font-style:italic; line-height:1.6;}
+
+  /* ---------- layout ---------- */
+  .layout{max-width:var(--maxw); margin:0 auto; padding:0 24px 80px; display:grid;
+    grid-template-columns:240px minmax(0,1fr); gap:40px;}
+  @media (max-width:1023px){ .layout{grid-template-columns:1fr;} }
+  .sidebar{display:block; position:sticky; top:64px; align-self:start; max-height:calc(100vh - 88px);
+    overflow-y:auto; padding-top:32px; padding-bottom:24px;}
+  @media (max-width:1023px){ .sidebar{display:none;} }
+  .sidebar__group{margin-bottom:22px;}
+  .sidebar__label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-faint); margin-bottom:8px; padding-left:10px;}
+  .sidebar a{display:flex; gap:9px; align-items:baseline; padding:6px 10px; border-radius:8px; font-size:13.5px;
+    color:var(--ink-soft); border-left:2px solid transparent;}
+  .sidebar a:hover{background:var(--panel-soft); text-decoration:none; color:var(--ink);}
+  .sidebar a.active{color:var(--accent-dark); border-left-color:var(--accent); background:var(--accent-50); font-weight:600;}
+  .sidebar a .n{font-family:var(--mono); font-size:11px; color:var(--ink-faint); flex:none; width:18px;}
+  .sidebar a.active .n{color:var(--accent);}
+
+  .main{padding-top:32px; min-width:0;}
+  .section-block{margin-bottom:52px;}
+  .section-block:first-child{margin-top:0;}
+  .section-label{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent-dark); margin-bottom:10px;}
+  .section-title{font-size:1.5rem; font-weight:750; margin-bottom:6px;}
+  .section-desc{color:var(--ink-soft); font-size:15px; margin-bottom:22px; max-width:680px;}
+
+  /* ---------- disclaimer strip ---------- */
+  .disclaimer-strip{background:var(--panel-soft); border-bottom:1px solid var(--border-soft); border-top:1px solid var(--border-soft);}
+  .disclaimer-strip__inner{max-width:var(--maxw); margin:0 auto; padding:16px 24px; font-size:13.5px; color:var(--ink-soft);
+    display:flex; gap:10px; align-items:flex-start;}
+  .disclaimer-strip__icon{flex:none; font-size:16px; margin-top:1px;}
+
+  /* ---------- callouts ---------- */
+  .callout{border-radius:var(--radius); padding:20px 22px; margin-bottom:18px; border:1px solid; box-shadow:var(--shadow);}
+  .callout--warning{background:var(--amber-bg); border-color:var(--amber-border);}
+  .callout--note{background:var(--accent-50); border-color:var(--accent-100);}
+  .callout__title{display:flex; align-items:center; gap:9px; font-weight:700; font-size:15px; margin-bottom:10px;}
+  .callout--warning .callout__title{color:var(--amber);}
+  .callout--note .callout__title{color:var(--accent-dark);}
+  .callout p:last-child{margin-bottom:0;}
+  .callout p{font-size:14.5px; color:var(--ink-soft);}
+
+  /* ---------- signal list ---------- */
+  .signal-list{display:flex; flex-direction:column; gap:14px;}
+  .signal-item{display:flex; gap:14px;}
+  .signal-num{flex:none; width:30px; height:30px; border-radius:8px; background:var(--accent-dark); color:#fff;
+    font-family:var(--mono); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .signal-item p{font-size:14.5px; color:var(--ink-soft); margin:0;}
+  .signal-item strong{color:var(--ink);}
+
+  /* ---------- case brief card ---------- */
+  .case-brief{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:26px 26px;
+    box-shadow:var(--shadow);}
+  .correction-box{background:var(--amber-bg); border:1px dashed var(--amber-border); border-radius:10px;
+    padding:14px 16px; margin-bottom:16px; font-size:14px; color:#7a4a14;}
+  .correction-box strong{color:var(--amber);}
+  .case-brief p{font-size:15px; color:var(--ink-soft); margin-bottom:0;}
+
+  /* ---------- stage cards ---------- */
+  .stage{position:relative; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:30px 28px 28px 100px; margin-bottom:22px; box-shadow:var(--shadow); scroll-margin-top:80px;}
+  @media (max-width:640px){ .stage{padding-left:28px;} .stage__ghost{display:none;} }
+  .stage__ghost{position:absolute; left:18px; top:22px; font-family:var(--mono); font-weight:800;
+    font-size:2.6rem; color:rgba(8,145,178,.10); line-height:1; user-select:none;}
+  .stage__head{margin-bottom:16px;}
+  .stage__meta{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px;}
+  .stage__code{font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--accent-dark);
+    background:var(--accent-50); border:1px solid var(--accent-100); border-radius:100px; padding:3px 10px;}
+  .stage__index{font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); letter-spacing:.04em;}
+  .stage__title{font-size:1.22rem; font-weight:700; color:var(--ink);}
+  .stage__question{font-style:italic; color:var(--ink-soft); font-size:14.5px; margin-top:4px;}
+  .stage__body h4{font-size:14px; font-weight:700; color:var(--accent-dark); margin:20px 0 8px; letter-spacing:.01em;}
+  .stage__body h4:first-child{margin-top:4px;}
+  .stage__body p{font-size:14.8px; color:var(--ink-soft);}
+  .stage__body li{font-size:14.8px; color:var(--ink-soft);}
+
+  /* ---------- tables ---------- */
+  .table-wrap{overflow-x:auto; margin:10px 0 18px; border:1px solid var(--border-soft); border-radius:10px;}
+  table{border-collapse:collapse; width:100%; font-size:13.6px; min-width:480px;}
+  thead th{background:var(--bg-deep-2); color:#dff3f6; text-align:left; padding:10px 13px; font-weight:600;
+    font-size:12.5px; letter-spacing:.02em; white-space:nowrap;}
+  tbody td{padding:10px 13px; border-bottom:1px solid var(--border-soft); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#fbfdfd;}
+  tbody td:first-child{color:var(--ink); font-weight:600;}
+
+  /* ---------- inline epistemic tags ---------- */
+  .tag-chip{display:inline-block; font-family:var(--mono); font-size:11.5px; font-weight:600; border-radius:6px;
+    padding:1px 6px; white-space:normal; line-height:1.5; border:1px solid transparent;}
+  .tag-C{background:var(--green-bg); color:var(--green); border-color:#bbf0cf;}
+  .tag-I{background:var(--blue-bg); color:var(--blue); border-color:#bfdbfe;}
+  .tag-P{background:var(--amber-bg); color:var(--amber); border-color:var(--amber-border);}
+  .tag-S{background:var(--rose-bg); color:var(--rose); border-color:#fecdd3;}
+  .tag-U{background:#f1f5f9; color:#64748b; border-color:#e2e8f0;}
+
+  /* ---------- certainty badges ---------- */
+  .cert{display:inline-flex; align-items:center; gap:5px; font-weight:650; font-size:13px; padding:3px 9px;
+    border-radius:7px;}
+  .cert--solid{background:var(--green-bg); color:var(--green);}
+  .cert--uncertain{background:var(--amber-bg); color:var(--amber);}
+  .cert--speculative{background:var(--rose-bg); color:var(--rose);}
+
+  /* ---------- revelation block ---------- */
+  .revelation{margin-top:18px; background:linear-gradient(90deg, var(--accent-50), #fff); border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:14px 18px;}
+  .revelation__label{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--accent-dark); font-weight:700; margin-bottom:5px;}
+  .revelation p{margin-bottom:0; color:var(--ink); font-size:14.6px;}
+
+  /* ---------- ascii / pre ---------- */
+  pre.ascii{background:var(--bg-deep-2); color:#a9e7f0; font-family:var(--mono); font-size:12.4px; line-height:1.55;
+    padding:20px 22px; border-radius:12px; overflow-x:auto; margin:14px 0 18px;}
+
+  /* ---------- pull quote / teaching point ---------- */
+  .pullquote{background:var(--bg-deep); color:#eaf6f8; border-radius:var(--radius); padding:30px 30px;
+    margin:20px 0; position:relative; overflow:hidden;}
+  .pullquote::before{content:"“"; position:absolute; top:-12px; left:18px; font-size:90px; color:rgba(34,182,212,.18);
+    font-family:Georgia, serif;}
+  .pullquote p{position:relative; z-index:1; font-size:16px; color:#dff3f6; margin:0; line-height:1.65;}
+  .pullquote strong{color:#fff;}
+
+  /* ---------- bloom / fink grid ---------- */
+  .chip-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:12px; margin:14px 0 18px;}
+  .chip-card{border:1px solid var(--border-soft); border-radius:11px; padding:14px 15px; background:var(--panel);}
+  .chip-card__top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:6px;}
+  .chip-card__level{font-weight:650; font-size:14px; color:var(--ink);}
+  .chip-card__status{font-family:var(--mono); font-size:11px; padding:2px 8px; border-radius:100px; font-weight:600;
+    white-space:nowrap;}
+  .chip-card .strong{background:var(--accent-50); color:var(--accent-dark);}
+  .chip-card .partial{background:var(--amber-bg); color:var(--amber);}
+  .chip-card .absent{background:#f1f5f9; color:#64748b;}
+  .chip-card p{font-size:13px; margin:0; color:var(--ink-soft);}
+
+  /* ---------- gauge ---------- */
+  .gauge-wrap{display:flex; align-items:center; gap:18px; margin:14px 0 8px; flex-wrap:wrap;}
+  .gauge{display:flex; gap:6px;}
+  .gauge__seg{width:30px; height:14px; border-radius:4px; background:#e7eef1;}
+  .gauge__seg.fill{background:var(--accent);}
+  .gauge__seg.half{background:linear-gradient(90deg, var(--accent) 50%, #e7eef1 50%);}
+  .gauge-score{font-family:var(--mono); font-size:22px; font-weight:700; color:var(--ink);}
+  .gauge-score span{font-size:14px; color:var(--ink-faint); font-weight:500;}
+
+  /* ---------- appendix details ---------- */
+  details.appendix{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    margin-bottom:14px; box-shadow:var(--shadow); overflow:hidden;}
+  details.appendix summary{cursor:pointer; padding:18px 22px; font-weight:650; font-size:15px; color:var(--ink);
+    list-style:none; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  details.appendix summary::-webkit-details-marker{display:none;}
+  details.appendix summary .arrow{font-family:var(--mono); color:var(--accent); transition:transform .2s ease; flex:none;}
+  details.appendix[open] summary .arrow{transform:rotate(90deg);}
+  details.appendix .appendix__body{padding:0 22px 22px;}
+  details.appendix summary small{display:block; font-weight:400; font-size:12.5px; color:var(--ink-faint); margin-top:3px;}
+
+  /* ---------- footer ---------- */
+  .site-footer{background:var(--bg-deep); color:#9bbac1; padding:48px 24px 32px;}
+  .site-footer__inner{max-width:var(--maxw); margin:0 auto;}
+  .site-footer h3{color:#fff; font-size:16px; margin-bottom:10px;}
+  .site-footer p{font-size:13px; line-height:1.7; color:#7fa3ad; margin-bottom:6px;}
+  .site-footer .pipeline-trail{font-family:var(--mono); font-size:11.5px; color:#5e8590; word-break:break-word;
+    margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,.08);}
+  .site-footer__rule{height:1px; background:rgba(255,255,255,.08); margin:24px 0;}
+
+  /* ---------- back to top ---------- */
+  .totop{position:fixed; right:22px; bottom:22px; width:42px; height:42px; border-radius:50%; background:var(--accent-dark);
+    color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(8,145,178,.35);
+    font-size:16px; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:90; border:none;
+    cursor:pointer;}
+  .totop.show{opacity:1; pointer-events:auto;}
+  .totop:hover{transform:translateY(-2px);}
+
+  .lede{font-size:16.5px; color:var(--ink-soft); max-width:720px;}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="brand">
+      <div class="brand__mark">CC</div>
+      <div class="brand__text">
+        <span class="brand__top">VibeRounds</span>
+        <span class="brand__bottom">Module CC — Post-COVID Hydropneumothorax</span>
+      </div>
+    </div>
+    <span class="pipeline-chip">M20 → M32 · 22 stages</span>
+    <div class="mobile-jump">
+      <select onchange="if(this.value) location.hash=this.value;">
+        <option value="">Jump to…</option>
+        <option value="#audit-notice">Audit Notice</option>
+        <option value="#signal-box">Top-3 Signals</option>
+        <option value="#case-brief">Case Brief</option>
+        <option value="#stage-1">Stage 1 — RPD</option>
+        <option value="#stage-5">Stage 5 — Nested Analysis</option>
+        <option value="#stage-10">Stage 10 — Diagnostic Time-Out</option>
+        <option value="#stage-15">Stage 15 — Iatrogenic Domino</option>
+        <option value="#stage-18">Stage 18 — Pre-Mortem</option>
+        <option value="#stage-22">Stage 22 — Cognition Loop</option>
+        <option value="#synthesis">Synthesis</option>
+        <option value="#closure">Closure</option>
+        <option value="#appendix">Appendix SG</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero__inner">
+    <span class="eyebrow">🩺 Shadow-Audited Clinical Cognition Module</span>
+    <h1>Module <em>CC</em></h1>
+    <div class="sub">Clinical Cognition Deep Dive · Post-COVID Bilateral Hydropneumothorax</div>
+    <div class="meta">23-year-old male, food supplier · Level C: Consultant / Attending · De-identified e-log case, October 2020</div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat__num">22</div><div class="stat__label">Pipeline stages</div></div>
+      <div class="stat"><div class="stat__num">5–6</div><div class="stat__label">Bloom's levels</div></div>
+      <div class="stat"><div class="stat__num">4</div><div class="stat__label">Fink dimensions</div></div>
+      <div class="stat"><div class="stat__num">3.5/5</div><div class="stat__label">Confidence calibration</div></div>
+    </div>
+    <p class="hero__note">Educational Disclaimer: all outputs below are educational observations for self-directed clinical reasoning. They are not clinical decisions. Case data is de-identified per original e-log book consent protocols.</p>
+  </div>
+</section>
+
+<div class="disclaimer-strip">
+  <div class="disclaimer-strip__inner">
+    <span class="disclaimer-strip__icon">📘</span>
+    <span>This document has been processed through <strong>Shadow Module CC</strong> — a quantitative-integrity and hallucination-skepticism safeguard. Unsourced numeric claims have been reframed qualitatively and one factual error has been corrected against source case data. See the <a href="#appendix">Appendix SG audit log</a> for the full change record.</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Section navigation">
+    <div class="sidebar__group">
+      <div class="sidebar__label">Front Matter</div>
+      <a href="#audit-notice"><span class="n">§</span>Audit Notice</a>
+      <a href="#signal-box"><span class="n">§</span>Top-3 Signals</a>
+      <a href="#case-brief"><span class="n">§</span>Case Brief</a>
+    </div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">22-Stage Pipeline</div>
+      <a href="#stage-1"><span class="n">01</span>RPD Model</a>
+      <a href="#stage-2"><span class="n">02</span>Epistemic Mapping</a>
+      <a href="#stage-3"><span class="n">03</span>Bayesian Engine</a>
+      <a href="#stage-4"><span class="n">04</span>Causal Network</a>
+      <a href="#stage-5"><span class="n">05</span>Nested Analysis</a>
+      <a href="#stage-6"><span class="n">06</span>Counterfactuals</a>
+      <a href="#stage-7"><span class="n">07</span>"Why Now?"</a>
+      <a href="#stage-8"><span class="n">08</span>Anchor Extractor</a>
+      <a href="#stage-9"><span class="n">09</span>Bias Auditing</a>
+      <a href="#stage-10"><span class="n">10</span>Diagnostic Time-Out</a>
+      <a href="#stage-11"><span class="n">11</span>Signal vs. Noise</a>
+      <a href="#stage-12"><span class="n">12</span>Poly-Crisis Sim</a>
+      <a href="#stage-13"><span class="n">13</span>Global Knowledge</a>
+      <a href="#stage-14"><span class="n">14</span>Pathophysiology</a>
+      <a href="#stage-15"><span class="n">15</span>Iatrogenic Domino</a>
+      <a href="#stage-16"><span class="n">16</span>High-Value Care</a>
+      <a href="#stage-17"><span class="n">17</span>Health Economics</a>
+      <a href="#stage-18"><span class="n">18</span>Pre-Mortem</a>
+      <a href="#stage-19"><span class="n">19</span>Evidence Frontier</a>
+      <a href="#stage-20"><span class="n">20</span>EBM Insights</a>
+      <a href="#stage-21"><span class="n">21</span>Prognosis Trajectory</a>
+      <a href="#stage-22"><span class="n">22</span>Cognition Loop</a>
+    </div>
+    <div class="sidebar__group">
+      <div class="sidebar__label">Closure</div>
+      <a href="#synthesis"><span class="n">§</span>Synthesis (CC.3)</a>
+      <a href="#closure"><span class="n">§</span>Closure (CC.4)</a>
+      <a href="#appendix"><span class="n">§</span>Appendix SG</a>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ===================== AUDIT NOTICE ===================== -->
+    <section class="section-block" id="audit-notice">
+      <div class="callout callout--warning">
+        <div class="callout__title">⚠️ Shadow Module SG Audit Notice — Read First</div>
+        <p>This document has been processed through Shadow Module CC — Quantitative Integrity &amp; Hallucination-Skepticism Safeguard (Steps SG.1–SG.6). All unsourced numeric claims have been reframed qualitatively. One factual error in the source Case Brief (laterality of air entry findings) has been corrected against the original case data. All clinical syndrome labels have been verified against case-documented criteria. The full audit change log is appended at the end of this document (<a href="#appendix">Appendix SG</a>).</p>
+        <p>This document has undergone a <strong>same-model self-audit pass</strong>; it has <strong>not</strong> received independent human or cross-model review. Any statistic without an explicit citation should be treated as illustrative, not evidence-based. If this document will be used for teaching, shared beyond personal study, or published, an independent review by a human subject-matter expert or a different AI model specifically tasked with identifying ungrounded numbers and mislabelled syndromes is recommended before treating it as final.</p>
+      </div>
+    </section>
+
+    <!-- ===================== TOP-3 SIGNAL BOX ===================== -->
+    <section class="section-block" id="signal-box">
+      <div class="callout callout--note">
+        <div class="callout__title">📡 Top-3 Signal Box — Read Before Proceeding <span style="font-weight:400; font-size:12.5px; color:var(--ink-faint); font-style:italic; margin-left:6px;">(SG.5 — Signal Compression)</span></div>
+        <div class="signal-list">
+          <div class="signal-item">
+            <div class="signal-num">1</div>
+            <p><strong>The single most important finding in this case is the 18-day missed prevention window</strong> between the 23/09/2020 HRCT (which documented "possible spontaneous rupture of subpleural bulla" and pneumomediastinum) and the 11/10/2020 acute decompensation. Proactive thoracic surgery referral at that point could plausibly have prevented the acute event. <span class="tag-chip tag-C">C — Confirmed in case data: 23/09/2020 HRCT documented; acute event 11/10/2020 documented</span></p>
+          </div>
+          <div class="signal-item">
+            <div class="signal-num">2</div>
+            <p>The <strong>right lower lobe bulla</strong> (confirmed on HRCT 14/10/2020) is the highest-priority unaddressed structural risk at case closure — a contralateral pneumothorax in this patient's clinical state (bilateral lung disease, ICD in situ, coagulopathy, thrombocytopenia) would be catastrophic. <span class="tag-chip tag-C">C — Confirmed: right lower lobe bulla documented on HRCT 14/10/2020</span></p>
+          </div>
+          <div class="signal-item">
+            <div class="signal-num">3</div>
+            <p>Three diagnostically consequential questions remain unresolved at case closure: PE status (CTPA not performed despite D-dimer 1940 µg/L), infectious organism identity (no culture data documented), and TB exclusion (no AFB workup documented). Each has direct management implications in a 23-year-old in a high-TB-burden setting. <span class="tag-chip tag-C">C — All three gaps confirmed by absence in documented case data</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CASE BRIEF ===================== -->
+    <section class="section-block" id="case-brief">
+      <div class="section-label">De-identified Case Brief</div>
+      <h2 class="section-title">What the team was looking at</h2>
+      <div class="case-brief">
+        <div class="correction-box">
+          <strong>⚠️ SG Correction — Laterality of Air Entry:</strong> The source case documentation records <strong>decreased</strong> air entry on the <strong>right</strong> side and <strong>absent</strong> air entry on the <strong>left</strong> side. The original Module CC draft incorrectly described only "absent left air entry" without noting the right-sided finding. This correction is carried through the document where relevant.
+        </div>
+        <p>23-year-old male food supplier. Presented October 2020 with cough × 1 week, dyspnoea × 4 days. One month prior: proven COVID-19 infection (CORADS 5 on HRCT 23/09/2020), treated, tested negative after 20 days. Re-presented with whitish productive cough, pleuritic chest pain, exertional dyspnoea. Acute decompensation 11/10/2020 at 12:30 PM: SpO₂ 82% on room air, RR 36, HR 127, BP 130/80, haemoptysis ~50 mL, <strong>decreased air entry on the right side, absent air entry on the left side</strong> <span class="tag-chip tag-C">C — directly documented in case</span>. CXR → pneumothorax revealed. ICD inserted (24F, 5th ICS, mid-axillary line, left). D-dimer 1940 µg/L. HRCT 14/10 → bilateral loculated hydropneumothorax, residual right lower lobe bulla (apical segment), bilateral infective consolidations (CORADS 2). Thoracoscopy and decortication recommended (pulmonology referral 17/10). New acute dyspnoea 19/10/2020 with worsening CXR.</p>
+      </div>
+    </section>
+
+    <!-- ===================== STAGES SECTION HEADER ===================== -->
+    <section class="section-block">
+      <div class="section-label">The 22-Stage Pipeline</div>
+      <h2 class="section-title">From first-pass gestalt to closure</h2>
+      <p class="section-desc">Each stage runs a distinct cognitive module against the same case — pattern recognition, Bayesian updating, causal mapping, bias auditing, pre-mortem simulation — building toward a single, integrated teaching synthesis.</p>
+    </section>
+
+    <!-- ===== STAGE 1 ===== -->
+    <article class="stage" id="stage-1">
+      <span class="stage__ghost">01</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M20</span><span class="stage__index">STAGE 1 OF 22</span></div>
+        <h3 class="stage__title">Naturalistic Decision Making (RPD Model)</h3>
+        <p class="stage__question">What does expert intuition fire first, before any systematic analysis?</p>
+      </div>
+      <div class="stage__body">
+        <h4>Pattern Recognition — First-pass gestalt</h4>
+        <p>An otherwise healthy young man who had COVID-19 one month ago walks back in looking sick — cough, dyspnoea, then suddenly crashes. The attending's System 1 fires immediately: <em>post-COVID structural lung complication</em>. The absent left air entry is enough — pneumothorax until proven otherwise.</p>
+        <h4>Recognition-Primed Decision (RPD) model applied</h4>
+        <p>The attending recognises a prototypical situation: young male, unilateral absent air entry, acute desaturation, recent pneumonia. The action script fires — oxygen, CXR, ICD if confirmed. This is appropriate pattern-matching and it saved time.</p>
+        <h4>What expert pattern recognition adds beyond the resident's</h4>
+        <p>A resident stops at "pneumothorax, drain it." The attending's RPD includes a second-order recognition: <em>this is not primary spontaneous pneumothorax in a healthy young man — the COVID context makes this secondary SPT with high probability of bilateral disease, bulla, and recurrence risk</em>. The attending's pattern encompasses the entire trajectory, not just the acute presentation.</p>
+        <h4>Where RPD could fail here</h4>
+        <ul>
+          <li><strong>Availability bias:</strong> recent COVID cases in a pandemic year could make the consultant over-attribute everything to COVID, potentially missing an alternative primary pathology (e.g., Marfan-related bulla, occult TB).</li>
+          <li><strong>Representativeness:</strong> the "young male pneumothorax" prototype could suppress the atypical features (bilateral, hemoptysis, inflammatory markers).</li>
+        </ul>
+        <div class="revelation"><div class="revelation__label">Stage 1 Revelation</div><p>Expert intuition correctly fires the pneumothorax response AND flags the COVID causality — but must not suppress alternative diagnoses prematurely.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 2 ===== -->
+    <article class="stage" id="stage-2">
+      <span class="stage__ghost">02</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M35</span><span class="stage__index">STAGE 2 OF 22</span></div>
+        <h3 class="stage__title">Epistemic Certainty Mapping</h3>
+        <p class="stage__question">Which conclusions are evidence-based, which are experience-based, which are assumption chains?</p>
+      </div>
+      <div class="stage__body">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Claim</th><th>Basis</th><th>Certainty</th></tr></thead>
+          <tbody>
+            <tr><td>Left pneumothorax present</td><td>CXR confirmed, absent left air entry on examination</td><td>✅ SOLID</td></tr>
+            <tr><td>Decreased right-sided air entry at presentation</td><td>Documented on examination 11/10/2020</td><td>✅ SOLID</td></tr>
+            <tr><td>COVID-19 infection one month prior</td><td>Tested positive, treated, tested negative</td><td>✅ SOLID</td></tr>
+            <tr><td>CORADS 5 bilateral lung involvement</td><td>HRCT 23/09/2020 reported</td><td>✅ SOLID</td></tr>
+            <tr><td>Subpleural bulla present (left)</td><td>HRCT 23/09/2020 report: "possible spontaneous rupture of subpleural bulla"</td><td>⚠️ UNCERTAIN — "possible" not confirmed</td></tr>
+            <tr><td>Bulla rupture caused the pneumothorax</td><td>Mechanistically plausible, temporally linked</td><td>⚠️ UNCERTAIN — no direct intraoperative confirmation yet</td></tr>
+            <tr><td>Bilateral loculated hydropneumothorax</td><td>HRCT 14/10/2020 confirmed</td><td>✅ SOLID</td></tr>
+            <tr><td>Right lower lobe bulla (apical segment)</td><td>HRCT 14/10/2020 confirmed</td><td>✅ SOLID</td></tr>
+            <tr><td>Secondary bacterial superinfection</td><td>Leucocytosis, infective consolidations on HRCT</td><td>⚠️ UNCERTAIN — no culture data documented</td></tr>
+            <tr><td>D-dimer elevation due to inflammation not PE</td><td>Assumed — no CTPA performed</td><td>❌ SPECULATIVE</td></tr>
+            <tr><td>Diastolic dysfunction from COVID myocarditis</td><td>2D echo finding</td><td>⚠️ UNCERTAIN — could be non-specific / tachycardia-related; no cardiac MRI</td></tr>
+            <tr><td>Thrombocytopenia from post-viral marrow suppression</td><td>Assumed</td><td>❌ SPECULATIVE — DIC, drug effect, consumption not excluded</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Key epistemic gap</h4>
+        <p>The relationship between COVID-19 lung injury and bulla formation is biologically plausible and increasingly reported in 2020 literature, but was not yet a firmly established entity at the time of this case. The chain is: SARS-CoV-2 → type II pneumocyte injury → parenchymal necrosis → cyst/pneumatocele/bulla → rupture → pneumothorax. Each link is supported but the full chain lacks a single prospective study at this time. <span class="tag-chip tag-P">P — general medical knowledge, not source-verified for this specific case; treat with appropriate calibration</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 2 Revelation</div><p>Several key conclusions rest on assumption chains, not confirmed data. The pneumothorax aetiology is plausible but not proven. The PE question is unresolved. Microbiological identity of the superinfection is unknown.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 3 ===== -->
+    <article class="stage" id="stage-3">
+      <span class="stage__ghost">03</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M36</span><span class="stage__index">STAGE 3 OF 22</span></div>
+        <h3 class="stage__title">Bayesian Probability / Likelihood Ratio Engine</h3>
+        <p class="stage__question">How does each finding update the differential?</p>
+      </div>
+      <div class="stage__body">
+        <div class="callout callout--warning" style="margin:0 0 18px;">
+          <div class="callout__title" style="font-size:13.5px;">⚠️ SG.1 Numeric De-Fabrication — Full Pass Applied to this Stage</div>
+          <p style="font-size:13.5px;">This stage in the original document contained multiple specific likelihood-ratio values and pre/post-test probability percentages. None were traceable to a retrieved citation or to direct case data — they were model-generated, plausible-sounding estimates. All have been reframed qualitatively per Step SG.1. The directional reasoning is preserved; the false numeric precision has been removed. See <a href="#appendix">Appendix SG — Change Log</a> for the full audit table.</p>
+        </div>
+        <h4>Pre-test Differential — qualitative framing</h4>
+        <p style="font-size:13.5px; margin-bottom:6px;">Prior plausibility in a 23yo post-COVID male with pneumothorax:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Diagnosis</th><th>Pre-test Plausibility</th></tr></thead>
+          <tbody>
+            <tr><td>Post-COVID secondary spontaneous pneumothorax (bulla rupture)</td><td>HIGH — dominant hypothesis given confirmed COVID history, CORADS 5 imaging, bulla on HRCT</td></tr>
+            <tr><td>Primary spontaneous pneumothorax (unrelated to COVID)</td><td>LOW — demographic fits PSP but bilateral / complicated character argues strongly against</td></tr>
+            <tr><td>Secondary bacterial pneumonia with parapneumonic effusion / empyema</td><td>MODERATE — leucocytosis and bilateral consolidations support; no culture confirmation</td></tr>
+            <tr><td>Pulmonary embolism (co-existent)</td><td>LOW-TO-MODERATE — D-dimer elevated; unexcluded; not the primary presentation but cannot be dismissed</td></tr>
+            <tr><td>Tuberculous pleuritis / bronchopleural fistula</td><td>LOW — clinically relevant in geographic context; not excluded</td></tr>
+            <tr><td>Pneumatocele rupture (other aetiology)</td><td>LOW</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Directional updates to the differential</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Finding</th><th>Direction</th><th>Basis</th></tr></thead>
+          <tbody>
+            <tr><td>CORADS 5 HRCT 1 month prior</td><td>Strongly UP for COVID aetiology</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>Subpleural bulla on HRCT 23/09</td><td>Further UP for bulla rupture</td><td><span class="tag-chip tag-C">C — "possible" per report</span></td></tr>
+            <tr><td>Bilateral involvement on HRCT 14/10</td><td>Strongly DOWN for PSP</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>CRP negative</td><td>Moderately DOWN for bacteria</td><td><span class="tag-chip tag-C">C — confirmed; timing caveat applies</span></td></tr>
+            <tr><td>D-dimer 1940 µg/L</td><td>Weakly up for PE; insufficient to move probability substantially</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>Normal ECG + no RV strain on Echo</td><td>Strongly DOWN for massive PE</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>Hemoptysis ~50 mL</td><td>Mildly UP for PE-related infarction</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>WBC 16,200 with neutrophilia 11/10</td><td>Moderately UP for bacterial superinfection</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+            <tr><td>Leucocytosis resolving by 13/10 (WBC 7,400)</td><td>Ambiguous</td><td><span class="tag-chip tag-C">C — confirmed case data</span></td></tr>
+          </tbody>
+        </table></div>
+        <h4>Post-test Plausibility — qualitative framing</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Diagnosis</th><th>Post-test Plausibility</th></tr></thead>
+          <tbody>
+            <tr><td>Post-COVID secondary SPT (bulla rupture)</td><td>HIGH — dominant, well-supported</td></tr>
+            <tr><td>Bacterial superinfection (concurrent)</td><td>MODERATE — independent and non-exclusive; supported but unconfirmed microbiologically</td></tr>
+            <tr><td>Pulmonary embolism (co-existent)</td><td>LOW-TO-MODERATE — unexcluded; D-dimer + haemoptysis constellation; clinically significant at this age</td></tr>
+            <tr><td>Tuberculous pleuritis</td><td>LOW — but epidemiologically relevant; not excluded</td></tr>
+            <tr><td>Primary SPT unrelated to COVID</td><td>VERY LOW — bilateral / complicated presentation makes this implausible</td></tr>
+          </tbody>
+        </table></div>
+        <p><strong>Attending-level note:</strong> the HIGH post-test plausibility for COVID bulla rupture does NOT mean other pathologies are absent. Post-COVID patients can have simultaneous PE, superinfection, and structural lung disease. These are not mutually exclusive.</p>
+        <div class="revelation"><div class="revelation__label">Stage 3 Revelation</div><p>The data strongly support COVID-related secondary SPT, but PE remains unexcluded — clinically significant in a 23-year-old. The D-dimer + haemoptysis constellation warrants CTPA when stable.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 4 ===== -->
+    <article class="stage" id="stage-4">
+      <span class="stage__ghost">04</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M18</span><span class="stage__index">STAGE 4 OF 22</span></div>
+        <h3 class="stage__title">Causal vs. Probabilistic (Network) Reasoning</h3>
+        <p class="stage__question">Build the causal network. Distinguish what CAUSED this from what PREDICTS this.</p>
+      </div>
+      <div class="stage__body">
+        <h4>Causal Network — Directed Acyclic Graph (narrative form)</h4>
+<pre class="ascii">SARS-CoV-2 infection (proven)
+     │
+     ├─→ Direct type II pneumocyte cytopathic injury
+     │        │
+     │        ├─→ Alveolar wall destruction → Cyst/bulla formation (subpleural)
+     │        │        │
+     │        │        └─→ [RUPTURE EVENT 11/10/2020]
+     │        │                 │
+     │        │                 ├─→ Left pneumothorax → Hypoxia / Haemodynamic stress
+     │        │                 ├─→ Air tracking → Pneumomediastinum → Subcutaneous emphysema
+     │        │                 └─→ Pleural contamination + inflammatory exudate
+     │        │                          │
+     │        │                          └─→ Bilateral loculated hydropneumothorax
+     │        │                                   │
+     │        │                                   └─→ Lower lobe atelectasis
+     │        │
+     │        └─→ Mucosal vascular fragility → Hemoptysis
+     │
+     ├─→ Systemic hyperinflammation
+     │        │
+     │        ├─→ Elevated D-dimer (non-specific) — also ← pleural + lung injury
+     │        ├─→ Hepatic involvement → Mild elevation LFTs
+     │        └─→ Diastolic dysfunction (myocardial oedema/inflammation)
+     │
+     └─→ Post-viral immune dysregulation
+              │
+              ├─→ Thrombocytopenia (marrow suppression / consumption)
+              └─→ Susceptibility to secondary bacterial infection
+                       │
+                       └─→ Peribronchial consolidations (HRCT 14/10)</pre>
+        <h4>What predicts vs. what caused</h4>
+        <ul>
+          <li>High D-dimer <em>predicts</em> adverse outcomes but is a <em>downstream marker</em>, not a cause.</li>
+          <li>Neutrophilic leucocytosis <em>predicts</em> infection but could be <em>caused</em> by either bacterial superinfection OR physiological stress response to acute pneumothorax.</li>
+          <li>Thrombocytopenia <em>predicts</em> coagulopathy risk but may be <em>caused</em> by multiple parallel mechanisms (marrow suppression, consumption, medication).</li>
+        </ul>
+        <h4>Hidden common cause</h4>
+        <p>SARS-CoV-2 infection is the single upstream common cause of multiple seemingly independent findings (pneumothorax, D-dimer, LFT rise, thrombocytopenia, diastolic dysfunction). Failing to recognise this unified causal root risks treating each complication in isolation.</p>
+        <div class="revelation"><div class="revelation__label">Stage 4 Revelation</div><p>This is a single-cause multi-system cascade, not multiple independent problems. The causal network converges on COVID-19 lung injury as the root. Every management decision should be made with this causal unity in mind.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 5 ===== -->
+    <article class="stage" id="stage-5">
+      <span class="stage__ghost">05</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M22</span><span class="stage__index">STAGE 5 OF 22</span></div>
+        <h3 class="stage__title">Nested Analysis</h3>
+        <p class="stage__question">What sub-problems are nested within the presenting problem?</p>
+      </div>
+      <div class="stage__body">
+        <p><strong>Top-level problem:</strong> Acute respiratory failure in post-COVID young male.</p>
+        <h4>1. Structural (Pleural)</h4>
+        <ul>
+          <li>Active left hydropneumothorax with ICD in situ</li>
+          <li>Bilateral loculated collections requiring thoracoscopy/decortication</li>
+          <li>Residual right lower lobe bulla (apical segment) — imminent second pneumothorax risk</li>
+        </ul>
+        <h4>2. Infectious</h4>
+        <ul>
+          <li>Secondary bacterial pneumonia (organism unknown — no cultures documented)</li>
+          <li>Possible empyema (loculated pleural fluid in context of infection)</li>
+          <li>Risk of nosocomial infection (ICD in situ, prolonged hospitalisation)</li>
+        </ul>
+        <h4>3. Haematological / Coagulation</h4>
+        <ul>
+          <li>Thrombocytopenia (nadir platelet count 1.24 [×10⁹/L inferred from context], 13/10) — unresolved aetiology <span class="tag-chip tag-C">C</span></li>
+          <li>Elevated D-dimer — PE unexcluded <span class="tag-chip tag-C">C</span></li>
+          <li>FFP transfused — implies coagulopathy (PT/INR/aPTT not documented)</li>
+          <li>Anaemia: Hb 14.6 g/dL (11/10) → 11.6 g/dL (13/10) → 11.2 g/dL (16/10) — progressive fall <span class="tag-chip tag-C">C — confirmed across serial CBPs</span></li>
+        </ul>
+        <h4>4. Cardiovascular</h4>
+        <ul>
+          <li>Diastolic dysfunction — COVID myocardial involvement vs. tachycardia-related <span class="tag-chip tag-C">C — confirmed on 2D Echo</span></li>
+          <li>No LV clot, no RV strain — reduces but does not exclude embolic risk <span class="tag-chip tag-C">C — confirmed on 2D Echo</span></li>
+        </ul>
+        <h4>5. Hepatic</h4>
+        <ul>
+          <li>SGPT 74 IU/L, ALP 157 IU/L, total protein 5.3 g/dL <span class="tag-chip tag-C">C — confirmed on LFT 11/10/2020</span></li>
+          <li>Could impair drug metabolism (antibiotics, analgesics) and coagulation factor synthesis</li>
+        </ul>
+        <h4>6. Nutritional / Metabolic</h4>
+        <ul>
+          <li>Low total protein (5.3 g/dL), albumin 3.8 g/dL — catabolic state <span class="tag-chip tag-C">C — confirmed on LFT 11/10/2020</span></li>
+          <li>Impairs wound healing, pleural repair, immune function</li>
+        </ul>
+        <h4>7. Procedural / Ongoing</h4>
+        <ul>
+          <li>ICD patency and positioning — new acute dyspnoea 19/10 raises concern for blockage/dislodgement or contralateral progression <span class="tag-chip tag-C">C — confirmed in case</span></li>
+          <li>Risk of ICD-associated infection</li>
+        </ul>
+        <h4>8. Psychosocial (often invisible at this age)</h4>
+        <ul>
+          <li>23-year-old food supplier — occupational and financial vulnerability during prolonged hospitalisation</li>
+          <li>Sudden severe illness in a young person — risk of post-traumatic psychological sequelae (not documented but clinically relevant) <span class="tag-chip tag-I">I — inferred; not documented in source</span></li>
+        </ul>
+        <div class="revelation"><div class="revelation__label">Stage 5 Revelation</div><p>This case has at least 8 distinct nested sub-problem domains. Managing only the pneumothorax without addressing the haematological, nutritional, infectious, and cardiology sub-problems risks partial treatment with preventable downstream complications.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 6 ===== -->
+    <article class="stage" id="stage-6">
+      <span class="stage__ghost">06</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M23</span><span class="stage__index">STAGE 6 OF 22</span></div>
+        <h3 class="stage__title">Counterfactual Analysis</h3>
+        <p class="stage__question">What would have changed the outcome? What paths were not taken?</p>
+      </div>
+      <div class="stage__body">
+        <h4>Counterfactual 1 — What if the 23/09 bulla finding had triggered prophylactic intervention?</h4>
+        <p>The 23/09 HRCT explicitly documented "possible spontaneous rupture of subpleural bulla" and pneumomediastinum. Had this prompted a thoracic surgery referral at that point, the patient could have undergone elective VATS bullectomy and pleurodesis while stable. The catastrophic 11/10 event (SpO₂ 82%, haemoptysis, acute decompensation) might have been prevented. This is the highest-impact counterfactual in this case — a <em>potentially preventable</em> acute event through proactive surgical planning. <span class="tag-chip tag-I">I — clinical inference; plausible but not certain</span></p>
+        <h4>Counterfactual 2 — What if a CTPA had been performed at presentation?</h4>
+        <p>D-dimer 1940 µg/L in a post-COVID patient is a clinically significant signal. Had CTPA been performed before the ICD, a concurrent PE diagnosis (if present) could have altered anticoagulation decisions. The risk: anticoagulating someone about to have a procedural intervention. The benefit: not missing a diagnosis that carries significant mortality in a young person. The attending's decision not to do CTPA first was pragmatically justified (pneumothorax was the immediate life threat), but the PE question remains open and should be closed.</p>
+        <h4>Counterfactual 3 — What if only the left side had been treated, unaware of bilateral disease?</h4>
+        <p>The post-procedure decision to pursue HRCT was critical — it revealed bilateral involvement and the right-sided bulla. Without HRCT, the team would have managed a "left pneumothorax" while the right-sided bulla remained an unrecognised time bomb. The HRCT was appropriately ordered and changed management (thoracoscopy recommendation). <span class="tag-chip tag-C">C — confirmed: HRCT 14/10 changed management to thoracoscopy</span></p>
+        <h4>Counterfactual 4 — What if broad-spectrum antibiotics had not been started empirically?</h4>
+        <p>Given no culture data and a negative CRP, there may have been clinical hesitation about starting antibiotics. In a patient with loculated hydropneumothorax, bilateral consolidations, and leucocytosis — empirical broad-spectrum cover (Pip-Taz + Metronidazole + Azithromycin) was the correct default. Withholding this pending culture results in a loculated pleural space could have allowed progressive empyema.</p>
+        <h4>Counterfactual 5 — What if this had been managed as Primary Spontaneous Pneumothorax?</h4>
+        <p>Simple aspiration or small-bore drain (standard PSP management) would have been grossly insufficient. PSP management assumes unilateral, non-infected, non-loculated pathology in a structurally normal lung. This patient had none of those features. The team correctly moved to ICD, Pulmonology referral, and thoracoscopy planning — avoiding the PSP management trap.</p>
+        <div class="revelation"><div class="revelation__label">Stage 6 Revelation</div><p>The highest-impact counterfactual is the missed opportunity between 23/09 (HRCT with bulla + pneumomediastinum) and 11/10 (acute decompensation). There was an 18-day window in which surgical prevention was possible. This is the key teaching moment for systems improvement.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 7 ===== -->
+    <article class="stage" id="stage-7">
+      <span class="stage__ghost">07</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M33</span><span class="stage__index">STAGE 7 OF 22</span></div>
+        <h3 class="stage__title">The "Why Now?" Precipitant Hunter</h3>
+        <p class="stage__question">Why did this patient decompensate on 11/10/2020 at 12:30 PM, not earlier?</p>
+      </div>
+      <div class="stage__body">
+        <h4>What had changed between viral clearance and 11/10</h4>
+        <ul>
+          <li>The bulla, formed during acute viral injury, does not immediately rupture at peak inflammation — it ruptures when structural weakening reaches a threshold. Subpleural bullae are most vulnerable in the remodelling phase, not necessarily at peak disease. <span class="tag-chip tag-P">P — general medical knowledge; treat with appropriate calibration</span></li>
+          <li>The patient had returned to activity (food supplier — physical exertion). Increased intrathoracic pressure during physical activity (coughing, lifting) is a recognised precipitant of bulla rupture. <span class="tag-chip tag-P">P</span></li>
+          <li>The patient had been symptomatic for 1 week before the acute event — the escalating cough itself increases intrathoracic pressure repeatedly. <span class="tag-chip tag-I">I — inferred from cough history documented in case</span></li>
+          <li>The resolution of acute inflammation reduces surrounding tissue support for a structurally weakened bulla — paradoxically, recovering from COVID may have reduced the "splinting" effect of surrounding consolidated lung. <span class="tag-chip tag-S">S — speculative hypothesis; plausible but unverifiable from case data</span></li>
+        </ul>
+        <h4>Why bilateral disease but unilateral acute event</h4>
+        <p>The right-sided bulla is a different anatomical size and location (apical segment, right lower lobe). The left bulla ruptured first. The right bulla remains at risk. <span class="tag-chip tag-I">I — inferred from HRCT 14/10 finding</span></p>
+        <h4>Why 12:30 PM</h4>
+        <p>No clear temporal trigger documented. Coughing paroxysm is the most likely proximate precipitant — consistent with 1-week cough history. <span class="tag-chip tag-S">S — speculative</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 7 Revelation</div><p>The "why now" is: post-viral bulla (structurally formed during COVID, then vulnerable during remodelling) + recurrent cough-induced intrathoracic pressure spikes = rupture threshold crossed. The 18-day window between HRCT (23/09) and acute event (11/10) was a lost prevention window.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 8 ===== -->
+    <article class="stage" id="stage-8">
+      <span class="stage__ghost">08</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M30</span><span class="stage__index">STAGE 8 OF 22</span></div>
+        <h3 class="stage__title">Diagnostic Anchor Extractor</h3>
+        <p class="stage__question">What cognitive anchor is the team stuck on? Including the consultant's own.</p>
+      </div>
+      <div class="stage__body">
+        <h4>Primary anchor identified: "Post-COVID complications"</h4>
+        <p>Once the COVID history was established, all subsequent findings were filtered through the COVID lens. This is broadly correct but creates a risk: other diagnoses that happen to co-occur (TB, PE, malignancy) may be anchored out.</p>
+        <h4>Secondary anchor: "Young male, pneumothorax = relatively benign"</h4>
+        <p>The demographic of a 23-year-old male + pneumothorax carries a cognitive prototype of Primary SPT — manageable, self-limiting, good prognosis. This prototype was partially overridden by the bilateral and complicated nature of the case, but may have contributed to delay in aggressive thoracoscopy planning (thoracoscopy recommended on 17/10, bilateral disease confirmed on 14/10 — a 3-day delay).</p>
+        <h4>The consultant's own potential anchor</h4>
+        <p>An attending who has seen multiple post-COVID cases in 2020 may anchor to the emerging literature and pattern of COVID-related pneumothorax, potentially underweighting the TB differential in a South Asian context (where TB prevalence is relevant). No AFB workup is documented.</p>
+        <h4>Anchor displacement exercise</h4>
+        <p><em>If there were no COVID history</em> — how would this case read? A 23-year-old male food supplier with cough, haemoptysis, bilateral loculated pleural disease, bilateral consolidations, elevated inflammatory markers, and thrombocytopenia: this is a <strong>presentation warranting TB exclusion as an immediate priority</strong> until proven otherwise. The COVID narrative is the correct primary frame, but TB co-infection or primary TB must be formally excluded, not assumed absent.</p>
+        <div class="revelation"><div class="revelation__label">Stage 8 Revelation</div><p>The "Post-COVID" anchor is broadly appropriate but risks anchoring out TB co-infection, which is epidemiologically relevant and clinically overlapping. Formal AFB workup is a necessary anchor-displacement manoeuvre.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 9 ===== -->
+    <article class="stage" id="stage-9">
+      <span class="stage__ghost">09</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M26</span><span class="stage__index">STAGE 9 OF 22</span></div>
+        <h3 class="stage__title">Bias Auditing</h3>
+        <p class="stage__question">Full bias inventory — including systemic and institutional biases.</p>
+      </div>
+      <div class="stage__body">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Bias</th><th>Present?</th><th>Evidence</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td>Anchoring bias</td><td>Yes</td><td>COVID history frames all subsequent interpretation</td><td>Moderate — may miss TB co-infection or PE</td></tr>
+            <tr><td>Availability bias</td><td>Yes</td><td>COVID-associated pneumothorax was widely discussed in 2020; recent personal exposure makes this salient</td><td>Low-moderate — correct in this case but could over-apply to future cases</td></tr>
+            <tr><td>Premature closure</td><td>Partial</td><td>ICD inserted (correct) but PE formally unexcluded; no culture workup documented</td><td>Moderate — infectious organism unknown; coagulopathy aetiology unresolved</td></tr>
+            <tr><td>Representativeness bias</td><td>Low-moderate</td><td>"Young male pneumothorax" prototype initially fires</td><td>Low — overridden by clinical severity</td></tr>
+            <tr><td>Framing effect</td><td>Yes</td><td>Case framed as "post-COVID sequelae" from start — shapes every decision</td><td>Moderate — correct frame but could suppress alternative primary diagnoses</td></tr>
+            <tr><td>Omission bias</td><td>Present</td><td>No CTPA performed, no AFB workup, no formal PE risk stratification documented</td><td>Significant — these are consequential omissions</td></tr>
+            <tr><td>Commission bias</td><td>Low</td><td>Antibiotic regimen is broad — potentially overtreating, though defensible in this severity</td><td>Low</td></tr>
+            <tr><td>Confirmation bias</td><td>Low</td><td>Team pursued HRCT and found consistent findings — did not selectively interpret</td><td>Low</td></tr>
+            <tr><td>Gender/age bias</td><td>Possible</td><td>A 23-year-old male's serious illness may be under-triaged initially (young, healthy-appearing)</td><td>Cannot assess from documentation</td></tr>
+            <tr><td>Institutional / system bias</td><td>Possible</td><td>Access to CTPA, thoracoscopy, and specialist referral appears resource-dependent; some diagnostic steps may have been delayed by resource availability rather than clinical decision</td><td>Possibly significant</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Systemic bias note</h4>
+        <p>The management decisions documented suggest a resource-constrained environment. FFP transfusion is documented but coagulation studies (PT/INR/aPTT/fibrinogen) are not. CTPA is not performed despite D-dimer elevation. These may reflect resource availability rather than clinical omission — an important distinction when auditing decision quality.</p>
+        <div class="revelation"><div class="revelation__label">Stage 9 Revelation</div><p>The dominant clinically impactful bias is <strong>omission bias</strong> — specifically, three unaddressed diagnostic questions: PE status (CTPA), microbiological identity of infection (cultures), and TB exclusion (AFB workup). These are not intellectually abstract gaps — they affect direct management decisions.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 10 ===== -->
+    <article class="stage" id="stage-10">
+      <span class="stage__ghost">10</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M28</span><span class="stage__index">STAGE 10 OF 22</span></div>
+        <h3 class="stage__title">Diagnostic Time-Out</h3>
+        <p class="stage__question">Structured debiasing pause before finalising the diagnostic framework.</p>
+      </div>
+      <div class="stage__body">
+        <h4>1. What diagnosis have I not considered that would most change management?</h4>
+        <p>→ <strong>Pulmonary tuberculosis with co-incidental COVID.</strong> If the bilateral consolidations, pleural disease, loculations, haemoptysis, and thrombocytopenia are primarily TB rather than post-COVID sequelae, the management changes fundamentally: ATT (anti-tuberculosis therapy) is indicated, contact tracing is required, airborne precautions must be implemented, the antibiotic regimen is insufficient, and the prognosis trajectory is different. This has not been formally excluded.</p>
+        <h4>2. What finding am I most confidently interpreting that is actually least certain?</h4>
+        <p>→ <strong>That D-dimer elevation reflects inflammation, not PE.</strong> This is stated clinically without any imaging confirmation. A concurrent PE in a post-COVID hypercoagulable state at age 23 carries meaningful mortality risk.</p>
+        <h4>3. If this patient deteriorates further, what will I wish I had done today?</h4>
+        <p>→ CTPA, pleural fluid analysis (culture, AFB, cytology, biochemistry), blood cultures, AFB sputum smear, formal coagulation panel (PT, aPTT, fibrinogen, D-dimer serial trend), and contralateral pleural intervention planning.</p>
+        <h4>Time-out conclusion</h4>
+        <p>The working diagnosis of Post-COVID bilateral hydropneumothorax with secondary bacterial infection is defensible and likely correct. But three diagnostic gaps — PE, TB, and infection organism identity — remain open and must be actively closed rather than passively assumed.</p>
+        <div class="revelation"><div class="revelation__label">Stage 10 Revelation</div><p>The diagnostic framework is substantially complete for the primary diagnosis. The remaining gaps are not academic — they include potentially life-altering diagnoses in a 23-year-old. <span class="tag-chip tag-I">I — "substantially complete" is a clinical inference; exact completeness cannot be quantified without the missing tests</span></p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 11 ===== -->
+    <article class="stage" id="stage-11">
+      <span class="stage__ghost">11</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M37</span><span class="stage__index">STAGE 11 OF 22</span></div>
+        <h3 class="stage__title">Red Herring / Signal-to-Noise Drill</h3>
+        <p class="stage__question">Separate clinically meaningful findings from noise in this case.</p>
+      </div>
+      <div class="stage__body">
+        <h4>True signals (high clinical weight)</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Finding</th><th>Why it is a real signal</th></tr></thead>
+          <tbody>
+            <tr><td>SpO₂ 82% on room air (acute)</td><td>Life-threatening; primary driver of emergency intervention <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Absent left air entry</td><td>Confirms large pneumothorax; action-forcing <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Decreased right-sided air entry</td><td>Signals right-sided involvement even acutely — not just a left-sided problem <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>HRCT subpleural bulla (23/09)</td><td>Structural vulnerability — the causal precursor to the event <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>HRCT bilateral loculated hydropneumothorax (14/10)</td><td>Changes management from simple ICD to thoracoscopy <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Right lower lobe bulla (14/10 HRCT)</td><td>Imminent second pneumothorax — the most underweighted signal in this case <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Hb drop 14.6 → 11.2 g/dL over 8 days</td><td>Haemorrhagic or dilutional — clinically significant trend <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Thrombocytopenia (nadir 1.24, 13/10)</td><td>Coagulopathy risk; warrants formal haematological workup <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>D-dimer 1940 µg/L</td><td>PE unexcluded — cannot be dismissed without CTPA <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Acute dyspnoea 19/10 with worsening CXR</td><td>New clinical event — ICD failure vs. contralateral progression vs. PE <span class="tag-chip tag-C">C</span></td></tr>
+          </tbody>
+        </table></div>
+        <h4>Noise (low clinical weight in isolation)</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Finding</th><th>Why it is noise</th></tr></thead>
+          <tbody>
+            <tr><td>SGOT (AST) 30 IU/L</td><td>Within normal range; clinically insignificant in isolation <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Uric acid 4.6 mg/dL</td><td>Normal; no clinical relevance here <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Calcium 8.8 mg/dL</td><td>Normal <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Post-procedure BP drop (130/80 → 110/70)</td><td>Expected physiological response post-ICD; not alarming in isolation <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Sputum colour (whitish)</td><td>Reported but non-specific; neither confirms nor excludes aetiology <span class="tag-chip tag-C">C</span></td></tr>
+          </tbody>
+        </table></div>
+        <h4>Borderline signals (context-dependent)</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Finding</th><th>Context-dependent interpretation</th></tr></thead>
+          <tbody>
+            <tr><td>SGPT 74, ALP 157</td><td>Mildly elevated — COVID hepatic involvement vs. drug effect; monitor, not act on immediately <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>CRP negative</td><td>Reassuring but timing-dependent; CRP can lag; absence does not exclude bacterial infection <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>WBC 16,200 on 11/10 → 7,400 by 13/10</td><td>Rapid normalisation could mean antibiotic response OR was stress-related all along <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Total protein 5.3 g/dL</td><td>Borderline low — nutritional risk; warrants dietary intervention but not emergency action <span class="tag-chip tag-C">C</span></td></tr>
+          </tbody>
+        </table></div>
+        <h4>The single most underweighted signal in this case</h4>
+        <p>The right lower lobe bulla confirmed on HRCT 14/10/2020 (apical segment). This is a radiologically confirmed, anatomically located structural risk in the contralateral lung of a patient already hospitalised with pneumothorax. It generated a pulmonology comment but does not appear to have generated an urgent thoracic surgery referral for prophylactic management. This is the highest-priority underweighted signal.</p>
+        <div class="revelation"><div class="revelation__label">Stage 11 Revelation</div><p>The right-sided residual bulla is the most clinically consequential finding that received insufficient urgency. A contralateral pneumothorax in this patient — post-ICD, on IV fluids, with bilateral loculated disease — would be catastrophic.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 12 ===== -->
+    <article class="stage" id="stage-12">
+      <span class="stage__ghost">12</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M38</span><span class="stage__index">STAGE 12 OF 22</span></div>
+        <h3 class="stage__title">Poly-Crisis &amp; Cascading Failure Simulator</h3>
+        <p class="stage__question">What happens when multiple systems fail simultaneously?</p>
+      </div>
+      <div class="stage__body">
+        <h4>Simultaneous active failure nodes at peak (11–14 October 2020)</h4>
+        <ol>
+          <li><strong>Respiratory failure</strong> — SpO₂ 82%, bilateral lung disease, ICD just inserted <span class="tag-chip tag-C">C</span></li>
+          <li><strong>Haematological instability</strong> — Hb dropping, thrombocytopenia emerging, FFP required <span class="tag-chip tag-C">C</span></li>
+          <li><strong>Haemostatic compromise</strong> — Coagulopathy implied (FFP transfusion), haemoptysis active <span class="tag-chip tag-C">C</span></li>
+          <li><strong>Cardiovascular stress</strong> — HR 127, diastolic dysfunction, potential PE <span class="tag-chip tag-C">C — HR and echo confirmed; PE unexcluded</span></li>
+          <li><strong>Nutritional compromise</strong> — Low protein, catabolic state impairing tissue repair <span class="tag-chip tag-C">C</span></li>
+          <li><strong>Infectious burden</strong> — Active bilateral consolidations, no organism identified, antibiotics empirical <span class="tag-chip tag-C">C</span></li>
+        </ol>
+        <h4>Cascading failure simulation</h4>
+        <p><strong>Scenario A — ICD blockage</strong> (which appears to have happened 19/10): ICD blocks → left lung fails to re-expand → hypoxia worsens → respiratory distress → if contralateral bulla simultaneously ruptures → bilateral tension physiology → circulatory collapse. In a thrombocytopenic, coagulopathic patient, emergency intervention (second ICD, intubation) carries haemorrhagic risk. <span class="tag-chip tag-I">I — plausible cascade; 19/10 event is documented; causal chain is clinical inference</span></p>
+        <p><strong>Scenario B — PE occurs:</strong> Undetected PE → progressive RV strain → acute cor pulmonale → haemodynamic collapse → in a patient with bilateral lung disease and ICD in situ, thrombolysis carries significant haemorrhagic risk (active haemoptysis + coagulopathy). Anticoagulation is also high risk. Surgical embolectomy in a patient with bilateral pleural disease is extremely high risk. <span class="tag-chip tag-S">S — PE itself is speculative; cascade is sound given PE premise</span></p>
+        <p><strong>Scenario C — Right bulla ruptures during thoracoscopy preparation:</strong> While planning left-sided thoracoscopy and decortication, the right bulla ruptures → bilateral pneumothorax → emergency bilateral ICD → acute ventilatory failure in an already compromised respiratory state. <span class="tag-chip tag-S">S — speculative scenario; right bulla is confirmed, rupture timing is speculative</span></p>
+        <h4>Poly-crisis mitigation strategies</h4>
+        <ul>
+          <li><strong>Secure the right bulla before it ruptures</strong> — earliest possible surgical referral</li>
+          <li><strong>Exclude PE with CTPA before anticoagulation decisions are forced</strong> — pre-emptive diagnosis is safer than reactive management of decompensated PE</li>
+          <li><strong>Secure ICD patency</strong> — daily imaging and clinical review; low threshold for repositioning or second drain</li>
+          <li><strong>Correct coagulopathy proactively</strong> — formal coagulation panel, Vitamin K, FFP availability, haematology input</li>
+          <li><strong>Nutritional support aggressively</strong> — poor protein state impairs all healing</li>
+        </ul>
+        <div class="revelation"><div class="revelation__label">Stage 12 Revelation</div><p>This patient is simultaneously vulnerable to ICD blockage, bulla rupture, and undetected PE — any of which could cascade into a scenario with no safe treatment options. The attending's priority must be to close down as many of these open failure nodes as possible before any one of them cascades.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 13 ===== -->
+    <article class="stage" id="stage-13">
+      <span class="stage__ghost">13</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M39</span><span class="stage__index">STAGE 13 OF 22</span></div>
+        <h3 class="stage__title">Global Knowledge Network Diagnostic Matrix</h3>
+        <p class="stage__question">International and cross-specialty knowledge frameworks.</p>
+      </div>
+      <div class="stage__body">
+        <h4>Pulmonology (International)</h4>
+        <p>COVID-19-associated pneumothorax was first systematically described in case series from Italy, UK, and China in 2020. In non-ventilated young patients, spontaneous pneumothorax appeared linked to subpleural bulla/pneumatocele formation — a pattern not seen in prior coronavirus infections (SARS, MERS) with the same frequency. The bilateral and loculated character of this case is at the severe end of the described spectrum. <span class="tag-chip tag-P">P — general medical knowledge as of 2020; specific incidence figures previously stated were unsourced and have been removed — see Appendix SG</span></p>
+        <h4>Infectious Disease</h4>
+        <p>In South Asia (the likely geographic setting of this case), TB and COVID-19 co-infection was an early pandemic concern. India carried a very high TB burden per RNTCP data (2020). A young patient with haemoptysis, bilateral pleural disease, loculations, and thrombocytopenia in this geographic context requires TB exclusion as a standard of care, not an optional consideration. The COVID HRCT pattern (crazy paving, GGO) is distinct from TB (upper lobe fibrocavitary), but mixed presentations exist. <span class="tag-chip tag-P">P</span></p>
+        <h4>Thoracic Surgery</h4>
+        <p>Standard guidelines recommend video-assisted thoracoscopic surgery (VATS) with bullectomy and mechanical/chemical pleurodesis for recurrent or bilateral pneumothorax (BTS guidance, with evidence available by 2020). This patient has bilateral disease, a residual right bulla, and likely impending recurrence — meeting multiple VATS indications. Intrapleural fibrinolytic therapy (urokinase or tPA) is an evidence-based option for loculated pleural collections when surgery is delayed or high-risk. <span class="tag-chip tag-P">P</span></p>
+        <h4>Haematology</h4>
+        <p>Post-viral thrombocytopenia in COVID-19 can reflect: immune thrombocytopenic purpura (ITP-like mechanism), consumptive coagulopathy (DIC), bone marrow suppression, or drug-induced thrombocytopenia. FFP transfusion addresses coagulation factor deficiency but not platelet counts. If thrombocytopenia is ITP-mediated, IVIG or corticosteroids may be indicated — a haematology consultation is warranted. <span class="tag-chip tag-P">P</span></p>
+        <h4>Cardiology</h4>
+        <p>Diastolic dysfunction in COVID-19 was documented in cardiac MRI and echocardiographic studies in 2020 — myocardial oedema, pericardial effusion, and interstitial involvement can impair diastolic relaxation. In a young patient, this is likely reversible. However, in the context of significant systemic illness, diastolic dysfunction impairs volume tolerance — fluid resuscitation must be carefully titrated to avoid pulmonary oedema in already compromised lungs. <span class="tag-chip tag-P">P — general knowledge; cardiac MRI reference is general, not specific to this case</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 13 Revelation</div><p>Three cross-specialty gaps: (1) TB exclusion is a geographic imperative in this setting, (2) haematology input for thrombocytopenia aetiology is needed, and (3) cardiac MRI at outpatient follow-up would provide prognostic information about long-term myocardial involvement.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 14 ===== -->
+    <article class="stage" id="stage-14">
+      <span class="stage__ghost">14</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M31</span><span class="stage__index">STAGE 14 OF 22</span></div>
+        <h3 class="stage__title">First-Principles Pathophysiology Mapping</h3>
+        <p class="stage__question">The mechanistic map for teaching purposes.</p>
+      </div>
+      <div class="stage__body">
+        <h4>COVID-19 → Pneumothorax — full mechanistic chain</h4>
+<pre class="ascii">SARS-CoV-2 binds ACE2 receptors on type II alveolar pneumocytes
+            ↓
+Direct viral cytopathic effect → Type II pneumocyte necrosis
+            ↓
+Loss of surfactant production → Alveolar collapse + overdistension in adjacent alveoli
+            ↓
+Inflammatory infiltration (macrophages, neutrophils, T-cells)
+            ↓
+Cytokine storm → Diffuse alveolar damage (DAD) → Hyaline membrane formation
+            ↓
+Crazy paving pattern on HRCT (GGO + interlobular septal thickening)
+            ↓
+Parenchymal necrosis + liquefaction in focal areas
+            ↓
+Pneumatocele / Subpleural bulla formation
+(air trapped by check-valve mechanism through damaged airways)
+            ↓
+Bulla enlarges during remodelling phase (post-viral)
+            ↓
+Intrathoracic pressure spike (cough, exertion) → Bulla wall stress exceeds tensile strength
+            ↓
+RUPTURE
+            ↓
+Air enters pleural space → Pneumothorax
+    ↙                ↘
+Ipsilateral lung       Air tracks along fascial planes
+collapse               → Pneumomediastinum [C — confirmed on 23/09 HRCT]
+                       → Subcutaneous emphysema [C — confirmed on 23/09 HRCT]
+            ↓
+Pleural irritation + inflammatory exudate
+            ↓
+Protein-rich fluid accumulates (hydropneumothorax)
+            ↓
+Fibrin deposition → Loculation [C — confirmed HRCT 14/10]
+            ↓
+Secondary bacterial colonisation → Empyema
+            ↓
+Bilateral involvement (right bulla also formed during primary infection) [C — right bulla confirmed HRCT 14/10]</pre>
+        <p style="font-size:13.2px; color:var(--ink-faint); font-style:italic;"><span class="tag-chip tag-P">P</span> — this mechanistic chain is general medical knowledge reconstructed from pathophysiological principles, not a step-by-step chain verified in a single published study. Individual links are supported; treat the full chain with appropriate calibration.</p>
+        <h4>Haemoptysis mechanism</h4>
+        <p>Mucosal fragility from endobronchial inflammation + traction on pulmonary vessels during acute lung collapse + possible microinfarction from in-situ microvascular thrombosis (COVID coagulopathy) → haemoptysis. <span class="tag-chip tag-I">I/P</span></p>
+        <h4>D-dimer elevation mechanism</h4>
+        <p>Multiple parallel contributors: (1) systemic fibrin degradation products from diffuse alveolar injury, (2) pleural inflammation, (3) possible in-situ microvascular thrombosis (COVID-associated coagulopathy), (4) true PE (unexcluded). All four can co-exist. <span class="tag-chip tag-P">P/I</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 14 Revelation</div><p>The pathophysiology is a single continuous chain from viral entry to pleural catastrophe. Understanding this chain allows prediction of complications before they occur (right bulla still in chain; empyema is downstream if not drained; PE is a parallel branch).</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 15 ===== -->
+    <article class="stage" id="stage-15">
+      <span class="stage__ghost">15</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M29</span><span class="stage__index">STAGE 15 OF 22</span></div>
+        <h3 class="stage__title">Iatrogenic Domino Effect</h3>
+        <p class="stage__question">Full iatrogenic chain analysis.</p>
+      </div>
+      <div class="stage__body">
+        <h4>1. ICD Insertion (24F, 5th ICS MAL, 11/10)</h4>
+        <ul>
+          <li>Appropriate procedure, appropriate indication</li>
+          <li>Post-procedure BP dropped from 130/80 to 110/70 — likely vasovagal response + pleural decompression, not alarming <span class="tag-chip tag-C">C</span></li>
+          <li>Post-procedure RR 38/min — patient remained tachypnoeic; re-expansion pulmonary oedema must be considered if ipsilateral lung re-expanded rapidly after prolonged collapse <span class="tag-chip tag-I">I</span></li>
+          <li>Potential ICD blockage: new acute dyspnoea 19/10 raises concern — standard complication of large-bore ICD (clotting, kinking, malposition) <span class="tag-chip tag-C">C — 19/10 event documented</span></li>
+        </ul>
+        <h4>2. IV Fluids (NS + DNS + RL at 75 mL/hr)</h4>
+        <ul>
+          <li>Aggressive fluid resuscitation in a patient with diastolic dysfunction and bilateral lung disease risks pulmonary oedema <span class="tag-chip tag-I">I</span></li>
+          <li>Total protein already low (5.3 g/dL) — crystalloid resuscitation will further dilute oncotic pressure <span class="tag-chip tag-C">C</span></li>
+          <li>DNS is unusual in this context — dextrose-containing fluids in an acutely stressed patient risk hyperglycaemia (GRBS monitoring documented, which is appropriate) <span class="tag-chip tag-C">C — GRBS monitoring confirmed in treatment sheet</span></li>
+        </ul>
+        <h4>3. FFP Transfusion</h4>
+        <ul>
+          <li>Appropriate if coagulopathy confirmed; volume load risk in a compromised cardiorespiratory state <span class="tag-chip tag-I">I</span></li>
+          <li>Transfusion-related acute lung injury (TRALI) is a rare but serious complication — lungs already compromised make this clinically significant <span class="tag-chip tag-P">P</span></li>
+        </ul>
+        <h4>4. Analgesic — Tramadol</h4>
+        <ul>
+          <li>Tramadol in a hypoxic, tachypnoeic patient: risk of respiratory depression, especially if SpO₂ is borderline <span class="tag-chip tag-P">P</span></li>
+          <li>Appropriate for pleuritic pain (which impairs deep breathing and cough clearance) but requires careful monitoring</li>
+          <li>Nausea/vomiting (Zofer given for this) — opioid side effect management appropriate <span class="tag-chip tag-C">C — Zofer documented in treatment sheet</span></li>
+        </ul>
+        <h4>5. Piperacillin-Tazobactam</h4>
+        <ul>
+          <li>Appropriate empirical choice for pleural space infection <span class="tag-chip tag-P">P</span></li>
+          <li>Risk: selection of resistant organisms with prolonged use in a loculated space with poor penetration <span class="tag-chip tag-P">P</span></li>
+          <li>Consideration: if TB co-infection present, Pip-Taz provides no anti-mycobacterial cover — reinforcing the urgency of AFB workup</li>
+        </ul>
+        <h4>6. Nebulisation with Mucomist (N-acetylcysteine)</h4>
+        <ul>
+          <li>Can paradoxically cause bronchoconstriction in some patients; ipratropium (Ipravent) co-administered appropriately mitigates this <span class="tag-chip tag-C">P / C — both confirmed documented in treatment sheet</span></li>
+        </ul>
+        <h4>Most significant iatrogenic concern</h4>
+        <p>Fluid management — 3 separate fluids running at 75 mL/hr plus oral fluids 3 L/day in a patient with bilateral lung disease, diastolic dysfunction, low albumin, and bilateral pleural collections is potentially harmful. Daily weight, urine output monitoring, and chest auscultation for pulmonary oedema signs should be documented. <span class="tag-chip tag-I">I — clinical inference from documented fluid regimen + clinical context</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 15 Revelation</div><p>The highest iatrogenic risk is cumulative fluid overload in a compromised cardiorespiratory state with low oncotic pressure. The ICD blockage risk (evident on 19/10) is the second most significant iatrogenic concern.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 16 ===== -->
+    <article class="stage" id="stage-16">
+      <span class="stage__ghost">16</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M34</span><span class="stage__index">STAGE 16 OF 22</span></div>
+        <h3 class="stage__title">High-Value Care Auditor</h3>
+        <p class="stage__question">Attending-level value and resource analysis.</p>
+      </div>
+      <div class="stage__body">
+        <h4>Tests ordered — value assessment</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Test</th><th>Value</th><th>Comment</th></tr></thead>
+          <tbody>
+            <tr><td>Serial CBP</td><td>High value</td><td>Tracked Hb trend, leucocyte response, thrombocytopenia — appropriate frequency <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>RFT/LFT</td><td>High value</td><td>Baseline organ function; informs antibiotic dosing and complication surveillance <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>D-dimer</td><td>Intermediate value</td><td>Ordered but interpretation incomplete without CTPA follow-up — created an unresolved diagnostic obligation <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>2D Echo</td><td>High value</td><td>Excluded significant cardiac involvement; informed fluid management <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>ECG</td><td>High value</td><td>Excluded arrhythmia and RV strain pattern <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>HRCT ×2</td><td>High value</td><td>Changed management significantly both times — justified <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>GRBS monitoring</td><td>High value</td><td>Appropriate given dextrose IV and physiological stress <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>CTPA</td><td>NOT ordered — should have been</td><td>High value gap — PE remains unexcluded; missing test with significant management implications</td></tr>
+            <tr><td>Pleural fluid analysis</td><td>NOT documented</td><td>High value gap — loculated hydropneumothorax with no documented fluid culture/biochemistry is a significant omission</td></tr>
+            <tr><td>AFB sputum smear/culture</td><td>NOT documented</td><td>High value in geographic context — TB exclusion is low cost, high stakes</td></tr>
+            <tr><td>Coagulation panel (PT/aPTT)</td><td>NOT documented</td><td>FFP was given without documented coagulation results — a high-value gap</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Treatments ordered — value assessment</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Treatment</th><th>Value</th><th>Comment</th></tr></thead>
+          <tbody>
+            <tr><td>High-flow O₂ @ 12 L/min</td><td>Essential</td><td>Correct first step <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>ICD 24F</td><td>Essential</td><td>Life-saving, correctly indicated <span class="tag-chip tag-C">C</span></td></tr>
+            <tr><td>Pip-Taz + Metronidazole + Azithromycin</td><td>High value</td><td>Broad-spectrum appropriate; atypical cover with Azithromycin adds value given viral-bacterial overlap <span class="tag-chip tag-C">C — regimen confirmed</span></td></tr>
+            <tr><td>Nebulisation (Ipravent + Budecort + Mucomist)</td><td>Moderate value</td><td>Symptomatic; reasonable <span class="tag-chip tag-C">C — confirmed</span></td></tr>
+            <tr><td>Tramadol for pain</td><td>High value</td><td>Untreated pleuritic pain impairs breathing mechanics <span class="tag-chip tag-C">C — confirmed</span></td></tr>
+            <tr><td>Grilinctus syrup (antitussive/expectorant)</td><td>Low value</td><td>Contradictory to have both antitussive and mucolytic — cough suppression risks sputum retention in bilateral pneumonia <span class="tag-chip tag-C">C — confirmed in treatment sheet</span></td></tr>
+            <tr><td>Nutritional supplementation (Zincovit, Vit C)</td><td>Moderate value</td><td>Reasonable adjuncts; insufficient as primary nutritional intervention <span class="tag-chip tag-C">C — confirmed</span></td></tr>
+            <tr><td>IVF at 75 mL/hr (3 separate fluids)</td><td>Potentially harmful</td><td>Volume should be guided by clinical assessment and urine output <span class="tag-chip tag-C">C — confirmed in treatment sheet</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="revelation"><div class="revelation__label">Stage 16 Revelation</div><p>High-value care was delivered in the acute phase (ICD, antibiotics, oxygen). Post-stabilisation, three high-value omissions (CTPA, pleural fluid culture, AFB workup) and one potentially harmful intervention (aggressive IV fluids in compromised cardiorespiratory state) stand out.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 17 ===== -->
+    <article class="stage" id="stage-17">
+      <span class="stage__ghost">17</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M43</span><span class="stage__index">STAGE 17 OF 22</span></div>
+        <h3 class="stage__title">Health Economics &amp; Value-Based Care Alignment</h3>
+        <p class="stage__question">Institutional and health-system economics.</p>
+      </div>
+      <div class="stage__body">
+        <h4>Resource context (inferred from a 2020 Indian tertiary care setting)</h4>
+        <p>The management pattern suggests a resource-constrained but capable tertiary centre — HRCT available (twice), 2D echo available, pulmonology referral accessible, ICD insertion performed, FFP available. However, CTPA and formal pleural fluid analysis are not documented, which may reflect resource or cost barriers rather than clinical omission. <span class="tag-chip tag-I">I — inferred from management pattern; geographic context inferred, not explicitly stated in case</span></p>
+        <h4>Cost-effective highest-yield interventions not yet implemented</h4>
+        <ol>
+          <li><strong>AFB sputum smear</strong> — extremely low cost, high yield in this geographic setting, result within hours</li>
+          <li><strong>Pleural fluid analysis</strong> — ICD is already in situ; fluid sampling costs essentially nothing additional and provides microbiological, biochemical, and cytological data</li>
+          <li><strong>Formal coagulation panel</strong> — standard laboratory tests; low cost; high clinical value given FFP transfusion already administered</li>
+          <li><strong>Dietician review</strong> — low cost, potentially high impact on recovery trajectory</li>
+        </ol>
+        <h4>Potentially avoidable costs</h4>
+        <ul>
+          <li>Extended hospitalisation due to ICD blockage/dislodgement (19/10 deterioration) — could partly be mitigated by daily ICD care audits and earlier thoracoscopy planning</li>
+          <li>Empirical antibiotic change without culture data — ongoing broad-spectrum antibiotics without de-escalation data will accrue resistance risk and cost</li>
+        </ul>
+        <div class="revelation"><div class="revelation__label">Stage 17 Revelation</div><p>The three cheapest tests in this case (AFB smear, pleural fluid analysis, coagulation panel) remain undone while expensive treatments continue. Value-based care requires closing cheap diagnostic gaps before escalating expensive therapeutic interventions.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 18 ===== -->
+    <article class="stage" id="stage-18">
+      <span class="stage__ghost">18</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M42</span><span class="stage__index">STAGE 18 OF 22</span></div>
+        <h3 class="stage__title">Clinical Pre-Mortem</h3>
+        <p class="stage__question">If this patient dies or suffers major harm in the next 14 days, what will the post-mortem review conclude?</p>
+      </div>
+      <div class="stage__body">
+        <h4>Failure Mode 1 — Contralateral pneumothorax (most likely)</h4>
+        <p>Right lower lobe bulla ruptures → bilateral tension physiology → emergency in a patient with bilateral ICD, coagulopathy, thrombocytopenia → haemorrhagic complications of emergency intervention or circulatory arrest.<br><em>Prevention:</em> Urgent thoracic surgery referral for right-sided prophylactic bullectomy/pleurodesis before discharge or before thoracoscopy for left-sided disease.</p>
+        <h4>Failure Mode 2 — Undetected PE</h4>
+        <p>Patient deteriorates with haemodynamic instability → echo shows new RV dilatation → CTPA reveals massive PE → thrombolysis is relatively contraindicated (active haemoptysis, recent pleural surgery) → surgical embolectomy in a bilateral lung disease patient carries extreme risk.<br><em>Prevention:</em> CTPA now while patient is relatively stable; if PE confirmed, structured anticoagulation decision with haematology and thoracic surgery input.</p>
+        <h4>Failure Mode 3 — Empyema requiring emergency decortication</h4>
+        <p>Loculated hydropneumothorax progresses to frank empyema → sepsis → multi-organ failure in a nutritionally depleted, thrombocytopenic, coagulopathic young man.<br><em>Prevention:</em> Thoracoscopy + decortication urgently (already recommended 17/10 but not yet performed by 19/10). <span class="tag-chip tag-C">C — timing confirmed in case</span></p>
+        <h4>Failure Mode 4 — ICD-related</h4>
+        <p>ICD blockage (19/10 deterioration) already occurred. If not promptly managed → tension pneumothorax → cardiac arrest.<br><em>Prevention:</em> Immediate ICD assessment, flush, or replacement on 19/10; low threshold for second ICD.</p>
+        <h4>Failure Mode 5 — Nosocomial sepsis</h4>
+        <p>Prolonged ICD, IV lines, immunocompromised post-COVID state → hospital-acquired pneumonia or line sepsis → septic shock in a nutritionally and immunologically compromised patient.<br><em>Prevention:</em> ICD care bundles, line insertion/maintenance protocols, early de-escalation of invasive monitoring.</p>
+        <h4>Pre-Mortem priority ranking</h4>
+        <ol>
+          <li>Right-sided bulla (immediate)</li>
+          <li>ICD patency (19/10 event — urgent)</li>
+          <li>CTPA for PE (urgent once stable)</li>
+          <li>Thoracoscopy/decortication (scheduled but must not be further delayed)</li>
+          <li>Nutritional optimisation (background priority)</li>
+        </ol>
+        <div class="revelation"><div class="revelation__label">Stage 18 Revelation</div><p>Five simultaneous failure modes are open. Failure Mode 1 (right-sided bulla rupture) is the most likely and most immediately preventable. The 19/10 acute dyspnoea event may represent Failure Mode 4 already occurring.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 19 ===== -->
+    <article class="stage" id="stage-19">
+      <span class="stage__ghost">19</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M21</span><span class="stage__index">STAGE 19 OF 22</span></div>
+        <h3 class="stage__title">Evidence Frontier Search</h3>
+        <p class="stage__question">Where is the cutting edge of evidence on this case's key clinical questions? (as of October 2020)</p>
+      </div>
+      <div class="stage__body">
+        <h4>Key question 1 — Evidence base for pneumothorax as a COVID-19 complication</h4>
+        <p>By October 2020, early case series from the UK, Italy, and China documented spontaneous pneumothorax in non-ventilated COVID-19 patients. Mechanistically attributed to subpleural cyst/bulla formation. No randomised controlled trial data; all evidence was case series and case reports (evidence level IV). This patient was at the frontier of an emerging complication being described in real-time. <span class="tag-chip tag-P">P — general knowledge of 2020 literature; treat with appropriate calibration</span></p>
+        <h4>Key question 2 — VATS vs. conservative management for COVID-related pneumothorax</h4>
+        <p>No specific COVID-related guidance existed at this time. Standard BTS guidelines for secondary spontaneous pneumothorax (SSP) recommend ICD as first-line, with thoracoscopy for non-resolving cases. Given bilateral loculated disease, early surgical intervention was guideline-consistent even without COVID-specific data. <span class="tag-chip tag-P">P</span></p>
+        <h4>Key question 3 — Anticoagulation in COVID-19 with concurrent bleeding risk</h4>
+        <p>This was an active clinical debate in 2020. ISTH guidance (April 2020) recommended prophylactic anticoagulation for hospitalised COVID patients. The concurrent haemoptysis and thrombocytopenia create a therapeutic dilemma — no specific trial data on this exact combination existed. <span class="tag-chip tag-P">P</span></p>
+        <h4>Key question 4 — Intrapleural fibrinolytics for loculated effusions</h4>
+        <p>The MIST2 trial (Rahman et al., 2011) demonstrated that combined intrapleural tPA + DNase was more effective than either agent alone for pleural infection — a result relevant by extrapolation to COVID-related loculated empyema. However, COVID-related loculated empyema was not within the trial scope. Evidence for intrapleural fibrinolytics in this context was extrapolated. <span class="tag-chip tag-P">P — MIST2 is a retrievable citation; this is the one sourced reference in this stage</span></p>
+        <h4>Key question 5 — Post-COVID pulmonary sequelae: long-term prognosis</h4>
+        <p>No long-term outcome data existed at this point (October 2020). The first COVID outcomes cohort studies would not be published until 2021–2022. This clinician was managing a patient with unknown long-term prognosis. <span class="tag-chip tag-P">P</span></p>
+        <div class="revelation"><div class="revelation__label">Stage 19 Revelation</div><p>This case occurred at the evidence frontier — managing a complication that was being defined in real time with limited trial data. The clinical decisions had to be made on pathophysiological reasoning and extrapolation from non-COVID literature. This context is essential when auditing management decisions.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 20 ===== -->
+    <article class="stage" id="stage-20">
+      <span class="stage__ghost">20</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M46</span><span class="stage__index">STAGE 20 OF 22</span></div>
+        <h3 class="stage__title">Evidence-Based Medicine Insights</h3>
+        <p class="stage__question">Applying Sackett's EBM cycle to the management decisions.</p>
+      </div>
+      <div class="stage__body">
+        <h4>1. Best available evidence</h4>
+        <ul>
+          <li>ICD for secondary spontaneous pneumothorax: Strong evidence (BTS guidelines; multiple studies) <span class="tag-chip tag-P">P</span></li>
+          <li>Broad-spectrum antibiotics for complicated pneumonia with parapneumonic effusion: Strong evidence <span class="tag-chip tag-P">P</span></li>
+          <li>VATS/thoracoscopy for loculated empyema: Good evidence (observational studies, guideline consensus) <span class="tag-chip tag-P">P</span></li>
+          <li>Intrapleural fibrinolytics as bridge to surgery: Strong for non-COVID pleuritis (MIST2), extrapolated for COVID <span class="tag-chip tag-P">P</span></li>
+          <li>Prophylactic anticoagulation in COVID: Moderate evidence (ISTH guidance), complicated by concurrent bleeding risk <span class="tag-chip tag-P">P</span></li>
+        </ul>
+        <h4>2. Clinical expertise</h4>
+        <ul>
+          <li>Emergency ICD insertion was appropriate and timely</li>
+          <li>Pulmonology referral for bilateral loculated disease was appropriate</li>
+          <li>Empirical broad-spectrum antibiotic selection was appropriate</li>
+          <li>The failure to obtain cultures before antibiotics is a minor EBM infraction (reduces the yield of subsequently obtained cultures)</li>
+        </ul>
+        <h4>3. Patient values and preferences (not documented but inferred)</h4>
+        <ul>
+          <li>A 23-year-old food supplier has strong vocational reasons to pursue aggressive treatment and early rehabilitation <span class="tag-chip tag-I">I — inferred; not documented</span></li>
+          <li>Young age supports aggressive surgical intervention over conservative prolonged drainage</li>
+          <li>Financial vulnerability of prolonged hospitalisation may affect treatment decisions in resource-constrained setting</li>
+        </ul>
+        <h4>EBM gap</h4>
+        <p>The most significant EBM gap is the absence of microbiological data to guide antibiotic de-escalation. Empirical antibiotics without culture data means the team cannot know if therapy is appropriately targeted, and cannot know when it is safe to de-escalate — creating open-ended broad-spectrum antibiotic use.</p>
+        <div class="revelation"><div class="revelation__label">Stage 20 Revelation</div><p>The acute management followed evidence-based guidelines. The gaps are in evidence-informed refinement: culture-guided de-escalation, CTPA-informed anticoagulation decision, and evidence-based nutritional support.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 21 ===== -->
+    <article class="stage" id="stage-21">
+      <span class="stage__ghost">21</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M48</span><span class="stage__index">STAGE 21 OF 22</span></div>
+        <h3 class="stage__title">Treatment Comparative Analysis &amp; Prognosis Trajectory</h3>
+        <p class="stage__question">Comparing treatment options with evidence-informed prognosis modelling.</p>
+      </div>
+      <div class="stage__body">
+        <div class="callout callout--warning" style="margin:0 0 18px;">
+          <div class="callout__title" style="font-size:13.5px;">⚠️ SG.1 Numeric De-Fabrication — Applied to Prognosis Scenarios</div>
+          <p style="font-size:13.5px;">The original document stated three prognosis scenarios with specific probability assignments. These were model-generated estimates with no retrievable citation. They have been reframed as directional plausibility labels (High, Moderate, Low likelihood). The clinical content of each scenario is preserved unchanged. See <a href="#appendix">Appendix SG — Change Log</a>.</p>
+        </div>
+        <h4>Current management vs. optimal</h4>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Domain</th><th>Current</th><th>Optimal Addition</th></tr></thead>
+          <tbody>
+            <tr><td>Pleural drainage</td><td>Single left ICD 24F</td><td>Bilateral ICD consideration; thoracoscopy/decortication urgently <span class="tag-chip tag-C">C — left ICD confirmed; right-sided intervention not documented</span></td></tr>
+            <tr><td>Antibiotics</td><td>Pip-Taz + Metronidazole + Azithromycin</td><td>Await cultures → de-escalate if possible; add AFB cover if TB confirmed <span class="tag-chip tag-C">C — regimen confirmed</span></td></tr>
+            <tr><td>Anticoagulation</td><td>None documented</td><td>Low-molecular-weight heparin prophylaxis (risk-benefit: haemoptysis vs. PE risk)</td></tr>
+            <tr><td>Nutrition</td><td>Soft diet + Zincovit + Vit C</td><td>High-protein diet, dietician review, consider NG supplementation if intake inadequate <span class="tag-chip tag-C">C — documented in treatment sheet</span></td></tr>
+            <tr><td>Cardiorespiratory monitoring</td><td>Hourly BP/PR/RR/SpO₂</td><td>Appropriate; add daily weight and fluid balance charting <span class="tag-chip tag-C">C — hourly monitoring documented</span></td></tr>
+            <tr><td>Surgical planning</td><td>Thoracoscopy recommended 17/10 (left)</td><td>Add contralateral bulla risk — surgical team must plan bilateral strategy <span class="tag-chip tag-C">C — thoracoscopy timing confirmed</span></td></tr>
+            <tr><td>PE exclusion</td><td>Not done</td><td>CTPA when stable</td></tr>
+            <tr><td>TB exclusion</td><td>Not documented</td><td>AFB sputum smear × 3, pleural fluid AFB</td></tr>
+            <tr><td>Haematology</td><td>FFP given</td><td>Formal coagulation panel, platelet cause investigation, haematology consult</td></tr>
+          </tbody>
+        </table></div>
+        <h4>Prognosis trajectory — qualitative scenarios</h4>
+        <p><strong>High-likelihood optimistic scenario:</strong> ICD clears, thoracoscopy + decortication performed promptly, right-sided bulla managed prophylactically, PE excluded by CTPA, antibiotics de-escalated by culture guidance, nutrition optimised → discharge within a few weeks → full functional recovery at 6 months with possible residual mild restrictive defect on PFTs. <span class="tag-chip tag-I">I</span></p>
+        <p><strong>Moderate-likelihood intermediate scenario:</strong> Thoracoscopy performed but loculations partially persist → prolonged ICD drainage → re-admission for right-sided pneumothorax → second surgical procedure → recovery extends to several months → mild-moderate residual lung function impairment. <span class="tag-chip tag-I">I</span></p>
+        <p><strong>Lower-likelihood adverse scenario:</strong> Right bulla ruptures before surgical intervention, or undetected PE causes haemodynamic compromise, or frank empyema with sepsis develops → multi-organ involvement in an already nutritionally and immunologically compromised patient → mortality or severe long-term disability. <span class="tag-chip tag-S">I/S — scenario is clinically plausible given open failure nodes</span></p>
+        <h4>The single most important intervention to shift from adverse to optimistic trajectory</h4>
+        <p>Urgent thoracic surgery referral for prophylactic right-sided intervention and definitive left-sided decortication — before the next failure event.</p>
+        <div class="revelation"><div class="revelation__label">Stage 21 Revelation</div><p>Prognosis is favourable if managed aggressively and completely. The adverse scenario is potentially preventable with the right surgical timing and diagnostic closure.</p></div>
+      </div>
+    </article>
+
+    <!-- ===== STAGE 22 ===== -->
+    <article class="stage" id="stage-22">
+      <span class="stage__ghost">22</span>
+      <div class="stage__head">
+        <div class="stage__meta"><span class="stage__code">M32</span><span class="stage__index">STAGE 22 OF 22</span></div>
+        <h3 class="stage__title">Clinical Cognition Loop</h3>
+        <p class="stage__question">Full cognitive integration — what would you teach a resident from this case?</p>
+      </div>
+      <div class="stage__body">
+        <h4>How understanding evolved across the pipeline</h4>
+        <ul>
+          <li><strong>Stage 1 (RPD):</strong> Expert intuition correctly fires COVID → pneumothorax but must not suppress alternatives.</li>
+          <li><strong>Stage 3 (Bayesian):</strong> COVID SPT is the dominant hypothesis — but PE and TB are not negligible in a 23-year-old in this geographic setting and cannot be excluded without investigation.</li>
+          <li><strong>Stage 4 (Causal network):</strong> This is a single-cause multi-system cascade, not multiple independent problems.</li>
+          <li><strong>Stage 6 (Counterfactual):</strong> An 18-day prevention window was missed between the HRCT bulla finding (23/09) and the pneumothorax (11/10).</li>
+          <li><strong>Stage 11 (Signal-noise):</strong> The right lower lobe bulla is the most underweighted signal in the entire case.</li>
+          <li><strong>Stage 12 (Poly-crisis):</strong> Multiple simultaneous failure modes are open; the patient is vulnerable to cascading crisis if any one node triggers.</li>
+          <li><strong>Stage 15 (Iatrogenic):</strong> Fluid management is the highest ongoing iatrogenic risk.</li>
+          <li><strong>Stage 18 (Pre-mortem):</strong> Right bulla rupture is the most likely and most preventable cause of a fatal adverse event.</li>
+        </ul>
+        <h4>Two cognitive shift moments</h4>
+        <ol>
+          <li><strong>Stage 6 (Counterfactual):</strong> The realisation that the 23/09 HRCT contained an actionable finding (bulla + pneumomediastinum) that was not acted upon surgically — shifting the case from "managed well under pressure" to "preventable escalation with an 18-day window."</li>
+          <li><strong>Stage 12 (Poly-crisis):</strong> The realisation that multiple concurrent open failure nodes exist simultaneously, and that the sequence in which they occur determines whether rescue is possible — shifting from linear thinking ("treat the pneumothorax") to systems thinking ("close every open failure node in order of imminence").</li>
+        </ol>
+        <h4>What this case teaches about clinical cognition</h4>
+        <div class="pullquote">
+          <p><strong>The case teaches that appropriate emergency management of an acute event is not the same as complete management of the underlying disease trajectory.</strong> The team responded correctly to the pneumothorax. The cognitive error was not in the emergency response — it was in failing to recognise, on 23/09, that a bulla-forming COVID lung was a surgical problem that needed proactive thoracic surgery involvement, not watchful waiting. In post-COVID care, the attending must think ahead of the disease — not just respond to its current manifestation.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ===================== SYNTHESIS ===================== -->
+    <section class="section-block" id="synthesis">
+      <div class="section-label">Step CC.3</div>
+      <h2 class="section-title">Synthesis Stage</h2>
+      <p class="section-desc">Integrating all 22 stages into a single cognitive narrative, a residual uncertainty map, and one transferable teaching point.</p>
+
+      <div class="case-brief" style="margin-bottom:18px;">
+        <h4 style="margin-top:0;">1. Cognitive narrative</h4>
+        <p>The pipeline began with expert pattern recognition correctly identifying COVID-related secondary pneumothorax, but immediately flagged that expert intuition was at risk of anchoring out equally important parallel diagnoses (PE, TB). Bayesian analysis confirmed COVID-related SPT as the dominant hypothesis, while identifying PE and TB as unexcluded and diagnostically consequential in a 23-year-old in a high-TB-burden setting. The causal network revealed a single-cause multi-system cascade, which reframed the case from multiple independent problems into one unified COVID-injury trajectory. The counterfactual analysis was the most cognitively destabilising stage: an 18-day window between the 23/09 HRCT and the 11/10 acute decompensation, during which proactive surgical intervention could have prevented the catastrophe. The poly-crisis simulation then demonstrated that multiple concurrent failure nodes are open simultaneously, making the current clinical state more fragile than it appears from any single-organ perspective. The pre-mortem crystallised the priority: the right lower lobe bulla — confirmed, anatomically located, and surgically accessible — is the highest-priority unaddressed risk in this case. Two genuine cognitive shifts occurred: recognising the missed prevention window (23/09 HRCT) and recognising the poly-crisis architecture of the current clinical state.</p>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:24px 0 10px;">2. Residual uncertainty map</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Conclusion</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Left pneumothorax caused by COVID bulla rupture</td><td>⚠️ UNCERTAIN — mechanistically plausible, not confirmed</td></tr>
+          <tr><td>Bilateral loculated hydropneumothorax</td><td>✅ SOLID <span class="tag-chip tag-C">C</span></td></tr>
+          <tr><td>Secondary bacterial superinfection present</td><td>⚠️ UNCERTAIN — no cultures documented</td></tr>
+          <tr><td>D-dimer elevation due to inflammation not PE</td><td>❌ SPECULATIVE — CTPA not performed</td></tr>
+          <tr><td>Thrombocytopenia aetiology</td><td>❌ SPECULATIVE — multiple unexcluded causes</td></tr>
+          <tr><td>No TB co-infection</td><td>❌ SPECULATIVE — not tested</td></tr>
+          <tr><td>Diastolic dysfunction due to COVID myocarditis</td><td>⚠️ UNCERTAIN — Echo finding, not cardiac MRI confirmed</td></tr>
+          <tr><td>ICD adequate for left-sided drainage</td><td>❌ SPECULATIVE — 19/10 deterioration suggests failure</td></tr>
+          <tr><td>Right bulla will not rupture without intervention</td><td>❌ SPECULATIVE — actively dangerous assumption</td></tr>
+        </tbody>
+      </table></div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:24px 0 10px;">3. What a more senior or differently-trained clinician would catch</h4>
+      <p class="lede" style="font-size:14.8px;">A thoracic surgeon reviewing this case would have immediately flagged the 23/09 HRCT bulla and pneumomediastinum as surgical referral criteria — not a finding to monitor. The attending here (internal medicine / pulmonology) managed the case appropriately within their specialty but lacked the surgical referral reflex that a thoracic surgeon collaborator would have provided on first HRCT review.</p>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:24px 0 10px;">4. One teaching point</h4>
+      <div class="pullquote">
+        <p><strong>In post-COVID pulmonary care, the attending must act as a surgeon's referral agent before structural lung complications become emergencies.</strong> A bulla on HRCT in a post-COVID patient is not a radiological observation — it is a surgical indication in waiting. The 18-day gap between radiological discovery and catastrophic rupture is not a management failure in retrospect; it is a systems failure in prospective recognition of the surgical nature of a radiological finding.</p>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:24px 0 10px;">5. Next case calibration</h4>
+      <p class="lede" style="font-size:14.8px;">To address the identified gap (failure to act on radiological structural findings as prospective surgical indications), the next case should be: <em>a post-infectious or post-inflammatory patient with bilateral structural lung disease identified on imaging, requiring a multidisciplinary (physician + thoracic surgery + radiology) management plan.</em> This would specifically build the "radiology-to-surgical-action" cognitive reflex that this case revealed was absent.</p>
+    </section>
+
+    <!-- ===================== CLOSURE ===================== -->
+    <section class="section-block" id="closure">
+      <div class="section-label">Step CC.4</div>
+      <h2 class="section-title">Closure</h2>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:0 0 10px;">A. Session summary</h4>
+      <div class="case-brief" style="margin-bottom:22px;">
+        <p>This Clinical Cognition Deep Dive analysed a 23-year-old post-COVID male who developed bilateral loculated hydropneumothorax with haemoptysis and acute respiratory failure secondary to subpleural bulla rupture (the dominant, well-supported hypothesis). The pipeline confirmed COVID-related secondary spontaneous pneumothorax as the primary diagnosis while identifying three clinically significant unexcluded diagnoses: PE (unexcluded, low-to-moderate plausibility), TB (low plausibility but epidemiologically relevant, unexcluded), and unknown bacterial organism identity. The most important cognitive finding was the 18-day missed prevention window between the 23/09 HRCT (bulla identified) and the 11/10 acute decompensation — a systems failure in prospective surgical referral, not a failure of acute management. The highest-priority clinical action is urgent thoracic surgery input for the right lower lobe bulla before a contralateral pneumothorax creates an unsalvageable poly-crisis.</p>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:0 0 10px;">B. Bloom's levels achieved</h4>
+      <div class="chip-grid">
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Remember (L1)</span><span class="chip-card__status absent">PASSIVE</span></div><p>Case facts reviewed</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Understand (L2)</span><span class="chip-card__status strong">ACTIVE</span></div><p>Pathophysiology mapped</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Apply (L3)</span><span class="chip-card__status strong">ACTIVE</span></div><p>Management analysed</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Analyse (L4)</span><span class="chip-card__status strong">ACTIVE</span></div><p>Causal network, Bayesian update, bias audit</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Evaluate (L5)</span><span class="chip-card__status strong">ACTIVE</span></div><p>Counterfactual, pre-mortem, HVC audit</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Create (L6)</span><span class="chip-card__status strong">ACTIVE</span></div><p>New causal framework, teaching case synthesis</p></div>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:28px 0 10px;">C. Fink dimensions engaged</h4>
+      <div class="chip-grid">
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Foundational Knowledge</span><span class="chip-card__status strong">STRONG</span></div><p>Pathophysiology, pharmacology, imaging</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Application</span><span class="chip-card__status strong">STRONG</span></div><p>Management decisions, diagnostic reasoning</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Integration</span><span class="chip-card__status strong">STRONG</span></div><p>Multi-specialty synthesis (pulmonology, surgery, haematology, cardiology)</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Human Dimension</span><span class="chip-card__status partial">PARTIAL</span></div><p>Age, occupation, psychosocial context noted but not deeply explored</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Caring</span><span class="chip-card__status absent">ABSENT</span></div><p>Patient values and preferences not documented or explored</p></div>
+        <div class="chip-card"><div class="chip-card__top"><span class="chip-card__level">Learning-How-to-Learn</span><span class="chip-card__status strong">STRONG</span></div><p>Bias audit, cognitive shift identification, calibration statement</p></div>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:28px 0 10px;">D. Confidence calibration</h4>
+      <div class="case-brief" style="margin-bottom:22px;">
+        <div class="gauge-wrap">
+          <div class="gauge-score">3.5<span> / 5</span></div>
+          <div class="gauge" aria-hidden="true">
+            <div class="gauge__seg fill"></div><div class="gauge__seg fill"></div><div class="gauge__seg fill"></div><div class="gauge__seg half"></div><div class="gauge__seg"></div>
+          </div>
+        </div>
+        <p style="margin-top:14px;">The core diagnosis (post-COVID secondary SPT from bulla rupture) is the dominant, well-supported hypothesis. Confidence is capped at 3.5 because three significant diagnostic gaps remain open (PE, TB, infectious organism), and because the 19/10 acute deterioration event represents a new clinical development whose cause is not yet resolved at the time of case documentation closure.</p>
+      </div>
+
+      <h4 style="font-size:14px; font-weight:700; color:var(--accent-dark); margin:0 0 10px;">E. Module recommendation</h4>
+      <p class="lede" style="font-size:14.8px;"><strong>Module M23 — Counterfactual Analysis</strong> as a standalone session on the next complex case. This module most consistently reveals the "missed prevention window" pattern — the cognitive gap between recognising a finding and acting on its structural implications before it becomes an emergency. Developing automaticity in counterfactual reasoning would have closed this case's most important gap proactively.</p>
+    </section>
+
+    <!-- ===================== APPENDIX SG ===================== -->
+    <section class="section-block" id="appendix">
+      <div class="section-label">Appendix SG</div>
+      <h2 class="section-title">Shadow Module Audit Change Log</h2>
+      <p class="section-desc">Executed per Shadow Module CC — Quantitative Integrity &amp; Hallucination-Skepticism Safeguard. Steps SG.1 through SG.6 applied.</p>
+
+      <details class="appendix" open>
+        <summary>SG.1 — Numeric De-Fabrication Change Table <span class="arrow">▸</span><small>27 unsourced numeric values removed and reframed qualitatively</small></summary>
+        <div class="appendix__body">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Location</th><th>Original claim</th><th>Removed</th><th>Qualitative replacement</th><th>Reason</th></tr></thead>
+            <tbody>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Post-COVID secondary SPT: 60%"</td><td>60%</td><td>HIGH</td><td>Unsourced model-generated estimate</td></tr>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Primary SPT (unrelated): 15%"</td><td>15%</td><td>LOW</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Secondary bacterial pneumonia: 10%"</td><td>10%</td><td>MODERATE</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Pulmonary embolism: 8%"</td><td>8%</td><td>LOW-TO-MODERATE</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Tuberculous pleuritis: 5%"</td><td>5%</td><td>LOW</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Pre-test probability</td><td>"Pneumatocele rupture: 2%"</td><td>2%</td><td>LOW</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~8" (CORADS 5 for COVID SPT)</td><td>LR+ ~8</td><td>Strongly UP for COVID aetiology</td><td>Unsourced; no LR study retrieved</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~12" (bulla on HRCT)</td><td>LR+ ~12</td><td>Further UP</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR− ~0.1 for PSP" (bilateral HRCT)</td><td>LR− ~0.1</td><td>Strongly DOWN for PSP</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR− ~0.4 for bacteria" (CRP negative)</td><td>LR− ~0.4</td><td>Moderately DOWN for bacteria</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~2 for PE" (D-dimer)</td><td>LR+ ~2</td><td>Weakly up for PE; insufficient to move probability substantially</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~4 for systemic inflammation" (D-dimer)</td><td>LR+ ~4</td><td>Merged into directional note</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR− ~0.2 for massive PE" (normal ECG + echo)</td><td>LR− ~0.2</td><td>Strongly DOWN for massive PE</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~3 for PE-related infarction" (hemoptysis)</td><td>LR+ ~3</td><td>Mildly UP for PE-related infarction</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — LR table</td><td>"LR+ ~3" (WBC 16,200 for bacterial)</td><td>LR+ ~3</td><td>Moderately UP</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Post-test probability</td><td>"~78%" (Post-COVID SPT)</td><td>~78%</td><td>HIGH</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Post-test probability</td><td>"~55%" (Bacterial superinfection)</td><td>~55%</td><td>MODERATE</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Post-test probability</td><td>"~15%" (PE)</td><td>~15%</td><td>LOW-TO-MODERATE</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Post-test probability</td><td>"~3%" (TB)</td><td>~3%</td><td>LOW</td><td>Unsourced</td></tr>
+              <tr><td>Stage 3 — Post-test probability</td><td>"~2%" (Primary SPT)</td><td>~2%</td><td>VERY LOW</td><td>Unsourced</td></tr>
+              <tr><td>Stage 10 — Time-out conclusion</td><td>"diagnostic framework is 75% complete"</td><td>75%</td><td>"Substantially complete for the primary diagnosis"</td><td>No basis for a quantified completeness figure</td></tr>
+              <tr><td>Stage 10 — Revelation</td><td>"15%, TB at 3-5%"</td><td>15%, 3-5%</td><td>"Clinically significant in a 23-year-old"</td><td>Repetition of unsourced Stage 3 figures</td></tr>
+              <tr><td>Stage 13 — Pulmonology paragraph</td><td>"1–2% of hospitalised COVID-19 patients, rising to ~5% in ventilated patients"</td><td>1-2%, ~5%</td><td>Removed; replaced with qualitative description</td><td>Unsourced incidence figures; no citation retrieved</td></tr>
+              <tr><td>Stage 21 — Prognosis scenarios</td><td>"probability ~50%" (optimistic)</td><td>~50%</td><td>High-likelihood</td><td>Unsourced</td></tr>
+              <tr><td>Stage 21 — Prognosis scenarios</td><td>"probability ~35%" (intermediate)</td><td>~35%</td><td>Moderate-likelihood</td><td>Unsourced</td></tr>
+              <tr><td>Stage 21 — Prognosis scenarios</td><td>"probability ~15%" (adverse)</td><td>~15%</td><td>Lower-likelihood</td><td>Unsourced</td></tr>
+              <tr><td>Step CC.4 Session Summary</td><td>"~78% posterior probability"</td><td>~78%</td><td>"Dominant, well-supported hypothesis"</td><td>Repetition of unsourced Stage 3 figure; also changed at source</td></tr>
+              <tr><td>Step CC.4 Session Summary</td><td>"PE (~15%)" and "TB (~3–5%)"</td><td>~15%, ~3–5%</td><td>"PE (unexcluded, low-to-moderate plausibility)" / "TB (low plausibility but epidemiologically relevant)"</td><td>Repetition of unsourced figures</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </details>
+
+      <details class="appendix">
+        <summary>SG.2 — Clinical Syndrome &amp; Label Accuracy Check <span class="arrow">▸</span><small>6 syndrome labels verified against case-documented criteria</small></summary>
+        <div class="appendix__body">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Syndrome / Label</th><th>Where used</th><th>Criteria check</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>"Tension pneumothorax"</td><td>Hypothetical cascade only (Stage 12, Scenario A)</td><td>Applied only where bilateral pneumothorax + ICD failure are stipulated — not claimed for the actual presentation</td><td>✅ Appropriate — hypothetical use, not overcall</td></tr>
+              <tr><td>"Post-COVID secondary spontaneous pneumothorax"</td><td>Dominant diagnosis throughout</td><td>Confirmed COVID infection 1 month prior; structural lung disease (bulla) on HRCT; absence of features of primary SPT</td><td>✅ Appropriate — criteria well-met</td></tr>
+              <tr><td>"Diastolic dysfunction"</td><td>Stages 2, 4, 5, 13, 15, 21</td><td>2D Echo directly documented "Diastolic dysfunction present"</td><td>✅ Appropriate — directly documented</td></tr>
+              <tr><td>"Bacterial superinfection"</td><td>Multiple stages</td><td>Leucocytosis + bilateral consolidations on HRCT — no microbiological confirmation</td><td>⚠️ Supported but not confirmed — correctly labelled UNCERTAIN throughout</td></tr>
+              <tr><td>"Coagulopathy" (implied by FFP transfusion)</td><td>Stages 5, 12, 15</td><td>FFP documented; PT/INR/aPTT not documented</td><td>⚠️ Appropriately qualified</td></tr>
+              <tr><td>"ICD failure"</td><td>Stages 12, 18, 22</td><td>19/10 acute dyspnoea with worsening CXR documented — a differential, not a confirmed diagnosis</td><td>⚠️ Correctly used as hypothesis, not confirmed label</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </details>
+
+      <details class="appendix">
+        <summary>SG.3 — Epistemic Basis Tag Key <span class="arrow">▸</span><small>The four inline confidence tags used throughout this document</small></summary>
+        <div class="appendix__body">
+          <div class="chip-grid">
+            <div class="chip-card"><span class="tag-chip tag-C" style="margin-bottom:8px; display:inline-block;">C — Confirmed</span><p>Confirmed directly in the case data (vitals, labs, imaging reports as documented)</p></div>
+            <div class="chip-card"><span class="tag-chip tag-I" style="margin-bottom:8px; display:inline-block;">I — Inference</span><p>Clinical inference reasonably drawn from the case data</p></div>
+            <div class="chip-card"><span class="tag-chip tag-P" style="margin-bottom:8px; display:inline-block;">P — Pattern</span><p>General medical knowledge/pattern not specific to this case — treat with appropriate calibration; not source-verified for this case</p></div>
+            <div class="chip-card"><span class="tag-chip tag-S" style="margin-bottom:8px; display:inline-block;">S — Speculative</span><p>Speculative or model-generated hypothesis — treat with heightened scepticism</p></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="appendix">
+        <summary>SG.4 — Self-Audit Cross-Check <span class="arrow">▸</span><small>Second-pass review for items missed in the initial SG.1–SG.3 pass</small></summary>
+        <div class="appendix__body">
+          <ol>
+            <li><strong>Laterality error in Case Brief and Stage 11 (missed in SG.2 initial pass):</strong> The source case documents "decreased air entry on right side / absent air entry on left side." The original Module CC draft described "absent left air entry" without noting the documented decreased right-sided air entry. This is a factual error against the source case data. Corrected throughout (Case Brief, Stage 11 signal table). This error is clinically significant — decreased right-sided air entry at presentation is an additional signal of bilateral involvement that should have been weighted in the initial differential.</li>
+            <li><strong>Stage 10 "75% complete" residual numeric phrase:</strong> Confirmed removed in corrected version. The phrase "remaining 25% is not academic" (which logically depends on the 75% figure) has been reworded to "the remaining gaps are not academic."</li>
+            <li><strong>Stage 22 repetition of unsourced figures "78%… PE at 15% and TB at 3–5%":</strong> Confirmed these were removed in the Stage 22 corrected text — reframed as qualitative.</li>
+            <li><strong>No additional unsourced numbers or mislabelled syndromes identified on this second pass.</strong> This is a clean result on self-audit — but self-audit shares the blind spots of original generation. Independent review is still recommended before any external use.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="appendix">
+        <summary>SG.6 — Closing Disclaimer <span class="arrow">▸</span><small>Full scope and limitations of this audit pass</small></summary>
+        <div class="appendix__body">
+          <p>This document is a retrospective cognition-training exercise on a de-identified clinical case logged in October 2020, published in an open medical education e-log book. It is not a verified clinical reference, a decision-support tool, or a substitute for direct clinical judgement. It should not be used to guide the management of any patient.</p>
+          <p>Any statistic in this document without an explicit citation should be assumed illustrative rather than evidence-based. The original Module CC output contained numerous specific numeric likelihood ratios, probability percentages, and incidence figures; all have been removed and replaced with qualitative language by Shadow Module SG.1. No fabricated citation was introduced to justify retaining any number.</p>
+          <p>This document has undergone a same-model self-audit pass (Steps SG.1–SG.4). Same-model self-audit shares the same blind spots as original generation — it catches careless repetition and logical inconsistency, not the underlying pattern-generation failure. <strong>If this document will be used for teaching, shared with learners, published, or used beyond personal study, it should receive an independent review pass by a different model or a human subject-matter expert (physician + medical educator) specifically tasked with identifying ungrounded numbers and mislabelled syndromes before being treated as final.</strong></p>
+        </div>
+      </details>
+    </section>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <h3>Clinical Cognition Deep Dive · Module CC</h3>
+    <p>Level C: Consultant / Attending · Shadow Module CC — Quantitative Integrity &amp; Hallucination-Skepticism Safeguard applied.</p>
+    <p>Source case: Sreeja Boga, e-log book, October 2020 (de-identified).</p>
+    <div class="site-footer__rule"></div>
+    <p>VibeRounds Prompt Modules · Pipeline executed per Dr. Avinash Kumar Gupta's Module CC (June 2026).</p>
+    <p>Shadow Module authored by Dr. Avinash Kumar Gupta · VibeRounds, June 2026.</p>
+    <div class="pipeline-trail">22 Stages: M20 → M35 → M36 → M18 → M22 → M23 → M33 → M30 → M26 → M28 → M37 → M38 → M39 → M31 → M29 → M34 → M43 → M42 → M21 → M46 → M48 → M32</div>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // progress bar
+  const progress = document.getElementById('progress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = (scrolled || 0) + '%';
+    document.getElementById('totop').classList.toggle('show', h.scrollTop > 600);
+  }
+  document.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // scrollspy for sidebar
+  const links = Array.from(document.querySelectorAll('.sidebar a'));
+  const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = '#' + entry.target.id;
+      const link = links.find(a => a.getAttribute('href') === id);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin: '-20% 0px -70% 0px', threshold: 0});
+  targets.forEach(t => io.observe(t));
+
+  // wrap inline epistemic basis tags [C ...] [I ...] [P ...] [S ...] [unsourced ...] into styled chips
+  (function tagify(){
+    const root = document.querySelector('main');
+    const combined = /\[(?:([CIPS])((?:\/[CIPS])*)\b([^\]]*)|unsourced([^\]]*))\]/gi;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        if (!node.nodeValue || node.nodeValue.indexOf('[') === -1) return NodeFilter.FILTER_REJECT;
+        const p = node.parentElement;
+        if (p && (p.closest('.tag-chip') || p.closest('pre') || p.tagName === 'SCRIPT' || p.tagName === 'STYLE')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    let n;
+    while (n = walker.nextNode()) nodes.push(n);
+    nodes.forEach(node => {
+      const text = node.nodeValue;
+      combined.lastIndex = 0;
+      if (!combined.test(text)) return;
+      combined.lastIndex = 0;
+      const frag = document.createDocumentFragment();
+      let last = 0, m;
+      while ((m = combined.exec(text))) {
+        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        const span = document.createElement('span');
+        if (m[1]) {
+          span.className = 'tag-chip tag-' + m[1].toUpperCase();
+          span.textContent = '[' + m[1].toUpperCase() + (m[2]||'') + (m[3]||'') + ']';
+        } else {
+          span.className = 'tag-chip tag-U';
+          span.textContent = '[unsourced' + (m[4]||'') + ']';
+        }
+        frag.appendChild(span);
+        last = m.index + m[0].length;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  })();
+
+  // certainty badges for ✅ / ⚠️ / ❌ tokens inside tables
+  (function certify(){
+    document.querySelectorAll('main td').forEach(td => {
+      td.innerHTML = td.innerHTML
+        .replace(/✅\s*SOLID/g, '<span class="cert cert--solid">✅ SOLID</span>')
+        .replace(/⚠️\s*UNCERTAIN/g, '<span class="cert cert--uncertain">⚠️ UNCERTAIN</span>')
+        .replace(/❌\s*SPECULATIVE/g, '<span class="cert cert--speculative">❌ SPECULATIVE</span>');
+    });
+  })();
+</script>
+
+</body>
+</html>
