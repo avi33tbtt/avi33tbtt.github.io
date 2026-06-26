@@ -8,3 +8,5 @@ date - 26 june 2026
 4 - by chatgpt - free - https://chatgpt.com/share/6a3e12cd-41f0-83e9-8c3d-8d3efd9b560a 
 
 5 comparative analysis by claude - https://claude.ai/share/2f66425f-7354-4701-bf65-42876273ac7d
+
+6- https://claude.ai/share/d330f6a7-042a-463a-93a8-c4cadd89b248
