@@ -12,3 +12,5 @@ date - 26 june 2026
 6- https://claude.ai/share/d330f6a7-042a-463a-93a8-c4cadd89b248
 
 7 - after passing claude output via shadow module (safeguard) - https://claude.ai/share/ccb14b9c-00f9-4fcd-abb4-563862189685
+
+8 - https://www.researchgate.net/publication/408109442_VibeRounds_-Research_Paper_Shadow_Module_CC_Quantitative_Integrity_Hallucination-Skepticism_Safeguard_for_AI-Assisted_Clinical_Reasoning_VibeRounds_-A_Socratic_AI_Paradigm_for_Clinical_Medicine_Demons
