@@ -10,3 +10,5 @@ date - 26 june 2026
 5 comparative analysis by claude - https://claude.ai/share/2f66425f-7354-4701-bf65-42876273ac7d
 
 6- https://claude.ai/share/d330f6a7-042a-463a-93a8-c4cadd89b248
+
+7 - after passing claude output via shadow module (safeguard) - https://claude.ai/share/ccb14b9c-00f9-4fcd-abb4-563862189685
