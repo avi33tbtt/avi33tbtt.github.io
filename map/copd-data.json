@@ -1,0 +1,63 @@
+{
+  "name": "COPD",
+  "nodes": [
+    {
+      "id": "copd",
+      "label": "COPD",
+      "type": "Disease",
+      "level": 0
+    },
+    {
+      "id": "smoking",
+      "label": "Smoking",
+      "type": "Risk Factor",
+      "level": 1
+    },
+    {
+      "id": "small_airway_inflammation",
+      "label": "Small Airway Inflammation",
+      "type": "Pathology",
+      "level": 2
+    },
+    {
+      "id": "airflow_obstruction",
+      "label": "Airflow Obstruction",
+      "type": "Physiology",
+      "level": 3
+    },
+    {
+      "id": "hyperinflation",
+      "label": "Hyperinflation",
+      "type": "Physiology",
+      "level": 4
+    },
+    {
+      "id": "dyspnea",
+      "label": "Dyspnea",
+      "type": "Clinical Finding",
+      "level": 5
+    }
+  ],
+  "edges": [
+    {
+      "source": "smoking",
+      "target": "small_airway_inflammation",
+      "relation": "causes"
+    },
+    {
+      "source": "small_airway_inflammation",
+      "target": "airflow_obstruction",
+      "relation": "causes"
+    },
+    {
+      "source": "airflow_obstruction",
+      "target": "hyperinflation",
+      "relation": "results_in"
+    },
+    {
+      "source": "hyperinflation",
+      "target": "dyspnea",
+      "relation": "causes"
+    }
+  ]
+}
