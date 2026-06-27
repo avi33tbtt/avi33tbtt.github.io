@@ -4,1151 +4,899 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VibeRounds · Clinical Cognition Operating System</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<meta name="description" content="From Prompt Library to Clinical Cognition Operating System — VibeRounds by Dr. Avinash Kumar Gupta">
+<meta name="theme-color" content="#0891B2">
 <style>
-/* ─── TOKENS ─────────────────────────────────────────── */
-:root {
-  --teal-900: #04342C;
-  --teal-800: #0A5244;
-  --teal-700: #0F6E56;
-  --teal-500: #1D9E75;
-  --teal-300: #5DCAA5;
-  --teal-100: #C8F0E1;
-  --teal-50:  #E6FAF3;
+  :root {
+    --cyan: #0891B2;
+    --cyan-dark: #0e7490;
+    --cyan-light: #e0f2fe;
+    --cyan-mid: #bae6fd;
+    --bg: #f8fafc;
+    --bg2: #f1f5f9;
+    --bg3: #e8f4f8;
+    --surface: #ffffff;
+    --surface2: #f1f5f9;
+    --border: rgba(8,145,178,0.15);
+    --border2: rgba(8,145,178,0.3);
+    --text: #0f172a;
+    --text2: #334155;
+    --text3: #64748b;
+    --accent: #0891B2;
+    --accent2: #06b6d4;
+    --green: #059669;
+    --amber: #d97706;
+    --red: #e11d48;
+    --radius: 10px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Cascadia Code', 'Fira Code', monospace;
+  }
 
-  --ink:       #0E1412;
-  --ink-2:     #243330;
-  --ink-3:     #445550;
-  --muted:     #7A948E;
-  --border:    #D4E3DF;
-  --border-lt: #EAF2F0;
-  --surface:   #FAFCFB;
-  --white:     #FFFFFF;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  --blue:  #0C447C;
-  --indigo:#534AB7;
-  --green: #0F6E56;
-  --rust:  #993C1D;
-  --olive: #3B6D11;
-  --amber: #854F0B;
-  --navy:  #185FA5;
+  html { scroll-behavior: smooth; }
 
-  --font-serif: 'DM Serif Display', Georgia, serif;
-  --font-sans:  'Inter', system-ui, sans-serif;
-  --font-mono:  'JetBrains Mono', monospace;
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
 
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 16px;
-  --r-xl: 24px;
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(248,250,252,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: -.3px; text-decoration: none; }
+  .nav-logo span { color: var(--text2); font-weight: 400; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-size: 13px; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-badge {
+    background: linear-gradient(90deg, var(--cyan) 0%, var(--accent2) 100%);
+    color: #fff; font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+  }
 
-  color-scheme: light;
-}
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 4rem 0; }
+  section + section { border-top: 1px solid var(--border); }
 
-/* ─── RESET ──────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-sans);
-  background: var(--surface);
-  color: var(--ink);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  /* HERO */
+  .hero {
+    padding: 5rem 0 4rem;
+    text-align: center;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(8,145,178,0.07) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(8,145,178,0.1); border: 1px solid var(--border2);
+    color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .05em;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  .hero h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: var(--text2); max-width: 580px; margin: 0 auto 2rem; }
+  .hero-author { font-size: 13px; color: var(--text3); }
+  .hero-author strong { color: var(--text2); }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 20px; border-radius: var(--radius);
+    font-size: 13px; font-weight: 600; text-decoration: none;
+    transition: all .2s; cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--cyan); color: #fff; }
+  .btn-primary:hover { background: var(--cyan-dark); }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ─── LAYOUT ─────────────────────────────────────────── */
-.page { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
 
-/* ─── HERO ───────────────────────────────────────────── */
-.hero {
-  position: relative;
-  padding: 56px 0 48px;
-  text-align: center;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, #C8F0E155 0%, transparent 70%);
-  pointer-events: none;
-}
-.brand-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--teal-900);
-  color: var(--teal-100);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  padding: 5px 16px;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  font-family: var(--font-mono);
-}
-.hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(28px, 5vw, 46px);
-  line-height: 1.12;
-  color: var(--ink);
-  margin-bottom: 14px;
-}
-.hero-title em {
-  font-style: italic;
-  color: var(--teal-700);
-}
-.hero-sub {
-  font-size: 15px;
-  color: var(--ink-3);
-  max-width: 520px;
-  margin: 0 auto 8px;
-}
-.hero-author {
-  font-size: 12px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-}
-.hero-links {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 22px;
-  flex-wrap: wrap;
-}
-.hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--teal-500);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 9px 20px;
-  border-radius: 24px;
-  text-decoration: none;
-  transition: background .15s, transform .1s;
-}
-.hero-cta:hover { background: var(--teal-700); transform: translateY(-1px); }
-.hero-cta.outline {
-  background: transparent;
-  color: var(--teal-700);
-  border: 1.5px solid var(--teal-300);
-}
-.hero-cta.outline:hover { background: var(--teal-50); }
+  /* SECTION HEADERS */
+  .section-header { margin-bottom: 2rem; }
+  .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+  .section-title { font-size: 1.8rem; font-weight: 700; letter-spacing: -.02em; }
+  .section-sub { color: var(--text2); margin-top: .5rem; }
 
-/* ─── SECTION LABEL ──────────────────────────────────── */
-.section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
-  font-family: var(--font-mono);
-}
+  /* GENERATIONS */
+  .gen-track {
+    display: flex; gap: 0; position: relative;
+    margin: 1.5rem 0;
+  }
+  .gen-track::before {
+    content: ''; position: absolute; top: 28px; left: 28px; right: 28px; height: 2px;
+    background: linear-gradient(90deg, var(--border2) 0%, var(--accent) 100%);
+  }
+  .gen-node { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .gen-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--text2); position: relative; z-index: 1;
+    margin-bottom: .6rem; transition: border-color .2s;
+  }
+  .gen-node.active .gen-circle { border-color: var(--accent); color: var(--accent); background: rgba(8,145,178,0.1); }
+  .gen-label { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .gen-node.active .gen-label { color: var(--text2); }
 
-.section { margin-bottom: 44px; }
+  /* LAYERS */
+  .layers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .layer-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .layer-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+  }
+  .layer-num { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+  .layer-name { font-size: 15px; font-weight: 700; margin: 4px 0 8px; }
+  .layer-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .layer-tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    background: rgba(8,145,178,0.1); color: var(--text2); border: 1px solid var(--border);
+  }
 
-/* ─── DIVIDER ────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--border), transparent);
-  margin: 40px 0;
-}
+  /* PARADIGM */
+  .paradigm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .paradigm-col { background: var(--surface); padding: 1.5rem; }
+  .paradigm-col.old { }
+  .paradigm-col.new { background: var(--bg3); }
+  .paradigm-heading { font-size: 13px; font-weight: 700; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  .paradigm-heading.old-h { color: var(--text3); }
+  .paradigm-heading.new-h { color: var(--accent); }
+  .paradigm-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .paradigm-key { font-size: 10px; font-weight: 700; color: var(--text3); min-width: 48px; padding-top: 2px; }
+  .paradigm-val { font-size: 12px; color: var(--text2); }
+  .paradigm-col.new .paradigm-val { color: var(--text); }
+  .paradigm-col.new .paradigm-key { color: var(--accent); }
 
-/* ─── STATS ──────────────────────────────────────────── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-}
-@media (max-width: 600px) { .stats { grid-template-columns: repeat(3, 1fr); } }
-.stat {
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 16px 10px;
-  text-align: center;
-  background: var(--white);
-  transition: box-shadow .15s;
-}
-.stat:hover { box-shadow: 0 4px 16px rgba(29,158,117,.12); }
-.stat-num {
-  font-family: var(--font-serif);
-  font-size: 30px;
-  color: var(--teal-500);
-  line-height: 1;
-}
-.stat-label {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
-  line-height: 1.3;
-}
+  /* TRUST CARDS */
+  .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .trust-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  }
+  .trust-icon { font-size: 1.4rem; margin-bottom: .6rem; }
+  .trust-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .trust-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .trust-transform {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    font-size: 11px; color: var(--text3);
+  }
+  .trust-before { text-decoration: line-through; }
+  .trust-arrow { color: var(--accent); }
+  .trust-after { color: var(--green); font-weight: 600; }
 
-/* ─── EVOLUTION ──────────────────────────────────────── */
-.evolution {
-  display: flex;
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: var(--white);
-}
-.gen {
-  flex: 1;
-  padding: 16px 10px 14px;
-  border-right: 1px solid var(--border-lt);
-  position: relative;
-}
-.gen:last-child { border-right: none; background: #04342C08; }
-.gen-num {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--muted);
-  margin-bottom: 5px;
-}
-.gen-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 5px;
-  line-height: 1.3;
-}
-.gen-tag { font-size: 10px; color: var(--ink-3); line-height: 1.5; }
-.gen-bar { height: 3px; border-radius: 2px; margin-top: 12px; }
-.g1 .gen-bar { background: #B4B2A9; }
-.g2 .gen-bar { background: #9FE1CB; }
-.g3 .gen-bar { background: #5DCAA5; }
-.g4 .gen-bar { background: #1D9E75; }
-.g5 .gen-bar { background: #0F6E56; }
-@media (max-width: 620px) {
-  .evolution { flex-direction: column; }
-  .gen { border-right: none; border-bottom: 1px solid var(--border-lt); }
-  .gen:last-child { border-bottom: none; }
-}
+  /* FLOW */
+  .flow-wrap { overflow-x: auto; padding-bottom: 8px; }
+  .flow-track { display: flex; align-items: center; gap: 0; min-width: 600px; }
+  .flow-node {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: .6rem .5rem; text-align: center; font-size: 11px;
+  }
+  .flow-node strong { display: block; font-size: 11px; color: var(--accent); font-weight: 700; }
+  .flow-node span { color: var(--text3); font-size: 10px; }
+  .flow-arrow { color: var(--accent); padding: 0 4px; font-size: 14px; flex-shrink: 0; }
+  .flow-loop {
+    text-align: center; margin-top: .75rem; font-size: 11px; color: var(--text3);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
 
-/* ─── LAYERS ─────────────────────────────────────────── */
-.layers-wrap { display: flex; flex-direction: column; gap: 6px; }
-.layer {
-  display: flex;
-  align-items: stretch;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--white);
-  transition: box-shadow .15s, transform .1s;
-}
-.layer:hover { box-shadow: 0 3px 14px rgba(0,0,0,.07); transform: translateX(2px); }
-.layer-num-badge {
-  width: 38px;
-  min-width: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: #fff;
-  font-family: var(--font-mono);
-}
-.layer-body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 11px 16px;
-  gap: 16px;
-}
-.layer-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  min-width: 190px;
-}
-.layer-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.tag {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  color: var(--ink-3);
-  background: var(--surface);
-}
-.l1 .layer-num-badge { background: var(--blue); }
-.l2 .layer-num-badge { background: var(--indigo); }
-.l3 .layer-num-badge { background: var(--green); }
-.l4 .layer-num-badge { background: var(--rust); }
-.l5 .layer-num-badge { background: var(--olive); }
-.l6 .layer-num-badge { background: var(--amber); }
+  /* MODULES GRID */
+  .mods-search {
+    width: 100%; padding: 9px 14px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; margin-bottom: 1rem;
+    outline: none;
+  }
+  .mods-search:focus { border-color: var(--accent); }
+  .mods-search::placeholder { color: var(--text3); }
+  .mods-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .filter-btn {
+    font-size: 11px; padding: 4px 12px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text2); cursor: pointer; transition: all .15s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(8,145,178,0.15); border-color: var(--accent); color: var(--accent); }
+  .mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+  .mod-chip {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 9px 11px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    text-decoration: none; transition: all .15s; cursor: pointer;
+  }
+  .mod-chip:hover { border-color: var(--accent); background: rgba(8,145,178,0.07); }
+  .mod-chip-num { font-size: 10px; font-weight: 700; color: var(--text3); min-width: 24px; flex-shrink: 0; padding-top: 1px; }
+  .mod-chip-name { font-size: 12px; color: var(--text2); line-height: 1.4; }
+  .mod-chip-tag { font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .mod-empty { color: var(--text3); font-size: 13px; padding: 1rem 0; grid-column: 1/-1; }
 
-/* ─── TRUST SPOTLIGHT ────────────────────────────────── */
-.trust-spotlight {
-  background: linear-gradient(135deg, #FAECE7 0%, #FFF5F2 100%);
-  border: 1px solid #F5C4B3;
-  border-radius: var(--r-lg);
-  padding: 20px 20px 18px;
-}
-.trust-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #4A1B0C;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 520px) { .trust-grid { grid-template-columns: 1fr; } }
-.trust-card {
-  background: rgba(255,255,255,.7);
-  border: 1px solid #F5C4B3;
-  border-radius: var(--r-sm);
-  padding: 12px 14px;
-}
-.tc-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--rust);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 5px;
-  font-family: var(--font-mono);
-}
-.tc-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
-.transform-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 8px;
-  font-size: 11px;
-  flex-wrap: wrap;
-}
-.t-from { background: #F5C4B3; color: #4A1B0C; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
-.t-arrow { color: var(--rust); }
-.t-to   { background: #9FE1CB; color: #04342C; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+  /* PROMPT BUILDER */
+  .builder-wrap { background: var(--bg3); border: 1px solid var(--border2); border-radius: 14px; overflow: hidden; }
+  .builder-header {
+    background: linear-gradient(90deg, rgba(8,145,178,0.15) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border2); padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .builder-header-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(8,145,178,0.2); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .builder-header-text h3 { font-size: 15px; font-weight: 700; }
+  .builder-header-text p { font-size: 12px; color: var(--text3); }
 
-/* ─── FLOW ───────────────────────────────────────────── */
-.flow {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-.flow-step {
-  flex: 1;
-  text-align: center;
-  font-size: 10px;
-  color: var(--ink-3);
-  background: var(--white);
-  border: 1px solid var(--border);
-  padding: 9px 6px;
-  border-radius: var(--r-sm);
-  min-width: 76px;
-  line-height: 1.4;
-}
-.flow-step strong {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-.flow-arrow { color: var(--teal-500); font-size: 14px; padding: 0 3px; flex-shrink: 0; }
+  .builder-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
 
-/* ─── COMPARE ────────────────────────────────────────── */
-.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 520px) { .compare { grid-template-columns: 1fr; } }
-.compare-col {
-  border-radius: var(--r-md);
-  padding: 16px;
-  border: 1px solid var(--border);
-  background: var(--white);
-}
-.compare-col.old  { border-top: 3px solid #B4B2A9; }
-.compare-col.new  { border-top: 3px solid var(--teal-500); background: #E6FAF3; }
-.col-head { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
-.compare-item {
-  font-size: 11px;
-  color: var(--ink-3);
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border-lt);
-  line-height: 1.4;
-}
-.compare-item:last-child { border-bottom: none; }
-.ci-key { font-weight: 600; color: var(--muted); font-size: 10px; font-family: var(--font-mono); }
+  .bsect-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+  .bsect { }
 
-/* ─── MODULE MAP ─────────────────────────────────────── */
-.module-map-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.map-title {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  color: var(--ink);
-}
-.map-count {
-  font-size: 12px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-}
+  .case-input {
+    width: 100%; min-height: 80px; padding: 10px 13px;
+    background: var(--bg); border: 1px solid var(--border2);
+    border-radius: var(--radius); color: var(--text); font-size: 13px;
+    font-family: var(--font); line-height: 1.6; resize: vertical; outline: none;
+    transition: border-color .2s;
+  }
+  .case-input:focus { border-color: var(--accent); }
+  .case-input::placeholder { color: var(--text3); }
 
-/* Search + filters */
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.search-bar input {
-  flex: 1;
-  font-size: 13px;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: var(--white);
-  color: var(--ink);
-  outline: none;
-  font-family: var(--font-sans);
-  transition: border-color .15s;
-}
-.search-bar input:focus { border-color: var(--teal-500); }
-.cnt-badge {
-  font-size: 11px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  white-space: nowrap;
-}
+  .bmod-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .75rem; }
+  .bmod-filter {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: var(--bg); border: 1px solid var(--border2);
+    color: var(--text3); cursor: pointer; transition: all .15s;
+  }
+  .bmod-filter.active, .bmod-filter:hover { background: rgba(8,145,178,0.15); border-color: var(--accent); color: var(--accent); }
 
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 18px;
-  align-items: center;
-}
-.filter-row span {
-  font-size: 11px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-}
-.fb {
-  font-size: 11px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--white);
-  color: var(--ink-3);
-  cursor: pointer;
-  transition: all .15s;
-  font-family: var(--font-sans);
-}
-.fb:hover { border-color: var(--teal-500); color: var(--teal-700); }
-.fb.active {
-  background: var(--teal-900);
-  color: var(--teal-100);
-  border-color: transparent;
-}
+  .bmod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+  .bmod-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 9px; border-radius: 7px;
+    background: var(--bg); border: 1px solid var(--border);
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .bmod-chip:hover { border-color: var(--border2); }
+  .bmod-chip.sel { border-color: var(--accent); background: rgba(8,145,178,0.12); }
+  .bmod-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background .15s; }
+  .bmod-chip.sel .bmod-dot { background: var(--accent); }
+  .bmod-num { font-size: 10px; color: var(--text3); min-width: 22px; }
+  .bmod-chip.sel .bmod-num { color: var(--accent); }
+  .bmod-name { font-size: 11px; color: var(--text2); line-height: 1.3; }
+  .bmod-chip.sel .bmod-name { color: var(--text); font-weight: 500; }
 
-/* Layer blocks */
-.layer-block { margin-bottom: 20px; }
-.layer-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  padding: 9px 14px;
-  border-radius: var(--r-md);
-}
-.lh-num {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 600;
-  color: #fff;
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-}
-.lh-name { font-size: 13px; font-weight: 500; color: var(--ink); }
-.lh-desc { font-size: 11px; color: var(--ink-3); margin-left: auto; }
+  .run-section { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+  .run-seq-wrap { display: flex; gap: 10px; align-items: flex-start; }
+  .run-seq {
+    flex: 1; min-height: 50px; padding: 9px 11px;
+    background: var(--bg); border: 1.5px dashed var(--border2);
+    border-radius: var(--radius);
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+  }
+  .run-empty { font-size: 12px; color: var(--text3); }
+  .run-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 20px;
+    background: rgba(8,145,178,0.15); border: 1px solid var(--border2);
+    font-size: 11px; color: var(--accent); font-weight: 500; white-space: nowrap;
+  }
+  .run-chip .rx { cursor: pointer; opacity: .5; font-size: 13px; line-height: 1; }
+  .run-chip .rx:hover { opacity: 1; }
+  .run-arrow { font-size: 10px; color: var(--text3); }
+  .btn-build {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 18px; border-radius: var(--radius);
+    background: var(--cyan); color: #fff; border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background .15s; white-space: nowrap;
+  }
+  .btn-build:hover { background: var(--cyan-dark); }
+  .btn-build:disabled { opacity: .4; cursor: default; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.chip {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
-  background: var(--white);
-  color: var(--ink-3);
-  cursor: pointer;
-  transition: all .12s;
-  line-height: 1.4;
-  text-decoration: none;
-  display: inline-block;
-}
-.chip:hover {
-  background: var(--teal-50);
-  border-color: var(--teal-300);
-  color: var(--teal-800);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(29,158,117,.15);
-}
-.chip .mn { font-weight: 600; color: var(--ink); font-family: var(--font-mono); font-size: 10px; }
-.chip.hidden { display: none; }
+  .output-panel { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .output-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: .5rem; }
+  .output-pre {
+    background: var(--bg); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 12px 14px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--text2);
+    white-space: pre-wrap; line-height: 1.65; max-height: 200px; overflow-y: auto;
+  }
+  .output-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: var(--radius);
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border2); color: var(--text2);
+    transition: all .15s;
+  }
+  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
 
-.fw-chip {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid #BFD4F0;
-  background: #EBF2FC;
-  color: var(--navy);
-  cursor: pointer;
-  font-weight: 500;
-  text-decoration: none;
-  display: inline-block;
-  transition: all .12s;
-}
-.fw-chip:hover {
-  background: #D5E6FA;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(24,95,165,.15);
-}
-.fw-chip .mn { font-family: var(--font-mono); font-size: 10px; }
-.fw-chip.hidden { display: none; }
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0; text-align: center;
+    color: var(--text3); font-size: 12px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-logo { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: .5rem; }
 
-/* Legend */
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-lt);
-}
-.leg-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
-.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-.empty {
-  font-size: 13px;
-  color: var(--muted);
-  text-align: center;
-  padding: 32px;
-  display: none;
-}
-
-/* ─── FOOTER ─────────────────────────────────────────── */
-.footer {
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  line-height: 2;
-}
-.footer a { color: var(--teal-700); text-decoration: none; }
-.footer a:hover { text-decoration: underline; }
-.footer .research-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--teal-50);
-  border: 1px solid var(--teal-100);
-  color: var(--teal-800);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none;
-  margin-top: 10px;
-  transition: background .15s;
-}
-.footer .research-link:hover { background: var(--teal-100); text-decoration: none; }
-
-/* ─── RESEARCH BANNER ────────────────────────────────── */
-.research-banner {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: linear-gradient(135deg, #E6FAF3 0%, #EBF2FC 100%);
-  border: 1px solid var(--teal-100);
-  border-radius: var(--r-lg);
-  padding: 16px 20px;
-  margin-bottom: 44px;
-  flex-wrap: wrap;
-}
-.rb-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-}
-.rb-text { flex: 1; min-width: 200px; }
-.rb-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--teal-700);
-  font-family: var(--font-mono);
-  margin-bottom: 3px;
-}
-.rb-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-  line-height: 1.4;
-}
-.rb-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--teal-900);
-  color: var(--teal-100);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 20px;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background .15s;
-}
-.rb-cta:hover { background: var(--teal-800); }
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .layers-grid, .trust-grid, .paradigm-grid { grid-template-columns: 1fr; }
+    .gen-label { display: none; }
+    nav .nav-links { display: none; }
+    .run-seq-wrap { flex-direction: column; }
+    .btn-build { width: 100%; justify-content: center; }
+  }
 </style>
 </head>
 <body>
 
-<div class="page">
+<nav>
+  <a class="nav-logo" href="#">VibeRounds <span>· CCOS</span></a>
+  <ul class="nav-links">
+    <li><a href="#evolution">Evolution</a></li>
+    <li><a href="#layers">Layers</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#builder">Prompt Builder</a></li>
+    <li><a href="https://avi33tbtt.github.io/Prompts/" target="_blank">Directory ↗</a></li>
+  </ul>
+  <span class="nav-badge">🩺 June 2026</span>
+</nav>
 
-  <!-- ── HERO ── -->
-  <div class="hero">
-    <div class="brand-pill">🩺 VibeRounds · June 2026</div>
-    <h1 class="hero-title">
-      From Prompt Library to<br>
-      <em>Clinical Cognition<br>Operating System</em>
-    </h1>
-    <p class="hero-sub">Architectural evolution of AI-assisted clinical reasoning</p>
-    <p class="hero-author">Dr. Avinash Kumar Gupta · avi33tbtt.github.io</p>
-    <div class="hero-links">
-      <a class="hero-cta" href="https://avi33tbtt.github.io/Prompts/" target="_blank">
-        ↗ Browse all modules
-      </a>
-      <a class="hero-cta outline" href="https://www.researchgate.net/publication/408150632_From_Prompt_Library_to_Clinical_Cognition_Operating_System_Architectural_Evolution_of_the_VibeRounds_Framework" target="_blank">
-        📄 Research paper
-      </a>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">🩺 Healthcare AI · Clinical Cognition Operating System</div>
+    <h1>From Prompt Library to<br><em>Clinical Cognition OS</em></h1>
+    <p class="hero-sub">Architectural evolution of AI-assisted clinical reasoning — built on Socratic principles, cognitive frameworks, and 57 reasoning modules.</p>
+    <p class="hero-author">by <strong>Dr. Avinash Kumar Gupta</strong> · avi33tbtt.github.io</p>
+    <div class="hero-actions">
+      <a href="#builder" class="btn btn-primary">⚡ Prompt Builder</a>
+      <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" class="btn btn-ghost">↗ Browse all modules</a>
+      <a href="https://www.researchgate.net/publication/408150632" target="_blank" class="btn btn-ghost">📄 Research paper</a>
     </div>
   </div>
+</section>
 
-  <div class="divider"></div>
-
-  <!-- ── STATS ── -->
-  <div class="section">
-    <div class="section-label">The framework at a glance</div>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">5</div><div class="stat-label">architectural generations</div></div>
-      <div class="stat"><div class="stat-num">6</div><div class="stat-label">cognitive layers</div></div>
-      <div class="stat"><div class="stat-num">57</div><div class="stat-label">reasoning modules</div></div>
-      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">clinical pipelines</div></div>
-      <div class="stat"><div class="stat-num">4</div><div class="stat-label">pedagogical frameworks</div></div>
+<!-- STATS -->
+<section>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Architectural generations</div></div>
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Cognitive layers</div></div>
+      <div class="stat-card"><div class="stat-num">57</div><div class="stat-label">Reasoning modules</div></div>
+      <div class="stat-card"><div class="stat-num">200+</div><div class="stat-label">Clinical pipelines</div></div>
     </div>
   </div>
+</section>
 
-  <!-- ── EVOLUTION ── -->
-  <div class="section">
-    <div class="section-label">Five generations of evolution</div>
-    <div class="evolution">
-      <div class="gen g1">
-        <div class="gen-num">Gen I</div>
-        <div class="gen-title">Prompt library</div>
-        <div class="gen-tag">Standalone prompts, answer-oriented, no workflow</div>
-        <div class="gen-bar"></div>
+<!-- EVOLUTION -->
+<section id="evolution">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Five generations of evolution</div>
+      <h2 class="section-title">From prompt library to operating system</h2>
+    </div>
+    <div class="gen-track">
+      <div class="gen-node">
+        <div class="gen-circle">I</div>
+        <div class="gen-label">Prompt library</div>
       </div>
-      <div class="gen g2">
-        <div class="gen-num">Gen II</div>
-        <div class="gen-title">Modular reasoning</div>
-        <div class="gen-tag">Illness scripts, differentials, reflective modules</div>
-        <div class="gen-bar"></div>
+      <div class="gen-node">
+        <div class="gen-circle">II</div>
+        <div class="gen-label">Modular reasoning</div>
       </div>
-      <div class="gen g3">
-        <div class="gen-num">Gen III</div>
-        <div class="gen-title">Protocol networks</div>
-        <div class="gen-tag">Dependency-linked cognitive pipelines</div>
-        <div class="gen-bar"></div>
+      <div class="gen-node">
+        <div class="gen-circle">III</div>
+        <div class="gen-label">Protocol networks</div>
       </div>
-      <div class="gen g4">
-        <div class="gen-num">Gen IV</div>
-        <div class="gen-title">Metacognitive layer</div>
-        <div class="gen-tag">Bias detection, uncertainty mapping, reflection loops</div>
-        <div class="gen-bar"></div>
+      <div class="gen-node">
+        <div class="gen-circle">IV</div>
+        <div class="gen-label">Metacognitive layer</div>
       </div>
-      <div class="gen g5">
-        <div class="gen-num">Gen V</div>
-        <div class="gen-title">CCOS</div>
-        <div class="gen-tag">Full clinical cognition operating system with trust safeguards</div>
-        <div class="gen-bar"></div>
+      <div class="gen-node active">
+        <div class="gen-circle">V</div>
+        <div class="gen-label">CCOS</div>
       </div>
     </div>
+    <div class="layers-grid" style="margin-top:1.5rem">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:.3rem">Gen I</div>
+        <div style="font-weight:600;margin-bottom:.3rem">Prompt library</div>
+        <div style="font-size:12px;color:var(--text3)">Standalone prompts, answer-oriented, no workflow</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:.3rem">Gen II</div>
+        <div style="font-weight:600;margin-bottom:.3rem">Modular reasoning</div>
+        <div style="font-size:12px;color:var(--text3)">Illness scripts, differentials, reflective modules</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:.3rem">Gen III</div>
+        <div style="font-weight:600;margin-bottom:.3rem">Protocol networks</div>
+        <div style="font-size:12px;color:var(--text3)">Dependency-linked cognitive pipelines</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:.3rem">Gen IV</div>
+        <div style="font-weight:600;margin-bottom:.3rem">Metacognitive layer</div>
+        <div style="font-size:12px;color:var(--text3)">Bias detection, uncertainty mapping, reflection loops</div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(90deg,rgba(8,145,178,0.12),rgba(8,145,178,0.05));border:1px solid var(--border2);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-top:1rem">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:.3rem">Gen V — CCOS</div>
+      <div style="font-weight:700;margin-bottom:.3rem">Full clinical cognition operating system with trust safeguards</div>
+      <div style="font-size:12px;color:var(--text2)">Epistemic calibration · Hallucination-aware · Decision spectrum · Longitudinal learning</div>
+    </div>
   </div>
+</section>
 
-  <!-- ── SIX LAYERS ── -->
-  <div class="section">
-    <div class="section-label">The six cognitive layers</div>
-    <div class="layers-wrap">
-      <div class="layer l1">
-        <div class="layer-num-badge">1</div>
-        <div class="layer-body">
-          <div class="layer-name">Clinical reasoning</div>
-          <div class="layer-tags">
-            <span class="tag">Illness scripts</span>
-            <span class="tag">Differential diagnosis</span>
-            <span class="tag">Bayesian inference</span>
-            <span class="tag">Hypothesis generation</span>
-          </div>
+<!-- LAYERS -->
+<section id="layers">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Architecture</div>
+      <h2 class="section-title">The six cognitive layers</h2>
+    </div>
+    <div class="layers-grid">
+      <div class="layer-card">
+        <div class="layer-num">Layer 1</div>
+        <div class="layer-name">Clinical reasoning</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Illness scripts</span>
+          <span class="layer-tag">Differential diagnosis</span>
+          <span class="layer-tag">Bayesian inference</span>
+          <span class="layer-tag">Hypothesis generation</span>
         </div>
       </div>
-      <div class="layer l2">
-        <div class="layer-num-badge">2</div>
-        <div class="layer-body">
-          <div class="layer-name">Workflow engine</div>
-          <div class="layer-tags">
-            <span class="tag">Protocol dependency networks</span>
-            <span class="tag">Module sequencing</span>
-            <span class="tag">Pipeline coordination</span>
-          </div>
+      <div class="layer-card">
+        <div class="layer-num">Layer 2</div>
+        <div class="layer-name">Workflow engine</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Protocol networks</span>
+          <span class="layer-tag">Module sequencing</span>
+          <span class="layer-tag">Pipeline coordination</span>
         </div>
       </div>
-      <div class="layer l3">
-        <div class="layer-num-badge">3</div>
-        <div class="layer-body">
-          <div class="layer-name">Metacognitive monitoring</div>
-          <div class="layer-tags">
-            <span class="tag">Bias detection</span>
-            <span class="tag">Assumption audit</span>
-            <span class="tag">Missing-data finder</span>
-            <span class="tag">Uncertainty mapping</span>
-          </div>
+      <div class="layer-card">
+        <div class="layer-num">Layer 3</div>
+        <div class="layer-name">Metacognitive monitoring</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Bias detection</span>
+          <span class="layer-tag">Assumption audit</span>
+          <span class="layer-tag">Missing-data finder</span>
+          <span class="layer-tag">Uncertainty mapping</span>
         </div>
       </div>
-      <div class="layer l4">
-        <div class="layer-num-badge">4</div>
-        <div class="layer-body">
-          <div class="layer-name">Epistemic trust layer ✦</div>
-          <div class="layer-tags">
-            <span class="tag">Hallucination calibration</span>
-            <span class="tag">Claim verification</span>
-            <span class="tag">Confidence calibration</span>
-          </div>
+      <div class="layer-card" style="border-left-color:var(--amber)">
+        <div class="layer-num" style="color:var(--amber)">Layer 4 ✦</div>
+        <div class="layer-name">Epistemic trust layer</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Hallucination calibration</span>
+          <span class="layer-tag">Claim verification</span>
+          <span class="layer-tag">Confidence calibration</span>
         </div>
       </div>
-      <div class="layer l5">
-        <div class="layer-num-badge">5</div>
-        <div class="layer-body">
-          <div class="layer-name">Decision architecture</div>
-          <div class="layer-tags">
-            <span class="tag">Conservative</span>
-            <span class="tag">Minimal</span>
-            <span class="tag">Balanced</span>
-            <span class="tag">Aggressive</span>
-            <span class="tag">Maximal</span>
-          </div>
+      <div class="layer-card">
+        <div class="layer-num">Layer 5</div>
+        <div class="layer-name">Decision architecture</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Conservative</span>
+          <span class="layer-tag">Minimal</span>
+          <span class="layer-tag">Balanced</span>
+          <span class="layer-tag">Aggressive</span>
+          <span class="layer-tag">Maximal</span>
         </div>
       </div>
-      <div class="layer l6">
-        <div class="layer-num-badge">6</div>
-        <div class="layer-body">
-          <div class="layer-name">Learning & documentation</div>
-          <div class="layer-tags">
-            <span class="tag">Clinical closure</span>
-            <span class="tag">Competency tracking</span>
-            <span class="tag">Longitudinal archive</span>
-          </div>
+      <div class="layer-card" style="border-left-color:var(--green)">
+        <div class="layer-num" style="color:var(--green)">Layer 6</div>
+        <div class="layer-name">Learning & documentation</div>
+        <div class="layer-tags">
+          <span class="layer-tag">Clinical closure</span>
+          <span class="layer-tag">Competency tracking</span>
+          <span class="layer-tag">Longitudinal archive</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ── TRUST SPOTLIGHT ── -->
-  <div class="section">
-    <div class="trust-spotlight">
-      <div class="trust-title">✦ Trust layer — three architectural innovations</div>
+    <!-- Trust innovations -->
+    <div style="margin-top:2rem">
+      <div class="section-header" style="margin-bottom:1rem">
+        <div class="section-eyebrow">Trust layer — three innovations</div>
+      </div>
       <div class="trust-grid">
         <div class="trust-card">
-          <div class="tc-label">Hallucination calibration</div>
-          <div class="tc-desc">Suppresses false numerical precision; preserves ordinal knowledge</div>
-          <div class="transform-row">
-            <span class="t-from">13.7% mortality</span>
-            <span class="t-arrow">→</span>
-            <span class="t-to">Mortality appears moderate</span>
-          </div>
+          <div class="trust-title">Hallucination calibration</div>
+          <div class="trust-desc">Suppresses false numerical precision; preserves ordinal knowledge</div>
+          <div class="trust-transform"><span class="trust-before">13.7% mortality</span><span class="trust-arrow">→</span><span class="trust-after">Mortality appears moderate</span></div>
         </div>
         <div class="trust-card">
-          <div class="tc-label">Prioritised claim verification</div>
-          <div class="tc-desc">Risk-based — verifies only diagnosis-changing or safety-critical claims</div>
-          <div class="transform-row">
-            <span class="t-from">Verify everything</span>
-            <span class="t-arrow">→</span>
-            <span class="t-to">Verify what matters</span>
-          </div>
+          <div class="trust-title">Prioritised claim verification</div>
+          <div class="trust-desc">Risk-based — verifies only diagnosis-changing or safety-critical claims</div>
+          <div class="trust-transform"><span class="trust-before">Verify everything</span><span class="trust-arrow">→</span><span class="trust-after">Verify what matters</span></div>
         </div>
         <div class="trust-card">
-          <div class="tc-label">Decision spectrum</div>
-          <div class="tc-desc">Replaces single-answer AI with a structured landscape of defensible pathways</div>
-          <div class="transform-row">
-            <span class="t-from">One answer</span>
-            <span class="t-arrow">→</span>
-            <span class="t-to">Conservative → Maximal</span>
-          </div>
+          <div class="trust-title">Decision spectrum</div>
+          <div class="trust-desc">Replaces single-answer AI with a structured landscape of defensible pathways</div>
+          <div class="trust-transform"><span class="trust-before">One answer</span><span class="trust-arrow">→</span><span class="trust-after">Conservative → Maximal</span></div>
         </div>
         <div class="trust-card">
-          <div class="tc-label">Confidence calibration</div>
-          <div class="tc-desc">Separates confidence across diagnosis, evidence, recommendation & prognosis</div>
-          <div class="transform-row">
-            <span class="t-from">Single score</span>
-            <span class="t-arrow">→</span>
-            <span class="t-to">Multi-domain profile</span>
-          </div>
+          <div class="trust-title">Confidence calibration</div>
+          <div class="trust-desc">Separates confidence across diagnosis, evidence, recommendation & prognosis</div>
+          <div class="trust-transform"><span class="trust-before">Single score</span><span class="trust-arrow">→</span><span class="trust-after">Multi-domain profile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow -->
+    <div style="margin-top:2rem">
+      <div class="section-eyebrow" style="margin-bottom:.75rem">End-to-end information flow</div>
+      <div class="flow-wrap">
+        <div class="flow-track">
+          <div class="flow-node"><strong>Patient case</strong><span>History & exam</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Reasoning</strong><span>Illness scripts, DDx</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Workflow</strong><span>Protocol networks</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Metacognition</strong><span>Bias & gaps</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Trust layer</strong><span>Calibrate & verify</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Decision</strong><span>Spectrum options</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><strong>Clinician</strong><span>Final judgment</span></div>
+        </div>
+      </div>
+      <div class="flow-loop">↻ <strong style="color:var(--accent)">Learning</strong> — Longitudinal growth feeds back into next session</div>
+    </div>
+
+    <!-- Paradigm shift -->
+    <div style="margin-top:2rem">
+      <div class="section-eyebrow" style="margin-bottom:.75rem">Paradigm shift</div>
+      <div class="paradigm-grid">
+        <div class="paradigm-col old">
+          <div class="paradigm-heading old-h">Conventional prompt engineering</div>
+          <div class="paradigm-row"><div class="paradigm-key">GOAL</div><div class="paradigm-val">Improve AI responses</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">MODEL</div><div class="paradigm-val">AI generates conclusions</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">UNCERT</div><div class="paradigm-val">Confidence statements only</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">HALLUC</div><div class="paradigm-val">Post-hoc retrieval augmentation</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">DECIS</div><div class="paradigm-val">Single recommended answer</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">LEARN</div><div class="paradigm-val">Session-based, no continuity</div></div>
+        </div>
+        <div class="paradigm-col new">
+          <div class="paradigm-heading new-h">Clinical Cognition Operating System</div>
+          <div class="paradigm-row"><div class="paradigm-key">GOAL</div><div class="paradigm-val">Improve human clinical reasoning</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">MODEL</div><div class="paradigm-val">Clinician reasons; AI scaffolds</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">UNCERT</div><div class="paradigm-val">Explicit epistemic calibration</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">HALLUC</div><div class="paradigm-val">Dedicated calibration module</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">DECIS</div><div class="paradigm-val">Conservative → maximal spectrum</div></div>
+          <div class="paradigm-row"><div class="paradigm-key">LEARN</div><div class="paradigm-val">Longitudinal with structured reflection</div></div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ── FLOW ── -->
-  <div class="section">
-    <div class="section-label">End-to-end information flow</div>
-    <div class="flow">
-      <div class="flow-step"><strong>Patient case</strong>History & exam</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Reasoning</strong>Illness scripts, DDx</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Workflow</strong>Protocol networks</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Metacognition</strong>Bias & gaps</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Trust layer</strong>Calibrate & verify</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Decision</strong>Spectrum options</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><strong>Clinician</strong>Final judgment</div>
-      <div class="flow-arrow">↻</div>
-      <div class="flow-step"><strong>Learning</strong>Longitudinal growth</div>
+<!-- MODULES -->
+<section id="modules">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">CCOS module map</div>
+      <h2 class="section-title">57 modules · click any to open</h2>
+      <p class="section-sub">All modules live at <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" style="color:var(--accent)">avi33tbtt.github.io/Prompts/</a></p>
     </div>
+    <input type="text" class="mods-search" id="modSearch" placeholder="Search modules…" oninput="filterMods()">
+    <div class="mods-filter" id="modFilters">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Clinical reasoning',this)">Clinical reasoning</button>
+      <button class="filter-btn" onclick="setFilter('Patient advocacy',this)">Patient advocacy</button>
+      <button class="filter-btn" onclick="setFilter('Analytics',this)">Analytics</button>
+      <button class="filter-btn" onclick="setFilter('Safety',this)">Safety</button>
+      <button class="filter-btn" onclick="setFilter('Education',this)">Education</button>
+      <button class="filter-btn" onclick="setFilter('Operations',this)">Operations</button>
+      <button class="filter-btn" onclick="setFilter('Framework',this)">Frameworks</button>
+    </div>
+    <div class="mods-grid" id="modsGrid"></div>
   </div>
+</section>
 
-  <!-- ── COMPARE ── -->
-  <div class="section">
-    <div class="section-label">Paradigm shift</div>
-    <div class="compare">
-      <div class="compare-col old">
-        <div class="col-head">Conventional prompt engineering</div>
-        <div class="compare-item"><span class="ci-key">GOAL&nbsp;&nbsp;</span>Improve AI responses</div>
-        <div class="compare-item"><span class="ci-key">MODEL&nbsp;</span>AI generates conclusions</div>
-        <div class="compare-item"><span class="ci-key">UNCERT</span>Confidence statements only</div>
-        <div class="compare-item"><span class="ci-key">HALLUC</span>Post-hoc retrieval augmentation</div>
-        <div class="compare-item"><span class="ci-key">DECIS&nbsp;</span>Single recommended answer</div>
-        <div class="compare-item"><span class="ci-key">LEARN&nbsp;</span>Session-based, no continuity</div>
-        <div class="compare-item"><span class="ci-key">EXPLN</span>Why did the AI answer this way?</div>
+<!-- PROMPT BUILDER -->
+<section id="builder">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Prompt Creator</div>
+      <h2 class="section-title">Build a run prompt</h2>
+      <p class="section-sub">Select a case and chain modules in sequence — outputs a ready-to-paste prompt referencing the VibeRounds directory.</p>
+    </div>
+
+    <div class="builder-wrap">
+      <div class="builder-header">
+        <div class="builder-header-icon">⚡</div>
+        <div class="builder-header-text">
+          <h3>VibeRounds Prompt Builder</h3>
+          <p>Case → select modules → copy your run prompt</p>
+        </div>
       </div>
-      <div class="compare-col new">
-        <div class="col-head">Clinical Cognition Operating System</div>
-        <div class="compare-item"><span class="ci-key">GOAL&nbsp;&nbsp;</span>Improve human clinical reasoning</div>
-        <div class="compare-item"><span class="ci-key">MODEL&nbsp;</span>Clinician reasons; AI scaffolds</div>
-        <div class="compare-item"><span class="ci-key">UNCERT</span>Explicit epistemic calibration</div>
-        <div class="compare-item"><span class="ci-key">HALLUC</span>Dedicated calibration module</div>
-        <div class="compare-item"><span class="ci-key">DECIS&nbsp;</span>Conservative → maximal spectrum</div>
-        <div class="compare-item"><span class="ci-key">LEARN&nbsp;</span>Longitudinal with structured reflection</div>
-        <div class="compare-item"><span class="ci-key">EXPLN</span>How did the clinician's reasoning evolve?</div>
+      <div class="builder-body">
+
+        <!-- CASE -->
+        <div class="bsect">
+          <div class="bsect-label">Case</div>
+          <textarea class="case-input" id="bCaseInput" placeholder="Paste a case description or a link — e.g. 42F with severe pitting edema, 3-week onset, no prior history · or https://your-case-url"></textarea>
+        </div>
+
+        <!-- MODULE PICKER -->
+        <div class="bsect">
+          <div class="bsect-label">Select modules</div>
+          <div class="bmod-filters" id="bModFilters">
+            <button class="bmod-filter active" onclick="setBFilter('all',this)">All</button>
+            <button class="bmod-filter" onclick="setBFilter('Clinical reasoning',this)">Clinical reasoning</button>
+            <button class="bmod-filter" onclick="setBFilter('Patient advocacy',this)">Patient advocacy</button>
+            <button class="bmod-filter" onclick="setBFilter('Analytics',this)">Analytics</button>
+            <button class="bmod-filter" onclick="setBFilter('Safety',this)">Safety</button>
+            <button class="bmod-filter" onclick="setBFilter('Education',this)">Education</button>
+            <button class="bmod-filter" onclick="setBFilter('Operations',this)">Operations</button>
+            <button class="bmod-filter" onclick="setBFilter('Framework',this)">Frameworks</button>
+          </div>
+          <div class="bmod-grid" id="bModGrid"></div>
+        </div>
+
+        <!-- RUN -->
+        <div class="run-section">
+          <div class="bsect-label">Run</div>
+          <div class="run-seq-wrap">
+            <div class="run-seq" id="runSeq">
+              <span class="run-empty" id="runEmpty">Select modules above to build your run sequence</span>
+            </div>
+            <button class="btn-build" id="btnBuild" onclick="buildPrompt()" disabled>⚡ Build prompt</button>
+          </div>
+          <div id="outputPanel" style="display:none" class="output-panel">
+            <div class="output-label">Generated prompt — copy and paste into any LLM</div>
+            <pre class="output-pre" id="outputPre"></pre>
+            <div class="output-actions">
+              <button class="btn-sm" onclick="copyPrompt()">📋 Copy prompt</button>
+              <button class="btn-sm" onclick="clearAll()">✕ Clear</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
+</section>
 
-  <div class="divider"></div>
-
-  <!-- ── RESEARCH BANNER ── -->
-  <div class="research-banner">
-    <div class="rb-icon">📄</div>
-    <div class="rb-text">
-      <div class="rb-label">Research paper</div>
-      <div class="rb-title">From Prompt Library to Clinical Cognition Operating System — Architectural Evolution of the VibeRounds Framework</div>
-    </div>
-    <a class="rb-cta" href="https://www.researchgate.net/publication/408150632_From_Prompt_Library_to_Clinical_Cognition_Operating_System_Architectural_Evolution_of_the_VibeRounds_Framework" target="_blank">Read on ResearchGate ↗</a>
+<footer>
+  <div class="container">
+    <div class="footer-logo">VibeRounds</div>
+    <div>AI that questions, not answers · <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · <a href="https://avi33tbtt.github.io/Prompts/">Prompt directory</a></div>
+    <div style="margin-top:.5rem">Dr. Avinash Kumar Gupta · June 2026 · All outputs require independent clinical verification.</div>
   </div>
-
-  <!-- ── MODULE MAP ── -->
-  <div class="section">
-    <div class="module-map-header">
-      <div>
-        <div class="map-title">CCOS module map</div>
-        <div class="map-count">57 modules + 4 frameworks · click any chip to open</div>
-      </div>
-    </div>
-
-    <div class="search-bar">
-      <input id="srch" type="text" placeholder="Search modules or IDs…" oninput="filterAll()">
-      <span class="cnt-badge" id="cnt">61 shown</span>
-    </div>
-
-    <div class="filter-row">
-      <span>Filter:</span>
-      <button class="fb active" data-cat="all"  onclick="setFilter('all')">All</button>
-      <button class="fb" data-cat="L1" onclick="setFilter('L1')">Clinical reasoning</button>
-      <button class="fb" data-cat="L2" onclick="setFilter('L2')">Workflow</button>
-      <button class="fb" data-cat="L3" onclick="setFilter('L3')">Metacognition</button>
-      <button class="fb" data-cat="L4" onclick="setFilter('L4')">Trust</button>
-      <button class="fb" data-cat="L5" onclick="setFilter('L5')">Decisions</button>
-      <button class="fb" data-cat="L6" onclick="setFilter('L6')">Learning</button>
-      <button class="fb" data-cat="FW" onclick="setFilter('FW')">Frameworks</button>
-    </div>
-
-    <div id="layers"></div>
-    <div class="empty" id="empty">No modules match that search.</div>
-
-    <div class="legend">
-      <div class="leg-item"><div class="leg-dot" style="background:#0C447C"></div>L1 Clinical reasoning</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#534AB7"></div>L2 Workflow</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#0F6E56"></div>L3 Metacognition</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#993C1D"></div>L4 Trust</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#3B6D11"></div>L5 Decisions</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#854F0B"></div>L6 Learning</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#185FA5"></div>Frameworks</div>
-    </div>
-  </div>
-
-  <!-- ── FOOTER ── -->
-  <div class="footer">
-    <div>
-      <strong>VibeRounds</strong> — AI that questions, not answers &nbsp;·&nbsp;
-      <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> &nbsp;·&nbsp;
-      <a href="https://avi33tbtt.github.io/Prompts/">Prompt directory</a>
-    </div>
-    <div>Dr. Avinash Kumar Gupta · June 2026</div>
-    <div style="margin-top:8px;">
-      <a class="research-link" href="https://www.researchgate.net/publication/408150632_From_Prompt_Library_to_Clinical_Cognition_Operating_System_Architectural_Evolution_of_the_VibeRounds_Framework" target="_blank">
-        📄 Read the research paper on ResearchGate
-      </a>
-    </div>
-  </div>
-
-</div><!-- /page -->
+</footer>
 
 <script>
-const BASE = 'https://avi33tbtt.github.io/Prompts/';
-
-const LAYERS = [
-  {
-    id:'L1', num:'1', name:'Clinical reasoning', color:'#0C447C', bg:'#E6F1FB',
-    desc:'Primary hypothesis generation',
-    modules:[
-      {n:'M00',label:'Cold-start orientation',url:'Module-00-Cold-Start-Orientation.html'},
-      {n:'M01',label:'Socratic clinical reasoning',url:'Module-01-Socratic-Clinical-Reasoning.html'},
-      {n:'M12',label:'Differential diagnosis deepdive',url:'Module-12-Differential-Diagnosis-Deepdive.html'},
-      {n:'M15',label:'Illness script acquisition',url:'Module-15-Illness-Script-Acquisition.html'},
-      {n:'M17',label:'Semantic qualifiers & problem representation',url:'Module-17-Semantic-Qualifiers-Problem-Representation.html'},
-      {n:'M18',label:'Causal vs probabilistic reasoning',url:'Module-18-Causal-vs-Probabilistic-Network-Reasoning.html'},
-      {n:'M20',label:'Naturalistic decision making',url:'Module-20-Recognition-Primed-Decision-Model.html'},
-      {n:'M28',label:'Diagnostic time-out',url:'Module-28-Diagnostic-Time-Out.html'},
-      {n:'M30',label:'Diagnostic anchor extractor',url:'Module-30-Diagnostic-Anchor-Extractor.html'},
-      {n:'M31',label:'First-principles pathophysiology',url:'Module-31-First-Principles-Pathophysiology-Mapping.html'},
-      {n:'M33',label:'The "why now?" precipitant hunter',url:'Module-33-Why-Now-Precipitant-Hunter.html'},
-      {n:'M36',label:'Bayesian probability engine',url:'Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html'},
-      {n:'M37',label:'Red herring / signal-to-noise drill',url:'Module-37-Red-Herring-Signal-to-Noise-Drill.html'},
-      {n:'M50',label:'Diagnostic reasoning map',url:'Module-50-DRM-Diagnostic-Reasoning-Map.html'},
-      {n:'M51',label:'Systems-based clinical analysis',url:'Module-51-Systems-Based-Clinical-Analysis-and-Insights.html'},
-      {n:'M54',label:'System 1 & 2 thinking generator',url:'Module-54-System1-System2-Question-Generator.html'},
-      {n:'M56',label:'Hypothetico-deductive reasoning',url:'Module-HDM-Hypothetico-Deductive-Model.html'},
-      {n:'M57',label:'Clinical cognition deep dive',url:'Module-CC-Clinical-Cognition-Deep-Dive.html'},
-      {n:'M14',label:'Resource-constrained reasoning',url:'Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html'},
-    ]
-  },
-  {
-    id:'L2', num:'2', name:'Workflow engine', color:'#534AB7', bg:'#EEEDFE',
-    desc:'Protocol dependency networks',
-    modules:[
-      {n:'M04',label:'Ward round preparation',url:'Module-04-Peer-Level-Ward-Round-Preparation.html'},
-      {n:'M08',label:'Socratic-mode design spec',url:'Module-08-Socratic-Mode-Design-Specification.html'},
-      {n:'M32',label:'Clinical cognition loop',url:'Module-32-Clinical-Cognition-Loop.html'},
-      {n:'M40',label:'Operational throughput strategist',url:'Module-40-Operational-Throughput-Strategist.html'},
-      {n:'M41',label:'Clinical workflow implementation',url:'Module-41-Clinical-Workflow-Implementation-Science.html'},
-    ]
-  },
-  {
-    id:'L3', num:'3', name:'Metacognitive monitoring', color:'#0F6E56', bg:'#E1F5EE',
-    desc:'Bias detection · reflection · gaps',
-    modules:[
-      {n:'M24',label:'Heuristic analysis',url:'Module-24-Heuristic-Analysis.html'},
-      {n:'M25',label:'Thematic analysis',url:'Module-25-Thematic-Analysis.html'},
-      {n:'M26',label:'Bias auditing',url:'Module-26-Bias-Auditing.html'},
-      {n:'M27',label:'Time-series & velocity analyzer',url:'Module-27-Time-Series-Velocity-Analyzer.html'},
-      {n:'M29',label:'Iatrogenic domino effect',url:'Module-29-Iatrogenic-Domino-Effect.html'},
-      {n:'M38',label:'Poly-crisis & cascading failure',url:'Module-38-Poly-Crisis-Cascading-Failure-Simulator.html'},
-      {n:'M42',label:'Clinical pre-mortem',url:'Module-42-Clinical-Pre-Mortem.html'},
-      {n:'M49',label:'FMEA analysis',url:'Module-49-FMEA-Analysis-and-Insights.html'},
-    ]
-  },
-  {
-    id:'L4', num:'4', name:'Epistemic trust layer', color:'#993C1D', bg:'#FAECE7',
-    desc:'Hallucination · verification · calibration',
-    modules:[
-      {n:'M21',label:'Evidence frontier search',url:'Module-21-Evidence-Frontier-Search.html'},
-      {n:'M23',label:'Counterfactual analysis',url:'Module-23-Counterfactual-Analysis.html'},
-      {n:'M35',label:'Epistemic certainty mapping',url:'Module-35-Epistemic-Certainty-Mapping-Calibration.html'},
-      {n:'M44',label:'Clinical genetics reasoning',url:'Module-44-Clinical-Genetics-Reasoning.html'},
-      {n:'Shd-44',label:'Shadow module 44 — genetics adversarial',url:'Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html'},
-      {n:'M46',label:'Evidence-based medicine insights',url:'Module-45-Evidence-Based-Medicine-Insights.html'},
-      {n:'Shd-47',label:'Shadow module 47 — EBM adversarial',url:'Shadow-Module-45-EBM-Adversarial-Counterpart.html'},
-      {n:'M48',label:'Treatment comparative analysis',url:'Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html'},
-      {n:'M53',label:'Clinical guideline navigator',url:'Module-53-Clinical-Guideline-Intelligence-Navigator.html'},
-    ]
-  },
-  {
-    id:'L5', num:'5', name:'Decision architecture', color:'#3B6D11', bg:'#EAF3DE',
-    desc:'Multi-pathway decision spectrum',
-    modules:[
-      {n:'M13',label:'Medication reconciliation & polypharmacy',url:'Module-13-Medication-Reconciliation-Polypharmacy-Audit.html'},
-      {n:'M16',label:'Basic science ↔ clinical integration',url:'Module-16-Bidirectional-Basic-Science-Clinical-Integration.html'},
-      {n:'M19',label:'Community & social medicine',url:'Module-19-Community-and-Social-Medicine-Insights.html'},
-      {n:'M34',label:'High-value care auditor',url:'Module-34-High-Value-Care-Auditor.html'},
-      {n:'M39',label:'Global knowledge diagnostic matrix',url:'Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html'},
-      {n:'M43',label:'Health economics & value-based care',url:'Module-43-Health-Economics-Value-Based-Care-Alignment.html'},
-      {n:'M52',label:'Clinical pearls distillation',url:'Module-52-CP-Clinical-Pearls.html'},
-    ]
-  },
-  {
-    id:'L6', num:'6', name:'Learning & documentation', color:'#854F0B', bg:'#FAEEDA',
-    desc:'Closure · reflection · longitudinal growth',
-    modules:[
-      {n:'M02',label:'Patient advocate documentation',url:'Module-02-Patient-Advocate-Case-Documentation.html'},
-      {n:'M03',label:'Extended patient advocate monitoring',url:'Module-03-Extended-Patient-Advocate-Monitoring.html'},
-      {n:'M05',label:'Real-time case review & audit',url:'Module-05-Real-Time-Case-Review-and-Data-Audit.html'},
-      {n:'M06',label:'Registry-level analytics',url:'Module-06-Registry-Level-Analytics.html'},
-      {n:'M07',label:'Longitudinal & cross-case learning',url:'Module-07-Longitudinal-and-Cross-Case-Learning.html'},
-      {n:'M09',label:'N-of-1 case research protocol',url:'Module-09-Case-Research_Protocol.html'},
-      {n:'M10',label:'Journal & article reading',url:'Module-10-Medical-Journal-Article-Reading.html'},
-      {n:'M11',label:'Patient education query intelligence',url:'Module-11-Patient-Education-Query-Intelligence.html'},
-      {n:'M22',label:'Nested analysis',url:'Module-22-Nested-Analysis.html'},
-      {n:'M55',label:'Patient needs assessment',url:'Module-55-Patient-Needs-Assessment.html'},
-    ]
-  }
+const MODS = [
+  {num:'00',name:'Cold-Start Orientation',url:'https://avi33tbtt.github.io/Prompts/Module-00-Cold-Start-Orientation.html',cat:'Clinical reasoning'},
+  {num:'01',name:'Socratic Clinical Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-01-Socratic-Clinical-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'02',name:'Patient-Advocate Case Documentation',url:'https://avi33tbtt.github.io/Prompts/Module-02-Patient-Advocate-Case-Documentation.html',cat:'Patient advocacy'},
+  {num:'03',name:'Extended Patient-Advocate Monitoring',url:'https://avi33tbtt.github.io/Prompts/Module-03-Extended-Patient-Advocate-Monitoring.html',cat:'Patient advocacy'},
+  {num:'04',name:'Peer-Level Ward Round Preparation',url:'https://avi33tbtt.github.io/Prompts/Module-04-Peer-Level-Ward-Round-Preparation.html',cat:'Education'},
+  {num:'05',name:'Real-Time Case Review & Data Audit',url:'https://avi33tbtt.github.io/Prompts/Module-05-Real-Time-Case-Review-and-Data-Audit.html',cat:'Analytics'},
+  {num:'06',name:'Registry-Level Analytics',url:'https://avi33tbtt.github.io/Prompts/Module-06-Registry-Level-Analytics.html',cat:'Analytics'},
+  {num:'07',name:'Longitudinal & Cross-Case Learning',url:'https://avi33tbtt.github.io/Prompts/Module-07-Longitudinal-and-Cross-Case-Learning.html',cat:'Analytics'},
+  {num:'08',name:'Socratic-Mode Design Specification',url:'https://avi33tbtt.github.io/Prompts/Module-08-Socratic-Mode-Design-Specification.html',cat:'Framework'},
+  {num:'09',name:'N-of-1 Case Research Protocol',url:'https://avi33tbtt.github.io/Prompts/Module-09-Case-Research_Protocol.html',cat:'Patient advocacy'},
+  {num:'10',name:'Journal & Article Reading',url:'https://avi33tbtt.github.io/Prompts/Module-10-Medical-Journal-Article-Reading.html',cat:'Education'},
+  {num:'11',name:'Patient Education Query Intelligence',url:'https://avi33tbtt.github.io/Prompts/Module-11-Patient-Education-Query-Intelligence.html',cat:'Patient advocacy'},
+  {num:'12',name:'Differential Diagnosis Deepdive',url:'https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html',cat:'Clinical reasoning'},
+  {num:'13',name:'Medication Reconciliation & Polypharmacy',url:'https://avi33tbtt.github.io/Prompts/Module-13-Medication-Reconciliation-Polypharmacy-Audit.html',cat:'Patient advocacy'},
+  {num:'14',name:'Resource-Constrained Clinical Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'15',name:'Illness Script Acquisition',url:'https://avi33tbtt.github.io/Prompts/Module-15-Illness-Script-Acquisition.html',cat:'Clinical reasoning'},
+  {num:'16',name:'Basic Science ↔ Clinical Integration',url:'https://avi33tbtt.github.io/Prompts/Module-16-Bidirectional-Basic-Science-Clinical-Integration.html',cat:'Education'},
+  {num:'17',name:'Semantic Qualifiers & Problem Representation',url:'https://avi33tbtt.github.io/Prompts/Module-17-Semantic-Qualifiers-Problem-Representation.html',cat:'Clinical reasoning'},
+  {num:'18',name:'Causal vs. Probabilistic Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-18-Causal-vs-Probabilistic-Network-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'19',name:'Community & Social Medicine Insights',url:'https://avi33tbtt.github.io/Prompts/Module-19-Community-and-Social-Medicine-Insights.html',cat:'Operations'},
+  {num:'20',name:'Naturalistic Decision Making',url:'https://avi33tbtt.github.io/Prompts/Module-20-Recognition-Primed-Decision-Model.html',cat:'Clinical reasoning'},
+  {num:'21',name:'Evidence Frontier Search',url:'https://avi33tbtt.github.io/Prompts/Module-21-Evidence-Frontier-Search.html',cat:'Education'},
+  {num:'22',name:'Nested Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-22-Nested-Analysis.html',cat:'Analytics'},
+  {num:'23',name:'Counterfactual Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-23-Counterfactual-Analysis.html',cat:'Analytics'},
+  {num:'24',name:'Heuristic Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-24-Heuristic-Analysis.html',cat:'Analytics'},
+  {num:'25',name:'Thematic Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-25-Thematic-Analysis.html',cat:'Analytics'},
+  {num:'26',name:'Bias Auditing',url:'https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html',cat:'Safety'},
+  {num:'27',name:'Time-Series & Velocity Analyzer',url:'https://avi33tbtt.github.io/Prompts/Module-27-Time-Series-Velocity-Analyzer.html',cat:'Analytics'},
+  {num:'28',name:'Diagnostic Time-Out',url:'https://avi33tbtt.github.io/Prompts/Module-28-Diagnostic-Time-Out.html',cat:'Clinical reasoning'},
+  {num:'29',name:'Iatrogenic Domino Effect',url:'https://avi33tbtt.github.io/Prompts/Module-29-Iatrogenic-Domino-Effect.html',cat:'Safety'},
+  {num:'30',name:'Diagnostic Anchor Extractor',url:'https://avi33tbtt.github.io/Prompts/Module-30-Diagnostic-Anchor-Extractor.html',cat:'Clinical reasoning'},
+  {num:'31',name:'First-Principles Pathophysiology Mapping',url:'https://avi33tbtt.github.io/Prompts/Module-31-First-Principles-Pathophysiology-Mapping.html',cat:'Education'},
+  {num:'32',name:'Clinical Cognition Loop',url:'https://avi33tbtt.github.io/Prompts/Module-32-Clinical-Cognition-Loop.html',cat:'Clinical reasoning'},
+  {num:'33',name:'"Why Now?" Precipitant Hunter',url:'https://avi33tbtt.github.io/Prompts/Module-33-Why-Now-Precipitant-Hunter.html',cat:'Clinical reasoning'},
+  {num:'34',name:'High-Value Care Auditor',url:'https://avi33tbtt.github.io/Prompts/Module-34-High-Value-Care-Auditor.html',cat:'Operations'},
+  {num:'35',name:'Epistemic Certainty Mapping & Calibration',url:'https://avi33tbtt.github.io/Prompts/Module-35-Epistemic-Certainty-Mapping-Calibration.html',cat:'Clinical reasoning'},
+  {num:'36',name:'Bayesian Probability / Likelihood Ratio Engine',url:'https://avi33tbtt.github.io/Prompts/Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html',cat:'Clinical reasoning'},
+  {num:'37',name:'Red Herring / Signal-to-Noise Drill',url:'https://avi33tbtt.github.io/Prompts/Module-37-Red-Herring-Signal-to-Noise-Drill.html',cat:'Clinical reasoning'},
+  {num:'38',name:'Poly-Crisis & Cascading Failure Simulator',url:'https://avi33tbtt.github.io/Prompts/Module-38-Poly-Crisis-Cascading-Failure-Simulator.html',cat:'Safety'},
+  {num:'39',name:'Global Knowledge Network Diagnostic Matrix',url:'https://avi33tbtt.github.io/Prompts/Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html',cat:'Education'},
+  {num:'40',name:'Operational & Throughput Strategist',url:'https://avi33tbtt.github.io/Prompts/Module-40-Operational-Throughput-Strategist.html',cat:'Operations'},
+  {num:'41',name:'Clinical Workflow Implementation Science',url:'https://avi33tbtt.github.io/Prompts/Module-41-Clinical-Workflow-Implementation-Science.html',cat:'Operations'},
+  {num:'42',name:'Clinical Pre-Mortem',url:'https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html',cat:'Safety'},
+  {num:'43',name:'Health Economics & Value-Based Care',url:'https://avi33tbtt.github.io/Prompts/Module-43-Health-Economics-Value-Based-Care-Alignment.html',cat:'Operations'},
+  {num:'44',name:'Clinical Genetics Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-44-Clinical-Genetics-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'45',name:'Shadow Module — Clinical Genetics Adversarial',url:'https://avi33tbtt.github.io/Prompts/Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html',cat:'Safety'},
+  {num:'46',name:'Evidence-Based Medicine Insights',url:'https://avi33tbtt.github.io/Prompts/Module-45-Evidence-Based-Medicine-Insights.html',cat:'Education'},
+  {num:'47',name:'Shadow Module — EBM Adversarial Counterpart',url:'https://avi33tbtt.github.io/Prompts/Shadow-Module-45-EBM-Adversarial-Counterpart.html',cat:'Safety'},
+  {num:'48',name:'Treatment Comparative Analysis & Prognosis Trajectory',url:'https://avi33tbtt.github.io/Prompts/Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html',cat:'Clinical reasoning'},
+  {num:'49',name:'FMEA Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-49-FMEA-Analysis-and-Insights.html',cat:'Safety'},
+  {num:'50',name:'Diagnostic Reasoning Map',url:'https://avi33tbtt.github.io/Prompts/Module-50-DRM-Diagnostic-Reasoning-Map.html',cat:'Clinical reasoning'},
+  {num:'51',name:'Systems-Based Clinical Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-51-Systems-Based-Clinical-Analysis-and-Insights.html',cat:'Clinical reasoning'},
+  {num:'52',name:'Clinical Pearls Distillation',url:'https://avi33tbtt.github.io/Prompts/Module-52-CP-Clinical-Pearls.html',cat:'Education'},
+  {num:'53',name:'Clinical Guideline Intelligence Navigator',url:'https://avi33tbtt.github.io/Prompts/Module-53-Clinical-Guideline-Intelligence-Navigator.html',cat:'Clinical reasoning'},
+  {num:'54',name:'System 1 & System 2 Question Generator',url:'https://avi33tbtt.github.io/Prompts/Module-54-System1-System2-Question-Generator.html',cat:'Clinical reasoning'},
+  {num:'55',name:'Patient Needs Assessment',url:'https://avi33tbtt.github.io/Prompts/Module-55-Patient-Needs-Assessment.html',cat:'Patient advocacy'},
+  {num:'56',name:'Hypothetico-Deductive Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-HDM-Hypothetico-Deductive-Model.html',cat:'Clinical reasoning'},
+  {num:'57',name:'Clinical Cognition Deep Dive',url:'https://avi33tbtt.github.io/Prompts/Module-CC-Clinical-Cognition-Deep-Dive.html',cat:'Clinical reasoning'},
+  {num:'A',name:'Humanistic Persona & Confidence-Building',url:'https://avi33tbtt.github.io/Prompts/Framework-A-Humanistic-Persona.html',cat:'Framework'},
+  {num:'B',name:"Fink's Taxonomy of Significant Learning",url:'https://avi33tbtt.github.io/Prompts/Framework-B-Finks-FLINK-Taxonomy.html',cat:'Framework'},
+  {num:'C',name:"Bloom's Revised Taxonomy",url:'https://avi33tbtt.github.io/Prompts/Framework-C-Blooms-Taxonomy.html',cat:'Framework'},
+  {num:'D',name:'Critical Awareness Framework',url:'https://avi33tbtt.github.io/Prompts/Framework-D-Critical-Awareness-Framework.html',cat:'Framework'},
 ];
 
-const FRAMEWORKS = [
-  {n:'Fw-A',label:'Humanistic persona & confidence-building',url:'Framework-A-Humanistic-Persona.html'},
-  {n:'Fw-B',label:"Fink's FLINK taxonomy",url:'Framework-B-Finks-FLINK-Taxonomy.html'},
-  {n:'Fw-C',label:"Bloom's revised taxonomy",url:'Framework-C-Blooms-Taxonomy.html'},
-  {n:'Fw-D',label:'Critical awareness framework',url:'Framework-D-Critical-Awareness-Framework.html'},
-];
+const PROMPTS_BASE = 'https://avi33tbtt.github.io/Prompts/';
 
-let activeFilter = 'all';
+// ── MODULE MAP (browsable grid) ──────────────────────────────
+let modFilter = 'all';
+let modSearch = '';
 
-function setFilter(f){
-  activeFilter = f;
-  document.querySelectorAll('.fb').forEach(b => b.classList.toggle('active', b.dataset.cat === f));
-  filterAll();
+function setFilter(cat, btn) {
+  modFilter = cat;
+  document.querySelectorAll('#modFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMods();
 }
 
-function filterAll(){
-  const q = document.getElementById('srch').value.toLowerCase();
-  let total = 0;
-  LAYERS.forEach(layer => {
-    const block = document.getElementById('block-' + layer.id);
-    const visible = layer.id === activeFilter || activeFilter === 'all';
-    block.style.display = visible ? '' : 'none';
-    if(!visible) return;
-    layer.modules.forEach(m => {
-      const el = document.getElementById('chip-' + m.n.replace(/[^a-z0-9]/gi,'-'));
-      if(!el) return;
-      const match = !q || m.label.toLowerCase().includes(q) || m.n.toLowerCase().includes(q);
-      el.classList.toggle('hidden', !match);
-      if(match) total++;
-    });
+function filterMods() {
+  modSearch = document.getElementById('modSearch').value.toLowerCase();
+  renderMods();
+}
+
+function renderMods() {
+  const grid = document.getElementById('modsGrid');
+  const filtered = MODS.filter(m => {
+    const matchCat = modFilter === 'all' || m.cat === modFilter;
+    const matchSearch = !modSearch || m.name.toLowerCase().includes(modSearch) || m.num.toLowerCase().includes(modSearch);
+    return matchCat && matchSearch;
   });
-  const fwBlock = document.getElementById('block-FW');
-  const fwVisible = activeFilter === 'FW' || activeFilter === 'all';
-  fwBlock.style.display = fwVisible ? '' : 'none';
-  if(fwVisible){
-    FRAMEWORKS.forEach(fw => {
-      const el = document.getElementById('chip-' + fw.n.replace(/[^a-z0-9]/gi,'-'));
-      if(!el) return;
-      const match = !q || fw.label.toLowerCase().includes(q) || fw.n.toLowerCase().includes(q);
-      el.classList.toggle('hidden', !match);
-      if(match) total++;
-    });
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="mod-empty">No modules match that search.</div>';
+    return;
   }
-  document.getElementById('cnt').textContent = total + ' shown';
-  document.getElementById('empty').style.display = total === 0 ? 'block' : 'none';
+  grid.innerHTML = filtered.map(m => `
+    <a class="mod-chip" href="${m.url}" target="_blank">
+      <span class="mod-chip-num">M${m.num}</span>
+      <div>
+        <div class="mod-chip-name">${m.name}</div>
+        <div class="mod-chip-tag">${m.cat}</div>
+      </div>
+    </a>
+  `).join('');
 }
 
-function buildMap(){
-  const container = document.getElementById('layers');
-  LAYERS.forEach(layer => {
-    const block = document.createElement('div');
-    block.className = 'layer-block';
-    block.id = 'block-' + layer.id;
+// ── PROMPT BUILDER ────────────────────────────────────────────
+let bFilter = 'all';
+const ORDER = [];
 
-    const head = document.createElement('div');
-    head.className = 'layer-head';
-    head.style.background = layer.bg + '88';
-    head.innerHTML = `
-      <div class="lh-num" style="background:${layer.color}">${layer.num}</div>
-      <div class="lh-name">${layer.name}</div>
-      <div class="lh-desc">${layer.desc}</div>`;
-    block.appendChild(head);
-
-    const chips = document.createElement('div');
-    chips.className = 'chips';
-    layer.modules.forEach(m => {
-      const c = document.createElement('a');
-      c.className = 'chip';
-      c.href = BASE + m.url;
-      c.target = '_blank';
-      c.rel = 'noopener noreferrer';
-      c.id = 'chip-' + m.n.replace(/[^a-z0-9]/gi,'-');
-      c.innerHTML = `<span class="mn">${m.n}</span> ${m.label}`;
-      chips.appendChild(c);
-    });
-    block.appendChild(chips);
-    container.appendChild(block);
-  });
-
-  // Frameworks block
-  const fwBlock = document.createElement('div');
-  fwBlock.className = 'layer-block';
-  fwBlock.id = 'block-FW';
-
-  const fwHead = document.createElement('div');
-  fwHead.className = 'layer-head';
-  fwHead.style.background = '#EBF2FC88';
-  fwHead.innerHTML = `
-    <div class="lh-num" style="background:#185FA5">FW</div>
-    <div class="lh-name">Pedagogical frameworks</div>
-    <div class="lh-desc">Woven across all layers</div>`;
-  fwBlock.appendChild(fwHead);
-
-  const fwChips = document.createElement('div');
-  fwChips.className = 'chips';
-  FRAMEWORKS.forEach(fw => {
-    const c = document.createElement('a');
-    c.className = 'fw-chip';
-    c.href = BASE + fw.url;
-    c.target = '_blank';
-    c.rel = 'noopener noreferrer';
-    c.id = 'chip-' + fw.n.replace(/[^a-z0-9]/gi,'-');
-    c.innerHTML = `<span class="mn">${fw.n}</span> ${fw.label}`;
-    fwChips.appendChild(c);
-  });
-  fwBlock.appendChild(fwChips);
-  container.appendChild(fwBlock);
+function setBFilter(cat, btn) {
+  bFilter = cat;
+  document.querySelectorAll('#bModFilters .bmod-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBMods();
 }
 
-buildMap();
+function renderBMods() {
+  const grid = document.getElementById('bModGrid');
+  const filtered = MODS.filter(m => bFilter === 'all' || m.cat === bFilter);
+  grid.innerHTML = filtered.map(m => {
+    const sel = ORDER.find(x => x.num === m.num) ? 'sel' : '';
+    return `<div class="bmod-chip ${sel}" onclick="toggleMod(this,'${m.num}')" data-num="${m.num}">
+      <span class="bmod-dot"></span>
+      <span class="bmod-num">M${m.num}</span>
+      <span class="bmod-name">${m.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleMod(chip, num) {
+  const idx = ORDER.findIndex(x => x.num === num);
+  if (idx > -1) {
+    ORDER.splice(idx, 1);
+    chip.classList.remove('sel');
+  } else {
+    const mod = MODS.find(m => m.num === num);
+    ORDER.push(mod);
+    chip.classList.add('sel');
+  }
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+function renderRunSeq() {
+  const seq = document.getElementById('runSeq');
+  const empty = document.getElementById('runEmpty');
+  const btn = document.getElementById('btnBuild');
+  seq.innerHTML = '';
+  if (!ORDER.length) {
+    seq.appendChild(Object.assign(document.createElement('span'), {className:'run-empty', textContent:'Select modules above to build your run sequence'}));
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  ORDER.forEach((m, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'run-chip';
+    chip.innerHTML = `M${m.num} ${m.name} <span class="rx" onclick="removeFromRun('${m.num}', event)">×</span>`;
+    seq.appendChild(chip);
+    if (i < ORDER.length - 1) {
+      const arr = document.createElement('span');
+      arr.className = 'run-arrow';
+      arr.textContent = '→';
+      seq.appendChild(arr);
+    }
+  });
+}
+
+function removeFromRun(num, e) {
+  e.stopPropagation();
+  const idx = ORDER.findIndex(x => x.num === num);
+  if (idx > -1) ORDER.splice(idx, 1);
+  // deselect chip in builder grid
+  document.querySelectorAll(`#bModGrid .bmod-chip[data-num="${num}"]`).forEach(c => c.classList.remove('sel'));
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+function buildPrompt() {
+  const caseText = document.getElementById('bCaseInput').value.trim();
+  const caseSection = caseText
+    ? `for case - ${caseText}`
+    : 'for case - [paste your case description or URL here]';
+  const runNums = ORDER.map(m => m.num).join(' -> ');
+  const prompt = `${caseSection} run modules ${runNums} from ${PROMPTS_BASE}`;
+  document.getElementById('outputPre').textContent = prompt;
+  document.getElementById('outputPanel').style.display = 'block';
+  document.getElementById('outputPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function copyPrompt() {
+  navigator.clipboard.writeText(document.getElementById('outputPre').textContent).catch(() => {});
+}
+
+function clearAll() {
+  ORDER.length = 0;
+  document.getElementById('bCaseInput').value = '';
+  renderBMods();
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+// init
+renderMods();
+renderBMods();
 </script>
 </body>
 </html>
