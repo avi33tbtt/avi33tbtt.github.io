@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CCOS Analytics Mode — Hospital Workflow Reference</title>
+<style>
+  :root {
+    --slate-900: #0f172a; --slate-800: #1e293b; --slate-700: #334155;
+    --slate-600: #475569; --slate-500: #64748b; --slate-400: #94a3b8;
+    --slate-300: #cbd5e1; --slate-200: #e2e8f0; --slate-100: #f1f5f9; --slate-50: #f8fafc;
+    --teal-700: #0f766e; --teal-600: #0d9488; --teal-500: #14b8a6;
+    --teal-100: #ccfbf1; --teal-50: #f0fdfa;
+    --amber-700: #b45309; --amber-100: #fef3c7;
+    --red-700: #b91c1c; --red-100: #fee2e2;
+    --blue-700: #1d4ed8; --blue-100: #dbeafe;
+    --violet-700: #6d28d9; --violet-100: #ede9fe;
+    --green-700: #15803d; --green-100: #dcfce7;
+    --sidebar-w: 228px; --header-h: 58px; --mobile-nav-h: 60px;
+    --radius-card: 12px;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 12px rgba(13,148,136,0.12), 0 1px 3px rgba(13,148,136,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--slate-50); color: var(--slate-800);
+    font-size: 14px; line-height: 1.5; min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    position: sticky; top: 0; z-index: 200; height: var(--header-h);
+    background: var(--slate-900); display: flex; align-items: center;
+    padding: 0 1rem 0 1.25rem; gap: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--teal-600), var(--teal-500));
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
+    flex-shrink: 0; box-shadow: 0 2px 8px rgba(13,148,136,0.4);
+  }
+  .logo-text { color: #fff; font-size: 14px; font-weight: 700; white-space: nowrap; letter-spacing: -0.2px; }
+  .logo-sub { color: var(--slate-400); font-size: 10.5px; margin-top: 1px; }
+  .header-search { flex: 1; max-width: 460px; margin-left: auto; position: relative; }
+  .header-search input {
+    width: 100%; height: 36px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
+    padding: 0 12px 0 38px; color: #fff; font-size: 13px; outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .header-search input::placeholder { color: var(--slate-400); }
+  .header-search input:focus { border-color: var(--teal-500); background: rgba(255,255,255,0.12); }
+  .search-icon {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--slate-400); pointer-events: none; font-size: 15px;
+  }
+  .disclaimer-badge {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.25);
+    border-radius: 6px; padding: 4px 9px; font-size: 10.5px; color: #fbbf24;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  @media (max-width: 600px) { .disclaimer-badge { display: none; } .logo-sub { display: none; } }
+  .app-shell { display: flex; min-height: calc(100vh - var(--header-h)); }
+  nav {
+    width: var(--sidebar-w); flex-shrink: 0; background: #fff;
+    border-right: 1px solid var(--slate-200); padding: 0.75rem 0 1rem;
+    position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h));
+    overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--slate-200) transparent;
+  }
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-thumb { background: var(--slate-200); border-radius: 2px; }
+  .nav-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--slate-400); padding: 0.875rem 1rem 0.375rem;
+  }
+  .nav-btn {
+    display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 1rem;
+    background: none; border: none; cursor: pointer; font-size: 13px; color: var(--slate-600);
+    text-align: left; border-left: 3px solid transparent;
+    transition: background 0.12s, color 0.12s; border-radius: 0 6px 6px 0; margin: 1px 0;
+  }
+  .nav-btn:hover { background: var(--slate-50); color: var(--slate-900); }
+  .nav-btn.active { background: var(--teal-50); color: var(--teal-700); border-left-color: var(--teal-600); font-weight: 600; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .nav-count {
+    margin-left: auto; font-size: 10px; font-weight: 600; background: var(--slate-100);
+    color: var(--slate-500); border-radius: 10px; padding: 1px 7px; flex-shrink: 0;
+  }
+  .nav-btn.active .nav-count { background: var(--teal-100); color: var(--teal-700); }
+  .nav-divider { height: 1px; background: var(--slate-100); margin: 0.5rem 1rem; }
+  main { flex: 1; padding: 1.5rem 1.75rem; min-width: 0; max-width: 900px; }
+  .result-bar {
+    font-size: 12px; color: var(--slate-500); margin-bottom: 1rem; padding: 8px 14px;
+    background: white; border: 1px solid var(--slate-200); border-radius: 8px;
+    display: none; font-weight: 500;
+  }
+  .result-bar.visible { display: block; }
+  .phase-hero {
+    display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem 1.5rem;
+    border-radius: 14px; margin-bottom: 1.75rem; border: 1px solid;
+  }
+  .phase-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+  .phase-hero-text h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+  .phase-hero-text p { font-size: 13px; line-height: 1.55; opacity: 0.85; }
+  .task-group { margin-bottom: 2rem; }
+  .group-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.875rem; padding-bottom: 0.625rem; border-bottom: 1px solid var(--slate-200); }
+  .group-title { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--slate-500); }
+  .group-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tasks { display: flex; flex-direction: column; gap: 10px; }
+  .task-card {
+    background: #fff; border: 1px solid var(--slate-200); border-radius: var(--radius-card);
+    padding: 14px 16px; cursor: default;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    position: relative; box-shadow: var(--shadow-card);
+  }
+  .task-card:hover { border-color: var(--teal-500); box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .task-card.safety  { border-left: 3px solid var(--amber-700); }
+  .task-card.critical{ border-left: 3px solid var(--red-700); }
+  .task-card.evidence{ border-left: 3px solid var(--blue-700); }
+  .task-card.learning{ border-left: 3px solid var(--violet-700); }
+  .task-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .task-title { font-size: 13.5px; font-weight: 700; color: var(--slate-900); line-height: 1.3; letter-spacing: -0.1px; }
+  .task-modules { display: flex; flex-wrap: wrap; gap: 4px; flex-shrink: 0; }
+  .mod-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: var(--slate-100); color: var(--slate-600); letter-spacing: 0.03em; white-space: nowrap; }
+  .mod-chip.pipeline { background: linear-gradient(135deg, var(--teal-100), #e0fdf4); color: var(--teal-700); }
+  .task-desc { font-size: 12.5px; color: var(--slate-500); line-height: 1.55; margin-bottom: 10px; }
+  .task-prompt {
+    font-size: 11.5px; color: var(--slate-700); background: var(--slate-50);
+    border: 1px solid var(--slate-200); border-radius: 8px;
+    padding: 10px 12px; padding-right: 72px; line-height: 1.55;
+    font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace; position: relative;
+  }
+  .task-prompt em { color: var(--teal-700); font-style: normal; font-weight: 600; }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px; background: white;
+    border: 1px solid var(--slate-200); border-radius: 6px; padding: 4px 10px;
+    font-size: 11px; font-weight: 600; color: var(--slate-600); cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s; white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  .copy-btn:hover { background: var(--slate-50); border-color: var(--slate-300); color: var(--slate-800); }
+  .copy-btn.copied { background: var(--teal-50); border-color: var(--teal-100); color: var(--teal-700); }
+  .task-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge-amber  { background: var(--amber-100);  color: var(--amber-700); }
+  .badge-red    { background: var(--red-100);    color: var(--red-700); }
+  .badge-blue   { background: var(--blue-100);   color: var(--blue-700); }
+  .badge-violet { background: var(--violet-100); color: var(--violet-700); }
+  .badge-green  { background: var(--green-100);  color: var(--green-700); }
+  .badge-slate  { background: var(--slate-100);  color: var(--slate-600); }
+  .badge-teal   { background: var(--teal-100);   color: var(--teal-700); }
+  .pipeline-steps { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--slate-100); }
+  .pipeline-steps.open { display: block; }
+  .pipeline-step { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; font-size: 12px; color: var(--slate-600); }
+  .step-num { font-size: 10px; font-weight: 700; color: var(--teal-700); background: var(--teal-50); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; margin-top: 1px; min-width: 24px; text-align: center; }
+  .pipeline-toggle { font-size: 11.5px; font-weight: 600; color: var(--teal-700); background: var(--teal-50); border: 1px solid var(--teal-100); border-radius: 6px; cursor: pointer; padding: 4px 12px; margin-top: 10px; transition: background 0.12s; }
+  .pipeline-toggle:hover { background: var(--teal-100); }
+  .no-results { text-align: center; padding: 3.5rem 1rem; color: var(--slate-400); font-size: 14px; }
+  .no-results strong { display: block; font-size: 17px; margin-bottom: 8px; color: var(--slate-600); }
+  .footer { text-align: center; padding: 2rem 1rem; font-size: 11.5px; color: var(--slate-400); border-top: 1px solid var(--slate-200); margin-top: 2rem; line-height: 1.8; }
+  .footer a { color: var(--teal-600); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+  .phase-admission  { background: #eff6ff; border-color: #bfdbfe; }
+  .phase-admission .phase-icon  { background: #dbeafe; }
+  .phase-admission h2, .phase-admission p { color: #1e3a5f; }
+  .phase-round      { background: #f0fdfa; border-color: #99f6e4; }
+  .phase-round .phase-icon      { background: #ccfbf1; }
+  .phase-round h2, .phase-round p { color: #134e4a; }
+  .phase-active     { background: #fffbeb; border-color: #fde68a; }
+  .phase-active .phase-icon     { background: #fef3c7; }
+  .phase-active h2, .phase-active p { color: #78350f; }
+  .phase-deteriorating { background: #fff1f2; border-color: #fecdd3; }
+  .phase-deteriorating .phase-icon { background: #fee2e2; }
+  .phase-deteriorating h2, .phase-deteriorating p { color: #881337; }
+  .phase-handover   { background: #f5f3ff; border-color: #ddd6fe; }
+  .phase-handover .phase-icon   { background: #ede9fe; }
+  .phase-handover h2, .phase-handover p { color: #4c1d95; }
+  .phase-learning   { background: #f0fdf4; border-color: #bbf7d0; }
+  .phase-learning .phase-icon   { background: #dcfce7; }
+  .phase-learning h2, .phase-learning p { color: #14532d; }
+  .phase-pipelines  { background: #f8fafc; border-color: #e2e8f0; }
+  .phase-pipelines .phase-icon  { background: #e2e8f0; }
+  .phase-pipelines h2, .phase-pipelines p { color: #1e293b; }
+  .phase-advocate   { background: #fff7ed; border-color: #fed7aa; }
+  .phase-advocate .phase-icon   { background: #ffedd5; }
+  .phase-advocate h2, .phase-advocate p { color: #7c2d12; }
+  /* Mobile */
+  .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 150; backdrop-filter: blur(2px); }
+  .mobile-nav-overlay.open { display: block; }
+  .mobile-sidebar {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white;
+    border-radius: 20px 20px 0 0; padding: 0 0 env(safe-area-inset-bottom, 12px); z-index: 160;
+    max-height: 75vh; overflow-y: auto;
+    transform: translateY(100%); transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+  }
+  .mobile-sidebar.open { transform: translateY(0); }
+  .mobile-sidebar-header {
+    position: sticky; top: 0; background: white; padding: 16px 1.25rem 8px;
+    border-bottom: 1px solid var(--slate-100); display: flex; align-items: center;
+    justify-content: space-between; border-radius: 20px 20px 0 0;
+  }
+  .mobile-sidebar-title { font-size: 15px; font-weight: 700; color: var(--slate-900); }
+  .mobile-sidebar-close { width: 30px; height: 30px; background: var(--slate-100); border: none; border-radius: 50%; cursor: pointer; font-size: 16px; color: var(--slate-500); display: flex; align-items: center; justify-content: center; }
+  .mobile-drag-handle { width: 36px; height: 4px; background: var(--slate-200); border-radius: 2px; margin: 12px auto 0; }
+  .bottom-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    height: calc(var(--mobile-nav-h) + env(safe-area-inset-bottom, 0px));
+    background: white; border-top: 1px solid var(--slate-200); z-index: 140;
+    padding-bottom: env(safe-area-inset-bottom, 0px); box-shadow: 0 -1px 12px rgba(0,0,0,0.06);
+  }
+  .bottom-nav-inner { display: flex; height: var(--mobile-nav-h); align-items: center; }
+  .bottom-tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; background: none; border: none; cursor: pointer; font-size: 9.5px;
+    font-weight: 500; color: var(--slate-400); padding: 6px 2px;
+    transition: color 0.12s; height: 100%;
+  }
+  .bottom-tab.active { color: var(--teal-700); }
+  .bottom-tab .tab-icon { font-size: 20px; line-height: 1; }
+  .bottom-tab .tab-more { font-size: 22px; line-height: 1; }
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { padding: 1rem; padding-bottom: calc(var(--mobile-nav-h) + env(safe-area-inset-bottom, 0px) + 1rem); max-width: 100%; }
+    .bottom-nav { display: flex; flex-direction: column; justify-content: flex-end; }
+    .mobile-sidebar { display: block; }
+    .phase-hero { padding: 1rem 1.125rem; gap: 0.75rem; }
+    .phase-hero-text h2 { font-size: 16px; }
+    .phase-icon { width: 38px; height: 38px; font-size: 20px; }
+    .task-prompt { font-size: 11px; padding: 9px 10px; padding-top: 32px; }
+    .copy-btn { top: 7px; right: 7px; }
+  }
+  @media (max-width: 480px) {
+    .task-top { flex-direction: column; gap: 6px; }
+    .task-modules { order: -1; }
+    header { padding: 0 0.875rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-mark">VR</div>
+    <div>
+      <div class="logo-text">VibeRounds · CCOS</div>
+      <div class="logo-sub">Analytics Mode — Hospital Workflow</div>
+    </div>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Search tasks, modules, or clinical scenarios…" autocomplete="off">
+  </div>
+  <div class="disclaimer-badge">⚠ Educational — verify all outputs</div>
+</header>
+<div class="app-shell">
+<nav id="sidebar">
+  <div class="nav-section-label">Hospital Phases</div>
+  <button class="nav-btn active" data-phase="admission" onclick="showPhase('admission',this)"><span class="nav-dot" style="background:#3b82f6"></span>Admission &amp; Presentation<span class="nav-count" id="cnt-admission">12</span></button>
+  <button class="nav-btn" data-phase="round" onclick="showPhase('round',this)"><span class="nav-dot" style="background:#0d9488"></span>Ward Round<span class="nav-count" id="cnt-round">10</span></button>
+  <button class="nav-btn" data-phase="active" onclick="showPhase('active',this)"><span class="nav-dot" style="background:#f59e0b"></span>Active Management<span class="nav-count" id="cnt-active">12</span></button>
+  <button class="nav-btn" data-phase="deteriorating" onclick="showPhase('deteriorating',this)"><span class="nav-dot" style="background:#ef4444"></span>Deteriorating Patient<span class="nav-count" id="cnt-deteriorating">8</span></button>
+  <button class="nav-btn" data-phase="handover" onclick="showPhase('handover',this)"><span class="nav-dot" style="background:#8b5cf6"></span>Handover &amp; Closure<span class="nav-count" id="cnt-handover">7</span></button>
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Workflows</div>
+  <button class="nav-btn" data-phase="pipelines" onclick="showPhase('pipelines',this)"><span class="nav-dot" style="background:#475569"></span>Full Pipelines<span class="nav-count" id="cnt-pipelines">8</span></button>
+  <button class="nav-btn" data-phase="advocate" onclick="showPhase('advocate',this)"><span class="nav-dot" style="background:#f97316"></span>Patient Advocacy<span class="nav-count" id="cnt-advocate">6</span></button>
+  <button class="nav-btn" data-phase="learning" onclick="showPhase('learning',this)"><span class="nav-dot" style="background:#22c55e"></span>Learning &amp; Education<span class="nav-count" id="cnt-learning">10</span></button>
+</nav>
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bottom-tab active" id="btab-admission" onclick="showPhaseM('admission',this)"><span class="tab-icon">🚨</span>Admission</button>
+    <button class="bottom-tab" id="btab-round" onclick="showPhaseM('round',this)"><span class="tab-icon">📋</span>Ward Round</button>
+    <button class="bottom-tab" id="btab-active" onclick="showPhaseM('active',this)"><span class="tab-icon">⚙️</span>Active</button>
+    <button class="bottom-tab" id="btab-deteriorating" onclick="showPhaseM('deteriorating',this)"><span class="tab-icon">🔴</span>Acute</button>
+    <button class="bottom-tab" id="btab-more" onclick="openMobileMenu()"><span class="tab-more">☰</span>More</button>
+  </div>
+</div>
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-sidebar" id="mobileSidebar">
+  <div class="mobile-drag-handle"></div>
+  <div class="mobile-sidebar-header">
+    <span class="mobile-sidebar-title">All Phases</span>
+    <button class="mobile-sidebar-close" onclick="closeMobileMenu()">✕</button>
+  </div>
+  <div style="padding:0.75rem 0">
+    <div class="nav-section-label">Hospital Phases</div>
+    <button class="nav-btn" data-phase="admission" onclick="showPhaseM('admission');closeMobileMenu()"><span class="nav-dot" style="background:#3b82f6"></span>Admission &amp; Presentation<span class="nav-count" id="mcnt-admission">12</span></button>
+    <button class="nav-btn" data-phase="round" onclick="showPhaseM('round');closeMobileMenu()"><span class="nav-dot" style="background:#0d9488"></span>Ward Round<span class="nav-count" id="mcnt-round">10</span></button>
+    <button class="nav-btn" data-phase="active" onclick="showPhaseM('active');closeMobileMenu()"><span class="nav-dot" style="background:#f59e0b"></span>Active Management<span class="nav-count" id="mcnt-active">12</span></button>
+    <button class="nav-btn" data-phase="deteriorating" onclick="showPhaseM('deteriorating');closeMobileMenu()"><span class="nav-dot" style="background:#ef4444"></span>Deteriorating Patient<span class="nav-count" id="mcnt-deteriorating">8</span></button>
+    <button class="nav-btn" data-phase="handover" onclick="showPhaseM('handover');closeMobileMenu()"><span class="nav-dot" style="background:#8b5cf6"></span>Handover &amp; Closure<span class="nav-count" id="mcnt-handover">7</span></button>
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Workflows</div>
+    <button class="nav-btn" data-phase="pipelines" onclick="showPhaseM('pipelines');closeMobileMenu()"><span class="nav-dot" style="background:#475569"></span>Full Pipelines<span class="nav-count" id="mcnt-pipelines">8</span></button>
+    <button class="nav-btn" data-phase="advocate" onclick="showPhaseM('advocate');closeMobileMenu()"><span class="nav-dot" style="background:#f97316"></span>Patient Advocacy<span class="nav-count" id="mcnt-advocate">6</span></button>
+    <button class="nav-btn" data-phase="learning" onclick="showPhaseM('learning');closeMobileMenu()"><span class="nav-dot" style="background:#22c55e"></span>Learning &amp; Education<span class="nav-count" id="mcnt-learning">10</span></button>
+  </div>
+</div>
+<main id="mainContent">
+<div class="result-bar" id="resultBar"></div>
