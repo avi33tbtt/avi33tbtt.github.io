@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCOS Analytics Mode — Hospital Workflow Reference</title>
+<style>
+  :root {
+    --slate-900: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-400: #94a3b8;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50:  #f8fafc;
+    --teal-700:  #0f766e;
+    --teal-600:  #0d9488;
+    --teal-100:  #ccfbf1;
+    --teal-50:   #f0fdfa;
+    --amber-700: #b45309;
+    --amber-100: #fef3c7;
+    --amber-50:  #fffbeb;
+    --red-700:   #b91c1c;
+    --red-100:   #fee2e2;
+    --blue-700:  #1d4ed8;
+    --blue-100:  #dbeafe;
+    --blue-50:   #eff6ff;
+    --violet-700:#6d28d9;
+    --violet-100:#ede9fe;
+    --green-700: #15803d;
+    --green-100: #dcfce7;
+    --page-bg:   #f8fafc;
+    --sidebar-w: 220px;
+    --header-h:  56px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--page-bg);
+    color: var(--slate-800);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--header-h);
+    background: var(--slate-900);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--slate-700);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .logo-mark {
+    width: 28px; height: 28px;
+    background: var(--teal-600);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+  .logo-text { color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .logo-sub  { color: var(--slate-400); font-size: 11px; font-weight: 400; margin-top: 1px; }
+  .header-search {
+    flex: 1;
+    max-width: 480px;
+    margin-left: auto;
+    position: relative;
+  }
+  .header-search input {
+    width: 100%;
+    height: 34px;
+    background: var(--slate-800);
+    border: 1px solid var(--slate-600);
+    border-radius: 6px;
+    padding: 0 12px 0 36px;
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+  }
+  .header-search input::placeholder { color: var(--slate-400); }
+  .header-search input:focus { border-color: var(--teal-600); }
+  .search-icon {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate-400);
+    pointer-events: none;
+    font-size: 14px;
+  }
+  .disclaimer-badge {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(251,191,36,0.15);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px; color: #fbbf24;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .app-shell {
+    display: flex;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* ── SIDEBAR ── */
+  nav {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: #fff;
+    border-right: 1px solid var(--slate-200);
+    padding: 1rem 0;
+    position: sticky;
+    top: var(--header-h);
+    height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+  }
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-400);
+    padding: 0.75rem 1rem 0.25rem;
+  }
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--slate-600);
+    text-align: left;
+    border-left: 2px solid transparent;
+    transition: background 0.1s, color 0.1s;
+  }
+  .nav-btn:hover { background: var(--slate-50); color: var(--slate-900); }
+  .nav-btn.active {
+    background: var(--teal-50);
+    color: var(--teal-700);
+    border-left-color: var(--teal-600);
+    font-weight: 500;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .nav-count {
+    margin-left: auto;
+    font-size: 10px;
+    background: var(--slate-100);
+    color: var(--slate-500);
+    border-radius: 10px;
+    padding: 1px 6px;
+  }
+  .nav-btn.active .nav-count {
+    background: var(--teal-100);
+    color: var(--teal-700);
+  }
+  .nav-divider { height: 1px; background: var(--slate-200); margin: 0.5rem 0; }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    min-width: 0;
+  }
+
+  /* ── PHASE HERO ── */
+  .phase-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid;
+  }
+  .phase-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .phase-hero-text h2 { font-size: 17px; font-weight: 600; margin-bottom: 3px; }
+  .phase-hero-text p  { font-size: 13px; line-height: 1.5; }
+
+  /* ── TASK GROUPS ── */
+  .task-group { margin-bottom: 2rem; }
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--slate-200);
+  }
+  .group-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate-500);
+  }
+  .group-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TASK CARDS ── */
+  .tasks { display: flex; flex-direction: column; gap: 8px; }
+  .task-card {
+    background: #fff;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .task-card:hover {
+    border-color: var(--teal-600);
+    box-shadow: 0 0 0 3px rgba(13,148,136,0.08);
+  }
+  .task-card.safety {
+    border-left: 3px solid var(--amber-700);
+  }
+  .task-card.critical {
+    border-left: 3px solid var(--red-700);
+  }
+  .task-card.evidence {
+    border-left: 3px solid var(--blue-700);
+  }
+  .task-card.learning {
+    border-left: 3px solid var(--violet-700);
+  }
+  .task-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .task-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate-900);
+    line-height: 1.3;
+  }
+  .task-modules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .mod-chip {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--slate-100);
+    color: var(--slate-600);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .mod-chip.pipeline {
+    background: var(--teal-100);
+    color: var(--teal-700);
+  }
+  .task-desc {
+    font-size: 12px;
+    color: var(--slate-500);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .task-prompt {
+    font-size: 11.5px;
+    color: var(--slate-700);
+    background: var(--slate-50);
+    border: 1px solid var(--slate-200);
+    border-radius: 5px;
+    padding: 8px 10px;
+    line-height: 1.5;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    position: relative;
+  }
+  .task-prompt em { color: var(--teal-700); font-style: normal; font-weight: 600; }
+  .copy-btn {
+    position: absolute;
+    top: 6px; right: 6px;
+    background: var(--slate-200);
+    border: none;
+    border-radius: 4px;
+    padding: 3px 7px;
+    font-size: 10px;
+    color: var(--slate-600);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .copy-btn:hover { background: var(--slate-300); }
+  .copy-btn.copied { background: var(--teal-100); color: var(--teal-700); }
+  .task-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .badge-amber  { background: var(--amber-100);  color: var(--amber-700); }
+  .badge-red    { background: var(--red-100);    color: var(--red-700); }
+  .badge-blue   { background: var(--blue-100);   color: var(--blue-700); }
+  .badge-violet { background: var(--violet-100); color: var(--violet-700); }
+  .badge-green  { background: var(--green-100);  color: var(--green-700); }
+  .badge-slate  { background: var(--slate-100);  color: var(--slate-600); }
+  .badge-teal   { background: var(--teal-100);   color: var(--teal-700); }
+
+  /* pipeline expand */
+  .pipeline-steps {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--slate-200);
+  }
+  .pipeline-steps.open { display: block; }
+  .pipeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--slate-600);
+  }
+  .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--teal-700);
+    background: var(--teal-50);
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .pipeline-toggle {
+    font-size: 11px;
+    color: var(--teal-700);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin-top: 6px;
+  }
+
+  /* search state */
+  .no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--slate-400);
+    font-size: 14px;
+  }
+  .no-results strong { display: block; font-size: 16px; margin-bottom: 6px; color: var(--slate-600); }
+
+  /* count bar */
+  .result-bar {
+    font-size: 12px;
+    color: var(--slate-400);
+    margin-bottom: 1rem;
+    padding: 6px 12px;
+    background: var(--slate-100);
+    border-radius: 5px;
+    display: none;
+  }
+  .result-bar.visible { display: block; }
+
+  /* footer */
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 11px;
+    color: var(--slate-400);
+    border-top: 1px solid var(--slate-200);
+    margin-top: 2rem;
+  }
+  .footer a { color: var(--teal-600); text-decoration: none; }
+
+  /* phase colors */
+  .phase-admission  { background: #eff6ff; border-color: #bfdbfe; }
+  .phase-admission .phase-icon  { background: #dbeafe; }
+  .phase-admission h2, .phase-admission p { color: #1e3a5f; }
+
+  .phase-round      { background: #f0fdfa; border-color: #99f6e4; }
+  .phase-round .phase-icon      { background: #ccfbf1; }
+  .phase-round h2, .phase-round p { color: #134e4a; }
+
+  .phase-active     { background: #fffbeb; border-color: #fde68a; }
+  .phase-active .phase-icon     { background: #fef3c7; }
+  .phase-active h2, .phase-active p { color: #78350f; }
+
+  .phase-deteriorating { background: #fff1f2; border-color: #fecdd3; }
+  .phase-deteriorating .phase-icon { background: #fee2e2; }
+  .phase-deteriorating h2, .phase-deteriorating p { color: #881337; }
+
+  .phase-handover   { background: #f5f3ff; border-color: #ddd6fe; }
+  .phase-handover .phase-icon   { background: #ede9fe; }
+  .phase-handover h2, .phase-handover p { color: #4c1d95; }
+
+  .phase-learning   { background: #f0fdf4; border-color: #bbf7d0; }
+  .phase-learning .phase-icon   { background: #dcfce7; }
+  .phase-learning h2, .phase-learning p { color: #14532d; }
+
+  .phase-pipelines  { background: #f8fafc; border-color: #e2e8f0; }
+  .phase-pipelines .phase-icon  { background: #e2e8f0; }
+  .phase-pipelines h2, .phase-pipelines p { color: #1e293b; }
+
+  .phase-advocate   { background: #fff7ed; border-color: #fed7aa; }
+  .phase-advocate .phase-icon   { background: #ffedd5; }
+  .phase-advocate h2, .phase-advocate p { color: #7c2d12; }
+
+  @media (max-width: 768px) {
+    :root { --sidebar-w: 0px; }
+    nav { display: none; }
+    main { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">VR</div>
+    <div>
+      <div class="logo-text">VibeRounds · CCOS</div>
+      <div class="logo-sub">Analytics Mode — Hospital Workflow</div>
+    </div>
+  </div>
+  <div class="header-search">
+    <span class="search-icon">&#9906;</span>
+    <input type="text" id="searchInput" placeholder="Search tasks, modules, or clinical scenarios…" autocomplete="off">
+  </div>
+  <div class="disclaimer-badge">⚠ Educational use only — verify all outputs</div>
+</header>
+
+<div class="app-shell">
+
+<nav id="sidebar">
+  <div class="nav-section-label">Hospital Phases</div>
+  <button class="nav-btn active" data-phase="admission" onclick="showPhase('admission',this)">
+    <span class="nav-dot" style="background:#3b82f6"></span>Admission &amp; Presentation
+    <span class="nav-count" id="cnt-admission">12</span>
+  </button>
+  <button class="nav-btn" data-phase="round" onclick="showPhase('round',this)">
+    <span class="nav-dot" style="background:#0d9488"></span>Ward Round
+    <span class="nav-count" id="cnt-round">10</span>
+  </button>
+  <button class="nav-btn" data-phase="active" onclick="showPhase('active',this)">
+    <span class="nav-dot" style="background:#f59e0b"></span>Active Management
+    <span class="nav-count" id="cnt-active">12</span>
+  </button>
+  <button class="nav-btn" data-phase="deteriorating" onclick="showPhase('deteriorating',this)">
+    <span class="nav-dot" style="background:#ef4444"></span>Deteriorating Patient
+    <span class="nav-count" id="cnt-deteriorating">8</span>
+  </button>
+  <button class="nav-btn" data-phase="handover" onclick="showPhase('handover',this)">
+    <span class="nav-dot" style="background:#8b5cf6"></span>Handover &amp; Closure
+    <span class="nav-count" id="cnt-handover">7</span>
+  </button>
+  <div class="nav-divider"></div>
+  <div class="nav-section-label">Workflows</div>
+  <button class="nav-btn" data-phase="pipelines" onclick="showPhase('pipelines',this)">
+    <span class="nav-dot" style="background:#475569"></span>Full Pipelines
+    <span class="nav-count" id="cnt-pipelines">8</span>
+  </button>
+  <button class="nav-btn" data-phase="advocate" onclick="showPhase('advocate',this)">
+    <span class="nav-dot" style="background:#f97316"></span>Patient Advocacy
+    <span class="nav-count" id="cnt-advocate">6</span>
+  </button>
+  <button class="nav-btn" data-phase="learning" onclick="showPhase('learning',this)">
+    <span class="nav-dot" style="background:#22c55e"></span>Learning &amp; Education
+    <span class="nav-count" id="cnt-learning">10</span>
+  </button>
+</nav>
+
+<main id="mainContent">
+  <div class="result-bar" id="resultBar"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: ADMISSION & PRESENTATION
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-admission">
+    <div class="phase-hero phase-admission">
+      <div class="phase-icon">🚨</div>
+      <div class="phase-hero-text">
+        <h2>Admission &amp; Presentation</h2>
+        <p>From first encounter to working diagnosis. These tasks run during assessment, triage, and the first diagnostic cycle. The AI interrogates your reasoning — it does not hand you a diagnosis.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header">
+        <span class="group-title">First contact &amp; orientation</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="orientation route new user">
+          <div class="task-top">
+            <div class="task-title">Route-finding for a new session</div>
+            <div class="task-modules"><span class="mod-chip">M00</span></div>
+          </div>
+          <div class="task-desc">If you are new or unsure which module fits your situation, M00 identifies your role and routes you before any clinical data is entered.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            I am a <em>[student / registrar / consultant / advocate]</em>. My current clinical question is <em>[question]</em>. Run Cold-Start Orientation to identify the right module.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="diagnosis presentation semantic problem representation">
+          <div class="task-top">
+            <div class="task-title">Compress the case to a problem representation</div>
+            <div class="task-modules"><span class="mod-chip">M17</span></div>
+          </div>
+          <div class="task-desc">Before building a differential, compress the case to a one-sentence semantic problem representation. Qualifiers: acuity, severity, time course, host factors.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M17 on this case. Case: <em>[paste history and exam findings]</em>. Help me compress this to a precise one-sentence problem representation using semantic qualifiers.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="illness script prototype diagnosis">
+          <div class="task-top">
+            <div class="task-title">Build the illness script for the leading candidate</div>
+            <div class="task-modules"><span class="mod-chip">M15</span></div>
+          </div>
+          <div class="task-desc">Build the formal illness script for the suspected disease and use it as the comparator against your patient's actual findings.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M15 on <em>[suspected diagnosis]</em>. Then compare the illness script against this patient: <em>[key findings]</em>. Where does the patient fit the prototype and where do they deviate?
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="differential diagnosis ddx expand rank">
+          <div class="task-top">
+            <div class="task-title">Differential diagnosis deep dive</div>
+            <div class="task-modules"><span class="mod-chip">M12</span></div>
+          </div>
+          <div class="task-desc">Expand, re-rank, and interrogate the differential. For each entry: what supports it, what excludes it, what investigation would move it up or down.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M12 on this case. Working diagnosis: <em>[diagnosis]</em>. Current DDx: <em>[list]</em>. Case summary: <em>[findings]</em>. Expand, re-rank, and interrogate each item.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header">
+        <span class="group-title">Diagnostic reasoning</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="hypothetico deductive hypothesis test">
+          <div class="task-top">
+            <div class="task-title">Test each hypothesis deductively</div>
+            <div class="task-modules"><span class="mod-chip">M56</span></div>
+          </div>
+          <div class="task-desc">State the leading hypothesis. The AI generates its testable predictions, then checks each against the case data — surfacing where evidence supports, undermines, or is absent.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M56 (Hypothetico-Deductive Model). Leading hypothesis: <em>[diagnosis]</em>. Case: <em>[summary]</em>. Generate the predictions this hypothesis makes, then test each against the data.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="bayesian likelihood ratio probability pre-test">
+          <div class="task-top">
+            <div class="task-title">Apply Bayesian likelihood ratios to key findings</div>
+            <div class="task-modules"><span class="mod-chip">M36</span></div>
+          </div>
+          <div class="task-desc">For each key finding, estimate pre-test probability and apply likelihood ratios. The AI audits numeric reasoning and shows how each finding shifts the posterior probability.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M36 (Bayesian Engine) on this case. Key findings: <em>[list]</em>. Leading diagnoses: <em>[list]</em>. Audit my probability estimates and show how each finding shifts the posterior.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="causal probabilistic reasoning network">
+          <div class="task-top">
+            <div class="task-title">Separate causal from probabilistic reasoning</div>
+            <div class="task-modules"><span class="mod-chip">M18</span></div>
+          </div>
+          <div class="task-desc">Run the case through both lenses. The AI surfaces where you are reasoning causally when the data only supports probabilistic inference — and vice versa.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M18 on this case. Case: <em>[summary]</em>. Working diagnosis: <em>[diagnosis]</em>. Identify where my reasoning is causal and where it is only probabilistic.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="pathophysiology mechanism first principles biology">
+          <div class="task-top">
+            <div class="task-title">Map first-principles pathophysiology</div>
+            <div class="task-modules"><span class="mod-chip">M31</span></div>
+          </div>
+          <div class="task-desc">Build the mechanistic chain from underlying biology to clinical presentation. The AI challenges every assumed step and asks for the molecular mechanism.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M31 on this presentation. Case: <em>[findings]</em>. Build the first-principles pathophysiological chain from mechanism to the clinical picture in front of me.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="red herring signal noise data">
+          <div class="task-top">
+            <div class="task-title">Red herring / signal-to-noise drill</div>
+            <div class="task-modules"><span class="mod-chip">M37</span></div>
+          </div>
+          <div class="task-desc">Classify every finding as signal, noise, or red herring. The AI challenges every classification. Use when a case feels complex because of data volume, not genuine ambiguity.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M37 on this case. All findings: <em>[full data set]</em>. Classify each finding as signal, noise, or red herring — then interrogate my classifications.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="naturalistic decision recognition primed pattern">
+          <div class="task-top">
+            <div class="task-title">Audit your pattern recognition</div>
+            <div class="task-modules"><span class="mod-chip">M20</span></div>
+          </div>
+          <div class="task-desc">Name the pattern you fired first. M20 runs the Recognition-Primed Decision model — what cues triggered it, what mental simulation you ran, where System 1 may have short-circuited.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M20 (Naturalistic Decision Making). The pattern I fired on this case: <em>[pattern/diagnosis]</em>. Case: <em>[summary]</em>. Audit the cues, the mental simulation, and the risk of premature closure.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="diagnostic anchor anchoring premature closure">
+          <div class="task-top">
+            <div class="task-title">Extract and interrogate the diagnostic anchor</div>
+            <div class="task-modules"><span class="mod-chip">M30</span><span class="mod-chip">M26</span></div>
+          </div>
+          <div class="task-desc">Identify the single finding most powerfully anchoring the current diagnosis. Defend it, test its reversibility, and reason through what happens if the anchor is wrong.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M30 → M26 on this case. Case: <em>[summary]</em>. Working diagnosis: <em>[diagnosis]</em>. Extract the diagnostic anchor, then run a full bias audit on my reasoning.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Bias audit</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /admission -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: WARD ROUND
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-round" style="display:none">
+    <div class="phase-hero phase-round">
+      <div class="phase-icon">📋</div>
+      <div class="phase-hero-text">
+        <h2>Ward Round</h2>
+        <p>Structured preparation, real-time case review, and on-round decision auditing. The AI plays a senior peer — probing each element and insisting on justification before you move on.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Preparation</span></div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="ward round sbar preparation presentation">
+          <div class="task-top">
+            <div class="task-title">Ward round preparation — structured SBAR</div>
+            <div class="task-modules"><span class="mod-chip">M04</span></div>
+          </div>
+          <div class="task-desc">Prepare the structured SBAR presentation for each patient. The AI acts as a senior peer, probing the problem list, active issues, outstanding investigations, and planned interventions.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M04 (Ward Round Preparation). Patient: <em>[age, sex, day of admission]</em>. Diagnosis: <em>[working diagnosis]</em>. Summary: <em>[24hr events, vitals, key data]</em>. Outstanding issues: <em>[list]</em>. Drill my presentation.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="overnight trends vitals trajectory">
+          <div class="task-top">
+            <div class="task-title">Overnight trend analysis</div>
+            <div class="task-modules"><span class="mod-chip">M27</span></div>
+          </div>
+          <div class="task-desc">Plot the trajectory of key parameters overnight. The AI identifies acceleration, deceleration, plateau, and trend reversal — then asks for clinical interpretation of each velocity change.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M27 (Time-Series Analyzer) on this patient's overnight data. Data: <em>[vitals, obs, bloods with timestamps]</em>. Identify velocity changes and ask me to interpret each one.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="real time case review data audit clean">
+          <div class="task-top">
+            <div class="task-title">Real-time case review &amp; data audit</div>
+            <div class="task-modules"><span class="mod-chip">M05</span></div>
+          </div>
+          <div class="task-desc">Query and clean the case log before the round. The AI identifies data gaps, inconsistencies, and entries requiring verification — asking you to explain each anomaly.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M05 (Real-Time Case Review) on this patient's record. Case log: <em>[paste de-identified record]</em>. Identify gaps, inconsistencies, and data points needing verification before the round.
+          </div>
+          <div class="task-badges"><span class="badge badge-slate">⚠ De-identified data only</span></div>
+        </div>
+
+        <div class="task-card" data-tags="polypharmacy medication drug chart screen">
+          <div class="task-top">
+            <div class="task-title">Polypharmacy screen before the round</div>
+            <div class="task-modules"><span class="mod-chip">M13</span></div>
+          </div>
+          <div class="task-desc">Run the polypharmacy screen before stepping onto the ward. For each medication: indication, interaction, dose check, and deprescribing opportunity.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M13 (Medication Reconciliation) on this drug chart. Patient: <em>[age, weight, CrCl/eGFR, hepatic function]</em>. Medications: <em>[list with doses and frequency]</em>. Diagnoses: <em>[list]</em>.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety</span><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">On-round decisions</span></div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="diagnostic timeout pause check missing">
+          <div class="task-top">
+            <div class="task-title">Diagnostic time-out before committing</div>
+            <div class="task-modules"><span class="mod-chip">M28</span></div>
+          </div>
+          <div class="task-desc">Pause at the moment of decision. What are we missing? What is the most dangerous diagnosis not yet excluded? Have we anchored prematurely? Assign explicit confidence levels before proceeding.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M28 (Diagnostic Time-Out) before I commit to this plan. Current diagnosis: <em>[diagnosis]</em>. Proposed plan: <em>[summary]</em>. Case: <em>[key findings]</em>. Force a full time-out.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety gate</span></div>
+        </div>
+
+        <div class="task-card" data-tags="high value care audit test referral investigation">
+          <div class="task-top">
+            <div class="task-title">High-value care audit of outstanding requests</div>
+            <div class="task-modules"><span class="mod-chip">M34</span></div>
+          </div>
+          <div class="task-desc">Audit every outstanding test, investigation, and referral. What is the pre-test probability? What will this change? Does the benefit justify the cost and patient burden?</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M34 (HVC Auditor) on these outstanding requests. Requests: <em>[list of tests/referrals]</em>. Working diagnosis: <em>[diagnosis]</em>. Audit each for pre-test probability, clinical impact, and value.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="why now precipitant acute change decompensation">
+          <div class="task-top">
+            <div class="task-title">"Why now?" — precipitant for acute change</div>
+            <div class="task-modules"><span class="mod-chip">M33</span></div>
+          </div>
+          <div class="task-desc">Why did this patient change overnight? The AI will not accept "the disease progressed" — it interrogates for a specific precipitant: physiological, pharmacological, behavioural, or social.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M33 ("Why Now?" Hunter). Patient with known <em>[chronic diagnosis]</em> has acutely <em>[changed/deteriorated]</em>. Clinical findings: <em>[overnight data]</em>. Find the precipitant.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="discharge planning throughput bed flow operational">
+          <div class="task-top">
+            <div class="task-title">Discharge planning &amp; throughput strategy</div>
+            <div class="task-modules"><span class="mod-chip">M40</span></div>
+          </div>
+          <div class="task-desc">Identify bottlenecks, sequence dependencies, and timing risks in the discharge or ongoing management plan. Build a throughput sequence that maximizes safety without sacrificing efficiency.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M40 (Operational Strategist) for this patient. Remaining clinical tasks before discharge: <em>[list]</em>. Constraints: <em>[bed pressures, specialty availability, investigations pending]</em>. Sequence optimally.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="epistemic certainty confidence calibration how certain">
+          <div class="task-top">
+            <div class="task-title">Map certainty across the management plan</div>
+            <div class="task-modules"><span class="mod-chip">M35</span></div>
+          </div>
+          <div class="task-desc">For each claim in the plan, assign epistemic status: established fact, evidence-based inference, reasonable assumption, or speculation. Identify where the plan rests on conjecture.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M35 (Epistemic Certainty Mapping) on this management plan. Diagnosis: <em>[diagnosis]</em>. Plan: <em>[list each element]</em>. Map the certainty status of each claim.
+          </div>
+          <div class="task-badges"><span class="badge badge-blue">Evidence</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /round -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: ACTIVE MANAGEMENT
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-active" style="display:none">
+    <div class="phase-hero phase-active">
+      <div class="phase-icon">⚙️</div>
+      <div class="phase-hero-text">
+        <h2>Active Management</h2>
+        <p>Ongoing treatment decisions, evidence integration, and management plan auditing. The AI stress-tests your plan across the Conservative → Maximal decision spectrum.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Treatment decisions</span></div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="treatment compare options comparative analysis prognosis">
+          <div class="task-top">
+            <div class="task-title">Compare treatment options with prognosis trajectories</div>
+            <div class="task-modules"><span class="mod-chip">M48</span></div>
+          </div>
+          <div class="task-desc">Compare two or more treatment options: mechanism, evidence quality, response timeline, adverse event profile, and prognostic trajectory. The AI then audits your reasoning for choosing one path.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M48 on this management decision. Options: <em>[Option A vs Option B]</em>. Diagnosis: <em>[diagnosis]</em>. Patient profile: <em>[age, comorbidities, relevant factors]</em>. Compare and then audit my reasoning.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="decision spectrum conservative aggressive risk benefit">
+          <div class="task-top">
+            <div class="task-title">Map the full decision spectrum</div>
+            <div class="task-modules"><span class="mod-chip">Decision Spectrum</span></div>
+          </div>
+          <div class="task-desc">For any management decision, map Conservative → Minimal → Balanced → Aggressive → Maximal with explicit rationale and uncertainty flags at each step. Defend your position on the spectrum.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Decision Spectrum on this management question: <em>[specific decision]</em>. Patient: <em>[summary]</em>. Map all five positions with rationale, then ask me to defend where I am placing myself.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="guideline concordance protocol deviate evidence based">
+          <div class="task-top">
+            <div class="task-title">Check guideline concordance</div>
+            <div class="task-modules"><span class="mod-chip">M53</span></div>
+          </div>
+          <div class="task-desc">Map relevant clinical guidelines, identify where the management plan is concordant and where it deviates, and provide explicit justification for each deviation.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M53 (Clinical Guideline Navigator) on my management plan. Diagnosis: <em>[diagnosis]</em>. Plan: <em>[list]</em>. Identify which elements are guideline-concordant and interrogate each deviation.
+          </div>
+          <div class="task-badges"><span class="badge badge-blue">Evidence</span></div>
+        </div>
+
+        <div class="task-card" data-tags="counterfactual what if different age sex comorbidity">
+          <div class="task-top">
+            <div class="task-title">Counterfactual stress-test of the plan</div>
+            <div class="task-modules"><span class="mod-chip">M23</span></div>
+          </div>
+          <div class="task-desc">Run structured "what if" scenarios. What if the key finding were absent? What if the patient were 20 years older? How does the plan change across each counterfactual?</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M23 (Counterfactual Analysis) on this case. Diagnosis: <em>[diagnosis]</em>. Plan: <em>[plan]</em>. Test these counterfactuals: <em>[list — e.g. if CXR were normal, if patient were 75yo, if renal function were impaired]</em>.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Safety &amp; harm prevention</span>
+        <span class="group-tag badge-amber badge">Safety</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card safety" data-tags="pre mortem failure imagine catastrophe anticipate">
+          <div class="task-top">
+            <div class="task-title">Clinical pre-mortem before implementing the plan</div>
+            <div class="task-modules"><span class="mod-chip">M42</span></div>
+          </div>
+          <div class="task-desc">Imagine the patient has come to harm six weeks from now. Work backwards to identify the most likely failure modes in the current plan, ranked by probability and severity.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M42 (Clinical Pre-Mortem) on this plan. Management plan: <em>[list]</em>. Imagine the patient has deteriorated in 4-6 weeks. Identify the most likely failure modes and rank them.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety</span></div>
+        </div>
+
+        <div class="task-card safety" data-tags="iatrogenic harm domino downstream treatment complication">
+          <div class="task-top">
+            <div class="task-title">Iatrogenic domino effect — trace downstream harms</div>
+            <div class="task-modules"><span class="mod-chip">M29</span></div>
+          </div>
+          <div class="task-desc">Trace the downstream harm chain for each decision: Treatment A → Adverse Event B → Intervention C → Harm D. Use to stress-test the management plan before committing.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M29 (Iatrogenic Domino) on this management plan. Plan: <em>[list each treatment and intervention]</em>. Patient: <em>[comorbidities, medications, age]</em>. Trace the potential downstream harm chain for each decision.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety</span></div>
+        </div>
+
+        <div class="task-card safety" data-tags="FMEA failure mode effects analysis risk rank">
+          <div class="task-top">
+            <div class="task-title">FMEA — rank failure modes in the management plan</div>
+            <div class="task-modules"><span class="mod-chip">M49</span></div>
+          </div>
+          <div class="task-desc">Apply Failure Mode and Effects Analysis to the clinical plan. Enumerate failure modes at each step, estimate severity and likelihood, and prioritize the highest-risk points.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M49 (FMEA) on this clinical plan. Plan: <em>[step-by-step management]</em>. For each step, identify failure modes, estimate severity (1–10) and likelihood (1–10), and rank overall risk.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety</span></div>
+        </div>
+
+        <div class="task-card safety" data-tags="economics value based care cost resource allocation">
+          <div class="task-top">
+            <div class="task-title">Health economics &amp; value-based care alignment</div>
+            <div class="task-modules"><span class="mod-chip">M43</span></div>
+          </div>
+          <div class="task-desc">Calculate or estimate cost-effectiveness, resource intensity, and value-based care alignment for the proposed plan. The AI challenges assumptions and asks for explicit trade-off reasoning.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M43 (Health Economics) on this management plan. Plan: <em>[list]</em>. Setting: <em>[tertiary / district / resource-limited]</em>. Evaluate cost-effectiveness and value alignment, then challenge my assumptions.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="systems based analysis patient team unit institutional">
+          <div class="task-top">
+            <div class="task-title">Systems-based clinical analysis</div>
+            <div class="task-modules"><span class="mod-chip">M51</span></div>
+          </div>
+          <div class="task-desc">Analyse through a systems lens: patient, team, unit, institutional, and societal factors contributing to this presentation or management risk. Identify intervention points at every level.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M51 (Systems-Based Analysis) on this case. Case: <em>[summary]</em>. Analyse contributing factors at the patient, team, unit, and institutional level. Identify where interventions are possible.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="bias audit anchoring availability commission">
+          <div class="task-top">
+            <div class="task-title">Full cognitive bias audit</div>
+            <div class="task-modules"><span class="mod-chip">M26</span></div>
+          </div>
+          <div class="task-desc">Systematic audit for anchoring, availability, premature closure, framing effects, and commission bias. The AI names each bias, its mechanism, and the specific moment it appears in the reasoning.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M26 (Bias Audit) on my diagnostic and management reasoning for this case. My full reasoning: <em>[describe how you reached your diagnosis and plan]</em>. Identify all cognitive biases present.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Bias audit</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Evidence integration</span>
+        <span class="group-tag badge-blue badge">Evidence</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card evidence" data-tags="evidence frontier what is known literature review">
+          <div class="task-top">
+            <div class="task-title">Map the evidence frontier for a clinical question</div>
+            <div class="task-modules"><span class="mod-chip">M21</span></div>
+          </div>
+          <div class="task-desc">What is known, what is contested, what is recent, and where the evidence base is thin or absent — for this diagnosis or management question.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M21 (Evidence Frontier) on this clinical question: <em>[PICO or specific question]</em>. Map what is established, what is contested, what is recent, and where genuine evidence gaps exist.
+          </div>
+          <div class="task-badges"><span class="badge badge-blue">Evidence</span></div>
+        </div>
+
+        <div class="task-card evidence" data-tags="EBM evidence based medicine PICO appraise sackett">
+          <div class="task-top">
+            <div class="task-title">Evidence-based medicine appraisal</div>
+            <div class="task-modules"><span class="mod-chip">M45</span><span class="mod-chip">Shadow M47</span></div>
+          </div>
+          <div class="task-desc">Apply the Sackett EBM cycle: formulate the PICO, identify the best evidence, critically appraise, integrate. Then run the adversarial counterpart to challenge the appraisal under pressure.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M45 then Shadow M47 on this clinical question. Question: <em>[clinical question or PICO]</em>. Key study or guideline: <em>[citation or description]</em>. Appraise, then immediately challenge the appraisal adversarially.
+          </div>
+          <div class="task-badges"><span class="badge badge-blue">Evidence</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /active -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: DETERIORATING PATIENT
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-deteriorating" style="display:none">
+    <div class="phase-hero phase-deteriorating">
+      <div class="phase-icon">🔴</div>
+      <div class="phase-hero-text">
+        <h2>Deteriorating Patient</h2>
+        <p>Acute-on-chronic decompensation, multi-organ complexity, and cascading failure. These modules help you find the precipitant, model the cascade, and avoid missing the reversible cause.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Acute deterioration workup</span>
+        <span class="group-tag badge-red badge">High acuity</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card critical" data-tags="why now precipitant deterioration acute change">
+          <div class="task-top">
+            <div class="task-title">Find the precipitant — "Why now?"</div>
+            <div class="task-modules"><span class="mod-chip">M33</span></div>
+          </div>
+          <div class="task-desc">The AI will not accept "the disease progressed." It interrogates for a specific precipitant — physiological, pharmacological, behavioural, social — and audits whether you have actually looked for it.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M33 ("Why Now?") urgently. Patient: known <em>[chronic diagnosis]</em>, now acutely <em>[description of deterioration]</em>. Findings: <em>[vitals, bloods, clinical signs]</em>. Find the specific precipitant.
+          </div>
+          <div class="task-badges"><span class="badge badge-red">Acute</span></div>
+        </div>
+
+        <div class="task-card critical" data-tags="poly crisis cascading multi organ complex failure">
+          <div class="task-top">
+            <div class="task-title">Poly-crisis — map how pathologies are interacting</div>
+            <div class="task-modules"><span class="mod-chip">M38</span></div>
+          </div>
+          <div class="task-desc">For patients where multiple pathologies are simultaneously active, M38 simulates how each problem interacts with and amplifies the others — identifying the single intervention most likely to interrupt the cascade.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M38 (Poly-Crisis Simulator) on this patient. Active problems: <em>[list all simultaneous pathologies]</em>. Current state: <em>[vitals and clinical summary]</em>. Map the cascade and find the priority intervention.
+          </div>
+          <div class="task-badges"><span class="badge badge-red">Acute</span></div>
+        </div>
+
+        <div class="task-card critical" data-tags="time series velocity trend deterioration speed">
+          <div class="task-top">
+            <div class="task-title">Velocity analysis — what is deteriorating fastest?</div>
+            <div class="task-modules"><span class="mod-chip">M27</span></div>
+          </div>
+          <div class="task-desc">Plot the trajectory of key clinical parameters. The AI identifies which parameters are accelerating, which are plateauing, and asks you to interpret the clinical significance of each rate of change.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M27 (Time-Series Velocity Analyzer) on this deteriorating patient. Serial data: <em>[parameters with timestamps — obs, bloods, UO, GCS, etc.]</em>. Identify what is deteriorating fastest.
+          </div>
+        </div>
+
+        <div class="task-card critical" data-tags="iatrogenic treatment caused harm medication cascade">
+          <div class="task-top">
+            <div class="task-title">Is treatment contributing to the deterioration?</div>
+            <div class="task-modules"><span class="mod-chip">M29</span><span class="mod-chip">M13</span></div>
+          </div>
+          <div class="task-desc">The Domino Effect traces how prior treatment decisions may have contributed to the current state. The Medication Reconciliation finds pharmacological risks already embedded in the chart.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M29 → M13 on this deteriorating patient. Current medications: <em>[list with doses]</em>. Recent interventions: <em>[list treatments given]</em>. Current state: <em>[findings]</em>. Has treatment contributed to deterioration?
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety</span><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+        <div class="task-card critical" data-tags="FMEA pre mortem risk failure next failure anticipate">
+          <div class="task-top">
+            <div class="task-title">Anticipate the next failure point</div>
+            <div class="task-modules"><span class="mod-chip">M49</span><span class="mod-chip">M42</span></div>
+          </div>
+          <div class="task-desc">FMEA identifies where the next failure is most likely. The Pre-Mortem imagines it has occurred and asks you to trace the mechanism — so you can interrupt it before it happens.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M49 → M42 on this deteriorating patient. Current plan: <em>[management steps]</em>. Active problems: <em>[list]</em>. Identify the highest-risk next failure point and run a pre-mortem on it.
+          </div>
+          <div class="task-badges"><span class="badge badge-red">High risk</span></div>
+        </div>
+
+        <div class="task-card" data-tags="diagnostic timeout missing diagnosis missed dangerous exclude">
+          <div class="task-top">
+            <div class="task-title">Emergency diagnostic time-out</div>
+            <div class="task-modules"><span class="mod-chip">M28</span><span class="mod-chip">M26</span></div>
+          </div>
+          <div class="task-desc">Before committing to a management plan for a deteriorating patient, pause and run the Time-Out + Bias Audit. What dangerous diagnosis have we not yet excluded?</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M28 + M26 (Diagnostic Time-Out + Bias Audit) urgently. Working diagnosis: <em>[diagnosis]</em>. Current plan: <em>[plan]</em>. Case: <em>[clinical summary]</em>. What are we missing, and what bias has led us to miss it?
+          </div>
+          <div class="task-badges"><span class="badge badge-red">Safety gate</span></div>
+        </div>
+
+        <div class="task-card" data-tags="counterfactual what if anchor wrong alternative diagnosis">
+          <div class="task-top">
+            <div class="task-title">What if the working diagnosis is wrong?</div>
+            <div class="task-modules"><span class="mod-chip">M30</span><span class="mod-chip">M23</span></div>
+          </div>
+          <div class="task-desc">Extract the anchor, then run counterfactuals designed specifically to break it. What would the case look like if the anchor finding were absent, misleading, or a red herring?</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M30 → M23 on this case. Working diagnosis: <em>[diagnosis]</em>. The patient is deteriorating despite treatment. Extract the diagnostic anchor and build counterfactuals to challenge it.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="operational throughput triage priority sequence competing">
+          <div class="task-top">
+            <div class="task-title">Triage and sequence competing priorities</div>
+            <div class="task-modules"><span class="mod-chip">M40</span></div>
+          </div>
+          <div class="task-desc">For a patient with multiple simultaneous clinical priorities, build a throughput sequence that addresses the highest-risk first without creating new bottlenecks elsewhere.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M40 (Operational Strategist) for this complex deteriorating patient. Active problems: <em>[list]</em>. Resources available: <em>[team, investigations, procedures available]</em>. Sequence the clinical priorities.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /deteriorating -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: HANDOVER & CLOSURE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-handover" style="display:none">
+    <div class="phase-hero phase-handover">
+      <div class="phase-icon">🔄</div>
+      <div class="phase-hero-text">
+        <h2>Handover &amp; Closure</h2>
+        <p>End-of-shift, discharge, and case closure. These modules ensure clinical knowledge is transferred cleanly, outstanding risks are named explicitly, and lessons are captured before the case closes.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Handover preparation</span></div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="handover overnight triage prepare anticipate">
+          <div class="task-top">
+            <div class="task-title">Overnight triage anticipation — prepare the covering team</div>
+            <div class="task-modules"><span class="mod-chip">M04</span></div>
+          </div>
+          <div class="task-desc">Rehearse the night-cover scenario: which patient is seen first, which can wait, which needs immediate escalation, and which needs an anticipatory care plan before you leave.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M04 (Overnight Triage Rehearsal). Patients to hand over: <em>[list with brief summaries and current concerns]</em>. Covering team: <em>[grade/experience]</em>. Prioritize and identify anticipatory care needs.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="outstanding risk what are we missing uncertainty flag">
+          <div class="task-top">
+            <div class="task-title">Outstanding risks and uncertainty flags for handover</div>
+            <div class="task-modules"><span class="mod-chip">M35</span><span class="mod-chip">M28</span></div>
+          </div>
+          <div class="task-desc">Map epistemic certainty across the management plan and run a final Time-Out before handover. What is uncertain? What would trigger escalation? What must the covering team know?</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M35 + M28 as a pre-handover check. Patient: <em>[summary]</em>. Current plan: <em>[list]</em>. Map what we are certain and uncertain about, and identify what the covering team must watch for.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="implementation workflow escalation trigger criteria">
+          <div class="task-top">
+            <div class="task-title">Set escalation triggers and implementation plan</div>
+            <div class="task-modules"><span class="mod-chip">M41</span></div>
+          </div>
+          <div class="task-desc">Apply implementation science to the ongoing management plan: identify barriers, enablers, feedback loops, and explicit escalation criteria for the covering team.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M41 (Clinical Workflow Implementation) for handover. Ongoing plan: <em>[management steps]</em>. Define clear escalation triggers, monitoring parameters, and next decision points for the covering team.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Case closure &amp; learning</span></div>
+      <div class="tasks">
+
+        <div class="task-card learning" data-tags="clinical pearls learning distill case summary">
+          <div class="task-top">
+            <div class="task-title">Distill clinical pearls from a resolved case</div>
+            <div class="task-modules"><span class="mod-chip">M52</span></div>
+          </div>
+          <div class="task-desc">After a case resolves, distill the key learning points into shareable clinical pearls — then stress-test each pearl for generalizability and exception conditions.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M52 (Clinical Pearls Distillation). The case: <em>[summary of presentation, diagnosis, management, outcome]</em>. Extract the key clinical pearls and test each for generalizability.
+          </div>
+          <div class="task-badges"><span class="badge badge-green">Learning</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="post adverse event review FMEA system analysis">
+          <div class="task-top">
+            <div class="task-title">Post-adverse-event structured review</div>
+            <div class="task-modules"><span class="mod-chip">M49</span><span class="mod-chip">M29</span><span class="mod-chip">M51</span></div>
+          </div>
+          <div class="task-desc">When something has gone wrong, run a structured post-event analysis: FMEA to rank failure modes, the Domino Effect to trace the harm mechanism, and Systems-Based Analysis for systemic factors.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M49 → M29 → M51 as a post-event review. The adverse event: <em>[what happened]</em>. Timeline: <em>[sequence of events]</em>. Run a structured analysis: failure modes, harm mechanism, and system factors.
+          </div>
+          <div class="task-badges"><span class="badge badge-amber">Safety review</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="diagnostic reasoning map record trajectory visualize">
+          <div class="task-top">
+            <div class="task-title">Produce the diagnostic reasoning map</div>
+            <div class="task-modules"><span class="mod-chip">M50</span></div>
+          </div>
+          <div class="task-desc">Generate a structured map of the complete diagnostic reasoning process: anchor findings, branch points, pivots, and the final diagnosis. Documents how the reasoning evolved, not just where it landed.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M50 (Diagnostic Reasoning Map) for this resolved case. Chronology of reasoning: <em>[describe how the diagnosis evolved — initial impression, pivots, final diagnosis]</em>. Produce the complete map.
+          </div>
+          <div class="task-badges"><span class="badge badge-violet">Metacognition</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="thematic analysis patterns narrative recurring">
+          <div class="task-top">
+            <div class="task-title">Thematic analysis of the case narrative</div>
+            <div class="task-modules"><span class="mod-chip">M25</span></div>
+          </div>
+          <div class="task-desc">Identify the recurring clinical themes across the case history. The AI names the dominant themes, asks whether they form a coherent narrative, and surfaces data points that do not fit.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M25 (Thematic Analysis) on this case. Full case narrative: <em>[presentation, investigations, management, outcome]</em>. Identify dominant clinical themes and surface any data that did not fit the narrative.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /handover -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: FULL PIPELINES
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-pipelines" style="display:none">
+    <div class="phase-hero phase-pipelines">
+      <div class="phase-icon">⛓️</div>
+      <div class="phase-hero-text">
+        <h2>Full Clinical Pipelines</h2>
+        <p>End-to-end module sequences for the most common clinical challenges. Each pipeline has a defined entry point, core sequence, and closure. Click "Show steps" to expand any pipeline.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Diagnostic pipelines</span></div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="diagnostic pipeline complete full rigorous">
+          <div class="task-top">
+            <div class="task-title">Complete Diagnostic Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 1</span></div>
+          </div>
+          <div class="task-desc">From presentation to diagnosis with full cognitive audit. For complex, uncertain, or high-stakes cases.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Complete Diagnostic Pipeline on this case. Case: <em>[full clinical summary]</em>. Run M17 → M15 → M12 → M56 → M36 → M37 → M30 → M26 → M28 → M50 in sequence.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M17 — Semantic problem representation</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M15 — Illness script for leading candidate</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M12 — DDx Deep Dive vs. the script</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M56 — Hypothetico-deductive testing</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M36 — Bayesian likelihood ratios</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M37 — Red herring / signal-noise drill</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M30 — Diagnostic anchor extraction</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M26 — Full bias audit</div>
+            <div class="pipeline-step"><span class="step-num">9</span> M28 — Diagnostic time-out</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M50 — Diagnostic reasoning map (closure)</div>
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="cognitive safety bias audit pipeline how i think">
+          <div class="task-top">
+            <div class="task-title">Cognitive Safety &amp; Bias Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 2</span></div>
+          </div>
+          <div class="task-desc">Complete audit of how you are thinking, not just what. For cases where you have a strong intuitive read and want to audit it before acting.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Cognitive Safety Pipeline on this case. My reasoning so far: <em>[describe your diagnostic thinking]</em>. Run M54 → M20 → M24 → M30 → M23 → M26 → Fw-D → M28, then close with M32 + M57.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M54 — System 1/2 question generator (baseline)</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M20 — Name the pattern you recognized</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M24 — Evaluate the heuristic used</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M30 — Extract the diagnostic anchor</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M23 — Counterfactuals to break the anchor</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M26 — Systematic bias audit</div>
+            <div class="pipeline-step"><span class="step-num">7</span> Fw-D — Critical awareness / AI risk audit</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M28 — Final diagnostic time-out</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M32 + M57 — Cognition loop + deep dive (closure)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Management &amp; safety pipelines</span></div>
+      <div class="tasks">
+
+        <div class="task-card safety" data-tags="management pipeline plan treatment decision full">
+          <div class="task-top">
+            <div class="task-title">Management Decision Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 3</span></div>
+          </div>
+          <div class="task-desc">From confirmed diagnosis to defensible management plan. For complex decisions, polypharmacy, or any case with significant iatrogenic potential.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Management Decision Pipeline. Diagnosis: <em>[confirmed diagnosis]</em>. Working plan: <em>[proposed management]</em>. Patient: <em>[summary]</em>. Run M48 → Decision Spectrum → M13 → M34 → M29 → M42 → M49 → M35 → M53.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M48 — Treatment comparative analysis</div>
+            <div class="pipeline-step"><span class="step-num">2</span> Decision Spectrum — Map all five positions</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M13 — Medication reconciliation ⚠</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M34 — High-value care auditor</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M29 — Iatrogenic domino effect</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M42 — Clinical pre-mortem</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M49 — FMEA on the proposed plan</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M35 — Epistemic certainty mapping</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M53 — Guideline concordance + M52 pearls (closure)</div>
+          </div>
+        </div>
+
+        <div class="task-card safety" data-tags="patient safety pipeline harm reduction polypharmacy risk">
+          <div class="task-top">
+            <div class="task-title">Patient Safety Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 6</span></div>
+          </div>
+          <div class="task-desc">Systematic pre-action harm reduction for high-risk interventions, polypharmacy, or complex multi-morbid patients. "First, do no harm" as a structured workflow.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Patient Safety Pipeline before implementing this plan. Plan: <em>[management]</em>. Patient: <em>[age, comorbidities, medications]</em>. Run M38 → M29 → M13 → M49 → M42 → M26 → M34 → M33 → M35.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M38 — Poly-crisis simulator (multi-morbid)</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M29 — Iatrogenic domino effect</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M13 — Medication reconciliation ⚠</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M49 — FMEA analysis</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M42 — Pre-mortem on top failure modes</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M26 — Bias audit (commission bias)</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M34 — High-value care auditor</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M33 — "Why now?" timing check</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M35 — Epistemic certainty mapping (closure)</div>
+          </div>
+        </div>
+
+        <div class="task-card critical" data-tags="deteriorating complex poly crisis pipeline systems multi organ">
+          <div class="task-top">
+            <div class="task-title">Deteriorating Patient / Complex Systems Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 13</span></div>
+          </div>
+          <div class="task-desc">For patients in whom everything is going wrong simultaneously: multi-organ failure, frail elderly with multiple active problems, ICU complexity.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Systems Failure Pipeline. Patient: <em>[age, background, acute presentation]</em>. Active problems: <em>[list]</em>. Run M38 → M27 → M33 → M29 → M13 → M51 → M49 → M42 → M40.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M38 — Poly-crisis cascade model</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M27 — Velocity: what is deteriorating fastest?</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M33 — "Why now?" precipitant hunt</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M29 — Iatrogenic contribution?</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M13 — Medication reconciliation ⚠</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M51 — Systems-based clinical analysis</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M49 — FMEA: next failure point</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M42 — Pre-mortem on highest risk</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M40 — Operational throughput: triage priorities</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Evidence &amp; ward round pipelines</span></div>
+      <div class="tasks">
+
+        <div class="task-card evidence" data-tags="evidence informed practice EBM frontier pipeline">
+          <div class="task-top">
+            <div class="task-title">Evidence-Informed Practice Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 4</span></div>
+          </div>
+          <div class="task-desc">From clinical question to evidence-integrated decision. For cases where you plan to deviate from standard management, or need to integrate recent literature.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Evidence Pipeline on this question: <em>[PICO or clinical question]</em>. Key paper: <em>[paper or guideline]</em>. Run M21 → M10 → M45 → Shadow M47 → M35 → M34 → M53.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M21 — Evidence frontier search</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M10 — Critical appraisal of key paper</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M45 — EBM PICO + appraisal + integration</div>
+            <div class="pipeline-step"><span class="step-num">4</span> Shadow M47 — Adversarial EBM challenge</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M35 — Epistemic certainty of evidence base</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M34 — HVC auditor</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M53 — Guideline navigator (closure)</div>
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="ward round complete pipeline full morning">
+          <div class="task-top">
+            <div class="task-title">Complete Ward Round Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 7</span></div>
+          </div>
+          <div class="task-desc">From overnight events to post-round plan. Can be run for a single patient or across a patient list.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Ward Round Pipeline for this patient. 24hr summary: <em>[events, vitals, bloods]</em>. Medications: <em>[list]</em>. Outstanding tasks: <em>[list]</em>. Run M04 → M05 → M27 → M33 → M13 → M28 → M34 → M40.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M04 — Structured SBAR preparation</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M05 — Real-time case review ⚠</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M27 — Overnight trends velocity analysis</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M33 — "Why now?" for any acute change</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M13 — Polypharmacy screen ⚠</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M28 — Diagnostic time-out (uncertain patients)</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M34 — HVC audit of outstanding requests</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> M40 — Discharge planning + throughput (closure)</div>
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="uncertainty epistemic pipeline ambiguity confident">
+          <div class="task-top">
+            <div class="task-title">Uncertainty &amp; Epistemic Calibration Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 12</span></div>
+          </div>
+          <div class="task-desc">When you know what you don't know and need to map it rigorously. For diagnostically ambiguous presentations, or when the team disagrees.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Uncertainty Calibration Pipeline. Case: <em>[ambiguous presentation]</em>. Current uncertainty: <em>[describe what you don't know]</em>. Run M35 → M36 → M37 → M23 → M28 → M21 → M35 → Decision Spectrum.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M35 — Baseline epistemic certainty map</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M36 — Bayesian likelihood ratios</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M37 — Red herring / signal-noise drill</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M23 — Counterfactuals: what would shift certainty?</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M28 — Diagnostic time-out</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M21 — Evidence frontier: is the gap resolvable?</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M35 — Repeat certainty map: has it moved?</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> Decision Spectrum — Most defensible option (closure)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /pipelines -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: PATIENT ADVOCACY
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-advocate" style="display:none">
+    <div class="phase-hero phase-advocate">
+      <div class="phase-icon">👥</div>
+      <div class="phase-hero-text">
+        <h2>Patient Advocacy</h2>
+        <p>Workflows for family members, non-clinician advocates, and patient-centred care integration. All tasks require strictly de-identified data and must comply with local data governance.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Advocate workflows</span>
+        <span class="group-tag badge-slate badge">⚠ De-identified data only</span>
+      </div>
+      <div class="tasks">
+
+        <div class="task-card" data-tags="advocate documentation family case record build">
+          <div class="task-top">
+            <div class="task-title">Build a structured case record as an advocate</div>
+            <div class="task-modules"><span class="mod-chip">M02</span></div>
+          </div>
+          <div class="task-desc">Four-step workflow for a family member to build a structured case record: timeline, medication log, question list, and consultation summary.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M02 (Patient Advocate Documentation) — I am a family member / advocate. Patient details (de-identified): <em>[age, sex, main diagnosis, current situation]</em>. Help me build a structured case record.
+          </div>
+          <div class="task-badges"><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+        <div class="task-card" data-tags="longitudinal monitoring tracking advocate daily symptom log">
+          <div class="task-top">
+            <div class="task-title">Longitudinal monitoring and tracking</div>
+            <div class="task-modules"><span class="mod-chip">M03</span></div>
+          </div>
+          <div class="task-desc">Extends M02 into ongoing tracking: daily symptoms, mood, medication adherence, lifestyle factors, and red-flag alerts. The AI organizes observations and identifies trends.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M03 (Extended Monitoring) — continuing from the case record. This week's observations: <em>[symptom log, mood, medications taken, any concerns]</em>. Identify trends and flag anything to raise with the clinical team.
+          </div>
+          <div class="task-badges"><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+        <div class="task-card" data-tags="patient needs what does the patient need biomedical social">
+          <div class="task-top">
+            <div class="task-title">Patient needs assessment</div>
+            <div class="task-modules"><span class="mod-chip">M55</span></div>
+          </div>
+          <div class="task-desc">Run a structured assessment of what the patient actually needs — biomedical, psychological, social, and informational. Distinguish between what is being treated and what the patient experiences as their most pressing problem.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M55 (Patient Needs Assessment). Patient: <em>[de-identified summary]</em>. From the patient's perspective, what are their most pressing biomedical, psychological, social, and informational needs right now?
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="patient education explain question health literacy">
+          <div class="task-top">
+            <div class="task-title">Answer patient questions clearly and accurately</div>
+            <div class="task-modules"><span class="mod-chip">M11</span></div>
+          </div>
+          <div class="task-desc">For a patient or advocate question, M11 constructs a health-literacy-appropriate response then audits it for accuracy, completeness, and the risk of misinterpretation.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M11 (Patient Education Query Intelligence). The patient / family is asking: <em>[question]</em>. Diagnosis context: <em>[diagnosis]</em>. Generate a clear, accurate, appropriate answer and audit it.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="social determinants community support resources access">
+          <div class="task-top">
+            <div class="task-title">Identify community supports and social resources</div>
+            <div class="task-modules"><span class="mod-chip">M19</span></div>
+          </div>
+          <div class="task-desc">Analyse the social determinants in the case and identify community-level supports, services, and resources the patient can access. Use to plan post-discharge support.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M19 (Community &amp; Social Medicine) for discharge planning. Patient context (de-identified): <em>[social situation, housing, income, support network]</em>. Identify relevant community resources and social supports.
+          </div>
+        </div>
+
+        <div class="task-card" data-tags="advocate pipeline complete full workflow M02 M03">
+          <div class="task-top">
+            <div class="task-title">Complete Patient Advocate Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 10</span></div>
+          </div>
+          <div class="task-desc">Full support workflow for a family member or non-clinician advocate: documentation → monitoring → needs assessment → education → medication review → community planning.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Patient Advocate Pipeline. I am a family advocate for a patient with: <em>[de-identified summary]</em>. Run M00 (Advocate route) → M02 → M03 → M55 → M11 → M13 → M19 in sequence.
+          </div>
+          <div class="task-badges"><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /advocate -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PHASE: LEARNING & EDUCATION
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="phase-section" id="phase-learning" style="display:none">
+    <div class="phase-hero phase-learning">
+      <div class="phase-icon">📚</div>
+      <div class="phase-hero-text">
+        <h2>Learning &amp; Education</h2>
+        <p>Self-directed learning, trainee formative assessment, teaching preparation, and literature integration. The AI plays Socratic teacher — withholding answers until your reasoning is complete.</p>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Self-directed learning</span></div>
+      <div class="tasks">
+
+        <div class="task-card learning" data-tags="socratic teaching learning self directed case active reasoning">
+          <div class="task-top">
+            <div class="task-title">Socratic case interrogation — reason before receiving</div>
+            <div class="task-modules"><span class="mod-chip">M01</span></div>
+          </div>
+          <div class="task-desc">Present a case. The AI withholds its assessment and forces you to commit to and justify your reasoning before any answer is given. Works at any level of seniority.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M01 (Socratic Clinical Reasoning) on this case. I am a <em>[level of training]</em>. Case: <em>[present history and exam findings]</em>. Do not give me the diagnosis — ask me Socratic questions until I have reasoned through to an answer.
+          </div>
+          <div class="task-badges"><span class="badge badge-green">Learning</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="illness script acquisition learn disease prototype">
+          <div class="task-top">
+            <div class="task-title">Acquire an illness script for a new disease</div>
+            <div class="task-modules"><span class="mod-chip">M15</span><span class="mod-chip">M16</span></div>
+          </div>
+          <div class="task-desc">Build the formal illness script, then run M16 to integrate the underlying basic science — so the script is grounded in pathophysiology, not just a checklist.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M15 → M16 to help me learn <em>[disease]</em>. First build the illness script in full, then integrate the basic science bidirectionally — from mechanism to findings and from findings back to mechanism.
+          </div>
+          <div class="task-badges"><span class="badge badge-green">Learning</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="journal article reading critical appraisal EBM">
+          <div class="task-top">
+            <div class="task-title">Critical appraisal of a journal article</div>
+            <div class="task-modules"><span class="mod-chip">M10</span></div>
+          </div>
+          <div class="task-desc">Walk through structured critical appraisal: study design, bias risk, primary endpoint, effect size, confidence intervals, and applicability to a specific patient or question.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M10 (Journal Article Reading) on this paper. Abstract / summary: <em>[paste abstract or summarize the paper]</em>. My clinical question: <em>[question]</em>. Walk me through critical appraisal.
+          </div>
+          <div class="task-badges"><span class="badge badge-blue">Evidence</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="global knowledge genetics rare unusual international evidence">
+          <div class="task-top">
+            <div class="task-title">Apply global &amp; genetics knowledge to a complex case</div>
+            <div class="task-modules"><span class="mod-chip">M39</span><span class="mod-chip">M44</span></div>
+          </div>
+          <div class="task-desc">For unusual or diagnostically challenging cases, run the Global Knowledge Network Matrix and Clinical Genetics module to surface international evidence and hereditary considerations.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M39 + M44 on this unusual case. Case: <em>[summary of atypical presentation]</em>. What does the global diagnostic literature say? Are there genetic or hereditary factors to consider?
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="group-header"><span class="group-title">Trainee assessment &amp; feedback</span></div>
+      <div class="tasks">
+
+        <div class="task-card learning" data-tags="formative assessment trainee feedback bloom teaching">
+          <div class="task-top">
+            <div class="task-title">Structured self-assessment with Bloom's audit</div>
+            <div class="task-modules"><span class="mod-chip">M01</span><span class="mod-chip">Fw-C</span><span class="mod-chip">Fw-B</span></div>
+          </div>
+          <div class="task-desc">Run M01 for case reasoning, then apply Bloom's Taxonomy to identify which cognitive levels were reached and FLINK to ensure learning was meaningful — not just correct.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M01 on this case, then apply Fw-C (Bloom's Taxonomy) and Fw-B (FLINK) as a closure audit. Case: <em>[case]</em>. After my reasoning, tell me which cognitive levels I reached and which were absent.
+          </div>
+          <div class="task-badges"><span class="badge badge-green">Formative</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="teaching preparation teaching case question set prepare">
+          <div class="task-top">
+            <div class="task-title">Prepare a case for teaching</div>
+            <div class="task-modules"><span class="mod-chip">M17</span><span class="mod-chip">M54</span><span class="mod-chip">M52</span></div>
+          </div>
+          <div class="task-desc">Compress the case, generate a graded question set for the session, and distill the clinical pearls — producing structured teaching material with both System 1 and System 2 questions.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Prepare a teaching case using M17 → M54 → M52. Case: <em>[summary]</em>. Audience: <em>[student / F1 / registrar]</em>. Generate a semantic problem representation, a graded question set, and distilled pearls.
+          </div>
+          <div class="task-badges"><span class="badge badge-green">Teaching</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="N of 1 research protocol case report unusual complex">
+          <div class="task-top">
+            <div class="task-title">N-of-1 research protocol for an unusual case</div>
+            <div class="task-modules"><span class="mod-chip">M09</span></div>
+          </div>
+          <div class="task-desc">Run the seven-stage N-of-1 research protocol: case definition, hypothesis, data collection plan, intervention logic, outcome measurement, analysis, and dissemination readiness.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M09 (N-of-1 Research Protocol) on this case. Case: <em>[de-identified summary of the unusual presentation]</em>. Clinical question: <em>[specific question this case raises]</em>. Guide me through all seven stages.
+          </div>
+          <div class="task-badges"><span class="badge badge-slate">⚠ De-identified</span></div>
+        </div>
+
+        <div class="task-card learning" data-tags="resource constrained global health limited formulary triage">
+          <div class="task-top">
+            <div class="task-title">Resource-constrained reasoning drill</div>
+            <div class="task-modules"><span class="mod-chip">M14</span><span class="mod-chip">M19</span></div>
+          </div>
+          <div class="task-desc">Re-run diagnostic and management reasoning under defined resource constraints. Tests whether your reasoning holds when the standard algorithm is stripped of investigations and specialist access.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run M14 + M19 on this case under resource constraint. Case: <em>[summary]</em>. Constraint: <em>[e.g. first-level health facility / no imaging / limited formulary / remote setting]</em>. Does my reasoning hold?
+          </div>
+        </div>
+
+        <div class="task-card learning" data-tags="complete cognition science reasoning pipeline deep metacognitive">
+          <div class="task-top">
+            <div class="task-title">Complete Clinical Cognition Science Pipeline</div>
+            <div class="task-modules"><span class="mod-chip pipeline">Pipeline 11</span></div>
+          </div>
+          <div class="task-desc">A full deep-dive into how expert clinicians think. Covers the complete spectrum from intuitive pattern recognition to formal epistemic mapping.</div>
+          <div class="task-prompt">
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+            Run the Clinical Cognition Pipeline on this case. Case: <em>[summary]</em>. Run M54 → M20 → M56 → M18 → M24 → M23 → M22 → M32 → M57 → M50, then close with Fw-D and Fw-C.
+          </div>
+          <button class="pipeline-toggle" onclick="togglePipeline(this)">Show steps ↓</button>
+          <div class="pipeline-steps">
+            <div class="pipeline-step"><span class="step-num">1</span> M54 — System 1/2 question generator (baseline)</div>
+            <div class="pipeline-step"><span class="step-num">2</span> M20 — Naturalistic decision making (RPD)</div>
+            <div class="pipeline-step"><span class="step-num">3</span> M56 — Hypothetico-deductive model</div>
+            <div class="pipeline-step"><span class="step-num">4</span> M18 — Causal vs probabilistic reasoning</div>
+            <div class="pipeline-step"><span class="step-num">5</span> M24 — Heuristic analysis</div>
+            <div class="pipeline-step"><span class="step-num">6</span> M23 — Counterfactual analysis</div>
+            <div class="pipeline-step"><span class="step-num">7</span> M22 — Nested analysis</div>
+            <div class="pipeline-step"><span class="step-num">8</span> M32 — Clinical cognition loop</div>
+            <div class="pipeline-step"><span class="step-num">9</span> M57 — Clinical cognition deep dive</div>
+            <div class="pipeline-step"><span class="step-num">10</span> M50 — Diagnostic reasoning map</div>
+            <div class="pipeline-step"><span class="step-num">✓</span> Fw-D + Fw-C — Critical awareness + Bloom's audit</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /learning -->
+
+  <div id="noResults" class="no-results" style="display:none">
+    <strong>No tasks found</strong>
+    Try different keywords — module numbers (M12), clinical terms (polypharmacy, bias), or scenario types (deteriorating, handover).
+  </div>
+
+  <footer class="footer">
+    VibeRounds · CCOS Analytics Mode · Educational use only — verify all outputs before clinical action<br>
+    Dr. Avinash Kumar Gupta ·
+    <a href="https://avi33tbtt.github.io/Prompts/" target="_blank">Prompt Directory</a> ·
+    <a href="https://avi33tbtt.github.io/playbook.html" target="_blank">Playbook</a> ·
+    <a href="https://www.researchgate.net/publication/408150632_From_Prompt_Library_to_Clinical_Cognition_Operating_System_Architectural_Evolution_of_the_VibeRounds_Framework" target="_blank">Research Paper</a>
+  </footer>
+
+</main>
+</div>
+
+<script>
+// ── PHASE NAVIGATION ──────────────────────────────────────────
+function showPhase(phaseId, btn) {
+  document.querySelectorAll('.phase-section').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('phase-' + phaseId);
+  if (el) el.style.display = 'block';
+  if (btn) btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('resultBar').classList.remove('visible');
+  document.getElementById('noResults').style.display = 'none';
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (!q) {
+    // restore current phase
+    const activeBtn = document.querySelector('.nav-btn.active');
+    if (activeBtn) {
+      const ph = activeBtn.dataset.phase;
+      document.querySelectorAll('.phase-section').forEach(s => s.style.display = 'none');
+      const target = document.getElementById('phase-' + ph);
+      if (target) target.style.display = 'block';
+    }
+    document.getElementById('resultBar').classList.remove('visible');
+    document.getElementById('noResults').style.display = 'none';
+    return;
+  }
+
+  // show all phases during search
+  document.querySelectorAll('.phase-section').forEach(s => s.style.display = 'block');
+
+  let count = 0;
+  document.querySelectorAll('.task-card').forEach(card => {
+    const text = (card.dataset.tags || '') + ' ' + card.textContent;
+    const match = q.split(' ').every(word => text.toLowerCase().includes(word));
+    card.style.display = match ? 'block' : 'none';
+    if (match) count++;
+  });
+
+  // hide empty phase sections
+  document.querySelectorAll('.phase-section').forEach(section => {
+    const visible = section.querySelectorAll('.task-card[style="display: block;"], .task-card:not([style])').length;
+    const visibleCards = Array.from(section.querySelectorAll('.task-card')).filter(c => c.style.display !== 'none').length;
+    section.style.display = visibleCards > 0 ? 'block' : 'none';
+  });
+
+  const rb = document.getElementById('resultBar');
+  rb.textContent = count + ' task' + (count !== 1 ? 's' : '') + ' matching "' + this.value + '"';
+  rb.classList.add('visible');
+  document.getElementById('noResults').style.display = count === 0 ? 'block' : 'none';
+});
+
+// ── COPY PROMPT ───────────────────────────────────────────────
+function copyPrompt(btn) {
+  const promptEl = btn.parentElement;
+  const text = promptEl.innerText.replace('Copy', '').replace('Copied!', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── PIPELINE EXPAND ───────────────────────────────────────────
+function togglePipeline(btn) {
+  const steps = btn.nextElementSibling;
+  const open = steps.classList.toggle('open');
+  btn.textContent = open ? 'Hide steps ↑' : 'Show steps ↓';
+}
+
+// ── COUNT BADGES ──────────────────────────────────────────────
+function updateCounts() {
+  const phases = ['admission','round','active','deteriorating','handover','pipelines','advocate','learning'];
+  phases.forEach(ph => {
+    const section = document.getElementById('phase-' + ph);
+    const el = document.getElementById('cnt-' + ph);
+    if (section && el) {
+      el.textContent = section.querySelectorAll('.task-card').length;
+    }
+  });
+}
+updateCounts();
+</script>
+</body>
+</html>
