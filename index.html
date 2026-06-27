@@ -3002,6 +3002,7 @@
     <button class="tab-btn" data-tab="demos">Demos</button>
     <button class="tab-btn" data-tab="gd-research">Research</button>
     <button class="tab-btn" data-tab="gd-docs">Documentation</button>
+    <button class="tab-btn" data-tab="gd-summary">Summary</button>
   </div>
 </nav>
 
@@ -3727,7 +3728,18 @@
     <h2>Academic Publications</h2>
     <p class="lead">Research papers, technical architecture proposals, and preprints from the VibeRounds project — all available open-access on ResearchGate.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:8px;">
+    <!-- ★ FEATURED PREPRINT — highlighted at top -->
+    <div style="background:linear-gradient(135deg,#EFF6FF 0%,#F0FDFA 100%);border:2px solid var(--teal);border-radius:14px;padding:26px 28px;display:flex;flex-direction:column;gap:12px;margin-top:8px;margin-bottom:8px;position:relative;box-shadow:0 4px 20px rgba(8,145,178,0.13);">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;width:fit-content;background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE;">Preprint</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 9px;border-radius:999px;background:var(--teal);color:#fff;font-weight:700;">★ Latest</span>
+      </div>
+      <h3 style="font-size:16px;font-weight:700;line-height:1.4;color:var(--ink);margin:0;">From Prompt Library to Clinical Cognition Operating System: Architectural Evolution of the VibeRounds Framework</h3>
+      <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin:0;">The most recent VibeRounds architecture paper — traces the evolution from a standalone prompt library to a full Clinical Cognition Operating System, documenting the layered architectural decisions behind the framework's growth into a composable, agent-mediated clinical reasoning platform.</p>
+      <a href="https://www.researchgate.net/publication/408150632_From_Prompt_Library_to_Clinical_Cognition_Operating_System_Architectural_Evolution_of_the_VibeRounds_Framework" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:11.5px;color:var(--teal-deep);text-decoration:none;font-weight:600;margin-top:4px;">↗ View on ResearchGate</a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:0;">
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.18s,box-shadow 0.18s,transform 0.15s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 14px rgba(8,145,178,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='';this.style.transform=''">
         <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;width:fit-content;background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE;">Preprint</span>
@@ -3773,16 +3785,16 @@
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.18s,box-shadow 0.18s,transform 0.15s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 14px rgba(8,145,178,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='';this.style.transform=''">
         <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;width:fit-content;background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0;">Preprint</span>
-        <h3 style="font-size:14.5px;font-weight:600;line-height:1.4;color:var(--ink);margin:0;">Structured Epistemic Architecture vs. Direct Query A Process-Level Comparison of VibeRounds EBM Against Unstructured LLM Evidence Retrieval</h3>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0;flex:1;">The comparison is not case-based; it examines what each mode does to a user's reasoning process-how it frames questions, acquires and appraises evidence, communicates uncertainty, and self-corrects.</p>
-        <a href="https://www.researchgate.net/publication/407280243_Cognitive_Biases_in_AI-Assisted_Clinical_Reasoning_Mechanisms_Risks_and_Mitigation_Strategies" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-deep);text-decoration:none;font-weight:500;margin-top:4px;">↗ View on ResearchGate</a>
+        <h3 style="font-size:14.5px;font-weight:600;line-height:1.4;color:var(--ink);margin:0;">Structured Epistemic Architecture vs. Direct Query: A Process-Level Comparison of VibeRounds EBM Module 45 / Shadow Module 45 Against Unstructured LLM Evidence Retrieval</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0;flex:1;">The comparison is not case-based; it examines what each mode does to a user's reasoning process — how it frames questions, acquires and appraises evidence, communicates uncertainty, and self-corrects.</p>
+        <a href="https://www.researchgate.net/publication/407658329_Structured_Epistemic_Architecture_vs_Direct_Query_A_Process-Level_Comparison_of_VibeRounds_EBM_Module_45_Shadow_Module_45_Against_Unstructured_LLM_Evidence_Retrieval" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-deep);text-decoration:none;font-weight:500;margin-top:4px;">↗ View on ResearchGate</a>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.18s,box-shadow 0.18s,transform 0.15s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 14px rgba(8,145,178,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='';this.style.transform=''">
         <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;display:inline-block;width:fit-content;background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE;">Preprint</span>
-        <h3 style="font-size:14.5px;font-weight:600;line-height:1.4;color:var(--ink);margin:0;">VibeRounds: A Structured Multi-Prompt Protocol for AI-Assisted Clinical Case Reasoning and Caregiver Education</h3>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0;flex:1;">Broad-scope paper covering the full VibeRounds framework — multi-prompt protocol design, AI-assisted clinical case reasoning, and applications in caregiver education settings.</p>
-        <a href="https://www.researchgate.net/publication/407658329_Structured_Epistemic_Architecture_vs_Direct_Query_A_Process-Level_Comparison_of_VibeRounds_EBM_Module_45_Shadow_Module_45_Against_Unstructured_LLM_Evidence_Retrieval" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-deep);text-decoration:none;font-weight:500;margin-top:4px;">↗ View on ResearchGate</a>
+        <h3 style="font-size:14.5px;font-weight:600;line-height:1.4;color:var(--ink);margin:0;">VibeRounds Clinical Cognition Series — Module CC: Post-COVID Pneumothorax (Educational Use Only): Comparative Evaluation of Clinical Cognition Documentation Formats in Medical Education</h3>
+        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0;flex:1;">A case-based analysis comparing clinical cognition documentation formats applied to a Post-COVID pneumothorax case — evaluating the Module CC framework for structured clinical reasoning and educational documentation in medical training.</p>
+        <a href="https://www.researchgate.net/publication/408104991_VibeRounds_Clinical_Cognition_Series_Module_CC_-Post-COVID_Pneumothorax_Educational_Use_Only_Comparative_Evaluation_of_Clinical_Cognition_Documentation_Formats_in_Medical_Education_A_Case-Based_Analys" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-deep);text-decoration:none;font-weight:500;margin-top:4px;">↗ View on ResearchGate</a>
       </div>
 
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.18s,box-shadow 0.18s,transform 0.15s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 14px rgba(8,145,178,0.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='';this.style.transform=''">
@@ -3832,6 +3844,22 @@
       loading="lazy"
       title="VibeRounds Documentation"
     ></iframe>
+  </div>
+</section>
+
+<!-- ══ SUMMARY TAB ══ -->
+<section class="tabpanel" id="tab-gd-summary">
+  <div class="section" style="border-top:none;display:flex;flex-direction:column;align-items:center;gap:28px;padding-top:44px;padding-bottom:64px;">
+    <div class="eyebrow" style="margin-bottom:0;">CCOS at a Glance</div>
+    <h2 style="font-size:26px;font-weight:700;text-align:center;max-width:680px;line-height:1.25;">Clinical Cognition Operating System — Summary</h2>
+    <p style="font-size:14px;color:var(--ink-soft);text-align:center;max-width:600px;line-height:1.7;margin-bottom:4px;">A one-page visual overview of how CCOS is positioned as a learning stack for clinical analytics and reasoning — not for decision making.</p>
+    <div style="width:100%;max-width:1100px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 24px rgba(15,23,42,0.08);">
+      <img src="./Summary.png" alt="CCOS — Clinical Context Operating System: Learning Stack for Clinical Analytics and Reasoning Around a Case" style="width:100%;height:auto;display:block;" />
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+      <a href="./Summary.png" download style="display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:var(--teal);color:#fff;border-radius:6px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.04em;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='var(--teal-deep)'" onmouseout="this.style.background='var(--teal)'">↓ Download Image</a>
+      <button onclick="activateTab('overview')" style="display:inline-flex;align-items:center;gap:6px;padding:9px 20px;background:var(--surface);border:1px solid var(--border);color:var(--ink-soft);border-radius:6px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:0.04em;cursor:pointer;transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal-deep)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink-soft)'">← Back to Overview</button>
+    </div>
   </div>
 </section>
 
