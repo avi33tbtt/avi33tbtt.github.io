@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>45-Year-Old Male with Abdominal Distension — VibeRounds Case Narrator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #ffffff; font-family: system-ui, -apple-system, sans-serif; color: #1e293b; line-height: 1.7; }
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Header */
+  .case-header { border-bottom: 3px solid #0891b2; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .case-header h1 { font-size: 1.7rem; color: #0891b2; margin-bottom: 0.4rem; }
+  .case-header .meta { font-size: 0.82rem; color: #64748b; font-family: monospace; margin-bottom: 0.6rem; }
+  .case-header .summary { font-size: 1rem; color: #334155; font-style: italic; border-left: 4px solid #0891b2; padding-left: 1rem; margin-top: 0.8rem; }
+  .attribution { font-size: 0.78rem; color: #94a3b8; margin-top: 0.5rem; }
+
+  /* Section headings */
+  .section-title { font-size: 1.2rem; font-weight: 700; color: #0891b2; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; margin: 2.5rem 0 1.2rem; }
+
+  /* Case text */
+  .case-segment { font-family: Georgia, serif; font-size: 1.05rem; color: #1e293b; background: #f8f9fa; border-left: 4px solid #0891b2; padding: 1rem 1.2rem; margin-bottom: 0.5rem; border-radius: 0 6px 6px 0; }
+
+  /* Annotation boxes */
+  .ann-box { border-radius: 8px; padding: 0.9rem 1.1rem; margin: 0.6rem 0 1rem; border-left-width: 4px; border-left-style: solid; }
+  .ann-pill { display: inline-block; font-size: 0.7rem; font-weight: 700; font-family: monospace; letter-spacing: 0.05em; padding: 0.15rem 0.5rem; border-radius: 999px; margin-bottom: 0.5rem; }
+
+  /* Socratic Question — slate */
+  .sq { background: #f8fafc; border-left-color: #cbd5e1; color: #1e293b; }
+  .sq .ann-pill { background: #e2e8f0; color: #475569; }
+  .sq p { font-style: italic; }
+
+  /* Topic Hint — emerald */
+  .th { background: #ecfdf5; border-left-color: #34d399; color: #065f46; }
+  .th .ann-pill { background: #d1fae5; color: #065f46; }
+  .th .hint-line { font-family: monospace; font-size: 0.9rem; }
+
+  /* LLM Prompt — blue */
+  .llm { background: #eff6ff; border-left-color: #93c5fd; color: #1e40af; position: relative; }
+  .llm .ann-pill { background: #dbeafe; color: #1e40af; }
+  .llm pre { font-family: monospace; font-size: 0.85rem; white-space: pre-wrap; word-break: break-word; margin-top: 0.4rem; }
+  .copy-btn { position: absolute; top: 0.7rem; right: 0.8rem; background: #1e40af; color: #fff; border: none; border-radius: 4px; padding: 0.2rem 0.6rem; font-size: 0.75rem; cursor: pointer; font-family: monospace; }
+  .copy-btn:hover { background: #1d4ed8; }
+
+  /* Pearl — amber */
+  .pearl { background: #fef3c7; border-left-color: #f59e0b; color: #92400e; }
+  .pearl .ann-pill { background: #fde68a; color: #78350f; }
+
+  /* PICO — violet */
+  .pico { background: #ede9fe; border-left-color: #a78bfa; color: #5b21b6; }
+  .pico .ann-pill { background: #ddd6fe; color: #4c1d95; }
+  .pico-grid { display: grid; grid-template-columns: 2rem 1fr; gap: 0.2rem 0.5rem; margin-top: 0.4rem; font-size: 0.92rem; }
+  .pico-label { font-weight: 700; font-family: monospace; }
+
+  /* Decision Point — red */
+  .dp { background: #fef2f2; border-left-color: #f87171; color: #991b1b; }
+  .dp .ann-pill { background: #fee2e2; color: #7f1d1d; }
+
+  /* Illness Script — teal */
+  .is { background: #f0fdfa; border-left-color: #2dd4bf; color: #134e4a; }
+  .is .ann-pill { background: #ccfbf1; color: #134e4a; }
+  .is-grid { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 0.8rem; margin-top: 0.4rem; font-size: 0.9rem; }
+  .is-label { font-weight: 700; font-family: monospace; }
+
+  /* Synthesis section */
+  .synthesis { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin-top: 3rem; border: 2px solid #0891b2; }
+  .synthesis h2 { font-size: 1.4rem; color: #0891b2; margin-bottom: 1rem; }
+  .synth-sub { margin-bottom: 2rem; }
+  .synth-sub h3 { font-size: 1.05rem; font-weight: 700; color: #0e7490; border-bottom: 1px solid #a5f3fc; padding-bottom: 0.3rem; margin-bottom: 0.8rem; }
+  .numbered-item { margin-bottom: 0.6rem; padding-left: 1.2rem; position: relative; }
+  .numbered-item::before { position: absolute; left: 0; font-weight: 700; color: #0891b2; }
+  ol.annot-list { padding-left: 1.5rem; }
+  ol.annot-list li { margin-bottom: 0.5rem; }
+
+  /* Open Question */
+  .oq { font-style: italic; color: #1d4ed8; margin-bottom: 0.5rem; }
+  .oq::before { content: "🔭 "; }
+
+  /* Footer */
+  footer { margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; font-size: 0.78rem; color: #94a3b8; }
+  footer a { color: #0891b2; }
+
+  /* Print styles */
+  @media print {
+    .ann-box { border: 1px solid #888 !important; background: #f9f9f9 !important; color: #000 !important; }
+    .copy-btn { display: none; }
+    .case-header h1 { color: #000; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- PAGE HEADER -->
+<div class="case-header">
+  <h1>45-Year-Old Male with Jaundice, Abdominal Distension &amp; Pedal Oedema</h1>
+  <div class="meta">Case Narrator · VibeRounds · Dr. Avinash Kumar Gupta · June 2026</div>
+  <div class="attribution">Module 51B · <a href="https://avi33tbtt.github.io/Prompts/Module-51B-Case-Narrator-HTML-Export.html">https://avi33tbtt.github.io/Prompts/Module-51B-Case-Narrator-HTML-Export.html</a></div>
+  <div class="summary">A 45-year-old chronic alcoholic presents with a 20-day history of progressive jaundice, ascites, and bilateral pedal oedema — a classic portal hypertension syndrome demanding systematic unpacking of the stigmata of chronic liver disease and decompensation triggers.</div>
+</div>
+
+<!-- SEGMENT 1 -->
+<div class="section-title">Segment 1 — Chief Complaints &amp; Opening Demographics</div>
+<div class="case-segment">A 45-yr-old male patient came with chief complaints of yellowish discolouration of sclera since 20 days, abdominal distension since 20 days, pedal oedema since 20 days, and shortness of breath since 15 days.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>A 45-year-old male with simultaneous onset of jaundice, ascites, and bilateral pedal oedema over 20 days — before you read further, what single unifying organ-system diagnosis best ties all three together, and why does the temporal clustering matter?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Hepatology</div>
+  <div class="hint-line">Topic: Decompensated Chronic Liver Disease</div>
+  <div class="hint-line">Concept: Portal Hypertension Triad — jaundice + ascites + oedema as markers of synthetic failure and portal pressure elevation</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>Explain the pathophysiology linking portal hypertension to each of the following: (1) jaundice, (2) ascites formation, and (3) peripheral pedal oedema. Use the underfill vs overflow theory of ascites formation in your answer.</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>The portal hypertension triad (jaundice + ascites + peripheral oedema) appearing simultaneously suggests acute decompensation of chronic liver disease, not a new acute hepatitis.</strong> The 20-day onset signals a precipitant — search actively for infection, variceal bleed, drugs, or portal vein thrombosis as the trigger.
+</div>
+
+<div class="ann-box is">
+  <div class="ann-pill">◈ ILLNESS SCRIPT UPDATE</div>
+  <div class="is-grid">
+    <span class="is-label">Epidemiology</span><span>Middle-aged male, 45 years</span>
+    <span class="is-label">Symptoms</span><span>Jaundice, ascites, bilateral pedal oedema, SOB — all ≈20 days</span>
+  </div>
+</div>
+
+<!-- SEGMENT 2 -->
+<div class="section-title">Segment 2 — History of Present Illness</div>
+<div class="case-segment">Patient was apparently asymptomatic 5 years back, then developed vomitings and went to hospital where he was told of low BP, hypokalemia, and liver disease. He recently developed similar complaints associated with jaundice. 20 days back he developed abdominal distension, yellowish discolouration of sclera and urine, associated with bilateral pitting pedal oedema up to knee. No history of chest pain, hemoptysis, abdominal pain, burning micturition.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Stop. He had <em>low BP, hypokalemia, and liver disease</em> 5 years ago. What is the single most common cause of hypokalemia in a person with liver disease, and why does it matter prognostically?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Hepatology / Electrolytes</div>
+  <div class="hint-line">Topic: Hypokalemia in Liver Disease</div>
+  <div class="hint-line">Concept: Secondary hyperaldosteronism driving urinary potassium wasting; also worsened by diuretics and poor dietary intake in alcoholics</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>What are the mechanisms of hypokalemia in decompensated cirrhosis? How does hypokalemia worsen hepatic encephalopathy, and what is the target serum potassium level in managing cirrhotic ascites?</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>A prior episode of liver disease, hypokalemia, and low BP 5 years earlier is strong evidence of established cirrhosis rather than acute hepatitis.</strong> Hypokalemia in cirrhosis drives ammonia production in the kidneys, directly precipitating or worsening hepatic encephalopathy — it is a modifiable precipitant that must always be corrected.
+</div>
+
+<div class="ann-box dp">
+  <div class="ann-pill">⚑ DECISION POINT 1</div>
+  <strong>Given his 5-year history of documented liver disease, should you treat this as decompensated cirrhosis vs acute-on-chronic liver failure (ACLF)? What clinical and biochemical criteria differentiate them, and does the distinction change management?</strong>
+</div>
+
+<!-- SEGMENT 3 -->
+<div class="section-title">Segment 3 — Personal History (The Alcohol Exposure)</div>
+<div class="case-segment">Consumption of 360 ml of whiskey per day since 15 years. Chewing of gutka since 10 years.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Stop. 360 ml of whiskey <em>per day</em> for 15 years. Convert this to standard drinks and calculate his approximate cumulative alcohol exposure. At what threshold does chronic alcohol consumption cause histological cirrhosis, and how does the hepatotoxicity compare between male and female drinkers?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Hepatology / Alcohol</div>
+  <div class="hint-line">Topic: Alcohol-Related Liver Disease Spectrum</div>
+  <div class="hint-line">Concept: Dose-dependent hepatotoxicity — steatosis → steatohepatitis → fibrosis → cirrhosis; risk threshold ≈80g/day in men for &gt;10 years; 360ml of whiskey ≈ 120g ethanol/day</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>What is the dose-response relationship between alcohol consumption and risk of cirrhosis? What are the histological stages of alcohol-related liver disease? How does the AUDIT-C score help in clinical identification of harmful drinking, and what role does brief intervention play in reversing early liver disease?</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>360 ml of standard whiskey (≈40% ABV) provides approximately 115–120 g of pure ethanol per day — well above the 80 g/day threshold associated with cirrhosis risk in men after a decade of consumption.</strong> At 15 years of such intake, cirrhosis is the expected endpoint; asking about abstinence periods, gutka (oral premalignant lesion risk), and nutritional status is essential.
+</div>
+
+<div class="ann-box is">
+  <div class="ann-pill">◈ ILLNESS SCRIPT UPDATE</div>
+  <div class="is-grid">
+    <span class="is-label">Predisposing</span><span>Chronic heavy alcohol use (360 ml/day × 15 years); gutka (tobacco) use × 10 years</span>
+    <span class="is-label">Pathophysiology</span><span>Alcohol → hepatocyte injury → steatohepatitis → portal fibrosis → cirrhosis → portal hypertension</span>
+  </div>
+</div>
+
+<!-- SEGMENT 4 -->
+<div class="section-title">Segment 4 — General Examination: Stigmata of Chronic Liver Disease</div>
+<div class="case-segment">Weight 53 kgs, height 165 cms, BMI 19.4. Bilateral pitting oedema up to knee. Icterus present. Temporal wasting present. Loss of buccal pad of fat and axillary fat. Bilateral parotid enlargement. Gynecomastia. Palmar erythema present. SpO₂ 91% at room air. GRBS 138 mg/dl.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Stop. <em>Bilateral parotid enlargement</em> in an alcoholic. This is not a standard liver disease sign — what specific metabolic mechanism causes parotid enlargement in chronic alcoholism, and how does it differ from parotid swelling caused by other conditions?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Gastroenterology / Endocrinology</div>
+  <div class="hint-line">Topic: Alcohol-Related Parotid Enlargement (Sialosis)</div>
+  <div class="hint-line">Concept: Hypertrophy of acinar cells secondary to autonomic neuropathy and metabolic disturbance (not inflammatory); painless, bilateral, benign — a reliable clinical marker of chronic heavy alcohol use</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>What is the mechanism of bilateral parotid enlargement (sialosis) in chronic alcoholism? How does it differ clinically from parotitis (Stensen's duct obstruction, Sjögren's syndrome, mumps)? Does parotid enlargement correlate with severity of liver disease or alcohol intake amount?</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>Gynecomastia in male cirrhosis results from impaired hepatic metabolism of oestrogens combined with increased peripheral aromatisation — the liver cannot clear oestradiol, and androgen-to-oestrogen ratio falls.</strong> Palmar erythema reflects hyperoestrogenaemia-driven cutaneous vasodilation. Both signs together strongly point to hepatic synthetic dysfunction rather than extrahepatic jaundice.
+</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>SpO₂ is 91% at room air. He has no chest pain, no hemoptysis, vesicular breath sounds. What are the three hepatic causes of hypoxaemia in cirrhosis, and which is most likely here given the clinical picture?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Pulmonology / Hepatology</div>
+  <div class="hint-line">Topic: Hepatopulmonary Syndrome (HPS)</div>
+  <div class="hint-line">Concept: HPS = intrapulmonary vascular dilatation → V/Q mismatch and shunting; classic orthodeoxia (SpO₂ worse sitting up vs lying); also consider portopulmonary hypertension and hepatic hydrothorax</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>Compare the three hepatic complications causing hypoxaemia in cirrhosis: hepatopulmonary syndrome, portopulmonary hypertension, and hepatic hydrothorax. For each: mechanism, diagnostic criteria, effect on liver transplant eligibility, and treatment. Include the role of the 100% O2 test (shunt fraction calculation) in HPS diagnosis.</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>An SpO₂ of 91% at rest in a cirrhotic patient should never be dismissed as positional or anxiety-related.</strong> Hepatopulmonary syndrome (HPS) is present in 15–30% of patients awaiting liver transplantation, and a PaO₂ &lt;60 mmHg on room air qualifies the patient for MELD exception points, accelerating transplant listing.
+</div>
+
+<div class="ann-box dp">
+  <div class="ann-pill">⚑ DECISION POINT 2</div>
+  <strong>SpO₂ 91% at room air in a cirrhotic patient. Do you order an ABG now, and if it confirms hypoxaemia, what is your next investigation to distinguish hepatopulmonary syndrome from portopulmonary hypertension? How does this distinction alter management?</strong>
+</div>
+
+<div class="ann-box pico">
+  <div class="ann-pill">■ PICO</div>
+  <div class="pico-grid">
+    <span class="pico-label">P</span><span>Adults with cirrhosis and suspected hepatopulmonary syndrome (SpO₂ &lt;94% at rest)</span>
+    <span class="pico-label">I</span><span>Contrast-enhanced echocardiography (bubble study) for intrapulmonary vascular dilatation</span>
+    <span class="pico-label">C</span><span>Technetium-99m macroaggregated albumin lung perfusion scan</span>
+    <span class="pico-label">O</span><span>Diagnostic accuracy for HPS, sensitivity and specificity, and impact on transplant listing decisions</span>
+  </div>
+</div>
+
+<div class="ann-box is">
+  <div class="ann-pill">◈ ILLNESS SCRIPT UPDATE</div>
+  <div class="is-grid">
+    <span class="is-label">Signs</span><span>Icterus, temporal wasting, loss of fat pads, bilateral parotid enlargement, gynecomastia, palmar erythema, bilateral pitting oedema to knees, SpO₂ 91% RA</span>
+    <span class="is-label">Complications</span><span>Probable hepatopulmonary syndrome (SpO₂ 91%); decompensation (ascites, jaundice, oedema)</span>
+  </div>
+</div>
+
+<!-- SEGMENT 5 -->
+<div class="section-title">Segment 5 — Per Abdomen Findings</div>
+<div class="case-segment">Abdomen distended, abdominal girth 85 cm, umbilicus slit-like, non-tender. Visible distended veins present. Multiple scars over abdomen. Mild hepatomegaly and splenomegaly on palpation. Percussion: shifting dullness present. Auscultation: bowel sounds positive.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Stop. <em>Visible distended veins</em> over the abdomen in a portal hypertension patient. The direction of venous flow in these dilated abdominal veins is diagnostically critical — describe how you would clinically determine flow direction, and what different patterns indicate different levels of venous obstruction.</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Hepatology / Clinical Signs</div>
+  <div class="hint-line">Topic: Dilated Abdominal Veins — Caput Medusae vs IVC Obstruction Pattern</div>
+  <div class="hint-line">Concept: In portal hypertension — flow radiates away from umbilicus (caput medusae via paraumbilical veins). In IVC obstruction — upward flow in flanks, downward in epigastrium (reversed). Use two-finger occlusion test (emptying test) to assess flow direction.</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>Describe the clinical technique for determining flow direction in dilated abdominal wall veins. Compare caput medusae (portal hypertension) vs collateral veins in IVC obstruction and SVC obstruction in terms of: distribution, flow direction, associated signs, and underlying pathology. Include the sensitivity and specificity of these signs.</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>Hepatomegaly in alcoholic cirrhosis is common early (fatty liver, hepatitis); however, in established cirrhosis, the liver often shrinks and a palpably enlarged liver may suggest active alcoholic hepatitis superimposed on cirrhosis, hepatocellular carcinoma, or congestive hepatopathy.</strong> Splenomegaly indicates portal pressure &gt;10 mmHg; its size roughly correlates with degree of portal hypertension.
+</div>
+
+<div class="ann-box dp">
+  <div class="ann-pill">⚑ DECISION POINT 3</div>
+  <strong>You find mild hepatosplenomegaly with ascites and visible abdominal veins. Before you do a diagnostic paracentesis, what are the absolute and relative contraindications? What is the minimum investigation panel you need first, and how urgent is the tap?</strong>
+</div>
+
+<div class="ann-box pico">
+  <div class="ann-pill">■ PICO</div>
+  <div class="pico-grid">
+    <span class="pico-label">P</span><span>Patients with cirrhotic ascites undergoing therapeutic paracentesis (&gt;5 litres)</span>
+    <span class="pico-label">I</span><span>IV albumin infusion (6–8 g per litre of ascites removed)</span>
+    <span class="pico-label">C</span><span>No albumin infusion / colloid alternatives (gelatin, dextran)</span>
+    <span class="pico-label">O</span><span>Prevention of post-paracentesis circulatory dysfunction (PPCD), renal impairment, 30-day mortality</span>
+  </div>
+</div>
+
+<!-- SEGMENT 6 -->
+<div class="section-title">Segment 6 — Investigations: LFT &amp; Coagulation Pattern</div>
+<div class="case-segment">LFT: Total bilirubin elevated (predominantly direct/conjugated), AST and ALT elevated with AST:ALT ratio &gt;2:1. Albumin low. PT/INR prolonged. Serum sodium low (hyponatraemia). Platelet count low (thrombocytopaenia).</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Stop. The AST:ALT ratio is greater than 2:1. This is a well-known pattern. What is the name of this ratio, what pathology classically produces it, and what is the mechanistic explanation for why AST rises disproportionately over ALT in this specific condition?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Hepatology / Biochemistry</div>
+  <div class="hint-line">Topic: De Ritis Ratio (AST:ALT &gt;2)</div>
+  <div class="hint-line">Concept: Alcohol depletes hepatocyte pyridoxal-5-phosphate (B6), a cofactor for ALT synthesis more than AST; additionally, alcohol causes mitochondrial injury releasing mitochondrial AST; ratio &gt;2 has ~70% sensitivity for alcoholic hepatitis</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>Explain the De Ritis ratio (AST:ALT). What is the biochemical mechanism explaining an AST:ALT ratio &gt;2 in alcoholic liver disease? What are the sensitivity, specificity, and positive predictive value of this ratio for alcoholic hepatitis? In what other conditions does a &gt;2 ratio occur, and when might an alcoholic patient paradoxically have a ratio &lt;2?</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>In alcoholic liver disease, AST rarely exceeds 300 IU/L and ALT rarely exceeds 200 IU/L — very high transaminases (&gt;1000 IU/L) should prompt consideration of ischaemic hepatitis, acute viral hepatitis, or drug toxicity even in an alcoholic.</strong> The De Ritis ratio &gt;2 is a useful discriminator but must be interpreted alongside clinical context.
+</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>Hyponatraemia is present. In the context of cirrhosis with ascites, is this hyponatraemia likely hypovolaemic, hypervolaemic, or euvolaemic? What is the mechanism, and what is the target sodium level before you consider listing a patient for liver transplantation?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Nephrology / Hepatology</div>
+  <div class="hint-line">Topic: Dilutional Hyponatraemia in Cirrhosis</div>
+  <div class="hint-line">Concept: Splanchnic vasodilation → reduced effective arterial volume → ADH non-osmotic release → free water retention → dilutional hyponatraemia; sodium &lt;130 mEq/L is associated with worse prognosis; MELD-Na incorporates sodium</div>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>Hyponatraemia in cirrhosis is predominantly <em>dilutional</em> (hypervolaemic) — giving saline is contraindicated as it worsens ascites and oedema.</strong> The MELD-Na score incorporates serum sodium into the transplant priority calculation, reflecting the strong independent prognostic impact of hyponatraemia in decompensated cirrhosis.
+</div>
+
+<div class="ann-box pico">
+  <div class="ann-pill">■ PICO</div>
+  <div class="pico-grid">
+    <span class="pico-label">P</span><span>Patients with decompensated cirrhosis and dilutional hyponatraemia (Na &lt;130 mEq/L)</span>
+    <span class="pico-label">I</span><span>Tolvaptan (selective V2 receptor antagonist / vaptans)</span>
+    <span class="pico-label">C</span><span>Fluid restriction alone (&lt;1 litre/day)</span>
+    <span class="pico-label">O</span><span>Rate of sodium correction, safety (hepatotoxicity signal), effect on 30-day mortality, symptom improvement</span>
+  </div>
+</div>
+
+<div class="ann-box dp">
+  <div class="ann-pill">⚑ DECISION POINT 4</div>
+  <strong>Prolonged PT/INR in a cirrhotic patient who needs a diagnostic paracentesis. Do you correct the coagulopathy with FFP before the procedure? What does current evidence say about "prophylactic" FFP/platelets before paracentesis in cirrhosis, and what is the minimum platelet count and INR threshold at which paracentesis is considered safe without correction?</strong>
+</div>
+
+<div class="ann-box is">
+  <div class="ann-pill">◈ ILLNESS SCRIPT UPDATE</div>
+  <div class="is-grid">
+    <span class="is-label">Investigations</span><span>Elevated bilirubin (conjugated &gt; unconjugated), AST:ALT &gt;2:1 (De Ritis), low albumin, prolonged PT/INR, thrombocytopaenia, hyponatraemia — full synthetic failure profile</span>
+    <span class="is-label">Treatment</span><span>Diuretics (spironolactone + furosemide), fluid + salt restriction, albumin infusion with large-volume paracentesis, treat precipitant</span>
+  </div>
+</div>
+
+<!-- SEGMENT 7 -->
+<div class="section-title">Segment 7 — USG / Imaging &amp; Final Diagnosis</div>
+<div class="case-segment">Ultrasound abdomen: Hepatosplenomegaly, ascites, coarse echotexture of liver, features of portal hypertension. Provisional diagnosis: Cirrhosis with portal hypertension secondary to alcohol.</div>
+
+<div class="ann-box sq">
+  <div class="ann-pill">❓ SOCRATIC QUESTION</div>
+  <p>"Coarse echotexture of liver" on ultrasound — what histological change does this reflect, and what is the sensitivity and specificity of ultrasound for diagnosing cirrhosis compared to transient elastography (FibroScan)?</p>
+</div>
+
+<div class="ann-box th">
+  <div class="ann-pill">💡 TOPIC HINT</div>
+  <div class="hint-line">Subject: Radiology / Hepatology</div>
+  <div class="hint-line">Topic: Ultrasound in Cirrhosis — Limitations</div>
+  <div class="hint-line">Concept: Coarse echotexture = fibrosis and regenerative nodules altering acoustic interface; USG sensitivity for cirrhosis ≈50–80%, specificity ≈80–95%; transient elastography (FibroScan) &gt;12.5 kPa is more sensitive for advanced fibrosis</div>
+</div>
+
+<div class="ann-box llm" style="position:relative;">
+  <div class="ann-pill">🤖 LLM COPY PROMPT</div>
+  <button class="copy-btn" onclick="navigator.clipboard.writeText(this.nextElementSibling.textContent)">Copy</button>
+  <pre>Compare non-invasive methods for diagnosing liver cirrhosis: (1) ultrasound features, (2) transient elastography (FibroScan), (3) serum fibrosis markers (FIB-4, APRI, ELF), and (4) MR elastography. Include sensitivity, specificity, LR+/LR-, cost, and when liver biopsy remains necessary despite non-invasive results.</pre>
+</div>
+
+<div class="ann-box pearl">
+  <div class="ann-pill">🪨 PEARL</div>
+  <strong>In a patient with ascites, ultrasound-based diagnosis of cirrhosis is limited — the ascites itself reduces image quality and may mask small liver contour nodularity.</strong> A normal-appearing liver on ultrasound does NOT exclude cirrhosis, particularly in the early stages. FibroScan is contraindicated with active ascites but can be performed after paracentesis.
+</div>
+
+<div class="ann-box dp">
+  <div class="ann-pill">⚑ DECISION POINT 5</div>
+  <strong>The provisional diagnosis is alcoholic cirrhosis with portal hypertension. Before accepting this, what investigations would you order to rule out concurrent hepatocellular carcinoma (HCC), and what is the AFP threshold and imaging finding that would change your management from "decompensated cirrhosis" to "HCC with decompensated cirrhosis"?</strong>
+</div>
+
+<!-- SYNTHESIS SECTION -->
+<div class="synthesis">
+  <h2>⚕ Phase 3 · Grand Round Synthesis</h2>
+
+  <div class="synth-sub">
+    <h3>1. Final Illness Script — Alcoholic Cirrhosis with Decompensation</h3>
+    <div class="ann-box is" style="margin:0;">
+      <div class="is-grid">
+        <span class="is-label">Epidemiology</span><span>Middle-aged males 40–60; prevalent in South Asia with high-volume spirit consumption; male:female ratio 3:1 for alcoholic cirrhosis</span>
+        <span class="is-label">Predisposing</span><span>Chronic heavy alcohol (&gt;80 g/day × &gt;10 years); malnutrition; genetic variants (PNPLA3, TM6SF2); concurrent NASH, HBV, or HCV accelerates fibrosis</span>
+        <span class="is-label">Pathophysiology</span><span>Alcohol → acetaldehyde toxicity → oxidative stress → hepatocyte necrosis + stellate cell activation → perisinusoidal fibrosis → portal hypertension → splanchnic vasodilation → RAAS/SNS/ADH activation → sodium and water retention → ascites, oedema, hyponatraemia</span>
+        <span class="is-label">Symptoms</span><span>Jaundice, abdominal distension, ankle swelling, SOB (hepatopulmonary syndrome / hepatic hydrothorax), fatigue, decreased appetite, confusion (encephalopathy)</span>
+        <span class="is-label">Signs</span><span>Icterus, temporal + axillary wasting, bilateral parotid enlargement (sialosis), gynecomastia, palmar erythema, spider naevi, caput medusae, ascites (shifting dullness, fluid thrill), hepatosplenomegaly, bilateral pitting oedema, SpO₂ 91% (HPS)</span>
+        <span class="is-label">Investigations</span><span>LFT: elevated bilirubin (conjugated), AST:ALT &gt;2 (De Ritis), low albumin, prolonged PT/INR; CBC: thrombocytopaenia, anaemia; electrolytes: dilutional hyponatraemia, hypokalaemia; USG: coarse liver, splenomegaly, ascites, portal vein dilatation; SAAG ascites &gt;1.1 g/dL; AFP + triphasic CT to screen HCC; EGD for varices</span>
+        <span class="is-label">Complications</span><span>Spontaneous bacterial peritonitis (SBP), variceal bleeding, hepatic encephalopathy, hepatorenal syndrome, hepatopulmonary syndrome, hepatocellular carcinoma, malnutrition</span>
+        <span class="is-label">Treatment</span><span>Complete alcohol abstinence (most important); spironolactone + furosemide (100:40 ratio); salt restriction &lt;2 g/day; fluid restriction if Na &lt;125; therapeutic paracentesis + IV albumin; propranolol/carvedilol for variceal prophylaxis; lactulose ± rifaximin for encephalopathy; liver transplant evaluation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="synth-sub">
+    <h3>2. Decision Point Review</h3>
+    <ol class="annot-list">
+      <li><strong>⚑ DP1 — Decompensated cirrhosis vs ACLF:</strong> ACLF requires an acute precipitant causing organ failure(s) beyond liver (renal, cerebral, circulatory, coagulation). Here there is no overt precipitant identified; decompensated cirrhosis is the working diagnosis. Evidence: EASL-CLIF ACLF criteria require organ failure score. Management implication: ACLF has higher short-term mortality and may require ICU-level care vs ward management.</li>
+      <li><strong>⚑ DP2 — SpO₂ 91%:</strong> Order ABG. If PaO₂ &lt;80 mmHg, proceed to bubble echocardiography. HPS confirmed by intrapulmonary shunting. Portopulmonary hypertension needs echo with estimated PASP &gt;40 mmHg. HPS improves with liver transplant; portopulmonary hypertension may require pre-transplant pulmonary vasodilator therapy.</li>
+      <li><strong>⚑ DP3 — Pre-paracentesis workup:</strong> Current evidence (EASL 2018) does not support routine FFP/platelets before paracentesis. Platelets &gt;40,000 and INR &lt;5 are generally acceptable. Perform diagnostic paracentesis for cell count, albumin, protein, culture to rule out SBP — this is urgent given decompensation.</li>
+      <li><strong>⚑ DP4 — Coagulopathy correction before paracentesis:</strong> Do NOT give FFP. Paracentesis is safe at INR up to 5 without correction. Viscoelastic tests (TEG/ROTEM) better reflect true haemostatic status in cirrhosis than INR, as they capture both pro- and anticoagulant factor deficiencies.</li>
+      <li><strong>⚑ DP5 — Rule out HCC:</strong> AFP + triphasic CT abdomen required. LI-RADS criteria on MRI/CT classify hepatic lesions &gt;1 cm. If AFP &gt;400 ng/mL with arterial enhancement + washout on CT = HCC without biopsy. This changes staging, MELD exception, and potentially eligibility for loco-regional therapy.</li>
+    </ol>
+  </div>
+
+  <div class="synth-sub">
+    <h3>3. Pearl Compendium</h3>
+    <ol class="annot-list">
+      <li>🪨 Simultaneous jaundice + ascites + oedema indicates decompensated cirrhosis; always search for the precipitant (infection, bleed, drugs, thrombosis).</li>
+      <li>🪨 Hypokalemia in cirrhosis precipitates hepatic encephalopathy via renal ammoniogenesis — it is a modifiable and frequently missed trigger.</li>
+      <li>🪨 360 ml whiskey/day ≈ 120 g ethanol/day, far exceeding the 80 g/day × 10 year threshold for cirrhosis in men.</li>
+      <li>🪨 Gynecomastia + palmar erythema = hyperoestrogenaemia from impaired hepatic oestrogen catabolism — reliable stigmata of hepatocellular synthetic dysfunction.</li>
+      <li>🪨 SpO₂ 91% in cirrhosis → hepatopulmonary syndrome (PaO₂ &lt;60 mmHg) qualifies for MELD exception, accelerating transplant priority.</li>
+      <li>🪨 AST:ALT &gt;2 (De Ritis) in alcoholic liver disease: caused by pyridoxal-5-phosphate depletion and mitochondrial AST release; but total transaminases rarely exceed 300–400 IU/L.</li>
+      <li>🪨 Hyponatraemia in cirrhosis is dilutional/hypervolaemic — do NOT give saline; MELD-Na incorporates it as an independent mortality predictor.</li>
+      <li>🪨 Coarse liver echotexture on USG = fibrosis + regenerative nodules; sensitivity for cirrhosis only ~60%; FibroScan is superior but requires absence of active ascites.</li>
+    </ol>
+  </div>
+
+  <div class="synth-sub">
+    <h3>4. PICO Evidence Map</h3>
+    <ol class="annot-list">
+      <li><strong>PICO 1 — Bubble echo vs MAA scan for hepatopulmonary syndrome:</strong> P: cirrhosis + hypoxaemia; I: contrast echocardiography; C: Tc99m-MAA scan; O: diagnostic accuracy. Evidence: both have ~97% sensitivity; echo preferred first-line for ease; MAA scan quantifies shunt fraction and predicts post-transplant oxygenation recovery.</li>
+      <li><strong>PICO 2 — Albumin infusion in large-volume paracentesis:</strong> P: cirrhotic ascites ≥5L tapped; I: IV albumin 6–8 g/L removed; C: no albumin or gelatin; O: post-paracentesis circulatory dysfunction (PPCD), AKI, mortality. Evidence: EASL 2018 recommends albumin as standard of care; reduces PPCD from ~35% to &lt;5%; gelatin/dextran are non-inferior for &lt;5L taps.</li>
+      <li><strong>PICO 3 — Tolvaptan for dilutional hyponatraemia:</strong> P: cirrhosis + Na &lt;130; I: tolvaptan (V2 antagonist); C: fluid restriction; O: sodium correction, safety. Evidence: SALT trials showed tolvaptan increases serum sodium; FDA black box warning for hepatotoxicity in cirrhosis limits use; fluid restriction remains standard first-line in most guidelines.</li>
+    </ol>
+  </div>
+
+  <div class="synth-sub">
+    <h3>5. Open Questions</h3>
+    <p class="oq">What is the optimal timing for liver transplant evaluation in a decompensated cirrhotic who achieves alcohol abstinence — should there be a mandatory sobriety period, and does a 6-month rule improve post-transplant outcomes?</p>
+    <p class="oq">Does early non-selective beta-blocker (carvedilol) initiation in decompensated cirrhosis with ascites improve survival or does it worsen haemodynamics in advanced disease (the "window hypothesis")?</p>
+    <p class="oq">What is the role of long-term albumin infusion (PILOT/ANSWER trial paradigm) in preventing infections, hepatic encephalopathy, and mortality in decompensated cirrhosis beyond paracentesis cover?</p>
+    <p class="oq">How does concurrent gutka (tobacco) use modify the risk of hepatocellular carcinoma in alcoholic cirrhosis — is the risk multiplicative?</p>
+    <p class="oq">Is oral rifaximin superior to lactulose alone for primary prevention of hepatic encephalopathy in newly decompensated cirrhosis?</p>
+  </div>
+
+  <div class="synth-sub">
+    <h3>6. What Would Make You Wrong Audit</h3>
+    <p>Early commitment: <em>"This is alcoholic cirrhosis."</em></p>
+    <ul style="padding-left:1.5rem; margin-top:0.5rem;">
+      <li style="margin-bottom:0.4rem;"><strong>Concurrent HBV/HCV:</strong> Co-infection accelerates fibrosis independently of alcohol — always check serology.</li>
+      <li style="margin-bottom:0.4rem;"><strong>Wilson's disease:</strong> Rare at 45 with no Kayser-Fleischer rings mentioned, but a serum caeruloplasmin cost is low if atypical features emerge.</li>
+      <li style="margin-bottom:0.4rem;"><strong>Haemochromatosis:</strong> Can present with cirrhosis in middle-aged males — ferritin and transferrin saturation warranted.</li>
+      <li style="margin-bottom:0.4rem;"><strong>Portal vein thrombosis:</strong> Causes acute decompensation on top of cirrhosis; Doppler ultrasound is mandatory in all new decompensation episodes.</li>
+      <li style="margin-bottom:0.4rem;"><strong>Hepatocellular carcinoma:</strong> Complicates 20% of cirrhotic patients annually; always check AFP and imaging before labelling "simple decompensation."</li>
+      <li><strong>SBP as precipitant:</strong> Diagnostic paracentesis must be done; neutrophil count &gt;250/mm³ = SBP requiring cefotaxime regardless of symptoms.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Case Narrator · VibeRounds · Dr. Avinash Kumar Gupta · <a href="https://avi33tbtt.github.io/Prompts/Module-51B-Case-Narrator-HTML-Export.html">Module 51B</a> · June 2026 · CC BY 4.0</p>
+  <p style="margin-top:0.4rem;"><em>All AI-generated annotations require independent clinical verification. This document is a learning tool, not a clinical decision support system. Patient data de-identified.</em></p>
+</footer>
+
+</div>
+</body>
+</html>
