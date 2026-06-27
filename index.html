@@ -5330,6 +5330,218 @@ renderPlCards(PIPELINES);
     activateSite(initial);
   }
 })();
+
+
+
+
+
+
+  const MODS = [
+  {num:'00',name:'Cold-Start Orientation',url:'https://avi33tbtt.github.io/Prompts/Module-00-Cold-Start-Orientation.html',cat:'Clinical reasoning'},
+  {num:'01',name:'Socratic Clinical Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-01-Socratic-Clinical-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'02',name:'Patient-Advocate Case Documentation',url:'https://avi33tbtt.github.io/Prompts/Module-02-Patient-Advocate-Case-Documentation.html',cat:'Patient advocacy'},
+  {num:'03',name:'Extended Patient-Advocate Monitoring',url:'https://avi33tbtt.github.io/Prompts/Module-03-Extended-Patient-Advocate-Monitoring.html',cat:'Patient advocacy'},
+  {num:'04',name:'Peer-Level Ward Round Preparation',url:'https://avi33tbtt.github.io/Prompts/Module-04-Peer-Level-Ward-Round-Preparation.html',cat:'Education'},
+  {num:'05',name:'Real-Time Case Review & Data Audit',url:'https://avi33tbtt.github.io/Prompts/Module-05-Real-Time-Case-Review-and-Data-Audit.html',cat:'Analytics'},
+  {num:'06',name:'Registry-Level Analytics',url:'https://avi33tbtt.github.io/Prompts/Module-06-Registry-Level-Analytics.html',cat:'Analytics'},
+  {num:'07',name:'Longitudinal & Cross-Case Learning',url:'https://avi33tbtt.github.io/Prompts/Module-07-Longitudinal-and-Cross-Case-Learning.html',cat:'Analytics'},
+  {num:'08',name:'Socratic-Mode Design Specification',url:'https://avi33tbtt.github.io/Prompts/Module-08-Socratic-Mode-Design-Specification.html',cat:'Framework'},
+  {num:'09',name:'N-of-1 Case Research Protocol',url:'https://avi33tbtt.github.io/Prompts/Module-09-Case-Research_Protocol.html',cat:'Patient advocacy'},
+  {num:'10',name:'Journal & Article Reading',url:'https://avi33tbtt.github.io/Prompts/Module-10-Medical-Journal-Article-Reading.html',cat:'Education'},
+  {num:'11',name:'Patient Education Query Intelligence',url:'https://avi33tbtt.github.io/Prompts/Module-11-Patient-Education-Query-Intelligence.html',cat:'Patient advocacy'},
+  {num:'12',name:'Differential Diagnosis Deepdive',url:'https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html',cat:'Clinical reasoning'},
+  {num:'13',name:'Medication Reconciliation & Polypharmacy',url:'https://avi33tbtt.github.io/Prompts/Module-13-Medication-Reconciliation-Polypharmacy-Audit.html',cat:'Patient advocacy'},
+  {num:'14',name:'Resource-Constrained Clinical Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'15',name:'Illness Script Acquisition',url:'https://avi33tbtt.github.io/Prompts/Module-15-Illness-Script-Acquisition.html',cat:'Clinical reasoning'},
+  {num:'16',name:'Basic Science ↔ Clinical Integration',url:'https://avi33tbtt.github.io/Prompts/Module-16-Bidirectional-Basic-Science-Clinical-Integration.html',cat:'Education'},
+  {num:'17',name:'Semantic Qualifiers & Problem Representation',url:'https://avi33tbtt.github.io/Prompts/Module-17-Semantic-Qualifiers-Problem-Representation.html',cat:'Clinical reasoning'},
+  {num:'18',name:'Causal vs. Probabilistic Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-18-Causal-vs-Probabilistic-Network-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'19',name:'Community & Social Medicine Insights',url:'https://avi33tbtt.github.io/Prompts/Module-19-Community-and-Social-Medicine-Insights.html',cat:'Operations'},
+  {num:'20',name:'Naturalistic Decision Making',url:'https://avi33tbtt.github.io/Prompts/Module-20-Recognition-Primed-Decision-Model.html',cat:'Clinical reasoning'},
+  {num:'21',name:'Evidence Frontier Search',url:'https://avi33tbtt.github.io/Prompts/Module-21-Evidence-Frontier-Search.html',cat:'Education'},
+  {num:'22',name:'Nested Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-22-Nested-Analysis.html',cat:'Analytics'},
+  {num:'23',name:'Counterfactual Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-23-Counterfactual-Analysis.html',cat:'Analytics'},
+  {num:'24',name:'Heuristic Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-24-Heuristic-Analysis.html',cat:'Analytics'},
+  {num:'25',name:'Thematic Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-25-Thematic-Analysis.html',cat:'Analytics'},
+  {num:'26',name:'Bias Auditing',url:'https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html',cat:'Safety'},
+  {num:'27',name:'Time-Series & Velocity Analyzer',url:'https://avi33tbtt.github.io/Prompts/Module-27-Time-Series-Velocity-Analyzer.html',cat:'Analytics'},
+  {num:'28',name:'Diagnostic Time-Out',url:'https://avi33tbtt.github.io/Prompts/Module-28-Diagnostic-Time-Out.html',cat:'Clinical reasoning'},
+  {num:'29',name:'Iatrogenic Domino Effect',url:'https://avi33tbtt.github.io/Prompts/Module-29-Iatrogenic-Domino-Effect.html',cat:'Safety'},
+  {num:'30',name:'Diagnostic Anchor Extractor',url:'https://avi33tbtt.github.io/Prompts/Module-30-Diagnostic-Anchor-Extractor.html',cat:'Clinical reasoning'},
+  {num:'31',name:'First-Principles Pathophysiology Mapping',url:'https://avi33tbtt.github.io/Prompts/Module-31-First-Principles-Pathophysiology-Mapping.html',cat:'Education'},
+  {num:'32',name:'Clinical Cognition Loop',url:'https://avi33tbtt.github.io/Prompts/Module-32-Clinical-Cognition-Loop.html',cat:'Clinical reasoning'},
+  {num:'33',name:'"Why Now?" Precipitant Hunter',url:'https://avi33tbtt.github.io/Prompts/Module-33-Why-Now-Precipitant-Hunter.html',cat:'Clinical reasoning'},
+  {num:'34',name:'High-Value Care Auditor',url:'https://avi33tbtt.github.io/Prompts/Module-34-High-Value-Care-Auditor.html',cat:'Operations'},
+  {num:'35',name:'Epistemic Certainty Mapping & Calibration',url:'https://avi33tbtt.github.io/Prompts/Module-35-Epistemic-Certainty-Mapping-Calibration.html',cat:'Clinical reasoning'},
+  {num:'36',name:'Bayesian Probability / Likelihood Ratio Engine',url:'https://avi33tbtt.github.io/Prompts/Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html',cat:'Clinical reasoning'},
+  {num:'37',name:'Red Herring / Signal-to-Noise Drill',url:'https://avi33tbtt.github.io/Prompts/Module-37-Red-Herring-Signal-to-Noise-Drill.html',cat:'Clinical reasoning'},
+  {num:'38',name:'Poly-Crisis & Cascading Failure Simulator',url:'https://avi33tbtt.github.io/Prompts/Module-38-Poly-Crisis-Cascading-Failure-Simulator.html',cat:'Safety'},
+  {num:'39',name:'Global Knowledge Network Diagnostic Matrix',url:'https://avi33tbtt.github.io/Prompts/Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html',cat:'Education'},
+  {num:'40',name:'Operational & Throughput Strategist',url:'https://avi33tbtt.github.io/Prompts/Module-40-Operational-Throughput-Strategist.html',cat:'Operations'},
+  {num:'41',name:'Clinical Workflow Implementation Science',url:'https://avi33tbtt.github.io/Prompts/Module-41-Clinical-Workflow-Implementation-Science.html',cat:'Operations'},
+  {num:'42',name:'Clinical Pre-Mortem',url:'https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html',cat:'Safety'},
+  {num:'43',name:'Health Economics & Value-Based Care',url:'https://avi33tbtt.github.io/Prompts/Module-43-Health-Economics-Value-Based-Care-Alignment.html',cat:'Operations'},
+  {num:'44',name:'Clinical Genetics Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-44-Clinical-Genetics-Reasoning.html',cat:'Clinical reasoning'},
+  {num:'45',name:'Shadow Module — Clinical Genetics Adversarial',url:'https://avi33tbtt.github.io/Prompts/Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html',cat:'Safety'},
+  {num:'46',name:'Evidence-Based Medicine Insights',url:'https://avi33tbtt.github.io/Prompts/Module-45-Evidence-Based-Medicine-Insights.html',cat:'Education'},
+  {num:'47',name:'Shadow Module — EBM Adversarial Counterpart',url:'https://avi33tbtt.github.io/Prompts/Shadow-Module-45-EBM-Adversarial-Counterpart.html',cat:'Safety'},
+  {num:'48',name:'Treatment Comparative Analysis & Prognosis Trajectory',url:'https://avi33tbtt.github.io/Prompts/Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html',cat:'Clinical reasoning'},
+  {num:'49',name:'FMEA Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-49-FMEA-Analysis-and-Insights.html',cat:'Safety'},
+  {num:'50',name:'Diagnostic Reasoning Map',url:'https://avi33tbtt.github.io/Prompts/Module-50-DRM-Diagnostic-Reasoning-Map.html',cat:'Clinical reasoning'},
+  {num:'51',name:'Systems-Based Clinical Analysis',url:'https://avi33tbtt.github.io/Prompts/Module-51-Systems-Based-Clinical-Analysis-and-Insights.html',cat:'Clinical reasoning'},
+  {num:'52',name:'Clinical Pearls Distillation',url:'https://avi33tbtt.github.io/Prompts/Module-52-CP-Clinical-Pearls.html',cat:'Education'},
+  {num:'53',name:'Clinical Guideline Intelligence Navigator',url:'https://avi33tbtt.github.io/Prompts/Module-53-Clinical-Guideline-Intelligence-Navigator.html',cat:'Clinical reasoning'},
+  {num:'54',name:'System 1 & System 2 Question Generator',url:'https://avi33tbtt.github.io/Prompts/Module-54-System1-System2-Question-Generator.html',cat:'Clinical reasoning'},
+  {num:'55',name:'Patient Needs Assessment',url:'https://avi33tbtt.github.io/Prompts/Module-55-Patient-Needs-Assessment.html',cat:'Patient advocacy'},
+  {num:'56',name:'Hypothetico-Deductive Reasoning',url:'https://avi33tbtt.github.io/Prompts/Module-HDM-Hypothetico-Deductive-Model.html',cat:'Clinical reasoning'},
+  {num:'57',name:'Clinical Cognition Deep Dive',url:'https://avi33tbtt.github.io/Prompts/Module-CC-Clinical-Cognition-Deep-Dive.html',cat:'Clinical reasoning'},
+  {num:'A',name:'Humanistic Persona & Confidence-Building',url:'https://avi33tbtt.github.io/Prompts/Framework-A-Humanistic-Persona.html',cat:'Framework'},
+  {num:'B',name:"Fink's Taxonomy of Significant Learning",url:'https://avi33tbtt.github.io/Prompts/Framework-B-Finks-FLINK-Taxonomy.html',cat:'Framework'},
+  {num:'C',name:"Bloom's Revised Taxonomy",url:'https://avi33tbtt.github.io/Prompts/Framework-C-Blooms-Taxonomy.html',cat:'Framework'},
+  {num:'D',name:'Critical Awareness Framework',url:'https://avi33tbtt.github.io/Prompts/Framework-D-Critical-Awareness-Framework.html',cat:'Framework'},
+];
+
+const PROMPTS_BASE = 'https://avi33tbtt.github.io/Prompts/';
+
+// ── MODULE MAP (browsable grid) ──────────────────────────────
+let modFilter = 'all';
+let modSearch = '';
+
+function setFilter(cat, btn) {
+  modFilter = cat;
+  document.querySelectorAll('#modFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMods();
+}
+
+function filterMods() {
+  modSearch = document.getElementById('modSearch').value.toLowerCase();
+  renderMods();
+}
+
+function renderMods() {
+  const grid = document.getElementById('modsGrid');
+  const filtered = MODS.filter(m => {
+    const matchCat = modFilter === 'all' || m.cat === modFilter;
+    const matchSearch = !modSearch || m.name.toLowerCase().includes(modSearch) || m.num.toLowerCase().includes(modSearch);
+    return matchCat && matchSearch;
+  });
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="mod-empty">No modules match that search.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(m => `
+    <a class="mod-chip" href="${m.url}" target="_blank">
+      <span class="mod-chip-num">M${m.num}</span>
+      <div>
+        <div class="mod-chip-name">${m.name}</div>
+        <div class="mod-chip-tag">${m.cat}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+// ── PROMPT BUILDER ────────────────────────────────────────────
+let bFilter = 'all';
+const ORDER = [];
+
+function setBFilter(cat, btn) {
+  bFilter = cat;
+  document.querySelectorAll('#bModFilters .bmod-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBMods();
+}
+
+function renderBMods() {
+  const grid = document.getElementById('bModGrid');
+  const filtered = MODS.filter(m => bFilter === 'all' || m.cat === bFilter);
+  grid.innerHTML = filtered.map(m => {
+    const sel = ORDER.find(x => x.num === m.num) ? 'sel' : '';
+    return `<div class="bmod-chip ${sel}" onclick="toggleMod(this,'${m.num}')" data-num="${m.num}">
+      <span class="bmod-dot"></span>
+      <span class="bmod-num">M${m.num}</span>
+      <span class="bmod-name">${m.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleMod(chip, num) {
+  const idx = ORDER.findIndex(x => x.num === num);
+  if (idx > -1) {
+    ORDER.splice(idx, 1);
+    chip.classList.remove('sel');
+  } else {
+    const mod = MODS.find(m => m.num === num);
+    ORDER.push(mod);
+    chip.classList.add('sel');
+  }
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+function renderRunSeq() {
+  const seq = document.getElementById('runSeq');
+  const empty = document.getElementById('runEmpty');
+  const btn = document.getElementById('btnBuild');
+  seq.innerHTML = '';
+  if (!ORDER.length) {
+    seq.appendChild(Object.assign(document.createElement('span'), {className:'run-empty', textContent:'Select modules above to build your run sequence'}));
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  ORDER.forEach((m, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'run-chip';
+    chip.innerHTML = `M${m.num} ${m.name} <span class="rx" onclick="removeFromRun('${m.num}', event)">×</span>`;
+    seq.appendChild(chip);
+    if (i < ORDER.length - 1) {
+      const arr = document.createElement('span');
+      arr.className = 'run-arrow';
+      arr.textContent = '→';
+      seq.appendChild(arr);
+    }
+  });
+}
+
+function removeFromRun(num, e) {
+  e.stopPropagation();
+  const idx = ORDER.findIndex(x => x.num === num);
+  if (idx > -1) ORDER.splice(idx, 1);
+  // deselect chip in builder grid
+  document.querySelectorAll(`#bModGrid .bmod-chip[data-num="${num}"]`).forEach(c => c.classList.remove('sel'));
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+function buildPrompt() {
+  const caseText = document.getElementById('bCaseInput').value.trim();
+  const caseSection = caseText
+    ? `for case - ${caseText}`
+    : 'for case - [paste your case description or URL here]';
+  const runNums = ORDER.map(m => m.num).join(' -> ');
+  const prompt = `${caseSection} run modules ${runNums} from ${PROMPTS_BASE}`;
+  document.getElementById('outputPre').textContent = prompt;
+  document.getElementById('outputPanel').style.display = 'block';
+  document.getElementById('outputPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function copyPrompt() {
+  navigator.clipboard.writeText(document.getElementById('outputPre').textContent).catch(() => {});
+}
+
+function clearAll() {
+  ORDER.length = 0;
+  document.getElementById('bCaseInput').value = '';
+  renderBMods();
+  renderRunSeq();
+  document.getElementById('outputPanel').style.display = 'none';
+}
+
+// init
+renderMods();
+renderBMods();
+</script>
 </script>
 
 </body>
