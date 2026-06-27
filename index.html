@@ -563,7 +563,215 @@
 
 
 
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
 
+  /* SECTION HEADERS */
+  .section-header { margin-bottom: 2rem; }
+  .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+  .section-title { font-size: 1.8rem; font-weight: 700; letter-spacing: -.02em; }
+  .section-sub { color: var(--text2); margin-top: .5rem; }
+
+
+  /* MODULES GRID */
+  .mods-search {
+    width: 100%; padding: 9px 14px; border-radius: var(--radius);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; margin-bottom: 1rem;
+    outline: none;
+  }
+  .mods-search:focus { border-color: var(--accent); }
+  .mods-search::placeholder { color: var(--text3); }
+  .mods-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .filter-btn {
+    font-size: 11px; padding: 4px 12px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text2); cursor: pointer; transition: all .15s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(8,145,178,0.15); border-color: var(--accent); color: var(--accent); }
+  .mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+  .mod-chip {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 9px 11px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    text-decoration: none; transition: all .15s; cursor: pointer;
+  }
+  .mod-chip:hover { border-color: var(--accent); background: rgba(8,145,178,0.07); }
+  .mod-chip-num { font-size: 10px; font-weight: 700; color: var(--text3); min-width: 24px; flex-shrink: 0; padding-top: 1px; }
+  .mod-chip-name { font-size: 12px; color: var(--text2); line-height: 1.4; }
+  .mod-chip-tag { font-size: 10px; color: var(--text3); margin-top: 2px; }
+  .mod-empty { color: var(--text3); font-size: 13px; padding: 1rem 0; grid-column: 1/-1; }
+
+  /* PROMPT BUILDER */
+  .builder-wrap { background: var(--bg3); border: 1px solid var(--border2); border-radius: 14px; overflow: hidden; }
+  .builder-header {
+    background: linear-gradient(90deg, rgba(8,145,178,0.15) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border2); padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .builder-header-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(8,145,178,0.2); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .builder-header-text h3 { font-size: 15px; font-weight: 700; }
+  .builder-header-text p { font-size: 12px; color: var(--text3); }
+
+  .builder-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .bsect-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
+  .bsect { }
+
+  .case-input {
+    width: 100%; min-height: 80px; padding: 10px 13px;
+    background: var(--bg); border: 1px solid var(--border2);
+    border-radius: var(--radius); color: var(--text); font-size: 13px;
+    font-family: var(--font); line-height: 1.6; resize: vertical; outline: none;
+    transition: border-color .2s;
+  }
+  .case-input:focus { border-color: var(--accent); }
+  .case-input::placeholder { color: var(--text3); }
+
+  .bmod-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .75rem; }
+  .bmod-filter {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: var(--bg); border: 1px solid var(--border2);
+    color: var(--text3); cursor: pointer; transition: all .15s;
+  }
+  .bmod-filter.active, .bmod-filter:hover { background: rgba(8,145,178,0.15); border-color: var(--accent); color: var(--accent); }
+
+  .bmod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+  .bmod-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 9px; border-radius: 7px;
+    background: var(--bg); border: 1px solid var(--border);
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .bmod-chip:hover { border-color: var(--border2); }
+  .bmod-chip.sel { border-color: var(--accent); background: rgba(8,145,178,0.12); }
+  .bmod-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); flex-shrink: 0; transition: background .15s; }
+  .bmod-chip.sel .bmod-dot { background: var(--accent); }
+  .bmod-num { font-size: 10px; color: var(--text3); min-width: 22px; }
+  .bmod-chip.sel .bmod-num { color: var(--accent); }
+  .bmod-name { font-size: 11px; color: var(--text2); line-height: 1.3; }
+  .bmod-chip.sel .bmod-name { color: var(--text); font-weight: 500; }
+
+  .run-section { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+  .run-seq-wrap { display: flex; gap: 10px; align-items: flex-start; }
+  .run-seq {
+    flex: 1; min-height: 50px; padding: 9px 11px;
+    background: var(--bg); border: 1.5px dashed var(--border2);
+    border-radius: var(--radius);
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+  }
+  .run-empty { font-size: 12px; color: var(--text3); }
+  .run-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 20px;
+    background: rgba(8,145,178,0.15); border: 1px solid var(--border2);
+    font-size: 11px; color: var(--accent); font-weight: 500; white-space: nowrap;
+  }
+  .run-chip .rx { cursor: pointer; opacity: .5; font-size: 13px; line-height: 1; }
+  .run-chip .rx:hover { opacity: 1; }
+  .run-arrow { font-size: 10px; color: var(--text3); }
+  .btn-build {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 18px; border-radius: var(--radius);
+    background: var(--cyan); color: #fff; border: none;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background .15s; white-space: nowrap;
+  }
+  .btn-build:hover { background: var(--cyan-dark); }
+  .btn-build:disabled { opacity: .4; cursor: default; }
+
+  .output-panel { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .output-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: .5rem; }
+  .output-pre {
+    background: var(--bg); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 12px 14px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--text2);
+    white-space: pre-wrap; line-height: 1.65; max-height: 200px; overflow-y: auto;
+  }
+  .output-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 12px; border-radius: var(--radius);
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border2); color: var(--text2);
+    transition: all .15s;
+  }
+  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0; text-align: center;
+    color: var(--text3); font-size: 12px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-logo { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: .5rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .layers-grid, .trust-grid, .paradigm-grid { grid-template-columns: 1fr; }
+    .gen-label { display: none; }
+    nav .nav-links { display: none; }
+    .run-seq-wrap { flex-direction: column; }
+    .btn-build { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">VibeRounds <span>· CCOS</span></a>
+  <ul class="nav-links">
+    <li><a href="#evolution">Evolution</a></li>
+    <li><a href="#layers">Layers</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#builder">Prompt Builder</a></li>
+    <li><a href="https://avi33tbtt.github.io/Prompts/" target="_blank">Directory ↗</a></li>
+  </ul>
+  <span class="nav-badge">🩺 June 2026</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">🩺 Healthcare AI · Clinical Cognition Operating System</div>
+    <h1>From Prompt Library to<br><em>Clinical Cognition OS</em></h1>
+    <p class="hero-sub">Architectural evolution of AI-assisted clinical reasoning — built on Socratic principles, cognitive frameworks, and 57 reasoning modules.</p>
+    <p class="hero-author">by <strong>Dr. Avinash Kumar Gupta</strong> · avi33tbtt.github.io</p>
+    <div class="hero-actions">
+      <a href="#builder" class="btn btn-primary">⚡ Prompt Builder</a>
+      <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" class="btn btn-ghost">↗ Browse all modules</a>
+      <a href="https://www.researchgate.net/publication/408150632" target="_blank" class="btn btn-ghost">📄 Research paper</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section>
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Architectural generations</div></div>
+      <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Cognitive layers</div></div>
+      <div class="stat-card"><div class="stat-num">57</div><div class="stat-label">Reasoning modules</div></div>
+      <div class="stat-card"><div class="stat-num">200+</div><div class="stat-label">Clinical pipelines</div></div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+  
 
 
 
