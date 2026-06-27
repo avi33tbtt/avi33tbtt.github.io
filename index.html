@@ -460,6 +460,114 @@
     .site-tab { flex: 1; padding: 8px 10px; font-size: 12px; }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /* GENERATIONS */
+  .gen-track {
+    display: flex; gap: 0; position: relative;
+    margin: 1.5rem 0;
+  }
+  .gen-track::before {
+    content: ''; position: absolute; top: 28px; left: 28px; right: 28px; height: 2px;
+    background: linear-gradient(90deg, var(--border2) 0%, var(--accent) 100%);
+  }
+  .gen-node { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .gen-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--text2); position: relative; z-index: 1;
+    margin-bottom: .6rem; transition: border-color .2s;
+  }
+  .gen-node.active .gen-circle { border-color: var(--accent); color: var(--accent); background: rgba(8,145,178,0.1); }
+  .gen-label { font-size: 11px; color: var(--text3); font-weight: 500; }
+  .gen-node.active .gen-label { color: var(--text2); }
+
+  /* LAYERS */
+  .layers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .layer-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .layer-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+  }
+  .layer-num { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; }
+  .layer-name { font-size: 15px; font-weight: 700; margin: 4px 0 8px; }
+  .layer-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .layer-tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    background: rgba(8,145,178,0.1); color: var(--text2); border: 1px solid var(--border);
+  }
+
+  /* PARADIGM */
+  .paradigm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .paradigm-col { background: var(--surface); padding: 1.5rem; }
+  .paradigm-col.old { }
+  .paradigm-col.new { background: var(--bg3); }
+  .paradigm-heading { font-size: 13px; font-weight: 700; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+  .paradigm-heading.old-h { color: var(--text3); }
+  .paradigm-heading.new-h { color: var(--accent); }
+  .paradigm-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .paradigm-key { font-size: 10px; font-weight: 700; color: var(--text3); min-width: 48px; padding-top: 2px; }
+  .paradigm-val { font-size: 12px; color: var(--text2); }
+  .paradigm-col.new .paradigm-val { color: var(--text); }
+  .paradigm-col.new .paradigm-key { color: var(--accent); }
+
+  /* TRUST CARDS */
+  .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .trust-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+  }
+  .trust-icon { font-size: 1.4rem; margin-bottom: .6rem; }
+  .trust-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .trust-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .trust-transform {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    font-size: 11px; color: var(--text3);
+  }
+  .trust-before { text-decoration: line-through; }
+  .trust-arrow { color: var(--accent); }
+  .trust-after { color: var(--green); font-weight: 600; }
+
+  /* FLOW */
+  .flow-wrap { overflow-x: auto; padding-bottom: 8px; }
+  .flow-track { display: flex; align-items: center; gap: 0; min-width: 600px; }
+  .flow-node {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: .6rem .5rem; text-align: center; font-size: 11px;
+  }
+  .flow-node strong { display: block; font-size: 11px; color: var(--accent); font-weight: 700; }
+  .flow-node span { color: var(--text3); font-size: 10px; }
+  .flow-arrow { color: var(--accent); padding: 0 4px; font-size: 14px; flex-shrink: 0; }
+  .flow-loop {
+    text-align: center; margin-top: .75rem; font-size: 11px; color: var(--text3);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+
+
+
+
+
+
+
+
+
+    
   /* ── RESEARCH TAB ── */
   .research-panel { padding: 48px 40px 80px; max-width: 1280px; margin: 0 auto; }
   .research-intro { font-size: 14px; color: var(--ink-soft); line-height: 1.7; max-width: 640px; margin-bottom: 36px; }
