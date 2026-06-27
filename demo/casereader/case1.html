@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 51B — Annotated Case: 60/M Leptospirosis | VibeRounds</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --section-bg: #f8f9fa;
+    --accent: #0891b2;
+    --accent-light: #e0f2fe;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+
+    --pearl-bg: #fef3c7; --pearl-text: #92400e; --pearl-border: #f59e0b;
+    --pico-bg: #ede9fe; --pico-text: #5b21b6; --pico-border: #a78bfa;
+    --dp-bg: #fef2f2; --dp-text: #991b1b; --dp-border: #f87171;
+    --hint-bg: #ecfdf5; --hint-text: #065f46; --hint-border: #34d399;
+    --llm-bg: #eff6ff; --llm-text: #1e40af; --llm-border: #93c5fd;
+    --script-bg: #f0fdfa; --script-text: #134e4a; --script-border: #2dd4bf;
+    --sq-bg: #f8fafc; --sq-text: #1e293b; --sq-border: #cbd5e1;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    border-bottom: 4px solid #0e7490;
+  }
+  .page-header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+  .page-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .page-header .meta {
+    font-size: 12px;
+    opacity: 0.85;
+    margin-top: 0.75rem;
+  }
+  .page-header .summary-line {
+    background: rgba(255,255,255,0.15);
+    border-left: 3px solid rgba(255,255,255,0.6);
+    padding: 0.6rem 1rem;
+    margin-top: 1rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 13.5px;
+    font-style: italic;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* ── CASE TEXT ── */
+  .case-segment {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .case-text {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a1a2e;
+    background: #fdfcfb;
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 1.25rem;
+  }
+  .case-text strong { color: var(--accent); }
+
+  /* ── ANNOTATIONS ── */
+  .annotation {
+    border-radius: 6px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid;
+    position: relative;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-bottom: 0.45rem;
+    font-family: monospace;
+  }
+  .annotation p, .annotation li { font-size: 13.5px; line-height: 1.6; }
+
+  /* Socratic Q */
+  .ann-sq { background: var(--sq-bg); border-color: var(--sq-border); color: var(--sq-text); }
+  .ann-sq .pill { background: #e2e8f0; color: #334155; }
+  .ann-sq em { font-style: italic; font-size: 14px; }
+
+  /* Topic Hint */
+  .ann-hint { background: var(--hint-bg); border-color: var(--hint-border); color: var(--hint-text); }
+  .ann-hint .pill { background: #a7f3d0; color: #065f46; }
+  .ann-hint .hint-line { display: flex; gap: 0.5rem; margin-bottom: 0.2rem; font-size: 13px; }
+  .ann-hint .hint-label { font-weight: 700; min-width: 80px; font-family: monospace; font-size: 11px; text-transform: uppercase; opacity: 0.7; }
+
+  /* LLM Prompt */
+  .ann-llm { background: var(--llm-bg); border-color: var(--llm-border); color: var(--llm-text); }
+  .ann-llm .pill { background: #bfdbfe; color: #1e40af; }
+  .ann-llm pre { font-family: monospace; font-size: 12.5px; white-space: pre-wrap; background: rgba(255,255,255,0.6); padding: 0.5rem 0.75rem; border-radius: 4px; border: 1px solid var(--llm-border); margin-top: 0.4rem; }
+  .copy-btn { float: right; font-size: 11px; font-family: monospace; background: var(--accent); color: #fff; border: none; border-radius: 4px; padding: 3px 10px; cursor: pointer; margin-left: 0.5rem; }
+  .copy-btn:hover { background: #0e7490; }
+
+  /* Pearl */
+  .ann-pearl { background: var(--pearl-bg); border-color: var(--pearl-border); color: var(--pearl-text); }
+  .ann-pearl .pill { background: #fde68a; color: #92400e; }
+
+  /* PICO */
+  .ann-pico { background: var(--pico-bg); border-color: var(--pico-border); color: var(--pico-text); }
+  .ann-pico .pill { background: #c4b5fd; color: #5b21b6; }
+  .pico-grid { display: grid; grid-template-columns: 2rem 1fr; gap: 0.25rem 0.5rem; font-size: 13px; margin-top: 0.4rem; }
+  .pico-key { font-weight: 800; font-family: monospace; color: var(--pico-border); }
+
+  /* Decision Point */
+  .ann-dp { background: var(--dp-bg); border-color: var(--dp-border); color: var(--dp-text); }
+  .ann-dp .pill { background: #fecaca; color: #991b1b; }
+
+  /* Illness Script */
+  .ann-script { background: var(--script-bg); border-color: var(--script-border); color: var(--script-text); }
+  .ann-script .pill { background: #99f6e4; color: #134e4a; }
+  .script-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 0.5rem; }
+  .script-table td { padding: 4px 8px; border-bottom: 1px solid rgba(45,212,191,0.2); vertical-align: top; }
+  .script-table td:first-child { font-weight: 700; white-space: nowrap; width: 160px; font-family: monospace; font-size: 11px; text-transform: uppercase; opacity: 0.75; }
+
+  /* ── PHASE 3 SYNTHESIS ── */
+  .phase3 {
+    background: var(--section-bg);
+    border-top: 3px solid var(--accent);
+    margin-top: 3rem;
+    padding: 2rem 0;
+  }
+  .phase3-inner { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+  .phase3 h2 { font-size: 1.3rem; color: var(--accent); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.4rem; margin-bottom: 1.5rem; }
+  .phase3 h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 12px; border-left: 3px solid var(--accent); padding-left: 0.5rem; }
+
+  .script-full table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .script-full td { padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .script-full td:first-child { font-weight: 700; width: 180px; color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .numbered-list { counter-reset: item; list-style: none; }
+  .numbered-list li { counter-increment: item; display: flex; gap: 0.75rem; margin-bottom: 0.9rem; font-size: 13.5px; }
+  .numbered-list li::before { content: counter(item); font-weight: 800; color: var(--accent); font-family: monospace; min-width: 1.5rem; font-size: 15px; }
+
+  .open-q { font-size: 13.5px; margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+  .open-q::before { content: "🔭"; position: absolute; left: 0; }
+
+  .dp-review-item { background: var(--dp-bg); border-left: 4px solid var(--dp-border); border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; margin-bottom: 0.75rem; font-size: 13px; color: var(--dp-text); }
+  .dp-review-item strong { display: block; margin-bottom: 0.3rem; }
+
+  .wrong-audit { background: #fff7ed; border-left: 4px solid #fb923c; border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; font-size: 13.5px; color: #7c2d12; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #1e293b;
+    color: #94a3b8;
+    text-align: center;
+    padding: 1.5rem 2rem;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-top: 3rem;
+  }
+  .footer a { color: #7dd3fc; text-decoration: none; }
+  .footer strong { color: #e2e8f0; }
+
+  /* ── PRINT ── */
+  @media print {
+    .ann-pearl { background: #f5f5f5 !important; border-color: #888 !important; color: #000 !important; }
+    .ann-pico { background: #efefef !important; border-color: #888 !important; color: #000 !important; }
+    .ann-dp { background: #f0f0f0 !important; border-color: #888 !important; color: #000 !important; }
+    .ann-hint { background: #f5f5f5 !important; border-color: #888 !important; color: #000 !important; }
+    .ann-llm { background: #f5f5f5 !important; border-color: #888 !important; color: #000 !important; }
+    .ann-script { background: #f5f5f5 !important; border-color: #888 !important; color: #000 !important; }
+    .copy-btn { display: none; }
+  }
+
+  /* ── SEGMENT HEADER ── */
+  .seg-label { font-size: 10px; font-family: monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+
+  /* collapsible toggle for Phase 3 sub-sections - decorative only */
+  .synth-block { margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ PAGE HEADER ═══════════════════════════════════ -->
+<div class="page-header">
+  <div class="eyebrow">VibeRounds · Module 51B — Case Narrator: HTML Export Variant</div>
+  <h1>A 60-Year-Old Male Farmer Presenting with Malaise, Myalgia, Abdominal Distension &amp; Polyuria</h1>
+  <div class="meta">
+    Dr. Avinash Kumar Gupta &nbsp;·&nbsp;
+    Module 51B — Case Narrator · HTML Export Variant &nbsp;·&nbsp;
+    DOI: <a href="https://doi.org/10.5281/zenodo.20622693" style="color:#bae6fd;">10.5281/zenodo.20622693</a> &nbsp;·&nbsp;
+    June 2026
+  </div>
+  <div class="summary-line">
+    Annotated Socratic reading of a complex case: a 60-year-old agric-exposed diabetic with leptospirosis, acute kidney injury, cholestatic liver injury, hyponatraemia, and polyuric hyperglycaemia — all on a background of hypertension, possible OSA, and thiazide use.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ CASE BODY ═══════════════════════════════════ -->
+<div class="container">
+
+  <!-- ══ SEGMENT 1 — Chief Complaint & Occupation ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 1 · Presenting complaint &amp; occupational history</div>
+
+    <div class="case-text">
+      60/M presented with a <strong>1 week history of malaise, diffuse muscle aches, distention of abdomen, loss of appetite and increased urine output.</strong>
+      <br><br>
+      An agile farmer whose work involves <strong>tilling lands and working barefooted in muddy waters (infested with rats)</strong>, the patient recalls being well until a week ago, when he developed fever with loss of appetite.
+    </div>
+
+    <!-- SQ -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. "Barefoot in rat-infested muddy water" is not a background detail — it is the case's most important sentence. What does this exposure pattern make you reach for immediately, and why does the epidemiology matter before anything else?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Infectious Disease / Zoonosis</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Leptospirosis — transmission and at-risk occupations</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Weil's disease: the ictero-haemorrhagic form of leptospirosis; biphasic illness pattern</span></div>
+    </div>
+
+    <!-- LLM prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p1">Explain the epidemiology and transmission routes of Leptospira interrogans, including which occupational groups are at highest risk, and describe the classic biphasic clinical course distinguishing the leptospiraemic from the immune phase.</pre>
+    </div>
+
+    <!-- Pearl -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 1</div>
+      <p><strong>Occupational exposure to animal urine in flood-prone or agricultural settings is the canonical risk factor for leptospirosis.</strong> Spirochaetes enter through skin abrasions or mucous membranes — working barefoot in rat-infested water is textbook inoculation. Always ask farmers and sewer workers about waterlogged exposure.</p>
+    </div>
+
+    <!-- Illness Script — INIT -->
+    <div class="annotation ann-script">
+      <div class="pill">◈ Illness Script — Initialised</div>
+      <table class="script-table">
+        <tr><td>Epidemiology</td><td>60/M; agric worker; tropical/subtropical setting; rat-infested water contact</td></tr>
+        <tr><td>Predisposing conditions</td><td>DM2, HTN; immunocompromise possible</td></tr>
+        <tr><td>Pathophysiology</td><td>Leptospira interrogans → systemic vasculitis → multiorgan involvement (liver, kidney, lungs, eyes)</td></tr>
+        <tr><td>Symptoms so far</td><td>1/52 malaise, myalgia, anorexia, fever, polyuria, abdominal distension</td></tr>
+        <tr><td>Signs</td><td>Pending</td></tr>
+        <tr><td>Investigations</td><td>Pending</td></tr>
+        <tr><td>Complications</td><td>AKI, jaundice (Weil's), pulm haemorrhage, uveitis</td></tr>
+        <tr><td>Treatment</td><td>Doxycycline (mild); IV Penicillin G / Ceftriaxone (severe)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 2 — Biphasic History & Medications ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 2 · Biphasic history, past medical history &amp; medications</div>
+
+    <div class="case-text">
+      His fever was low grade, with a mild evening rise and associated with loss of appetite. At this point he consulted a doctor who prescribed <strong>symptomatic treatment which provided quick relief.</strong> However, he continued to have loss of appetite and since the <strong>last 4 days he has been having fatigue and muscle aches.</strong>
+      <br><br>
+      He denies having involuntary weight loss, vomiting, altered bowel habits, jaundice or altered taste. His past history is significant for <strong>Chronic Diabetes and Hypertension</strong> for which he uses <strong>Telmisartan 40 mg + Hydrochlorothiazide 12.5 mg.</strong> He has been using <strong>Glibenclamide 5mg and Metformin 500mg.</strong> His dietary adherence to salt and sugar restriction is poor.
+    </div>
+
+    <!-- SQ: biphasic -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. The fever "resolved quickly" but the patient re-presents with fatigue and myalgia 4 days later. What classic disease pattern does this symptom trajectory most suggest, and how does it change your initial diagnostic frame?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Infectious Disease</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Biphasic illness — leptospiraemic phase vs immune (Weil's) phase</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Apparent clinical improvement between phases can lead to diagnostic delay; second phase is the dangerous one</span></div>
+    </div>
+
+    <!-- Pearl 2 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 2</div>
+      <p><strong>Leptospirosis classically shows a "defervescence trap."</strong> The leptospiraemic phase (days 1–7) resolves spontaneously — doctors and patients are lulled into thinking recovery is underway. The immune phase (days 7–14+) then brings hepato-renal involvement. Recognise the biphasic trajectory before labs return.</p>
+    </div>
+
+    <!-- SQ: Glibenclamide & Metformin in AKI -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. He is taking Glibenclamide and Metformin. If this patient is developing AKI — which is very likely — what is the specific danger posed by each of these drugs?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Pharmacology / Clinical Toxicology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Metformin-associated lactic acidosis (MALA); hypoglycaemia from sulphonylureas in renal failure</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Both agents accumulate in CKD/AKI: Metformin→ lactate accumulation; Glibenclamide → prolonged hypoglycaemia due to active metabolite accumulation</span></div>
+    </div>
+
+    <!-- LLM Prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p2">Compare the risks of Metformin and Glibenclamide in a patient developing acute kidney injury, focusing on Metformin-associated lactic acidosis and sulphonylurea-induced hypoglycaemia. At what eGFR thresholds should each be withheld, and what alternatives exist for glycaemic control in AKI?</pre>
+    </div>
+
+    <!-- Pearl 3 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 3</div>
+      <p><strong>Always review the OHA list before the creatinine result in a febrile diabetic.</strong> Metformin must be withheld at eGFR &lt;30 (and proactively in any state of haemodynamic compromise). Glibenclamide is the most dangerous sulphonylurea in renal failure — its active metabolites accumulate causing prolonged, unpredictable hypoglycaemia.</p>
+    </div>
+
+    <!-- PICO: Telmisartan in AKI context -->
+    <div class="annotation ann-pico">
+      <div class="pill">■ PICO 1</div>
+      <div class="pico-grid">
+        <span class="pico-key">P</span><span>Adult hypertensive diabetics on ARB therapy who develop acute infectious illness with incipient AKI (eGFR declining)</span>
+        <span class="pico-key">I</span><span>Continuing Telmisartan (ARB) through the acute illness</span>
+        <span class="pico-key">C</span><span>Temporarily holding ARB with transition to alternative antihypertensive</span>
+        <span class="pico-key">O</span><span>Rate of AKI progression, need for renal replacement therapy, recovery of renal function</span>
+      </div>
+      <p style="margin-top:0.5rem; font-size:12px; opacity:0.8;">Reflect: Should the ARB be withheld now, given this clinical trajectory? What principle guides this decision?</p>
+    </div>
+
+    <!-- Illness Script update -->
+    <div class="annotation ann-script">
+      <div class="pill">◈ Illness Script — Update</div>
+      <table class="script-table">
+        <tr><td>Predisposing</td><td>DM2 (Glibenclamide + Metformin — both renally cleared; high AKI risk), HTN (on ARB+thiazide), poor dietary adherence</td></tr>
+        <tr><td>Symptoms</td><td>Biphasic pattern confirmed: early fever → apparent improvement → recurrent fatigue/myalgia at day 4–7</td></tr>
+        <tr><td>Drug risks</td><td>Metformin (MALA risk in AKI), Glibenclamide (accumulation → hypoglycaemia), Telmisartan (worsens AKI via efferent arteriolar dilation), HCTZ (hyponatraemia risk)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 3 — Sleep history & Nocturia ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 3 · Sleep, nocturia &amp; systemic review</div>
+
+    <div class="case-text">
+      He has a fairly well balanced diet. He reports having <strong>unrefreshing sleep since the last few years</strong> and his wife confides that the patient <strong>snores during his sleep.</strong> He however does not have daytime somnolence. He occasionally has nocturia but denies having nocturnal diarrhoea, increased frequency, urgency or hesitancy.
+    </div>
+
+    <!-- SQ: OSA -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. Unrefreshing sleep, spouse-reported snoring, and obesity in a hypertensive diabetic — what syndrome should you screen for, and how does its presence compound the metabolic risks already catalogued?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Sleep Medicine / Endocrinology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Obstructive Sleep Apnoea (OSA) in the metabolic syndrome cluster</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>OSA → intermittent hypoxia → insulin resistance, sympathetic activation, non-dipping BP pattern; note absence of daytime somnolence does not exclude OSA</span></div>
+    </div>
+
+    <!-- Pearl 4 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 4</div>
+      <p><strong>The absence of daytime somnolence does not exclude OSA.</strong> Many patients with OSA adapt to chronic sleep fragmentation and do not perceive excessive daytime sleepiness. Spouse-reported snoring + unrefreshing sleep + metabolic syndrome = strong OSA phenotype. Mallampati Class 3 (noted later) reinforces this.</p>
+    </div>
+
+    <!-- SQ: Nocturia -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>The patient has occasional nocturia but denies frequency, urgency, or hesitancy. In this diabetic with possible renal disease, what are the three most likely explanations for nocturia, and how does each generate a different investigation priority?</em></p>
+    </div>
+
+    <!-- LLM Prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p3">In a 60-year-old diabetic male with hypertension, unrefreshing sleep, and snoring but without daytime somnolence, compare the STOP-BANG score utility versus overnight oximetry versus polysomnography for OSA screening. Also outline how untreated OSA worsens glycaemic control and cardiovascular risk.</pre>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 4 — Vitals ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 4 · Vital signs</div>
+
+    <div class="case-text">
+      Vitals — PR: <strong>93 BPM</strong> &nbsp;|&nbsp; BP: <strong>110/80 mmHg</strong> &nbsp;|&nbsp; Temp: <strong>98.3 °F</strong> &nbsp;|&nbsp; RR: <strong>22 /min</strong> &nbsp;|&nbsp; SpO₂: <strong>97% RA</strong> &nbsp;|&nbsp; RBS: <strong>664 mg/dL</strong>
+    </div>
+
+    <!-- SQ: BP low for HTN -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. He is a known hypertensive. His BP is 110/80. What does this tell you about his haemodynamic state, and what does it make you worry about?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Clinical Medicine / Haemodynamics</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Relative hypotension in a hypertensive patient; sepsis haemodynamics</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>For a patient whose baseline BP may be 150–160 mmHg, a reading of 110/80 represents a significant relative fall — may indicate early distributive shock or profound volume depletion</span></div>
+    </div>
+
+    <!-- Pearl 5 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 5</div>
+      <p><strong>Never interpret a BP in isolation — interpret it in context of the patient's baseline.</strong> A known hypertensive whose BP has "normalised" without anti-hypertensive dose change may in fact be in relative hypotension. Track the trend; assume haemodynamic stress until proven otherwise.</p>
+    </div>
+
+    <!-- SQ: RBS 664 -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>RBS is 664 mg/dL. Before ordering anything — what are the three immediate dangers of this glucose level, and what test pair would you urgently request to triage for the most life-threatening emergency?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Endocrinology / Emergency Medicine</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Hyperosmolar hyperglycaemic state (HHS) vs DKA; distinguishing criteria</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>RBS 664 in T2DM → likely HHS; check urine ketones + ABG to distinguish; osmolality >320 and absence of significant ketosis defines HHS</span></div>
+    </div>
+
+    <!-- LLM Prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p4">Compare the diagnostic criteria, pathophysiology, and emergency management of Hyperosmolar Hyperglycaemic State (HHS) versus Diabetic Ketoacidosis (DKA) in a T2DM patient presenting with RBS 664 mg/dL. Include the corrected sodium formula and the role of infection as a precipitant.</pre>
+    </div>
+
+    <!-- Pearl 6 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 6</div>
+      <p><strong>RBS 664 + T2DM + no vomiting or altered sensorium + relative polyuria → think HHS first.</strong> HHS carries higher mortality than DKA and is frequently precipitated by infection. Corrected Na = [Na measured + 1.6 × ((glucose − 100) / 100)]. Markedly elevated corrected Na predicts profound free water deficit.</p>
+    </div>
+
+    <!-- Decision Point 1 -->
+    <div class="annotation ann-dp">
+      <div class="pill">⚑ Decision Point 1</div>
+      <p><strong>Before any IV fluids or insulin: you must decide which hyperglycaemic emergency this is, and in what order you act. What is your immediate management sequence in the first 30 minutes?</strong></p>
+      <p style="margin-top:0.4rem; font-size:12px;">Think: Airway? Venous access? Which bloods first? Fluid bolus or cautious resuscitation? When does insulin come in?</p>
+    </div>
+
+    <!-- PICO: Fluid strategy in HHS -->
+    <div class="annotation ann-pico">
+      <div class="pill">■ PICO 2</div>
+      <div class="pico-grid">
+        <span class="pico-key">P</span><span>Adults with Hyperosmolar Hyperglycaemic State (serum osmolality >320 mOsm/kg, blood glucose >600 mg/dL)</span>
+        <span class="pico-key">I</span><span>Aggressive isotonic fluid resuscitation (0.9% NaCl at 1 L/hr initially)</span>
+        <span class="pico-key">C</span><span>Conservative fluid replacement targeting slower osmolality correction (&lt;3 mOsm/kg/hr)</span>
+        <span class="pico-key">O</span><span>Cerebral oedema risk, mortality, time to normalisation of osmolality and consciousness</span>
+      </div>
+    </div>
+
+    <!-- SQ: RR 22 -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>RR is 22. In the context of everything we know — what are you thinking about, and how does it inform your urgency about the ABG?</em></p>
+    </div>
+
+    <!-- Illness Script update -->
+    <div class="annotation ann-script">
+      <div class="pill">◈ Illness Script — Update</div>
+      <table class="script-table">
+        <tr><td>Signs (vitals)</td><td>Relative hypotension (110/80 in known hypertensive), tachycardia (93), afebrile (98.3°F — immune phase?), mild tachypnoea (RR 22), SpO₂ 97%, RBS 664 — hyperglycaemic emergency</td></tr>
+        <tr><td>Pathophysiology</td><td>Leptospira → systemic vasculitis + AKI → impaired glucose excretion → worsening hyperglycaemia; infection as HHS precipitant</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 5 — General Exam ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 5 · General examination</div>
+
+    <div class="case-text">
+      General Examination: Tiny <strong>bilateral subconjunctival haemorrhages</strong> with <strong>marked conjunctival suffusion</strong> and <strong>icterus present.</strong>
+      Tongue and mucous membranes are moist. <strong>Mallampati Class 3.</strong>
+      Nails — <strong>Terry nails.</strong> No cervical or supraclavicular lymphadenopathy.
+      He also has <strong>bilateral pitting pedal oedema</strong> with the pits resolving in about 40 seconds.
+    </div>
+
+    <!-- SQ: subconjunctival haem + suffusion + icterus -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. Subconjunctival haemorrhages + conjunctival suffusion + icterus in a farmer with rat-water exposure. This triad is almost diagnostic. What is it, and what does it tell you about disease severity?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Infectious Disease — Leptospirosis</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Weil's disease — the ictero-haemorrhagic form</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Conjunctival suffusion (not conjunctivitis — no discharge) is pathognomonic of leptospirosis; with subconjunctival bleeds and jaundice, this is Weil's disease until proven otherwise</span></div>
+    </div>
+
+    <!-- Pearl 7 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 7</div>
+      <p><strong>Conjunctival suffusion is distinct from conjunctivitis.</strong> It is injection without discharge — the hallmark of leptospirosis ocular involvement. Combined with jaundice and haemorrhagic manifestations (subconjunctival bleeds) in the right epidemiological context, this is Weil's disease. Do not wait for serology to treat.</p>
+    </div>
+
+    <!-- SQ: Terry nails -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Terry nails — describe what you see and name at least three systemic conditions they indicate. Which one fits best in this patient's metabolic context?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Clinical Signs / Dermatology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Terry nails — white nail with distal pink/red band</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Associated with: hepatic cirrhosis, hypoalbuminaemia (any cause), CHF, DM2, CKD. In this patient: hypoalbuminaemia from both hepatic injury (leptospirosis) and possible nephrotic leak is the most likely driver</span></div>
+    </div>
+
+    <!-- Pearl 8 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 8</div>
+      <p><strong>Terry nails signal hypoalbuminaemia regardless of cause.</strong> The white opacification results from oedema of the nail bed displacing the vascular pattern. In this patient, both hepatocellular injury from leptospirosis AND protein loss from nephrotic/nephritic renal disease may be simultaneously depressing albumin.</p>
+    </div>
+
+    <!-- SQ: Mallampati 3 -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Mallampati Class 3 is documented. Why is this clinically important in this patient — both for immediate management and longer-term risk?</em></p>
+    </div>
+
+    <!-- Pearl 9 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 9</div>
+      <p><strong>Mallampati Class 3 predicts difficult intubation AND confirms an OSA-prone upper airway anatomy.</strong> In any febrile, hyperglycaemic patient who may require urgent intubation (e.g., for HHS-related neurological deterioration or pulmonary leptospirosis), a Class 3 airway must be flagged for the anaesthesia team early.</p>
+    </div>
+
+    <!-- Decision Point 2 -->
+    <div class="annotation ann-dp">
+      <div class="pill">⚑ Decision Point 2</div>
+      <p><strong>You now have: conjunctival suffusion + subconjunctival haemorrhages + icterus + pedal oedema + agricultural rat-water exposure. Would you start empirical antibiotic therapy NOW, before leptospira serology returns? What agent and dose?</strong></p>
+    </div>
+
+    <!-- LLM Prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p5">In a patient with clinical Weil's disease (severe leptospirosis) presenting with jaundice, renal impairment, and haemorrhagic manifestations, compare IV Benzylpenicillin G versus IV Ceftriaxone as antibiotic choices — including evidence, dosing, and considerations in renal failure.</pre>
+    </div>
+
+    <!-- Illness Script update -->
+    <div class="annotation ann-script">
+      <div class="pill">◈ Illness Script — Update</div>
+      <table class="script-table">
+        <tr><td>Signs (exam)</td><td>Conjunctival suffusion (pathognomonic leptospirosis), subconjunctival haemorrhages, icterus, Terry nails (hypoalbuminaemia), Mallampati 3 (difficult airway / OSA anatomy), bilateral pitting oedema (40s pit resolution — moderate severity)</td></tr>
+        <tr><td>Severity</td><td>Weil's disease confirmed clinically — severe form. Multiorgan involvement: hepatic + renal + haemorrhagic</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 6 — Systemic Examination ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 6 · Systemic examination — abdomen, respiratory, cardiovascular, CNS</div>
+
+    <div class="case-text">
+      Per abdomen: <strong>Abdomen is distended</strong> and the umbilicus central and inverted. There are no obvious dilated veins or pulsations. On palpation — soft, non-tender, no organomegaly. Bowel sounds heard.
+      No specific tender points on muscle exam.
+      RS: B/L air entry present, no added sounds.
+      CVS: S1S2 heard, no murmurs.
+      CNS: NFND.
+    </div>
+
+    <!-- SQ: distended + no organomegaly -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. The abdomen is distended but there is no organomegaly and no dilated veins. What explains abdominal distension without organomegaly or portal hypertensive signs in this patient?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Gastroenterology / Pathophysiology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Ascites — mechanisms and aetiology; SAAG interpretation</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Likely ascites due to hypoalbuminaemia (low oncotic pressure) ± leptospiral peritoneal inflammation; SAAG &lt;1.1 expected if not portal-HTN driven; inverted central umbilicus may suggest ascites under tension or obesity</span></div>
+    </div>
+
+    <!-- Pearl 10 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 10</div>
+      <p><strong>Abdominal distension + soft, non-tender abdomen + no organomegaly + oedema + hypoalbuminaemia = ascites from low oncotic pressure until proven otherwise.</strong> Request bedside ultrasound. SAAG will guide aetiology — &lt;1.1 g/dL favours hypoproteinaemia; &gt;1.1 g/dL favours portal hypertension.</p>
+    </div>
+
+    <!-- SQ: No pulmonary findings but RR 22 -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Respiratory exam is clear — bilateral air entry, no added sounds. Yet RR is 22. What extra-pulmonary causes of tachypnoea are you considering in this patient?</em></p>
+    </div>
+
+    <!-- Pearl 11 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 11</div>
+      <p><strong>Tachypnoea without auscultatory signs can reflect metabolic acidosis (Kussmaul breathing), severe anaemia, pain, anxiety, or early interstitial lung disease not yet auscultable.</strong> In leptospirosis, pulmonary haemorrhage syndrome (ARDS-like) can begin before frank crackles appear. A CXR is non-negotiable.</p>
+    </div>
+
+    <!-- Decision Point 3 -->
+    <div class="annotation ann-dp">
+      <div class="pill">⚑ Decision Point 3</div>
+      <p><strong>No organomegaly detected on palpation. Does the absence of clinically palpable hepatosplenomegaly exclude hepatic involvement in leptospirosis? How should this influence your investigation strategy?</strong></p>
+    </div>
+  </div>
+
+  <!-- ══ SEGMENT 7 — Investigations ══ -->
+  <div class="case-segment">
+    <div class="seg-label">Segment 7 · Investigations &amp; diagnosis</div>
+
+    <div class="case-text">
+      Diagnosis summary: A 60/M presented with a 1 week history of fever and loss of appetite.
+      Labs revealed: <strong>RBS 664</strong> with <strong>no metabolic acidosis or ketonuria.</strong>
+      <strong>TB 3.2 / DB 2.5</strong> with <strong>ALP 550</strong> and TP 5.9 and <strong>Alb 2.9.</strong>
+      <strong>Blood Urea 150</strong> and <strong>Serum Creatinine 3.5.</strong>
+      Na 129, K 4.3, Cl 90.
+      Urine: <strong>8–10 pus cells.</strong>
+    </div>
+
+    <!-- Prediction before reveal already done above — now annotate results -->
+
+    <!-- SQ: LFT pattern -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Stop. TB 3.2, DB 2.5, ALP 550. What pattern of liver injury does this represent — hepatocellular, cholestatic, or mixed? And how does this fit with leptospiral hepatitis?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Hepatology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>LFT pattern interpretation — R-ratio; leptospiral hepatitis is predominantly cholestatic</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Markedly elevated ALP with moderate bilirubin elevation + predominantly conjugated fraction → cholestatic pattern; leptospirosis characteristically causes cholestatic jaundice, not massive hepatocellular necrosis (unlike viral hepatitis)</span></div>
+    </div>
+
+    <!-- Pearl 12 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 12</div>
+      <p><strong>Leptospiral jaundice is cholestatic, not hepatocellular.</strong> Unlike viral hepatitis where transaminases soar, in Weil's disease bilirubin is elevated (mostly direct) with relatively disproportionate ALP elevation and mildly elevated transaminases. The liver architecture is preserved — jaundice resolves with treatment. Massive hepatocellular failure is rare.</p>
+    </div>
+
+    <!-- SQ: AKI -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Urea 150, Creatinine 3.5. This is AKI. But there are 8–10 pus cells in urine. Does this change your thinking about the mechanism of AKI — pre-renal, intrinsic renal, or obstructive? And what specific renal lesion does leptospirosis cause?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Nephrology</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Leptospiral AKI — tubulointerstitial nephritis; distinction from ATN</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Leptospirosis causes acute tubulointerstitial nephritis (ATIN) — pyuria without bacteriuria is common; this patient also has HCTZ (a cause of ATIN) and ARB use (worsening AKI). The AKI is often non-oliguric — hence the polyuria in the chief complaint</span></div>
+    </div>
+
+    <!-- Pearl 13 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 13</div>
+      <p><strong>Leptospiral AKI is characteristically non-oliguric tubulointerstitial nephritis.</strong> Patients may actually have polyuria despite significant renal impairment — a counter-intuitive finding that can delay recognition. Pyuria without bacteriuria on urine microscopy is a clue to interstitial nephritis. Prompt antibiotic therapy and fluid management can lead to full renal recovery.</p>
+    </div>
+
+    <!-- SQ: Hyponatraemia -->
+    <div class="annotation ann-sq">
+      <div class="pill">❓ Socratic Question</div>
+      <p><em>Na 129, Cl 90. Hyponatraemia with hypochloraemia. List the mechanisms operating in this patient that could contribute to this pattern — at least three. Which is most likely dominant?</em></p>
+    </div>
+
+    <!-- Hint -->
+    <div class="annotation ann-hint">
+      <div class="pill">💡 Topic Hint</div>
+      <div class="hint-line"><span class="hint-label">Subject</span><span>Nephrology / Electrolytes</span></div>
+      <div class="hint-line"><span class="hint-label">Topic</span><span>Hyponatraemia — differential in this case context</span></div>
+      <div class="hint-line"><span class="hint-label">Concept</span><span>Mechanisms: (1) HCTZ — blocks Na reabsorption in DCT; (2) leptospiral ATIN → tubular Na-wasting; (3) SIADH from infection/inflammation; (4) pseudohyponatraemia from hyperglycaemia — correct Na for glucose first</span></div>
+    </div>
+
+    <!-- LLM Prompt -->
+    <div class="annotation ann-llm">
+      <div class="pill">🤖 LLM Copy Prompt</div>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre id="p6">In a patient with Na 129 and glucose 664 mg/dL, calculate the corrected sodium. Then outline the differential diagnosis of hyponatraemia with hypochloraemia in the context of: Thiazide use, leptospiral tubulointerstitial nephritis, SIADH from infection, and hyperglycaemia-related pseudohyponatraemia. Which mechanism dominates, and how does management differ?</pre>
+    </div>
+
+    <!-- Pearl 14 -->
+    <div class="annotation ann-pearl">
+      <div class="pill">🪨 Pearl 14</div>
+      <p><strong>Always correct sodium for glucose before labelling hyponatraemia.</strong> For every 100 mg/dL rise in glucose above 100, Na falls ~1.6–2.4 mEq/L due to osmotic water shift. Corrected Na = 129 + 1.6 × (664−100)/100 ≈ 129 + 9 = ~138 mEq/L — potentially a near-normal corrected sodium, changing the entire electrolyte management approach.</p>
+    </div>
+
+    <!-- Decision Point 4 -->
+    <div class="annotation ann-dp">
+      <div class="pill">⚑ Decision Point 4</div>
+      <p><strong>The patient is on Telmisartan + HCTZ, Glibenclamide, and Metformin. He has AKI (Cr 3.5), hyponatraemia (Na 129), and RBS 664. Which drugs would you stop, which continue, and what would you substitute? Walk through your reasoning drug by drug.</strong></p>
+    </div>
+
+    <!-- PICO: Ceftriaxone in leptospiral AKI -->
+    <div class="annotation ann-pico">
+      <div class="pill">■ PICO 3</div>
+      <div class="pico-grid">
+        <span class="pico-key">P</span><span>Adults with severe leptospirosis (Weil's disease) and concurrent AKI (serum creatinine >2.0 mg/dL)</span>
+        <span class="pico-key">I</span><span>IV Ceftriaxone (1g/day) — renally adjusted</span>
+        <span class="pico-key">C</span><span>IV Penicillin G (1.5 million units 6-hourly)</span>
+        <span class="pico-key">O</span><span>Clinical recovery, time to creatinine improvement, mortality, adverse drug effects</span>
+      </div>
+    </div>
+
+    <!-- Illness Script — near final -->
+    <div class="annotation ann-script">
+      <div class="pill">◈ Illness Script — Near Final Update</div>
+      <table class="script-table">
+        <tr><td>Investigations</td><td>RBS 664 (HHS, no ketosis), TB 3.2 / DB 2.5 / ALP 550 (cholestatic pattern), Urea 150 / Cr 3.5 (AKI — likely ATIN), Alb 2.9 (hypoalbuminaemia), Na 129 / Cl 90 (corrected Na ~138), Pyuria (8–10 WBC/hpf) without stated bacteriuria</td></tr>
+        <tr><td>Diagnosis</td><td>1. Weil's disease (leptospirosis — ictero-haemorrhagic form) · 2. HHS (precipitated by infection) · 3. AKI — likely leptospiral ATIN ± HCTZ-ATIN · 4. Hyponatraemia (mixed: thiazide + pseudohyponatraemia) · 5. Hypoalbuminaemia · 6. Possible OSA</td></tr>
+        <tr><td>Treatment</td><td>IV Ceftriaxone 1g/day (adjust for AKI); IV fluids with careful osmolality monitoring; HOLD Metformin, Glibenclamide, HCTZ, Telmisartan; glucose management with insulin infusion; close renal monitoring</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════════════════════ PHASE 3 SYNTHESIS ═══════════════════════════════════ -->
+<div class="phase3">
+<div class="phase3-inner">
+
+  <h2>Phase 3 · Grand Round Synthesis</h2>
+
+  <!-- 1. FINAL ILLNESS SCRIPT -->
+  <div class="synth-block">
+    <h3>1 · Final Illness Script</h3>
+    <div class="script-full">
+      <table>
+        <tr><td>Epidemiology</td><td>60-year-old male; agric-exposed farmer; barefoot in rat-infested water; tropical/subtropical; DM2 and HTN background</td></tr>
+        <tr><td>Predisposing conditions</td><td>DM2 (immunocompromised state, poor metabolic control, multiple OHAs); Hypertension (on ARB + thiazide); probable OSA (metabolic amplifier); poor dietary adherence; skin barrier compromise from agricultural work</td></tr>
+        <tr><td>Pathophysiology</td><td>Leptospira interrogans enter via skin abrasion/mucosa → haematogenous spread → systemic vasculitis → multiorgan involvement. Liver: intrahepatic cholestasis (not hepatocellular necrosis). Kidney: tubulointerstitial nephritis → non-oliguric AKI + tubular Na-wasting. Eye: conjunctival suffusion + subconjunctival haemorrhages. Haemostasis: thrombocytopaenia likely, haemorrhagic diathesis. Concurrent: infection precipitates HHS; thiazide + ATIN → hyponatraemia; ARB → worsens AKI</td></tr>
+        <tr><td>Symptoms</td><td>Biphasic: Week 1 — fever, malaise, anorexia → apparent improvement; Days 4–7 — fatigue, myalgia recur. Chief complaint: malaise, muscle aches, abdominal distension, anorexia, polyuria (non-oliguric AKI characteristic)</td></tr>
+        <tr><td>Signs</td><td>Relative hypotension (110/80 in hypertensive), tachycardia (93), tachypnoea (RR 22), conjunctival suffusion (pathognomonic), subconjunctival haemorrhages, icterus, Terry nails, Mallampati 3, bilateral pitting oedema, abdominal distension (likely ascites from hypoalbuminaemia)</td></tr>
+        <tr><td>Investigations</td><td>RBS 664 / no ketonuria → HHS. TB 3.2 / DB 2.5 / ALP 550 → cholestatic hepatitis. Urea 150 / Cr 3.5 → AKI stage 3 (KDIGO). Alb 2.9 → hypoalbuminaemia. Na 129 (corrected ~138) / Cl 90 → mixed hyponatraemia. Pyuria 8–10 WBC → interstitial nephritis. Serology: Microscopic Agglutination Test (MAT) — gold standard. IgM ELISA — rapid point-of-care</td></tr>
+        <tr><td>Complications</td><td>Pulmonary haemorrhage syndrome (ARDS-like — early warning: RR 22), severe AKI requiring RRT, haemorrhage, uveitis (late), hypoglycaemia from drug accumulation, cerebral oedema from HHS correction, MALA from Metformin</td></tr>
+        <tr><td>Treatment</td><td>IV Ceftriaxone 1g OD (preferred over Penicillin G in resource-limited setting; renal dose adjustment); IV 0.9% NaCl for HHS — target glucose fall ≤50 mg/dL/hour, osmolality fall ≤3 mOsm/kg/hr; IV Insulin infusion when glucose &lt;300; HOLD Metformin (MALA risk), Glibenclamide (accumulation hypoglycaemia), HCTZ (worsens Na), Telmisartan (worsens AKI efferent arteriole); monitoring: hourly glucose, 4-hourly electrolytes, daily creatinine, urine output</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2. DECISION POINT REVIEW -->
+  <div class="synth-block">
+    <h3>2 · Decision Point Review</h3>
+
+    <div class="dp-review-item">
+      <strong>⚑ DP 1 — Hyperglycaemic emergency triage: first 30 minutes</strong>
+      No ketosis, no acidosis, RBS 664 → HHS confirmed. Sequence: IV access → blood draw (glucose, electrolytes, urea/Cr, LFTs, FBC, ABG, blood cultures) → IV 0.9% NaCl 1L over 1hr → reassess → insulin only after glucose &lt;300 or if acidotic (DKA component). Evidence supports cautious osmolality correction to avoid cerebral oedema.
+    </div>
+
+    <div class="dp-review-item">
+      <strong>⚑ DP 2 — Empirical antibiotic therapy</strong>
+      Clinical Weil's disease: conjunctival suffusion + jaundice + AKI + epidemiological exposure. Start IV Ceftriaxone 1g OD WITHOUT waiting for serology. Antibiotic benefit is time-dependent and greatest in the first 4 days of severe disease.
+    </div>
+
+    <div class="dp-review-item">
+      <strong>⚑ DP 3 — Absence of organomegaly and investigation strategy</strong>
+      Leptospiral hepatitis does not reliably produce palpable hepatomegaly — the injury is at cell/canalicular level, not structural enlargement. Order LFTs, USS abdomen (for ascites quantification and liver echotexture), and MAT serology regardless of exam findings.
+    </div>
+
+    <div class="dp-review-item">
+      <strong>⚑ DP 4 — Drug rationalisation in AKI</strong>
+      STOP: Metformin (MALA risk, CI at eGFR &lt;30), Glibenclamide (active metabolite accumulation → hypoglycaemia), HCTZ (Na-wasting worsens hyponatraemia), Telmisartan (ARB efferent dilation → worsens AKI). SUBSTITUTE: Insulin infusion for glycaemia; Amlodipine or IV labetalol for BP if needed; aggressive fluid management for haemodynamics.
+    </div>
+  </div>
+
+  <!-- 3. PEARL COMPENDIUM -->
+  <div class="synth-block">
+    <h3>3 · Pearl Compendium</h3>
+    <ul class="numbered-list">
+      <li>Occupational exposure to animal urine in agricultural or flood settings is the canonical leptospirosis risk. Barefoot work in rat-infested water = textbook inoculation route.</li>
+      <li>Leptospirosis shows a "defervescence trap" — apparent early improvement precedes the dangerous immune phase. Recognise the biphasic pattern before labs return.</li>
+      <li>Always review OHAs before the creatinine in a febrile diabetic. Metformin (MALA) and Glibenclamide (hypoglycaemia) both accumulate in AKI.</li>
+      <li>Absence of daytime somnolence does not exclude OSA. Spouse-reported snoring + unrefreshing sleep + metabolic syndrome is a compelling OSA phenotype.</li>
+      <li>Never interpret BP in isolation — a "normal" BP in a hypertensive may represent relative hypotension of 40–50 mmHg below baseline.</li>
+      <li>RBS 664 in T2DM without ketosis → HHS first. Corrected Na and effective osmolality are the key initial calculations.</li>
+      <li>Conjunctival suffusion (injection without discharge) is distinct from conjunctivitis and is pathognomonic of leptospirosis. With jaundice and haemorrhage = Weil's disease.</li>
+      <li>Terry nails signal hypoalbuminaemia. In this patient: dual mechanism — leptospiral hepatic cholestasis + glomerular/tubular protein leak.</li>
+      <li>Mallampati Class 3 = difficult airway flag. Document proactively; alert anaesthesia early if intubation is anticipated.</li>
+      <li>Leptospiral jaundice is cholestatic, not hepatocellular. ALP disproportionately elevated; transaminases mildly raised; full recovery expected with treatment.</li>
+      <li>Abdominal distension without organomegaly + oedema + low albumin = ascites from oncotic pressure loss. Confirm with bedside USS; SAAG guides aetiology.</li>
+      <li>Leptospiral AKI is characteristically non-oliguric tubulointerstitial nephritis — polyuria despite impaired renal function is a diagnostic clue. Full recovery possible with early treatment.</li>
+      <li>Tachypnoea without auscultatory signs may reflect metabolic acidosis, anaemia, or early pulmonary haemorrhage syndrome — a CXR and ABG are mandatory.</li>
+      <li>Always correct sodium for glucose before labelling hyponatraemia. At glucose 664: corrected Na ≈ 138 — potentially normal, completely changing electrolyte management.</li>
+    </ul>
+  </div>
+
+  <!-- 4. PICO EVIDENCE MAP -->
+  <div class="synth-block">
+    <h3>4 · PICO Evidence Map</h3>
+    <ul class="numbered-list">
+      <li><strong>PICO 1 — ARB continuation vs. holding in AKI:</strong> P: Hypertensive diabetics with incipient AKI on ARB | I: Continue ARB | C: Hold ARB | O: AKI progression, RRT need, renal recovery. <em>Current evidence favours holding RAAS blockade in haemodynamically significant AKI or sepsis (KDIGO guidelines). Seek the STOP-AKI trial data.</em></li>
+      <li><strong>PICO 2 — Fluid strategy in HHS:</strong> P: Adults with HHS | I: Aggressive isotonic resuscitation | C: Conservative correction | O: Cerebral oedema, mortality, osmolality normalisation. <em>ADA/JBDS guidelines recommend isotonic saline at 1L/hr initially, then reassess; avoid rapid osmolality correction (&lt;3 mOsm/kg/hr).</em></li>
+      <li><strong>PICO 3 — Ceftriaxone vs Penicillin G in severe leptospirosis with AKI:</strong> P: Severe leptospirosis with AKI | I: Ceftriaxone 1g/day IV | C: Penicillin G 1.5 MU 6-hrly IV | O: Clinical recovery, creatinine trajectory, mortality. <em>RCT evidence (Panaphut et al. 2003, Clin Infect Dis) showed comparable efficacy; Ceftriaxone offers once-daily dosing advantage. Renal adjustment required for Penicillin in severe AKI.</em></li>
+    </ul>
+  </div>
+
+  <!-- 5. OPEN QUESTIONS -->
+  <div class="synth-block">
+    <h3>5 · Open Questions</h3>
+    <div class="open-q">Does early antibiotic therapy (within 48 hours of immune-phase onset) meaningfully alter the trajectory of leptospiral AKI — or does the immune-mediated tubulointerstitial inflammation proceed independently of bacterial load?</div>
+    <div class="open-q">In a patient with concurrent HHS and leptospirosis-driven AKI, what is the optimal fluid composition and rate — and how does the risk of osmotic demyelination syndrome interact with hypernatraemia correction in this setting?</div>
+    <div class="open-q">What is the role of corticosteroids as adjunctive immunosuppression in severe leptospiral ATIN — is there human trial evidence supporting benefit, or does this remain experimental?</div>
+    <div class="open-q">Given that both Thiazide use and leptospiral ATIN can cause hyponatraemia, is there a clinical or biochemical marker that can reliably distinguish the dominant mechanism in a given patient?</div>
+    <div class="open-q">Does undiagnosed OSA (suggested here by Mallampati 3 + snoring + unrefreshing sleep) independently worsen the outcome of severe tropical infections by impairing nocturnal immune reconstitution — and should febrile admissions include routine OSA screening?</div>
+  </div>
+
+  <!-- 6. WHAT WOULD MAKE YOU WRONG AUDIT -->
+  <div class="synth-block">
+    <h3>6 · What Would Make You Wrong Audit</h3>
+    <div class="wrong-audit">
+      <p><strong>Commitment: Leptospirosis (Weil's disease) as the unifying diagnosis.</strong></p>
+      <p style="margin-top:0.5rem;">What would make this wrong? Consider: (1) Serology returns negative — MAT and IgM ELISA both negative in the right epidemiological window; would force reconsideration of other causes of ictero-haemorrhagic syndrome with AKI — malaria, dengue haemorrhagic fever, viral haemorrhagic fevers, Hantavirus, DILI. (2) Blood cultures grow an organism — bacteraemia from another source (gram-negative sepsis with multi-organ dysfunction). (3) The AKI worsens rapidly despite antibiotics and fluids — suggests a dominant non-leptospiral mechanism (DM nephropathy progression, contrast nephropathy, or obstructive uropathy missed on exam). (4) Bilirubin pattern on full LFTs shows high transaminases — would reconsider viral hepatitis (HBV/HCV with flare) or drug-induced liver injury (Metformin, Glibenclamide rarely). (5) Chest X-ray shows pulmonary infiltrates — could be aspiration, TB, or leptospiral pulmonary haemorrhage syndrome requiring escalation to ICU.</p>
+    </div>
+  </div>
+
+  <!-- 7. GENERALISATION STEP -->
+  <div class="synth-block">
+    <h3>7 · Prototypical Patient for Your Illness Script Repository</h3>
+    <div style="background:#e0f2fe; border-left:4px solid #0891b2; border-radius:0 6px 6px 0; padding:1rem 1.25rem; font-size:13.5px; color:#0c4a6e; line-height:1.8;">
+      <strong>Leptospirosis (Weil's Disease) — Prototypical Patient:</strong> A working-age to elderly agricultural or sewer worker in a tropical/subtropical setting, with a history of waterlogged soil or flood water exposure (barefoot), presenting with a biphasic illness — early fever with apparent recovery followed by jaundice, renal impairment, and bleeding manifestations 7–14 days later. Conjunctival suffusion without discharge is the clinical hallmark. Labs show cholestatic jaundice pattern, non-oliguric AKI (often pyuria without bacteriuria), and variable haemorrhagic manifestations. Comorbidities (DM, immunosuppression) worsen outcome. Early empirical antibiotics save lives. Full renal and hepatic recovery is achievable with appropriate treatment.
+    </div>
+  </div>
+
+  <!-- 8. DIFFICULTY RATCHET -->
+  <div class="synth-block">
+    <h3>8 · Difficulty Ratchet — Atypical Version</h3>
+    <div style="background:#fdf4ff; border-left:4px solid #c084fc; border-radius:0 6px 6px 0; padding:1rem 1.25rem; font-size:13.5px; color:#581c87; line-height:1.8;">
+      <strong>Same patient — now presenting atypically:</strong> Imagine this patient presented during the first phase ONLY — no jaundice yet, conjunctival suffusion subtle, fever dismissed as viral URTI, and the physician focuses entirely on the RBS of 664. Leptospirosis is missed. The patient is managed for HHS, discharged after glucose control, and represents 5 days later in pulmonary haemorrhage syndrome — diffuse alveolar haemorrhage on CXR, O₂ saturation 82%, requiring emergency ICU admission. <em>How would you retrospectively identify the missed diagnosis, and what clinical or investigational triggers should have kept leptospirosis on the differential in the first admission?</em>
+    </div>
+  </div>
+
+</div><!-- /phase3-inner -->
+</div><!-- /phase3 -->
+
+<!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════════ -->
+<div class="footer">
+  <strong>VibeRounds Module 51B — Case Narrator: HTML Export Variant</strong><br>
+  Dr. Avinash Kumar Gupta &nbsp;·&nbsp; June 2026<br>
+  DOI: <a href="https://doi.org/10.5281/zenodo.20622693">10.5281/zenodo.20622693</a> &nbsp;·&nbsp; CC BY 4.0<br>
+  <a href="https://avi33tbtt.github.io/Prompts/Module-51B-Case-Narrator-HTML-Export.html">Module 51B</a> &nbsp;·&nbsp;
+  <a href="https://avi33tbtt.github.io/Prompts/">Prompts Directory</a> &nbsp;·&nbsp;
+  <a href="https://avi33tbtt.github.io/">VibeRounds Home</a><br><br>
+  <em>All AI-generated clinical content requires independent verification by a qualified clinician. This document is a learning tool, not a clinical decision support system. Original case courtesy of Navya Mallempalli, blogspot.com, 2021.</em>
+</div>
+
+<script>
+function copyPrompt(btn) {
+  const pre = btn.parentElement.querySelector('pre');
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => {
+    btn.textContent = 'Select & copy manually';
+  });
+}
+</script>
+
+</body>
+</html>
