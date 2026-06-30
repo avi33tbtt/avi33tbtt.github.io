@@ -21,7 +21,7 @@ Phase 1 · Initiation → Phase 2 · Execution → Phase 3 · Closure / Review
 **Prompt:**
 ```text
 #VibeRounds I am new to Vibe Rounds. Before we do anything else, ask me two
-things: (1) my role right now — medical student; (2) what I am trying to accomplish in this session, in one
+things: (1) my role right now — medical student/researcher; (2) what I am trying to accomplish in this session, in one
 sentence. Do not assume which Vibe Rounds module I need until I have
 answered both.
 ```
@@ -38,7 +38,7 @@ answered both.
 **Prompt:**
 ```text
 #VibeRounds Based on my role and goal, tell me which Vibe Rounds module (0
-through 8) best fits this session, and tell me whether I should start at
+through 57) best fits this session, and tell me whether I should start at
 that module's Step X.0 or a later step if I already have a baseline case
 record or registry data. State the module number and name explicitly
 before we continue.
