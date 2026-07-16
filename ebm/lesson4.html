@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4: Systematic Reviews &amp; Meta-Analyses</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 44px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 24px 0; border-radius: 4px; font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px;
+  }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+  .worked-example, .homework, .resources, .diagram-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 24px; margin: 24px 0;
+  }
+  .worked-example h3, .homework h3, .diagram-card h3 { margin-top: 0; }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  .forest-plot {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .forest-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 90px;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .forest-row:last-child { border-bottom: none; }
+  .forest-track {
+    position: relative;
+    height: 18px;
+    background: linear-gradient(to right, transparent 49.5%, var(--muted) 49.5%, var(--muted) 50.5%, transparent 50.5%);
+  }
+  .forest-ci {
+    position: absolute;
+    top: 8px;
+    height: 2px;
+    background: var(--accent);
+  }
+  .forest-point {
+    position: absolute;
+    top: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+  .forest-diamond {
+    position: absolute;
+    top: 2px;
+    width: 0; height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 7px solid var(--ink);
+    transform: translateX(-50%);
+  }
+  .forest-labels {
+    display: grid; grid-template-columns: 110px 1fr 90px; gap: 10px;
+    font-weight: 700; padding-bottom: 6px; border-bottom: 2px solid var(--ink);
+    color: var(--muted);
+  }
+  .axis-labels {
+    display: flex; justify-content: space-between; font-size: 11px; color: var(--muted);
+    margin-top: 4px; padding-left: 120px;
+  }
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 4: Systematic Reviews &amp; Meta-Analyses</h1>
+    <p class="subtitle">Part 4 &mdash; one trial is a data point. A systematic review is what happens when you stop trusting any single data point.</p>
+  </header>
+
+  <p>In Lesson 3 you appraised a single RCT. But no single trial is ever the final word &mdash; it has its own sample, its own setting, its own quirks. A <strong>systematic review</strong> tries to find every relevant trial on a question, appraise them with the same rigor you learned in Lesson 3, and combine them into one answer. When that combination is done statistically, it's called a <strong>meta-analysis</strong>.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> think of individual trials as noisy sensor readings. One reading might be biased by a faulty sensor (a flawed trial) or just random noise (small sample size). A systematic review is signal averaging &mdash; but only if you've first thrown out the broken sensors, which is why appraisal still comes before pooling.
+  </div>
+
+  <h2>Systematic Review vs. Ordinary Literature Review</h2>
+  <p>Not everything called a "review" is a systematic review. The difference is method, not just topic:</p>
+
+  <table>
+    <tr><th>Ordinary (narrative) review</th><th>Systematic review</th></tr>
+    <tr><td>Author picks papers they know or find convenient</td><td>Pre-registered, explicit search strategy across multiple databases</td></tr>
+    <tr><td>No fixed inclusion/exclusion criteria</td><td>Defined PICO-based inclusion/exclusion criteria, set in advance</td></tr>
+    <tr><td>Selection and conclusions can reflect the author's prior views</td><td>Reproducible methodology; two reviewers screen independently</td></tr>
+    <tr><td>Rarely appraises quality of included studies systematically</td><td>Every included study is formally appraised for risk of bias</td></tr>
+  </table>
+
+  <p>A systematic review doesn't have to include a meta-analysis &mdash; sometimes the included studies are too different to combine numerically, and the review just summarizes them narratively (this is sometimes done, and is still valuable, but weaker than a pooled estimate).</p>
+
+  <h2>Reading a Forest Plot</h2>
+  <p>A forest plot is the standard way to visualize a meta-analysis: each row is one trial, and the diamond at the bottom is the pooled result across all of them.</p>
+
+  <div class="diagram-card">
+    <h3>Illustrative Forest Plot &mdash; Effect of Drug X on Stroke Risk</h3>
+    <div class="forest-plot">
+      <div class="forest-labels">
+        <div>Study</div>
+        <div>Relative Risk (95% CI)</div>
+        <div>Weight</div>
+      </div>
+      <div class="forest-row">
+        <div>Trial A (2018)</div>
+        <div class="forest-track">
+          <div class="forest-ci" style="left:30%; width:30%;"></div>
+          <div class="forest-point" style="left:45%;"></div>
+        </div>
+        <div>18%</div>
+      </div>
+      <div class="forest-row">
+        <div>Trial B (2019)</div>
+        <div class="forest-track">
+          <div class="forest-ci" style="left:38%; width:20%;"></div>
+          <div class="forest-point" style="left:48%;"></div>
+        </div>
+        <div>27%</div>
+      </div>
+      <div class="forest-row">
+        <div>Trial C (2020)</div>
+        <div class="forest-track">
+          <div class="forest-ci" style="left:20%; width:45%;"></div>
+          <div class="forest-point" style="left:42%;"></div>
+        </div>
+        <div>12%</div>
+      </div>
+      <div class="forest-row">
+        <div>Trial D (2021)</div>
+        <div class="forest-track">
+          <div class="forest-ci" style="left:40%; width:18%;"></div>
+          <div class="forest-point" style="left:50%;"></div>
+        </div>
+        <div>31%</div>
+      </div>
+      <div class="forest-row">
+        <div>Trial E (2022)</div>
+        <div class="forest-track">
+          <div class="forest-ci" style="left:33%; width:24%;"></div>
+          <div class="forest-point" style="left:46%;"></div>
+        </div>
+        <div>12%</div>
+      </div>
+      <div class="forest-row">
+        <div><strong>Pooled</strong></div>
+        <div class="forest-track">
+          <div class="forest-diamond" style="left:46%;"></div>
+        </div>
+        <div><strong>100%</strong></div>
+      </div>
+      <div class="axis-labels">
+        <span>&larr; favors Drug X</span>
+        <span>RR = 1.0 (no effect)</span>
+        <span>favors control &rarr;</span>
+      </div>
+    </div>
+  </div>
+
+  <p>How to read it:</p>
+  <ul>
+    <li><strong>The vertical center line</strong> represents "no difference" (relative risk = 1.0). If a trial's confidence interval crosses this line, that trial alone didn't reach statistical significance.</li>
+    <li><strong>Each dot</strong> is a trial's point estimate; the line through it is its 95% confidence interval. A wider line means a smaller, less precise trial.</li>
+    <li><strong>Box/dot size roughly reflects weight</strong> &mdash; bigger trials with more events usually get more influence over the pooled result.</li>
+    <li><strong>The diamond</strong> at the bottom is the pooled estimate; its width is the pooled confidence interval. Because it combines all the data, it's almost always narrower (more precise) than any single trial.</li>
+  </ul>
+
+  <div class="callout">
+    In the plot above, every individual trial's confidence interval touches or crosses the line of no effect &mdash; none was significant alone. But the pooled diamond sits clearly to the left of it. This is the whole point of meta-analysis: several underpowered trials pointing the same direction can add up to a confident answer.
+  </div>
+
+  <div class="techie-note">
+    <strong>For non-medical readers:</strong> think of each trial as one A/B test run on a different, smaller sample. None alone gave statistical confidence, but averaging results (weighted by sample size) is like merging several underpowered experiments into one well-powered one &mdash; the "diamond" is essentially a weighted mean with its own recalculated confidence interval.
+  </div>
+
+  <h2>Heterogeneity: When Is It Fair to Pool?</h2>
+  <p>Averaging only makes sense if the trials are answering roughly the same question. <strong>Heterogeneity</strong> is the term for how much trials disagree beyond what you'd expect from chance alone.</p>
+  <ul>
+    <li><strong>Clinical heterogeneity</strong> &mdash; different populations, doses, follow-up durations, or outcome definitions across trials.</li>
+    <li><strong>Statistical heterogeneity</strong> &mdash; measured by the <strong>I&sup2; statistic</strong>, which estimates the percentage of variation across trials due to real differences rather than random chance.</li>
+  </ul>
+
+  <table>
+    <tr><th>I&sup2; value</th><th>Rough interpretation</th></tr>
+    <tr><td>0&ndash;40%</td><td>Might not be important; trials are reasonably consistent</td></tr>
+    <tr><td>30&ndash;60%</td><td>May represent moderate heterogeneity</td></tr>
+    <tr><td>50&ndash;90%</td><td>May represent substantial heterogeneity</td></tr>
+    <tr><td>75&ndash;100%</td><td>Considerable heterogeneity &mdash; pooling may not be meaningful</td></tr>
+  </table>
+
+  <p>High heterogeneity doesn't automatically mean "don't pool" &mdash; but it does mean you should ask why trials disagree (different doses? different patient ages?) before trusting the single pooled number, and a <strong>random-effects model</strong> (which assumes true effects vary across settings) is usually more honest than a <strong>fixed-effect model</strong> (which assumes one true effect everywhere) when I&sup2; is high.</p>
+
+  <h2>Funnel Plots and Publication Bias</h2>
+  <p>Studies with exciting, positive results are more likely to get published than "boring" null results &mdash; which can bias a meta-analysis toward overstating an effect. A <strong>funnel plot</strong> checks for this: plot each trial's effect size against its precision (or sample size). With no publication bias, trials should scatter symmetrically around the pooled estimate, forming a rough funnel/triangle shape &mdash; small trials scattered widely at the bottom, large trials tightly clustered near the top.</p>
+  <p>If small studies are missing from one side of the funnel &mdash; typically the side showing a null or negative result &mdash; that gap is a red flag for publication bias: small "boring" trials may have been left unpublished, skewing the pooled result.</p>
+
+  <h2>Appraising a Systematic Review Itself</h2>
+  <p>The three-question framework from Lesson 3 still applies &mdash; just aimed at the review, not a single trial:</p>
+  <ol>
+    <li><strong>Are the results valid?</strong> Was the search comprehensive (multiple databases, no language restriction)? Was study selection and quality appraisal done by at least two independent reviewers? Were the included studies actually similar enough to combine?</li>
+    <li><strong>What are the results?</strong> What's the pooled effect size and confidence interval? How much heterogeneity was there, and was it explored (subgroup or sensitivity analysis)?</li>
+    <li><strong>Will this help my patient?</strong> Do the included trials' populations resemble your patient? Were all patient-important outcomes covered, not just the ones easiest to pool?</li>
+  </ol>
+  <p><strong>AMSTAR-2</strong> and <strong>PRISMA</strong> are the two most widely used formal checklists here: AMSTAR-2 rates the methodological quality of a review, while PRISMA is a reporting checklist authors are expected to follow when writing one up. Reviewers use AMSTAR-2; authors (and readers checking completeness) use PRISMA.</p>
+
+  <div class="homework">
+    <h3>Homework for Lesson 4</h3>
+    <ol>
+      <li>Find a systematic review or meta-analysis relevant to the clinical question you've been building since Lesson 2 (search PubMed with a "systematic review" or "meta-analysis" publication-type filter).</li>
+      <li>Locate its forest plot. Identify: how many trials were pooled, whether any individual trial's CI crossed the line of no effect, and what the pooled diamond shows.</li>
+      <li>Find the reported I&sup2; value. Based on the table above, how much heterogeneity was there, and does the review explain why (if at all)?</li>
+      <li>One paragraph: would you trust this pooled result enough to change how you'd treat your patient from Lesson 1?</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3>Resources for This Lesson</h3>
+    <a href="https://www.cochranelibrary.com/" target="_blank" rel="noopener">Cochrane Library &mdash; systematic reviews</a>
+    <a href="https://amstar.ca/Amstar_Checklist.php" target="_blank" rel="noopener">AMSTAR-2 Checklist</a>
+    <a href="https://www.prisma-statement.org/" target="_blank" rel="noopener">PRISMA Statement</a>
+    <a href="https://training.cochrane.org/handbook" target="_blank" rel="noopener">Cochrane Handbook for Systematic Reviews of Interventions</a>
+  </div>
+
+  <footer>
+    <p>Lesson 4 of the Evidence-Based Medicine course for techies, building on the single-trial appraisal skills from Lesson 3. Concepts follow standard teaching from the Cochrane Handbook and the Centre for Evidence-Based Medicine, Oxford.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson3.html">&larr; Lesson 3</a>
+    <a class="nav-pill" href="lesson5.html">Lesson 5 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

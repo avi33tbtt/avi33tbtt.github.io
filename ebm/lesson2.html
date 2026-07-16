@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2: Asking Answerable Clinical Questions (PICO) and Finding the Evidence</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 32px;
+    margin: 10px 0 8px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 22px;
+    margin-top: 44px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code {
+    background: var(--accent-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  .worked-example {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin: 24px 0;
+  }
+  .worked-example h3 { margin-top: 0; }
+  .homework {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .homework h3 { margin-top: 0; }
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: var(--accent);
+    color: #fff !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 2: Asking Answerable Clinical Questions (PICO) and Finding the Evidence</h1>
+    <p class="subtitle">Part 2 &mdash; turning a vague worry into a searchable question, then finding the paper that answers it.</p>
+  </header>
+
+  <p>In Lesson 1 we put the patient at the centre: history, examination, and a treatment plan built with SOAP notes and PaJR. We ended with homework &mdash; bring a patient's story, and bring a clinical question. This lesson is about that second piece: <strong>how do you turn a real, messy clinical worry into a question that a database can actually answer?</strong></p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> this is essentially a search-query optimization problem. "Is this drug good?" returns garbage. A well-structured question returns exactly the paper you need. If you've ever rewritten a bad SQL query or a vague Google search into something precise, you already have the instinct for this.
+  </div>
+
+  <h2>From Vague Worry to Structured Question</h2>
+  <p>Real clinical questions start messy: "Should this patient be on aspirin?" "Is this new inhaler better than the old one?" "Does this test actually help?" None of these are searchable as written &mdash; they're missing the pieces that let you filter a database of millions of papers down to a handful of relevant ones.</p>
+
+  <h2>The PICO Framework</h2>
+  <p>PICO breaks any clinical question into four parts. Think of it as the schema for a well-formed query:</p>
+
+  <table>
+    <tr><th>Letter</th><th>Stands for</th><th>What you fill in</th></tr>
+    <tr><td><strong>P</strong></td><td>Population / Patient / Problem</td><td>Who is this about? Age, condition, setting &mdash; e.g. "adults with type 2 diabetes"</td></tr>
+    <tr><td><strong>I</strong></td><td>Intervention</td><td>What are you considering doing? A drug, test, procedure, lifestyle change</td></tr>
+    <tr><td><strong>C</strong></td><td>Comparison</td><td>Compared to what? Placebo, standard care, an alternative drug, "no treatment"</td></tr>
+    <tr><td><strong>O</strong></td><td>Outcome</td><td>What are you actually trying to change or measure? Mortality, symptom relief, side effects, cost</td></tr>
+  </table>
+
+  <p>Some versions add a fifth letter &mdash; <strong>T</strong> for Time frame (PICOT) &mdash; when duration matters, e.g. "risk of stroke over 5 years."</p>
+
+  <div class="worked-example">
+    <h3>Worked Example</h3>
+    <p><strong>Vague version:</strong> "Does metformin help with weight loss?"</p>
+    <p><strong>PICO version:</strong></p>
+    <ul>
+      <li><strong>P</strong> &mdash; Adults with type 2 diabetes and obesity</li>
+      <li><strong>I</strong> &mdash; Metformin</li>
+      <li><strong>C</strong> &mdash; Placebo or lifestyle intervention alone</li>
+      <li><strong>O</strong> &mdash; Change in body weight at 6 and 12 months</li>
+    </ul>
+    <p><strong>Answerable question:</strong> "In adults with type 2 diabetes and obesity, does metformin, compared to lifestyle intervention alone, lead to greater weight loss at 6&ndash;12 months?"</p>
+  </div>
+
+  <h2>Two Kinds of Questions</h2>
+  <p>Not every clinical question is about treatment. It helps to know which bucket you're in before you search, because it changes what kind of study you're looking for:</p>
+  <ul>
+    <li><strong>Background questions</strong> &mdash; general knowledge. "What is atrial fibrillation?" Answered by textbooks, review articles, UpToDate-style resources.</li>
+    <li><strong>Foreground questions</strong> &mdash; specific, patient-facing, PICO-structured. "In a 68-year-old with AF, does anticoagulation reduce stroke risk more than antiplatelet therapy?" Answered by original research, systematic reviews, guidelines.</li>
+  </ul>
+  <p>As a rule of thumb: the more experienced you get, the more your questions shift from background to foreground. Beginners often ask background questions dressed up as foreground ones &mdash; part of this course is learning to tell the difference.</p>
+
+  <h2>Matching the Question Type to the Study Type</h2>
+  <p>Once your question is PICO-structured, its <em>type</em> tells you what kind of study design to look for. This is the fastest way to filter your search:</p>
+
+  <table>
+    <tr><th>Question type</th><th>Best study design to search for</th></tr>
+    <tr><td>Therapy / treatment effect</td><td>Randomized controlled trial (RCT), systematic review of RCTs</td></tr>
+    <tr><td>Diagnosis / test accuracy</td><td>Cross-sectional study comparing test vs. gold standard</td></tr>
+    <tr><td>Prognosis</td><td>Cohort study (following patients over time)</td></tr>
+    <tr><td>Harm / side effects</td><td>Cohort or case-control study (RCTs are often too short/small to catch rare harms)</td></tr>
+    <tr><td>Cost-effectiveness</td><td>Economic evaluation / cost-effectiveness analysis</td></tr>
+  </table>
+
+  <p>This is why Lesson 1's evidence pyramid matters here: knowing the shape of your question tells you where on the pyramid to start looking.</p>
+
+  <h2>Turning PICO into a Search Query</h2>
+  <p>PubMed and similar databases reward structured searching. A rough workflow:</p>
+  <ol>
+    <li>Pull out the key concepts from P, I, C, O.</li>
+    <li>Search each concept separately first, then combine with <code>AND</code> / <code>OR</code>.</li>
+    <li>Use quotation marks for exact phrases, and consider MeSH terms (PubMed's controlled vocabulary) once you're comfortable.</li>
+    <li>Apply filters: publication type (e.g. "Randomized Controlled Trial", "Systematic Review"), date range, human studies.</li>
+  </ol>
+
+  <div class="callout">
+    <strong>Example search string</strong> (from the worked PICO above):<br>
+    <code>("metformin"[Title/Abstract]) AND ("weight loss"[Title/Abstract] OR "body weight"[MeSH]) AND ("type 2 diabetes"[MeSH]) AND (randomized controlled trial[Publication Type])</code>
+  </div>
+
+  <p><strong>Pro tip:</strong> if a plain search returns thousands of results, your question probably isn't specific enough yet &mdash; go back and tighten the P, I, C, or O. If it returns zero, you've probably over-specified &mdash; loosen one term at a time.</p>
+
+  <h2>Where to Search</h2>
+  <ul>
+    <li><strong>PubMed</strong> &mdash; the largest free index of biomedical literature. Best general-purpose starting point.</li>
+    <li><strong>Cochrane Library</strong> &mdash; systematic reviews specifically; good when you want the "already appraised for you" answer.</li>
+    <li><strong>Google Scholar</strong> &mdash; broader net, less structured filtering, useful as a supplement.</li>
+    <li><strong>CDSS tools</strong> (mentioned in Lesson 1) &mdash; UpToDate, DynaMed, BMJ Best Practice &mdash; good for background questions and quick pre-appraised summaries.</li>
+  </ul>
+
+  <div class="homework">
+    <h3>Homework for Lesson 2</h3>
+    <ol>
+      <li>Take the clinical question you brought from Lesson 1 (or your patient's question) and rewrite it in full PICO form.</li>
+      <li>Identify which question type it is (therapy, diagnosis, prognosis, harm) and which study design you should be hunting for.</li>
+      <li>Run your PICO question through PubMed. Bring back the single best-matching paper's title, and one sentence on why it fits your P, I, C, and O.</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+    <a href="https://www.cochranelibrary.com/" target="_blank" rel="noopener">Cochrane Library &mdash; systematic reviews</a>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; EBM tools, including PICO worksheets</a>
+    <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
+  </div>
+
+  <footer>
+    <p>Lesson 2 of the Evidence-Based Medicine course for techies, building directly on Lesson 1's foundation of patient-centred history and examination. Original course material and structure by this course; concepts follow standard EBM/PICO teaching as popularized by the Centre for Evidence-Based Medicine, Oxford, and the Cochrane Collaboration.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson1.html">&larr; Lesson 1</a>
+    <a class="nav-pill" href="lesson3.html">Lesson 3 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

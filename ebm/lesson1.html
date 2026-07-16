@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1: Teaching Critical Appraisal for Medicos and Non-Medicos</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 32px;
+    margin: 10px 0 8px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 22px;
+    margin-top: 44px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  figure {
+    margin: 32px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  figcaption {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  .homework {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .homework h3 { margin-top: 0; }
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: var(--accent);
+    color: #fff !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-top: 10px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 1: Teaching Critical Appraisal for Medicos and Non-Medicos</h1>
+    <p class="subtitle">Part 1 &mdash; putting the patient back at the centre before we ever open a research paper.</p>
+  </header>
+
+  <p>The gap between a medico and a non-medico is mostly a matter of knowledge base &mdash; not capability. A self-taught, empowered patient can out-reason a specialist on their own condition. That's the spirit in which this course begins: everyone in this room, technical background or not, is capable of learning <strong>critical appraisal</strong> and, eventually, <strong>evidence-based medicine (EBM)</strong>.</p>
+
+  <div class="callout">
+    <strong>First question:</strong> should there be any learning of medicine without a patient at the centre of the exercise? No &mdash; everyone agrees on that. So we start with the person, not the paper.
+  </div>
+
+  <p>Every patient who comes to us sick is, in effect, a teacher &mdash; handing the medical fraternity a lifelong learning opportunity. Before any data collection, the job is to make that person feel comfortable, treated with empathy and respect, and genuinely supported.</p>
+
+  <h2>Step 1 &mdash; Taking Patient History</h2>
+  <p>History is the patient's story. It can be recorded in the structured way taught in medical school, or in a narrative format that's easier for non-medicos and newcomers. A good history is detailed, timelined, and drawn from reliable sources. Patient problems can be captured:</p>
+  <ul>
+    <li><strong>Qualitatively</strong> &mdash; e.g. "shooting pain"</li>
+    <li><strong>Quantitatively</strong> &mdash; e.g. "100&deg;F temperature"</li>
+    <li><strong>Narratively</strong> &mdash; e.g. "pain so bad since morning they couldn't do housework"</li>
+  </ul>
+  <p>Updating the history over time matters &mdash; good data capture is one of the most valuable things you can do.</p>
+
+  <h2>Step 2 &mdash; Clinical Examination</h2>
+  <p>Look, feel, touch. Photographs, audio, and video can supplement this. Between history and examination alone, most diseases affecting humankind can already be identified.</p>
+  <p>Investigations come next &mdash; they confirm the provisional diagnosis and let us look more deeply into the body. Together, history and examination answer two core questions:</p>
+  <ul>
+    <li><strong>What is the problem</strong> (listen)</li>
+    <li><strong>Where is the problem</strong> (examine)</li>
+  </ul>
+  <p>Note: history-taking and examination are already EBM in action &mdash; examinations carry their own sensitivity and specificity, and history-taking reveals patient priorities.</p>
+
+  <h2>Step 3 &mdash; What Can Be Done About It</h2>
+  <p>This is where we get our hands into the treatment plan, and into the questions that arise &mdash; from the patient or from ourselves &mdash; while building a robust plan. But first, three tools worth knowing:</p>
+
+  <h3>SOAP Notes</h3>
+  <p><strong>S</strong>ubjective, <strong>O</strong>bjective, <strong>A</strong>ssessment, <strong>P</strong>lan &mdash; a documentation format used by care teams to communicate clearly:</p>
+  <ul>
+    <li><strong>S</strong> &mdash; the patient's concern today, in narrative form</li>
+    <li><strong>O</strong> &mdash; objective values: temperature readings, investigation results, etc.</li>
+    <li><strong>A</strong> &mdash; your assessment/examination of the patient now</li>
+    <li><strong>P</strong> &mdash; the treatment plan</li>
+  </ul>
+  <p>Anyone &mdash; medico, non-medico, patient, or caretaker &mdash; can use this template for daily data.</p>
+
+  <h3>PaJR &mdash; Patient Journey Record</h3>
+  <p>Document the patient's ongoing journey: daily updates, a photo of their food plate, sleep routine, exercise routine, and any other clinically meaningful parameter relevant to the patient. Keeping it focused tends to improve adherence to regular updates.</p>
+
+  <h3>Identifying Fake News</h3>
+  <p>Fake news is common enough to have its own term &mdash; infodemic. You likely already guard against it by:</p>
+  <ol>
+    <li>Checking whether a headline is a clickbait</li>
+    <li>Cross-checking the same news across multiple sources</li>
+    <li>Checking sources that are authentic and reliable</li>
+  </ol>
+  <p>Doing any of this means you kept your skepticism and critically analysed the information rather than accepting it at face value. That's critical appraisal &mdash; and we're about to apply the same discipline to medical evidence in research papers.</p>
+
+  <figure>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9mphVzHfzJngNxBhIUBKMh6imHpjgDd2ybyy-SwzQKSj9XfipJuHLY6p4k9nCDkLspqeReMluYRtGYofcuz6YivtcI93iRjautmhXO81fSk23bZIr4RgcpC2o0nwU_iqaMYxPkhVOKcv4jevwXcazmHc6Y3eT41FpZRo3vKvvuV8bG6Tm6o-07SW1UVuM/s960/evidence-based-medicine_moment1.jpg" alt="Evidence-based medicine moment">
+    <figcaption>EBM is not just the information from best research.</figcaption>
+  </figure>
+
+  <h2>What the Evidence Pyramid Tells Us</h2>
+  <p>Clinical research comes in several types, and it's worth seeing them laid out visually before diving in:</p>
+
+  <figure>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1UosvkIOYguLfI0M7lAa37hG2KFJyDSnKTUfVlimIsM5TjuZCxXZK7ZNhL0IrM4vKu9z-2cY8EKK2La1eF5g1U2aPtV__nmQzmIE4eSRDfoi2JUu1dkX0cTn8GXR8iZAFNyNY3UqvF7fvDGXWtGCvt7YuxkkrZ1S-dm0Yl0HeChgCohJipdhDo9NynukX/s546/ebm-pyramid.gif" alt="EBM evidence pyramid">
+    <figcaption>The classic EBM evidence pyramid.</figcaption>
+  </figure>
+
+  <p>In-vitro and in-vivo pre-clinical studies sit below this pyramid. The pyramid gives a sense of clinical usefulness by level &mdash; but it shouldn't create the illusion that lower-level evidence is useless compared to higher-level evidence. Every study type has its own pros and cons, and the ranking blurs in practice.</p>
+
+  <figure>
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTU4h-qIOaOFJ8h10Rz-UoeLeFq8GD9yIqJPC4ZeLkJsZhbiQVrnuj4yl-JMyO-tFboBLMQF-nEVcvADXRmfLFgYh1srGqSXuCZNsgJJL1cvhMgT6PT4uJCd4qSn5DdJd9SYvvHgmItokdUSzxOhfbUCva03R2-blTlsK5jvH_hNW-2V0qehWatWZlLk7-/s1280/Clinical-Trial-Infographic.jpg" alt="Clinical trial infographic">
+    <figcaption>Clinical trial design at a glance. Even a single study type has sub-types, each with its own pros and cons.</figcaption>
+  </figure>
+
+  <p>These three images are enough to get anyone started. Dive deeper as you begin practicing critical appraisal on evidence tied to real clinical questions.</p>
+
+  <h2>The Easy Way vs. the Hard Way</h2>
+  <p>There are two speeds for critical appraisal. The easy way is quick and gives you the important details. The hard way is slow and gives you deeper understanding.</p>
+
+  <div class="callout">
+    <strong>Easy way:</strong>
+    <ol>
+      <li>Identify the type of study in the paper you're appraising.</li>
+      <li>Download the matching critical appraisal tool from a trusted site and apply it.</li>
+    </ol>
+  </div>
+
+  <p>The hard way means reading the paper in full detail &mdash; the data, the statistical analysis, individual patient data where available, possible biases, and funding sources. It can be overkill for a quick clinical question, but it builds real understanding over time.</p>
+
+  <p><strong>Pro tip:</strong> various CDSS (clinical decision support system) apps offer pre-appraised evidence summaries for common clinical questions &mdash; useful shortcuts once you understand what's behind them.</p>
+
+  <h2>Wait &mdash; Are We Missing Something?</h2>
+  <p>Yes: the clinical question. Or, really, the patient. This is exactly what happens too often in medical education &mdash; the key beneficiary quietly drops out of the picture. That's not acceptable here.</p>
+
+  <div class="homework">
+    <h3>Homework for Lesson 1</h3>
+    <p>Think of a patient-centred clinical question &mdash; something real, specific to one person's situation, not a general "what is X" question.</p>
+    <div class="callout" style="margin-top:16px;">
+      <strong>Simple example:</strong> "In my 58-year-old patient with newly diagnosed type 2 diabetes and a BMI of 31, should we start metformin right away, or try three months of diet and exercise first?"
+    </div>
+    <p>Notice what makes it patient-centred: there's a specific person (age, condition, relevant detail), a real decision on the table, and it's answerable rather than open-ended. Bring your question to the next lesson &mdash; we'll turn it into a searchable PICO question.</p>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources Referenced</h3>
+    <a href="https://youtu.be/xvE5b8Xk3vM?si=2GE-4ehkcO8Whmjo" target="_blank" rel="noopener">Video: The patient as teacher</a>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools/critical-appraisal-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; Critical Appraisal Tools</a>
+    <a href="https://casp-uk.net/casp-tools-checklists/" target="_blank" rel="noopener">CASP UK &mdash; Checklists</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+  </div>
+
+  <footer>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson2.html">Lesson 2 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

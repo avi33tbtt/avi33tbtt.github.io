@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM-Assisted EBM &mdash; Prompt Library</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+    --done: #0891b2;
+    --done-soft: #e0f4f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 48px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 24px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+
+  .rule-banner {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin: 28px 0;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .rule-banner .rule-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+    color: #e0a897;
+    font-weight: 700;
+  }
+  .rule-banner p {
+    color: #f5efea;
+    font-size: 17px;
+    margin: 8px 0 0;
+    font-family: Georgia, serif;
+  }
+  .rule-banner strong { color: #fff; }
+
+  .stage-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 8px;
+  }
+  .stage-nav a {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .prompt-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin: 22px 0;
+  }
+  .prompt-card .lesson-tag {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: var(--done);
+    background: var(--done-soft);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .prompt-card h3.stage-title {
+    margin: 0 0 6px;
+    font-family: Georgia, serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 19px;
+    color: var(--ink);
+  }
+  .prompt-card .stage-desc {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0 0 14px;
+  }
+  .prompt-box {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--ink);
+    margin: 10px 0;
+  }
+  .verify-note {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+  }
+  .verify-note strong { color: var(--accent); }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>LLM-Assisted EBM: A Prompt Library</h1>
+    <p class="subtitle">Using a language model like a clinician's research assistant &mdash; fast at drafting, useless as a source of truth unless you check its work.</p>
+  </header>
+
+  <p>Every lesson in this course &mdash; from Lesson 2's PICO questions through Lesson 9's full case &mdash; involves work an LLM can genuinely speed up: rewriting a vague worry into PICO form, building a search string, skimming an abstract, pulling numbers out of a methods section, doing the ARR/RRR/NNT arithmetic, or role-playing a skeptical reviewer of your own appraisal. None of that work requires the model to be right on the first try. It requires <em>you</em> to be the one who catches it when it's wrong.</p>
+
+  <div class="rule-banner">
+    <div class="rule-eyebrow">The One Hard Rule</div>
+    <p><strong>The LLM drafts. You verify every number and citation against the source.</strong> Not "spot-check the ones that look off" &mdash; every number, every citation, every time. An LLM will produce a fluent, confident, specific-sounding statistic or reference that does not exist, and it will not sound different from one that does.</p>
+  </div>
+
+  <p>This isn't a special LLM failure mode &mdash; it's the same discipline Lesson 8 asked of you toward a published paper's own abstract: don't trust the headline number until you've checked it against what's actually reported. An LLM output just needs that same skepticism applied one step earlier, before the paper is even in hand.</p>
+
+  <h2>Jump to a Stage</h2>
+  <div class="stage-nav">
+    <a href="#pico">1. PICO Formulation</a>
+    <a href="#search">2. Search Strategy</a>
+    <a href="#screening">3. Screening Abstracts</a>
+    <a href="#extraction">4. Extracting Methodology</a>
+    <a href="#stats">5. ARR / RRR / NNT</a>
+    <a href="#stress-test">6. Stress-Testing Your Appraisal</a>
+  </div>
+
+  <h2 id="pico">1. Formulating a PICO Question</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lesson 2</span>
+    <h3 class="stage-title">Turn a vague clinical worry into a structured question</h3>
+    <p class="stage-desc">Use this right after you've written down the messy version of the question &mdash; the LLM's job is to propose candidate P/I/C/O splits, not to decide which one is right.</p>
+    <div class="prompt-box">I have a vague clinical question I want to turn into a well-formed PICO
+question. Here is the situation: [describe the patient/problem in plain
+language].
+
+Please:
+1. Propose 2-3 candidate PICO breakdowns (Population, Intervention,
+   Comparison, Outcome), since my question may be interpretable more
+   than one way.
+2. For each, note whether it's a therapy, diagnosis, prognosis, harm,
+   or cost-effectiveness question (per the EBM question-type
+   framework), since that determines what study design I should
+   search for.
+3. Flag anything ambiguous in my original description that changes
+   which PICO breakdown is correct, so I can clarify it myself rather
+   than have you guess.
+
+Do not recommend a treatment or diagnostic approach at this stage --
+I only want help structuring the question.</div>
+    <div class="verify-note"><strong>Verify:</strong> confirm the question-type classification yourself against Lesson 2's table before trusting which study design it points you toward.</div>
+  </div>
+
+  <h2 id="search">2. Building a Search Strategy</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lesson 2</span>
+    <h3 class="stage-title">Turn your PICO into a real PubMed search string</h3>
+    <p class="stage-desc">Good for the mechanical, SQL-query-like part of search-building: synonyms, MeSH candidates, Boolean structure.</p>
+    <div class="prompt-box">Here is my PICO question:
+P: [population]
+I: [intervention]
+C: [comparison]
+O: [outcome]
+
+Please draft a PubMed search string that:
+1. Uses Title/Abstract fields for the key P, I, and O concepts.
+2. Suggests likely MeSH terms for each concept (label them clearly as
+   suggestions -- I will verify each one exists in the current MeSH
+   database before using it).
+3. Combines concepts with AND, and synonyms within a concept with OR.
+4. Suggests relevant publication-type filters (e.g. "Randomized
+   Controlled Trial", "Systematic Review") based on my question type.
+
+Also tell me: if this search returns thousands of results, which term
+should I tighten first? If it returns zero, which term should I
+loosen first?</div>
+    <div class="verify-note"><strong>Verify:</strong> MeSH terms drift and get retired; confirm every suggested MeSH term actually exists in PubMed's current MeSH database before running the search, and run the search yourself rather than trusting a model's claimed result count.</div>
+  </div>
+
+  <h2 id="screening">3. Screening Abstracts</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lessons 2 &amp; 4</span>
+    <h3 class="stage-title">Triage a pile of search results against your PICO</h3>
+    <p class="stage-desc">Useful when a search returns dozens of abstracts and you need a first pass at which ones are even plausibly relevant &mdash; not a substitute for reading the ones it keeps.</p>
+    <div class="prompt-box">I'm screening search results against this PICO question:
+P: [population]  I: [intervention]  C: [comparison]  O: [outcome]
+
+Below is a list of paper titles and abstracts [paste them, or paste
+one at a time for a large batch]. For each one:
+1. Classify as "likely relevant", "likely irrelevant", or "unclear --
+   needs full-text check", based only on whether the population,
+   intervention, and outcome plausibly match my PICO.
+2. Give a one-sentence reason for each classification, quoting no
+   more than a short phrase from the abstract itself.
+3. Do not summarize findings or draw conclusions about what the
+   evidence shows overall -- I only want the relevance triage at this
+   stage.
+
+Flag any abstract that looks like a systematic review or meta-analysis
+separately, since I'll want to check those first.</div>
+    <div class="verify-note"><strong>Verify:</strong> treat "likely irrelevant" as provisional, not final -- spot-check a sample of the discarded abstracts yourself, since an LLM can misjudge borderline population or outcome matches.</div>
+  </div>
+
+  <h2 id="extraction">4. Extracting Trial Methodology</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lesson 3</span>
+    <h3 class="stage-title">Pull the Lesson 3 validity checklist out of a methods section</h3>
+    <p class="stage-desc">Feed it the paper's methods section (or the full text, if you have access) and let it locate the specific sentences that answer each validity question &mdash; then go read those sentences yourself.</p>
+    <div class="prompt-box">Here is the methods section of a trial I'm appraising: [paste text].
+
+For each of the following, tell me what the paper states, and quote
+the specific sentence or phrase it comes from so I can locate it
+myself. If the paper doesn't address a point, say "not stated" rather
+than guessing:
+
+1. How was randomization performed (method of sequence generation)?
+2. Was allocation concealed, and how?
+3. What level of blinding was used, and of whom?
+4. Was there a baseline comparability table, and were groups similar?
+5. What was the dropout/loss-to-follow-up rate in each arm, and was
+   it explained?
+6. Was the primary analysis intention-to-treat or per-protocol?
+7. What was the pre-specified primary outcome, and does it match
+   what's reported as primary in the results?
+
+Do not editorialize about whether the trial is "good" or "bad" -- I
+only want the extracted facts with their locations, so I can judge
+validity myself using the Lesson 3 framework.</div>
+    <div class="verify-note"><strong>Verify:</strong> this is the highest-stakes extraction task in the list -- a wrong answer here corrupts every downstream judgment. Open the paper and confirm every quoted sentence actually says what the model claims it says.</div>
+  </div>
+
+  <h2 id="stats">5. Calculating ARR, RRR, and NNT</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lesson 3</span>
+    <h3 class="stage-title">Do the arithmetic, show the work</h3>
+    <p class="stage-desc">Arithmetic is exactly the kind of task where an LLM's answer is easy to independently check -- so always ask for the raw numbers and the formula, not just the final figure.</p>
+    <div class="prompt-box">From this trial, here are the raw numbers:
+- Control group: [n] patients, [x] had the event
+- Treatment group: [n] patients, [y] had the event
+
+Please calculate, showing each step of arithmetic explicitly:
+1. Risk in control group and risk in treatment group (as percentages)
+2. Absolute Risk Reduction (ARR)
+3. Relative Risk Reduction (RRR)
+4. Number Needed to Treat (NNT), rounded up to the next whole number
+5. If the outcome is a harm rather than a benefit, also calculate the
+   Number Needed to Harm (NNH) using the same method
+
+State the formula you're using for each calculation before applying
+it, so I can check your arithmetic against my own by hand.</div>
+    <div class="verify-note"><strong>Verify:</strong> recompute at least the ARR and NNT by hand yourself. This is simple enough arithmetic that there's no excuse not to, and it's the fastest way to catch a misread number from the source paper.</div>
+  </div>
+
+  <h2 id="stress-test">6. Stress-Testing Your Own Appraisal</h2>
+  <div class="prompt-card">
+    <span class="lesson-tag">Builds on Lessons 3, 7 &amp; 8</span>
+    <h3 class="stage-title">Have the model argue against your conclusion</h3>
+    <p class="stage-desc">The most useful role an LLM can play once you've formed a view: an adversarial reviewer, not a second opinion that just agrees with you.</p>
+    <div class="prompt-box">I've appraised the following trial/review/guideline and reached this
+conclusion: [state your conclusion and the key evidence you're basing
+it on].
+
+Please act as a skeptical peer reviewer, not a supportive colleague.
+Specifically:
+1. What is the strongest argument that my conclusion is wrong, or
+   overstated, given the evidence I've described?
+2. What source of bias, confounding, or statistical misreading (per
+   the frameworks in Lessons 3, 6, and 8) am I most likely to have
+   missed or underweighted?
+3. If this evidence is being weighed against a clinical practice
+   guideline recommendation, is my conclusion more or less confident
+   than the guideline's own stated strength of recommendation --
+   and if there's a mismatch, what would explain it?
+4. What single additional piece of evidence, if I could get it, would
+   most change your confidence in my conclusion?
+
+Push back genuinely -- don't soften criticism just because I've
+already committed to a conclusion.</div>
+    <div class="verify-note"><strong>Verify:</strong> a stress-test is a source of questions to go check, not an answer in itself -- if it raises a concern about bias or a missing consideration, resolve it against the primary literature, not by asking the model to reassure you.</div>
+  </div>
+
+  <h2>General Habits Worth Keeping</h2>
+  <ul>
+    <li><strong>Paste the source text in, don't rely on the model's memory.</strong> An LLM asked to recall a specific trial's numbers from training data is far more likely to fabricate or misremember than one working from text you've given it directly.</li>
+    <li><strong>Ask for quotes and locations, not just conclusions.</strong> A claim you can trace back to a specific sentence is a claim you can check in seconds; an unsourced summary sentence isn't.</li>
+    <li><strong>Treat a citation the model produces unprompted as unverified until you've found it yourself.</strong> This applies even to citations that look exactly like real journal, year, and DOI formatting &mdash; fluent formatting is not evidence of existence.</li>
+    <li><strong>Use it to explain, not to decide.</strong> "Explain what I&sup2; means" is a safe use. "Should I recommend anticoagulation for this patient" is not &mdash; that's the judgment Lesson 9 walked through as belonging to you and the patient together.</li>
+  </ul>
+
+  <footer>
+    <p>Companion resource to the Evidence-Based Medicine course for techies. These prompts are starting templates, not fixed scripts &mdash; adapt the wording to your own case as needed, and keep the one hard rule intact regardless of how you adapt them.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson9.html">&larr; Lesson 9</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

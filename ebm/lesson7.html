@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7: Clinical Practice Guidelines</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 44px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 24px 0; border-radius: 4px; font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px;
+  }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+  .worked-example, .homework, .resources, .diagram-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 24px; margin: 24px 0;
+  }
+  .worked-example h3, .homework h3, .diagram-card h3 { margin-top: 0; }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  .formula-box strong { color: var(--accent); }
+
+  /* GRADE pyramid-ish flow diagram */
+  .grade-svg { display: block; margin: 12px auto; }
+
+  /* checklist styling for red-flag items */
+  .redflags { list-style: none; padding-left: 0; }
+  .redflags li {
+    padding: 10px 14px;
+    background: #f6e6e2;
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 7: Clinical Practice Guidelines</h1>
+    <p class="subtitle">Part 7 &mdash; someone already did the appraisal work from Lessons 3&ndash;6 for you. The question now is whether to trust their homework.</p>
+  </header>
+
+  <p>By this point you can appraise a single RCT (Lesson 3), a systematic review (Lesson 4), a diagnostic study (Lesson 5), and a prognosis or harm study (Lesson 6). Most clinicians, most of the time, don't do any of that from scratch for every decision &mdash; they reach for a <strong>clinical practice guideline</strong> that has supposedly already done it. This lesson is about treating a guideline the way you'd treat a dependency you're about to pull into production: trust it, but verify what it's built on first.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> a guideline is a compiled artifact, not source code. It's the output of someone else's build process &mdash; their evidence search, their appraisal, their judgment calls about trade-offs &mdash; packaged into a recommendation you can consume directly. That's enormously efficient when the build process was sound. It's a liability when you can't see the build log, don't know who funded the build, or the recommendation is years past its "last updated" date.
+  </div>
+
+  <h2>What a Guideline Actually Is</h2>
+  <p>A clinical practice guideline is a set of recommendations intended to optimize patient care, developed through a systematic process that reviews the evidence (often leaning heavily on the systematic reviews and meta-analyses from Lesson 4) and translates it into actionable statements &mdash; "do this," "consider this," "don't do this routinely." Guidelines exist because no clinician can personally appraise the entire literature for every decision they make in a day; they're a division-of-labor solution to an impossible information load.</p>
+  <p>But a recommendation is not the same thing as evidence. Two guidelines can look at the same trials and reach different recommendations because they weighed the trade-offs differently, used different thresholds for "good enough" evidence, or were written for different healthcare settings. Reading a guideline critically means separating <strong>what the evidence shows</strong> from <strong>what the panel decided to do about it</strong> &mdash; and GRADE is the most widely used framework for keeping those two things visibly distinct.</p>
+
+  <h2>The GRADE Framework</h2>
+  <p><strong>GRADE</strong> (Grading of Recommendations Assessment, Development and Evaluation) separates a guideline into two explicit outputs: a <strong>certainty of evidence</strong> rating, and a <strong>strength of recommendation</strong>. Keeping these separate is the whole point &mdash; a recommendation can be strong even when the underlying evidence certainty is only moderate, if the benefit is large and harms are minimal, and vice versa.</p>
+
+  <div class="diagram-card">
+    <h3>How GRADE Builds a Recommendation</h3>
+    <svg class="grade-svg" viewBox="0 0 480 220" width="480" height="220" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="180" height="50" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="100" y="42" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Body of evidence</text>
+      <text x="100" y="58" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c" text-anchor="middle">(RCTs, cohort studies, etc.)</text>
+
+      <line x1="190" y1="45" x2="240" y2="45" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="240,45 230,40 230,50" fill="#8a8078"/>
+
+      <rect x="250" y="20" width="220" height="50" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="360" y="42" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Certainty of evidence</text>
+      <text x="360" y="58" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c" text-anchor="middle">High / Moderate / Low / Very Low</text>
+
+      <line x1="360" y1="70" x2="360" y2="110" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="360,110 355,100 365,100" fill="#8a8078"/>
+
+      <rect x="130" y="120" width="220" height="50" rx="6" fill="#efece7" stroke="#8a8078"/>
+      <text x="240" y="142" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">+ Values, harms, costs,</text>
+      <text x="240" y="158" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">feasibility, patient preference</text>
+
+      <line x1="240" y1="170" x2="240" y2="190" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="240,190 235,180 245,180" fill="#8a8078"/>
+
+      <rect x="90" y="190" width="300" height="26" rx="6" fill="#a5432f"/>
+      <text x="240" y="207" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Strength of Recommendation: Strong / Conditional</text>
+    </svg>
+  </div>
+
+  <table>
+    <tr><th>Certainty of evidence</th><th>What it means</th></tr>
+    <tr><td><strong>High</strong></td><td>Further research is very unlikely to change confidence in the estimate</td></tr>
+    <tr><td><strong>Moderate</strong></td><td>Further research is likely to have an important impact on confidence, and may change the estimate</td></tr>
+    <tr><td><strong>Low</strong></td><td>Further research is very likely to have an important impact on confidence and is likely to change the estimate</td></tr>
+    <tr><td><strong>Very Low</strong></td><td>Any estimate is very uncertain</td></tr>
+  </table>
+
+  <p>GRADE starts RCTs at high certainty and observational studies at low certainty, then moves the rating up or down based on factors you already have the vocabulary for from earlier lessons: risk of bias (Lesson 3's validity checks), inconsistency (Lesson 4's heterogeneity), imprecision (wide confidence intervals), indirectness (does the studied population/outcome match the guideline's target question?), and publication bias (Lesson 4's funnel plots) can each downgrade certainty; a very large effect size or a clear dose-response relationship (echoing Lesson 6's Bradford Hill considerations) can upgrade it.</p>
+
+  <div class="formula-box">
+    <strong>Strong recommendation</strong> &mdash; "we recommend..." &mdash; most patients would want this course of action; a clinician can generally act without extensive discussion.<br><br>
+    <strong>Conditional (weak) recommendation</strong> &mdash; "we suggest..." &mdash; the right choice depends more on individual patient values, and warrants a shared-decision conversation.
+  </div>
+
+  <p>The most important habit this framework builds: <strong>a strong recommendation can rest on low-certainty evidence</strong> (e.g. "we strongly recommend not smoking during pregnancy" &mdash; the evidence is observational, but the potential harm is severe and the alternative is essentially free), and a <strong>conditional recommendation can rest on high-certainty evidence</strong> (e.g. a well-proven drug with a real but modest benefit that many patients would reasonably decline given the side effects). Certainty and strength are answering two different questions, and a guideline that blurs them together is hiding information you need.</p>
+
+  
+  <div class="techie-note">
+    <strong>For non-medical readers:</strong> certainty of evidence is like a test-coverage score for the underlying data (how much you can trust the numbers); strength of recommendation is the actual go/no-go decision made using that data plus judgment calls about cost, risk tolerance, and context. Two teams can look at the same coverage report and still ship different decisions.
+  </div>
+
+  <h2>Reading a Guideline Critically</h2>
+  <p>The same three-question shape from Lesson 3 applies, adapted to a document that is itself a synthesis of syntheses:</p>
+  <ol>
+    <li><strong>Are the results valid?</strong> Was the underlying evidence systematically reviewed (Lesson 4 standards) rather than cherry-picked? Is the certainty-of-evidence rating reported explicitly, and separately from the recommendation strength? Was the panel multidisciplinary, and did it include the perspective of patients themselves?</li>
+    <li><strong>What are the results?</strong> What, specifically, is being recommended, for whom, and how strongly? Vague language ("consider," "may be appropriate") often signals a conditional recommendation dressed up to sound more authoritative than it is.</li>
+    <li><strong>Will this help my patient?</strong> Does your patient match the population the guideline was written for? Guidelines are written for a "typical" patient with the index condition &mdash; they often say little about someone with several other conditions at once, whose treatments may interact or compete for priority.</li>
+  </ol>
+
+  <h2>Spotting Industry Influence and Other Red Flags</h2>
+  <p>Guideline panels are usually written by genuine experts &mdash; and genuine experts are often also the people industry most wants relationships with. That's not automatically disqualifying, but it does mean a critical reader checks specific things before trusting a recommendation at face value:</p>
+
+  <ul class="redflags">
+    <li><strong>No disclosed conflicts of interest, or a long list left unexamined.</strong> Check the declarations section, not just whether one exists &mdash; a guideline chair with speaker fees from the drug they're recommending is a specific, checkable fact.</li>
+    <li><strong>Direct or indirect industry funding of the guideline development process itself</strong>, not just of individual panel members.</li>
+    <li><strong>No independent, non-conflicted methodologist</strong> involved in grading the evidence &mdash; someone whose job is process integrity rather than clinical opinion.</li>
+    <li><strong>Recommendations that outrun the cited evidence</strong> &mdash; a "strong" recommendation attached to low-certainty evidence, with no clear explanation of why (large benefit? no reasonable alternative?).</li>
+    <li><strong>No stated update date, or one that's years stale</strong> in a fast-moving field &mdash; evidence changes, and a guideline that hasn't been revisited is quietly going out of date even if nobody relabels it.</li>
+  </ul>
+
+  <p>Two independent bodies reviewing the same evidence and reaching different recommendations is not automatically a red flag &mdash; it can reflect genuinely different value judgments (how much a panel weighs a rare serious harm against a common modest benefit, for instance) or different healthcare settings (cost-effectiveness looks different in different systems). What matters is whether each guideline shows its work clearly enough that you can see <em>why</em> it landed where it did.</p>
+
+  <h2>When the Patient Doesn't Fit the Guideline</h2>
+  <p>Guidelines are built from average effects in trial populations that typically exclude the very old, the very sick, and people with multiple coexisting conditions &mdash; precisely the patients guidelines are most often applied to in real practice. This isn't a flaw unique to any one guideline; it's a structural feature of how the evidence underneath them was generated (recall Lesson 3's applicability question, and Lesson 6's point about matching study populations to your actual patient).</p>
+  <p>A useful discipline: treat a guideline recommendation as a strong prior, not a verdict. Ask explicitly what's different about this patient from the guideline's target population, and whether that difference plausibly changes the balance of benefit and harm enough to justify deviating &mdash; and if so, document why. Multiple guidelines colliding is common in patients with several conditions at once; when they do, the individual patient's priorities (from Lesson 1's history-taking) become the tiebreaker, not a third guideline.</p>
+
+  <div class="callout">
+    <strong>Pro tip:</strong> the <strong>AGREE II</strong> instrument is to guideline development what AMSTAR-2 (Lesson 4) is to systematic reviews &mdash; a formal tool for rating the rigor of the process that produced a guideline, independent of whether you agree with its conclusions.
+  </div>
+
+  <div class="homework">
+    <h3>Homework for Lesson 7</h3>
+    <ol>
+      <li>Find a clinical practice guideline relevant to your patient from Lesson 1. Identify whether it uses GRADE or a similar framework, and locate one recommendation with its certainty-of-evidence and strength-of-recommendation ratings stated explicitly.</li>
+      <li>Check the guideline's conflict-of-interest and funding disclosures. Note anything relevant.</li>
+      <li>Find a second guideline (from a different body, ideally a different country or health system) addressing the same question. Do the recommendations agree? If not, what evidence or value judgment seems to explain the difference?</li>
+      <li>One paragraph: does your patient from Lesson 1 match the population this guideline was built for? If not, how would you adapt the recommendation, and why?</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://www.gradeworkinggroup.org/" target="_blank" rel="noopener">GRADE Working Group</a>
+    <a href="https://www.agreetrust.org/resource-centre/agree-ii/" target="_blank" rel="noopener">AGREE II Instrument</a>
+    <a href="https://guidelines.gov/" target="_blank" rel="noopener">Guideline repositories &amp; clearinghouses</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+  </div>
+
+  <footer>
+    <p>Lesson 7 of the Evidence-Based Medicine course for techies, building on the appraisal skills from Lessons 3&ndash;6 to critically evaluate synthesized recommendations. Concepts follow standard teaching from the GRADE Working Group and the AGREE Collaboration.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson6.html">&larr; Lesson 6</a>
+    <a class="nav-pill" href="lesson8.html">Lesson 8 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

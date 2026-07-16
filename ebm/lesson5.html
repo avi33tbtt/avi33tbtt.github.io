@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5: Appraising Diagnostic Test Studies</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 44px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 24px 0; border-radius: 4px; font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px;
+  }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+  .worked-example, .homework, .resources, .diagram-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 24px; margin: 24px 0;
+  }
+  .worked-example h3, .homework h3, .diagram-card h3 { margin-top: 0; }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  .formula-box strong { color: var(--accent); }
+
+  /* 2x2 contingency table */
+  .twobytwo {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+  }
+  .twobytwo table { margin: 12px 0 4px; }
+  .twobytwo th, .twobytwo td {
+    text-align: center;
+    padding: 12px 10px;
+  }
+  .twobytwo .corner { background: var(--bg); border: none; }
+  .twobytwo .disease-header { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .twobytwo .test-header { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .twobytwo .cell-tp { background: #e0f4f7; font-weight: 700; }
+  .twobytwo .cell-fp { background: #f6e6e2; }
+  .twobytwo .cell-fn { background: #f6e6e2; }
+  .twobytwo .cell-tn { background: #e0f4f7; font-weight: 700; }
+  .twobytwo .totals { background: var(--bg); font-weight: 700; }
+  .twobytwo .cell-label { font-size: 11px; color: var(--muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ROC-ish curve sketch */
+  .roc-card svg { display: block; margin: 0 auto; }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 5: Appraising Diagnostic Test Studies</h1>
+    <p class="subtitle">Part 5 &mdash; a test isn't "accurate" in the abstract. Its usefulness depends on who you're testing and what you already suspected.</p>
+  </header>
+
+  <p>Lessons 3 and 4 were about therapy questions &mdash; does this treatment work? This lesson shifts to a different kind of question, one you already met in Lesson 2's question-type table: <strong>does this test actually tell me what I think it tells me?</strong> A positive result on a bad test can do more harm than the disease it's chasing, and a negative result on a bad test can offer false reassurance. Getting comfortable with test accuracy statistics is how you tell the difference between a genuinely useful test and a confident-sounding number.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> this is a classification-model problem you already understand from a different angle. A diagnostic test is a binary classifier with a disease as ground truth. Sensitivity and specificity are recall on the positive and negative classes. And just like a fraud-detection model trained on a 50/50 dataset behaves very differently in production where fraud is rare, a test's real-world performance shifts with how common the disease is in the population you point it at &mdash; that's the whole second half of this lesson.
+  </div>
+
+  <h2>The 2&times;2 Table: Where Everything Comes From</h2>
+  <p>Every diagnostic accuracy statistic falls out of one table. You take a group of patients, run the test on all of them, and compare the test result against a <strong>gold standard</strong> &mdash; the best available way of knowing whether they truly have the disease (biopsy, culture, long-term follow-up, expert panel, etc.):</p>
+
+  <div class="diagram-card twobytwo">
+    <h3>The Diagnostic 2&times;2 Table</h3>
+    <table>
+      <tr>
+        <td class="corner"></td>
+        <td class="corner"></td>
+        <td class="disease-header" colspan="2">Gold Standard</td>
+      </tr>
+      <tr>
+        <td class="corner"></td>
+        <td class="corner"></td>
+        <td class="disease-header">Disease Present</td>
+        <td class="disease-header">Disease Absent</td>
+      </tr>
+      <tr>
+        <td class="test-header" rowspan="2" style="writing-mode: vertical-rl; text-align: center;">Test Result</td>
+        <td class="test-header">Positive</td>
+        <td class="cell-tp"><span class="cell-label">True Positive</span>a</td>
+        <td class="cell-fp"><span class="cell-label">False Positive</span>b</td>
+      </tr>
+      <tr>
+        <td class="test-header">Negative</td>
+        <td class="cell-fn"><span class="cell-label">False Negative</span>c</td>
+        <td class="cell-tn"><span class="cell-label">True Negative</span>d</td>
+      </tr>
+      <tr>
+        <td class="corner"></td>
+        <td class="totals">Total</td>
+        <td class="totals">a + c</td>
+        <td class="totals">b + d</td>
+      </tr>
+    </table>
+    <p style="font-size:13px; color: var(--muted); margin-top: 8px;">Green cells (a, d) are where the test got it right. Rust cells (b, c) are the two kinds of wrong &mdash; and they carry very different consequences.</p>
+  </div>
+
+  <p>A false positive (b) means telling a healthy person they're sick &mdash; anxiety, further invasive testing, sometimes unnecessary treatment. A false negative (c) means telling a sick person they're fine &mdash; missed or delayed treatment. Which error matters more depends entirely on the disease and the test's role, and it's worth asking explicitly before you look at any numbers.</p>
+
+  <h2>Sensitivity and Specificity</h2>
+  <p>These two numbers describe the test itself, independent of how common the disease is in whoever you happen to test:</p>
+
+  <div class="formula-box">
+    <strong>Sensitivity</strong> = a &divide; (a + c) &mdash; of everyone who <em>truly has</em> the disease, what fraction does the test catch?<br><br>
+    <strong>Specificity</strong> = d &divide; (b + d) &mdash; of everyone who <em>truly does not have</em> the disease, what fraction does the test correctly clear?
+  </div>
+
+  <div class="callout">
+    <strong>Memory aids that actually stick:</strong>
+    <ul style="margin-bottom:0;">
+      <li><strong>SnNout</strong> &mdash; a test with high <strong>Sn</strong>sitivity, when <strong>N</strong>egative, rules <strong>out</strong> disease. A highly sensitive test rarely misses true cases, so a negative result is reassuring.</li>
+      <li><strong>SpPin</strong> &mdash; a test with high <strong>Sp</strong>ecificity, when <strong>P</strong>ositive, rules <strong>in</strong> disease. A highly specific test rarely flags healthy people by mistake, so a positive result is convincing.</li>
+    </ul>
+  </div>
+
+  <p>Sensitivity and specificity are properties of the test (and the population it was studied in), and in principle they don't change with disease prevalence &mdash; but what they let you <em>conclude</em> about an individual patient changes a great deal, which is exactly the trap the next section is about.</p>
+
+  <h2>Predictive Values: What the Patient Actually Wants to Know</h2>
+  <p>A patient with a positive result doesn't want to know "of people with the disease, what fraction test positive" &mdash; they want to know "given that I tested positive, what's the chance I actually have it?" That's a different question, answered by <strong>predictive values</strong>:</p>
+
+  <div class="formula-box">
+    <strong>Positive Predictive Value (PPV)</strong> = a &divide; (a + b) &mdash; of everyone who tested positive, what fraction truly has the disease?<br><br>
+    <strong>Negative Predictive Value (NPV)</strong> = d &divide; (c + d) &mdash; of everyone who tested negative, what fraction is truly disease-free?
+  </div>
+
+  <p>Here's the catch: <strong>PPV and NPV depend heavily on prevalence</strong> &mdash; how common the disease is in the population being tested &mdash; even though sensitivity and specificity don't. This is the single most common source of diagnostic-test confusion, and it deserves a worked example.</p>
+
+  <div class="worked-example">
+    <h3>Worked Example &mdash; Same Test, Two Populations</h3>
+    <p>Take a test with <strong>90% sensitivity</strong> and <strong>90% specificity</strong> &mdash; a genuinely good test by most standards. Run it on 1,000 people twice, in two different settings.</p>
+
+    <p><strong>Setting A &mdash; a screening population, 1% disease prevalence</strong> (10 truly have the disease, 990 don't):</p>
+    <ul>
+      <li>True positives: 90% of 10 = 9</li>
+      <li>False negatives: 10% of 10 = 1</li>
+      <li>False positives: 10% of 990 = 99</li>
+      <li>True negatives: 90% of 990 = 891</li>
+    </ul>
+    <p><strong>PPV</strong> = 9 &divide; (9 + 99) = 9 &divide; 108 &asymp; <strong>8%</strong>. Of everyone who tests positive here, roughly 92% are false alarms &mdash; despite using a 90%/90% test.</p>
+
+    <p><strong>Setting B &mdash; a specialist clinic, 50% disease prevalence</strong> (500 truly have the disease, 500 don't):</p>
+    <ul>
+      <li>True positives: 90% of 500 = 450</li>
+      <li>False negatives: 10% of 500 = 50</li>
+      <li>False positives: 10% of 500 = 50</li>
+      <li>True negatives: 90% of 500 = 450</li>
+    </ul>
+    <p><strong>PPV</strong> = 450 &divide; (450 + 50) = <strong>90%</strong>. Exact same test, exact same sensitivity and specificity &mdash; wildly different real-world meaning of a positive result.</p>
+
+    <p><strong>Why this matters:</strong> this is why population-wide screening with a test validated in a high-prevalence specialist clinic can flood a low-prevalence population with false positives. The test didn't change. The context did.</p>
+  </div>
+
+  <h2>Likelihood Ratios: A Prevalence-Independent Shortcut</h2>
+  <p>Because PPV and NPV are prevalence-dependent, they don't transfer well between populations. <strong>Likelihood ratios (LRs)</strong> solve this: they're built from sensitivity and specificity, so they don't shift with prevalence, and they tell you how much a result should move your suspicion.</p>
+
+  <div class="formula-box">
+    <strong>Positive Likelihood Ratio (LR+)</strong> = Sensitivity &divide; (1 &minus; Specificity)<br><br>
+    <strong>Negative Likelihood Ratio (LR&minus;)</strong> = (1 &minus; Sensitivity) &divide; Specificity
+  </div>
+
+  <table>
+    <tr><th>LR+ value</th><th>Effect on suspicion</th></tr>
+    <tr><td>&gt; 10</td><td>Large, often conclusive increase</td></tr>
+    <tr><td>5&ndash;10</td><td>Moderate increase</td></tr>
+    <tr><td>2&ndash;5</td><td>Small increase</td></tr>
+    <tr><td>1&ndash;2</td><td>Rarely important</td></tr>
+  </table>
+  <table>
+    <tr><th>LR&minus; value</th><th>Effect on suspicion</th></tr>
+    <tr><td>0.5&ndash;1</td><td>Rarely important</td></tr>
+    <tr><td>0.2&ndash;0.5</td><td>Small decrease</td></tr>
+    <tr><td>0.1&ndash;0.2</td><td>Moderate decrease</td></tr>
+    <tr><td>&lt; 0.1</td><td>Large, often conclusive decrease</td></tr>
+  </table>
+
+  <p>The formal way to use an LR is with <strong>pre-test odds &times; LR = post-test odds</strong> (via Bayes' theorem), which needs converting probability to odds and back. In practice, most clinicians use a shortcut &mdash; the <strong>Fagan nomogram</strong> &mdash; a printed or online chart that lets you draw a straight line from pre-test probability through the LR to read off post-test probability directly, no arithmetic required.</p>
+
+  <div class="techie-note">
+    <strong>For non-medical readers:</strong> this is just Bayesian updating &mdash; the same math behind a spam filter recalculating "probability this email is spam" after seeing one more suspicious word. Pre-test probability is your prior; the likelihood ratio is how strongly the new evidence should shift it; post-test probability is your posterior.
+  </div>
+
+  <h2>ROC Curves and Choosing a Cutoff</h2>
+  <p>Sensitivity and specificity so far assumed the test gives a clean positive/negative answer. Many real tests actually output a continuous value &mdash; a lab number, a score &mdash; and <em>someone chose a cutoff</em> to call it positive or negative. Move that cutoff and both sensitivity and specificity change, in opposite directions.</p>
+
+  <div class="diagram-card roc-card">
+    <h3>Illustrative ROC Curve</h3>
+    <svg viewBox="0 0 360 320" width="360" height="320" xmlns="http://www.w3.org/2000/svg">
+      <!-- axes -->
+      <line x1="50" y1="260" x2="320" y2="260" stroke="#262220" stroke-width="1.5"/>
+      <line x1="50" y1="260" x2="50" y2="30" stroke="#262220" stroke-width="1.5"/>
+      <!-- axis labels -->
+      <text x="185" y="290" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#6b625c" text-anchor="middle">False Positive Rate (1 &minus; Specificity)</text>
+      <text x="20" y="145" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#6b625c" text-anchor="middle" transform="rotate(-90 20 145)">Sensitivity (True Positive Rate)</text>
+      <!-- diagonal chance line -->
+      <line x1="50" y1="260" x2="320" y2="30" stroke="#8a8078" stroke-width="1.5" stroke-dasharray="5,5"/>
+      <text x="245" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#8a8078">chance (AUC = 0.5)</text>
+      <!-- good test curve -->
+      <path d="M 50 260 C 70 130, 110 60, 320 30" fill="none" stroke="#a5432f" stroke-width="2.5"/>
+      <text x="130" y="70" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#a5432f" font-weight="700">this test (AUC &asymp; 0.85)</text>
+      <!-- cutoff marker -->
+      <circle cx="105" cy="90" r="5" fill="#262220"/>
+      <text x="118" y="94" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#262220">chosen cutoff</text>
+      <!-- corner labels -->
+      <text x="45" y="272" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c" text-anchor="end">0</text>
+      <text x="320" y="272" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c" text-anchor="middle">1</text>
+      <text x="45" y="34" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c" text-anchor="end">1</text>
+    </svg>
+  </div>
+
+  <p>Each point on the curve is a different cutoff. Move toward the top-left corner (high sensitivity, low false-positive rate) and you're at a stricter or looser cutoff depending on which way you moved &mdash; there's no free lunch: <strong>gaining sensitivity by loosening a cutoff always costs specificity, and vice versa.</strong> The diagonal line is what you'd get from a test no better than a coin flip. The <strong>area under the curve (AUC)</strong> summarizes overall discriminative ability in one number: 0.5 is useless, 1.0 is a perfect test, and most decent clinical tests sit somewhere around 0.7&ndash;0.9.</p>
+  <p>Where the cutoff actually gets set is a judgment call, not a statistical one &mdash; it depends on the relative cost of false positives versus false negatives discussed earlier. A cancer screening test might accept more false positives to avoid missing cases; a test that triggers major surgery might do the opposite.</p>
+
+  <h2>Appraising a Diagnostic Accuracy Study</h2>
+  <p>The same three-question shape from Lesson 3 applies here, adapted to test accuracy:</p>
+  <ol>
+    <li><strong>Are the results valid?</strong>
+      <ul>
+        <li>Was the test compared against an appropriate, independent gold standard &mdash; not itself, not a weaker reference?</li>
+        <li>Was the comparison <strong>blinded</strong> &mdash; did whoever read the gold standard not know the test result, and vice versa?</li>
+        <li>Did the study include a realistic <strong>spectrum</strong> of patients &mdash; both obvious and borderline cases &mdash; not just clear-cut sick people versus healthy volunteers (a common way accuracy gets artificially inflated)?</li>
+        <li>Was the test's cutoff decided <em>before</em> seeing the data, not tuned afterward to make the numbers look good?</li>
+      </ul>
+    </li>
+    <li><strong>What are the results?</strong> Sensitivity, specificity, likelihood ratios, and their confidence intervals &mdash; ideally with the raw 2&times;2 numbers reported so you can recompute anything.</li>
+    <li><strong>Will this help my patient?</strong> Is your patient's pre-test probability anywhere close to the study population's prevalence? Is the test available, safe, and affordable in your setting? And critically &mdash; will the result actually change what you do next? A test that can't change management, whatever it shows, usually shouldn't be ordered.</li>
+  </ol>
+
+  <div class="callout">
+    <strong>Pro tip:</strong> before ordering or interpreting any test, try to state your <em>pre-test probability</em> in words first &mdash; "I think there's maybe a 20% chance this patient has a PE" &mdash; even roughly. Without that starting estimate, a likelihood ratio has nothing to multiply against, and a lone positive or negative result is much easier to over- or under-interpret.
+  </div>
+
+  <div class="homework">
+    <h3>Homework for Lesson 5</h3>
+    <ol>
+      <li>Find a diagnostic accuracy study for a test relevant to your patient from Lesson 1 (or any clinical question you're curious about). Extract the raw 2&times;2 numbers if reported, and calculate sensitivity, specificity, PPV, and NPV yourself.</li>
+      <li>Recalculate PPV and NPV for a prevalence different from the study's &mdash; for example, at 5% and at 50% &mdash; and note how much they move even though sensitivity and specificity stay fixed.</li>
+      <li>Calculate LR+ and LR&minus; for the test, and state in one sentence how much a positive result should shift your suspicion for a patient you estimate started at roughly 20% pre-test probability.</li>
+      <li>One paragraph: is this test's spectrum of patients (as described in the study) similar enough to your patient that its numbers actually apply?</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://www.cebm.net/cebm-calculators/" target="_blank" rel="noopener">CEBM &mdash; Diagnostic test calculators (sensitivity, specificity, LRs)</a>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools/critical-appraisal-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; Critical Appraisal Tools (incl. diagnostic studies)</a>
+    <a href="https://casp-uk.net/casp-tools-checklists/" target="_blank" rel="noopener">CASP UK &mdash; Diagnostic Test Study Checklist</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+  </div>
+
+  <footer>
+    <p>Lesson 5 of the Evidence-Based Medicine course for techies, extending the appraisal skills from Lesson 3 to diagnostic test accuracy studies. Concepts follow standard EBM teaching as popularized by the Centre for Evidence-Based Medicine, Oxford, and the CASP checklists.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson4.html">&larr; Lesson 4</a>
+    <a class="nav-pill" href="lesson6.html">Lesson 6 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 9: Putting It All Together &mdash; A Full Patient Case</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+    --done: #0891b2;
+    --done-soft: #e0f4f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 44px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 24px 0; border-radius: 4px; font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px;
+  }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+  .worked-example, .homework, .resources, .diagram-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 24px; margin: 24px 0;
+  }
+  .worked-example h3, .homework h3, .diagram-card h3 { margin-top: 0; }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  .formula-box strong { color: var(--accent); }
+
+  /* Case file styling */
+  .case-file {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 24px 26px;
+    margin: 24px 0;
+  }
+  .case-file h3 { margin-top: 0; }
+  .case-file .tag {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  /* Journey steps */
+  .journey {
+    counter-reset: step;
+    margin: 24px 0;
+  }
+  .journey-step {
+    position: relative;
+    padding: 18px 22px 18px 60px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+  .journey-step::before {
+    counter-increment: step;
+    content: "L" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--done-soft);
+    color: var(--done);
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .journey-step h3 { margin: 0 0 6px; font-family: Georgia, serif; text-transform: none; letter-spacing: 0; font-size: 17px; color: var(--ink); }
+  .journey-step p { margin: 6px 0; font-size: 15px; }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 9: Putting It All Together &mdash; A Full Patient Case</h1>
+    <p class="subtitle">Part 9 &mdash; the final lesson. One de-identified patient, taken all the way from history to decision, using everything from Lessons 1&ndash;8.</p>
+  </header>
+
+  <p>Eight lessons ago, Lesson 1 opened with a claim: there should be no learning of medicine without a patient at the centre. Every lesson since has added a tool &mdash; PICO, appraisal frameworks, forest plots, 2&times;2 tables, hazard ratios, GRADE, and the statistical machinery underneath all of it. This lesson puts those tools back together, in order, on a single real (de-identified) case &mdash; the way you'd actually use them, not the way a syllabus lists them.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> this is the integration test. Every previous lesson was a unit test for one component &mdash; PICO, RCT appraisal, diagnostic accuracy, confounding, GRADE, statistical rigor. None of them tell you the system works end to end. This lesson runs the whole pipeline, in production, on one real input.
+  </div>
+
+  <h2>The Case</h2>
+
+  <div class="case-file">
+    <span class="tag">De-identified &middot; details altered per Lesson 1's guidance</span>
+    <h3>A 61-year-old with newly diagnosed atrial fibrillation</h3>
+    <p><strong>History (Lesson 1):</strong> a 61-year-old presents with two weeks of intermittent palpitations and mild breathlessness on exertion. No prior cardiac history. Narrative note: "it comes and goes, mostly when I'm stressed at work, and it scares me every time." Past medical history includes well-controlled hypertension. No prior stroke or bleeding history.</p>
+    <p><strong>Examination:</strong> irregularly irregular pulse at 96 bpm, blood pressure 138/86, no signs of heart failure. ECG confirms atrial fibrillation (AF).</p>
+    <p><strong>SOAP framing:</strong></p>
+    <ul style="margin:6px 0;">
+      <li><strong>S</strong> &mdash; intermittent palpitations, anxiety around episodes, exertional breathlessness</li>
+      <li><strong>O</strong> &mdash; irregular pulse, BP 138/86, ECG-confirmed AF, no structural heart disease on initial workup</li>
+      <li><strong>A</strong> &mdash; newly diagnosed non-valvular atrial fibrillation in a patient with hypertension</li>
+      <li><strong>P</strong> &mdash; rate/rhythm control decision pending; stroke-prevention decision pending</li>
+    </ul>
+    <p><strong>The patient's own priority</strong> (surfaced through history-taking, per Lesson 1): "I don't want to be on blood thinners forever if my risk is actually low &mdash; but I also really don't want a stroke." This sentence &mdash; not a lab value &mdash; is what the rest of this case is trying to answer.</p>
+  </div>
+
+  <p>Two clinical questions fall out of this history immediately: <strong>should this patient be anticoagulated to prevent stroke?</strong> and, secondarily, <strong>how good is the initial ECG diagnosis itself &mdash; could this be missed or over-called?</strong> We'll follow the first all the way through, since it's the one the patient is actually asking, and touch the second more briefly.</p>
+
+  <h2>The Journey, Lesson by Lesson</h2>
+
+  <div class="journey">
+    <div class="journey-step">
+      <h3>Formulating the question (Lesson 2)</h3>
+      <p><strong>Vague version:</strong> "Should this patient be on blood thinners?"</p>
+      <p><strong>PICO version:</strong> P &mdash; a 61-year-old with newly diagnosed non-valvular AF and hypertension, no prior stroke; I &mdash; oral anticoagulation; C &mdash; no anticoagulation (or antiplatelet therapy alone); O &mdash; stroke risk vs. major bleeding risk over the following years.</p>
+      <p><strong>Question type:</strong> this is simultaneously a <em>therapy</em> question (does anticoagulation reduce stroke?) and, underneath it, a <em>prognosis</em> question (what is this specific patient's baseline stroke risk without treatment?) &mdash; which tells us to look for both an RCT/systematic-review evidence base and a validated risk-prediction tool.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Finding the evidence (Lesson 2, continued)</h3>
+      <p>A PubMed search combining "atrial fibrillation," "oral anticoagulation," "stroke prevention," and "randomized controlled trial" surfaces the landmark trial evidence for anticoagulation in AF, plus systematic reviews pooling it. Separately, searching "atrial fibrillation" and "stroke risk stratification" surfaces the CHA&#8322;DS&#8322;-VASc risk score &mdash; a validated prognostic tool, not a single trial, which is the right kind of evidence for the second half of the question.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Appraising the therapy evidence (Lesson 3)</h3>
+      <p><strong>Validity:</strong> the pivotal trials in this area were randomized, and later ones used reasonable blinding of outcome assessment even where the intervention itself (warfarin vs. newer agents) couldn't be fully blinded to the patient. Groups were broadly similar at baseline; follow-up and intention-to-treat analysis were adequate in the major trials.</p>
+      <p><strong>Results:</strong> across this evidence base, anticoagulation produces a substantial relative risk reduction in stroke compared to no treatment, with an NNT in the range of the low tens over one to two years for higher-risk patients &mdash; alongside an increase in major bleeding, quantified separately as a Number Needed to Harm. Both numbers, not just the relative risk reduction headline, are what actually matter here.</p>
+      <p><strong>Applicability:</strong> the patient is similar in age and risk-factor profile to typical trial populations for this question &mdash; a reasonable applicability match.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Strengthening the answer with a systematic review (Lesson 4)</h3>
+      <p>A systematic review and meta-analysis pooling the anticoagulation trials would be expected to show a forest plot with most individual trial confidence intervals sitting on the "favors treatment" side, and a pooled diamond further left and narrower than any single trial &mdash; the multiple-underpowered-trials-adding-up pattern from Lesson 4. Checking I&sup2; here matters: trials differ by anticoagulant type and dose, so at least moderate heterogeneity would be unsurprising, and worth reading the review's explanation for rather than dismissing outright.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Quantifying baseline risk &mdash; a prognosis question (Lesson 6)</h3>
+      <p>The CHA&#8322;DS&#8322;-VASc score is itself the product of cohort studies: patients followed forward, stroke events counted, risk factors (age, hypertension, prior stroke, vascular disease, sex, diabetes, heart failure) identified as independent predictors through multivariable adjustment for confounding. Plugging this patient's factors in &mdash; age 61, hypertension, no other risk factors &mdash; gives a specific estimated annual stroke risk, which is what actually answers "how good is 'low' in this patient's own words?" A companion bleeding-risk score (built the same observational way) supplies the other side of the trade-off.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Checking the diagnosis itself &mdash; a diagnostic-accuracy question (Lesson 5)</h3>
+      <p>The secondary question &mdash; how confident should we be in a single-ECG diagnosis of paroxysmal AF &mdash; is a sensitivity/specificity question. A standard resting ECG has close to 100% specificity for AF <em>if it's captured during an episode</em>, but low sensitivity for catching an intermittent rhythm at all, since AF may simply not be present at the moment of recording. That asymmetry (SpPin logic from Lesson 5: a positive ECG during an episode rules AF in convincingly) is exactly why intermittent symptoms sometimes warrant extended rhythm monitoring rather than treating one clean ECG as the final word if the diagnosis were less certain than it is here.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Checking what a guideline says (Lesson 7)</h3>
+      <p>A relevant clinical practice guideline would likely offer a graded recommendation along the lines of: for a CHA&#8322;DS&#8322;-VASc score at or above a defined threshold, anticoagulation is recommended (often a strong recommendation, high-certainty evidence, given the trial base above); below that threshold, the recommendation typically becomes conditional &mdash; explicitly flagged for shared decision-making. Checking the guideline's disclosed funding and panel composition, and whether it's been updated recently, are the Lesson 7 due-diligence steps worth doing before leaning on it.</p>
+    </div>
+
+    <div class="journey-step">
+      <h3>Reading the numbers with statistical skepticism (Lesson 8)</h3>
+      <p>Before accepting any of the above at face value: check that the major trials' stroke-reduction confidence intervals are narrow and don't cross the line of no effect (Lesson 8's CI-width lesson), confirm the primary outcome wasn't switched between registration and publication, and note that stroke prevention here is a genuine patient-important outcome &mdash; not a surrogate &mdash; which is one less thing to be skeptical about in this particular case.</p>
+    </div>
+  </div>
+
+  <h2>The Decision</h2>
+  <div class="worked-example">
+    <h3>Bringing It Back to the Patient</h3>
+    <p>The patient's own framing &mdash; "not blood thinners forever if my risk is low, but I don't want a stroke" &mdash; is a request for exactly the trade-off this whole chain of evidence was built to quantify: a specific baseline stroke risk (Lesson 6), a specific relative and absolute risk reduction and NNT from anticoagulation (Lesson 3), weighed against a specific bleeding NNH from the same evidence, filtered through a guideline's judgment about where that trade-off tips from conditional to strong (Lesson 7), all resting on evidence checked for statistical and design integrity along the way (Lessons 4, 5, and 8).</p>
+    <p>If the calculated risk score lands this patient above the guideline's threshold, the strong-recommendation case for anticoagulation is well supported by high-certainty evidence &mdash; worth communicating plainly, including the honest NNT/NNH pair rather than a relative-risk headline (Lesson 3's lesson, still doing work here). If it lands right at the boundary, this becomes a genuine shared decision, and the patient's own stated aversion to indefinite treatment is exactly the kind of input a conditional recommendation is designed to make room for.</p>
+  </div>
+
+  <h2>What This Case Was Really Testing</h2>
+  <p>Notice what didn't happen anywhere in this walkthrough: at no point did a single number, a single trial, or a single guideline sentence get accepted on its own. Every step either fed the next one or was cross-checked against it &mdash; the diagnosis question checked the foundation the whole case sits on; the prognosis score gave the "low risk" claim a number instead of a feeling; the therapy evidence was checked for validity before its results were trusted; the systematic review checked whether that trial evidence replicated; the guideline's recommendation was checked against its own evidence certainty and its funding; and the statistics chapter's habits &mdash; check the interval, check the effect size, check for a surrogate, check the limitations &mdash; ran quietly underneath every other step.</p>
+  <p>That's the actual shape of evidence-based medicine: not a single lookup, but a chain of checks, each one catching a different kind of way to be wrong, converging on a specific number a specific patient can actually use to decide.</p>
+
+  <div class="callout">
+    <strong>Where the LLM fits in a workflow like this:</strong> a language model can accelerate almost every step above &mdash; drafting the PICO question, building the PubMed search string, summarizing a guideline's recommendation grid, explaining a forest plot. It should not be trusted to originate the stroke-risk number, the NNT, or the guideline's recommendation strength without you verifying each one against the primary source. The course's companion prompt library, linked below, is built around that one hard rule.
+  </div>
+
+  <div class="homework">
+    <h3>Final Exercise</h3>
+    <ol>
+      <li>Take the patient and clinical question you've been carrying since Lesson 1's homework. Write out, in order, which of Lessons 2&ndash;8 apply to your specific question &mdash; not every lesson will, and knowing which ones don't is itself part of the skill.</li>
+      <li>For each lesson that applies, find and appraise the relevant evidence, the way this case did above.</li>
+      <li>Write the final recommendation as you would explain it to the patient directly &mdash; absolute numbers, not just relative ones; the genuine trade-off, not a one-sided pitch; and space for what the patient told you they actually wanted, back in Lesson 1.</li>
+      <li>Optional: revisit the LLM-Assisted EBM prompt library and rebuild this same case using it as a research assistant, verifying every generated number and citation against the primary sources as you go.</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools/critical-appraisal-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; Critical Appraisal Tools (full set)</a>
+    <a href="https://www.cebm.net/cebm-calculators/" target="_blank" rel="noopener">CEBM &mdash; NNT, ARR, RRR, and diagnostic calculators</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+    <a href="prompts.html">LLM-Assisted EBM &mdash; the course's prompt library</a>
+  </div>
+
+  <footer>
+    <p>Lesson 9 of the Evidence-Based Medicine course for techies &mdash; the capstone, integrating Lessons 1&ndash;8 on a single de-identified case. The case itself is a composite constructed for teaching purposes, not a specific real patient. Course adapted and expanded from an original session by Dr. Avinash Kumar.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson8.html">&larr; Lesson 8</a>
+    <a class="nav-pill" href="prompts.html">Explore the Prompt Library &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

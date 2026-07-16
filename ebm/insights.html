@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interesting Insights &mdash; Evidence-Based Medicine for Techies</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+    --done: #0891b2;
+    --done-soft: #e0f4f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 21px; margin-top: 50px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  a { color: var(--accent); }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+
+  .filter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 8px;
+  }
+  .filter-nav a {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .insight-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .insight-card .lesson-tag {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: var(--done);
+    background: var(--done-soft);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .insight-card h3 {
+    margin: 0 0 10px;
+    font-family: Georgia, serif;
+    font-size: 19px;
+    line-height: 1.35;
+  }
+  .insight-card p { font-size: 16px; margin: 10px 0; }
+  .insight-card .number-punch {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    color: var(--ink);
+  }
+  .insight-card .number-punch strong { color: var(--accent); }
+
+  .stat-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .stat-pill {
+    font-family: Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    flex: 1;
+    min-width: 110px;
+  }
+  .stat-pill .big {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-pill .small {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .closing-callout {
+    background: var(--ink);
+    color: #f5efea;
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-top: 48px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .closing-callout p { color: #f5efea; font-family: Georgia, serif; font-size: 17px; margin: 0; }
+  .closing-callout .rule-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+    color: #e0a897;
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Interesting Insights</h1>
+    <p class="subtitle">A shortlist of the moments across nine lessons where the numbers do something a little counterintuitive &mdash; the kind of thing worth remembering even if you forget everything else.</p>
+  </header>
+
+  <p>Every lesson in this course has one or two ideas that tend to genuinely surprise people the first time they see them worked through with real numbers &mdash; not because the math is hard, but because intuition runs the other way. This page collects them in one place. Each card links back to the lesson where it's explained in full.</p>
+
+  <div class="filter-nav">
+    <a href="#insight-1">Same test, different worlds</a>
+    <a href="#insight-2">Headline vs. honest</a>
+    <a href="#insight-3">Weak trials, strong answer</a>
+    <a href="#insight-4">The lighter doesn't cause cancer</a>
+    <a href="#insight-5">Strength &ne; certainty</a>
+    <a href="#insight-6">Not significant &ne; no effect</a>
+    <a href="#insight-7">A perfect surrogate can still fail you</a>
+    <a href="#insight-8">Twenty tries, one "discovery"</a>
+  </div>
+
+  <h2 id="insight-1">1 &middot; Same Test, Two Different Worlds</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 5 &middot; Diagnostic Test Studies</span>
+    <h3>A 90%-accurate test can still be wrong most of the time it says "positive."</h3>
+    <p>Sensitivity and specificity describe the test. They don't change with who you point the test at. But <strong>predictive value</strong> &mdash; the thing a patient actually wants to know, "given I tested positive, do I actually have this?" &mdash; depends enormously on how common the disease is in the population being tested.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><span class="big">8%</span><span class="small">PPV at 1% prevalence</span></div>
+      <div class="stat-pill"><span class="big">90%</span><span class="small">PPV at 50% prevalence</span></div>
+    </div>
+    <p>Same test. 90% sensitivity, 90% specificity, unchanged in both scenarios. The only thing that moved was how common the disease was in the room. This is the single most common source of confusion in diagnostic testing, and it's why validating a test in a specialist clinic and then deploying it as a mass screening tool is a genuinely different act, statistically, than it looks.</p>
+    <a href="lesson5.html">&rarr; See the full worked example in Lesson 5</a>
+  </div>
+
+  <h2 id="insight-2">2 &middot; The Headline Number and the Honest Number Can Tell Opposite Stories</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 3 &middot; Appraising an RCT</span>
+    <h3>"40% risk reduction" and "treat 25 people to help one" are the same trial.</h3>
+    <div class="number-punch">10% stroke risk on placebo &rarr; 6% on the new drug.<br><strong>Relative risk reduction: 40%.</strong> Sounds dramatic.<br><strong>Absolute risk reduction: 4 percentage points. NNT: 25.</strong> Sounds different.</div>
+    <p>Relative risk reduction is the number that ends up in a headline or a drug ad, because it's always the bigger-looking number. Absolute risk reduction and Number Needed to Treat are the numbers that tell you what actually happens to a room full of real patients &mdash; including the 24 out of 25 who take on the drug's side effects for no personal benefit at all. Neither number is wrong. Only one of them is honest about scale.</p>
+    <a href="lesson3.html">&rarr; See the ARR/RRR/NNT framework in Lesson 3</a>
+  </div>
+
+  <h2 id="insight-3">3 &middot; A Pile of Weak Evidence Can Add Up to a Strong Answer</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 4 &middot; Systematic Reviews &amp; Meta-Analyses</span>
+    <h3>Five underpowered trials, none individually significant, can still add up to a confident pooled answer.</h3>
+    <p>In a forest plot, it's common to see every single trial's confidence interval touch or cross the line of "no effect" &mdash; none of them, alone, could claim statistical significance. And yet the pooled diamond at the bottom, combining all of their data, can sit clearly away from that line. This isn't a trick; it's exactly what averaging is supposed to do. Five noisy, individually inconclusive sensor readings pointing the same direction are real signal, even when none of them alone clears the bar.</p>
+    <a href="lesson4.html">&rarr; See the annotated forest plot in Lesson 4</a>
+  </div>
+
+  <h2 id="insight-4">4 &middot; The Lighter Doesn't Cause Cancer</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 6 &middot; Prognosis &amp; Harm Studies</span>
+    <h3>People who carry lighters have higher rates of lung cancer &mdash; and lighters are innocent.</h3>
+    <p>This is the cleanest illustration of confounding in the whole course precisely because nobody is tempted to believe the causal story. Smoking drives both lighter-carrying and cancer risk, creating a spurious statistical link between two things that have no direct connection at all. The uncomfortable part is that most real confounders in observational medical research are nowhere near this obvious &mdash; which is exactly why <strong>residual confounding</strong>, from a variable nobody thought to measure, can never be fully ruled out in an observational study, no matter how careful the adjustment.</p>
+    <a href="lesson6.html">&rarr; See the confounding triangle in Lesson 6</a>
+  </div>
+
+  <h2 id="insight-5">5 &middot; A "Strong" Recommendation Can Rest on Weak Evidence</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 7 &middot; Clinical Practice Guidelines</span>
+    <h3>Guideline strength and evidence certainty are two different dials, not one.</h3>
+    <p>GRADE deliberately keeps these separate. "Don't smoke during pregnancy" is a <em>strong</em> recommendation built on evidence that's technically <em>low-certainty</em> &mdash; you can't ethically randomize the exposure, so the evidence base is observational. It's strong anyway, because the plausible harm is severe and the cost of following the advice is essentially nothing. Meanwhile, a well-proven drug with high-certainty evidence behind it can still carry only a <em>conditional</em> recommendation, if the benefit is modest enough that reasonable patients would disagree about whether it's worth the trade-off. A guideline that collapses these two dials into one confident-sounding sentence is hiding information you need.</p>
+    <a href="lesson7.html">&rarr; See the GRADE framework in Lesson 7</a>
+  </div>
+
+  <h2 id="insight-6">6 &middot; "Not Statistically Significant" Almost Never Means "No Effect"</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 8 &middot; Statistics Deep-Dive</span>
+    <h3>A wide confidence interval crossing "no effect" usually means "we couldn't tell," not "there's nothing there."</h3>
+    <p>Three studies can each report a "non-significant" result and mean three completely different things: one might be genuinely null with a narrow, precise interval sitting right on top of "no effect." Another might be badly underpowered, with a wide interval that happens to straddle the line but is entirely compatible with a large real effect. Only the width of the interval tells you which is which &mdash; the p-value alone collapses that distinction into a single pass/fail bit and throws away the part that actually mattered.</p>
+    <a href="lesson8.html">&rarr; See the three-study CI comparison in Lesson 8</a>
+  </div>
+
+  <h2 id="insight-7">7 &middot; A Drug Can "Work" on Paper and Still Not Help Anyone</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 8 &middot; Statistics Deep-Dive</span>
+    <h3>Moving a surrogate marker in the right direction is not the same as helping the patient.</h3>
+    <p>Cholesterol, tumor size on a scan, blood glucose, bone density &mdash; these are fast, cheap, convenient things to measure, which is exactly why so many trials measure them instead of the outcome patients actually care about. A drug can reliably improve the surrogate and simply fail to move survival, quality of life, or fracture risk at all &mdash; or, in rarer and more troubling cases, improve the surrogate while causing net harm. The convenience of the surrogate is precisely what makes it worth being suspicious of.</p>
+    <a href="lesson8.html">&rarr; See the surrogate endpoint table in Lesson 8</a>
+  </div>
+
+  <h2 id="insight-8">8 &middot; Test Twenty Things, and Something Will "Work" by Accident</h2>
+  <div class="insight-card">
+    <span class="lesson-tag">Lesson 8 &middot; Statistics Deep-Dive</span>
+    <h3>At the standard 5% significance threshold, pure chance alone guarantees a false "discovery" often enough to matter.</h3>
+    <div class="stat-row">
+      <div class="stat-pill"><span class="big">~1 in 20</span><span class="small">tests "significant" by chance alone</span></div>
+      <div class="stat-pill"><span class="big">~64%</span><span class="small">chance of &ge;1 false hit testing 20 subgroups</span></div>
+    </div>
+    <p>Test 20 unrelated subgroups &mdash; men, women, over-65s, diabetics, and so on &mdash; against a treatment with truly zero effect, and the math says you should expect roughly one of them to cross <code>p &lt; 0.05</code> just from noise. That's not a hypothetical edge case; it's the arithmetic of the threshold itself. It's the exact same failure mode as tuning a model against its own test set until a number looks good &mdash; and the fix is the same in both fields: decide the primary comparison before you see the data, and hold it fixed.</p>
+    <a href="lesson8.html">&rarr; See p-hacking and multiple comparisons in Lesson 8</a>
+  </div>
+
+  <div class="closing-callout">
+    <div class="rule-eyebrow">The Thread Running Through All Eight</div>
+    <p>Every one of these surprises comes from the same root cause: a single summary number, taken at face value, hides a second variable that changes everything &mdash; prevalence, absolute scale, sample size, an unmeasured confounder, evidence certainty, interval width, the outcome being measured, or the number of chances taken to find it. The whole discipline of critical appraisal, from Lesson 1 onward, is really just the habit of asking "what's the second variable here?" before accepting the first number you're handed.</p>
+  </div>
+
+  <footer>
+    <p>Companion resource to the Evidence-Based Medicine course for techies, drawing examples from Lessons 3&ndash;8. Numbers here are the same illustrative worked examples used in their source lessons &mdash; revisit the linked lesson for the full derivation and appraisal context.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="prompts.html">LLM Prompt Library &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence-Based Medicine for Techies &mdash; Course Index</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+    --done: #0891b2;
+    --done-soft: #e0f4f7;
+    --todo: #6b8886;
+    --todo-soft: #e7f2f1;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 44px;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 34px;
+    margin: 10px 0 8px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 17px;
+    font-style: italic;
+    max-width: 600px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: 48px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  p { font-size: 17px; margin: 14px 0; }
+  .intro-note {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 24px 0;
+  }
+  .lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .lesson-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .lesson-card.available:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+  .lesson-card.pending {
+    cursor: default;
+    opacity: 0.85;
+  }
+  .lesson-num {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    min-width: 74px;
+    padding: 4px 0;
+    text-align: center;
+    border-radius: 20px;
+    align-self: flex-start;
+  }
+  .available .lesson-num {
+    background: var(--done-soft);
+    color: var(--done);
+  }
+  .pending .lesson-num {
+    background: var(--todo-soft);
+    color: var(--todo);
+  }
+  .lesson-body h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-family: Georgia, serif;
+  }
+  .lesson-body p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .status-tag {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  .available .status-tag { color: var(--done); }
+  .pending .status-tag { color: var(--todo); }
+  .toolkit-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-top: 16px;
+  }
+  .toolkit-card h3 { margin-top: 0; }
+  .toolkit-card a.nav-pill {
+    margin-top: 12px;
+  }
+  .nav-pill {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: var(--accent);
+    color: #fff !important;
+    padding: 7px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+  }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">A Course For Techies</div>
+    <h1>Evidence-Based Medicine, From First Principles</h1>
+    <p class="subtitle">Critical appraisal and evidence-based medicine, taught the way a clinician actually thinks &mdash; starting with a patient, not a p-value.</p>
+  </header>
+
+  <p>This course grew out of a session originally taught to a mix of medical students and non-medical learners. Each lesson builds on the last: we start with the patient, move to asking a well-formed clinical question, then learn to judge the evidence itself &mdash; and finally, how to use LLMs responsibly as a research assistant along the way.</p>
+
+  <div class="intro-note">
+    <strong>How to use this course:</strong> all nine lessons are now available, and are meant to be done in order the first time through. Each one ends with homework that feeds directly into the next lesson, so it helps to actually do the exercises rather than just read. Lesson 9 ties everything back together on a single full patient case.
+  </div>
+
+  <h2>Lessons</h2>
+  <div class="lesson-list">
+
+    <a class="lesson-card available" href="lesson1.html">
+      <div class="lesson-num">Lesson 1</div>
+      <div class="lesson-body">
+        <h3>Teaching Critical Appraisal for Medicos and Non-Medicos</h3>
+        <p>The patient at the centre: history, examination, SOAP notes, PaJR, spotting fake news, and a first look at the evidence pyramid.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson2.html">
+      <div class="lesson-num">Lesson 2</div>
+      <div class="lesson-body">
+        <h3>Asking Answerable Clinical Questions (PICO) and Finding the Evidence</h3>
+        <p>Turning a vague clinical worry into a PICO question, matching question type to study design, and building a real PubMed search.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson3.html">
+      <div class="lesson-num">Lesson 3</div>
+      <div class="lesson-body">
+        <h3>Critically Appraising a Randomized Controlled Trial</h3>
+        <p>The three-question framework &mdash; validity, results, applicability &mdash; plus ARR, RRR, NNT, and confidence intervals worked through by hand.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson4.html">
+      <div class="lesson-num">Lesson 4</div>
+      <div class="lesson-body">
+        <h3>Systematic Reviews &amp; Meta-Analyses</h3>
+        <p>How trials get pooled, reading a forest plot, heterogeneity (I&sup2;), funnel plots for publication bias, and appraising a review with AMSTAR-2.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson5.html">
+      <div class="lesson-num">Lesson 5</div>
+      <div class="lesson-body">
+        <h3>Appraising Diagnostic Test Studies</h3>
+        <p>Sensitivity, specificity, PPV/NPV, likelihood ratios, ROC curves, and why prevalence changes how useful a test is for your patient.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson6.html">
+      <div class="lesson-num">Lesson 6</div>
+      <div class="lesson-body">
+        <h3>Prognosis &amp; Harm Studies</h3>
+        <p>Cohort and case-control designs, hazard ratios, confounding, and why RCTs are the wrong tool for long-term risk or rare harms.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson7.html">
+      <div class="lesson-num">Lesson 7</div>
+      <div class="lesson-body">
+        <h3>Clinical Practice Guidelines</h3>
+        <p>How guidelines are built (GRADE), spotting industry influence, and reconciling a guideline with a patient who doesn't fit the trial average.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson8.html">
+      <div class="lesson-num">Lesson 8</div>
+      <div class="lesson-body">
+        <h3>Statistics Deep-Dive for the Skeptical Techie</h3>
+        <p>p-values vs. confidence intervals, what "significant" really claims, p-hacking, surrogate endpoints, and reading limitations sections critically.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+    <a class="lesson-card available" href="lesson9.html">
+      <div class="lesson-num">Lesson 9</div>
+      <div class="lesson-body">
+        <h3>Putting It All Together: A Full Patient Case</h3>
+        <p>A real, de-identified patient taken end to end &mdash; history, PICO question, search, appraisal, decision &mdash; tying the whole course back to Lesson 1.</p>
+        <span class="status-tag">Available</span>
+      </div>
+    </a>
+
+  </div>
+
+  <h2>For Non-Medical Techies</h2>
+  <div class="toolkit-card">
+    <h3>Techie Summary &mdash; EBM in the Language You Already Speak</h3>
+    <p>A fast, jargon-translated map of the whole course &mdash; PICO as a search schema, RCTs as A/B tests, likelihood ratios as Bayesian updates, GRADE as test-coverage vs. ship-decision. Read this first if you have no clinical background, or keep it open as a cheat sheet while working through the lessons.</p>
+    <a class="nav-pill" href="techie-summary.html">Open the Techie Summary &rarr;</a>
+  </div>
+
+  <h2>LLM-Assisted EBM</h2>
+  <div class="toolkit-card">
+    <h3>Using an LLM Like a Clinician's Research Assistant</h3>
+    <p>A companion prompt library for using an LLM at each stage of the EBM workflow &mdash; formulating PICO questions, building search strategies, screening abstracts, extracting trial methodology, calculating ARR/RRR/NNT, and stress-testing your own appraisal. Framed with one hard rule throughout: the LLM drafts, you verify every number and citation against the source.</p>
+    <a class="nav-pill" href="prompts.html">Open the Prompt Library &rarr;</a>
+  </div>
+
+  <h2>Interesting Insights</h2>
+  <div class="toolkit-card">
+    <h3>Eight Moments Where the Numbers Surprise You</h3>
+    <p>A shortlist of the most counterintuitive results across the course &mdash; the same test giving an 8% predictive value in one population and 90% in another, a "40% risk reduction" that turns out to mean treating 25 people to help one, five underpowered trials adding up to a confident pooled answer, and more. Each one links back to the lesson where it's worked through in full.</p>
+    <a class="nav-pill" href="insights.html">Browse the Insights &rarr;</a>
+  </div>
+
+  <footer>
+    <p>Course adapted and expanded from an original session by Dr. Avinash Kumar, <a href="https://classworkdecjan.blogspot.com/" target="_blank" rel="noopener">classwork blog</a>. Built for a technical, non-medical audience learning to read clinical evidence.</p>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

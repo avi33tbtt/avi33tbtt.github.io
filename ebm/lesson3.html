@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3: Critically Appraising a Randomized Controlled Trial</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 32px;
+    margin: 10px 0 8px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 22px;
+    margin-top: 44px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code {
+    background: var(--accent-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  .worked-example {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin: 24px 0;
+  }
+  .worked-example h3 { margin-top: 0; }
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  .formula-box strong { color: var(--accent); }
+  .homework {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .homework h3 { margin-top: 0; }
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: var(--accent);
+    color: #fff !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 3: Critically Appraising a Randomized Controlled Trial</h1>
+    <p class="subtitle">Part 3 &mdash; you found the paper in Lesson 2. Now: can you trust it, what does it actually say, and does it apply to your patient?</p>
+  </header>
+
+  <p>In Lesson 2, you turned a clinical worry into a PICO question and found a paper that matches it &mdash; ideally a randomized controlled trial (RCT), since that's the strongest design for therapy questions. Having the paper is not the same as trusting it. This lesson walks through the classic three-question framework used to critically appraise an RCT.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> think of appraisal as a code review. Finding the pull request isn't the job &mdash; checking whether it actually does what it claims, whether the tests are sound, and whether it's safe to merge into your specific production environment is the job. Same here: find the trial, then review it.
+  </div>
+
+  <h2>The Three-Question Framework</h2>
+  <p>Every major appraisal checklist (CASP, CEBM, JAMA Users' Guides) boils down to three questions, asked in this order:</p>
+  <ol>
+    <li><strong>Are the results valid?</strong> (Can I trust the methodology?)</li>
+    <li><strong>What are the results?</strong> (What did they actually find, in numbers?)</li>
+    <li><strong>Will the results help my patient?</strong> (Does this apply to the person in front of me?)</li>
+  </ol>
+  <p>Skipping straight to question 3 &mdash; "does this help my patient?" &mdash; without first checking validity is the single most common mistake. A big effect size from a badly designed trial is worth less than a modest effect from a rigorous one.</p>
+
+  <h2>Question 1: Are the Results Valid?</h2>
+  <p>This is about ruling out bias. For an RCT, check these in order:</p>
+
+  <table>
+    <tr><th>Check</th><th>What you're looking for</th></tr>
+    <tr><td><strong>Randomization</strong></td><td>Was allocation to groups truly random (computer-generated sequence), not something predictable like alternating patients or odd/even birthdates?</td></tr>
+    <tr><td><strong>Allocation concealment</strong></td><td>Did the person enrolling patients know in advance which group the next patient would land in? If yes, selection bias can creep in.</td></tr>
+    <tr><td><strong>Blinding</strong></td><td>Were patients, clinicians, and outcome assessors unaware of group assignment? Single, double, or triple blind?</td></tr>
+    <tr><td><strong>Similar groups at baseline</strong></td><td>Was there a "Table 1" showing the intervention and control groups were comparable at the start (age, severity, comorbidities)?</td></tr>
+    <tr><td><strong>Complete follow-up</strong></td><td>Were dropouts few, and were they explained? A good rule of thumb: worry if losses exceed ~20%.</td></tr>
+    <tr><td><strong>Intention-to-treat analysis</strong></td><td>Were patients analyzed in the group they were originally assigned to, even if they didn't complete treatment? This preserves the value of randomization.</td></tr>
+    <tr><td><strong>Equal treatment otherwise</strong></td><td>Aside from the intervention being tested, were both groups treated the same (co-interventions, monitoring)?</td></tr>
+  </table>
+
+  <p>If a trial fails badly on several of these, question 2 and 3 barely matter &mdash; the numbers may not reflect reality.</p>
+
+  <h2>Question 2: What Are the Results?</h2>
+  <p>Once you trust the method, extract the actual numbers. For a therapy trial with a binary outcome (e.g. "had a stroke" vs. "did not"), a few core statistics do most of the work:</p>
+
+  <div class="formula-box">
+    <strong>Absolute Risk Reduction (ARR)</strong> = Risk in control group &minus; Risk in treatment group<br><br>
+    <strong>Relative Risk Reduction (RRR)</strong> = ARR &divide; Risk in control group<br><br>
+    <strong>Number Needed to Treat (NNT)</strong> = 1 &divide; ARR
+  </div>
+
+  <div class="worked-example">
+    <h3>Worked Example</h3>
+    <p>Suppose a trial finds: 10% of patients on placebo have a stroke over 5 years, vs. 6% of patients on the new drug.</p>
+    <ul>
+      <li><strong>ARR</strong> = 10% &minus; 6% = 4 percentage points</li>
+      <li><strong>RRR</strong> = 4% &divide; 10% = 40%</li>
+      <li><strong>NNT</strong> = 1 &divide; 0.04 = 25 &mdash; you'd need to treat 25 patients for 5 years to prevent one stroke</li>
+    </ul>
+    <p><strong>Why this matters:</strong> "40% relative risk reduction!" sounds dramatic in a headline. "You need to treat 25 people to prevent one stroke, and the other 24 get the drug's side effects with no benefit" is the same result, stated honestly. Always ask for the absolute numbers behind a relative-risk claim.</p>
+
+  <div class="techie-note">
+    <strong>For non-medical readers:</strong> relative risk reduction is like reporting a bug-fix rate as "cut crashes by 40%" without saying the app only crashed for 1 in 10 users to begin with. NNT (25, here) is the more honest metric &mdash; it's the "cost per unit of benefit," similar to reporting how many units you need to ship before one behaves as expected.
+  </div>
+  </div>
+
+  <p>Also check the <strong>confidence interval</strong> around the main result. A 95% CI that's narrow and doesn't cross the "no difference" line (e.g. a relative risk CI that doesn't cross 1.0) suggests a precise, statistically solid finding. A wide CI that straddles "no effect" means the study may be underpowered &mdash; too small to be sure.</p>
+
+  <h2>Question 3: Will This Help My Patient?</h2>
+  <p>This is where the patient from Lesson 1 comes back into the picture. Ask:</p>
+  <ul>
+    <li>Is my patient similar enough to the people enrolled in this trial (age, sex, severity, comorbidities)? Check the trial's inclusion/exclusion criteria.</li>
+    <li>Were all clinically important outcomes measured &mdash; not just the convenient ones? (A drug that improves a lab value but not how the patient feels or survives is a partial answer.)</li>
+    <li>Are the likely benefits worth the potential harms and costs, for this specific patient?</li>
+    <li>Is the treatment feasible in your setting &mdash; available, affordable, something the patient can actually adhere to?</li>
+  </ul>
+  <p>This is also where your PICO question from Lesson 2 pays off: if you built it around your actual patient, this final step becomes a direct comparison rather than a guess.</p>
+
+  <h2>Putting It Together: A Quick Checklist</h2>
+  <div class="callout">
+    <strong>Fast appraisal pass for an RCT:</strong>
+    <ol>
+      <li>Randomized, concealed, blinded? &rarr; validity</li>
+      <li>Groups similar at start, follow-up complete, ITT analysis? &rarr; validity</li>
+      <li>ARR, RRR, NNT, confidence interval? &rarr; results</li>
+      <li>Does the trial population and outcome match my patient? &rarr; applicability</li>
+    </ol>
+  </div>
+
+  <p><strong>Pro tip:</strong> the CASP RCT checklist and the CEBM RCT worksheet (linked in Lesson 1 and below) turn this into a fill-in-the-blanks form. Use one the first several times you appraise a trial &mdash; it becomes intuitive faster than you'd expect.</p>
+
+  <div class="homework">
+    <h3>Homework for Lesson 3</h3>
+    <ol>
+      <li>Take the paper you found in Lesson 2's homework. Run it through the three-question framework above.</li>
+      <li>Calculate the ARR, RRR, and NNT (or NNH, Number Needed to Harm, if the outcome is a side effect) from the paper's own numbers.</li>
+      <li>Write two or three sentences: would you recommend this treatment to your patient from Lesson 1, and why or why not?</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://casp-uk.net/casp-tools-checklists/" target="_blank" rel="noopener">CASP UK &mdash; RCT Checklist</a>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools/critical-appraisal-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; Critical Appraisal Worksheets</a>
+    <a href="https://www.cebm.net/cebm-calculators/" target="_blank" rel="noopener">CEBM &mdash; NNT / ARR / RRR calculators</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+  </div>
+
+  <footer>
+    <p>Lesson 3 of the Evidence-Based Medicine course for techies, building on Lesson 2's PICO question and search. Concepts follow standard EBM appraisal teaching as popularized by the Centre for Evidence-Based Medicine, Oxford, and the CASP checklists.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson1.html">&larr; Lesson 1</a>
+    <a class="nav-pill" href="lesson2.html">&larr; Lesson 2</a>
+    <a class="nav-pill" href="lesson4.html">Lesson 4 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

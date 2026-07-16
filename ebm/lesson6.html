@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6: Prognosis &amp; Harm Studies</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { margin-bottom: 40px; border-bottom: 3px solid var(--accent); padding-bottom: 24px; }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    font-size: 12px; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 32px; margin: 10px 0 8px; line-height: 1.25; }
+  .subtitle { color: var(--muted); font-size: 16px; font-style: italic; }
+  h2 {
+    font-size: 22px; margin-top: 44px; color: var(--accent);
+    border-left: 4px solid var(--accent); padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--muted); margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    padding: 16px 20px; margin: 24px 0; border-radius: 4px; font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif; font-size: 15px;
+  }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--accent); }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  code { background: var(--accent-soft); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+  .worked-example, .homework, .resources, .diagram-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 22px 24px; margin: 24px 0;
+  }
+  .worked-example h3, .homework h3, .diagram-card h3 { margin-top: 0; }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  .formula-box strong { color: var(--accent); }
+
+  /* study design timeline diagrams */
+  .design-svg { display: block; margin: 12px auto; }
+
+  /* confounding triangle */
+  .triangle-card svg { display: block; margin: 0 auto; }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.5px; background: var(--accent); color: #fff !important;
+    padding: 6px 14px; border-radius: 20px; text-decoration: none; margin-top: 10px; margin-right: 8px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Lesson 6: Prognosis &amp; Harm Studies</h1>
+    <p class="subtitle">Part 6 &mdash; you can't randomize someone into smoking, or into a rare side effect. This is where the RCT stops being the right tool.</p>
+  </header>
+
+  <p>Lessons 3 and 4 covered therapy questions, where the RCT reigns because you can randomly assign an intervention. Lesson 5 covered diagnosis. This lesson covers two more question types from Lesson 2's table &mdash; <strong>prognosis</strong> ("what's likely to happen to this patient over time?") and <strong>harm</strong> ("does this exposure cause that outcome?") &mdash; both of which are usually answered with <strong>observational</strong> designs, not trials.</p>
+
+  <div class="callout">
+    <strong>Why this matters for techies:</strong> think of this as the difference between an A/B test and an observational log analysis. An RCT is the A/B test &mdash; you control the assignment, so confounding is handled by design. A cohort or case-control study is more like mining production logs for correlations between a feature flag and an outcome nobody explicitly randomized &mdash; powerful, sometimes the only option, but you now have to work much harder to rule out that some third variable is driving both.
+  </div>
+
+  <h2>Why Not Just Run an RCT?</h2>
+  <p>Three practical and ethical walls push prognosis and harm questions out of RCT territory:</p>
+  <ul>
+    <li><strong>You can't ethically randomize harm.</strong> You cannot assign one group of people to smoke, take a teratogenic drug, or be exposed to a pollutant to see what happens. If you already suspect harm, deliberately causing it is off the table.</li>
+    <li><strong>Rare outcomes need huge samples.</strong> If a side effect happens in 1 in 10,000 patients, an RCT with a few hundred participants will see zero events in either arm &mdash; not because the drug is safe, but because the trial was never powered to find out.</li>
+    <li><strong>Long-term outcomes need long follow-up.</strong> Prognosis and many harms unfold over years or decades. Trials are expensive to run and expensive to keep patients enrolled in for that long, so most stop long before the outcome that matters most has had time to occur.</li>
+  </ul>
+  <p>Observational studies trade the clean confounding-control of randomization for the ability to study questions an RCT simply cannot ethically or practically answer.</p>
+
+  <h2>Cohort Studies</h2>
+  <p>A cohort study follows groups defined by <strong>exposure status</strong> forward in time and compares how often the outcome occurs in each group.</p>
+
+  <div class="diagram-card">
+    <h3>Cohort Study &mdash; Direction of Travel</h3>
+    <svg class="design-svg" viewBox="0 0 480 180" width="480" height="180" xmlns="http://www.w3.org/2000/svg">
+      <text x="20" y="20" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c">PAST</text>
+      <text x="440" y="20" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c" text-anchor="end">FUTURE</text>
+      <line x1="20" y1="34" x2="460" y2="34" stroke="#8a8078" stroke-width="1.5"/>
+      <polygon points="460,34 450,29 450,39" fill="#8a8078"/>
+
+      <rect x="60" y="70" width="140" height="40" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="130" y="95" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Exposed group</text>
+      <line x1="200" y1="90" x2="330" y2="90" stroke="#a5432f" stroke-width="2"/>
+      <polygon points="330,90 320,85 320,95" fill="#a5432f"/>
+      <text x="340" y="94" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#262220">Outcome? Y/N</text>
+
+      <rect x="60" y="130" width="140" height="40" rx="6" fill="#efece7" stroke="#8a8078"/>
+      <text x="130" y="155" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Unexposed group</text>
+      <line x1="200" y1="150" x2="330" y2="150" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="330,150 320,145 320,155" fill="#8a8078"/>
+      <text x="340" y="154" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#262220">Outcome? Y/N</text>
+
+      <text x="30" y="55" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c" font-style="italic">Start: groups defined by exposure</text>
+    </svg>
+  </div>
+
+  <p>Both groups start free of the outcome. You wait, and count how many in each group go on to develop it. This is a natural fit for questions like "do smokers develop lung cancer more often than non-smokers?" or "do patients on this drug have more kidney injury than those on an alternative?"</p>
+
+  <table>
+    <tr><th>Type</th><th>How it works</th><th>Trade-off</th></tr>
+    <tr><td><strong>Prospective cohort</strong></td><td>Enroll exposed/unexposed groups now, follow them forward, watch the outcome occur</td><td>Best data quality and timing, but slow and expensive &mdash; can take years</td></tr>
+    <tr><td><strong>Retrospective cohort</strong></td><td>Use existing records to reconstruct exposure and outcome that already happened</td><td>Fast and cheap, but data quality depends entirely on how good the historical records were</td></tr>
+  </table>
+
+  <h2>Case-Control Studies</h2>
+  <p>A case-control study runs in the opposite direction &mdash; it starts from the <strong>outcome</strong> and looks backward for exposure.</p>
+
+  <div class="diagram-card">
+    <h3>Case-Control Study &mdash; Direction of Travel</h3>
+    <svg class="design-svg" viewBox="0 0 480 180" width="480" height="180" xmlns="http://www.w3.org/2000/svg">
+      <text x="20" y="20" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c">PAST</text>
+      <text x="440" y="20" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c" text-anchor="end">NOW</text>
+      <line x1="460" y1="34" x2="20" y2="34" stroke="#8a8078" stroke-width="1.5"/>
+      <polygon points="20,34 30,29 30,39" fill="#8a8078"/>
+
+      <rect x="280" y="70" width="140" height="40" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="350" y="95" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Cases (have outcome)</text>
+      <line x1="280" y1="90" x2="150" y2="90" stroke="#a5432f" stroke-width="2"/>
+      <polygon points="150,90 160,85 160,95" fill="#a5432f"/>
+      <text x="20" y="94" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#262220">Exposed before?</text>
+
+      <rect x="280" y="130" width="140" height="40" rx="6" fill="#efece7" stroke="#8a8078"/>
+      <text x="350" y="155" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Controls (no outcome)</text>
+      <line x1="280" y1="150" x2="150" y2="150" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="150,150 160,145 160,155" fill="#8a8078"/>
+      <text x="20" y="154" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#262220">Exposed before?</text>
+
+      <text x="220" y="55" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b625c" font-style="italic">Start: groups defined by outcome</text>
+    </svg>
+  </div>
+
+  <p>You identify people who already have the outcome (cases) and similar people who don't (controls), then look back at their histories to compare how often each group was exposed. This is the practical choice when the outcome is rare or slow to develop &mdash; you'd otherwise need to follow an enormous cohort for decades to accumulate enough cases. A study of a rare childhood cancer, for instance, is far more feasible as a case-control design than as a cohort.</p>
+
+  <div class="callout">
+    <strong>Rule of thumb:</strong> rare <em>outcome</em> &rarr; case-control (you actively go find the cases). Rare <em>exposure</em>, or you need to know the actual rate of the outcome &mdash; not just compare it &mdash; &rarr; cohort. Case-control studies can estimate an <strong>odds ratio</strong> as an approximation of relative risk, but cannot directly report incidence, since the proportion of cases and controls was set by the researcher, not by nature.</p>
+  </div>
+
+  <h2>Hazard Ratios and Survival Data</h2>
+  <p>Prognosis questions usually care not just about <em>whether</em> an outcome happens but <em>when</em>. A drug that delays death by five years and one that delays it by five days could show the same eventual event rate but very different value to a patient. This is where <strong>survival analysis</strong> and the <strong>hazard ratio (HR)</strong> come in.</p>
+
+  <div class="formula-box">
+    <strong>Hazard ratio</strong> compares the instantaneous <em>rate</em> at which an event occurs in one group versus another, across the whole follow-up period &mdash; not just the total count at the end.<br><br>
+    HR = 1 &rarr; no difference in event rate between groups<br>
+    HR &lt; 1 &rarr; exposure/treatment group has a lower event rate (protective)<br>
+    HR &gt; 1 &rarr; exposure/treatment group has a higher event rate (harmful)
+  </div>
+
+  <p>You'll usually meet hazard ratios alongside a <strong>Kaplan-Meier curve</strong> &mdash; a step-down plot of the proportion of patients still event-free over time, one line per group. Two curves can end at the same final percentage but separate very differently along the way; a curve that splits early and stays apart tells a different clinical story than one that only diverges near the end. As with any effect estimate, check the confidence interval around the HR &mdash; the same logic from Lesson 3 applies: a CI crossing 1.0 means the result isn't statistically distinguishable from no effect.</p>
+
+  <h2>Confounding: The Central Threat to Observational Studies</h2>
+  <p>Because exposure wasn't randomly assigned, people who got the exposure may differ systematically from those who didn't &mdash; in ways that also affect the outcome. That third variable is a <strong>confounder</strong>, and it's the main reason observational associations are held to a lower standard of proof than RCT results.</p>
+
+  <div class="diagram-card triangle-card">
+    <h3>The Confounding Triangle</h3>
+    <svg viewBox="0 0 380 260" width="380" height="260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="180" width="140" height="44" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="90" y="207" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Exposure</text>
+
+      <rect x="220" y="180" width="140" height="44" rx="6" fill="#f1e3dc" stroke="#a5432f"/>
+      <text x="290" y="207" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Outcome</text>
+
+      <rect x="120" y="20" width="140" height="44" rx="6" fill="#efece7" stroke="#8a8078"/>
+      <text x="190" y="47" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#262220" text-anchor="middle">Confounder</text>
+
+      <line x1="160" y1="202" x2="220" y2="202" stroke="#a5432f" stroke-width="2"/>
+      <polygon points="220,202 210,197 210,207" fill="#a5432f"/>
+      <text x="190" y="196" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#a5432f" text-anchor="middle">observed association?</text>
+
+      <line x1="155" y1="64" x2="95" y2="180" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="95,180 100,168 108,175" fill="#8a8078"/>
+
+      <line x1="225" y1="64" x2="285" y2="180" stroke="#8a8078" stroke-width="2"/>
+      <polygon points="285,180 277,168 269,175" fill="#8a8078"/>
+
+      <text x="60" y="120" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c">influences</text>
+      <text x="280" y="120" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#6b625c">influences</text>
+    </svg>
+    <p style="font-size:14px; color: var(--muted); margin-top:8px; margin-bottom:0;">A confounder is linked to <em>both</em> the exposure and the outcome, and can create or hide an association between them even if the exposure has no real causal effect at all.</p>
+  </div>
+
+  <div class="worked-example">
+    <h3>Classic Example</h3>
+    <p>Observational data might show that people who carry lighters have higher rates of lung cancer. Carrying a lighter doesn't cause cancer &mdash; <strong>smoking</strong> is the confounder: it drives both lighter-carrying and cancer risk, creating a spurious association between two things with no direct causal link.</p>
+  </div>
+
+  <h3>How Studies Try to Handle It</h3>
+  <ul>
+    <li><strong>Matching</strong> &mdash; pairing exposed and unexposed (or cases and controls) on known confounders like age and sex before comparing them.</li>
+    <li><strong>Stratification</strong> &mdash; analyzing the association separately within subgroups defined by a suspected confounder.</li>
+    <li><strong>Multivariable adjustment</strong> &mdash; statistically controlling for measured confounders in the analysis (the "adjusted" in "adjusted hazard ratio" or "adjusted odds ratio").</li>
+    <li><strong>Restriction</strong> &mdash; only enrolling a population narrow enough that the confounder can't vary, e.g. studying only non-smokers.</li>
+  </ul>
+  <p>All four only work for confounders the researchers thought to measure. <strong>Residual confounding</strong> &mdash; from a confounder that wasn't measured, or wasn't measured well &mdash; can never be fully ruled out in an observational study. This is exactly why RCTs remain the gold standard where they're feasible: randomization balances <em>every</em> confounder, known and unknown, purely by chance, given a large enough sample.</p>
+
+  <h2>Bradford Hill: When Is an Association Probably Causal?</h2>
+  <p>Since observational studies can't prove causation the way a well-run RCT can, epidemiologists lean on a set of considerations &mdash; originally proposed by Sir Austin Bradford Hill &mdash; that make a causal explanation more or less plausible. None is individually decisive, but together they're a useful checklist:</p>
+  <table>
+    <tr><th>Consideration</th><th>What it asks</th></tr>
+    <tr><td>Strength</td><td>Is the association large, or barely above noise?</td></tr>
+    <tr><td>Consistency</td><td>Has it been seen repeatedly, in different populations and studies?</td></tr>
+    <tr><td>Temporality</td><td>Did the exposure clearly come before the outcome? (The one truly essential criterion.)</td></tr>
+    <tr><td>Dose-response</td><td>Does more exposure track with more outcome?</td></tr>
+    <tr><td>Biological plausibility</td><td>Is there a credible mechanism connecting exposure to outcome?</td></tr>
+    <tr><td>Reversibility</td><td>Does removing the exposure reduce the risk?</td></tr>
+  </table>
+
+  <h2>Appraising a Prognosis or Harm Study</h2>
+  <p>The now-familiar three-question shape, adapted once more:</p>
+  <ol>
+    <li><strong>Are the results valid?</strong> Were exposed/unexposed (or case/control) groups similar apart from the exposure? Were outcomes measured the same way, and blindly, in both groups? Were the major plausible confounders identified and adjusted for? Was follow-up long enough and complete enough to catch the outcome?</li>
+    <li><strong>What are the results?</strong> What's the relative risk, odds ratio, or hazard ratio &mdash; adjusted or unadjusted &mdash; and its confidence interval? For prognosis specifically: what's the absolute risk over a clinically meaningful time frame, not just a relative comparison?</li>
+    <li><strong>Will this help my patient?</strong> Does your patient resemble the study population closely enough that the confounding-adjustment holds? Is the exposure or risk factor something modifiable, or purely informational?</li>
+  </ol>
+
+  <div class="callout">
+    Extending Lesson 3's code-review analogy: a confounder is like an untested interaction effect between two features that your A/B test would have silently balanced out through randomization, but that an observational log analysis has to go looking for explicitly &mdash; and might miss entirely if nobody thought to check.
+  </div>
+
+  <div class="homework">
+    <h3>Homework for Lesson 6</h3>
+    <ol>
+      <li>Find a cohort or case-control study relevant to a prognosis or harm question for your patient from Lesson 1. Identify which design it is and why that design fits the question (rare outcome? long follow-up needed?).</li>
+      <li>List the confounders the study explicitly adjusted for. Name at least one plausible confounder you think might have been missed.</li>
+      <li>If the study reports a hazard ratio or Kaplan-Meier curve, describe in one sentence when the two groups' curves separate and what that timing implies clinically.</li>
+      <li>Run the association through as many Bradford Hill considerations as the paper lets you evaluate. Does it look more or less likely to be causal?</li>
+    </ol>
+  </div>
+
+  <div class="resources">
+    <h3 style="margin-top:0;">Resources for This Lesson</h3>
+    <a href="https://casp-uk.net/casp-tools-checklists/" target="_blank" rel="noopener">CASP UK &mdash; Cohort Study Checklist</a>
+    <a href="https://www.cebm.ox.ac.uk/resources/ebm-tools/critical-appraisal-tools" target="_blank" rel="noopener">CEBM Oxford &mdash; Critical Appraisal Tools</a>
+    <a href="https://www.cebm.net/cebm-calculators/" target="_blank" rel="noopener">CEBM &mdash; Prognosis and harm calculators</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed &mdash; search medical research papers</a>
+  </div>
+
+  <footer>
+    <p>Lesson 6 of the Evidence-Based Medicine course for techies, extending the appraisal framework from Lesson 3 to observational designs for prognosis and harm. Concepts follow standard epidemiology and EBM teaching as popularized by the Centre for Evidence-Based Medicine, Oxford, and the CASP checklists.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson5.html">&larr; Lesson 5</a>
+    <a class="nav-pill" href="lesson7.html">Lesson 7 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

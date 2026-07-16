@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Techie Summary &mdash; Evidence-Based Medicine, Fast</title>
+<style>
+  :root {
+    --bg: #f3faf9;
+    --card: #ffffff;
+    --ink: #0f2b2e;
+    --muted: #4d6b69;
+    --accent: #0891b2;
+    --accent-soft: #e0f4f7;
+    --line: #cfe7e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 32px;
+    margin: 10px 0 8px;
+    line-height: 1.25;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 22px;
+    margin-top: 44px;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+  }
+  h3 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 28px;
+  }
+  p { margin: 14px 0; font-size: 17px; }
+  .callout {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  figure {
+    margin: 32px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  figcaption {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  ul, ol { font-size: 17px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  tr:nth-child(even) td {
+    background: #fbfffe;
+  }
+  .homework {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .homework h3 { margin-top: 0; }
+  .resources {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-top: 20px;
+  }
+  .resources a { display: block; margin: 6px 0; font-size: 15px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  .nav-pill {
+    display: inline-block;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: var(--accent);
+    color: #fff !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-top: 10px;
+  }
+
+  .vr-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    background: #0f2b2e;
+    color: #eafcff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 28px;
+  }
+  .vr-banner .vr-badge {
+    background: #0891b2;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .vr-banner a { color: #7fe7ff; font-weight: 700; text-decoration: none; }
+  .vr-banner a:hover { text-decoration: underline; }
+  .techie-note {
+    background: #e0f4f7;
+    border-left: 4px solid #0891b2;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .techie-note strong { color: #0891b2; }
+  .contact-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .contact-footer strong { color: var(--ink); }
+  .contact-footer a { color: #0891b2; text-decoration: none; }
+  .contact-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="vr-banner">
+    <span class="vr-badge">VibeRounds</span>
+    <span>This course is built in the spirit of <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">VibeRounds</a> &mdash; Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.</span>
+  </div>
+
+  <header>
+    <div class="eyebrow">Evidence-Based Medicine &middot; Course for Techies</div>
+    <h1>Techie Summary: EBM in the Language You Already Speak</h1>
+    <p class="subtitle">A fast, jargon-translated map of all nine lessons &mdash; for readers who think in systems, tests, and data pipelines rather than clinics.</p>
+  </header>
+
+  <p>This course teaches evidence-based medicine (EBM) &mdash; how clinicians judge whether a piece of medical research is trustworthy and relevant. If you have no clinical background but do have a technical one, the fastest on-ramp is mapping each concept to something you already know. That's what this page does. It isn't a replacement for the nine lessons &mdash; it's the cheat sheet you skim first, and return to whenever a lesson's jargon gets thick.</p>
+
+  <div class="callout">
+    <strong>One-line version of the whole course:</strong> a clinical question is a search query, a research paper is a system whose reliability you have to test before you trust its output, and statistics are just the error bars and significance tests you'd want on any experiment before shipping a decision based on it.
+  </div>
+
+  <h2>The Medicine &rarr; Tech Dictionary</h2>
+  <table>
+    <tr><th>Medical term</th><th>Techie translation</th></tr>
+    <tr><td>PICO question</td><td>A well-formed search query / schema: Population, Intervention, Comparison, Outcome &mdash; the four required fields before you query the literature</td></tr>
+    <tr><td>Randomized controlled trial (RCT)</td><td>An A/B test with random assignment to control for confounders</td></tr>
+    <tr><td>Cohort / case-control study</td><td>Observational log analysis &mdash; you didn't control assignment, so you have to work harder to rule out confounders</td></tr>
+    <tr><td>Confounder</td><td>A hidden third variable correlated with both your "feature" and your "outcome," producing a spurious correlation</td></tr>
+    <tr><td>Sensitivity / specificity</td><td>Recall / (1 &minus; false positive rate) for a diagnostic test, evaluated like a binary classifier</td></tr>
+    <tr><td>Likelihood ratio</td><td>A Bayesian update multiplier &mdash; same math as a spam filter updating "P(spam)" after seeing one more signal</td></tr>
+    <tr><td>ARR / RRR / NNT</td><td>Absolute vs. relative improvement, and "cost per unit of benefit" &mdash; the antidote to a misleading percentage in a headline</td></tr>
+    <tr><td>Confidence interval</td><td>Error bars on the effect estimate; a CI crossing "no effect" is like an experiment result that isn't statistically distinguishable from noise</td></tr>
+    <tr><td>P-value</td><td>Output of a null-hypothesis significance test &mdash; not "probability the treatment works," just "how surprising this data would be if it didn't"</td></tr>
+    <tr><td>Meta-analysis / forest plot</td><td>Combining several underpowered experiments into one weighted-average result with a recalculated confidence interval</td></tr>
+    <tr><td>Heterogeneity (I&sup2;)</td><td>Variance across experiments beyond what sampling noise explains &mdash; a signal that you may be averaging apples and oranges</td></tr>
+    <tr><td>Publication bias / funnel plot</td><td>Survivorship bias in your dataset &mdash; "boring" negative results are underrepresented because they're less likely to get published</td></tr>
+    <tr><td>GRADE (certainty vs. recommendation)</td><td>Test-coverage score (how much you trust the data) vs. the actual go/no-go ship decision (which also weighs cost and risk tolerance)</td></tr>
+    <tr><td>Hazard ratio / Kaplan-Meier curve</td><td>Time-to-event analysis &mdash; like a churn curve, comparing how fast two cohorts hit an "event" over time, not just whether they eventually do</td></tr>
+  </table>
+
+  <h2>The Course, Lesson by Lesson (Fast Version)</h2>
+  <ul>
+    <li><strong>Lesson 1</strong> &mdash; Start with the patient (the "user"), not the paper. History and exam are basically requirements-gathering before you touch any literature.</li>
+    <li><strong>Lesson 2</strong> &mdash; Turn a vague worry into a PICO query, then run it against PubMed like a structured database search.</li>
+    <li><strong>Lesson 3</strong> &mdash; Code-review an RCT: check validity (was it built right?) before results (what did it output?) before applicability (does it apply to your specific case?).</li>
+    <li><strong>Lesson 4</strong> &mdash; Meta-analyses pool multiple trials into one more-confident estimate; forest plots and funnel plots are how you sanity-check that pooling.</li>
+    <li><strong>Lesson 5</strong> &mdash; Diagnostic test performance is classifier evaluation: sensitivity/specificity, PPV/NPV, likelihood ratios, and ROC curves for choosing a cutoff.</li>
+    <li><strong>Lesson 6</strong> &mdash; Prognosis and harm studies are usually observational (no random assignment possible), so confounding control becomes the central engineering problem.</li>
+    <li><strong>Lesson 7</strong> &mdash; Clinical guidelines are a "recommendation engine" built on graded evidence (GRADE) &mdash; separating data quality from the final decision.</li>
+    <li><strong>Lesson 8</strong> &mdash; A skeptic's deep-dive into what p-values, significance, and "limitations" sections actually claim &mdash; and where they get misused (p-hacking, surrogate endpoints).</li>
+    <li><strong>Lesson 9</strong> &mdash; One full patient case run through the entire pipeline end to end, tying back to Lesson 1.</li>
+  </ul>
+
+  <div class="techie-note">
+    <strong>Why this matters if you're not a clinician:</strong> the whole point of EBM is the same reason you write tests before deploying code &mdash; a plausible-sounding claim ("this drug works," "this feature increases retention") still needs its methodology checked before you trust the number attached to it.
+  </div>
+
+  <h2>Recommended Path</h2>
+  <p>If you're short on time: read Lesson 1 (five minutes), then Lesson 3 (the core appraisal skill), then come back to this page whenever a term in Lessons 4&ndash;8 needs translating. Lesson 9 is worth doing last, in full, since it's the only lesson that shows the whole pipeline running on one real case.</p>
+
+  <footer>
+    <p>Techie Summary &mdash; a companion page to the Evidence-Based Medicine course for techies, cross-referencing terminology across all nine lessons.</p>
+    <a class="nav-pill" href="index.html">&larr; Course Index</a>
+    <a class="nav-pill" href="lesson1.html">Lesson 1 &rarr;</a>
+    <div class="contact-footer">
+    <strong>Contact</strong><br>
+    Email: <a href="mailto:avi33btt@gmail.com">avi33btt@gmail.com</a><br>
+    WhatsApp: <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 9817599973</a> &nbsp;/&nbsp; <a href="https://wa.me/917318510434" target="_blank" rel="noopener">+91 7318510434</a><br>
+    LinkedIn: <a href="https://in.linkedin.com/in/geekydoctoravi" target="_blank" rel="noopener">geekydoctoravi</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
