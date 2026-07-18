@@ -12,6 +12,7 @@
 <script src="courseware-data.js"></script>
 <script src="prompts-data.js"></script>
 <script src="diseases-data.js"></script>
+<script src="clinical-findings-data.js"></script>
 </head>
 <body>
 
@@ -20,18 +21,19 @@
     <div class="pbuilder-head">
       <span class="pb-eyebrow">Prompt Builder</span>
       <h2>Turn any chapter into a ready-to-use prompt.</h2>
-      <p>Pick a subject and chapter, choose topic(s) <em>or</em> switch to disease mode and pick straight from the disease list, then pick one or more prompts from the <a href="prompts/index.html">Prompt Library</a> — the tool fills in your selections automatically. Copy the result straight into any LLM.</p>
+      <p>Pick a subject and chapter, choose topic(s) <em>or</em> switch to disease mode and pick straight from the disease list, or switch to clinical findings mode and pick signs/findings by body system, then pick one or more prompts from the <a href="prompts/index.html">Prompt Library</a> — the tool fills in your selections automatically. Copy the result straight into any LLM.</p>
       <div class="pb-modetabs" id="pbModeTabs" role="tablist" aria-label="Prompt building mode">
         <button type="button" class="pb-modetab active" data-mode="chapter">By Chapter &amp; Topic</button>
         <button type="button" class="pb-modetab" data-mode="disease">By Disease</button>
+        <button type="button" class="pb-modetab" data-mode="finding">By Clinical Finding</button>
       </div>
     </div>
 
     <div class="pb-steps">
       <div class="pb-step" data-step="1">
         <div class="pb-step-head"><span class="pb-stepnum">1</span><h3>Subject &amp; chapter</h3></div>
-        <label class="pb-sublabel" for="pbSubject">Subject</label>
-        <select id="pbSubject" class="pb-select"></select>
+        <label class="pb-sublabel pb-subject-only" for="pbSubject">Subject</label>
+        <select id="pbSubject" class="pb-select pb-subject-only"></select>
         <label class="pb-sublabel pb-chapter-only" for="pbChapter">Chapter</label>
         <select id="pbChapter" class="pb-select pb-chapter-only"></select>
         <label class="pb-sublabel pb-disease-only" for="pbDiseaseFreq" style="display:none;">Frequency</label>
@@ -41,6 +43,8 @@
           <option value="lessCommon">Less Common</option>
           <option value="rare">Rare</option>
         </select>
+        <label class="pb-sublabel pb-finding-only" for="pbFindingCategory" style="display:none;">Body system</label>
+        <select id="pbFindingCategory" class="pb-select pb-finding-only" style="display:none;"></select>
       </div>
 
       <div class="pb-step" data-step="2">
@@ -49,6 +53,7 @@
           <button type="button" class="pb-linkbtn" id="pbTopicsAll">Select all</button>
         </div>
         <input type="search" id="pbDiseaseSearch" class="pb-select pb-disease-only" placeholder="Filter diseases…" style="display:none;margin-bottom:.6rem;">
+        <input type="search" id="pbFindingSearch" class="pb-select pb-finding-only" placeholder="Filter findings…" style="display:none;margin-bottom:.6rem;">
         <div class="pb-list" id="pbTopics"></div>
       </div>
 
@@ -367,15 +372,20 @@
   const topicsAllBtn = document.getElementById('pbTopicsAll');
   const modeTabs = document.getElementById('pbModeTabs');
 
+  const findingCategorySel = document.getElementById('pbFindingCategory');
+  const findingSearch = document.getElementById('pbFindingSearch');
+
   const subjects = (typeof SUBJECTS !== 'undefined') ? SUBJECTS : [];
   const prompts = (typeof PROMPTS !== 'undefined') ? PROMPTS : [];
   const diseases = (typeof DISEASES !== 'undefined') ? DISEASES : {};
+  const clinicalFindings = (typeof CLINICAL_FINDINGS !== 'undefined') ? CLINICAL_FINDINGS : {};
 
   const TRACK_LABELS = { context: 'Context & Story', reasoning: 'Clinical Reasoning', recall: 'Recall & Exam Prep', media: 'Passive & Media' };
   let activeTrack = 'all';
-  let mode = 'chapter'; // 'chapter' | 'disease'
+  let mode = 'chapter'; // 'chapter' | 'disease' | 'finding'
 
   subjSel.innerHTML = subjects.map((s,i) => `<option value="${i}">${s.title}</option>`).join('');
+  findingCategorySel.innerHTML = Object.keys(clinicalFindings).map(cat => `<option value="${esc(cat)}">${esc(cat)}</option>`).join('');
 
   modeTabs.querySelectorAll('.pb-modetab').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -383,16 +393,21 @@
       modeTabs.querySelectorAll('.pb-modetab').forEach(b => b.classList.toggle('active', b === btn));
       document.querySelectorAll('.pb-chapter-only').forEach(el => el.style.display = mode === 'chapter' ? '' : 'none');
       document.querySelectorAll('.pb-disease-only').forEach(el => el.style.display = mode === 'disease' ? '' : 'none');
-      step2Title.textContent = mode === 'disease' ? 'Disease(s)' : 'Topic(s)';
+      document.querySelectorAll('.pb-finding-only').forEach(el => el.style.display = mode === 'finding' ? '' : 'none');
+      document.querySelectorAll('.pb-subject-only').forEach(el => el.style.display = mode === 'finding' ? 'none' : '');
+      step2Title.textContent = mode === 'disease' ? 'Disease(s)' : (mode === 'finding' ? 'Finding(s)' : 'Topic(s)');
       refreshStep2();
     });
   });
 
   freqSel.addEventListener('change', () => { if(mode === 'disease') populateDiseases(); });
   diseaseSearch.addEventListener('input', () => { if(mode === 'disease') populateDiseases(); });
+  findingCategorySel.addEventListener('change', () => { if(mode === 'finding') populateFindings(); });
+  findingSearch.addEventListener('input', () => { if(mode === 'finding') populateFindings(); });
 
   function refreshStep2(){
     if(mode === 'disease') populateDiseases();
+    else if(mode === 'finding') populateFindings();
     else populateTopics();
   }
 
@@ -435,6 +450,37 @@
         <span class="pb-item-title"><span class="pb-freqtag ${d.tier}">${tierLabel[d.tier]}</span>${d.name}</span>
       </label>`).join('');
     topicsBox._diseaseList = list;
+    topicsBox.querySelectorAll('.pb-topic-cb').forEach(cb => {
+      cb.addEventListener('change', () => { syncChecked(cb); buildOutput(); });
+    });
+    buildOutput();
+  }
+
+  function getFindingSet(){
+    const cat = findingCategorySel.value;
+    const list = Array.from(new Set(clinicalFindings[cat] || []));
+    const term = findingSearch.value.trim().toLowerCase();
+    return term ? list.filter(f => f.toLowerCase().includes(term)) : list;
+  }
+
+  function populateFindings(){
+    if(!Object.keys(clinicalFindings).length){
+      topicsBox.innerHTML = `<div class="pb-empty">No clinical findings list published yet.</div>`;
+      buildOutput();
+      return;
+    }
+    const list = getFindingSet();
+    if(!list.length){
+      topicsBox.innerHTML = `<div class="pb-empty">No findings match that filter.</div>`;
+      buildOutput();
+      return;
+    }
+    topicsBox.innerHTML = list.map((f,i) => `
+      <label class="pb-item">
+        <input type="checkbox" class="pb-topic-cb" value="${i}">
+        <span class="pb-item-title">${f}</span>
+      </label>`).join('');
+    topicsBox._findingList = list;
     topicsBox.querySelectorAll('.pb-topic-cb').forEach(cb => {
       cb.addEventListener('change', () => { syncChecked(cb); buildOutput(); });
     });
@@ -507,6 +553,10 @@
       const list = topicsBox._diseaseList || [];
       return Array.from(topicsBox.querySelectorAll('.pb-topic-cb:checked')).map(cb => list[+cb.value] ? list[+cb.value].name : '');
     }
+    if(mode === 'finding'){
+      const list = topicsBox._findingList || [];
+      return Array.from(topicsBox.querySelectorAll('.pb-topic-cb:checked')).map(cb => list[+cb.value] || '');
+    }
     const s = subjects[subjSel.value];
     const c = s.chapters[chapSel.value];
     const list = (c.topics && c.topics.length) ? c.topics : (c._fallbackTopics || [c.title]);
@@ -517,13 +567,15 @@
     return Array.from(promptsBox.querySelectorAll('.pb-prompt-cb:checked')).map(cb => prompts[+cb.value]);
   }
 
-  function fillTokens(text, s, c, topics, diseaseNames){
+  function fillTokens(text, s, c, topics, diseaseNames, findingNames){
     const diseaseStr = (diseaseNames && diseaseNames.length) ? diseaseNames.join('; ') : '[name the specific disease/condition here]';
+    const findingStr = (findingNames && findingNames.length) ? findingNames.join('; ') : '[name the specific clinical finding here]';
     return text
-      .split('{{SUBJECT}}').join(s.title)
+      .split('{{SUBJECT}}').join(s ? s.title : '')
       .split('{{CHAPTER}}').join(c ? c.title : '')
       .split('{{TOPIC}}').join(topics.length ? topics.join('; ') : (c ? c.title : ''))
-      .split('{{DISEASE}}').join(diseaseStr);
+      .split('{{DISEASE}}').join(diseaseStr)
+      .split('{{FINDING}}').join(findingStr);
   }
 
   function esc(str){
@@ -534,20 +586,32 @@
     const s = subjects[subjSel.value];
     const selPrompts = getSelectedPrompts();
 
-    let block, c, topics, diseaseNames;
+    let block, c, topics, diseaseNames, findingNames;
 
     if(mode === 'disease'){
       diseaseNames = getSelectedTopics();
+      findingNames = [];
       topics = diseaseNames;
       c = null;
       block = `SUBJECT: ${s.title}\n`;
       if(diseaseNames.length){
         block += `DISEASE${diseaseNames.length > 1 ? 'S' : ''}:\n` + diseaseNames.map((d,i) => `${i+1}. ${d}`).join('\n') + '\n';
       }
+    } else if(mode === 'finding'){
+      findingNames = getSelectedTopics();
+      diseaseNames = [];
+      topics = findingNames;
+      c = null;
+      const cat = findingCategorySel.value;
+      block = `BODY SYSTEM: ${cat}\n`;
+      if(findingNames.length){
+        block += `FINDING${findingNames.length > 1 ? 'S' : ''}:\n` + findingNames.map((f,i) => `${i+1}. ${f}`).join('\n') + '\n';
+      }
     } else {
       c = s.chapters[chapSel.value];
       topics = getSelectedTopics();
       diseaseNames = [];
+      findingNames = [];
       block = `SUBJECT: ${s.title}\nCHAPTER: ${String(c.num).padStart(2,'0')} — ${c.title}\n`;
       if(topics.length){
         block += `TOPIC${topics.length > 1 ? 'S' : ''}:\n` + topics.map((t,i) => `${i+1}. ${t}`).join('\n') + '\n';
@@ -556,7 +620,7 @@
 
     if(selPrompts.length){
       selPrompts.forEach(p => {
-        const text = fillTokens(p.text || '', s, c, topics, diseaseNames);
+        const text = fillTokens(p.text || '', s, c, topics, diseaseNames, findingNames);
         block += `\n— ${p.title} —\n${text}\n`;
       });
     }
@@ -567,7 +631,7 @@
     outCount.textContent = selPrompts.length ? `${selPrompts.length} prompt${selPrompts.length > 1 ? 's' : ''} selected` : '';
   }
 
-  subjSel.addEventListener('change', () => { if(mode === 'disease') refreshStep2(); else populateChapters(); });
+  subjSel.addEventListener('change', () => { if(mode === 'disease') refreshStep2(); else if(mode !== 'finding') populateChapters(); });
   chapSel.addEventListener('change', populateTopics);
 
   topicsAllBtn.addEventListener('click', () => {
