@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 8: Evidence &amp; Calibration — Clinical Cognition, From First Principles</title>
+<meta name="description" content="Lesson 8 of Clinical Cognition, From First Principles — a VibeRounds course. Grading evidence, calibrating confidence across separate domains, and building an adversarial Shadow Module into your own reasoning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2027;
+    --ink-soft:#3b4a52;
+    --paper:#f7f5ef;
+    --paper-raised:#ffffff;
+    --line:#d8d2c4;
+    --teal:#0b6e7f;
+    --teal-deep:#08505c;
+    --amber:#b5651d;
+    --amber-soft:#f4e6d7;
+    --teal-soft:#e2eeef;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:17px;
+  }
+  a{color:var(--teal-deep);}
+  a:hover{color:var(--amber);}
+
+  .topbar{
+    background:var(--ink);
+    color:#eee7d8;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:9px 24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .topbar a{color:#eee7d8; text-decoration:none; border-bottom:1px dotted #6d7d82;}
+  .topbar a:hover{color:#ffd9a0; border-color:#ffd9a0;}
+
+  header.masthead{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .num{
+    background:var(--teal-deep);
+    color:var(--paper);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1.12;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1 em{font-style:italic; color:var(--teal-deep);}
+  .dek{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.22rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .meta-row b{color:var(--ink);}
+
+  main{max-width:820px; margin:0 auto; padding:0 24px 40px;}
+
+  section{margin:44px 0;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    color:var(--teal-deep);
+    border-bottom:2px solid var(--teal-deep);
+    padding-bottom:8px;
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    margin:28px 0 10px;
+    color:var(--ink);
+  }
+  p{margin:0 0 16px;}
+  ul,ol{padding-left:22px; margin:0 0 16px;}
+  li{margin-bottom:8px;}
+
+  .case-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal-deep);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:22px 0;
+  }
+  .case-card .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  /* Dual-track boxes */
+  .track{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0;
+  }
+  @media (max-width:640px){ .track{grid-template-columns:1fr;} }
+  .track-box{
+    border-radius:3px;
+    padding:18px 20px;
+    font-size:.97rem;
+  }
+  .track-box.clinician{
+    background:var(--teal-soft);
+    border:1px solid #b9d7da;
+  }
+  .track-box.techie{
+    background:var(--amber-soft);
+    border:1px solid #e3c298;
+  }
+  .track-box .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track-box.clinician .label{color:var(--teal-deep);}
+  .track-box.techie .label{color:var(--amber);}
+  .track-box p, .track-box ul{margin:0;}
+
+  .prompt-block{
+    background:#12262b;
+    color:#d9ede9;
+    font-family:var(--mono);
+    font-size:.86rem;
+    line-height:1.6;
+    padding:20px 22px;
+    border-radius:4px;
+    margin:18px 0;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+  .prompt-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .callout{
+    border:1px dashed var(--teal-deep);
+    background:#fdfcf8;
+    padding:16px 20px;
+    border-radius:3px;
+    margin:20px 0;
+    font-size:.95rem;
+  }
+  .callout .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:6px; display:block;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); border-bottom:2px solid var(--teal-deep);}
+
+  .homework{
+    background:var(--ink);
+    color:#f2ede0;
+    border-radius:4px;
+    padding:26px 28px;
+    margin:36px 0;
+  }
+  .homework h3{color:#ffd9a0; margin-top:0;}
+  .homework ol{color:#e4ded0;}
+
+  .source-note{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:36px;
+  }
+
+  nav.pager{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin:48px 0 20px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  nav.pager a{
+    flex:1;
+    border:1px solid var(--line);
+    padding:14px 18px;
+    border-radius:3px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--paper-raised);
+  }
+  nav.pager a:hover{border-color:var(--teal-deep); color:var(--teal-deep);}
+  nav.pager a.next{text-align:right;}
+  nav.pager a .dir{display:block; color:var(--ink-soft); font-size:11px; margin-bottom:4px;}
+
+  footer{
+    background:var(--ink);
+    color:#b9c3c6;
+    font-family:var(--mono);
+    font-size:12px;
+    padding:26px 24px;
+    text-align:center;
+  }
+  footer a{color:#ffd9a0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Part of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning &amp; Guided Discovery · Clinical Cognition Operating System</span>
+  <span>Sibling course: <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies →</a></span>
+</div>
+
+<header class="masthead">
+  <div class="kicker"><span class="num">08</span> Clinical Cognition, From First Principles</div>
+  <h1>Evidence &amp; <em>Calibration</em></h1>
+  <p class="dek">Confidence is not one number. This lesson is about grading the evidence underneath a judgment, calibrating how sure you are across several separate domains at once, and building a standing adversary into your own reasoning before anyone else has to.</p>
+  <div class="meta-row">
+    <span><b>Lesson</b> 8 of 9</span>
+    <span><b>Builds on</b> Lesson 7 — Safety &amp; Systems Thinking</span>
+    <span><b>Feeds into</b> Lesson 9 — Full Case, Start to Finish</span>
+    <span><b>Source modules</b> M21, M35, M45/46, Shadow Modules</span>
+  </div>
+</header>
+
+<main>
+
+<div class="callout" id="viberounds-badge">
+  <span class="label">VibeRounds</span>
+  This course is built in the spirit of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.
+</div>
+
+<section id="intro">
+  <p>Every prior lesson has produced a judgment — a differential, a cohort statistic, a risk score, a proposed fix — without dwelling much on a question that sits underneath all of them: how confident should you actually be, and confident about what, exactly? "I'm 80% sure" is a single scalar standing in for something that is never actually one-dimensional — confidence in the underlying evidence, confidence in how well that evidence applies to this particular patient, and confidence in your own reasoning process are three different things that happen to get compressed into one number far too often.</p>
+  <p>This lesson also introduces the course's most literal adversarial-testing tool: the Shadow Module, a parallel skeptical reviewer that interrogates a primary module's output the moment it's produced, rather than waiting for a human to catch the error later. It's Lesson 4's self-red-teaming instinct, formalized into a standing second process rather than left as a habit to remember to apply.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 For clinicians &amp; students</div>
+      <p>"I'm pretty confident" collapses three different questions into one feeling — how good is the underlying study, how well does it generalize to this patient, and how sure am I that I've reasoned through it correctly. This lesson is about pulling those three apart before reporting a confidence level.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 For techies</div>
+      <p>This is the difference between a single confidence score on a model's output and a multi-domain confidence breakdown — evidence quality, applicability, and calibration reported separately, the same way a good ML system reports precision and recall instead of one blended accuracy number.</p>
+    </div>
+  </div>
+</section>
+
+<section id="grading">
+  <h2>Grading the Evidence: Module 21</h2>
+  <p>Module 21 asks a question that's easy to skip past under time pressure: before you use a piece of evidence to inform a judgment, what kind of evidence is it? The module walks the student through a hierarchy familiar from evidence-based medicine — systematic review and meta-analysis above RCT, RCT above cohort study, cohort above case series, case series above expert opinion — not to mechanically rank sources, but to force an explicit statement of how much weight a given piece of evidence can actually bear.</p>
+  <p>Its distinguishing move is pairing evidence type with a second, independent axis: how directly the evidence answers the actual question being asked, since a high-quality RCT answering a slightly different question is not automatically stronger than a smaller study answering the right one.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 21, Step 21.2 (grade before you cite)</div>Before using this evidence to support a clinical claim, state: what type
+of study is it, and how directly does its population, intervention, and
+outcome match the question actually being asked? A well-designed study
+answering a different question is not strong evidence for this one.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>This is the discipline underneath every "studies show" claim — naming the study type out loud is often enough, on its own, to notice that a case series is being asked to carry the weight of a randomized trial.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a data-quality tier system for evidence — the same instinct as labeling a dataset "gold-standard labeled," "weakly labeled," or "synthetic" before a model gets trained on it, so nobody downstream mistakes one tier for another.</p>
+    </div>
+  </div>
+</section>
+
+<section id="applicability">
+  <h2>Does It Apply to This Patient? Module 35</h2>
+  <p>Module 35 separates a question Module 21 deliberately leaves open: even excellent evidence can be the wrong evidence for the patient in front of you. The module walks through external validity checks — was this patient's age range, comorbidity profile, and baseline risk represented in the study population, or does applying the finding here require an extrapolation the original trial never tested.</p>
+  <p>The module's sharpest habit is a single question asked before any recommendation is finalized, aimed squarely at the applicability gap rather than the evidence quality already covered in Module 21:</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 35, Step 35.4 (the applicability gap)</div>Name one way this patient differs from the typical trial participant in
+the evidence you're relying on — age, comorbidity, baseline risk, or
+setting. State whether that difference is likely to change the expected
+benefit, the expected harm, or neither.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>An 85-year-old with three comorbidities is not the same patient as the 55-year-old with none who dominated a trial's enrollment — the evidence can be A-grade and still need real judgment to translate onto the person actually in the room.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a distribution-shift check — a model validated on one population can be highly accurate on its training distribution and still fail silently on a different one, and applicability assessment is the manual version of checking whether your test case looks like your training data.</p>
+    </div>
+  </div>
+</section>
+
+<section id="multi-domain">
+  <h2>One Score Was Never Enough: Modules 45/46</h2>
+  <p>Modules 45 and 46 synthesize Module 21's evidence grade and Module 35's applicability check into a single reported output — deliberately structured as several separate confidence ratings rather than one blended number. A typical output states confidence in the evidence base, confidence in its applicability to this patient, and confidence in the reasoning chain connecting the two, each graded independently and each allowed to disagree with the others.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 45/46, the multi-domain confidence report</div>Report confidence across three separate domains rather than one number:
+(1) quality of the underlying evidence, (2) how well that evidence
+applies to this specific patient, (3) confidence in the reasoning chain
+used to connect the two. State each independently — do not average them
+into a single score.</div>
+  <p>The instruction not to average is the point. A high-quality trial (strong evidence) applied to a patient it doesn't really resemble (weak applicability) reasoned through carefully (strong chain) averages out to "moderate confidence" — a number that hides exactly the gap a clinician most needs to see.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>"I'm moderately confident" tells a colleague almost nothing about where to focus their own scrutiny. "Strong evidence, weak applicability" tells them exactly where the judgment is doing the most work and deserves the most pushback.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is multi-domain confidence reporting instead of one scalar score — the same reasoning that keeps precision and recall separate rather than collapsing them into one accuracy figure that a good number on one axis can quietly paper over a bad number on the other.</p>
+    </div>
+  </div>
+</section>
+
+<section id="shadow">
+  <h2>The Standing Adversary: Shadow Modules</h2>
+  <p>Shadow Modules formalize the self-red-teaming habit from Lesson 4 into a parallel process that runs alongside a primary module rather than after it — a skeptical reviewer that interrogates each output the moment it's produced. Shadow Module 45, paired directly with Module 45/46 above, exists specifically to challenge confidence ratings that look too clean: an evidence grade and applicability score that agree suspiciously well, or a confidence report with no domain rated as weak, are exactly the pattern the shadow process is built to interrogate.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Shadow Module 45, the adversarial challenge</div>Review the confidence report just produced. Challenge it directly: is
+there a domain rated more favorably than the evidence actually supports?
+Is there a plausible source of overconfidence in this specific reasoning
+chain that hasn't been named? If every domain looks equally strong,
+treat that as a signal to look harder, not as reassurance.</div>
+  <p>The design insight worth naming is that a skeptical reviewer bolted onto the end of a process, invoked only when something already feels wrong, catches far less than one running by default at every step — by the time something "feels wrong" enough to trigger a manual second look, the confident-sounding error has often already shaped the plan.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>This is a standing devil's-advocate built into the workflow rather than a habit you have to remember to invoke on a busy day — the same reason morbidity and mortality conferences work better as a scheduled practice than as something triggered only when a case already feels troubling.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is an adversarial validator running in the same pipeline as the primary model, not a separate QA pass invoked on suspicion — the difference between a linter that runs on every commit and one a developer has to remember to run manually before something breaks.</p>
+    </div>
+  </div>
+</section>
+
+<div class="homework">
+  <h3>Homework for Lesson 8</h3>
+  <ol>
+    <li>Take the case you've carried since Lesson 2. Name the strongest piece of evidence behind your leading diagnosis or plan, and grade it: what study type is it, and how directly does it answer the actual question at hand (Module 21)?</li>
+    <li>Name one way your patient differs from the population that evidence was drawn from, and state whether that difference likely shifts the expected benefit, the expected harm, or neither (Module 35).</li>
+    <li>Write a three-domain confidence report for your case's leading judgment — evidence quality, applicability, and reasoning-chain confidence, each graded separately — then run Shadow Module 45's challenge on your own report: which domain did you rate more favorably than it deserves?</li>
+  </ol>
+</div>
+
+<p class="source-note">This lesson draws directly on <a href="https://avi33tbtt.github.io/Prompts/Module-21-Evidence-Grading-Hierarchy.html">Module 21 — Evidence Grading Hierarchy</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-35-Applicability-External-Validity.html">Module 35 — Applicability &amp; External Validity</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-45-Evidence-Based-Medicine-Insights.html">Module 45/46 — Multi-Domain Confidence Synthesis</a>, and the <a href="https://avi33tbtt.github.io/Prompts/Shadow-Module-45-Adversarial-Counterpart.html">Shadow Modules — Adversarial Counterpart</a>, all from the <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Directory</a>. This lesson sits closest of any in the course to its sibling: <a href="https://avi33tbtt.github.io/ebm/lesson3.html">EBM Lesson 3</a> on appraising an RCT and <a href="https://avi33tbtt.github.io/ebm/lesson8.html">EBM Lesson 8</a> on statistics and p-hacking both feed directly into the evidence-grading work above, and are worth reading alongside it. Neither course is a clinical decision tool; see the <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">VibeRounds disclosure statement</a> for full terms.</p>
+
+<nav class="pager">
+  <a href="lesson7.html"><span class="dir">← Previous</span>Lesson 7 — Safety &amp; Systems Thinking</a>
+  <a href="course-plan.html"><span class="dir">↑ Course overview</span>See the full plan &amp; resources</a>
+  <a href="lesson9.html" class="next"><span class="dir">Next →</span>Lesson 9 — Full Case, Start to Finish</a>
+</nav>
+
+</main>
+
+<footer>
+  Clinical Cognition, From First Principles — a VibeRounds course · Dr. Avinash Kumar Gupta · June 2026<br>
+  <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · All outputs require independent clinical verification.
+</footer>
+
+</body>
+</html>

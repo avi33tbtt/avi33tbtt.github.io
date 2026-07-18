@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4: Bias &amp; Failure Modes — Clinical Cognition, From First Principles</title>
+<meta name="description" content="Lesson 4 of Clinical Cognition, From First Principles — a VibeRounds course. Where the cognition loop actually breaks: the pause, the anchor, the seductive finding, and the full post-hoc bias audit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2027;
+    --ink-soft:#3b4a52;
+    --paper:#f7f5ef;
+    --paper-raised:#ffffff;
+    --line:#d8d2c4;
+    --teal:#0b6e7f;
+    --teal-deep:#08505c;
+    --amber:#b5651d;
+    --amber-soft:#f4e6d7;
+    --teal-soft:#e2eeef;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:17px;
+  }
+  a{color:var(--teal-deep);}
+  a:hover{color:var(--amber);}
+
+  .topbar{
+    background:var(--ink);
+    color:#eee7d8;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:9px 24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .topbar a{color:#eee7d8; text-decoration:none; border-bottom:1px dotted #6d7d82;}
+  .topbar a:hover{color:#ffd9a0; border-color:#ffd9a0;}
+
+  header.masthead{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .num{
+    background:var(--teal-deep);
+    color:var(--paper);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1.12;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1 em{font-style:italic; color:var(--teal-deep);}
+  .dek{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.22rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .meta-row b{color:var(--ink);}
+
+  main{max-width:820px; margin:0 auto; padding:0 24px 40px;}
+
+  section{margin:44px 0;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    color:var(--teal-deep);
+    border-bottom:2px solid var(--teal-deep);
+    padding-bottom:8px;
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    margin:28px 0 10px;
+    color:var(--ink);
+  }
+  p{margin:0 0 16px;}
+  ul,ol{padding-left:22px; margin:0 0 16px;}
+  li{margin-bottom:8px;}
+
+  .case-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal-deep);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:22px 0;
+  }
+  .case-card .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  /* Dual-track boxes */
+  .track{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0;
+  }
+  @media (max-width:640px){ .track{grid-template-columns:1fr;} }
+  .track-box{
+    border-radius:3px;
+    padding:18px 20px;
+    font-size:.97rem;
+  }
+  .track-box.clinician{
+    background:var(--teal-soft);
+    border:1px solid #b9d7da;
+  }
+  .track-box.techie{
+    background:var(--amber-soft);
+    border:1px solid #e3c298;
+  }
+  .track-box .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track-box.clinician .label{color:var(--teal-deep);}
+  .track-box.techie .label{color:var(--amber);}
+  .track-box p, .track-box ul{margin:0;}
+
+  .prompt-block{
+    background:#12262b;
+    color:#d9ede9;
+    font-family:var(--mono);
+    font-size:.86rem;
+    line-height:1.6;
+    padding:20px 22px;
+    border-radius:4px;
+    margin:18px 0;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+  .prompt-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .callout{
+    border:1px dashed var(--teal-deep);
+    background:#fdfcf8;
+    padding:16px 20px;
+    border-radius:3px;
+    margin:20px 0;
+    font-size:.95rem;
+  }
+  .callout .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:6px; display:block;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); border-bottom:2px solid var(--teal-deep);}
+
+  .homework{
+    background:var(--ink);
+    color:#f2ede0;
+    border-radius:4px;
+    padding:26px 28px;
+    margin:36px 0;
+  }
+  .homework h3{color:#ffd9a0; margin-top:0;}
+  .homework ol{color:#e4ded0;}
+
+  .source-note{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:36px;
+  }
+
+  nav.pager{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin:48px 0 20px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  nav.pager a{
+    flex:1;
+    border:1px solid var(--line);
+    padding:14px 18px;
+    border-radius:3px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--paper-raised);
+  }
+  nav.pager a:hover{border-color:var(--teal-deep); color:var(--teal-deep);}
+  nav.pager a.next{text-align:right;}
+  nav.pager a .dir{display:block; color:var(--ink-soft); font-size:11px; margin-bottom:4px;}
+
+  footer{
+    background:var(--ink);
+    color:#b9c3c6;
+    font-family:var(--mono);
+    font-size:12px;
+    padding:26px 24px;
+    text-align:center;
+  }
+  footer a{color:#ffd9a0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Part of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning &amp; Guided Discovery · Clinical Cognition Operating System</span>
+  <span>Sibling course: <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies →</a></span>
+</div>
+
+<header class="masthead">
+  <div class="kicker"><span class="num">04</span> Clinical Cognition, From First Principles</div>
+  <h1>Bias &amp; <em>Failure Modes</em></h1>
+  <p class="dek">Lesson 1 named reflection as the stage of the cognition loop skipped almost universally. This lesson is that stage, made deliberate — the pause, the anchor, the seductive finding, and the full audit.</p>
+  <div class="meta-row">
+    <span><b>Lesson</b> 4 of 9</span>
+    <span><b>Builds on</b> Lesson 3 — Building the Differential</span>
+    <span><b>Feeds into</b> Lesson 5 — Patient Advocacy Track</span>
+    <span><b>Source modules</b> M26, M28, M30, M37, M24</span>
+  </div>
+</header>
+
+<main>
+
+<div class="callout" id="viberounds-badge">
+  <span class="label">VibeRounds</span>
+  This course is built in the spirit of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.
+</div>
+
+<section id="intro">
+  <p>Lesson 1's six-stage loop flagged one stage as the one that gets skipped almost universally: reflection. Not because it's hard to do, but because by the time a clinician reaches a working diagnosis, the case feels finished — there's rarely an obvious prompt to stop and ask what might have gone wrong on the way there. The four modules in this lesson exist because "obvious prompt" turns out to be exactly the wrong thing to wait for. Each one manufactures the pause deliberately, at a different point and with a different lever, rather than leaving it to the rare case that happens to feel uncertain enough to trigger it on its own.</p>
+  <p>Notice the sequence: a forced pause at the moment of confidence (Module 28), a search for the single finding doing the anchoring (Module 30), a discipline for telling dramatic findings from decisive ones (Module 37), and — only afterward, once the case is settled — the full retrospective audit (Module 26). Three of these run live, mid-case. One runs only after the case has closed. That ordering is deliberate, and it's the first thing worth getting right before anything else in this lesson.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 For clinicians &amp; students</div>
+      <p>Every module here targets the exact moment a case starts to feel settled — because that feeling is not evidence of anything except that your reasoning has stopped actively searching. Confidence is the highest-risk state in diagnosis, not the safest one.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 For techies</div>
+      <p>This is adversarial testing turned on your own output, run at two different points: a live circuit-breaker that fires before a high-stakes commit, and a full post-incident retrospective after the fact. Neither replaces the other.</p>
+    </div>
+  </div>
+</section>
+
+<section id="timeout">
+  <h2>The Pause: Diagnostic Time-Out</h2>
+  <p>Module 28 borrows its name and its logic directly from surgical safety culture — the mandatory pause before an incision where the team stops and confirms the basics out loud, precisely because everyone in the room already feels sure. The module's own application note says it plainly: run this whenever a case feels "settled" but the patient hasn't improved as expected — confidence is the trigger condition, not a reason to skip the pause.</p>
+  <p>The pause has teeth because of one specific move: the AI is instructed not to accept vague answers, and to distinguish findings that <em>support</em> a diagnosis from findings that merely <em>don't contradict</em> it. Those are not the same category, and conflating them is one of the quietest ways a working diagnosis accumulates false confidence.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 28, Step 22.2 (the deliberate disconfirmation search)</div>For my current working diagnosis, ask me three questions in sequence:
+(1) What single finding, if present, would make this diagnosis impossible
+— and have I looked for it? (2) What single investigation result, if it
+came back unexpected, would force me to revise? (3) What is the one thing
+I have not yet done in this workup that a cautious senior would have done
+first? Wait for my answer to each before proceeding.</div>
+  <p>The module closes not with a verdict but with a trip-wire: a specific finding or time-point that, if reached without improvement, triggers a mandatory re-evaluation. That's a deliberate design choice — the Time-Out doesn't ask a clinician to resolve all uncertainty on the spot, only to name in advance the condition under which they'll admit they were wrong.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>"What would make this diagnosis impossible?" is a different, harder question than "what supports this diagnosis?" — and it's the one most reasoning skips, because supporting evidence is what you were already looking for.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a pre-deploy gate, not a post-mortem — a mandatory checklist that runs before an irreversible action, with an explicit rollback trigger (the trip-wire) defined before the action is taken, not improvised after something breaks.</p>
+    </div>
+  </div>
+</section>
+
+<section id="anchor">
+  <h2>The Anchor: Finding the Load-Bearing Finding</h2>
+  <p>Module 30 starts from an uncomfortable premise, stated in its own framing: anchoring isn't a failure of intelligence, it's a failure of awareness. The clinician anchors because the anchor is usually plausible — it explains most of the picture. The danger isn't that the anchor is baseless; it's the features it doesn't explain and the diagnoses it quietly occludes.</p>
+  <p>The module's opening question does almost all the work: <em>what is the single piece of information that first made you think of this diagnosis?</em> The application note is direct about why this question is the whole mechanism — the learner's answer almost always names the anchor itself, and everything that follows exists only to test whether that anchor deserves to stay.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 30, Step 30.2 (the order-independence test)</div>Ask me to run the following thought experiment: if the findings in this
+case had been presented to me in a different order — specifically, if the
+anchor finding had been the last finding I received rather than the first
+— would my working diagnosis be the same? Ask me to construct a plausible
+alternative working diagnosis that would emerge if I had encountered the
+same facts beginning with the last finding I actually received.</div>
+  <p>That's the test worth remembering from this whole lesson: a diagnosis that only survives because of the order the evidence arrived in is not a robust diagnosis, whatever its final probability estimate says. The module also runs an Unexplained Finding Audit — everything the working diagnosis doesn't account for gets listed, and if those leftovers form a coherent cluster, that cluster may be pointing at the diagnosis the anchor is hiding.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>An anchor can be imported, too — carried in from a referral letter or a handover before you've assessed anything yourself. The module treats scepticism toward an imported diagnosis as a skill to build deliberately, not disrespect toward the clinician who handed it over.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is testing for order-dependence in a system that should be order-invariant — feeding the same inputs in a different sequence and checking whether the output changes. If it does, the model isn't reasoning from the full evidence set; it's reasoning from whatever arrived first.</p>
+    </div>
+  </div>
+</section>
+
+<section id="redherring">
+  <h2>The Seductive Finding: Signal vs. Noise</h2>
+  <p>Module 37 targets a different failure entirely — not fixation on the first finding, but over-weighting the most dramatic one. Its framing is blunt about who's most at risk: clinicians with more knowledge are, paradoxically, sometimes more susceptible, because they can construct a plausible narrative around any finding. The skill this module drills is a single reflex — asking not "what could this mean?" but "what does this actually change?"</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 37, Step 24.3 (the seductive abnormality test)</div>Identify the single most dramatic, unusual, or visually striking finding
+in this case — the one most likely to capture clinical attention. Ask me:
+(1) Is this finding causally upstream, downstream, or incidental to the
+primary diagnosis? (2) If I had not seen this finding, would my diagnostic
+reasoning have been more or less accurate? (3) Is there a documented
+cognitive bias that describes the tendency to over-weight this type of
+finding, and can I name it?</div>
+  <p>Question two is the one worth sitting with: <em>would I have reasoned better without this finding?</em> A dramatic finding that makes reasoning worse, not better, is the module's whole target — and the closing drill inverts the exercise entirely, taking whatever the learner dismissed as noise and asking whether some other patient, context, or comorbidity would make that exact finding the most important signal in the case. Nothing is permanently noise; it's noise <em>for this patient, in this context</em>, which is a narrower and more defensible claim than "irrelevant."</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>The most memorable finding on a chart and the most decisive one are frequently different findings. Training yourself to ask "what does this change" instead of "what could this mean" is what keeps the memorable one from silently taking the decisive one's seat.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is feature-importance auditing on your own model, by hand — checking whether the input with the highest salience is actually the input with the highest weight in the decision, since the two frequently diverge and the gap between them is where errors live.</p>
+    </div>
+  </div>
+</section>
+
+<section id="audit">
+  <h2>After the Case Closes: The Full Bias Audit</h2>
+  <p>Module 26 is different in kind from the previous three, and its own framing is explicit about the distinction: this is a post-hoc analytical exercise, not a real-time checklist. Running it on a case that's still live risks a different failure entirely — analysis paralysis. Use it once reasoning has concluded, not while a decision is still pending.</p>
+  <p>The module refuses to start with a bias checklist. It starts by reconstructing, in order, exactly what happened: the first impression, when it formed, what reinforced it, what pushed against it and how that pushback was handled. Only once that chronological map exists does bias-naming begin — because a learner who jumps straight to naming biases tends to name the ones they already know (anchoring, availability), not the ones that actually operated in this specific case.</p>
+  <p>Six biases get examined in sequence, each with its own probe: anchoring and insufficient adjustment, availability and representativeness (treated together, since a recently seen case often becomes the prototype that then anchors the next one), premature closure, framing and contextual effects, commission versus omission, and — the one most learners skip — affective and attribution bias.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 26, Step 22.7 (affective &amp; attribution bias)</div>Examine whether my feelings about this patient — positive or negative —
+influenced my reasoning. Did I find this patient likeable, credible, or
+sympathetic, and did that make me more accepting of their self-reported
+history? Conversely, did I find them difficult, non-compliant, or
+unconvincing — and did that make me discount symptom reports or default
+to psychosomatic attributions prematurely? Then ask me: what would my
+reasoning have looked like if this patient's demographics, manner, and
+credibility signals had been reversed?</div>
+  <p>The output is a table — Bias | Mechanism | Where it operated | Effect on reasoning | Corrective move — restricted deliberately to biases that actually showed up in this case, not a generic catalogue. And the module doesn't stop at naming: its payoff step reruns the same case with every corrective move applied, then asks whether the corrected path reaches the same conclusion or a different one. Naming what went wrong is analysis. Rerunning the case correctly is rehearsal — and the module treats the second as the actual point of the exercise.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>The instruction that the AI "will not flatter" your reasoning is doing real work here — a bias audit that softens its findings to spare feelings has quietly stopped being an audit.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a structured post-incident retrospective — root-cause analysis with a mandatory reconstruction-before-diagnosis step, a findings table scoped to what actually happened rather than a generic failure taxonomy, and a re-run of the decision with fixes applied before the retro is considered closed.</p>
+    </div>
+  </div>
+</section>
+
+<section id="together">
+  <h2>Four Modules, One Failure Surface</h2>
+  <p>Put side by side, these five modules cover the failure surface from five different angles rather than repeating one idea five times: Module 28 interrupts confidence itself, at whatever moment it appears. Module 30 interrogates one specific finding — the one doing the anchoring. Module 37 interrogates the reasoning's <em>weighting</em> rather than its content — which finding is pulling more attention than its actual evidentiary value justifies. Module 24 interrogates what happens to the reasoning the moment it's handed to someone else. Module 26 audits the whole reasoning path after the fact, once there's a complete chronology to examine.</p>
+  <table>
+    <tr><th>Module</th><th>When it runs</th><th>What it targets</th><th>Core question</th></tr>
+    <tr><td>28 — Time-Out</td><td>Mid-case, at peak confidence</td><td>The moment of commitment itself</td><td>"What would make this diagnosis impossible?"</td></tr>
+    <tr><td>30 — Anchor Extractor</td><td>Mid-case, once a diagnosis is stuck</td><td>The single load-bearing finding</td><td>"Would I still believe this if the evidence arrived in a different order?"</td></tr>
+    <tr><td>37 — Signal/Noise</td><td>Mid-case, across the whole finding list</td><td>Weighting, not content</td><td>"Why does that change your thinking?"</td></tr>
+    <tr><td>24 — Framing &amp; Handoff Distortion</td><td>At handoff — sign-out, referral, second opinion</td><td>How the story changes in the retelling</td><td>"What did the framing add or drop that the original findings didn't?"</td></tr>
+    <tr><td>26 — Bias Audit</td><td>After the case is closed</td><td>The full reasoning path, retrospectively</td><td>"What warped the path to that conclusion?"</td></tr>
+  </table>
+  <p>Module 24 deserves a word on its own, because it's the only one of the five that isn't about the original reasoner's bias at all — it's about what a second, uninvolved listener does with a compressed retelling. A five-minute sign-out routinely drops the equivocal findings and keeps the dramatic ones, not out of carelessness but because framing under time pressure naturally favors whatever's easiest to narrate. The receiving clinician then reasons from the framing, not from the original findings — inheriting a bias they never personally committed.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 24, handoff-distortion check</div>Compare the sign-out summary to the original finding list. Name one
+finding the summary dropped, one it added emphasis to that the original
+notes didn't support, and state whether a listener hearing only the
+summary would reach the same working diagnosis as the original reasoner.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>This is the bias that survives a perfect individual work-up and gets reintroduced at sign-out — worth auditing separately, because no amount of Module 26 self-audit by the original clinician catches a distortion that only appears in how the story was retold.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is lossy compression between two agents — the summary is a lower-bandwidth channel than the original findings, and the receiving agent has no way to tell which details were dropped for space versus dropped because they didn't fit the sender's working narrative.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="label">Where this connects forward</span>
+    Module 12's Devil's Advocate mode, from Lesson 3, is a sixth angle on this same failure surface — it attacks the differential as a whole rather than one finding, one moment, or one handoff. Running all six in sequence on a single real case is close to what Lesson 9's full case walkthrough will ask of you.
+  </div>
+</section>
+
+<section id="worked-example">
+  <h2>Worked Example: The Case from Lesson 3, Revisited</h2>
+  <p>Recall the case from Lesson 3: a 34-year-old woman with migratory joint pain, low-grade fevers, and a fluctuating rash, weighed between an autoimmune process and infective endocarditis. Suppose the murmur on exam was equivocal, cultures came back negative at 48 hours, and the working diagnosis settled on the autoimmune process. Here is what each module in this lesson would still ask before that diagnosis is allowed to stand.</p>
+  <div class="case-card">
+    <span class="tag">Module 28 — Time-Out</span>
+    <p>What finding, if present, would make the autoimmune diagnosis impossible? A new, unequivocal murmur. Has that been actively looked for on repeat exam, or only passively noted as "unchanged"? What's the trip-wire — if fevers persist beyond 5 more days, does that trigger a mandatory re-evaluation?</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Module 30 — Anchor Extractor</span>
+    <p>The anchor: negative cultures at 48 hours. Order-independence test — if the migratory joint pattern had been reported <em>after</em> the negative cultures rather than before, would autoimmune still be the first diagnosis reached, or would endocarditis have stayed live longer? Two negative cultures is suggestive, not conclusive — endocarditis cultures can take longer to turn positive, and this fact should have been weighed before the anchor formed, not after.</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Module 37 — Signal/Noise</span>
+    <p>The most dramatic finding was the migratory pattern — visually memorable, easy to narrate. Does it actually discriminate between the two leading diagnoses, or is it compatible with both? The equivocal murmur, dismissed as noise because it wasn't definitive, is exactly the kind of finding this module's reversal step exists to rescue — in a patient with any risk factor for endocarditis, an equivocal murmur is not the same as a normal one.</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Module 24 — Framing &amp; Handoff Distortion</span>
+    <p>The overnight sign-out reads: "34F, migratory arthralgia, low fevers, rash — likely autoimmune, cultures pending." Dropped entirely: the equivocal murmur. The receiving clinician, hearing only the summary, has no reason to actively re-examine for a murmur that was never mentioned — they've inherited the first clinician's framing, not the original finding list, and the equivocal murmur effectively disappears from the case a second time.</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Module 26 — Bias Audit (post-hoc, after discharge)</span>
+    <p>Reconstruction shows the first impression — autoimmune — formed within the first ten minutes, driven by the migratory pattern (representativeness: it matched a textbook prototype). The negative cultures reinforced rather than tested that impression (confirmation). The audit's table would likely name availability, representativeness, and premature closure — three biases operating in a single, connected chain, exactly the pattern Module 26 is built to trace rather than list in isolation.</p>
+  </div>
+</section>
+
+<div class="homework">
+  <h3>Homework for Lesson 4</h3>
+  <ol>
+    <li>Take the diagnosis you flagged as "shakiest" at the end of Lesson 3. Run the order-independence test on it yourself: if the finding that convinced you first had instead arrived last, would you have reached the same conclusion?</li>
+    <li>Identify the single most dramatic or memorable finding in that same case. Answer honestly: if you had not seen that finding, would your reasoning have been more accurate, less accurate, or unchanged?</li>
+    <li>Write a one-sentence trip-wire for that case — the specific finding or time-point that, if reached without improvement, would force you to reopen the differential. Bring this case forward one more time; in Lesson 5 we shift from the single-clinician case to the patient-advocacy context, where the same reasoning has to be documented and communicated, not just held privately.</li>
+  </ol>
+</div>
+
+<p class="source-note">This lesson draws directly on <a href="https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html">Module 26 — Bias Auditing</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-28-Diagnostic-Time-Out.html">Module 28 — Diagnostic Time-Out</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-30-Diagnostic-Anchor-Extractor.html">Module 30 — The "Diagnostic Anchor" Extractor</a>, and <a href="https://avi33tbtt.github.io/Prompts/Module-37-Red-Herring-Signal-to-Noise-Drill.html">Module 37 — Red Herring / Signal-to-Noise Drill</a>, together with Module 24 on framing and handoff distortion, all from the <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Directory</a>, and draws throughout on <a href="https://avi33tbtt.github.io/Prompts/Framework-D-Critical-Awareness-Framework.html">Framework D — Critical Awareness Framework</a>, the bias taxonomy these modules apply at depth. If you're coming from the evidence side, the companion <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies</a> course pairs well with this one. Neither course is a clinical decision tool; see the <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">VibeRounds disclosure statement</a> for full terms.</p>
+
+<nav class="pager">
+  <a href="lesson3.html"><span class="dir">← Previous</span>Lesson 3 — Building the Differential</a>
+  <a href="index.html"><span class="dir">↑ Course overview</span>See the full plan &amp; resources</a>
+</nav>
+
+</main>
+
+<footer>
+  Clinical Cognition, From First Principles — a VibeRounds course · Dr. Avinash Kumar Gupta · June 2026<br>
+  <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · All outputs require independent clinical verification.
+</footer>
+
+</body>
+</html>

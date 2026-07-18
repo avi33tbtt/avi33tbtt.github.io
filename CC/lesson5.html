@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5: Patient Advocacy Track — Clinical Cognition, From First Principles</title>
+<meta name="description" content="Lesson 5 of Clinical Cognition, From First Principles — a VibeRounds course. Turning clinical cognition outward: structured documentation, longitudinal monitoring, and seeing a case through the patient's eyes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2027;
+    --ink-soft:#3b4a52;
+    --paper:#f7f5ef;
+    --paper-raised:#ffffff;
+    --line:#d8d2c4;
+    --teal:#0b6e7f;
+    --teal-deep:#08505c;
+    --amber:#b5651d;
+    --amber-soft:#f4e6d7;
+    --teal-soft:#e2eeef;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:17px;
+  }
+  a{color:var(--teal-deep);}
+  a:hover{color:var(--amber);}
+
+  .topbar{
+    background:var(--ink);
+    color:#eee7d8;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:9px 24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .topbar a{color:#eee7d8; text-decoration:none; border-bottom:1px dotted #6d7d82;}
+  .topbar a:hover{color:#ffd9a0; border-color:#ffd9a0;}
+
+  header.masthead{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .num{
+    background:var(--teal-deep);
+    color:var(--paper);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1.12;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1 em{font-style:italic; color:var(--teal-deep);}
+  .dek{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.22rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .meta-row b{color:var(--ink);}
+
+  main{max-width:820px; margin:0 auto; padding:0 24px 40px;}
+
+  section{margin:44px 0;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    color:var(--teal-deep);
+    border-bottom:2px solid var(--teal-deep);
+    padding-bottom:8px;
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    margin:28px 0 10px;
+    color:var(--ink);
+  }
+  p{margin:0 0 16px;}
+  ul,ol{padding-left:22px; margin:0 0 16px;}
+  li{margin-bottom:8px;}
+
+  .case-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal-deep);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:22px 0;
+  }
+  .case-card .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  /* Dual-track boxes */
+  .track{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0;
+  }
+  @media (max-width:640px){ .track{grid-template-columns:1fr;} }
+  .track-box{
+    border-radius:3px;
+    padding:18px 20px;
+    font-size:.97rem;
+  }
+  .track-box.clinician{
+    background:var(--teal-soft);
+    border:1px solid #b9d7da;
+  }
+  .track-box.techie{
+    background:var(--amber-soft);
+    border:1px solid #e3c298;
+  }
+  .track-box .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track-box.clinician .label{color:var(--teal-deep);}
+  .track-box.techie .label{color:var(--amber);}
+  .track-box p, .track-box ul{margin:0;}
+
+  .prompt-block{
+    background:#12262b;
+    color:#d9ede9;
+    font-family:var(--mono);
+    font-size:.86rem;
+    line-height:1.6;
+    padding:20px 22px;
+    border-radius:4px;
+    margin:18px 0;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+  .prompt-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .callout{
+    border:1px dashed var(--teal-deep);
+    background:#fdfcf8;
+    padding:16px 20px;
+    border-radius:3px;
+    margin:20px 0;
+    font-size:.95rem;
+  }
+  .callout .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:6px; display:block;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); border-bottom:2px solid var(--teal-deep);}
+
+  .homework{
+    background:var(--ink);
+    color:#f2ede0;
+    border-radius:4px;
+    padding:26px 28px;
+    margin:36px 0;
+  }
+  .homework h3{color:#ffd9a0; margin-top:0;}
+  .homework ol{color:#e4ded0;}
+
+  .source-note{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:36px;
+  }
+
+  nav.pager{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin:48px 0 20px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  nav.pager a{
+    flex:1;
+    border:1px solid var(--line);
+    padding:14px 18px;
+    border-radius:3px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--paper-raised);
+  }
+  nav.pager a:hover{border-color:var(--teal-deep); color:var(--teal-deep);}
+  nav.pager a.next{text-align:right;}
+  nav.pager a .dir{display:block; color:var(--ink-soft); font-size:11px; margin-bottom:4px;}
+
+  footer{
+    background:var(--ink);
+    color:#b9c3c6;
+    font-family:var(--mono);
+    font-size:12px;
+    padding:26px 24px;
+    text-align:center;
+  }
+  footer a{color:#ffd9a0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Part of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning &amp; Guided Discovery · Clinical Cognition Operating System</span>
+  <span>Sibling course: <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies →</a></span>
+</div>
+
+<header class="masthead">
+  <div class="kicker"><span class="num">05</span> Clinical Cognition, From First Principles</div>
+  <h1>Patient <em>Advocacy</em> Track</h1>
+  <p class="dek">The same cognition loop, turned outward — held by a family member with no medical training instead of the clinician, and by a student learning to see the case through the patient's eyes instead of the chart's.</p>
+  <div class="meta-row">
+    <span><b>Lesson</b> 5 of 9</span>
+    <span><b>Builds on</b> Lesson 4 — Bias &amp; Failure Modes</span>
+    <span><b>Feeds into</b> Lesson 6 — Analytics at Scale</span>
+    <span><b>Source modules</b> M2, M3, M11, M13</span>
+  </div>
+</header>
+
+<main>
+
+<div class="callout" id="viberounds-badge">
+  <span class="label">VibeRounds</span>
+  This course is built in the spirit of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.
+</div>
+
+<section id="intro">
+  <p>Every module so far has assumed one actor holding the reasoning: a clinician or a learner, with the training to structure a case, retrieve a script, weight a probability, or audit a bias. This lesson turns the same loop outward, to two people who don't have that training but who carry real weight in the case anyway — a family member documenting and monitoring a loved one, and a student learning to see a case the way the patient living inside it actually experiences it.</p>
+  <p><strong>A scope note, honestly stated:</strong> this is a shorter lesson than Lessons 3 and 4. The modules behind it are earlier-stage — Module 2 has been tested against one de-identified case, Module 13 is explicitly marked "not yet validated in a live clinical or educational environment." That's not a reason to skip them; it's a reason to read what follows as a working sketch rather than a finished map.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 For clinicians &amp; students</div>
+      <p>Everything in Lessons 1–4 lived inside your head or a colleague's. This lesson is about the reasoning that has to leave your head — documented clearly enough for a family member to carry, or translated well enough for a patient to actually use.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 For techies</div>
+      <p>Think of this as the difference between an internal reasoning trace and a public API — the same underlying logic, but now it has to be structured, versioned, and safe for a consumer with no context on the implementation to call directly.</p>
+    </div>
+  </div>
+</section>
+
+<section id="documentation">
+  <h2>Structured Documentation: Module 2</h2>
+  <p>Module 2 hands the same case-building discipline from Lesson 3 to someone with no medical training at all — a family member — and its first move is entirely about tone, not content. The opening prompt tells the advocate outright: <em>"You are doing something important."</em> Every step that follows keeps affirming effort, not just correctness, because an advocate who feels incompetent will under-report rather than risk looking foolish.</p>
+  <p>Structurally, it's a compressed version of the pipeline from Lesson 3 — symptom capture, examination guidance, medication transcription — closing in a SOAP note the advocate didn't know they were capable of producing. But the module's most consequential note isn't pedagogical at all. It's a data-security warning that exists because the advocate, by definition, is a non-technical user typing real identifying detail into a consumer AI account by default.</p>
+  <div class="callout">
+    <span class="label">From the source — a warning worth repeating verbatim</span>
+    Type the drug name, dose, and frequency rather than uploading the prescription photo itself — photos commonly capture full name, date of birth, and home address in the same frame. Treat the chat as something the provider may retain and log, the same as any other cloud service.
+  </div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>A SOAP note written by a frightened, untrained family member at 2am is still a SOAP note — Subjective, Objective, Assessment, Plan is a structure robust enough to survive being held by someone outside the profession, which is exactly why it's worth teaching them the shape of it.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is onboarding a non-technical end user onto a system with real privacy stakes — and the fix isn't a longer terms-of-service notice, it's a design choice: ask for the text field instead of the photo upload, because the safer input path has to be the path of least resistance, not an opt-in.</p>
+    </div>
+  </div>
+</section>
+
+<section id="monitoring">
+  <h2>Longitudinal State: Module 3</h2>
+  <p>Module 3 extends Module 2 across time rather than a single encounter — tracking lifestyle, mood, medication adherence, and red-flag risk as four parallel domains, each checked in independently rather than folded into one vague "how's it going" update. That separation matters: a patient can be stable on medication adherence while deteriorating on mood, and a single combined check-in tends to let the stronger signal mask the weaker one.</p>
+  <p>The module's most important boundary is stated plainly in its own safety note, and it's worth restating because it's easy to misread the ALERT mechanism as more than it is:</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds — Module 3 data security note</div>Treat Step 3.4's ALERT mechanism as a documentation aid, not a transmission
+channel — it does not notify the treating team, so any urgent finding
+still has to be communicated to a clinician directly.</div>
+  <p>A red-flag alert that only lives inside a chat window is not a safety net — it's a note to self. The module is honest about that limit rather than letting the word "ALERT" imply more than it delivers.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>Four separate domains tracked independently is the longitudinal version of the qualifier-pair discipline from Lesson 3 — resist collapsing distinct signals into one impression, because the collapse is exactly where a deteriorating domain goes unnoticed.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a monitoring system with a critical gap between detection and action: the alert fires locally but has no delivery guarantee to the party who can actually act on it. Any real deployment of this pattern needs an explicit escalation path, not just a formatted warning block.</p>
+    </div>
+  </div>
+</section>
+
+<section id="patient-eyes">
+  <h2>Seeing Through the Patient's Eyes: Module 11</h2>
+  <p>Module 11 shifts the student's task entirely — not building a differential, but anticipating the questions a patient is silently carrying and may never voice. Its opening step generates ten to fifteen such questions, organized under headings like <em>"What is happening to my body?"</em> and <em>"What does this mean for my life?"</em> — and for each one, asks the AI to explain why patients commonly hold the concern but don't raise it. Naming the reason for the silence is the actual teaching point, not the question list itself.</p>
+  <p>The module's highest-yield step inverts the usual clinical direction entirely — instead of surfacing what the patient needs to ask, it surfaces what they need to know but wouldn't think to ask for:</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 11, Step 11.7 (the unasked question)</div>Based on the full clinical picture, identify 2–3 important things this
+patient needs to know — insights they would want if they understood their
+condition as well as a doctor does — but which patients almost never
+think to ask. These should be non-obvious, clinically important, and
+actionable.</div>
+  <p>The module also asks the student to draft a plain-language explanation using a memorable analogy, then to critique that explanation themselves for anything oversimplified to the point of inaccuracy — evaluating the AI's output is treated as part of the learning task, not a side effect of using it.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>Every clinician has had the experience of a patient asking, on the way out the door, the one question that mattered most. This module trains the habit of surfacing that question before the patient has to work up the nerve to ask it unprompted.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is proactive disclosure instead of reactive query-answering — surfacing what a user needs before they've formed the query for it, which is a materially harder and more valuable design target than a well-tuned FAQ.</p>
+    </div>
+  </div>
+</section>
+
+<section id="medication">
+  <h2>Translating the Audit: Module 13's Advocate Brief</h2>
+  <p>Module 13 is Lesson 3 and Lesson 4's machinery — interaction hunts, drug-disease conflicts, prescribing-cascade detection — but run with the student reasoning first and the AI filling only what's missed. Its closing step is the one that belongs in this lesson specifically: translating a completed pharmacology audit into something a non-medical advocate can actually use, without the advocate mistaking clinical detail for actionable safety guidance.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 13, Step 13.9 (the translation question)</div>Is there anything in the pharmacological findings that you chose not to
+include — and why? That choice is as important as what you included.</div>
+  <p>The module's own application note explains exactly why that omission question matters: an advocate who reads "MAJOR drug interaction" without context may stop a medication unilaterally, which could cause real harm. The correct advocate-facing brief communicates observable safety signals — watch for bleeding, watch for dizziness — rather than pharmacological mechanisms the advocate has no way to act on safely.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>A technically accurate handoff that gets misread into a dangerous action isn't actually accurate — it's incomplete, because accuracy for a lay reader has to include what the words will make them do, not just what the words say.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is the difference between a debug log and a user-facing error message — the debug log is complete and precise for an expert reader; the user-facing message has to be deliberately incomplete, translated down to what the reader can safely act on without triggering the wrong action.</p>
+    </div>
+  </div>
+</section>
+
+<div class="homework">
+  <h3>Homework for Lesson 5</h3>
+  <ol>
+    <li>Take the case you've carried since Lesson 2. Write the advocate-facing handover brief for it — maximum 150 words, plain language, the version a family member could read aloud to a new doctor in an emergency.</li>
+    <li>Generate three "silently carried" questions a patient with this case would likely hold but not voice (Module 11, Step 11.1), and for each, name the one-sentence reason they wouldn't ask it out loud.</li>
+    <li>If medications are part of your case, write one sentence you would deliberately choose to <em>leave out</em> of an advocate-facing medication brief, and explain why including it could do more harm than help.</li>
+  </ol>
+</div>
+
+<p class="source-note">This lesson draws directly on <a href="https://avi33tbtt.github.io/Prompts/Module-02-Patient-Advocate-Case-Documentation.html">Module 2 — Patient-Advocate Case Documentation</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-03-Extended-Patient-Advocate-Monitoring.html">Module 3 — Extended Patient-Advocate Monitoring</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-11-Patient-Education-Query-Intelligence.html">Module 11 — Patient Education Query Intelligence</a>, and <a href="https://avi33tbtt.github.io/Prompts/Module-13-Medication-Reconciliation-Polypharmacy-Audit.html">Module 13 — Medication Reconciliation &amp; Polypharmacy</a>, all from the <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Directory</a>. As noted at the top of this lesson, Modules 2 and 13 carry the directory's own caveats about limited validation — treat both as structured starting points, not finished clinical tools. If you're coming from the evidence side, the companion <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies</a> course pairs well with this one. Neither course is a clinical decision tool; see the <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">VibeRounds disclosure statement</a> for full terms.</p>
+
+<nav class="pager">
+  <a href="lesson4.html"><span class="dir">← Previous</span>Lesson 4 — Bias &amp; Failure Modes</a>
+  <a href="course-plan.html"><span class="dir">↑ Course overview</span>See the full plan &amp; resources</a>
+  <a href="lesson6.html" class="next"><span class="dir">Next →</span>Lesson 6 — Analytics at Scale</a>
+</nav>
+
+</main>
+
+<footer>
+  Clinical Cognition, From First Principles — a VibeRounds course · Dr. Avinash Kumar Gupta · June 2026<br>
+  <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · All outputs require independent clinical verification.
+</footer>
+
+</body>
+</html>
