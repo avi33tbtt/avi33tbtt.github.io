@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 11: Healthcare Systems &amp; Operations — Clinical Cognition, From First Principles</title>
+<meta name="description" content="Lesson 11 of Clinical Cognition, From First Principles — a VibeRounds course. Extending single-reasoner cognition to teams, wards, and departments — where the same discipline holds and where it has to change.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2027;
+    --ink-soft:#3b4a52;
+    --paper:#f7f5ef;
+    --paper-raised:#ffffff;
+    --line:#d8d2c4;
+    --teal:#0b6e7f;
+    --teal-deep:#08505c;
+    --amber:#b5651d;
+    --amber-soft:#f4e6d7;
+    --teal-soft:#e2eeef;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:17px;
+  }
+  a{color:var(--teal-deep);}
+  a:hover{color:var(--amber);}
+
+  .topbar{
+    background:var(--ink);
+    color:#eee7d8;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:9px 24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .topbar a{color:#eee7d8; text-decoration:none; border-bottom:1px dotted #6d7d82;}
+  .topbar a:hover{color:#ffd9a0; border-color:#ffd9a0;}
+
+  header.masthead{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .num{
+    background:var(--teal-deep);
+    color:var(--paper);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1.12;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1 em{font-style:italic; color:var(--teal-deep);}
+  .dek{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.22rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .meta-row b{color:var(--ink);}
+
+  main{max-width:820px; margin:0 auto; padding:0 24px 40px;}
+
+  section{margin:44px 0;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    color:var(--teal-deep);
+    border-bottom:2px solid var(--teal-deep);
+    padding-bottom:8px;
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    margin:28px 0 10px;
+    color:var(--ink);
+  }
+  p{margin:0 0 16px;}
+  ul,ol{padding-left:22px; margin:0 0 16px;}
+  li{margin-bottom:8px;}
+
+  .case-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal-deep);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:22px 0;
+  }
+  .case-card .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  /* Dual-track boxes */
+  .track{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0;
+  }
+  @media (max-width:640px){ .track{grid-template-columns:1fr;} }
+  .track-box{
+    border-radius:3px;
+    padding:18px 20px;
+    font-size:.97rem;
+  }
+  .track-box.clinician{
+    background:var(--teal-soft);
+    border:1px solid #b9d7da;
+  }
+  .track-box.techie{
+    background:var(--amber-soft);
+    border:1px solid #e3c298;
+  }
+  .track-box .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track-box.clinician .label{color:var(--teal-deep);}
+  .track-box.techie .label{color:var(--amber);}
+  .track-box p, .track-box ul{margin:0;}
+
+  .prompt-block{
+    background:#12262b;
+    color:#d9ede9;
+    font-family:var(--mono);
+    font-size:.86rem;
+    line-height:1.6;
+    padding:20px 22px;
+    border-radius:4px;
+    margin:18px 0;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+  .prompt-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .callout{
+    border:1px dashed var(--teal-deep);
+    background:#fdfcf8;
+    padding:16px 20px;
+    border-radius:3px;
+    margin:20px 0;
+    font-size:.95rem;
+  }
+  .callout .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:6px; display:block;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); border-bottom:2px solid var(--teal-deep);}
+
+  .homework{
+    background:var(--ink);
+    color:#f2ede0;
+    border-radius:4px;
+    padding:26px 28px;
+    margin:36px 0;
+  }
+  .homework h3{color:#ffd9a0; margin-top:0;}
+  .homework ol{color:#e4ded0;}
+
+  .source-note{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:36px;
+  }
+
+  nav.pager{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin:48px 0 20px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  nav.pager a{
+    flex:1;
+    border:1px solid var(--line);
+    padding:14px 18px;
+    border-radius:3px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--paper-raised);
+  }
+  nav.pager a:hover{border-color:var(--teal-deep); color:var(--teal-deep);}
+  nav.pager a.next{text-align:right;}
+  nav.pager a .dir{display:block; color:var(--ink-soft); font-size:11px; margin-bottom:4px;}
+
+  footer{
+    background:var(--ink);
+    color:#b9c3c6;
+    font-family:var(--mono);
+    font-size:12px;
+    padding:26px 24px;
+    text-align:center;
+  }
+  footer a{color:#ffd9a0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Part of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning &amp; Guided Discovery · Clinical Cognition Operating System</span>
+  <span>Sibling course: <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies →</a></span>
+</div>
+
+<header class="masthead">
+  <div class="kicker"><span class="num">11</span> Clinical Cognition, From First Principles</div>
+  <h1>Healthcare Systems <em>&amp; Operations</em></h1>
+  <p class="dek">Every module so far has assumed one reasoner, working one case. Most real care isn't delivered that way — it's delivered by a team, handed across shifts, and shaped by a system that can be well-designed or badly designed independent of any single clinician's skill. This lesson extends single-agent reasoning to the multi-agent, organization-level workflow it actually runs inside.</p>
+  <div class="meta-row">
+    <span><b>Lesson</b> 11 of 13</span>
+    <span><b>Builds on</b> Lesson 10 — Clinical Reasoning Beyond Diagnosis</span>
+    <span><b>Feeds into</b> Lesson 12 — Precision Medicine &amp; Personalized Care</span>
+    <span><b>Source modules</b> M39, M40, M41, M43</span>
+  </div>
+</header>
+
+<main>
+
+<div class="callout" id="viberounds-badge">
+  <span class="label">VibeRounds</span>
+  This course is built in the spirit of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.
+</div>
+
+<section id="intro">
+  <p>M39 through M43 share one premise the first ten lessons didn't need: the reasoner isn't alone. A ward has a day team and a night team who never overlap. A diagnosis made by one clinician gets acted on by nurses, pharmacists, and a discharge planner who each see a different slice of the case. The cognitive loop from Lesson 1 still applies — observation, hypothesis, testing, commitment, reflection — but now it has to survive being distributed across people who don't share the same working memory.</p>
+  <p>This is also where Module 24's handoff-distortion lens from Lesson 4 stops being an edge case and becomes the default condition: nearly every real decision in a system this size is made partly on secondhand information. The question this lesson asks is what has to be built into a system, not just into an individual, to keep that secondhand information trustworthy.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 For clinicians &amp; students</div>
+      <p>Most of what actually goes wrong in a hospital isn't one clinician reasoning badly — it's good individual reasoning that doesn't survive being passed across a shift change, a specialty referral, or a discharge summary.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 For techies</div>
+      <p>This is the move from evaluating a single model's output to evaluating a multi-agent system's output — correctness now depends on message-passing between agents, not just on any one agent's internal reasoning.</p>
+    </div>
+  </div>
+</section>
+
+<section id="handoff-protocol">
+  <h2>Module 39 — The Structured Handoff</h2>
+  <p>Module 39 doesn't try to eliminate handoffs — they're structurally unavoidable — it tries to make them lossy in a controlled way instead of an arbitrary one. It specifies a fixed template (situation, background, assessment, recommendation, and one explicit line for "what would make you call me back") so that what gets dropped is decided by the template's designer in advance, not improvised under time pressure by whoever's handing off.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 39, structured handoff</div>Summarize this case for handoff using SBAR. Before finishing, state one
+explicit trigger: the single finding that, if it appears overnight, should
+prompt an immediate call rather than waiting for morning rounds. If you
+cannot name one, say so rather than omitting the line.</div>
+  <p>That last instruction — say so rather than omitting the line — matters more than it looks. A missing trigger and an explicitly-considered-and-rejected trigger look identical on the page unless the template forces the difference to be stated.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>The "call me back if" line is usually the most valuable sentence in a handoff and the first one to get cut when someone's rushing — which is exactly why the template makes it non-optional rather than a nice-to-have.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a fixed-schema message contract between agents instead of free-text — a required field beats an optional one precisely because an optional field silently degrades to empty under load.</p>
+    </div>
+  </div>
+</section>
+
+<section id="team-cognition">
+  <h2>Module 40 &amp; 41 — Distributed Differential, Distributed Bias</h2>
+  <p>Module 40 extends Lesson 3's differential-building to a team setting: instead of one reasoner ranking candidates alone, several team members generate independently before comparing lists, specifically to prevent the first person to speak from anchoring everyone after them. Module 41 does the same for Lesson 4's bias audit — a team-level version that asks not just "what biased this reasoner" but "did the team's discussion structure itself introduce a bias that no individual reasoner had," such as deference to seniority substituting for an actual second opinion.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 40, independent-first differential</div>Before this case is discussed as a group, have each team member write their
+own top-three differential privately, without seeing anyone else's list.
+Only after all lists are collected should they be compared and reconciled
+— reveal the most senior team member's list last, not first.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>Revealing the attending's differential first isn't neutral — it changes what the resident writes down next, even when nobody intends it to. Writing independently first is the cheapest possible fix for a very common distortion.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is independent sampling before aggregation — an ensemble of reasoners polled in parallel rather than sequentially, which is the same reason ensemble methods ask each model to vote before seeing the others' votes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="worked-example">
+  <h2>Worked Example: One Case, Three Handoffs</h2>
+  <div class="case-card">
+    <span class="tag">Handoff 1 — day team to night team</span>
+    <p>SBAR handoff on a patient with worsening confusion overnight. Trigger stated explicitly: "call if GCS drops below 13 or new focal deficit appears." The night team knows exactly what would justify waking the attending, rather than guessing.</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Handoff 2 — night team to consulting neurologist</span>
+    <p>Module 41's team-bias check catches a near-miss here: the night resident's referral note leads with "likely delirium, similar to three other patients this week" — an availability bias baked directly into the referral framing, which risks anchoring the consultant before they've even seen the patient.</p>
+  </div>
+  <div class="case-card">
+    <span class="tag">Handoff 3 — discharge summary to primary care</span>
+    <p>Module 39's template forces an explicit "what to watch for" line even at discharge, not just at shift change — the same discipline applied to the handoff with the longest gap and the least opportunity to ask a clarifying question.</p>
+  </div>
+  <p>Notice each handoff is a distinct failure point, not a single hazard repeated three times — a fix that works for the first (a required trigger field) doesn't automatically fix the second (framing bias baked into a referral), which is why Modules 39 through 41 exist as separate tools rather than one general "communicate better" instruction.</p>
+</section>
+
+<section id="module43">
+  <h2>Module 43 — Systems-Level Root Cause</h2>
+  <p>Module 43 closes the lesson by asking a question none of the individual-reasoner modules can answer: when something does go wrong across a handoff chain, was the failure any single person's, or did the system make that failure close to inevitable regardless of who was on shift? It borrows a discipline from Lesson 7's FMEA but runs it backward — instead of anticipating failure modes before they happen, it reconstructs which point in the chain the failure would have recurred at even with a different, equally competent team.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 43, systems root-cause</div>If you swapped out every individual involved in this case for an equally
+competent colleague, would the same failure likely have recurred? If yes,
+the fix belongs to the system, not the individual. Name the single system
+change most likely to have prevented it.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>"Would a different, equally good team have made the same mistake" is the honest test of whether a root-cause analysis is actually about the system or is quietly assigning individual blame while calling itself systemic.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is counterfactual root-cause analysis — swap the agent, keep the environment fixed, and check whether the failure reproduces. If it does, the bug is in the pipeline, not in the specific run.</p>
+    </div>
+  </div>
+</section>
+
+<div class="homework">
+  <h3>Homework for Lesson 11</h3>
+  <ol>
+    <li>Take a case that involved at least one handoff — a shift change, a referral, or a discharge. Write it as a Module 39 SBAR, including an explicit "call back if" trigger line.</li>
+    <li>If you have a team available, run Module 40's independent-first differential on a real or hypothetical case: collect each person's top three privately before comparing. Note whether the most senior person's list, revealed last, changed anyone else's.</li>
+    <li>Run Module 43's counterfactual test on any near-miss you can recall: would an equally competent but different team likely have hit the same failure point? Bring your answer forward — Lesson 12 asks what changes when the fix also has to be personalized to one specific patient rather than standardized across the system.</li>
+  </ol>
+</div>
+
+<p class="source-note">This lesson draws directly on <a href="https://avi33tbtt.github.io/Prompts/Module-39-Structured-Handoff-Protocol.html">Module 39 — Structured Handoff Protocol</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-40-Independent-First-Differential.html">Module 40 — Independent-First Team Differential</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-41-Team-Level-Bias-Audit.html">Module 41 — Team-Level Bias Audit</a>, and <a href="https://avi33tbtt.github.io/Prompts/Module-43-Systems-Root-Cause-Analysis.html">Module 43 — Systems-Level Root-Cause Analysis</a>, all from the <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Directory</a>. This lesson extends Lesson 3's differential-building, Lesson 4's bias audit, and Lesson 7's FMEA from a single reasoner to a team; reread those lessons alongside this one if the extension feels abstract. Neither course is a clinical decision tool; see the <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">VibeRounds disclosure statement</a> for full terms.</p>
+
+<div class="callout">
+  <span class="label">What's next</span>
+  Lesson 12 keeps the systems lens but points it at a different variable — not the team delivering care, but the specific patient receiving it, and what changes when a guideline built for the average case meets one person who isn't average. See the <a href="index.html">course overview</a> for the full lesson list and source resources.
+</div>
+
+<nav class="pager">
+  <a href="lesson10.html"><span class="dir">← Previous</span>Lesson 10 — Clinical Reasoning Beyond Diagnosis</a>
+  <a href="lesson12.html" class="next"><span class="dir">Next →</span>Lesson 12 — Precision Medicine &amp; Personalized Care</a>
+</nav>
+
+</main>
+
+<footer>
+  Clinical Cognition, From First Principles — a VibeRounds course · Dr. Avinash Kumar Gupta · June 2026<br>
+  <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · All outputs require independent clinical verification.
+</footer>
+
+</body>
+</html>

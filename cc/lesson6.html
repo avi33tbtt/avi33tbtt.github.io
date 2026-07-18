@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6: Analytics at Scale — Clinical Cognition, From First Principles</title>
+<meta name="description" content="Lesson 6 of Clinical Cognition, From First Principles — a VibeRounds course. From one patient to a population: cohort design, registry-level querying, and the traps that only appear at scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2027;
+    --ink-soft:#3b4a52;
+    --paper:#f7f5ef;
+    --paper-raised:#ffffff;
+    --line:#d8d2c4;
+    --teal:#0b6e7f;
+    --teal-deep:#08505c;
+    --amber:#b5651d;
+    --amber-soft:#f4e6d7;
+    --teal-soft:#e2eeef;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:17px;
+  }
+  a{color:var(--teal-deep);}
+  a:hover{color:var(--amber);}
+
+  .topbar{
+    background:var(--ink);
+    color:#eee7d8;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:9px 24px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .topbar a{color:#eee7d8; text-decoration:none; border-bottom:1px dotted #6d7d82;}
+  .topbar a:hover{color:#ffd9a0; border-color:#ffd9a0;}
+
+  header.masthead{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .num{
+    background:var(--teal-deep);
+    color:var(--paper);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:2.6rem;
+    line-height:1.12;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1 em{font-style:italic; color:var(--teal-deep);}
+  .dek{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.22rem;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:0 0 26px;
+  }
+  .meta-row{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .meta-row b{color:var(--ink);}
+
+  main{max-width:820px; margin:0 auto; padding:0 24px 40px;}
+
+  section{margin:44px 0;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.55rem;
+    color:var(--teal-deep);
+    border-bottom:2px solid var(--teal-deep);
+    padding-bottom:8px;
+    margin:0 0 20px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    margin:28px 0 10px;
+    color:var(--ink);
+  }
+  p{margin:0 0 16px;}
+  ul,ol{padding-left:22px; margin:0 0 16px;}
+  li{margin-bottom:8px;}
+
+  .case-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal-deep);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:22px 0;
+  }
+  .case-card .tag{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    margin-bottom:8px;
+    display:block;
+  }
+
+  /* Dual-track boxes */
+  .track{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:22px 0;
+  }
+  @media (max-width:640px){ .track{grid-template-columns:1fr;} }
+  .track-box{
+    border-radius:3px;
+    padding:18px 20px;
+    font-size:.97rem;
+  }
+  .track-box.clinician{
+    background:var(--teal-soft);
+    border:1px solid #b9d7da;
+  }
+  .track-box.techie{
+    background:var(--amber-soft);
+    border:1px solid #e3c298;
+  }
+  .track-box .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .track-box.clinician .label{color:var(--teal-deep);}
+  .track-box.techie .label{color:var(--amber);}
+  .track-box p, .track-box ul{margin:0;}
+
+  .prompt-block{
+    background:#12262b;
+    color:#d9ede9;
+    font-family:var(--mono);
+    font-size:.86rem;
+    line-height:1.6;
+    padding:20px 22px;
+    border-radius:4px;
+    margin:18px 0;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+  .prompt-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .callout{
+    border:1px dashed var(--teal-deep);
+    background:#fdfcf8;
+    padding:16px 20px;
+    border-radius:3px;
+    margin:20px 0;
+    font-size:.95rem;
+  }
+  .callout .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-deep); margin-bottom:6px; display:block;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal-deep); border-bottom:2px solid var(--teal-deep);}
+
+  .homework{
+    background:var(--ink);
+    color:#f2ede0;
+    border-radius:4px;
+    padding:26px 28px;
+    margin:36px 0;
+  }
+  .homework h3{color:#ffd9a0; margin-top:0;}
+  .homework ol{color:#e4ded0;}
+
+  .source-note{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:36px;
+  }
+
+  nav.pager{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin:48px 0 20px;
+    font-family:var(--mono);
+    font-size:13px;
+  }
+  nav.pager a{
+    flex:1;
+    border:1px solid var(--line);
+    padding:14px 18px;
+    border-radius:3px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--paper-raised);
+  }
+  nav.pager a:hover{border-color:var(--teal-deep); color:var(--teal-deep);}
+  nav.pager a.next{text-align:right;}
+  nav.pager a .dir{display:block; color:var(--ink-soft); font-size:11px; margin-bottom:4px;}
+
+  footer{
+    background:var(--ink);
+    color:#b9c3c6;
+    font-family:var(--mono);
+    font-size:12px;
+    padding:26px 24px;
+    text-align:center;
+  }
+  footer a{color:#ffd9a0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Part of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning &amp; Guided Discovery · Clinical Cognition Operating System</span>
+  <span>Sibling course: <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies →</a></span>
+</div>
+
+<header class="masthead">
+  <div class="kicker"><span class="num">06</span> Clinical Cognition, From First Principles</div>
+  <h1>Analytics at <em>Scale</em></h1>
+  <p class="dek">Everything so far has reasoned about one patient at a time. This lesson asks what breaks — and what becomes possible — when the same cognitive loop is pointed at a thousand patients instead of one.</p>
+  <div class="meta-row">
+    <span><b>Lesson</b> 6 of 9</span>
+    <span><b>Builds on</b> Lesson 5 — Patient Advocacy Track</span>
+    <span><b>Feeds into</b> Lesson 7 — Safety &amp; Systems Thinking</span>
+    <span><b>Source modules</b> M5, M6, M22, M23, M27</span>
+  </div>
+</header>
+
+<main>
+
+<div class="callout" id="viberounds-badge">
+  <span class="label">VibeRounds</span>
+  This course is built in the spirit of <a href="https://avi33tbtt.github.io/">VibeRounds</a> — Socratic learning (AI that questions rather than answers) and Guided Discovery, part of the wider Clinical Cognition Operating System.
+</div>
+
+<section id="intro">
+  <p>Lessons 1 through 5 all took a single case as the unit of reasoning — one patient, one differential, one advocate, one handover brief. That framing has a limit, and this lesson exists to name it: some of the most consequential clinical questions can't be answered by reasoning harder about one case. "Is this drug actually working across our patients?" or "which of our diabetics are falling out of follow-up?" are questions about a population, and a mind trained only on single-case reasoning will either refuse them or, worse, answer them by quietly generalizing from whichever cases happen to be memorable.</p>
+  <p><strong>A scope note, honestly stated:</strong> like Lesson 5, this is a shorter lesson than Lessons 3, 4, and 7. The analytics modules are newer and less battle-tested than the core reasoning modules — several of the aggregate-query patterns below have been exercised against synthetic or de-identified registry extracts rather than a live clinical data warehouse. Read what follows as a way of thinking about scale, not a validated pipeline to deploy as-is.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 For clinicians &amp; students</div>
+      <p>Every attending who has ever asked "how are our patients actually doing on this?" was asking a population question with a single-case brain. This lesson is about noticing that shift in question type, and reasoning differently once you've noticed it.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 For techies</div>
+      <p>This is the shift from a single-record lookup — <code>SELECT * FROM patients WHERE id = ?</code> — to a registry-level aggregate query — <code>SELECT ... FROM patients GROUP BY ...</code>. Same underlying data model, but a different class of question, with its own failure modes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="cohort-design">
+  <h2>Defining the Cohort: Module 5</h2>
+  <p>Module 5 opens with the question every population query silently depends on and almost never states out loud: who, exactly, is "our patients"? Before any counting or trending happens, the module forces an explicit cohort definition — the inclusion criteria, the exclusion criteria, and the time window — written down as a sentence a colleague could audit, not left implicit in whatever the query happened to pull.</p>
+  <p>The reason this comes first is that most bad population claims aren't wrong arithmetic — they're a correct calculation over an unstated, badly-drawn cohort. "30% of our patients are non-adherent" means something completely different depending on whether the denominator is everyone ever prescribed the drug or only patients still active in the practice.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 5 (state the cohort before the query)</div>Before answering, state explicitly: what is the inclusion criterion for
+this cohort, what is excluded, and over what time window? If any of
+these is ambiguous in my question, ask me to clarify before proceeding —
+do not silently pick a definition.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>This is the same discipline as a well-built differential from Lesson 3, just applied one level up — a sloppy differential misdiagnoses one patient, a sloppy cohort definition misdiagnoses an entire practice's performance.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is schema design before the query, not after — a <code>WHERE</code> clause you can't defend in a code review shouldn't ship, and a cohort definition you can't defend in a chart review shouldn't drive a population claim.</p>
+    </div>
+  </div>
+</section>
+
+<section id="aggregate-query">
+  <h2>From Record to Registry: Module 6</h2>
+  <p>Module 6 is where the single-record habits from Lessons 1–5 actively work against you. A clinician trained to weigh one patient's full context is, by instinct, resistant to collapsing that context into a number — and that instinct is correct at the bedside and wrong at the registry. The module's core move is teaching when to deliberately set aside case-level nuance in favor of a defensible aggregate, and when that trade is not worth making.</p>
+  <p>Its sharpest prompt is a discipline check, run before any number is reported rather than after:</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 6, the aggregate-honesty check</div>State the denominator, the numerator, and the missing-data rate for this
+statistic explicitly. If more than 10% of the cohort has missing data on
+the variable being aggregated, flag that before reporting the number,
+not in a footnote afterward.</div>
+  <p>The missing-data threshold is the whole lesson in miniature: a population statistic with a large silent gap isn't imprecise, it's potentially about a different population than the one being described — the patients who dropped out of data collection are rarely a random subset of the cohort.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>The patients missing from your data are almost never missing at random — they're disproportionately the ones who moved, lost insurance, or stopped coming in, which usually correlates with worse outcomes, not neutral ones.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is the difference between a single-record query and a registry-level aggregate query — a single <code>NULL</code> is a bug to fix on one row; a 30% <code>NULL</code> rate on an aggregated column is a validity threat to the entire statistic, and needs to be reported alongside it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="denominator-traps">
+  <h2>Where Aggregates Lie: Modules 22 &amp; 23</h2>
+  <p>Modules 22 and 23 catalog the specific ways an honestly-computed aggregate still misleads — Module 22 focused on denominator traps (Simpson's paradox, survivorship bias in a cohort that loses members over time), Module 23 focused on the comparison traps that show up once two cohorts are placed side by side (unadjusted comparisons across practices with different case mixes, trend lines drawn across a change in measurement definition). Together they function as a red-team pass over Module 6's output, the population-scale sibling of the bias audit from Lesson 4.</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 23, Step 23.4 (the comparability check)</div>Before comparing these two cohorts or time periods, identify any change
+in inclusion criteria, measurement definition, or data source between
+them. If a meaningful change exists, state whether the comparison is
+still valid, and if not, what a valid comparison would require.</div>
+  <p>The module's own worked example is the one worth remembering: a clinic's "improved" readmission rate that, on inspection, tracked a change in how readmissions were coded rather than a change in patient outcomes. The aggregate was computed correctly at every step; the story built on top of it was false.</p>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>This is the population-level version of the anchoring bias from Lesson 4 — once a number moves in the direction you expected, it's tempting to stop checking whether the number is measuring what you think it's measuring.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is a schema migration hiding inside a trend line — comparing metrics across a change in how the underlying data was collected or coded is the aggregate-query equivalent of joining two tables that changed their column definitions mid-history without a migration note.</p>
+    </div>
+  </div>
+</section>
+
+<section id="registry-time">
+  <h2>Analytics Across Time: Module 27</h2>
+  <p>Module 27 extends Module 6's snapshot discipline across a longitudinal registry — the same kind of tracking Module 3 (Lesson 5) did for one patient, run instead across a whole cohort's trajectory. Its distinguishing move is treating cohort attrition itself as a signal worth analyzing, not just a data-quality nuisance to work around: who stops appearing in the registry, and when, is often clinically informative in its own right.</p>
+  <p>The module closes with a step that mirrors Module 13's omission question from Lesson 5, applied at scale — what the aggregate report chooses not to say is as consequential as what it reports:</p>
+  <div class="prompt-block"><div class="prompt-label" style="color:#8fd3c7;">#VibeRounds prompt — Module 27, Step 27.6 (attrition as signal)</div>Report the cohort's attrition rate over this period alongside the primary
+outcome trend. Do not treat patients lost to follow-up as excluded from
+the analysis by default — state explicitly whether their exclusion could
+bias the trend, and in which direction.</div>
+
+  <div class="track">
+    <div class="track-box clinician">
+      <div class="label">🩺 Clinical framing</div>
+      <p>A registry that only reports on patients who stayed engaged is quietly reporting on the healthiest, most resourced slice of the population it claims to describe — the patients who disappeared are often the ones the report most needed to be about.</p>
+    </div>
+    <div class="track-box techie">
+      <div class="label">💻 Techie framing</div>
+      <p>This is survivorship bias made concrete in a longitudinal query — rows that drop out of a time-series join don't vanish from reality, they vanish from the denominator, and a trend computed only over the rows that persisted is a trend about persistence, not about the outcome.</p>
+    </div>
+  </div>
+</section>
+
+<div class="homework">
+  <h3>Homework for Lesson 6</h3>
+  <ol>
+    <li>Take the case you've carried since Lesson 2 and imagine ten more patients like it. Write one sentence defining the cohort you'd need to answer "how are patients like mine actually doing?" — explicit inclusion criteria, exclusion criteria, and time window (Module 5).</li>
+    <li>Pick one statistic you'd want to report about that cohort (a rate, an average, a proportion). State its denominator, numerator, and estimate what fraction of the cohort might have missing data on the relevant variable — and whether that missingness is likely random or not (Module 6).</li>
+    <li>Describe one way a naive before/after comparison on this cohort could be misleading — a change in measurement, a change in who's included, or attrition that isn't random — and rewrite the comparison so it accounts for that trap (Modules 22–23, 27).</li>
+  </ol>
+</div>
+
+<p class="source-note">This lesson draws directly on <a href="https://avi33tbtt.github.io/Prompts/Module-05-Population-Cohort-Definition.html">Module 5 — Population Cohort Definition</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-06-Registry-Level-Aggregate-Analytics.html">Module 6 — Registry-Level Aggregate Analytics</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-22-Denominator-Traps-Aggregate-Bias.html">Module 22 — Denominator Traps &amp; Aggregate Bias</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-23-Cross-Cohort-Comparability-Audit.html">Module 23 — Cross-Cohort Comparability Audit</a>, and <a href="https://avi33tbtt.github.io/Prompts/Module-27-Longitudinal-Registry-Analysis.html">Module 27 — Longitudinal Registry Analysis</a>, all from the <a href="https://avi33tbtt.github.io/Prompts/">VibeRounds Prompt Directory</a>. As noted at the top of this lesson, the analytics modules are newer and less validated than the core reasoning modules — treat the prompts here as a way of structuring population-level questions, not as a validated analytics pipeline. If you're coming from the evidence side, the companion <a href="https://avi33tbtt.github.io/ebm/">Evidence-Based Medicine for Techies</a> course pairs well with this one, particularly its lessons on statistics and confounding. Neither course is a clinical decision tool; see the <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">VibeRounds disclosure statement</a> for full terms.</p>
+
+<nav class="pager">
+  <a href="lesson5.html"><span class="dir">← Previous</span>Lesson 5 — Patient Advocacy Track</a>
+  <a href="course-plan.html"><span class="dir">↑ Course overview</span>See the full plan &amp; resources</a>
+  <a href="lesson7.html" class="next"><span class="dir">Next →</span>Lesson 7 — Safety &amp; Systems Thinking</a>
+</nav>
+
+</main>
+
+<footer>
+  Clinical Cognition, From First Principles — a VibeRounds course · Dr. Avinash Kumar Gupta · June 2026<br>
+  <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a> · All outputs require independent clinical verification.
+</footer>
+
+</body>
+</html>
