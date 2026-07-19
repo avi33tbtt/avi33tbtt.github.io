@@ -66,7 +66,7 @@ IMPORTANT - This document has not undergone controlled evaluation of clinical, e
 
 This repository organizes a Non-tested set of large-language-model prompts the way a clinical procedure manual organizes bedside techniques — by objective, indication, and step sequence, rather than by who happened to write each one down.
 
-It contains **21 modules** each a self-contained prompt workflow with its own lifecycle, and **4 supplementary frameworks** (A–D) that are layered into specific steps across those modules rather than run on their own.
+It contains **57 modules** each a self-contained prompt workflow with its own lifecycle, and **4 supplementary frameworks** (A–D) that are layered into specific steps across those modules rather than run on their own.
 
 ---
 
