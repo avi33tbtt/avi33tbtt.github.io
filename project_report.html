@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds & the Clinical Cognition Operating System — Project Evaluation</title>
+<meta name="description" content="An expert clinical-education and AI-systems evaluation of the VibeRounds / CCOS learning stack: Socratic Learning, Guided Discovery, the CCOS Builder, the 57-module prompt library, the Clinical Cognition & EBM courses, and the MBBS Ward Chart courseware layer.">
+<style>
+  :root {
+    --ink: #1c2126;
+    --ink-soft: #46525c;
+    --navy: #0b3d5c;
+    --teal: #0891B2;
+    --teal-soft: #e6f4f7;
+    --line: #dbe3e8;
+    --paper: #fdfdfc;
+    --panel: #f5f8f9;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.65;
+    font-size: 17px;
+  }
+
+  a { color: var(--teal); }
+  a:hover { color: var(--navy); }
+
+  /* ---------- Masthead ---------- */
+  header.masthead {
+    background: linear-gradient(135deg, #06202f 0%, #0a3550 55%, #0b4a63 100%);
+    color: #ffffff;
+    padding: 64px 24px 56px;
+  }
+  .masthead-inner { max-width: 860px; margin: 0 auto; }
+  .kicker {
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #7fe0f0;
+    margin-bottom: 14px;
+  }
+  h1.title {
+    font-family: var(--sans);
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.25;
+    margin: 0 0 16px;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  }
+  .subtitle {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: #eaf3f7;
+    max-width: 640px;
+    margin: 0 0 26px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: #ffffff;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 18px;
+  }
+  .meta-row span strong { display: block; font-size: 12px; color: #9fd8e6; font-weight: 600; margin-bottom: 2px; }
+
+  /* ---------- Layout ---------- */
+  main { max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
+
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: -30px auto 48px;
+    font-family: var(--sans);
+  }
+  nav.toc h2 {
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--navy);
+    margin: 0 0 12px;
+  }
+  nav.toc ol {
+    columns: 2;
+    -webkit-columns: 2;
+    margin: 0;
+    padding-left: 20px;
+    font-size: 14px;
+  }
+  nav.toc li { margin-bottom: 7px; break-inside: avoid; }
+  nav.toc a { color: var(--ink-soft); text-decoration: none; }
+  nav.toc a:hover { color: var(--teal); }
+
+  section { margin-bottom: 52px; }
+
+  h2 {
+    font-family: var(--sans);
+    font-size: 24px;
+    color: var(--navy);
+    border-bottom: 3px solid var(--teal);
+    padding-bottom: 10px;
+    margin: 0 0 20px;
+    scroll-margin-top: 20px;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 17px;
+    color: var(--teal);
+    margin: 28px 0 10px;
+    scroll-margin-top: 20px;
+  }
+  h3 .num {
+    display: inline-block;
+    background: var(--teal-soft);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  p { margin: 0 0 14px; text-align: justify; color: var(--ink); }
+  ul, ol.plain { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 6px; }
+
+  strong { color: var(--navy); }
+
+  /* Callout boxes */
+  .box {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15.5px;
+  }
+  .box p:last-child { margin-bottom: 0; }
+  .box-strength { background: #eef8ee; border-left: 4px solid #3a9b4f; }
+  .box-strength .label { color: #2f7a3f; }
+  .box-risk { background: #fdf3ec; border-left: 4px solid #d97f3d; }
+  .box-risk .label { color: #b5652a; }
+  .box-note { background: var(--teal-soft); border-left: 4px solid var(--teal); }
+  .box-note .label { color: var(--navy); }
+  .box .label {
+    display: block;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 14.5px;
+    font-family: var(--sans);
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 10px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  tr:nth-child(even) td { background: var(--panel); }
+
+  /* Site cards for section grouping */
+  .site-chip {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 12px;
+    background: var(--navy);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  code {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', Consolas, monospace;
+  }
+
+  hr.section-rule {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 48px 0;
+  }
+
+  blockquote {
+    margin: 16px 0;
+    padding: 4px 20px;
+    border-left: 3px solid var(--teal);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .verdict {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 12px;
+    padding: 32px 30px;
+  }
+  .verdict h2 {
+    color: #fff;
+    border-bottom-color: rgba(255,255,255,0.3);
+  }
+  .verdict p { color: rgba(255,255,255,0.92); text-align: left; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 20px;
+    padding: 28px 0 60px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    nav.toc ol { columns: 1; }
+    body { font-size: 16px; }
+    header.masthead { padding: 48px 18px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="kicker">Project Evaluation · Clinical AI Education</div>
+    <h1 class="title">VibeRounds &amp; the Clinical Cognition Operating System</h1>
+    <p class="subtitle">An expert clinical-education and AI-systems review of a Socratic, prompt-based learning stack — from a single "AI that questions" philosophy to a composable, 57-module reasoning pipeline.</p>
+    <div class="meta-row">
+      <span><strong>Creator</strong>Dr. Avinash Kumar Gupta · June 2026</span>
+      <span><strong>Report date</strong>July 19, 2026</span>
+      <span><strong>License</strong>CC BY 4.0</span>
+      <span><strong>Sites reviewed</strong>5</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<nav class="toc" aria-label="Table of contents">
+  <h2>On this page</h2>
+  <ol>
+    <li><a href="#summary">Executive summary</a></li>
+    <li><a href="#site1">Site 1 — Philosophy, Socratic Learning &amp; Guided Discovery</a></li>
+    <li><a href="#site4">Site 4 — The 57-module prompt library</a></li>
+    <li><a href="#site2">Site 2 — Clinical Cognition course</a></li>
+    <li><a href="#site3">Site 3 — Evidence-Based Medicine course</a></li>
+    <li><a href="#site5">Site 5 — The Ward Chart courseware</a></li>
+    <li><a href="#systems">Cross-cutting systems assessment</a></li>
+    <li><a href="#strengths">Consolidated strengths</a></li>
+    <li><a href="#risks">Consolidated risks</a></li>
+    <li><a href="#verdict">Overall verdict</a></li>
+  </ol>
+</nav>
+
+<section id="summary">
+  <h2>Executive Summary</h2>
+  <p>VibeRounds is a self-published, Creative-Commons-licensed educational framework that repositions large language models as <strong>Socratic attendings</strong> rather than answer engines. Instead of a single prompt or app, it is architected as a six-layer <strong>"Learning Stack"</strong>: a foundational MBBS curriculum layer (the Ward Chart), a philosophy layer, a pedagogical-framework layer, a 57-module prompt library, two structured courses (Clinical Cognition and Evidence-Based Medicine), and an emerging <strong>Clinical Cognition Operating System (CCOS)</strong> that treats modules as composable, sequenceable pipelines rather than one-off prompts.</p>
+  <p>The project's core insight — that the biggest risk of AI in medical education is <em>premature cognitive offloading</em>, and that this can be engineered around with explicit answer-withholding constraints — is pedagogically well-grounded and mapped deliberately onto Stage 3 (Socratic) and Stage 4 (Guided Discovery) of the classic instructor-centered → learner-centered teaching spectrum.</p>
+  <div class="box box-note">
+    <span class="label">Maturity, by the project's own admission</span>
+    <p>Curriculum mapping (Ward Chart): <strong>High</strong> maturity — all 19 subjects now have full chapter-level topic pages. AI-augmented education: <strong>High</strong> maturity. Guided-discovery research workflow: <strong>Medium</strong>. Bedside decision support / EMR &amp; FHIR integration: <strong>Early / concept stage</strong>.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="site1">
+  <span class="site-chip">Site 1 · avi33tbtt.github.io</span>
+  <h2>Philosophy, Socratic Learning, Guided Discovery &amp; the CCOS Builder</h2>
+
+  <h3><span class="num">1.A</span>Socratic Learning</h3>
+  <p>The site anchors itself explicitly at <strong>Stage 3 — "Socratic: The Stress Test"</strong> of a five-stage pedagogical spectrum (Lecture → Dyadic → Socratic → Guided Discovery → Research). The core rule — <em>"AI that questions, not AI that answers"</em> — is operationalized through ten explicit constraints, including forced commitment before any hint, a deliberate pause before guidance, tiered hints (framework → narrowed direction → partial answer), reasoning graded on logic and stated uncertainty rather than correctness alone, and an answer-withholding policy that only releases the full answer after a genuine attempt or explicit surrender.</p>
+  <div class="box box-strength">
+    <span class="label">Strength</span>
+    <p>This directly targets <em>automation bias</em> — the tendency for learners to accept AI output uncritically — by mechanically preventing the AI from shortcutting the learner's own reasoning process.</p>
+  </div>
+  <div class="box box-risk">
+    <span class="label">Risk</span>
+    <p>Socratic AI can degenerate into "guess what the model is thinking." Its effectiveness depends entirely on how tightly a given LLM adheres to a persona prompt across a long session — see the prompt-drift discussion below.</p>
+  </div>
+
+  <h3><span class="num">1.B</span>Guided Discovery</h3>
+  <p>Framed as <strong>Stage 4</strong> of the same spectrum, this uses a scaffolded environment where parameters are set so a learner is <em>likely</em> — not guaranteed — to reach the correct conclusion. The site describes it as <em>"an MRI for clinical thinking"</em>: rather than asking what the diagnosis is, it asks how clinical thinking moves from uncertainty to understanding, via three building blocks — <strong>Modules</strong> (single cognitive lenses), <strong>Agents</strong> (orchestrated multi-framework runs), and <strong>Pipelines</strong> (ordered chains of modules/agents, e.g. <code>1 → 12 → 9 → 21 → 35</code>) — moving through a six-stage Discovery Journey from Observation to Metacognitive Reflection.</p>
+  <div class="box box-strength">
+    <span class="label">Strength</span>
+    <p>Tiered hints map cleanly onto Vygotsky's Zone of Proximal Development — the learner struggles within a bounded, supported space rather than being told the answer or left without scaffolding.</p>
+  </div>
+
+  <h3><span class="num">1.C</span>CCOS Builder — Running in Analytics Mode</h3>
+  <p>An interactive Module Order Builder lets a learner select modules in the order they'll run them against a case, returning a plain-language read on the likely "analytic yield" of that chain. Three worked patterns are demonstrated with linked transcripts: a single-module <strong>Analytics Mode</strong> run, a <strong>Targeted Clinical Pipeline</strong> chaining several modules, and the <strong>Full Guided Discovery Agent</strong> run in one pass — describing an architectural evolution from a flat Gen&nbsp;I prompt library through to Gen&nbsp;V, a six-layer "Clinical Cognition Operating System" including an explicit epistemic trust layer (hallucination calibration, prioritized claim verification, a conservative→maximal decision spectrum, multi-domain confidence calibration).</p>
+  <div class="box box-risk">
+    <span class="label">Risk</span>
+    <p>The site itself labels bedside clinical decision support — where FHIR/EMR integration would live — as <strong>"Early stage, pre-implementation."</strong> Chained pipelines currently depend on the underlying LLM outputting clean, structured text between steps, with no evidence of enforced schema validation between modules.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="site4">
+  <span class="site-chip">Site 4 · avi33tbtt.github.io/Prompts/</span>
+  <h2>The 57-Module Prompt Library &amp; Frameworks</h2>
+  <p>The Prompts site hosts 57 reasoning modules, each following the same <strong>Initiation → Execution → Closure</strong> lifecycle, organized under four cross-cutting pedagogical frameworks:</p>
+
+  <table>
+    <thead>
+      <tr><th>Framework</th><th>Function</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>A — Humanistic Persona</strong></td><td>Builds clinical confidence alongside competence. Key rule: specific affirmation before challenge — naming the exact reasoning move, since challenge without affirmation triggers defensive cognition.</td></tr>
+      <tr><td><strong>B — Fink's Taxonomy (FLINK)</strong></td><td>Six non-hierarchical learning dimensions — foundational knowledge, application, integration, human dimension, caring, learning-how-to-learn — applied at closure for durable, transferable insight.</td></tr>
+      <tr><td><strong>C — Bloom's Revised Taxonomy</strong></td><td>Six cognitive levels (Remember → Create) mapped to clinical reasoning tasks, used to calibrate difficulty between sessions.</td></tr>
+      <tr><td><strong>D — Critical Awareness Framework</strong></td><td>A standing closing prompt naming the biases the framework itself is susceptible to — automation bias, anchoring, hallucination risk, rare-diagnosis overweighting — the protocol auditing itself by design.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box box-strength">
+    <span class="label">Strength — self-auditing design</span>
+    <p>Framework D is a notable choice: rather than simply claiming safety, the stack builds in a recurring, structural prompt that forces the AI — and the learner — to interrogate the framework's own failure modes at the end of every session.</p>
+  </div>
+  <div class="box box-risk">
+    <span class="label">Risk — uneven maturity</span>
+    <p>The Prompts site states directly that "some components are mature and ready for self-directed use; others are explicitly experimental" — a candid admission rather than a glossed-over gap.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="site2">
+  <span class="site-chip">Site 2 · avi33tbtt.github.io/cc/</span>
+  <h2>Clinical Cognition, From First Principles</h2>
+  <p>A 13-lesson course (plus 5 elective modules), built from the 57-module library and dual-tracked for clinicians and technical readers. Lessons 1–9 build the core loop — observation, differential-building, bias auditing, patient advocacy, analytics at scale, safety/FMEA, evidence calibration, and one full case run start to finish. Lessons 10–13 extend it into meta-cognition, healthcare systems &amp; operations, precision medicine, and clinical wisdom &amp; mastery.</p>
+  <blockquote>The move from <em>pattern recognition</em> (what a diagnosis looks like) to making the reasoning process itself visible and auditable is the correct diagnosis of the actual bottleneck in clinical training.</blockquote>
+  <p>Applying engineering rigor — Failure Mode and Effects Analysis, borrowed from reliability engineering — to clinical reasoning is a genuinely useful cross-disciplinary transplant, reframing diagnostic error as a systems-reliability problem rather than a purely individual failure. Lesson 13's instruction to periodically "uncompress" one's expert intuition is a mature, non-obvious teaching point: expert shortcuts are efficient precisely because they are compressed, and compression is also how bias hides.</p>
+</section>
+
+<hr class="section-rule">
+
+<section id="site3">
+  <span class="site-chip">Site 3 · avi33tbtt.github.io/ebm/</span>
+  <h2>Evidence-Based Medicine, From First Principles</h2>
+  <p>A 9-lesson course teaching critical appraisal "the way a clinician actually thinks — starting with a patient, not a p-value," running from history-taking and spotting misinformation, through PICO questions and RCT appraisal (ARR, RRR, NNT), systematic reviews, diagnostic test statistics, prognosis/harm studies, guideline appraisal (GRADE), and a statistics deep-dive, to a single full patient case tying the course together.</p>
+  <p>A <strong>Techie Summary</strong> translates EBM into software-engineering language (PICO as a search schema, RCTs as A/B tests, GRADE as test-coverage-vs-ship-decision), and an LLM prompt library supports each appraisal stage under one hard rule:</p>
+  <div class="box box-note">
+    <span class="label">Operating rule</span>
+    <p>"The LLM drafts, you verify every number and citation against the source" — the correct safeguard against hallucinated statistics or citations being taken at face value.</p>
+  </div>
+  <p>Lesson 8's <strong>surrogate-endpoint</strong> teaching point targets a common technical-audience error: mistaking a statistically significant change in a surrogate marker (e.g. a lab value) for a change in a patient-oriented outcome (e.g. mortality) — arguably the single most valuable lesson for a non-clinical audience handling clinical data.</p>
+</section>
+
+<hr class="section-rule">
+
+<section id="site5">
+  <span class="site-chip">Site 5 · avi33tbtt.github.io/courseware/</span>
+  <h2>The Ward Chart — Foundational Curriculum Layer</h2>
+  <p>The newest addition to the stack is not a reasoning tool but a curriculum map: <strong>19 subjects and 190 chapters</strong> of the standard MBBS syllabus, laid out as a single rotation chart spanning 4 pre-clinical, and 15 para-clinical/clinical, subjects — from Anatomy, Physiology, and Biochemistry through Pathology, Pharmacology, Microbiology, Forensic Medicine, and Community Medicine, into the clinical disciplines (Medicine, Surgery, OBG, Paediatrics, Orthopaedics, Psychiatry, Emergency Medicine, and the surgical/sensory specialties). Each subject is evenly divided into 10 chapters, giving the whole chart a deliberately uniform, ten-part rhythm regardless of a subject's actual depth.</p>
+  <p>Every one of the 19 subjects now opens into full chapter-level topic pages, giving the chart genuine depth rather than a title-only index. The site frames itself explicitly as prerequisite infrastructure — <em>"the map, not the reasoning"</em> — with every chapter designed to be fed into a Vibe Rounds Socratic case rather than read as reference text on its own.</p>
+  <div class="box box-strength">
+    <span class="label">Strength — closes the content-source gap</span>
+    <p>Earlier layers of the stack (the 57 modules, the CC and EBM courses) assumed a clinical topic or case as input without specifying where that topic comes from. The Ward Chart supplies that missing foundation: a complete, standard-curriculum index — now fully built out to chapter-level topic pages across all 19 subjects — that any prompt can point at.</p>
+  </div>
+  <div class="box box-risk">
+    <span class="label">Risk — uniform structure over true weighting</span>
+    <p>The uniform "10 chapters per subject" structure is an organizing convenience rather than a reflection of true syllabus weighting — Community Medicine and General Medicine, for instance, cover materially more ground than 10 chapters each would suggest. Depth of each chapter-level topic page also likely varies by subject and merits periodic review as the chart matures.</p>
+  </div>
+</section>
+
+<hr class="section-rule">
+
+<section id="systems">
+  <h2>Cross-Cutting Systems Assessment</h2>
+
+  <h3>Task decomposition over mega-prompts</h3>
+  <p>Breaking clinical reasoning into 57 single-objective modules rather than one large prompt avoids the "lost in the middle" problem, where instructions buried deep in a long context window are under-attended to by a transformer's attention mechanism — a manual, human-in-the-loop analogue of chain-of-thought / tree-of-thought prompting.</p>
+
+  <h3>Prompt drift across a session</h3>
+  <p>Running several modules sequentially in one chat thread grows the context window and increases the risk that the model drifts away from the Socratic constraints set at the start — reverting toward its default, answer-first behavior. Published defenses (constraint restatement, the Critical Awareness Framework's closing audit) mitigate but do not structurally eliminate this, since they still rely on the model honoring a natural-language instruction rather than an enforced state machine.</p>
+
+  <h3>Overriding RLHF-driven helpfulness bias</h3>
+  <p>Instructing a model <em>not</em> to simply answer runs against typical RLHF-tuned behavior, which optimizes toward immediately resolving the user's request. The tiered-hint and answer-withholding constraints function as a persona-level override — a sound practical mitigation, though reliability will vary by which underlying model runs a given persona prompt.</p>
+
+  <h3>Data-layer maturity gap</h3>
+  <p>Chaining modules programmatically requires each module's output to be clean and machine-parseable so the next module receives usable input. The project's own maturity map places FHIR/EMR integration at "Early/Concept," meaning today's pipelines run on free-text LLM output passed between steps rather than validated structured data.</p>
+</section>
+
+<hr class="section-rule">
+
+<section id="strengths">
+  <h2>Consolidated Strengths</h2>
+  <ol class="plain">
+    <li>Correctly identifies premature cognitive offloading / automation bias as the central risk of AI in clinical education, and engineers concrete countermeasures rather than treating it as a vague concern.</li>
+    <li>Deliberate, theory-grounded placement on a recognized pedagogical spectrum, rather than an ad hoc claim to be "Socratic."</li>
+    <li>Layered architecture — frameworks → modules → lifecycle → courses → CCOS pipelines — is more maintainable and auditable than a flat prompt collection.</li>
+    <li>A framework that explicitly audits its own failure modes (Framework D) is an uncommon and valuable design choice.</li>
+    <li>The EBM course's "LLM drafts, human verifies" rule and its surrogate-endpoint emphasis directly target two of the most common and consequential errors technical teams make with medical data.</li>
+    <li>Extensive self-documentation: 57 modules, 22 lessons across two courses, multiple demos with linked AI transcripts, and a growing set of preprints describing the architecture's own evolution.</li>
+    <li>The new Ward Chart layer supplies a missing piece — a complete, standard MBBS curriculum index (19 subjects, 190 chapters, all now with full chapter-level topic pages) that anchors the reasoning stack to a recognized syllabus rather than an ad hoc set of topics.</li>
+  </ol>
+</section>
+
+<section id="risks">
+  <h2>Consolidated Risks &amp; Open Questions</h2>
+  <ol class="plain">
+    <li><strong>Unvalidated at scale.</strong> Nearly all supporting evidence is small-N and self-run; the project's own maturity map rates most of it "Medium" or "Early" outside the education domain.</li>
+    <li><strong>Prompt drift</strong> in multi-module chat sessions is a structural risk that natural-language constraints alone cannot fully close.</li>
+    <li><strong>No enforced data schema</strong> between chained modules yet — pipelines depend on the LLM's discipline in following formatting instructions, not validated structured output.</li>
+    <li><strong>Self-graded rigor.</strong> Claims of being "hallucination-aware" or providing "epistemic calibration" are architectural design goals described in the project's own materials; independent verification was not available in the sites reviewed.</li>
+    <li><strong>Explicitly not a clinical tool.</strong> Both the main site and the CCOS Builder repeatedly disclaim clinical use — this is a learning/rehearsal system, and every generated output is stated to require independent clinical verification.</li>
+  </ol>
+</section>
+
+<section id="verdict" class="verdict">
+  <h2>Overall Verdict</h2>
+  <p>VibeRounds is a structurally ambitious, well-documented, and pedagogically literate attempt to formalize what an expert clinical teacher does implicitly — question rather than tell — into a reusable, prompt-based system, and then to extend that system from a single Socratic conversation into a composable "operating system" for clinical reasoning.</p>
+  <p>Its strongest layer is the education / Socratic-questioning domain, which the project itself rates as its most mature. Its most speculative layer is the analytics/pipeline "CCOS" vision — architecturally coherent on paper but still dependent on unvalidated data-structuring assumptions and on the underlying LLM's willingness to sustain a persona across a long session.</p>
+  <p>As a self-directed learning stack for clinicians, medical students, and technical teams working alongside clinical data, it is a genuinely differentiated resource; as a claim to be an "operating system," a work in progress but currently better described as an actively-evolving architecture with a working prompt library at its center. The addition of the Ward Chart shows the project actively filling in its own gaps — grounding the reasoning layers in a recognized curriculum, now with all nineteen subjects built out to full chapter-level topic pages, rather than leaving "what to reason about" implicit.</p>
+</section>
+
+</main>
+
+<footer>
+  Report compiled from direct review of the five cited sites as of July 19, 2026.<br>
+  Source material: <a href="https://avi33tbtt.github.io" target="_blank" rel="noopener">avi33tbtt.github.io</a> ·
+  <a href="https://avi33tbtt.github.io/cc/" target="_blank" rel="noopener">/cc/</a> ·
+  <a href="https://avi33tbtt.github.io/ebm/" target="_blank" rel="noopener">/ebm/</a> ·
+  <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" rel="noopener">/Prompts/</a> ·
+  <a href="https://avi33tbtt.github.io/courseware/index.html" target="_blank" rel="noopener">/courseware/</a><br>
+  Licensed CC BY 4.0, attributed to Dr. Avinash Kumar Gupta, June 2026.
+</footer>
+
+</body>
+</html>
