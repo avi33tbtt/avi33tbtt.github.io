@@ -1,0 +1,56 @@
+// concepts-signs.js
+// Concept pool of examination signs used in disease profiles, keyed by id.
+// This is separate from clinical-findings-data.js (the large browsable sign/
+// system reference list) — this pool only holds signs actually wired into a
+// disease profile, so it doubles as the node list for the signs side of the graph.
+// TO ADD: reuse an existing id if the same sign applies elsewhere; otherwise add one.
+
+const SIGNS = {
+  "mcburneys-point-tenderness": "McBurney's point tenderness",
+  "rovsings-sign": "Rovsing's sign",
+  "psoas-sign": "Psoas sign",
+  "obturator-sign": "Obturator sign",
+  "rebound-tenderness": "Rebound tenderness",
+  "guarding": "Guarding",
+  "levines-sign": "Levine's sign",
+  "third-heart-sound-s3-gallop": "Third heart sound (S3 gallop)",
+  "bradycardia": "Bradycardia",
+  "hypotension": "Hypotension",
+  "raised-jugular-venous-pressure": "Raised jugular venous pressure",
+  "coarse-crackles": "Coarse crackles",
+  "bronchial-breathing": "Bronchial breathing",
+  "digital-clubbing-respiratory-cause": "Digital clubbing (respiratory cause)",
+  "cachexia": "Cachexia",
+  "fever": "Fever",
+  "acanthosis-nigricans": "Acanthosis nigricans",
+  "delayed-capillary-refill": "Delayed capillary refill",
+  "peripheral-edema": "Peripheral edema",
+  "xerosis-dry-skin": "Xerosis (dry skin)",
+  "dull-percussion-note": "Dull percussion note",
+  "increased-tactile-fremitus": "Increased tactile fremitus",
+  "egophony": "Egophony",
+  "tachypnea": "Tachypnea",
+  "pallor": "Pallor",
+  "hypertension": "Hypertension",
+  "uremic-fetor": "Uremic fetor",
+  "anasarca": "Anasarca",
+  "kernigs-sign": "Kernig's sign",
+  "brudzinskis-sign": "Brudzinski's sign",
+  "altered-mental-status": "Altered mental status",
+  "petechial-rash-meningococcemia": "Petechial rash (meningococcemia)",
+  "spider-angiomata": "Spider angiomata",
+  "palmar-erythema": "Palmar erythema",
+  "jaundice": "Jaundice",
+  "asterixis": "Asterixis",
+  "caput-medusae": "Caput medusae",
+  "ascites": "Ascites",
+  "swan-neck-deformity": "Swan neck deformity",
+  "boutonniere-deformity": "Boutonniere deformity",
+  "ulnar-deviation": "Ulnar deviation",
+  "rheumatoid-nodules": "Rheumatoid nodules",
+  "joint-swelling-symmetric": "Joint swelling (symmetric)",
+  "facial-asymmetry": "Facial asymmetry",
+  "hemiparesis": "Hemiparesis",
+  "babinski-sign-extensor": "Babinski sign (extensor)",
+  "dysarthria": "Dysarthria"
+};
