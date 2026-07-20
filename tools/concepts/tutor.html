@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Reasoning Tutor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load the data file here -->
+    <script src="disease-relations-data.js"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .correct { background-color: #dcfce7 !important; color: #166534 !important; border-color: #22c55e !important; }
+        .incorrect { background-color: #fee2e2 !important; color: #991b1b !important; border-color: #ef4444 !important; }
+        .trap-btn.selected { border: 2px solid #3b82f6; background-color: #eff6ff; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight">🩺 Reasoning Tutor</h1>
+            <div class="text-sm bg-indigo-800 px-3 py-1 rounded-full border border-indigo-700 shadow-inner" id="score-display">
+                Score: 0
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation & Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full flex flex-col md:flex-row gap-6">
+        
+        <!-- Sidebar Menu -->
+        <aside class="w-full md:w-64 shrink-0">
+            <nav class="flex flex-col gap-2" id="nav-menu">
+                <!-- Populated by JS -->
+            </nav>
+        </aside>
+
+        <!-- Drill Container -->
+        <section class="flex-grow bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 relative fade-in" id="drill-container">
+            <div class="text-center text-slate-500 py-12">Loading tutor modules...</div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. CORE STATE & UTILITIES ---
+        let score = 0;
+        let diseases = [];
+        
+        const MODULES = [
+            { id: 'diffDx', name: '🔍 Differential Dx Drill', render: renderDiffDx },
+            { id: 'recall', name: '🧠 Symptom Recall', render: renderRecall },
+            { id: 'investigations', name: '🧪 Investigation Chooser', render: renderInvestigations },
+            { id: 'redFlags', name: '🚩 Red Flag Spotter', render: renderRedFlags },
+            { id: 'management', name: '💊 Management Match', render: renderManagement },
+            { id: 'contraindication', name: '⚠️ Contraindication Trap', render: renderContraindication },
+            { id: 'complications', name: '📉 Complications', render: renderComplications },
+            { id: 'riskFactors', name: '🎲 Risk Factors', render: renderRiskFactors },
+            { id: 'vignette', name: '📝 Vignette Generator', render: renderVignette }
+        ];
+
+        let currentModuleId = MODULES[0].id;
+
+        // Formats kebab-case IDs into readable text
+        function formatId(id) {
+            if (!id) return '';
+            return id.split('-').join(' ').replace(/^\w/, c => c.toUpperCase());
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function getRandomDiseases(count, filterFn = () => true) {
+            const filtered = diseases.filter(filterFn);
+            return shuffle([...filtered]).slice(0, count);
+        }
+
+        function updateScore(points) {
+            score += points;
+            document.getElementById('score-display').innerText = `Score: ${score}`;
+        }
+
+        function setFeedback(elementId, isCorrect, message) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = `<div class="p-4 rounded-lg mt-4 ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${message}</div>`;
+            el.classList.remove('hidden');
+        }
+
+        // --- 2. INITIALIZATION ---
+        window.onload = () => {
+            if (typeof DISEASE_RELATIONS === 'undefined') {
+                document.getElementById('drill-container').innerHTML = `<div class="text-red-600 font-bold">Error: DISEASE_RELATIONS data not found. Please ensure 'disease-relations-data.js' is loaded.</div>`;
+                return;
+            }
+            diseases = Object.keys(DISEASE_RELATIONS);
+            initNav();
+            loadModule(currentModuleId);
+        };
+
+        function initNav() {
+            const nav = document.getElementById('nav-menu');
+            nav.innerHTML = MODULES.map(mod => `
+                <button onclick="loadModule('${mod.id}')" 
+                        id="nav-${mod.id}"
+                        class="w-full text-left px-4 py-3 rounded-lg font-medium transition-colors border ${currentModuleId === mod.id ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'border-transparent text-slate-600 hover:bg-slate-100'}">
+                    ${mod.name}
+                </button>
+            `).join('');
+        }
+
+        function loadModule(moduleId) {
+            currentModuleId = moduleId;
+            document.querySelectorAll('#nav-menu button').forEach(btn => {
+                btn.className = 'w-full text-left px-4 py-3 rounded-lg font-medium transition-colors border border-transparent text-slate-600 hover:bg-slate-100';
+            });
+            document.getElementById(`nav-${moduleId}`).className = 'w-full text-left px-4 py-3 rounded-lg font-medium transition-colors border bg-indigo-50 border-indigo-200 text-indigo-700';
+            
+            const container = document.getElementById('drill-container');
+            container.innerHTML = '';
+            
+            // Re-trigger animation
+            container.classList.remove('fade-in');
+            void container.offsetWidth; // trigger reflow
+            container.classList.add('fade-in');
+
+            const mod = MODULES.find(m => m.id === moduleId);
+            if (mod) mod.render(container);
+        }
+
+        // --- 3. DRILL IMPLEMENTATIONS ---
+
+        // Drill: Differential Diagnosis
+        function renderDiffDx(container) {
+            const options = getRandomDiseases(4);
+            const target = options[0]; // Correct answer
+            const data = DISEASE_RELATIONS[target];
+            shuffle(options);
+
+            const findings = [...data.symptoms, ...data.signs];
+            const presentation = findings.length > 0 ? findings.slice(0, 4).map(formatId).join(', ') : "Incidental presentation";
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Differential Diagnosis Drill</h2>
+                <p class="text-slate-600 mb-6">A patient presents with the following findings:</p>
+                <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg mb-6 shadow-sm">
+                    <p class="font-medium text-lg leading-relaxed text-slate-800 capitalize">${presentation}</p>
+                </div>
+                <p class="text-sm font-semibold text-slate-500 mb-3 uppercase tracking-wider">Select the most likely diagnosis:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="diff-options"></div>
+                <div id="diff-feedback" class="hidden"></div>
+                <button onclick="loadModule('diffDx')" class="mt-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            const optsContainer = document.getElementById('diff-options');
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 border border-slate-300 rounded-lg hover:border-indigo-400 hover:bg-indigo-50 text-left font-medium transition-colors";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    const isCorrect = opt === target;
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    updateScore(isCorrect ? 10 : -5);
+                    setFeedback('diff-feedback', isCorrect, isCorrect ? `Correct! ${target} is the right diagnosis.` : `Incorrect. The correct diagnosis was ${target}.`);
+                    Array.from(optsContainer.children).forEach(c => c.disabled = true);
+                };
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        // Drill: Symptom Recall
+        function renderRecall(container) {
+            const target = getRandomDiseases(1)[0];
+            const data = DISEASE_RELATIONS[target];
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Symptom & Sign Recall</h2>
+                <p class="text-slate-600 mb-6">Mentally recall the classical presentation for:</p>
+                <div class="text-2xl font-bold text-indigo-900 text-center py-10 bg-indigo-50 border border-indigo-100 rounded-lg mb-6 shadow-inner">
+                    ${target}
+                </div>
+                <button id="reveal-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm transition-colors mb-4">Reveal Answers</button>
+                
+                <div id="recall-answers" class="hidden space-y-4">
+                    <div><h3 class="font-bold text-slate-700 border-b pb-1 mb-2">Symptoms</h3>
+                        <ul class="list-disc pl-5 text-slate-600">${data.symptoms.map(s => `<li>${formatId(s)}</li>`).join('') || '<li>None</li>'}</ul>
+                    </div>
+                    <div><h3 class="font-bold text-slate-700 border-b pb-1 mb-2">Signs</h3>
+                        <ul class="list-disc pl-5 text-slate-600">${data.signs.map(s => `<li>${formatId(s)}</li>`).join('') || '<li>None</li>'}</ul>
+                    </div>
+                    <button onclick="loadModule('recall')" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Disease ➔</button>
+                </div>
+            `;
+
+            document.getElementById('reveal-btn').onclick = function() {
+                this.classList.add('hidden');
+                document.getElementById('recall-answers').classList.remove('hidden');
+                updateScore(2); // Participation points
+            };
+        }
+
+        // Drill: Investigation Chooser
+        function renderInvestigations(container) {
+            // Find a disease that actually has investigations
+            const valid = diseases.filter(d => DISEASE_RELATIONS[d].investigations.length > 0);
+            const target = getRandomElement(valid);
+            const data = DISEASE_RELATIONS[target];
+            
+            const correctInvs = data.investigations;
+            const wrongInvs = [
+                "mri-brain-with-contrast", "esophageal-manometry", "bone-marrow-biopsy", "barium-swallow", 
+                "lumbar-puncture", "dexa-scan", "colonoscopy", "holter-monitor"
+            ].filter(w => !correctInvs.includes(w));
+            
+            const options = shuffle([...correctInvs, ...shuffle(wrongInvs).slice(0, 4)]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Investigation Chooser</h2>
+                <p class="text-slate-600 mb-4">Select the appropriate <b>first-line investigations</b> for a patient suspected of having:</p>
+                <div class="text-xl font-semibold text-center py-4 bg-slate-100 rounded mb-6">${target}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6" id="inv-options">
+                    ${options.map(opt => `
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 cursor-pointer trap-btn">
+                            <input type="checkbox" value="${opt}" class="mr-3 h-5 w-5 text-indigo-600">
+                            <span class="capitalize text-slate-700 font-medium">${formatId(opt)}</span>
+                        </label>
+                    `).join('')}
+                </div>
+                <button id="submit-inv" class="px-6 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 transition-colors">Submit Workup</button>
+                <div id="inv-feedback" class="hidden mt-4"></div>
+                <button onclick="loadModule('investigations')" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            // UI toggle styling
+            document.querySelectorAll('#inv-options label').forEach(lbl => {
+                lbl.querySelector('input').addEventListener('change', function() {
+                    lbl.classList.toggle('selected', this.checked);
+                });
+            });
+
+            document.getElementById('submit-inv').onclick = () => {
+                const selected = Array.from(document.querySelectorAll('#inv-options input:checked')).map(i => i.value);
+                const isPerfect = selected.length === correctInvs.length && selected.every(s => correctInvs.includes(s));
+                
+                let feedbackStr = `<b>Correct first-line investigations:</b><ul class="list-disc pl-5 mb-2">${correctInvs.map(c => `<li>${formatId(c)}</li>`).join('')}</ul>`;
+                
+                if (isPerfect) {
+                    updateScore(15);
+                    setFeedback('inv-feedback', true, `Excellent workup! No over-ordering.<br><br>${feedbackStr}`);
+                } else {
+                    updateScore(-5);
+                    setFeedback('inv-feedback', false, `Suboptimal workup.<br><br>${feedbackStr}`);
+                }
+                document.getElementById('submit-inv').disabled = true;
+            };
+        }
+
+        // Drill: Red Flag Spotter
+        function renderRedFlags(container) {
+            const valid = diseases.filter(d => DISEASE_RELATIONS[d].redFlags && DISEASE_RELATIONS[d].redFlags.length > 0);
+            const target = getRandomElement(valid);
+            const data = DISEASE_RELATIONS[target];
+            
+            const redFlags = data.redFlags;
+            const benign = [...data.symptoms, ...data.signs].slice(0, 4);
+            const options = shuffle([...redFlags, ...benign]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Red Flag Spotter</h2>
+                <p class="text-slate-600 mb-4">Patient has ${target}. Which of the following findings are <b>Red Flags</b> indicating severe disease or alternative dangerous diagnosis?</p>
+                <div class="space-y-3 mb-6" id="rf-options">
+                    ${options.map(opt => `
+                        <button class="w-full text-left p-4 border rounded-lg hover:bg-slate-50 font-medium transition-colors" data-id="${opt}">
+                            ${formatId(opt)}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="rf-feedback" class="hidden"></div>
+                <button onclick="loadModule('redFlags')" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            let clicked = 0;
+            document.querySelectorAll('#rf-options button').forEach(btn => {
+                btn.onclick = () => {
+                    const id = btn.getAttribute('data-id');
+                    if (redFlags.includes(id)) {
+                        btn.classList.add('correct');
+                        updateScore(5);
+                        clicked++;
+                        if (clicked === redFlags.length) {
+                            setFeedback('rf-feedback', true, "You spotted all the red flags!");
+                        }
+                    } else {
+                        btn.classList.add('incorrect');
+                        updateScore(-2);
+                        setFeedback('rf-feedback', false, "Careful, that is a standard symptom/sign, not a red flag.");
+                    }
+                };
+            });
+        }
+
+        // Drill: Management Match
+        function renderManagement(container) {
+            const target = getRandomDiseases(1)[0];
+            const data = DISEASE_RELATIONS[target];
+            
+            // Collect all management keys that have items
+            const mgmtTypes = Object.keys(data.management).filter(k => data.management[k].length > 0);
+            if(mgmtTypes.length === 0) return loadModule('management'); // Retry if none
+            
+            const typeToTest = getRandomElement(mgmtTypes);
+            const correctAns = getRandomElement(data.management[typeToTest]);
+            
+            // Get wrong answers from other diseases
+            let wrongOptions = [];
+            while(wrongOptions.length < 3) {
+                const randomDisease = DISEASE_RELATIONS[getRandomDiseases(1)[0]];
+                if(randomDisease.management[typeToTest].length > 0) {
+                    const wrongItem = getRandomElement(randomDisease.management[typeToTest]);
+                    if(wrongItem !== correctAns && !wrongOptions.includes(wrongItem)) {
+                        wrongOptions.push(wrongItem);
+                    }
+                }
+            }
+            
+            const options = shuffle([correctAns, ...wrongOptions]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Management Match</h2>
+                <p class="text-slate-600 mb-6">Identify the correct <b>${typeToTest}</b> management for:</p>
+                <div class="text-2xl font-bold text-center py-6 bg-slate-50 border rounded-lg mb-6 shadow-sm">${target}</div>
+                <div class="grid grid-cols-1 gap-3" id="mgmt-options">
+                    ${options.map(opt => `
+                        <button class="p-4 border rounded-lg hover:border-indigo-400 hover:bg-indigo-50 text-left font-medium transition-colors capitalize" onclick="checkMgmt('${opt}', '${correctAns}')">
+                            ${formatId(opt)}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="mgmt-feedback" class="hidden"></div>
+                <button onclick="loadModule('management')" class="mt-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+            
+            window.checkMgmt = (selected, correct) => {
+                const isCorrect = selected === correct;
+                updateScore(isCorrect ? 10 : -5);
+                setFeedback('mgmt-feedback', isCorrect, isCorrect ? "Correct!" : `Incorrect. The standard option is ${formatId(correct)}.`);
+                document.querySelectorAll('#mgmt-options button').forEach(b => b.disabled = true);
+            };
+        }
+
+        // Drill: Contraindication Trap
+        function renderContraindication(container) {
+            const valid = diseases.filter(d => DISEASE_RELATIONS[d].contraindications && DISEASE_RELATIONS[d].contraindications.length > 0);
+            if(valid.length === 0) {
+                container.innerHTML = `<h2 class="text-xl font-bold">Contraindication Trap</h2><p>No diseases with contraindications found in data.</p>`;
+                return;
+            }
+            
+            const target = getRandomElement(valid);
+            const data = DISEASE_RELATIONS[target];
+            const trap = getRandomElement(data.contraindications);
+            
+            let safeOptions = [];
+            ['pharmacology', 'surgery', 'lifestyle'].forEach(cat => {
+                if(data.management[cat]) safeOptions.push(...data.management[cat]);
+            });
+            safeOptions = shuffle(safeOptions).slice(0, 3);
+            
+            // Fallback if not enough safe options
+            while(safeOptions.length < 3) safeOptions.push(`Observation and reassurance`); 
+            
+            const options = shuffle([trap, ...safeOptions]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Contraindication Trap ⚠️</h2>
+                <p class="text-slate-600 mb-4">You are planning management for <b>${target}</b>. One of the items below is a contraindication. Find the trap!</p>
+                <div class="space-y-3 mb-6">
+                    ${options.map(opt => `
+                        <button class="w-full p-4 border rounded-lg hover:bg-slate-50 text-left font-medium transition-colors capitalize" onclick="checkTrap('${opt}', '${trap}', this)">
+                            ${formatId(opt)}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="trap-feedback" class="hidden"></div>
+                <button onclick="loadModule('contraindication')" class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            window.checkTrap = (selected, trapId, btnElement) => {
+                const isCorrect = selected === trapId;
+                updateScore(isCorrect ? 15 : -10);
+                btnElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+                setFeedback('trap-feedback', isCorrect, isCorrect ? "Excellent! You spotted the danger." : "Ouch! You missed the contraindication.");
+            };
+        }
+
+        // Drill: Complication Prediction
+        function renderComplications(container) {
+            const valid = diseases.filter(d => DISEASE_RELATIONS[d].complications && DISEASE_RELATIONS[d].complications.length > 0);
+            const target = getRandomElement(valid);
+            const correctComp = getRandomElement(DISEASE_RELATIONS[target].complications);
+            
+            let wrongComps = [];
+            while(wrongComps.length < 3) {
+                const rand = getRandomElement(valid);
+                const w = getRandomElement(DISEASE_RELATIONS[rand].complications);
+                if(w !== correctComp && !wrongComps.includes(w)) wrongComps.push(w);
+            }
+            const options = shuffle([correctComp, ...wrongComps]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Complication Prediction</h2>
+                <p class="text-slate-600 mb-6">If left untreated, which of the following is a recognized complication of <b>${target}</b>?</p>
+                <div class="grid grid-cols-1 gap-3">
+                    ${options.map(opt => `
+                        <button class="p-4 border rounded-lg hover:border-indigo-400 hover:bg-indigo-50 text-left font-medium transition-colors capitalize" onclick="checkComp('${opt}', '${correctComp}', this)">
+                            ${formatId(opt)}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="comp-feedback" class="hidden mt-4"></div>
+                <button onclick="loadModule('complications')" class="mt-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            window.checkComp = (selected, correct, btn) => {
+                const isCorrect = selected === correct;
+                btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                updateScore(isCorrect ? 10 : -5);
+                setFeedback('comp-feedback', isCorrect, isCorrect ? "Correct!" : `Incorrect. The correct complication is ${formatId(correct)}.`);
+            };
+        }
+
+        // Drill: Risk Factor Matching
+        function renderRiskFactors(container) {
+            const valid = diseases.filter(d => DISEASE_RELATIONS[d].riskFactors && DISEASE_RELATIONS[d].riskFactors.length > 0);
+            const target = getRandomElement(valid);
+            const riskFactor = getRandomElement(DISEASE_RELATIONS[target].riskFactors);
+            
+            const options = shuffle([target, ...getRandomDiseases(3, d => d !== target)]);
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Risk Factor Match</h2>
+                <p class="text-slate-600 mb-6">Which condition is strongly associated with this risk factor?</p>
+                <div class="text-xl font-bold text-center py-6 bg-rose-50 text-rose-900 border border-rose-100 rounded-lg mb-6 shadow-sm capitalize">
+                    ${formatId(riskFactor)}
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    ${options.map(opt => `
+                        <button class="p-4 border rounded-lg hover:border-indigo-400 hover:bg-indigo-50 font-medium transition-colors" onclick="checkRisk('${opt}', '${target}', this)">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="risk-feedback" class="hidden mt-4"></div>
+                <button onclick="loadModule('riskFactors')" class="mt-6 px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-medium transition-colors">Next Case ➔</button>
+            `;
+
+            window.checkRisk = (selected, correct, btn) => {
+                const isCorrect = selected === correct;
+                btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                updateScore(isCorrect ? 10 : -5);
+                setFeedback('risk-feedback', isCorrect, isCorrect ? "Spot on!" : `Incorrect. It is a risk factor for ${correct}.`);
+            };
+        }
+
+        // Utility: Vignette Generator
+        function renderVignette(container) {
+            const target = getRandomDiseases(1)[0];
+            const data = DISEASE_RELATIONS[target];
+            const sym = data.symptoms.map(formatId).join(', ');
+            const sgn = data.signs.map(formatId).join(', ');
+
+            const promptText = `Act as an expert medical educator. Create a clinical case vignette for a USMLE-style question. 
+
+The underlying diagnosis is: ${target}. 
+
+Ensure the patient presents with these symptoms: ${sym}. 
+Physical examination must reveal these signs: ${sgn}. 
+
+Do NOT state the diagnosis directly in the vignette. End the vignette by asking "What is the most likely diagnosis?" Provide the correct answer and brief rationale separately.`;
+
+            container.innerHTML = `
+                <h2 class="text-xl font-bold mb-2">Case Vignette Generator</h2>
+                <p class="text-slate-600 mb-4">Use this prompt with an LLM (like ChatGPT or Gemini) to generate high-quality practice questions for <b>${target}</b>.</p>
+                
+                <textarea id="prompt-area" class="w-full h-64 p-4 font-mono text-sm bg-slate-800 text-slate-100 rounded-lg shadow-inner focus:outline-none mb-4" readonly>${promptText}</textarea>
+                
+                <div class="flex gap-4">
+                    <button id="copy-btn" class="px-6 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 transition-colors">Copy to Clipboard</button>
+                    <button onclick="loadModule('vignette')" class="px-6 py-2 bg-slate-200 hover:bg-slate-300 rounded text-slate-700 font-bold transition-colors">Generate New</button>
+                </div>
+            `;
+
+            document.getElementById('copy-btn').onclick = function() {
+                const text = document.getElementById('prompt-area').value;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerText = 'Copied!';
+                    this.classList.replace('bg-indigo-600', 'bg-green-600');
+                    setTimeout(() => {
+                        this.innerText = 'Copy to Clipboard';
+                        this.classList.replace('bg-green-600', 'bg-indigo-600');
+                    }, 2000);
+                });
+            };
+        }
+
+    </script>
+</body>
+</html>
