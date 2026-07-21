@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>VIBE ROUNDS TERMINAL — 15F Iron Deficiency Anemia</title>
+<style>
+:root{
+  --paper:#000000;
+  --panel:#0a0a0a;
+  --ink:#e8c98a;
+  --ink-dim:#8a8a8a;
+  --rule:#333333;
+  --amber:#ff9900;
+  --amber-bright:#ffb733;
+  --green:#5fd35f;
+  --yellow:#e8c020;
+  --red:#ff5c4d;
+  --deepred:#c73a2e;
+  --navy:#111111;
+  --mono: 'IBM Plex Mono','SF Mono',Consolas,monospace;
+  --serif: 'Iowan Old Style','Georgia',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:15.5px;height:100%;min-width:1280px;}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+
+/* ===== TOP BAR ===== */
+#topbar{display:flex;align-items:center;background:var(--navy);color:var(--ink);padding:6px 14px;gap:18px;font-size:13.5px;letter-spacing:.04em;border-bottom:1px solid var(--rule);}
+#topbar .brand{font-family:var(--serif);font-weight:700;font-size:16px;letter-spacing:.02em;color:var(--amber-bright);}
+#topbar .brand span{color:#fff}
+#topbar .clock{margin-left:auto;color:var(--ink-dim);font-variant-numeric:tabular-nums;}
+#topbar .tag{border:1px solid #46607a;padding:2px 8px;border-radius:2px;color:#e8c98a;}
+
+/* ===== TICKER ===== */
+#tickerwrap{background:#000;color:#eae2c8;overflow:hidden;white-space:nowrap;border-bottom:2px solid var(--amber);position:relative;height:30px;}
+#ticker{display:inline-block;padding-left:100%;animation:scroll 600s linear infinite;font-size:14.5px;line-height:30px;}
+#tickerwrap:hover #ticker{animation-play-state:paused;}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.tick-item{margin-right:48px;}
+.tick-tag{color:var(--amber-bright);font-weight:700;margin-right:6px;}
+.tick-mode-p{color:#7fd1a4;}
+.tick-mode-v{color:#e39a9a;}
+
+/* ===== LAYOUT ===== */
+#grid{display:grid;grid-template-columns:270px 1fr 300px;grid-template-rows:auto auto;gap:10px;padding:10px;}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:2px;display:flex;flex-direction:column;min-height:0;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;background:#161616;border-bottom:1px solid var(--rule);padding:6px 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;}
+.panel-head .fn{color:var(--amber);font-weight:700;margin-right:6px;}
+.panel-body{padding:10px;overflow:auto;}
+.toggle-btn{cursor:pointer;background:none;border:1px solid var(--rule);color:var(--ink-dim);font-family:var(--mono);font-size:11.5px;padding:2px 8px;border-radius:2px;}
+.toggle-btn:hover{border-color:var(--amber);color:var(--amber);}
+.collapsed .panel-body{display:none;}
+
+/* ===== IDENTITY PANEL ===== */
+.idf{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;font-size:13.5px;margin-bottom:10px;}
+.idf b{color:var(--amber-bright)}
+.chip{display:inline-block;font-size:11.5px;border:1px solid var(--rule);padding:2px 7px;border-radius:10px;margin:2px 3px 0 0;color:var(--ink-dim);}
+.chip.warn{border-color:var(--red);color:var(--red);}
+.chip.chronic{border-color:var(--amber);color:var(--amber);}
+.section-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-dim);border-top:1px dashed var(--rule);margin-top:10px;padding-top:8px;}
+.gene-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px dotted var(--rule);}
+.gene-row .g{color:var(--amber-bright);font-weight:700;}
+
+/* ===== TIMELINE ===== */
+#timeline-controls{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
+.zoombtn{cursor:pointer;background:var(--panel);border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:13px;padding:5px 12px;border-radius:2px;}
+.zoombtn.active{background:var(--amber);color:#000;border-color:var(--amber);}
+.zoombtn:hover:not(.active){border-color:var(--amber);}
+#svgwrap{width:100%;overflow-x:auto;background:#050505;border:1px solid var(--rule);border-radius:2px;}
+svg#tl{display:block;}
+.event-dot{cursor:pointer;stroke:#050505;stroke-width:1.5;transition:r .12s ease;filter:drop-shadow(0 0 4px currentColor);}
+.event-dot:hover{stroke:var(--ink);}
+.axis-line{stroke:#666666;stroke-width:1;}
+.axis-text{font-family:var(--mono);font-size:12px;fill:var(--ink-dim);}
+.mainline{stroke:#fff500;stroke-width:3;filter:drop-shadow(0 0 3px rgba(255,245,0,.5));}
+#legend{display:flex;gap:14px;font-size:12px;color:var(--ink-dim);margin-top:6px;flex-wrap:wrap;}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+#detail{margin-top:8px;padding:8px 10px;background:#161200;border:1px solid var(--rule);border-radius:2px;font-size:13.5px;min-height:52px;}
+#detail .dtitle{font-weight:700;color:var(--amber-bright);}
+#detail .dsev{float:right;font-size:11.5px;padding:2px 8px;border-radius:8px;color:#fff;}
+
+/* ===== CASE LOGS ===== */
+.logitem{padding:7px 0;border-bottom:1px dotted var(--rule);font-size:13px;}
+.logitem .lt{color:var(--amber-bright);font-weight:700;cursor:pointer;}
+.logitem .ld{display:none;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+.logitem.open .ld{display:block;}
+.tagpill{font-size:11px;color:var(--ink-dim);border:1px solid var(--rule);padding:1px 6px;border-radius:8px;margin-left:6px;}
+
+/* ===== CAT / SUMMARIES ===== */
+.tabs{display:flex;gap:4px;margin-bottom:8px;}
+.tab{cursor:pointer;font-size:13px;padding:6px 14px;border:1px solid var(--rule);background:var(--panel);border-radius:2px 2px 0 0;color:var(--ink-dim);}
+.tab.active{background:var(--amber);color:#000;border-color:var(--amber);}
+.cat{display:none;font-size:13.5px;line-height:1.6;color:var(--ink);}
+.cat.active{display:block;}
+.cat h4{margin:10px 0 4px;color:var(--amber-bright);font-family:var(--serif);font-size:14px;}
+.cat .qbox{background:#0e1a0e;border-left:3px solid var(--green);padding:7px 11px;margin:7px 0;font-size:13px;}
+.cat .bl{background:#1a1305;border-left:3px solid var(--amber);padding:7px 11px;margin:7px 0;font-size:13px;}
+.cat table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0;}
+.cat td,.cat th{border:1px solid var(--rule);padding:4px 6px;text-align:left;}
+.cat th{background:#161616;color:var(--amber-bright);}
+
+/* ===== OPERATIONS / MODULES ===== */
+.opgroup{margin-bottom:10px;}
+.opgroup-title{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-dim);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.opgroup-title.p{color:var(--green);}
+.opgroup-title.v{color:var(--red);}
+.op-btn{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:12.5px;padding:6px 9px;margin-bottom:4px;border-radius:2px;cursor:pointer;}
+.op-btn:hover{border-color:var(--amber);background:#1a1305;}
+.op-btn b{color:var(--amber-bright)}
+#console{grid-column:1/4;background:#050505;color:#dfe8dd;border-radius:2px;border:1px solid var(--rule);}
+#console .panel-head{background:#161616;color:#8ea78f;border-bottom:1px solid var(--rule);}
+#console-body{padding:10px 14px;font-size:13.5px;line-height:1.65;min-height:420px;max-height:1320px;overflow:auto;}
+#console-body .cprompt{color:var(--amber-bright);}
+#console-body .cline{margin-bottom:8px;}
+#console-body .ctag{color:#7fd1a4;font-weight:700;}
+#console-body .ctag.v{color:#e39a9a;}
+
+.pw-item{font-size:13px;padding:5px 0;border-bottom:1px dotted var(--rule);cursor:pointer;}
+.pw-item:hover .lt{color:var(--amber)}
+.small{font-size:12px;color:var(--ink-dim);}
+footer{padding:8px 16px;font-size:10px;color:var(--ink-dim);text-align:center;border-top:1px solid var(--rule);}
+
+/* ===== SOCRATIC CHAT ===== */
+#chatlog{max-height:1680px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:78%;font-size:13.5px;line-height:1.55;padding:8px 12px;border-radius:3px;}
+.msg.user{align-self:flex-end;background:#1a1a1a;border:1px solid var(--rule);color:var(--ink);}
+.msg.bot{align-self:flex-start;background:#0e1a0e;border:1px solid #2a3d2a;color:#cfe8cf;}
+.msg.bot .qmark{color:var(--green);font-weight:700;margin-right:4px;}
+.msg .modelabel{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);margin-bottom:3px;}
+#chatinputrow{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--rule);background:#0a0a0a;}
+#chatinputrow .cprompt{color:var(--amber-bright);font-weight:700;}
+#chatinput{flex:1;background:#000;border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:13.5px;padding:7px 10px;border-radius:2px;}
+#chatinput:focus{outline:none;border-color:var(--amber);}
+#chatsend{color:var(--amber-bright);border-color:var(--amber-bright);}
+#chathint{color:var(--ink-dim);}
+
+/* ===== KNOWLEDGE GRAPH / PATHWAY EXPLORER CARDS ===== */
+.kg-card{border:1px solid var(--rule);border-radius:2px;margin-bottom:8px;background:#0a0a0a;overflow:hidden;}
+.kg-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;background:#141414;}
+.kg-head:hover{background:#1a1a05;}
+.kg-name{font-weight:700;color:var(--amber-bright);font-size:14px;}
+.kg-sub{font-size:11.5px;color:var(--ink-dim);margin-top:2px;}
+.kg-caret{color:var(--ink-dim);font-size:12px;transition:transform .15s ease;}
+.kg-card.open .kg-caret{transform:rotate(90deg);color:var(--amber);}
+.kg-body{display:none;padding:10px 12px 12px;border-top:1px solid var(--rule);}
+.kg-card.open .kg-body{display:block;}
+.kg-tags{margin-bottom:8px;}
+.kg-tag{display:inline-block;font-size:10.5px;border:1px solid var(--rule);padding:2px 8px;border-radius:10px;margin:2px 4px 0 0;color:var(--ink-dim);}
+.kg-tag.chronic{border-color:var(--amber);color:var(--amber-bright);}
+.kg-tag.serious{border-color:#e8c020;color:#e8c020;}
+.kg-tag.redflag{border-color:var(--red);color:var(--red);}
+.kg-sec{margin-top:8px;}
+.kg-sec-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-dim);margin-bottom:4px;}
+.kg-chip{display:inline-block;font-size:11.5px;border:1px solid var(--rule);padding:2px 8px;border-radius:3px;margin:2px 4px 2px 0;color:var(--ink);cursor:default;}
+.kg-chip.rf{border-color:var(--red);color:#ffb0a8;}
+.kg-chip.exam{border-color:#5a8fd6;color:#a9c8ef;}
+.kg-note{font-size:12px;color:var(--ink-dim);margin-top:6px;line-height:1.5;}
+.pw-steps{margin:6px 0 0;padding-left:18px;font-size:12px;line-height:1.6;color:var(--ink);}
+.pw-steps li{margin-bottom:3px;}
+
+/* ===== TOAST ===== */
+#toastwrap{position:fixed;bottom:22px;right:22px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+.toast{background:#141414;border:1px solid var(--amber);color:var(--amber-bright);font-family:var(--mono);font-size:13px;padding:10px 16px;border-radius:3px;box-shadow:0 4px 18px rgba(0,0,0,.5);opacity:0;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast b{color:#fff;}
+
+/* ===== NEET PG MCQ DRILL ===== */
+.mcq-card{border:1px solid var(--rule);border-radius:2px;margin-bottom:10px;background:#0a0a0a;padding:10px 12px;}
+.mcq-q{font-size:13.5px;color:var(--ink);margin-bottom:8px;line-height:1.5;}
+.mcq-q .qn{color:var(--amber-bright);font-weight:700;margin-right:4px;}
+.mcq-opts{display:flex;flex-direction:column;gap:6px;}
+.mcq-opt{text-align:left;background:#111;border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:12.5px;padding:7px 10px;border-radius:2px;cursor:pointer;}
+.mcq-opt:hover{border-color:var(--amber);}
+.mcq-opt.correct{border-color:#39ff6a;color:#39ff6a;background:#0e1a0e;}
+.mcq-opt.wrong{border-color:#ff1744;color:#ff8080;background:#1a0a0a;}
+.mcq-exp{display:none;margin-top:8px;font-size:12px;color:var(--ink-dim);border-top:1px dashed var(--rule);padding-top:8px;line-height:1.5;}
+.mcq-exp.show{display:block;}
+.mcq-tag{font-size:10.5px;color:var(--ink-dim);border:1px solid var(--rule);padding:1px 7px;border-radius:8px;margin-left:8px;}
+#mcqscore{font-size:12px;color:var(--ink-dim);margin-bottom:10px;}
+
+/* ===== SOCRATIC-IN-LOGS ===== */
+.log-sq{margin-top:8px;padding-top:8px;border-top:1px dashed var(--rule);}
+.log-sq-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--green);margin-bottom:4px;}
+.log-sq-item{font-size:12px;color:#cfe8cf;padding:3px 0 3px 14px;position:relative;line-height:1.5;}
+.log-sq-item:before{content:"?";position:absolute;left:0;color:var(--green);font-weight:700;}
+
+/* ===== QUERIES / LABS / MEDS ===== */
+.qr-row,.lab-row,.med-row{border-bottom:1px dotted var(--rule);padding:8px 0;}
+.qr-row:last-child,.lab-row:last-child,.med-row:last-child{border-bottom:none;}
+.qr-q{font-size:13px;color:var(--ink);line-height:1.5;}
+.qr-why{font-size:11.5px;color:var(--ink-dim);margin-top:3px;}
+.lab-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.lab-name{font-size:13px;color:var(--amber-bright);font-weight:700;}
+.order-btn{cursor:pointer;background:var(--panel);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:2px;white-space:nowrap;}
+.order-btn:hover{background:#0e1a0e;}
+.order-btn.ordered{background:#0e1a0e;border-color:var(--rule);color:var(--ink-dim);cursor:default;}
+.lab-why,.med-why{font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+.med-name{font-size:13px;color:var(--amber-bright);font-weight:700;}
+.med-dose{font-size:11.5px;color:var(--ink-dim);margin-left:6px;}
+
+/* ===== MCQ NAV ===== */
+.mcq-next{margin-top:10px;cursor:pointer;background:var(--amber);color:#000;border:none;font-family:var(--mono);font-weight:700;font-size:12.5px;padding:7px 14px;border-radius:2px;}
+.mcq-next:hover{background:var(--amber-bright);}
+.mcq-progress{font-size:11.5px;color:var(--ink-dim);margin-bottom:8px;}
+
+/* ===== INTERACTIONS SEVERITY ===== */
+.sev-badge{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:8px;margin-left:8px;font-weight:700;}
+.sev-badge.major{background:#2a0a08;color:#ff8080;border:1px solid var(--red);}
+.sev-badge.moderate{background:#1a1305;color:#e8c020;border:1px solid var(--yellow);}
+.sev-badge.minor{background:#0e1a0e;color:#7fd1a4;border:1px solid var(--green);}
+
+/* ===== FUTURE TRAJECTORY TIMELINE ===== */
+.traj-row{display:grid;grid-template-columns:110px 1fr;gap:0;margin-bottom:0;}
+.traj-stage{position:relative;padding:14px 16px 14px 0;border-right:2px solid var(--rule);text-align:right;}
+.traj-stage .tlabel{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--amber-bright);font-weight:700;}
+.traj-stage .tsub{font-size:10.5px;color:var(--ink-dim);margin-top:2px;}
+.traj-stage:after{content:"";position:absolute;right:-7px;top:18px;width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.traj-content{padding:14px 0 14px 20px;}
+.traj-item{font-size:12.5px;line-height:1.55;padding:4px 0;color:var(--ink);}
+.traj-item b{color:var(--amber-bright);}
+.traj-row:last-child .traj-stage{border-right-color:transparent;}
+
+/* ===== MUST-SEE PANEL ===== */
+.mustsee-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;}
+.mustsee-card{border:1px solid var(--amber);border-radius:3px;padding:5px 8px;background:#141105;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;text-decoration:none;display:block;}
+.mustsee-card:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(255,153,0,.18);background:#1c1808;}
+.mustsee-card .ms-star{color:var(--amber-bright);font-size:10px;margin-right:3px;}
+.mustsee-card .ms-title{color:var(--amber-bright);font-weight:700;font-size:11px;line-height:1.3;}
+.mustsee-card .ms-why{display:none;}
+
+/* ===== ANIMATIONS ===== */
+html{scroll-behavior:smooth;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes pulseGlow{0%{box-shadow:0 0 0 rgba(255,153,0,0);}50%{box-shadow:0 0 14px rgba(255,153,0,.55);}100%{box-shadow:0 0 0 rgba(255,153,0,0);}}
+@keyframes slideDown{from{opacity:0;max-height:0;}to{opacity:1;max-height:2000px;}}
+.panel{animation:fadeInUp .5s ease both;}
+.panel:hover{box-shadow:0 4px 14px rgba(0,0,0,.35);}
+.panel, .toggle-btn, .op-btn, .mcq-opt, .order-btn, .zoombtn, .kg-card, .logitem, .pw-item, .mustsee-card, .event-dot{transition:all .18s ease;}
+.op-btn:active, .mcq-opt:active, .zoombtn:active, .order-btn:active{transform:scale(.97);}
+.panel-body{animation:fadeIn .35s ease both;}
+.kg-card.open .kg-body, .pw-item .kg-body{animation:fadeIn .25s ease both;}
+.logitem.open .ld{animation:fadeIn .25s ease both;}
+.msg{animation:fadeInUp .3s ease both;}
+.toast{animation:pulseGlow 1.8s ease 1;}
+.mainline, .event-dot{transition:r .15s ease, filter .15s ease;}
+#ticker{will-change:transform;}
+.mustsee-card{animation:fadeInUp .5s ease both;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">VIBE ROUNDS <span>TERMINAL</span></div>
+  <div class="tag" style="color:#e8c98a;border-color:#7a5c2a;">LEARNING STACK — NOT FOR CLINICAL USE</div>
+  <a href="https://sruthi995.blogspot.com/2021/04/a-15yr-old-female-came-with-complaints.html" target="_blank" rel="noopener" class="tag" style="text-decoration:none;color:var(--amber-bright);border-color:var(--amber);">PRIMARY CASE SOURCE ↗</a>
+  <button id="apikeybtn" class="tag" style="cursor:pointer;background:none;font-family:var(--mono);">⚿ GEMINI API KEY</button>
+  <div class="clock" id="clock">--:--:--</div>
+</div>
+
+<div id="loginwrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#0a0a0a;border:1px solid var(--amber);border-radius:3px;padding:22px 26px;width:380px;max-width:92vw;font-family:var(--mono);">
+    <div style="color:var(--amber-bright);font-weight:700;font-size:15px;margin-bottom:6px;">CONNECT GEMINI API</div>
+    <div style="color:var(--ink-dim);font-size:12px;line-height:1.5;margin-bottom:12px;">Paste a Google AI Studio Gemini API key. It's stored only in this browser (localStorage) and used to power the Reasoning Console operations and the Socratic Learning Chat. Leave blank to keep using local canned responses.</div>
+    <input id="apikeyinput" type="password" placeholder="AIza..." autocomplete="off" style="width:100%;background:#000;border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:13px;padding:8px 10px;border-radius:2px;margin-bottom:10px;">
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button id="apikeyclear" class="zoombtn">CLEAR</button>
+      <button id="apikeyclose" class="zoombtn">CANCEL</button>
+      <button id="apikeysave" class="zoombtn active">SAVE &amp; CLOSE</button>
+    </div>
+    <div id="apikeystatus" style="margin-top:10px;font-size:11.5px;color:var(--ink-dim);"></div>
+  </div>
+</div>
+
+<div id="tickerwrap"><div id="ticker"></div></div>
+
+<div style="padding:10px 10px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div class="panel collapsed" id="p-about">
+    <div class="panel-head"><span><span class="fn">i</span>ABOUT THIS PROJECT</span><button class="toggle-btn" data-target="p-about">SHOW</button></div>
+    <div class="panel-body" style="font-size:12.5px;line-height:1.6;">
+      Vibe Rounds Terminal is an experimental clinical-reasoning learning stack. It turns a single de-identified case into a structured, multi-panel teaching environment — timeline, knowledge graph, clinical pathways, MCQ drills, and a Socratic chat partner — designed to stress-test diagnostic reasoning rather than hand over answers.
+      <div class="small" style="margin-top:6px;">Note: this is a lightweight implementation — a single-file, client-side prototype (no backend, no persistence beyond your browser's local storage). It's meant to demonstrate the reasoning framework, not to serve as production-grade clinical software.</div>
+    </div>
+  </div>
+
+  <div class="panel collapsed" id="p-tutorial">
+    <div class="panel-head"><span><span class="fn">?</span>TUTORIAL — RUN YOUR OWN CASE</span><button class="toggle-btn" data-target="p-tutorial">SHOW</button></div>
+    <div class="panel-body" style="font-size:12.5px;line-height:1.6;">
+      <ol style="margin:0;padding-left:18px;">
+        <li>Take any case link (blog post, PDF, discharge summary) or raw case text you want to study.</li>
+        <li>Open your LLM of choice (Gemini/ChatGPT/Claude) and prompt it: <i>"Add a Vibe Rounds Terminal module for this case: [paste link or text]"</i> — asking it to restructure the material into this terminal's panels (profile, timeline, logs, KG, pathways, MCQs).</li>
+        <li>Paste the generated HTML/module back into this terminal, or open it as its own file, to see it rendered live.</li>
+        <li>Click <b style="color:var(--amber-bright);">⚿ GEMINI API KEY</b> above and paste a Gemini API key to power the Reasoning Console and Socratic Chat with a live LLM instead of the local canned logic.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div style="padding:10px 10px 0;">
+  <div class="panel" id="p-mustsee">
+    <div class="panel-head"><span><span class="fn">★</span>MUST-SEE — HIGHEST LEARNING VALUE</span><button class="toggle-btn" data-target="p-mustsee">HIDE</button></div>
+    <div class="panel-body" id="mustseebody" style="padding:8px 10px;"></div>
+  </div>
+</div>
+
+<div id="grid">
+
+  <!-- LEFT: IDENTITY -->
+  <div class="panel" id="p-id">
+    <div class="panel-head"><span><span class="fn">F1</span>PATIENT PROFILE</span><button class="toggle-btn" data-target="p-id">HIDE</button></div>
+    <div class="panel-body">
+      <div class="idf">
+        <b>Subject</b><span>15F, 9th standard student</span>
+        <b>Presenting</b><span>Easy fatiguibility + exertional giddiness</span>
+        <b>Onset</b><span>5–6 months, insidious</span>
+        <b>Course</b><span>Gradual, non-progressive to date</span>
+      </div>
+      <div>
+        <span class="chip chronic">CHRONIC — NUTRITIONAL</span>
+        <span class="chip">ADOLESCENT</span>
+        <span class="chip warn">PRIOR TRANSFUSION</span>
+        <span class="chip">MENSTRUAL IRREGULARITY</span>
+      </div>
+      <div class="section-label">Key Exam / Lab Findings</div>
+      <div class="gene-row"><span class="g">Pallor</span><span>++ (generalized)</span></div>
+      <div class="gene-row"><span class="g">Koilonychia</span><span>Present (spoon nails)</span></div>
+      <div class="gene-row"><span class="g">Vitals</span><span>Temp 98.1F, BP 110/70, PR 84, RR 18</span></div>
+      <div class="gene-row"><span class="g">Peripheral smear</span><span>Microcytic hypochromic RBCs</span></div>
+      <div class="gene-row"><span class="g">Menstrual</span><span>Menarche @12, irregular x1yr, no menorrhagia</span></div>
+      <div class="section-label">Confirmed / Working Dx</div>
+      <div style="font-size:11.5px;line-height:1.7;">
+        Microcytic hypochromic anemia — Iron Deficiency Anemia (IDA)
+      </div>
+      <div class="section-label">Current Regimen</div>
+      <div style="font-size:11.3px;line-height:1.7;">
+        Tab Orofer-XT (ferrous ascorbate + folic acid) PO BD
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: TIMELINE -->
+  <div class="panel" id="p-tl">
+    <div class="panel-head"><span><span class="fn">F2</span>PATIENT TIMELINE — EVENT SEVERITY</span><button class="toggle-btn" data-target="p-tl">HIDE</button></div>
+    <div class="panel-body">
+      <div id="timeline-controls">
+        <button class="zoombtn" data-z="years">YEARS</button>
+        <button class="zoombtn" data-z="months">MONTHS</button>
+        <button class="zoombtn" data-z="weeks">WEEKS</button>
+        <button class="zoombtn" data-z="days">DAYS</button>
+        <span class="small" id="rangelabel" style="margin-left:8px;"></span>
+      </div>
+      <div id="svgwrap"><svg id="tl" height="150"></svg></div>
+      <div id="legend">
+        <span><i class="dot" style="background:#39ff6a"></i>Mild</span>
+        <span><i class="dot" style="background:#ffe600"></i>Moderate</span>
+        <span><i class="dot" style="background:#ff5a1f"></i>Severe</span>
+        <span><i class="dot" style="background:#ff1744"></i>Critical / hospitalization</span>
+      </div>
+      <div id="detail">Click any event marker for details.</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: CASE LOGS -->
+  <div class="panel" id="p-logs">
+    <div class="panel-head"><span><span class="fn">F3</span>CASE STUDY LOGS</span><button class="toggle-btn" data-target="p-logs">HIDE</button></div>
+    <div class="panel-body" id="logbody"></div>
+  </div>
+
+  <!-- ROW 2 LEFT+CENTER: CATs -->
+  <div class="panel" id="p-cat" style="grid-column:1/3;">
+    <div class="panel-head"><span><span class="fn">F4</span>PRE-APPRAISED CLINICAL SUMMARIES (CATs)</span><button class="toggle-btn" data-target="p-cat">HIDE</button></div>
+    <div class="panel-body">
+      <div class="tabs">
+        <div class="tab active" data-cat="cat1">CAT 1 · Nutritional Iron Deficiency in Adolescents</div>
+        <div class="tab" data-cat="cat2">CAT 2 · Menorrhagia/Cycle Irregularity as a Contributor</div>
+        <div class="tab" data-cat="cat3">TRIGGERS</div>
+        <div class="tab" data-cat="cat4">SOCIAL / MENTAL / FINANCIAL</div>
+        <div class="tab" data-cat="cat5">LIFESTYLE MODIFICATIONS</div>
+      </div>
+      <div class="cat active" id="cat1">
+        <div class="qbox"><b>Clinical Question:</b> In a 15-year-old girl with a mixed diet and no overt malabsorptive or bleeding history, does dietary iron bioavailability alone provide a sufficient mechanistic explanation for microcytic hypochromic anemia, or must increased physiologic iron demand also be invoked?</div>
+        <h4>Background</h4>
+        <p>Dietary iron exists as heme (fleshy foods) and non-heme (plant-based, phytate-inhibited) forms. In typical regional diets where non-heme iron predominates and inhibitors outweigh enhancers, overall iron absorption is low, commonly cited around 5% of total dietary intake. Adolescence, alongside pregnancy and early childhood, is a period of disproportionately increased iron requirement, making teenage girls a recognized vulnerable group even without additional blood loss.</p>
+        <h4>Appraisal of Evidence</h4>
+        <p>Nutrition-science literature on iron bioavailability supports that absorption depends on the chemical form of iron, the enhancer/inhibitor balance in the diet, and the iron status of the individual — not calorie or protein sufficiency alone. This patient reports a mixed diet with good appetite and no pica, which somewhat limits (but does not exclude) a purely dietary explanation, since even an adequate-appearing mixed diet can be non-heme-iron-dominant and poorly bioavailable. Her prior transfusion 6 years ago for low hemoglobin establishes a longstanding tendency toward iron-deficient erythropoiesis predating the current episode.</p>
+        <table>
+          <tr><th>Domain</th><th>Supports link</th><th>Limits</th></tr>
+          <tr><td>Dietary pattern</td><td>Predominantly non-heme iron diets are a well-established population-level driver of IDA</td><td>Patient reports "good appetite," mixed diet — dietary deficiency not directly quantified (no diet recall done)</td></tr>
+          <tr><td>Physiologic demand</td><td>Adolescent growth spurt increases iron requirement independent of diet</td><td>Growth velocity not documented in this case</td></tr>
+          <tr><td>Prior history</td><td>Transfusion 6 years ago for low Hb suggests a recurring predisposition</td><td>No documented cause was established for that earlier episode either</td></tr>
+        </table>
+        <div class="bl"><b>Bottom line:</b> Dietary iron bioavailability plausibly explains a substantial part of the picture, but in an adolescent female with a history of prior anemia and new menstrual irregularity, physiologic demand and possible occult blood loss should be actively examined rather than assumed absent.</div>
+      </div>
+      <div class="cat" id="cat2">
+        <div class="qbox"><b>Clinical Question:</b> Given that her cycles have become irregular over the past year (though she denies menorrhagia or clots), could unrecognized or underreported menstrual blood loss be contributing meaningfully to her iron deficiency, independent of dietary intake?</div>
+        <h4>Background</h4>
+        <p>Menstrual blood loss is one of the two most common causes of iron deficiency in adolescent and adult women, alongside inadequate dietary intake. Subjective descriptions of flow (pad counts, absence of clots) are known to correlate imperfectly with actual measured blood loss, and cycle irregularity itself can reflect an evolving hypothalamic-pituitary-ovarian axis in early adolescence rather than a fixed, quantifiable pattern.</p>
+        <h4>Appraisal of Evidence</h4>
+        <p>Gynecologic and hematologic literature consistently identifies heavy or irregular menstrual bleeding as a major contributor to iron deficiency in reproductive-age females, and pad-count-based self-report is a recognized but imprecise proxy for volume. This patient's own report (2 pads/day, no clots, no menorrhagia, but new irregularity for 1 year) does not meet the usual clinical threshold for menorrhagia, but the shift from a regular 5/30 cycle to an irregular pattern is itself a change worth tracking rather than dismissing.</p>
+        <table>
+          <tr><th>Domain</th><th>Supports link</th><th>Limits</th></tr>
+          <tr><td>Reported flow</td><td>Consistent, non-heavy self-reported pattern argues against overt menorrhagia</td><td>Self-report is an imprecise proxy; true volume unmeasured</td></tr>
+          <tr><td>Cycle change</td><td>New irregularity over 1 year is a genuine change from her baseline pattern</td><td>Could reflect normal adolescent HPO-axis maturation rather than pathology</td></tr>
+          <tr><td>Combined burden</td><td>Even modest, "non-heavy" menstrual loss adds to an already iron-deficient state</td><td>Cannot be separated from dietary contribution without a menstrual diary/quantification</td></tr>
+        </table>
+        <div class="bl"><b>Bottom line:</b> Menstrual factors are a plausible contributing — not necessarily sufficient — cause; the case should be framed as combined nutritional and gynecologic contribution until specifically evaluated, not attributed to diet alone.</div>
+      </div>
+      <div class="cat" id="cat3">
+        <h4>Identified Triggers / Contributing Factors</h4>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Dietary / Nutritional</div>
+          <span class="kg-chip">Predominantly non-heme iron diet (regional dietary pattern)</span>
+          <span class="kg-chip">No documented iron-rich food fortification</span>
+        </div>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Physiologic</div>
+          <span class="kg-chip">Adolescent growth demand</span>
+          <span class="kg-chip">New menstrual cycle irregularity (1 year)</span>
+        </div>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Historical</div>
+          <span class="kg-chip rf">Prior blood transfusion for low Hb (6 years ago) — recurrence pattern</span>
+          <span class="kg-chip">Low-grade febrile illness 10 days prior to presentation</span>
+        </div>
+        <div class="kg-note" style="margin-top:8px;">No pica, no GI bleeding symptoms (no melena/hematochezia), and no reported weight loss were elicited — these negatives narrow, but do not fully exclude, an occult GI source (see Further Queries).</div>
+      </div>
+      <div class="cat" id="cat4">
+        <h4>Social, Mental &amp; Financial Insights</h4>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Social</div>
+          <span class="kg-chip">School-going adolescent (9th standard) — anemia-related fatigue may affect school performance/attendance</span>
+        </div>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Mental Health</div>
+          <span class="kg-chip">No psychiatric history elicited in this case; fatigue and giddiness may still affect concentration and mood if unaddressed</span>
+        </div>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Financial / Systemic</div>
+          <span class="kg-chip">Recurrent nutritional anemia (2nd documented episode) may reflect ongoing dietary-access or affordability constraints worth exploring with the family</span>
+        </div>
+        <div class="kg-note" style="margin-top:8px;">The case as documented does not report social/financial history in detail — this is flagged as a gap, not a finding (see Further Queries panel).</div>
+      </div>
+      <div class="cat" id="cat5">
+        <h4>Lifestyle Modifications</h4>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Currently Following</div>
+          <span class="kg-chip">Mixed diet with regular meals (3x/day) and fruit intake</span>
+          <span class="kg-chip">Oral iron/folate replacement (Orofer-XT)</span>
+        </div>
+        <div class="kg-sec">
+          <div class="kg-sec-label">Advisable / Not Yet Adopted</div>
+          <span class="kg-chip exam">Structured iron-rich, heme-iron-containing meal planning (or vitamin-C co-administration with non-heme meals to boost absorption)</span>
+          <span class="kg-chip exam">Menstrual cycle diary to quantify and track flow going forward</span>
+          <span class="kg-chip exam">Deworming assessment given regional endemicity of soil-transmitted helminths as an occult contributor</span>
+          <span class="kg-chip exam">Repeat CBC at 4–6 weeks to confirm hemoglobin response to therapy</span>
+        </div>
+        <div class="kg-note" style="margin-top:8px;">Distinguishing what she is already doing from what remains advisable-but-unstarted highlights where structured follow-up would add the most value.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2 RIGHT: OPERATIONS -->
+  <div class="panel" id="p-ops">
+    <div class="panel-head"><span><span class="fn">F5</span>OPERATIONS — RUN MODULE &lt;GO&gt;</span><button class="toggle-btn" data-target="p-ops">HIDE</button></div>
+    <div class="panel-body" id="ops"></div>
+  </div>
+
+  <!-- KNOWLEDGE GRAPH + CLINICAL PATHWAYS — 50/50 ROW -->
+  <div style="grid-column:1/4;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div class="panel" id="p-kg">
+      <div class="panel-head"><span><span class="fn">F8</span>KNOWLEDGE GRAPH — DIAGNOSIS EXPLORER</span><button class="toggle-btn" data-target="p-kg">HIDE</button></div>
+      <div class="panel-body" id="kgbody"></div>
+    </div>
+
+    <div class="panel" id="p-pw">
+      <div class="panel-head"><span><span class="fn">F9</span>CLINICAL PATHWAYS</span><button class="toggle-btn" data-target="p-pw">HIDE</button></div>
+      <div class="panel-body" id="pwbody"></div>
+    </div>
+  </div>
+
+  <!-- BASIC SCIENCE CONCEPTS EXPLORER -->
+  <div class="panel" id="p-basicsci" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F17</span>BASIC SCIENCE CONCEPTS EXPLORER</span><button class="toggle-btn" data-target="p-basicsci">HIDE</button></div>
+    <div class="panel-body" id="basicscibody"></div>
+  </div>
+
+  <!-- FURTHER QUERIES TO ASK PATIENT -->
+  <div class="panel" id="p-queries" style="grid-column:1/3;">
+    <div class="panel-head"><span><span class="fn">F11</span>FURTHER QUERIES TO ASK PATIENT</span><button class="toggle-btn" data-target="p-queries">HIDE</button></div>
+    <div class="panel-body" id="querybody"></div>
+  </div>
+
+  <!-- REQUIRED LABS -->
+  <div class="panel" id="p-labs">
+    <div class="panel-head"><span><span class="fn">F12</span>REQUIRED LABS</span><button class="toggle-btn" data-target="p-labs">HIDE</button></div>
+    <div class="panel-body" id="labsbody"></div>
+  </div>
+
+  <!-- MEDICATIONS / INTERVENTIONS -->
+  <div class="panel" id="p-meds" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F13</span>MEDICATIONS / INTERVENTIONS — RATIONALE</span><button class="toggle-btn" data-target="p-meds">HIDE</button></div>
+    <div class="panel-body">
+      <div id="medsbody"></div>
+      <div id="alertbox"></div>
+    </div>
+  </div>
+
+  <!-- DRUG-DRUG & DRUG-DISEASE INTERACTIONS -->
+  <div class="panel" id="p-interactions" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F15</span>DRUG–DRUG &amp; DRUG–DISEASE INTERACTIONS</span><button class="toggle-btn" data-target="p-interactions">HIDE</button></div>
+    <div class="panel-body" id="interactionsbody"></div>
+  </div>
+
+  <!-- FUTURE TRAJECTORY -->
+  <div class="panel" id="p-trajectory" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F16</span>FUTURE TRAJECTORY — WEEKS / MONTHS / YEARS / DECADES</span><button class="toggle-btn" data-target="p-trajectory">HIDE</button></div>
+    <div class="panel-body" id="trajectorybody"></div>
+  </div>
+
+  <!-- CLINICAL SCENARIO IMAGE SUMMARY -->
+  <div class="panel" id="p-imgsum" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F14</span>CLINICAL SCENARIO — IMAGE-PROMPT SUMMARY</span><button class="toggle-btn" data-target="p-imgsum">HIDE</button></div>
+    <div class="panel-body">
+      <div class="small" style="margin-bottom:8px;">Copy this into Gemini, ChatGPT, or any image-capable AI to generate a visual/infographic overview of the clinical scenario. Contains no real name or identifying details.</div>
+      <textarea id="imgsumtext" readonly style="width:100%;min-height:130px;background:#000;border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:12px;padding:10px;border-radius:2px;line-height:1.5;"></textarea>
+      <button id="imgsumcopy" class="zoombtn" style="margin-top:8px;">COPY SUMMARY</button>
+    </div>
+  </div>
+
+  <!-- IRON METABOLISM PATHWAY HYPOTHESIS — IMAGE PROMPT -->
+  <div class="panel" id="p-pathwayimg" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F18</span>IRON ABSORPTION &amp; ERYTHROPOIESIS PATHWAY — IMAGE-PROMPT SUMMARY</span><button class="toggle-btn" data-target="p-pathwayimg">HIDE</button></div>
+    <div class="panel-body">
+      <div class="small" style="margin-bottom:8px;">Copy this into Gemini, ChatGPT, or any image-capable AI to generate a diagram/illustration of the iron absorption and erythropoiesis pathway underlying this case.</div>
+      <textarea id="pathwayimgtext" readonly style="width:100%;min-height:150px;background:#000;border:1px solid var(--rule);color:var(--ink);font-family:var(--mono);font-size:12px;padding:10px;border-radius:2px;line-height:1.5;"></textarea>
+      <button id="pathwayimgcopy" class="zoombtn" style="margin-top:8px;">COPY SUMMARY</button>
+    </div>
+  </div>
+
+  <!-- NEET PG MCQ DRILL -->
+  <div class="panel" id="p-mcq" style="grid-column:1/4;">
+    <div class="panel-head"><span><span class="fn">F10</span>NEET PG MCQ DRILL — THIS CASE</span><button class="toggle-btn" data-target="p-mcq">HIDE</button></div>
+    <div class="panel-body">
+      <div id="mcqscore">Score: <span id="mcqcorrect">0</span> / <span id="mcqtotal">0</span> attempted</div>
+      <div id="mcqbody"></div>
+    </div>
+  </div>
+
+  <!-- CONSOLE + SOCRATIC CHAT — 50/50 ROW -->
+  <div style="grid-column:1/4;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div class="panel" id="console" style="grid-column:auto;">
+      <div class="panel-head"><span><span class="fn">F6</span>REASONING CONSOLE</span><button class="toggle-btn" data-target="console">HIDE</button></div>
+      <div id="console-body">
+        <div class="cline"><span class="cprompt">vibe&gt;</span> ready. Select an operation from the right panel to execute a promption or Provocation pass on the case.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-chat" style="grid-column:auto;">
+      <div class="panel-head"><span><span class="fn">F7</span>SOCRATIC LEARNING CHAT</span><button class="toggle-btn" data-target="p-chat">HIDE</button></div>
+      <div class="panel-body" style="padding:0;">
+        <div id="chatlog"></div>
+        <div id="chatinputrow">
+          <span class="cprompt">you&gt;</span>
+          <input id="chatinput" type="text" placeholder="Ask about the case, a symptom, or a differential (e.g. 'why is she pale?')" autocomplete="off">
+          <button id="chatsend" class="zoombtn">ASK</button>
+          <button id="chathint" class="zoombtn">HINT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Vibe Rounds Terminal — The Learning Stack · de-identified educational case reconstruction · not a diagnostic tool · reasoning frameworks only</footer>
+
+<div id="toastwrap"></div>
+
+<script>
+/* ---------------- GEMINI API INTEGRATION ---------------- */
+const GEMINI_KEY_STORAGE = 'vibeRoundsGeminiKey';
+function getGeminiKey(){ return localStorage.getItem(GEMINI_KEY_STORAGE) || ''; }
+function setGeminiKey(k){ if(k) localStorage.setItem(GEMINI_KEY_STORAGE,k); else localStorage.removeItem(GEMINI_KEY_STORAGE); }
+
+async function callGemini(prompt, systemInstruction){
+  const key = getGeminiKey();
+  if(!key) return null;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`;
+  const body = { contents:[{role:'user', parts:[{text:prompt}]}] };
+  if(systemInstruction) body.systemInstruction = {parts:[{text:systemInstruction}]};
+  try{
+    const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!res.ok){ const errText = await res.text(); throw new Error('Gemini API error '+res.status+': '+errText.slice(0,200)); }
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('') || '';
+    return text || null;
+  }catch(err){
+    console.error('Gemini call failed', err);
+    showToast(`<b>Gemini API error</b> — ${err.message.slice(0,120)}. Falling back to local response.`);
+    return null;
+  }
+}
+
+function updateApiKeyUI(){
+  const btn = document.getElementById('apikeybtn');
+  const has = !!getGeminiKey();
+  btn.textContent = has ? '⚿ GEMINI: CONNECTED' : '⚿ GEMINI API KEY';
+  btn.style.color = has ? 'var(--green)' : '';
+  btn.style.borderColor = has ? 'var(--green)' : '';
+}
+document.getElementById('apikeybtn').addEventListener('click', ()=>{
+  document.getElementById('apikeyinput').value = getGeminiKey();
+  document.getElementById('apikeystatus').textContent = getGeminiKey() ? 'A key is currently saved in this browser.' : 'No key saved — using local canned responses.';
+  document.getElementById('loginwrap').style.display = 'flex';
+});
+document.getElementById('apikeyclose').addEventListener('click', ()=>{ document.getElementById('loginwrap').style.display='none'; });
+document.getElementById('loginwrap').addEventListener('click', (e)=>{ if(e.target.id==='loginwrap') document.getElementById('loginwrap').style.display='none'; });
+document.getElementById('apikeyclear').addEventListener('click', ()=>{
+  setGeminiKey(''); updateApiKeyUI();
+  document.getElementById('apikeystatus').textContent = 'Cleared. Using local canned responses.';
+});
+document.getElementById('apikeysave').addEventListener('click', ()=>{
+  const val = document.getElementById('apikeyinput').value.trim();
+  setGeminiKey(val); updateApiKeyUI();
+  document.getElementById('loginwrap').style.display='none';
+  showToast(val ? 'Gemini API key saved to this browser.' : 'No key saved — using local canned responses.');
+});
+updateApiKeyUI();
+
+/* ---------------- TICKER (tweetorial) ---------------- */
+const tweetorial = [
+  {tag:"#17", mode:"P", text:"Problem representation: 15-year-old girl, 5-6 months of easy fatiguibility and exertional giddiness, pallor and koilonychia on exam, microcytic hypochromic picture."},
+  {tag:"#12", mode:"P", text:"Differential thread: is this purely dietary iron deficiency, or is new menstrual irregularity also contributing meaningfully to the picture?"},
+  {tag:"#30", mode:"V", text:"Anchor check: 'iron deficiency anemia' was reached quickly given the classic picture — has an occult GI or parasitic source truly been excluded, or just assumed absent?"},
+  {tag:"#37", mode:"V", text:"Signal vs noise: the fever 10 days ago resolved with medication — is it a red herring, or worth re-examining as a clue to a broader process?"},
+  {tag:"#28", mode:"V", text:"Diagnostic time-out: before crediting diet alone, note she already required a transfusion for low Hb 6 years ago — a recurring pattern deserves a cause, not just a repeat treatment."},
+  {tag:"#45", mode:"V", text:"Adversarial shadow: a single peripheral smear reading plus response-to-therapy is supportive, not definitive — iron studies (ferritin, TIBC) would confirm the diagnosis more rigorously."},
+  {tag:"#50", mode:"P", text:"Reasoning map: possible early-life nutritional vulnerability → prior transfusion at age ~9 → adolescent growth/menstrual demand → current symptomatic IDA."},
+  {tag:"#54", mode:"P", text:"System 1 vs 2 prompt: fast read says 'classic adolescent nutritional anemia' — slow read asks whether recurrence, menstrual change, and prior transfusion history deserve a more complete workup."},
+];
+const tickerEl = document.getElementById('ticker');
+function renderTicker(){
+  tickerEl.innerHTML = tweetorial.map(t=>`<span class="tick-item"><span class="tick-tag">${t.tag}</span><span class="${t.mode==='P'?'tick-mode-p':'tick-mode-v'}">[${t.mode==='P'?'PROMPTION':'PROVOCATION'}]</span> ${t.text}</span>`).join('');
+  tickerEl.innerHTML += tickerEl.innerHTML;
+}
+renderTicker();
+
+/* ---------------- CLOCK ---------------- */
+function tick(){
+  document.getElementById('clock').textContent = new Date().toUTCString().slice(17,25)+' UTC';
+}
+tick(); setInterval(tick,1000);
+
+/* ---------------- COLLAPSE TOGGLES ---------------- */
+document.querySelectorAll('.toggle-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const p = document.getElementById(b.dataset.target);
+    p.classList.toggle('collapsed');
+    b.textContent = p.classList.contains('collapsed') ? 'SHOW' : 'HIDE';
+  });
+});
+
+/* ---------------- TIMELINE DATA ---------------- */
+const sevColor = {1:"#39ff6a",2:"#ffe600",3:"#ff5a1f",4:"#ff1744"};
+const sevLabel = {1:"Mild",2:"Moderate",3:"Severe",4:"Critical / hospitalization"};
+const events = [
+  {age:0.0, label:"Birth — no antenatal/neonatal complications documented in this case", sev:1},
+  {age:9, label:"Blood transfusion given for documented low hemoglobin (cause not detailed in this record)", sev:3},
+  {age:12, label:"Menarche — initially regular 5/30 cycle, 2 pads/day, no clots, no dysmenorrhea", sev:1},
+  {age:14, label:"Onset of irregular menstrual cycles (bleeds 5 days, no clots, no menorrhagia) — ongoing for ~1 year", sev:2},
+  {age:14.5, label:"Insidious onset of easy fatiguibility and generalized weakness (5-6 months prior to presentation)", sev:2},
+  {age:14.9, label:"Low-grade fever, 2-3 days, resolved with medication (10 days before presentation)", sev:2},
+  {age:15.0, label:"Presentation: pallor++, koilonychia+, microcytic hypochromic anemia diagnosed as IDA; started on Tab Orofer-XT PO BD", sev:3},
+];
+const maxAge = 15.2;
+const zoomRanges = {
+  years:{from:0, to:maxAge, label:"Full lifespan view (birth → present, 15y)"},
+  months:{from:13.5, to:maxAge, label:"Last ~1.5 years (monthly resolution)"},
+  weeks:{from:14.6, to:maxAge, label:"Last ~6 months (weekly resolution)"},
+  days:{from:14.92, to:maxAge, label:"Last ~4 weeks (daily resolution)"}
+};
+let currentZoom = 'years';
+
+const svg = document.getElementById('tl');
+const svgNS = "http://www.w3.org/2000/svg";
+function drawTimeline(zoomKey){
+  currentZoom = zoomKey;
+  document.querySelectorAll('.zoombtn').forEach(b=>b.classList.toggle('active', b.dataset.z===zoomKey));
+  const range = zoomRanges[zoomKey];
+  document.getElementById('rangelabel').textContent = range.label;
+  const width = Math.max(700, document.getElementById('svgwrap').clientWidth-4);
+  const height = 150, padL=40, padR=20, padT=20, padB=30;
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.innerHTML = '';
+  const x0=padL, x1=width-padR, y=height/2+6;
+  const scaleX = age => x0 + (age-range.from)/(range.to-range.from) * (x1-x0);
+
+  const line = document.createElementNS(svgNS,'line');
+  line.setAttribute('x1',x0); line.setAttribute('x2',x1);
+  line.setAttribute('y1',y); line.setAttribute('y2',y);
+  line.setAttribute('class','mainline');
+  svg.appendChild(line);
+
+  const nTicks = 6;
+  for(let i=0;i<=nTicks;i++){
+    const age = range.from + (i/nTicks)*(range.to-range.from);
+    const xp = scaleX(age);
+    const tickLine = document.createElementNS(svgNS,'line');
+    tickLine.setAttribute('x1',xp);tickLine.setAttribute('x2',xp);
+    tickLine.setAttribute('y1',y-4);tickLine.setAttribute('y2',y+4);
+    tickLine.setAttribute('class','axis-line');
+    svg.appendChild(tickLine);
+    const txt = document.createElementNS(svgNS,'text');
+    txt.setAttribute('x',xp);txt.setAttribute('y',height-10);
+    txt.setAttribute('text-anchor','middle');
+    txt.setAttribute('class','axis-text');
+    txt.textContent = "Age "+age.toFixed(1);
+    svg.appendChild(txt);
+  }
+
+  const visible = events.filter(e=>e.age>=range.from-0.1 && e.age<=range.to+0.1);
+  visible.forEach(e=>{
+    const xp = Math.min(Math.max(scaleX(e.age), x0), x1);
+    const yOffset = (e.sev%2===0)? -18 : 18;
+    const cx = xp, cy = y+yOffset;
+    const stem = document.createElementNS(svgNS,'line');
+    stem.setAttribute('x1',xp);stem.setAttribute('x2',xp);
+    stem.setAttribute('y1',y);stem.setAttribute('y2',cy);
+    stem.setAttribute('class','axis-line');
+    svg.appendChild(stem);
+    const circ = document.createElementNS(svgNS,'circle');
+    circ.setAttribute('cx',cx);circ.setAttribute('cy',cy);
+    circ.setAttribute('r', 5+e.sev*1.3);
+    circ.setAttribute('fill', sevColor[e.sev]);
+    circ.setAttribute('class','event-dot');
+    circ.style.filter = `drop-shadow(0 0 5px ${sevColor[e.sev]})`;
+    circ.addEventListener('click',()=>showDetail(e));
+    circ.addEventListener('mouseenter',()=>circ.setAttribute('r', 7+e.sev*1.3));
+    circ.addEventListener('mouseleave',()=>circ.setAttribute('r', 5+e.sev*1.3));
+    svg.appendChild(circ);
+  });
+  if(visible.length===0){
+    const txt = document.createElementNS(svgNS,'text');
+    txt.setAttribute('x',(x0+x1)/2);txt.setAttribute('y',y-14);
+    txt.setAttribute('text-anchor','middle');txt.setAttribute('class','axis-text');
+    txt.textContent = "No discrete events logged at this resolution — zoom out to Years/Months.";
+    svg.appendChild(txt);
+  }
+}
+function showDetail(e){
+  const d = document.getElementById('detail');
+  d.innerHTML = `<span class="dsev" style="background:${sevColor[e.sev]}">${sevLabel[e.sev]}</span>
+    <span class="dtitle">Age ${e.age} — event</span><br>${e.label}`;
+}
+document.querySelectorAll('.zoombtn').forEach(b=>b.addEventListener('click',()=>drawTimeline(b.dataset.z)));
+window.addEventListener('resize',()=>drawTimeline(currentZoom));
+drawTimeline('years');
+
+/* ---------------- CASE LOGS ---------------- */
+const logs = [
+  {t:"Nutritional Anemia — reference profile", tag:"NUTRITION · KG", d:"Dietary iron exists as heme and non-heme forms; non-heme iron (dominant in many regional diets) is poorly absorbed (~5% of intake) due to phytate inhibitors outnumbering absorption enhancers. Adolescence, pregnancy, and early childhood are recognized high-demand, high-vulnerability periods for nutritional anemia.",
+    sq:["Has an actual diet recall been taken, or is 'mixed diet, good appetite' being treated as reassurance against dietary deficiency?","If her diet were truly adequate, what else would you need to invoke to explain a second documented episode of anemia?","Does absence of pica rule out iron deficiency, or is pica just one possible — and inconsistent — sign of it?"]},
+  {t:"Prior Transfusion History (age ~9)", tag:"HEMATOLOGY · RECURRENCE", d:"The patient required a blood transfusion 6 years ago for low hemoglobin, with no cause documented in this record. A second, now clinically apparent episode of anemia in the same patient raises the question of whether an underlying predisposing factor (nutritional, gynecologic once menarche occurred, or occult GI) has ever been identified.",
+    sq:["What would you want to know about that transfusion episode that isn't in this record?","Is treating each anemia episode independently, without asking 'why does this keep happening,' a mistake here?"]},
+  {t:"Menstrual Cycle Change — 1 year of irregularity", tag:"GYNECOLOGY · TIMELINE", d:"Cycles were initially regular (5/30, 2 pads/day) after menarche at 12, but have been irregular for the past year, with 5-day bleeds and no reported menorrhagia or clots. This timing overlaps closely with the reported 5-6 month onset of her fatigue and giddiness.",
+    sq:["Could irregular but 'non-heavy' cycles still add up to clinically significant blood loss over a year?","What quantification tool (pictorial blood loss chart, pad-weight diary) would move this from subjective report to actual measurement?"]},
+  {t:"Iron Deficiency Anemia — primary case source", tag:"OPEN CASE LOG", d:"The de-identified patient record underlying this terminal: 15-year-old female student with easy fatiguibility, exertional giddiness, pallor, koilonychia, and microcytic hypochromic anemia diagnosed as iron deficiency anemia, started on Tab Orofer-XT PO BD.",
+    sq:["What single follow-up test result, at 4-6 weeks, would most efficiently confirm this diagnosis was correct and adequately treated?","If her hemoglobin fails to rise on iron therapy, what does that tell you was missed at this first visit?"]},
+];
+const logBody = document.getElementById('logbody');
+logBody.innerHTML = logs.map((l,i)=>`
+  <div class="logitem" id="log${i}">
+    <div class="lt" onclick="document.getElementById('log${i}').classList.toggle('open')">${l.t}<span class="tagpill">${l.tag}</span></div>
+    <div class="ld">${l.d}
+      <div class="log-sq"><div class="log-sq-label">Socratic Questions</div>${(l.sq||[]).map(q=>`<div class="log-sq-item">${q}</div>`).join('')}</div>
+    </div>
+  </div>`).join('');
+
+/* ---------------- OPERATIONS MODULES ---------------- */
+const ops = [
+  {group:"PROMPTION — SCAFFOLDING", cls:"p", items:[
+    {id:"17", name:"Semantic Qualifiers & Problem Rep", out:"Restates the raw narrative as: a 15-year-old adolescent female with a 5-6 month history of easy fatiguibility and exertional giddiness, pallor and koilonychia on exam, and a microcytic hypochromic blood picture consistent with iron deficiency anemia, against a background of prior transfusion for low Hb and new menstrual irregularity."},
+    {id:"12", name:"Differential Diagnosis Deepdive", out:"Bridges findings to candidate drivers: (1) purely nutritional/dietary iron deficiency; (2) menstrual-loss-contributed iron deficiency; (3) occult GI blood loss (parasitic, structural) despite negative overt bleeding history; (4) thalassemia trait as a microcytic mimic requiring iron-study/HbA2 differentiation."},
+    {id:"15", name:"Illness Script Acquisition", out:"Builds the canonical illness script for adolescent IDA (fatigue, pallor, koilonychia, pica in some, microcytic hypochromic smear, low ferritin, response to oral iron) and compares point-by-point against this patient's phenotype."},
+    {id:"36", name:"Bayesian Probability Engine", out:"Given her age, sex, menstrual timing, and classic exam findings, prior probability strongly favors iron deficiency anemia over other microcytic causes — but a second lifetime episode raises the prior for an unaddressed recurring contributor."},
+    {id:"50", name:"Diagnostic Reasoning Map", out:"Chronological causal chain rendered: possible early nutritional vulnerability → transfusion for low Hb at ~age 9 → adolescent growth demand and new menstrual irregularity → current symptomatic recurrence of iron deficiency anemia."},
+  ]},
+  {group:"PROVOCATION — STRESS-TESTING", cls:"v", items:[
+    {id:"28", name:"Diagnostic Time-Out", out:"Pause before attributing this solely to diet — a second documented anemia episode in the same patient six years apart deserves an explicit search for a recurring cause, not a repeat of the same untargeted treatment."},
+    {id:"30", name:"Diagnostic Anchor Extractor", out:"Identified anchor: the classic triad of pallor, koilonychia, and microcytic hypochromic smear led quickly to 'IDA' — check whether confirmatory iron studies (ferritin, TIBC, serum iron) were actually sent, or whether the diagnosis rests on smear morphology and clinical gestalt alone."},
+    {id:"37", name:"Red Herring / Signal-to-Noise Drill", out:"Tests whether the low-grade fever 10 days prior is an incidental, self-limited viral illness (noise) or a clue toward an underlying chronic inflammatory or infective process worth re-examining (signal)."},
+    {id:"45", name:"Shadow Module — Adversarial Counterpart", out:"An adversarial reviewer would argue: without ferritin/TIBC or a stool exam for ova/parasites, a purely clinical + smear-based diagnosis of IDA risks missing thalassemia trait or an occult GI/parasitic contributor masquerading as simple nutritional deficiency."},
+    {id:"54", name:"System 1 & 2 Question Generator", out:"System-1 read: 'classic adolescent nutritional anemia, start iron.' System-2 questions to force: has thalassemia been excluded (family history, HbA2/electrophoresis)? Has a stool exam for occult blood/parasites been sent? Is the recurrence pattern (2nd episode) being adequately investigated rather than just re-treated?"},
+  ]},
+];
+const opsBody = document.getElementById('ops');
+opsBody.innerHTML = ops.map(g=>`
+  <div class="opgroup">
+    <div class="opgroup-title ${g.cls}">${g.group}</div>
+    ${g.items.map(it=>`<button class="op-btn" data-out="${encodeURIComponent(it.out)}" data-mode="${g.cls}"><b>#${it.id}</b> ${it.name}</button>`).join('')}
+  </div>`).join('');
+
+const consoleBody = document.getElementById('console-body');
+const CASE_LINK = "https://sruthi995.blogspot.com/2021/04/a-15yr-old-female-came-with-complaints.html";
+document.querySelectorAll('.op-btn').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const out = decodeURIComponent(btn.dataset.out);
+    const mode = btn.dataset.mode;
+    const modeName = mode==='v' ? 'PROVOCATION' : 'PROMPTION';
+    const moduleLabel = btn.textContent.trim();
+    const prompt =
+`CASE: ${CASE_LINK}
+MODULE: ${moduleLabel} [${modeName}]
+
+Run ${moduleLabel} on the above case.`;
+    const line = document.createElement('div');
+    line.className='cline';
+    const hasKey = !!getGeminiKey();
+    line.innerHTML = `<span class="cprompt">vibe&gt;</span> STRUCTURED PROMPT QUEUED<br>
+      <pre style="white-space:pre-wrap;background:#0a0a0a;border:1px solid #333;padding:8px 10px;border-radius:2px;margin:6px 0;color:#e8c98a;">${prompt}</pre>
+      <span class="ctag ${mode==='v'?'v':''}">RUN ON CASE →</span> <span class="gemini-out">${hasKey ? '<i>Calling Gemini…</i>' : out}</span>`;
+    consoleBody.appendChild(line);
+    consoleBody.scrollTop = consoleBody.scrollHeight;
+    showToast(`Queued <b>${moduleLabel}</b>${hasKey ? ' — calling Gemini' : ' — check the Reasoning Console'}.`);
+    if(hasKey){
+      const sys = "You are the reasoning engine inside a clinical-education terminal called Vibe Rounds Terminal. Respond concisely (3-6 sentences), in the analytical register of a case-based teaching tool, applying the named module to the case. This is educational reasoning practice, not real clinical advice.";
+      const geminiText = await callGemini(prompt, sys);
+      const target = line.querySelector('.gemini-out');
+      target.innerHTML = geminiText ? geminiText.replace(/\n/g,'<br>') : out;
+      consoleBody.scrollTop = consoleBody.scrollHeight;
+    }
+  });
+});
+
+/* ---------------- TOAST ---------------- */
+function showToast(html){
+  const wrap = document.getElementById('toastwrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = html;
+  wrap.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{
+    t.classList.remove('show');
+    setTimeout(()=>t.remove(), 250);
+  }, 4200);
+}
+
+/* ---------------- CAT TABS ---------------- */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.cat).classList.add('active');
+  });
+});
+
+/* ---------------- SOCRATIC LEARNING CHAT ---------------- */
+const socraticBank = [
+  {
+    kw:["pale","pallor","anemia","fatigue","tired","weak"],
+    mode:"promption",
+    qs:[
+      "Before naming a cause — what do the exam findings (pallor, koilonychia) plus the smear (microcytic hypochromic) already tell you about the type of anemia, before you even ask why?",
+      "She's had one prior episode requiring transfusion. What does a second lifetime episode change about how hard you should look for a cause this time?",
+      "If iron studies come back normal despite the smear, what would that force you to reconsider?"
+    ]
+  },
+  {
+    kw:["koilonychia","nails","spoon"],
+    mode:"promption",
+    qs:[
+      "Koilonychia is a classic sign of chronic iron deficiency — what does the word 'chronic' imply about how long this has likely been building, versus the 5-6 month history she reports?",
+      "What other chronic-deficiency exam signs would you specifically look for alongside koilonychia?"
+    ]
+  },
+  {
+    kw:["menstrual","period","cycle","irregular","menorrhagia"],
+    mode:"provocation",
+    qs:[
+      "She denies menorrhagia, but her cycles became irregular right around when her fatigue started. Does 'no menorrhagia' fully rule out menstrual blood loss as a contributor?",
+      "What tool would let you move from her subjective pad-count report to an actual quantified estimate of blood loss?",
+      "If her cycles are irregular but not obviously heavy, could cumulative loss over a year still matter more than any single cycle looks like it does?"
+    ]
+  },
+  {
+    kw:["diet","food","nutrition","pica","appetite"],
+    mode:"provocation",
+    qs:[
+      "She reports a 'mixed diet with good appetite' — does that description actually rule out low bioavailable iron intake, or just rule out starvation?",
+      "No pica was reported. Is the absence of pica evidence against iron deficiency, or just one variably-present sign among many?"
+    ]
+  },
+  {
+    kw:["transfusion","prior","before","6 years","recurrence"],
+    mode:"provocation",
+    qs:[
+      "A transfusion 6 years ago for low Hb, with no documented cause, followed by a second anemia episode now — what does that pattern suggest you shouldn't skip this time?",
+      "If you treat this exactly like her first episode was likely treated, what question remains unanswered again?"
+    ]
+  },
+  {
+    kw:["fever","infection","illness"],
+    mode:"provocation",
+    qs:[
+      "A low-grade fever 10 days before presentation, resolved with medication — is this a coincidental viral illness, or could it be worth revisiting as a clue (e.g. a parasitic or chronic infective contributor to anemia)?",
+      "What would make you treat that fever as clinically relevant to her anemia workup rather than an unrelated footnote?"
+    ]
+  },
+  {
+    kw:["diagnosis","differential","what does she have","what is wrong","cause"],
+    mode:"provocation",
+    qs:[
+      "Before I hand you a differential — what test result, if it came back abnormal, would most surprise you here and change the diagnosis?",
+      "What is the single strongest piece of evidence for iron deficiency here, and what is the single weakest?",
+      "Thalassemia trait can also cause a microcytic hypochromic picture — what would distinguish it from IDA in this patient?"
+    ]
+  },
+  {
+    kw:["hello","hi","hey","help","start"],
+    mode:"promption",
+    qs:[
+      "Welcome to the reasoning console. Rather than answer directly, I'll usually hand a question back — that's the Socratic model this terminal runs on. Try asking about her anemia, her cycles, or her prior transfusion to start.",
+    ]
+  }
+];
+const fallbackQs = [
+  "Interesting — before I respond, what in the timeline or profile panel already speaks to that question?",
+  "What would change your mind here — what single test result would move this from suspicion to certainty?",
+  "Try naming the assumption you're making right now. Is it one this case actually supports?"
+];
+const usedIdx = {};
+function findBank(text){
+  const low = text.toLowerCase();
+  return socraticBank.find(b=>b.kw.some(k=>low.includes(k)));
+}
+function nextQuestion(bank,key){
+  usedIdx[key] = usedIdx[key]===undefined ? 0 : (usedIdx[key]+1) % bank.qs.length;
+  return bank.qs[usedIdx[key]];
+}
+const chatlog = document.getElementById('chatlog');
+function addMsg(text, who, mode){
+  const m = document.createElement('div');
+  m.className = 'msg '+who;
+  if(who==='bot'){
+    m.innerHTML = `<span class="modelabel">${mode||'socratic'}</span><span class="qmark">?</span>${text}`;
+  } else {
+    m.textContent = text;
+  }
+  chatlog.appendChild(m);
+  chatlog.scrollTop = chatlog.scrollHeight;
+}
+const SOCRATIC_SYSTEM = "You are a Socratic clinical-reasoning partner inside 'Vibe Rounds Terminal', tutoring on a single de-identified case: a 15-year-old female with 5-6 months of easy fatiguibility and exertional giddiness, pallor, koilonychia, microcytic hypochromic anemia (iron deficiency anemia), a prior blood transfusion for low hemoglobin 6 years ago, and new menstrual cycle irregularity over the past year, on oral iron/folate therapy (Orofer-XT). Never hand over a direct diagnosis or answer. Always respond with one sharper, more specific question that reflects the learner's question back at them, grounded in the case details above. Keep it to 1-3 sentences.";
+async function respond(userText){
+  if(getGeminiKey()){
+    const reply = await callGemini(userText, SOCRATIC_SYSTEM);
+    if(reply){ addMsg(reply, 'bot', 'gemini · socratic'); return; }
+  }
+  const bank = findBank(userText);
+  if(bank){
+    const q = nextQuestion(bank, bank.kw[0]);
+    addMsg(q, 'bot', bank.mode);
+  } else {
+    const q = fallbackQs[Math.floor(Math.random()*fallbackQs.length)];
+    addMsg(q, 'bot', 'socratic');
+  }
+}
+function sendChat(){
+  const input = document.getElementById('chatinput');
+  const val = input.value.trim();
+  if(!val) return;
+  addMsg(val, 'user');
+  input.value='';
+  setTimeout(()=>respond(val), 250);
+}
+document.getElementById('chatsend').addEventListener('click', sendChat);
+document.getElementById('chatinput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+document.getElementById('chathint').addEventListener('click', ()=>{
+  addMsg("Try: 'why is she pale?', 'what about her menstrual cycles?', 'is IDA right?', 'what about the prior transfusion?'", 'bot', 'hint');
+});
+addMsg("This is a Socratic partner, not an answer key — ask about the case and I'll hand the question back sharper. Try 'why is she pale?'", 'bot', 'promption');
+
+/* ---------------- KNOWLEDGE GRAPH — DIAGNOSIS EXPLORER ---------------- */
+const kgData = [
+  {
+    name:"Iron Deficiency Anemia (nutritional)",
+    sub:"HEMATOLOGY · NUTRITIONAL · CHRONIC-RECURRENT",
+    tags:[["chronic","CHRONIC/RECURRENT"],["","DIET-MODIFIABLE"],["","TREATABLE"]],
+    risk:["Adolescent female (increased growth demand)","Predominantly non-heme (plant-based) dietary iron","Menstruating female","Low socioeconomic/dietary-access settings"],
+    symptoms:["Easy fatiguibility","Exertional giddiness","Generalized weakness"],
+    exam:["Pallor","Koilonychia (spoon nails)","Angular stomatitis (not documented but classically associated)"],
+    redflags:["Hemoglobin <7 g/dL with hemodynamic instability","Symptomatic anemia with tachycardia/hypotension","Failure to respond to oral iron after 4-6 weeks"],
+    diffs:["Thalassemia trait","Anemia of chronic disease","Sideroblastic anemia"],
+    note:"Best fit for the presenting triad of fatigue, pallor, koilonychia and a microcytic hypochromic smear — but a second lifetime episode (previous transfusion at ~age 9) means the diagnosis should be paired with an active search for why it recurs, not treated as a one-off."
+  },
+  {
+    name:"Menstrual-loss-contributed Iron Deficiency",
+    sub:"GYNECOLOGY · CONTRIBUTING FACTOR · EVOLVING",
+    tags:[["","NON-CONFIRMATORY BY ITSELF"],["","REQUIRES QUANTIFICATION"]],
+    risk:["New cycle irregularity (1 year)","Adolescent HPO-axis maturation","Absence of menorrhagia does not exclude cumulative loss"],
+    symptoms:["Irregular cycles (5-day bleeds, no clots)","No reported menorrhagia"],
+    exam:["No specific exam sign beyond anemia findings"],
+    redflags:["Menorrhagia with clots or flooding","Intermenstrual bleeding","Postcoital bleeding (not applicable here)"],
+    diffs:["Anovulatory dysfunctional uterine bleeding (adolescent)","Coagulopathy (e.g. von Willebrand disease) presenting as heavy/irregular bleeding"],
+    note:"Plausible contributing factor given the temporal overlap with symptom onset, but her own report does not meet a menorrhagia threshold — best treated as a factor to quantify (cycle diary), not a confirmed sole cause."
+  },
+  {
+    name:"Thalassemia Trait",
+    sub:"HEMATOLOGY · HEMOGLOBINOPATHY · GENETIC",
+    tags:[["chronic","LIFELONG"],["","NOT IRON-RESPONSIVE"],["serious","REQUIRES EXCLUSION"]],
+    risk:["Family history of anemia (not documented in this case)","Consanguinity","Regional/ethnic prevalence"],
+    symptoms:["Often asymptomatic or mild fatigue","Microcytosis disproportionate to degree of anemia"],
+    exam:["Pallor (mild)","Usually no koilonychia (since not a true iron-deficient state)"],
+    redflags:["Severe transfusion-dependent anemia (beta-thalassemia major, not trait)","Growth failure in childhood"],
+    diffs:["Iron deficiency anemia","Combined IDA + thalassemia trait"],
+    note:"An important mimic and potential co-existing diagnosis — microcytosis out of proportion to hemoglobin drop, or failure to respond to iron therapy, should prompt HbA2/electrophoresis testing before assuming IDA is the sole explanation."
+  },
+  {
+    name:"Occult Gastrointestinal Blood Loss (e.g. parasitic)",
+    sub:"GASTROENTEROLOGY · OCCULT · REGIONAL RELEVANCE",
+    tags:[["","REQUIRES EXCLUSION"],["","TREATABLE IF FOUND"]],
+    risk:["Soil-transmitted helminth (e.g. hookworm) endemic regions","Poor sanitation access","Barefoot walking/agricultural exposure"],
+    symptoms:["Often asymptomatic chronic blood loss","No overt melena or hematochezia required for occult loss"],
+    exam:["No specific sign; stool occult blood test needed"],
+    redflags:["Overt GI bleeding (melena, hematochezia)","Unintentional weight loss","Abdominal mass"],
+    diffs:["Peptic ulcer disease","Meckel's diverticulum","Inflammatory bowel disease"],
+    note:"Explicitly denied in this case (no bleeding PR, no dark stools, no altered bowel habits, no weight loss) — these negatives make overt GI bleeding unlikely, but a stool exam for occult blood/ova and parasites was not documented and remains a reasonable next step given regional endemicity."
+  },
+];
+const kgBody = document.getElementById('kgbody');
+kgBody.innerHTML = kgData.map((d,i)=>`
+  <div class="kg-card" id="kg${i}">
+    <div class="kg-head" onclick="document.getElementById('kg${i}').classList.toggle('open')">
+      <div><div class="kg-name">${d.name}</div><div class="kg-sub">${d.sub}</div></div>
+      <div class="kg-caret">&#9656;</div>
+    </div>
+    <div class="kg-body">
+      <div class="kg-tags">${d.tags.map(t=>`<span class="kg-tag ${t[0]}">${t[1]}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Risk Factors</div>${d.risk.map(r=>`<span class="kg-chip">${r}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Symptoms</div>${d.symptoms.map(r=>`<span class="kg-chip">${r}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Exam Signs</div>${d.exam.map(r=>`<span class="kg-chip exam">${r}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Red Flags</div>${d.redflags.map(r=>`<span class="kg-chip rf">${r}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Differential Diagnoses</div>${d.diffs.map(r=>`<span class="kg-chip">${r}</span>`).join('')}</div>
+      <div class="kg-note">${d.note}</div>
+    </div>
+  </div>`).join('');
+
+/* ---------------- CLINICAL PATHWAYS EXPLORER ---------------- */
+const pwData = [
+  {
+    name:"Adolescent Iron Deficiency Anemia — Diagnostic Workup",
+    sub:"HEMATOLOGY/PEDIATRICS · CONSTRUCTED FOR THIS CASE",
+    tags:[["","OUTPATIENT"],["serious","REQUIRES CONFIRMATION"]],
+    recognition:"Fatigue, exertional giddiness, pallor, koilonychia in an adolescent, with a microcytic hypochromic smear.",
+    diagnosis:"Confirmed by low serum ferritin (most specific), low serum iron, elevated TIBC/transferrin, low transferrin saturation; peripheral smear supports but does not confirm alone.",
+    steps:[
+      "Step 1: CBC with peripheral smear (already obtained — microcytic hypochromic)",
+      "Step 2: Serum ferritin, iron, TIBC, transferrin saturation",
+      "Step 3: HbA2/electrophoresis if microcytosis is disproportionate to anemia severity or family history suggests thalassemia",
+      "Step 4: Menstrual history quantification (cycle diary) and stool occult blood/ova-parasite exam",
+      "Step 5: Start oral iron (already initiated — Orofer-XT); recheck CBC/reticulocyte count at 2-4 weeks",
+      "Step 6: If no response by 4-6 weeks, escalate to GI/gynecology referral or consider IV iron"
+    ],
+    redflags:["Hemoglobin <7 g/dL","Hemodynamic instability (tachycardia, hypotension)","No hemoglobin rise after 4-6 weeks of adequate oral iron"],
+    note:"Constructed pathway synthesizing this patient's own presentation — the original case record reflects a clinical + smear-based diagnosis without documented iron studies; this pathway highlights the confirmatory steps that would strengthen the diagnosis."
+  },
+  {
+    name:"Adolescent Menstrual Irregularity — Evaluation Pathway",
+    sub:"GYNECOLOGY · CONSTRUCTED FOR THIS CASE",
+    tags:[["","OUTPATIENT"],["","STEPWISE"]],
+    recognition:"New irregular cycles in a previously regular adolescent, without overt menorrhagia, occurring within 3 years of menarche (when anovulatory cycles are common).",
+    diagnosis:"Largely a clinical and exclusionary diagnosis — anovulatory dysfunctional uterine bleeding is most common in this age group, but coagulopathy and thyroid dysfunction should be considered if bleeding is heavy or anemia is disproportionate.",
+    steps:[
+      "Document cycle pattern with a menstrual diary or pictorial blood loss chart",
+      "TSH and coagulation screen (PT/aPTT, and von Willebrand screen if heavy bleeding)",
+      "Pelvic ultrasound if bleeding is heavy, prolonged, or structural cause suspected",
+      "Correlate cycle changes with CBC/ferritin trend over time"
+    ],
+    redflags:["Bleeding requiring transfusion","Bleeding for >7 days or soaking through protection hourly","Signs of a bleeding disorder (easy bruising, epistaxis)"],
+    note:"Included because her cycle change coincides temporally with her anemia symptoms — this pathway keeps menstrual factors on the differential without over-attributing her anemia to them prematurely."
+  },
+  {
+    name:"Microcytic Anemia — Broad Differentiation Pathway",
+    sub:"HEMATOLOGY · GENERAL · REFERENCE TEMPLATE",
+    tags:[["","OUTPATIENT"],["serious","DIAGNOSTIC BRANCH POINT"]],
+    recognition:"Low MCV on CBC, regardless of presumed cause — must be systematically differentiated before committing to a single diagnosis.",
+    diagnosis:"Iron studies (ferritin/TIBC/iron) first-line; if iron studies are normal or discordant with the degree of microcytosis, proceed to hemoglobin electrophoresis/HbA2 for thalassemia, then consider anemia of chronic disease or (rarely) sideroblastic anemia.",
+    steps:[
+      "Step 1: Confirm microcytosis and hypochromia on smear/indices",
+      "Step 2: Iron studies (ferritin most reliable; note ferritin is an acute-phase reactant and can be falsely normal/elevated with concurrent infection/inflammation)",
+      "Step 3: If iron studies equivocal, consider recent illness (e.g. this patient's fever 10 days prior) as a possible confounder of ferritin interpretation",
+      "Step 4: HbA2/electrophoresis if thalassemia trait suspected",
+      "Step 5: Reticulocyte count and LFTs if hemolysis or chronic disease suspected"
+    ],
+    redflags:["Microcytosis with markedly elevated reticulocyte count (consider hemolysis)","Failure of iron trial to correct anemia","Family history of transfusion-dependent anemia"],
+    note:"Used here as a structural template: her recent fever is a relevant confounder for ferritin interpretation (an acute-phase reactant), so any iron studies drawn soon after that illness should be interpreted with caution."
+  }
+];
+const pwBody = document.getElementById('pwbody');
+pwBody.innerHTML = pwData.map((p,i)=>`
+  <div class="kg-card" id="pw${i}">
+    <div class="kg-head" onclick="document.getElementById('pw${i}').classList.toggle('open')">
+      <div><div class="kg-name">${p.name}</div><div class="kg-sub">${p.sub}</div></div>
+      <div class="kg-caret">&#9656;</div>
+    </div>
+    <div class="kg-body">
+      <div class="kg-tags">${p.tags.map(t=>`<span class="kg-tag ${t[0]}">${t[1]}</span>`).join('')}</div>
+      <div class="kg-sec"><div class="kg-sec-label">Recognition</div><div class="kg-note">${p.recognition}</div></div>
+      <div class="kg-sec"><div class="kg-sec-label">Diagnosis</div><div class="kg-note">${p.diagnosis}</div></div>
+      <div class="kg-sec"><div class="kg-sec-label">Management Steps</div><ol class="pw-steps">${p.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>
+      <div class="kg-sec"><div class="kg-sec-label">Red Flags</div>${p.redflags.map(r=>`<span class="kg-chip rf">${r}</span>`).join('')}</div>
+      <div class="kg-note" style="margin-top:8px;">${p.note}</div>
+    </div>
+  </div>`).join('');
+
+/* ---------------- BASIC SCIENCE CONCEPTS EXPLORER ---------------- */
+const basicSciData = [
+  {name:"Dietary Iron Bioavailability (Heme vs Non-heme)", sub:"NUTRITION · BIOCHEMISTRY",
+   why:"Underpins why even a self-reported 'mixed diet with good appetite' can still be poor in absorbable iron.",
+   points:["Heme iron (meat/fish) is well-absorbed; non-heme iron (plant sources) is poorly absorbed and inhibited by phytates.","Overall dietary iron absorption is often only ~5% in non-heme-dominant regional diets.","Vitamin C co-ingestion enhances non-heme iron absorption; tea/coffee with meals inhibits it."]},
+  {name:"Iron Requirement Across the Life Cycle", sub:"PHYSIOLOGY · GROWTH & REPRODUCTION",
+   why:"Explains why adolescent girls are a recognized high-risk group even without additional pathology.",
+   points:["Iron requirements rise sharply during growth spurts (adolescence) and with menstrual blood loss onset.","Pregnancy and early childhood are the other two classic high-demand periods.","Demand exceeding intake, even with a 'normal' diet, can produce a negative iron balance over months."]},
+  {name:"Erythropoiesis & Microcytosis", sub:"HEMATOLOGY · CELL BIOLOGY",
+   why:"Explains why iron deficiency specifically produces small (microcytic), pale (hypochromic) red cells.",
+   points:["Iron is essential for heme synthesis within developing erythroblasts in the bone marrow.","Insufficient iron leads to smaller cells with reduced hemoglobin content — microcytic, hypochromic morphology.","Distinguishes IDA from macrocytic (B12/folate deficiency) or normocytic (acute blood loss, chronic disease) anemias."]},
+  {name:"Iron Studies Interpretation (Ferritin, TIBC, Transferrin Saturation)", sub:"LABORATORY MEDICINE · DIAGNOSTICS",
+   why:"Central to confirming (or excluding) IDA rigorously rather than by smear and clinical picture alone.",
+   points:["Serum ferritin reflects total body iron stores and is the most specific test for iron deficiency.","Ferritin is also an acute-phase reactant — can be falsely normal/elevated during infection or inflammation (relevant given her recent fever).","Low iron with high TIBC and low transferrin saturation together support true iron deficiency over anemia of chronic disease."]},
+  {name:"Thalassemia vs Iron Deficiency — Mentzer Index & Beyond", sub:"HEMATOLOGY · DIFFERENTIAL DIAGNOSIS",
+   why:"Relevant since thalassemia trait is an important microcytic mimic that would not respond to iron therapy.",
+   points:["Mentzer index (MCV/RBC count) can help distinguish IDA (usually >13) from thalassemia trait (usually <13), though it's not fully reliable alone.","Thalassemia trait typically shows microcytosis disproportionate to the degree of anemia.","HbA2 electrophoresis is the definitive test to confirm or exclude beta-thalassemia trait."]},
+  {name:"Adolescent Menstrual Physiology", sub:"REPRODUCTIVE ENDOCRINOLOGY · ADOLESCENCE",
+   why:"Frames why cycle irregularity in the few years after menarche is common, and how it can still contribute to iron loss.",
+   points:["Anovulatory cycles are common in the first 2-3 years after menarche due to an immature hypothalamic-pituitary-ovarian axis.","Irregular cycles can still produce unpredictable or cumulative blood loss even without meeting a menorrhagia definition.","Distinguishing normal adolescent irregularity from a pathological cause (coagulopathy, thyroid dysfunction) requires targeted screening if anemia is disproportionate."]},
+  {name:"Acute-Phase Response and Iron Sequestration", sub:"IMMUNOLOGY · INFLAMMATION",
+   why:"Relevant to interpreting any iron studies drawn close to her recent febrile illness.",
+   points:["During infection/inflammation, hepcidin rises and sequesters iron within macrophages, lowering serum iron transiently.","Ferritin, as an acute-phase reactant, can rise during illness, potentially masking true iron deficiency if measured too soon after a febrile episode.","Best practice is to interpret iron studies with an awareness of recent illness, or to recheck after full recovery if results are borderline."]},
+];
+document.getElementById('basicscibody').innerHTML = basicSciData.map((d,i)=>`
+  <div class="kg-card" id="bs${i}">
+    <div class="kg-head" onclick="document.getElementById('bs${i}').classList.toggle('open')">
+      <div><div class="kg-name">${d.name}</div><div class="kg-sub">${d.sub}</div></div>
+      <div class="kg-caret">&#9656;</div>
+    </div>
+    <div class="kg-body">
+      <div class="kg-note" style="margin-bottom:8px;"><b style="color:var(--amber-bright);">Why it matters here:</b> ${d.why}</div>
+      <div class="kg-sec-label">Key Points</div>
+      <ul class="pw-steps">${d.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    </div>
+  </div>`).join('');
+
+/* ---------------- FURTHER QUERIES TO ASK PATIENT ---------------- */
+const furtherQueries = [
+  {q:"Can you walk me through a typical day's meals in detail — what, how much, and how often iron-rich or vitamin-C-rich foods appear?", why:"A structured diet recall is more reliable than a general 'mixed diet, good appetite' self-report for judging true dietary iron adequacy."},
+  {q:"What was the cause identified (if any) for the low hemoglobin that required a transfusion 6 years ago?", why:"Establishes whether this is a truly separate nutritional episode or a recurring, still-unaddressed process."},
+  {q:"Can you describe your periods over the last year in more detail — how many pads per day at the heaviest, any flooding, any need to change protection overnight?", why:"Refines the crude 'no menorrhagia' self-report into something closer to quantifiable blood loss."},
+  {q:"Has anyone in your family (parents, siblings) ever been told they have thalassemia, anemia, or needed a blood transfusion?", why:"Screens for a possible inherited hemoglobinopathy contributing to or mimicking the current microcytic picture."},
+  {q:"Do you walk barefoot often, or has anyone in the family had worm infestation treated before?", why:"Screens for a possible occult parasitic (e.g. hookworm) contributor to chronic iron loss, especially relevant in endemic regions."},
+  {q:"Since starting the Orofer-XT, have you noticed any change in energy, or any stomach upset/constipation from the tablets?", why:"Assesses both early treatment response and tolerance, which affects adherence to the 4-6 week follow-up plan."},
+];
+const queryBody = document.getElementById('querybody');
+queryBody.innerHTML = furtherQueries.map(f=>`
+  <div class="qr-row"><div class="qr-q">${f.q}</div><div class="qr-why">Why ask: ${f.why}</div></div>`).join('');
+
+/* ---------------- REQUIRED LABS ---------------- */
+const requiredLabs = [
+  {name:"Serum ferritin, serum iron, TIBC, transferrin saturation", why:"Confirms true iron deficiency rather than relying on smear morphology and clinical picture alone.",
+   interp:["Low ferritin + low iron + high TIBC + low transferrin saturation → confirms iron deficiency anemia definitively.","Normal or high ferritin despite anemia → consider recent infection (acute-phase effect) or anemia of chronic disease instead.","Discordant results (e.g. normal iron studies with marked microcytosis) → raise suspicion for thalassemia trait."]},
+  {name:"Hemoglobin electrophoresis / HbA2", why:"Distinguishes thalassemia trait from iron deficiency anemia — an important mimic that would not respond to iron.",
+   interp:["Elevated HbA2 → supports beta-thalassemia trait, explains microcytosis independent of iron status.","Normal HbA2 → argues against thalassemia trait, supports iron deficiency as the primary driver.","Note: iron deficiency can transiently lower HbA2 — best interpreted after iron repletion if borderline."]},
+  {name:"Stool examination for occult blood, ova and parasites", why:"Screens for an occult gastrointestinal contributor to iron loss despite a negative overt-bleeding history.",
+   interp:["Positive occult blood → warrants further GI workup (endoscopy) despite absence of overt melena/hematochezia.","Ova/parasites identified (e.g. hookworm) → identifies a treatable contributor to chronic iron loss.","Negative stool exam → supports dietary/menstrual factors as the primary drivers, though does not fully exclude an intermittent source."]},
+  {name:"Thyroid function test (TSH)", why:"Screens for thyroid dysfunction as a contributor to her new menstrual irregularity.",
+   interp:["Elevated TSH (hypothyroidism) → can cause menstrual irregularity and contribute indirectly to anemia; treatable cause if found.","Normal TSH → keeps menstrual irregularity attributed to normal adolescent anovulatory cycling for now."]},
+  {name:"Reticulocyte count", why:"Assesses bone marrow response and helps track early response to iron therapy.",
+   interp:["Reticulocytosis 5-10 days after starting iron → confirms marrow is responding appropriately to therapy.","Failure to rise → suggests inadequate iron absorption, incorrect diagnosis, or poor adherence to Orofer-XT."]},
+  {name:"Repeat CBC at 4–6 weeks", why:"Confirms hemoglobin response to oral iron therapy and guides duration of treatment.",
+   interp:["Hemoglobin rise of ≥1-2 g/dL → confirms adequate response; continue iron for 3-6 months to replete stores.","No significant rise → prompts reassessment of diagnosis, adherence, absorption, and ongoing loss."]},
+];
+const labsBody = document.getElementById('labsbody');
+labsBody.innerHTML = requiredLabs.map((l,i)=>`
+  <div class="lab-row">
+    <div class="lab-top"><span class="lab-name">${l.name}</span><button class="order-btn" id="orderbtn${i}" onclick="interpretLab(${i})">INTERPRET RESULT</button></div>
+    <div class="lab-why">${l.why}</div>
+    <div class="lab-interp" id="labinterp${i}" style="display:none;"></div>
+  </div>`).join('');
+function interpretLab(i){
+  const box = document.getElementById('labinterp'+i);
+  const b = document.getElementById('orderbtn'+i);
+  const showing = box.style.display !== 'none';
+  if(showing){ box.style.display='none'; b.textContent='INTERPRET RESULT'; return; }
+  box.innerHTML = `<div class="log-sq-label" style="margin-top:8px;color:var(--yellow);">Possible Interpretations</div>${requiredLabs[i].interp.map(t=>`<div class="log-sq-item">${t}</div>`).join('')}<div class="small" style="margin-top:6px;">Educational — illustrative interpretations only, not an actual result.</div>`;
+  box.style.display='block';
+  b.textContent='HIDE INTERPRETATION';
+}
+
+/* ---------------- MEDICATIONS / INTERVENTIONS ---------------- */
+const medsList = [
+  {name:"Orofer-XT (ferrous ascorbate + folic acid)", dose:"PO BD, as prescribed", why:"First-line oral iron replacement; ferrous ascorbate is generally better tolerated than ferrous sulfate, with folic acid supporting erythropoiesis."},
+  {name:"Dietary counseling — iron-rich foods + vitamin C co-ingestion", dose:"ongoing, advisory", why:"Improves non-heme iron absorption and addresses the underlying dietary contributor alongside supplementation."},
+  {name:"Menstrual cycle diary / pictorial blood loss chart", dose:"ongoing, advisory", why:"Quantifies the contribution of her new cycle irregularity to ongoing iron loss going forward."},
+  {name:"Deworming (empiric or exam-guided)", dose:"pending stool exam results", why:"Addresses a possible occult parasitic contributor to chronic iron loss, particularly relevant in endemic settings."},
+];
+const medsBody = document.getElementById('medsbody');
+medsBody.innerHTML = medsList.map((m,i)=>`
+  <div class="med-row"><span class="med-name">${m.name}</span><span class="med-dose">${m.dose}</span>
+    <button class="order-btn" style="margin-left:8px;" onclick="queryEvidence(${i})">EVIDENCE BASIS?</button>
+    <div class="med-why">${m.why}</div>
+  </div>`).join('');
+function queryEvidence(i){
+  const m = medsList[i];
+  const prompt = `In the context of this patient — 15F, easy fatiguibility, exertional giddiness, pallor, koilonychia, microcytic hypochromic anemia (iron deficiency anemia), prior transfusion for low Hb, new menstrual irregularity — what is the actual evidence base and mechanistic rationale for using ${m.name} (${m.dose})? Specifically: what published or mechanistic evidence supports it in a patient with this profile, what evidence is missing or purely anecdotal, and what would need to be true for this to be more than a plausible-sounding intervention?`;
+  const line = document.createElement('div');
+  line.className='cline';
+  const hasKey = !!getGeminiKey();
+  line.innerHTML = `<span class="cprompt">vibe&gt;</span> EVIDENCE QUERY QUEUED — <b>${m.name}</b><br>
+    <pre style="white-space:pre-wrap;background:#0a0a0a;border:1px solid #333;padding:8px 10px;border-radius:2px;margin:6px 0;color:#e8c98a;">${prompt}</pre>
+    <span class="ctag v">EVIDENCE CHECK →</span> <span class="gemini-out">${hasKey ? '<i>Calling Gemini…</i>' : 'No Gemini key set — paste this prompt into your LLM of choice to get an evidence appraisal, or add a key via the ⚿ GEMINI API KEY button above.'}</span>`;
+  consoleBody.appendChild(line);
+  consoleBody.scrollTop = consoleBody.scrollHeight;
+  showToast(`Evidence query queued for <b>${m.name}</b> — see Reasoning Console.`);
+  if(hasKey){
+    const sys = "You are the reasoning engine inside a clinical-education terminal called Vibe Rounds Terminal, evaluating the evidence basis for an intervention in a specific patient case. Be balanced and specific: cite the type of evidence that exists (mechanistic, case-report, anecdotal, controlled trial) and be explicit about what is NOT established. 4-7 sentences. Educational reasoning practice, not real clinical advice.";
+    callGemini(prompt, sys).then(text=>{
+      const target = line.querySelector('.gemini-out');
+      target.innerHTML = text ? text.replace(/\n/g,'<br>') : 'No Gemini key set — paste this prompt into your LLM of choice to get an evidence appraisal.';
+      consoleBody.scrollTop = consoleBody.scrollHeight;
+    });
+  }
+}
+
+/* ---------------- DRUG-DRUG / DRUG-DISEASE INTERACTION INSIGHTS ---------------- */
+const interactions = [
+  {type:"drug-drug", sev:"moderate", a:"Ferrous ascorbate (Orofer-XT)", b:"Tea/coffee, calcium supplements, antacids", note:"Tannins in tea/coffee and calcium/antacids reduce non-heme iron absorption if taken together — advise spacing iron tablets 1-2 hours apart from these."},
+  {type:"drug-drug", sev:"minor", a:"Ferrous ascorbate (Orofer-XT)", b:"Vitamin C-rich foods/juice", note:"Vitamin C enhances non-heme and supplemental iron absorption — a beneficial interaction worth reinforcing, not a concern."},
+  {type:"drug-disease", sev:"minor", a:"Oral iron therapy", b:"Recent low-grade febrile illness", note:"Concurrent inflammation can transiently alter iron study interpretation (via hepcidin/ferritin acute-phase effects) without meaningfully affecting the safety of iron therapy itself."},
+  {type:"drug-disease", sev:"moderate", a:"Oral iron therapy (high dose)", b:"Possible undiagnosed thalassemia trait", note:"If iron studies eventually show normal/replete iron stores, continuing empiric iron risks unnecessary GI side effects without benefit — confirm the diagnosis before prolonged high-dose therapy."},
+];
+const sevLabelMap = {major:"MAJOR", moderate:"MODERATE", minor:"MINOR"};
+const interactionsBody = document.getElementById('interactionsbody');
+interactionsBody.innerHTML = interactions.map(x=>`
+  <div class="med-row">
+    <span class="med-name">${x.a}</span> <span class="med-dose">↔ ${x.b}</span>
+    <span class="sev-badge ${x.sev}">${sevLabelMap[x.sev]}</span>
+    <span class="tagpill" style="margin-left:6px;">${x.type==='drug-disease'?'DRUG–DISEASE':'DRUG–DRUG'}</span>
+    <div class="med-why">${x.note}</div>
+  </div>`).join('') +
+  `<div class="small" style="margin-top:8px;">Severity grading is illustrative/educational, not a substitute for a pharmacist-reviewed interaction check.</div>`;
+
+/* ---------------- FUTURE TRAJECTORY ---------------- */
+const trajectory = [
+  {stage:"Weeks", sub:"0–6 weeks", items:[
+    "Continue Tab Orofer-XT PO BD; counsel on taking with vitamin C source, away from tea/coffee/calcium.",
+    "Send pending confirmatory labs: ferritin/iron studies, stool exam, TSH if not already done.",
+    "Begin menstrual cycle diary to start quantifying flow going forward.",
+  ]},
+  {stage:"Months", sub:"2–6 months", items:[
+    "Repeat CBC/reticulocyte count at 4-6 weeks to confirm hemoglobin response; extend iron therapy 3-6 months to replete stores if responding.",
+    "If poor response: pursue HbA2/electrophoresis for thalassemia trait and reassess for occult GI loss.",
+    "Gynecology follow-up if cycle irregularity persists or diary suggests significant cumulative loss.",
+  ]},
+  {stage:"Years", sub:"1–3 years", items:[
+    "Periodic CBC screening given her history of two lifetime anemia episodes, particularly around growth spurts.",
+    "Nutritional counseling reinforcement as dietary needs continue to evolve through later adolescence.",
+    "Reassess menstrual pattern as her HPO axis matures — expect increasing regularity over the next 1-3 years in most adolescents.",
+  ]},
+  {stage:"Decades", sub:"5+ years", items:[
+    "If thalassemia trait is ever confirmed, genetic counseling becomes relevant for future reproductive planning.",
+    "Long-term awareness that recurrent-episode iron deficiency in adolescence can inform screening thresholds in future pregnancies.",
+  ]},
+];
+document.getElementById('trajectorybody').innerHTML = trajectory.map(t=>`
+  <div class="traj-row">
+    <div class="traj-stage"><div class="tlabel">${t.stage}</div><div class="tsub">${t.sub}</div></div>
+    <div class="traj-content">${t.items.map(i=>`<div class="traj-item">• ${i}</div>`).join('')}</div>
+  </div>`).join('') +
+  `<div class="small" style="margin-top:8px;">Illustrative projected trajectory built from the case's open questions — not a guarantee of course or outcome.</div>`;
+
+/* ---------------- ALERT: SYMPTOMS & SIDE EFFECTS ---------------- */
+const alertSymptoms = [
+  "Sudden worsening pallor, breathlessness at rest, or palpitations — could indicate a rapid drop in hemoglobin requiring urgent reassessment.",
+  "Black tarry stools or visible blood in stool/vomit — signals overt GI bleeding, a departure from her current denied-bleeding history.",
+  "Heavy menstrual bleeding (soaking through protection hourly, passing large clots) — a change from her current reported pattern warranting urgent gynecology review.",
+  "Persistent high-grade fever, night sweats, or unexplained weight loss — would suggest a cause beyond simple nutritional deficiency.",
+]; 
+const alertSideEffects = [
+  "Oral iron (Orofer-XT): constipation, dark/black stools (expected, harmless), nausea, and metallic taste — usually mild and dose-related.",
+  "Oral iron overdose (if tablets accessed in excess by a younger sibling at home): can be dangerous — counsel on safe storage given a school-age household.",
+];
+document.getElementById('alertbox').innerHTML = `
+  <div class="section-label" style="color:var(--red);border-top-color:var(--red);">⚠ Alert — Symptoms Requiring Urgent Review</div>
+  <div style="background:#1a0a0a;border-left:3px solid var(--red);padding:9px 12px;margin:8px 0;font-size:12.5px;line-height:1.6;color:#ffcfc9;">
+    ${alertSymptoms.map(s=>`<div style="margin-bottom:5px;">⚠ ${s}</div>`).join('')}
+  </div>
+  <div class="section-label" style="color:var(--yellow);border-top-color:var(--rule);">Medication / Intervention Side Effects to Watch</div>
+  <div style="background:#1a1305;border-left:3px solid var(--yellow);padding:9px 12px;margin:8px 0;font-size:12.5px;line-height:1.6;color:#f2e6b0;">
+    ${alertSideEffects.map(s=>`<div style="margin-bottom:5px;">• ${s}</div>`).join('')}
+  </div>`;
+
+/* ---------------- CLINICAL SCENARIO IMAGE-PROMPT SUMMARY ---------------- */
+const imageSummary = `Create an educational medical infographic/illustration summarizing this de-identified clinical scenario:
+
+A 15-year-old female student presenting with 5-6 months of easy fatiguibility and exertional giddiness (2-3 min, relieved by rest), generalized weakness, and a low-grade fever 10 days prior that resolved with medication. No pedal edema, no breathlessness, no GI bleeding, no weight loss. History of blood transfusion 6 years ago for low hemoglobin. Menarche at 12 with initially regular cycles, now irregular for the past year (5-day bleeds, no menorrhagia). Exam: pallor++, koilonychia+, normal vitals, normal cardiovascular/abdominal/neurological exam. Diagnosis: microcytic hypochromic anemia — iron deficiency anemia. Treatment: Tab Orofer-XT (ferrous ascorbate + folic acid) PO BD.
+
+Illustrate as a clean, clinical-education style diagram (timeline + body-systems map), no real patient photo, de-identified and schematic only.`;
+document.getElementById('imgsumtext').value = imageSummary;
+document.getElementById('imgsumcopy').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(imageSummary);
+    showToast('Summary copied — paste into Gemini or ChatGPT to generate an image.');
+  }catch(e){
+    document.getElementById('imgsumtext').select();
+    document.execCommand('copy');
+    showToast('Summary copied.');
+  }
+});
+
+/* ---------------- IRON ABSORPTION & ERYTHROPOIESIS PATHWAY — IMAGE PROMPT ---------------- */
+const pathwayImageSummary = `Create an educational biochemistry/physiology pathway diagram illustrating this patient-specific hypothesis (de-identified, schematic only, no real patient depiction):
+
+Show two interlinked contributing pathways converging on one 15-year-old patient's iron deficiency anemia:
+1) Dietary Iron Absorption: mixed diet (predominantly non-heme iron) → phytate inhibition → low (~5%) intestinal absorption → insufficient iron delivery to bone marrow → microcytic, hypochromic erythropoiesis → fatigue, pallor, koilonychia.
+2) Menstrual Loss Pathway: menarche at 12 → initially regular cycles → new cycle irregularity over the past year → additional (though not overtly heavy) iron loss → compounding the dietary deficit.
+
+Layer a third box showing "Prior Episode" — a transfusion for low hemoglobin 6 years earlier — as a marker of recurring vulnerability, feeding into the same iron-deficient erythropoiesis endpoint.
+
+Style: clean biochemical/physiological pathway diagram with labeled arrows and boxes, clinical-education infographic style, no real photos, explicitly marked as an educational teaching diagram.`;
+document.getElementById('pathwayimgtext').value = pathwayImageSummary;
+document.getElementById('pathwayimgcopy').addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(pathwayImageSummary);
+    showToast('Iron pathway hypothesis prompt copied — paste into Gemini or ChatGPT to generate a diagram.');
+  }catch(e){
+    document.getElementById('pathwayimgtext').select();
+    document.execCommand('copy');
+    showToast('Summary copied.');
+  }
+});
+
+/* ---------------- NEET PG MCQ DRILL ---------------- */
+const mcqs = [
+  {
+    q:"A 15-year-old girl presents with fatigue, exertional giddiness, pallor, and koilonychia. Peripheral smear shows microcytic hypochromic RBCs. Which single test is most specific for confirming iron deficiency as the cause?",
+    opts:["Serum ferritin","Peripheral smear morphology","Hemoglobin electrophoresis","Total leukocyte count"],
+    correct:0,
+    exp:"Serum ferritin reflects total body iron stores and is the most specific test for true iron deficiency, though it can be falsely elevated during concurrent infection/inflammation (an acute-phase reactant) — relevant given her recent febrile illness.",
+    tag:"IDA"
+  },
+  {
+    q:"Which physical sign in this patient is classically associated with chronic, longstanding iron deficiency rather than acute blood loss?",
+    opts:["Tachycardia","Koilonychia","Splenomegaly","Jaundice"],
+    correct:1,
+    exp:"Koilonychia (spoon-shaped nails) is a sign of chronic iron deficiency, reflecting a longer-standing deficient state, distinguishing it from anemia due to acute blood loss which would not typically show this finding.",
+    tag:"IDA"
+  },
+  {
+    q:"What is the most likely explanation for a persistently low or absent rise in hemoglobin despite 6 weeks of adequate oral iron therapy in a patient like this?",
+    opts:["Normal expected response — no action needed","Ongoing unrecognized blood loss, malabsorption, incorrect diagnosis (e.g. thalassemia trait), or poor adherence","Iron therapy always takes longer than 6 months to show any effect","Vitamin C excess blocking iron absorption"],
+    correct:1,
+    exp:"Failure to respond to adequate oral iron over 4-6 weeks should prompt reassessment for ongoing loss, malabsorption, non-adherence, or an alternative/co-existing diagnosis such as thalassemia trait, rather than simply continuing therapy unchanged.",
+    tag:"IDA workup"
+  },
+  {
+    q:"Which of the following would best help distinguish iron deficiency anemia from thalassemia trait in this patient if the diagnosis remains uncertain?",
+    opts:["Repeat peripheral smear only","Hemoglobin electrophoresis / HbA2 level","Total leukocyte count","C-reactive protein"],
+    correct:1,
+    exp:"Both conditions can produce a microcytic hypochromic picture, but hemoglobin electrophoresis / HbA2 level is the definitive test to differentiate thalassemia trait (elevated HbA2) from iron deficiency anemia (normal HbA2, though iron deficiency can transiently lower it).",
+    tag:"Differential"
+  },
+  {
+    q:"In an adolescent girl with new menstrual cycle irregularity but no reported menorrhagia, which statement about her menstrual contribution to anemia is most accurate?",
+    opts:["Absence of menorrhagia definitively excludes menstrual blood loss as a contributor","Cumulative loss over an irregular year can still meaningfully contribute even without meeting a menorrhagia threshold","Menstrual blood loss can never contribute to anemia unless flow is described as heavy","Irregular cycles always indicate a bleeding disorder"],
+    correct:1,
+    exp:"Subjective self-report (pad counts, absence of clots) is an imprecise proxy for actual blood loss; cumulative loss from a full year of irregular cycles can still meaningfully contribute to iron deficiency even without meeting a formal menorrhagia definition, so it should be quantified rather than dismissed.",
+    tag:"Menstrual contribution"
+  },
+  {
+    q:"What is the most appropriate first-line initial management for confirmed/suspected iron deficiency anemia in this adolescent, as reflected in her actual treatment?",
+    opts:["Immediate blood transfusion","Oral iron replacement (e.g. ferrous ascorbate) with dietary counseling","IV iron infusion as first-line","Watchful waiting without treatment"],
+    correct:1,
+    exp:"Oral iron replacement (as with the Orofer-XT prescribed here) combined with dietary counseling is the appropriate first-line approach for uncomplicated iron deficiency anemia in a hemodynamically stable adolescent; transfusion and IV iron are reserved for more severe or non-responsive cases.",
+    tag:"Management"
+  },
+  {
+    q:"Why might serum ferritin be misleadingly reassuring if measured too soon after this patient's low-grade febrile illness 10 days prior?",
+    opts:["Ferritin is not affected by infection","Ferritin is an acute-phase reactant that can rise transiently during inflammation, masking true iron deficiency","Fever always lowers ferritin permanently","Ferritin only reflects iron intake from the previous 24 hours"],
+    correct:1,
+    exp:"Ferritin behaves as an acute-phase reactant and can be transiently elevated during infection or inflammation, which can mask an underlying true iron deficiency if the test is drawn too close to a febrile illness — best interpreted with this recent history in mind or rechecked after recovery.",
+    tag:"Lab interpretation"
+  },
+];
+let mcqCorrectCount = 0, mcqAttempted = 0, mcqIndex = 0;
+const mcqBody = document.getElementById('mcqbody');
+document.getElementById('mcqtotal').textContent = mcqs.length;
+
+function renderMcq(i){
+  if(i >= mcqs.length){
+    mcqBody.innerHTML = `<div class="mcq-card">Drill complete — final score <b>${mcqCorrectCount} / ${mcqs.length}</b>. <button class="mcq-next" onclick="mcqIndex=0;mcqAttempted=0;mcqCorrectCount=0;document.getElementById('mcqcorrect').textContent=0;document.getElementById('mcqtotal').textContent=mcqs.length;renderMcq(0);">RESTART DRILL</button></div>`;
+    return;
+  }
+  const m = mcqs[i];
+  mcqBody.innerHTML = `
+    <div class="mcq-progress">Question ${i+1} of ${mcqs.length}</div>
+    <div class="mcq-card" id="mcq${i}">
+      <div class="mcq-q"><span class="qn">Q${i+1}.</span>${m.q}<span class="mcq-tag">${m.tag}</span></div>
+      <div class="mcq-opts">
+        ${m.opts.map((o,j)=>`<button class="mcq-opt" data-i="${i}" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}
+      </div>
+      <div class="mcq-exp" id="mcq-exp-${i}"><b>Explanation:</b> ${m.exp}</div>
+    </div>`;
+  mcqBody.querySelectorAll('.mcq-opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const ii = +btn.dataset.i, jj = +btn.dataset.j;
+      const card = document.getElementById('mcq'+ii);
+      if(card.classList.contains('answered')) return;
+      card.classList.add('answered');
+      mcqAttempted++;
+      const opts = card.querySelectorAll('.mcq-opt');
+      opts.forEach(o=>o.style.pointerEvents='none');
+      if(jj===mcqs[ii].correct){
+        btn.classList.add('correct');
+        mcqCorrectCount++;
+      } else {
+        btn.classList.add('wrong');
+        opts[mcqs[ii].correct].classList.add('correct');
+      }
+      document.getElementById('mcq-exp-'+ii).classList.add('show');
+      document.getElementById('mcqcorrect').textContent = mcqCorrectCount;
+      document.getElementById('mcqtotal').textContent = mcqs.length + ' (' + mcqAttempted + ' attempted)';
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'mcq-next';
+      nextBtn.textContent = (ii+1 < mcqs.length) ? 'NEXT QUESTION →' : 'SEE FINAL SCORE →';
+      nextBtn.onclick = ()=>{ mcqIndex = ii+1; renderMcq(mcqIndex); };
+      card.appendChild(nextBtn);
+    });
+  });
+}
+renderMcq(mcqIndex);
+
+/* ---------------- MUST-SEE — HIGHEST LEARNING VALUE ---------------- */
+const mustSee = [
+  {id:"p-cat", title:"★ Pre-Appraised Clinical Summaries (CATs)", why:"The core teaching artifact — shows exactly how evidence is appraised, not just cited, plus Triggers/Social/Lifestyle tabs."},
+  {id:"p-kg", title:"★ Knowledge Graph — Diagnosis Explorer", why:"Fastest way to compare all candidate diagnoses side-by-side: risk factors, red flags, and where each one falls short."},
+  {id:"p-basicsci", title:"★ Basic Science Concepts Explorer", why:"The mechanistic foundation underneath every diagnosis in this case — iron absorption, erythropoiesis, and thalassemia differentiation."},
+  {id:"p-chat", title:"★ Socratic Learning Chat", why:"Active-recall practice — forces you to reason instead of just reading; connect a Gemini key for live, dynamic questioning."},
+  {id:"p-mcq", title:"★ NEET PG MCQ Drill", why:"Turns the case into testable, scored recall — the highest-yield 5 minutes in this terminal."},
+  {id:"p-ops", title:"Operations — Reasoning Console modules", why:"Shows the Promption vs. Provocation framework in action on a real case."},
+  {id:"p-trajectory", title:"Future Trajectory", why:"Connects today's open questions to what should actually happen next, over weeks to years."},
+  {id:"p-pathwayimg", title:"Iron Absorption Pathway Hypothesis (image prompt)", why:"Copy-ready prompt to visualize how dietary, menstrual, and historical factors interlink — great for building intuition fast."},
+];
+document.getElementById('mustseebody').innerHTML = `<div class="mustsee-grid">` + mustSee.map(m=>`
+  <a class="mustsee-card" href="#${m.id}" onclick="revealPanel('${m.id}')" title="${m.why.replace(/"/g,'&quot;')}">
+    <div class="ms-title">${m.title}</div>
+    <div class="ms-why">${m.why}</div>
+  </a>`).join('') + `</div>`;
+function revealPanel(id){
+  const p = document.getElementById(id);
+  if(!p) return;
+  if(p.classList.contains('collapsed')){
+    p.classList.remove('collapsed');
+    const btn = p.querySelector('.toggle-btn');
+    if(btn) btn.textContent = 'HIDE';
+  }
+  setTimeout(()=>{
+    p.style.animation = 'none';
+    void p.offsetWidth;
+    p.style.animation = 'pulseGlow 1.2s ease 2';
+  }, 300);
+}
+</script>
+</body>
+</html>
