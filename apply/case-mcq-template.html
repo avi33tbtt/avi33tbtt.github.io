@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz — Vibe Rounds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     VIBE ROUNDS QUIZ TEMPLATE
+     Reusable shell for NEET-PG-style MCQ quizzes.
+     To make a new quiz: copy this file, then only edit the
+     QUIZ CONFIG block inside <script> near the bottom
+     (QUIZ_TITLE, QUIZ_SUBTITLE, and the QUESTIONS array).
+     Nothing above the config block needs to change.
+     ============================================================ */
+
+  :root{
+    --cyan-50:  #ecfeff;
+    --cyan-100: #cffafe;
+    --cyan-200: #a5f3fc;
+    --cyan-500: #06b6d4;
+    --cyan-600: #0891b2;
+    --cyan-700: #0e7490;
+    --cyan-900: #164e63;
+
+    --ink-900: #0f172a;
+    --ink-700: #334155;
+    --ink-500: #64748b;
+    --ink-300: #cbd5e1;
+    --ink-200: #e2e8f0;
+    --ink-100: #f1f5f9;
+
+    --green-500: #059669;
+    --green-50:  #ecfdf5;
+    --green-200: #a7f3d0;
+
+    --red-500: #dc2626;
+    --red-50:  #fef2f2;
+    --red-200: #fecaca;
+
+    --amber-500:#d97706;
+    --amber-50: #fffbeb;
+
+    --bg: #f6f9fb;
+    --card: #ffffff;
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 24px -12px rgba(15,23,42,.12);
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--ink-900);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    background:
+      radial-gradient(1000px 420px at 50% -180px, var(--cyan-100), transparent 70%),
+      var(--bg);
+    min-height: 100vh;
+  }
+
+  .wrap{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+
+  /* ---------- Header ---------- */
+  .site-tag{
+    display:flex; align-items:center; gap:8px;
+    font-size: 12.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase;
+    color: var(--cyan-700);
+    margin-bottom: 14px;
+  }
+  .site-tag .dot{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--cyan-500);
+    box-shadow: 0 0 0 4px var(--cyan-100);
+  }
+
+  header.hero{
+    background: linear-gradient(135deg, var(--cyan-700), var(--cyan-600) 60%, var(--cyan-500));
+    border-radius: var(--radius);
+    padding: 26px 26px 22px;
+    color: white;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute; right:-40px; top:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background: rgba(255,255,255,.08);
+  }
+  header.hero h1{
+    margin:0 0 6px; font-size: 22px; font-weight: 800; letter-spacing:-.01em;
+    position:relative;
+  }
+  header.hero p.sub{
+    margin:0; font-size: 13.5px; color: rgba(255,255,255,.85); position:relative;
+    max-width: 46ch;
+  }
+  header.hero .meta-row{
+    display:flex; gap: 16px; margin-top: 16px; position:relative; flex-wrap:wrap;
+  }
+  header.hero .meta-chip{
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 5px 11px; border-radius: 999px;
+    font-size: 12px; font-weight:600;
+  }
+
+  /* ---------- Progress ---------- */
+  .progress-shell{
+    margin: 18px 0 22px;
+  }
+  .progress-track{
+    height: 8px; border-radius: 999px;
+    background: var(--ink-200);
+    overflow: hidden;
+  }
+  .progress-fill{
+    height:100%; border-radius:999px;
+    background: linear-gradient(90deg, var(--cyan-500), var(--cyan-700));
+    transition: width .35s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .progress-labels{
+    display:flex; justify-content:space-between;
+    font-size: 12px; color: var(--ink-500); margin-top: 6px; font-weight:600;
+  }
+
+  /* ---------- Card ---------- */
+  .card{
+    background: var(--card);
+    border: 1px solid var(--ink-200);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+
+  .q-eyebrow{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom: 12px;
+  }
+  .q-number{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px; font-weight:600;
+    color: var(--cyan-700);
+    background: var(--cyan-50);
+    border: 1px solid var(--cyan-200);
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .q-status{
+    font-size: 12px; font-weight:700; color: var(--ink-500);
+  }
+
+  .q-stem{
+    font-size: 16.5px; line-height:1.55; font-weight:600;
+    color: var(--ink-900); margin: 4px 0 20px;
+  }
+
+  .options{ display:flex; flex-direction:column; gap:10px; }
+
+  .opt{
+    display:flex; align-items:flex-start; gap:12px;
+    text-align:left;
+    width:100%;
+    border: 1.5px solid var(--ink-200);
+    background: #fff;
+    border-radius: 11px;
+    padding: 13px 15px;
+    font-size: 14.5px; line-height:1.5;
+    color: var(--ink-700);
+    cursor:pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+    font-family: inherit;
+  }
+  .opt:hover:not(:disabled){
+    border-color: var(--cyan-500);
+    background: var(--cyan-50);
+  }
+  .opt:active:not(:disabled){ transform: scale(.997); }
+  .opt:disabled{ cursor:default; }
+
+  .opt .letter{
+    flex: 0 0 auto;
+    width: 26px; height:26px; border-radius:8px;
+    background: var(--ink-100);
+    color: var(--ink-700);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  .opt.correct{
+    border-color: var(--green-500);
+    background: var(--green-50);
+  }
+  .opt.correct .letter{ background: var(--green-500); color:#fff; }
+
+  .opt.incorrect{
+    border-color: var(--red-500);
+    background: var(--red-50);
+  }
+  .opt.incorrect .letter{ background: var(--red-500); color:#fff; }
+
+  .opt.dim{ opacity: .55; }
+
+  /* ---------- Explanation ---------- */
+  .explain{
+    margin-top: 18px;
+    border-radius: 11px;
+    padding: 15px 16px;
+    font-size: 14px; line-height:1.6;
+    display:none;
+    animation: slideIn .25s ease;
+  }
+  .explain.show{ display:block; }
+  .explain.right{ background: var(--green-50); border:1px solid var(--green-200); color:#065f46; }
+  .explain.wrong{ background: var(--amber-50); border:1px solid #fde68a; color:#78350f; }
+  .explain b{ font-weight:700; }
+  @keyframes slideIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+
+  .actions{
+    display:flex; justify-content:flex-end; margin-top: 20px;
+  }
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    font-family:inherit; font-weight:700; font-size:14.5px;
+    padding: 11px 22px; border-radius: 10px;
+    background: var(--cyan-600); color:#fff;
+    transition: background .15s, transform .1s;
+    display:none;
+  }
+  .btn.show{ display:inline-flex; align-items:center; gap:6px; }
+  .btn:hover{ background: var(--cyan-700); }
+  .btn:active{ transform: scale(.98); }
+  .btn.ghost{
+    background: transparent; color: var(--cyan-700);
+    border: 1.5px solid var(--cyan-200);
+  }
+  .btn.ghost:hover{ background: var(--cyan-50); }
+
+  /* ---------- Results ---------- */
+  .results{ display:none; }
+  .results.show{ display:block; }
+  .quiz-area.hide{ display:none; }
+
+  .score-card{
+    text-align:center;
+    padding: 34px 24px 28px;
+  }
+  .score-ring{
+    width: 132px; height:132px; margin: 0 auto 18px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background: conic-gradient(var(--cyan-600) calc(var(--pct,0)*1%), var(--ink-100) 0);
+    position:relative;
+  }
+  .score-ring::before{
+    content:""; position:absolute; inset:9px;
+    background:#fff; border-radius:50%;
+  }
+  .score-ring .num{
+    position:relative; font-size: 26px; font-weight:800; color: var(--ink-900);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .score-title{ font-size:19px; font-weight:800; margin: 0 0 4px; }
+  .score-sub{ font-size:14px; color:var(--ink-500); margin:0 0 6px; }
+  .score-tagline{
+    display:inline-block; margin-top:10px;
+    font-size:12.5px; font-weight:700; color:var(--cyan-700);
+    background:var(--cyan-50); border:1px solid var(--cyan-200);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  .review-list{
+    margin-top: 22px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .review-item{
+    border:1px solid var(--ink-200); border-radius:11px; padding:14px 16px;
+    background:#fff;
+  }
+  .review-item .rtop{
+    display:flex; align-items:flex-start; gap:10px; font-size:13.5px; font-weight:600;
+  }
+  .review-item .badge{
+    flex:0 0 auto; width:22px; height:22px; border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800; color:#fff; margin-top:1px;
+  }
+  .review-item.ok .badge{ background: var(--green-500); }
+  .review-item.no .badge{ background: var(--red-500); }
+  .review-item .rmeta{
+    font-size:12.5px; color:var(--ink-500); margin-top:6px; margin-left:32px;
+  }
+
+  .result-actions{
+    display:flex; gap:10px; justify-content:center; margin-top:26px; flex-wrap:wrap;
+  }
+
+  footer.pagefoot{
+    text-align:center; font-size:12px; color:var(--ink-500);
+    margin-top: 30px;
+  }
+  footer.pagefoot a{ color:var(--cyan-700); text-decoration:none; font-weight:600; }
+
+  @media (max-width:480px){
+    .wrap{ padding: 18px 14px 60px; }
+    header.hero{ padding: 20px 18px 18px; }
+    .card{ padding:18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="site-tag"><span class="dot"></span> Vibe Rounds · Courseware Quiz</div>
+
+  <header class="hero">
+    <h1 id="quizTitle">Quiz Title</h1>
+    <p class="sub" id="quizSubtitle">Subtitle / topic description goes here.</p>
+    <div class="meta-row">
+      <span class="meta-chip" id="chipCount">— questions</span>
+      <span class="meta-chip">Self-paced · Untimed</span>
+      <span class="meta-chip">Learning use only</span>
+    </div>
+  </header>
+
+  <div class="progress-shell">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-labels">
+      <span id="progressLabel">Question 1 of —</span>
+      <span id="progressScore">Score: 0</span>
+    </div>
+  </div>
+
+  <div class="quiz-area" id="quizArea">
+    <div class="card">
+      <div class="q-eyebrow">
+        <span class="q-number" id="qNumber">Q1</span>
+        <span class="q-status" id="qStatus"></span>
+      </div>
+      <div class="q-stem" id="qStem">Loading question…</div>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+      <div class="actions">
+        <button class="btn" id="nextBtn">Next question →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="card score-card">
+      <div class="score-ring" style="--pct:0" id="scoreRing"><span class="num" id="scoreNum">0%</span></div>
+      <p class="score-title" id="scoreTitle">Quiz complete</p>
+      <p class="score-sub" id="scoreSub">You scored 0 of 0</p>
+      <span class="score-tagline" id="scoreTagline">Keep practicing</span>
+
+      <div class="review-list" id="reviewList"></div>
+
+      <div class="result-actions">
+        <button class="btn ghost show" id="retryBtn">↺ Retake quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pagefoot">
+    Part of the <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Vibe Rounds</a> learning stack · For learning purposes only, not clinical use.
+  </footer>
+
+</div>
+
+<script>
+/* ================================================================
+   QUIZ CONFIG — edit only this block to make a new quiz.
+   ================================================================ */
+
+const QUIZ_TITLE    = "Sample MCQ Quiz";
+const QUIZ_SUBTITLE = "Replace this with the topic/description of the quiz.";
+
+// Each question: text, 4 options (A–D), the correct letter, and an explanation.
+const QUESTIONS = [
+  {
+    q: "Sample question text goes here?",
+    options: {
+      A: "Option A text",
+      B: "Option B text",
+      C: "Option C text",
+      D: "Option D text"
+    },
+    answer: "B",
+    explain: "Explanation of why B is correct goes here."
+  }
+  // Add more question objects here, comma-separated.
+];
+
+/* ================================================================
+   ENGINE — no need to edit below this line.
+   ================================================================ */
+
+let current = 0;
+let score = 0;
+let answered = false;
+const userAnswers = [];
+
+const els = {
+  title: document.getElementById('quizTitle'),
+  subtitle: document.getElementById('quizSubtitle'),
+  chipCount: document.getElementById('chipCount'),
+  progressFill: document.getElementById('progressFill'),
+  progressLabel: document.getElementById('progressLabel'),
+  progressScore: document.getElementById('progressScore'),
+  qNumber: document.getElementById('qNumber'),
+  qStatus: document.getElementById('qStatus'),
+  qStem: document.getElementById('qStem'),
+  qOptions: document.getElementById('qOptions'),
+  qExplain: document.getElementById('qExplain'),
+  nextBtn: document.getElementById('nextBtn'),
+  quizArea: document.getElementById('quizArea'),
+  results: document.getElementById('results'),
+  scoreRing: document.getElementById('scoreRing'),
+  scoreNum: document.getElementById('scoreNum'),
+  scoreTitle: document.getElementById('scoreTitle'),
+  scoreSub: document.getElementById('scoreSub'),
+  scoreTagline: document.getElementById('scoreTagline'),
+  reviewList: document.getElementById('reviewList'),
+  retryBtn: document.getElementById('retryBtn'),
+};
+
+function init(){
+  els.title.textContent = QUIZ_TITLE;
+  els.subtitle.textContent = QUIZ_SUBTITLE;
+  els.chipCount.textContent = QUESTIONS.length + " questions";
+  document.title = QUIZ_TITLE + " — Vibe Rounds";
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  const item = QUESTIONS[current];
+  els.qNumber.textContent = "Q" + (current + 1);
+  els.qStatus.textContent = "";
+  els.qStem.textContent = item.q;
+  els.qExplain.className = "explain";
+  els.qExplain.innerHTML = "";
+  els.nextBtn.classList.remove('show');
+
+  els.qOptions.innerHTML = "";
+  Object.keys(item.options).forEach(letter => {
+    const btn = document.createElement('button');
+    btn.className = "opt";
+    btn.innerHTML = `<span class="letter">${letter}</span><span>${item.options[letter]}</span>`;
+    btn.addEventListener('click', () => selectOption(letter, btn));
+    els.qOptions.appendChild(btn);
+  });
+
+  updateProgress();
+}
+
+function selectOption(letter, btn){
+  if (answered) return;
+  answered = true;
+  const item = QUESTIONS[current];
+  const correct = letter === item.answer;
+  if (correct) score++;
+  userAnswers.push({ chosen: letter, correct });
+
+  [...els.qOptions.children].forEach(el => {
+    el.disabled = true;
+    const optLetter = el.querySelector('.letter').textContent;
+    if (optLetter === item.answer) el.classList.add('correct');
+    else if (optLetter === letter) el.classList.add('incorrect');
+    else el.classList.add('dim');
+  });
+
+  els.qStatus.textContent = correct ? "✓ Correct" : "✕ Incorrect";
+  els.qStatus.style.color = correct ? "var(--green-500)" : "var(--red-500)";
+
+  els.qExplain.className = "explain show " + (correct ? "right" : "wrong");
+  els.qExplain.innerHTML = `<b>${correct ? "Correct." : "Not quite."}</b> ${item.explain}`;
+
+  els.nextBtn.textContent = (current === QUESTIONS.length - 1) ? "See results →" : "Next question →";
+  els.nextBtn.classList.add('show');
+  updateProgress();
+}
+
+els.nextBtn.addEventListener('click', () => {
+  if (current < QUESTIONS.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function updateProgress(){
+  const pct = ((current + (answered ? 1 : 0)) / QUESTIONS.length) * 100;
+  els.progressFill.style.width = pct + "%";
+  els.progressLabel.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  els.progressScore.textContent = `Score: ${score}`;
+}
+
+function showResults(){
+  els.quizArea.classList.add('hide');
+  els.results.classList.add('show');
+
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  els.scoreRing.style.setProperty('--pct', pct);
+  els.scoreNum.textContent = pct + "%";
+  els.scoreSub.textContent = `You scored ${score} of ${QUESTIONS.length}`;
+
+  let tagline = "Keep practicing";
+  if (pct >= 90) tagline = "Excellent — near-mastery";
+  else if (pct >= 75) tagline = "Strong grasp of the topic";
+  else if (pct >= 50) tagline = "Solid start — review the misses";
+  else tagline = "Worth a focused re-review";
+  els.scoreTagline.textContent = tagline;
+
+  els.reviewList.innerHTML = "";
+  QUESTIONS.forEach((item, i) => {
+    const ua = userAnswers[i];
+    const div = document.createElement('div');
+    div.className = "review-item " + (ua.correct ? "ok" : "no");
+    div.innerHTML = `
+      <div class="rtop">
+        <span class="badge">${ua.correct ? "✓" : "✕"}</span>
+        <span>Q${i+1}. ${item.q}</span>
+      </div>
+      <div class="rmeta">Your answer: ${ua.chosen} · Correct answer: ${item.answer}</div>
+    `;
+    els.reviewList.appendChild(div);
+  });
+}
+
+els.retryBtn.addEventListener('click', () => {
+  current = 0; score = 0; userAnswers.length = 0;
+  els.results.classList.remove('show');
+  els.quizArea.classList.remove('hide');
+  renderQuestion();
+});
+
+init();
+</script>
+</body>
+</html>
