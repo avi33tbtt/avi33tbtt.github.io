@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acute Pancreatitis — Clinical Pathway</title>
+<style>
+  :root{
+    --ink:#1b2430;
+    --ink-soft:#4a5568;
+    --paper:#f6f4ef;
+    --panel:#ffffff;
+    --line:#dcd7c9;
+    --tab-common:#2f6f4f;
+    --tab-common-bg:#e4f1e8;
+    --accent:#c0562f;
+    --red-bg:#f9e4e0; --red-line:#b8432f; --red-ink:#7a2416;
+    --blue-bg:#e4edf5; --blue-line:#2f5f8a; --blue-ink:#1c3a54;
+    --green-bg:#e8f1e4; --green-line:#4f7f3a; --green-ink:#2c4a1e;
+    --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+    --serif:"Source Serif 4","Georgia",serif;
+    --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:var(--sans); color:var(--ink); background:var(--paper); line-height:1.5;
+  }
+  header.banner{
+    background:var(--ink); color:#f6f4ef; padding:20px 26px 18px;
+    border-bottom:4px solid var(--accent);
+  }
+  header.banner .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+  header.banner .tag{
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    padding:3px 9px; border:1px solid #566; color:#d8d2c0;
+  }
+  header.banner .tag.tier-common{ background:var(--tab-common-bg); color:var(--tab-common); border-color:var(--tab-common); }
+  header.banner h1{ font-family:var(--serif); font-size:28px; margin:4px 0 6px; }
+  header.banner .definition{ font-size:14.5px; color:#c7d0d4; max-width:900px; }
+
+  .toc{
+    position:sticky; top:0; z-index:5; background:#efeadd; border-bottom:1px solid var(--line);
+    padding:8px 26px; display:flex; gap:14px; flex-wrap:wrap; font-family:var(--mono); font-size:11.5px;
+  }
+  .toc a{ color:var(--ink-soft); text-decoration:none; padding:3px 6px; border:1px solid transparent; }
+  .toc a:hover{ border-color:var(--line); color:var(--ink); background:#fff; }
+
+  main{ max-width:960px; margin:0 auto; padding:22px 26px 60px; }
+
+  .quickfacts{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;
+    background:var(--panel); border:1px solid var(--line); padding:14px 16px; margin-bottom:26px;
+  }
+  .quickfacts div .label{ font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); }
+  .quickfacts div .value{ font-size:14px; font-weight:600; }
+
+  section{ margin-bottom:30px; }
+  h2{
+    font-family:var(--serif); font-size:20px; margin:0 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);
+    scroll-margin-top:52px;
+  }
+  h3{ font-family:var(--sans); font-size:14.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); margin:18px 0 8px; }
+
+  section.management{
+    background:#fbf7ee; border:1px solid var(--line); padding:18px 22px; border-radius:2px;
+  }
+  section.management h2{ font-size:23px; color:#8a3f1f; }
+
+  ol.steps{ margin:0 0 14px; padding-left:22px; }
+  ol.steps li{ margin-bottom:8px; }
+  ol.steps li .setting{
+    font-family:var(--mono); font-size:10px; text-transform:uppercase; padding:1px 6px; margin-left:6px;
+    border:1px solid var(--ink-soft); color:var(--ink-soft);
+  }
+
+  table{ width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13.5px; }
+  table th{ text-align:left; background:#eee8d9; padding:7px 9px; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.03em; }
+  table td{ padding:7px 9px; border-top:1px solid var(--line); vertical-align:top; }
+  table tr:nth-child(even) td{ background:#fbfaf6; }
+
+  .callout{ border-left:5px solid; padding:12px 16px; margin:14px 0; }
+  .callout.red{ background:var(--red-bg); border-color:var(--red-line); color:var(--red-ink); }
+  .callout.blue{ background:var(--blue-bg); border-color:var(--blue-line); color:var(--blue-ink); }
+  .callout.green{ background:var(--green-bg); border-color:var(--green-line); color:var(--green-ink); }
+  .callout h3{ margin-top:0; color:inherit; }
+  .callout ul{ margin:0; padding-left:20px; }
+
+  .badge-line{ display:flex; gap:10px; align-items:center; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); margin-bottom:4px;}
+
+  footer{ font-size:11.5px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:12px; margin-top:10px; }
+
+  @media print{
+    .toc{ display:none; }
+    header.banner{ background:#fff !important; color:#000 !important; }
+    section.management{ background:#fff !important; }
+    .callout{ break-inside:avoid; }
+    section{ break-inside:avoid-page; }
+  }
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="tags">
+    <span class="tag">General Surgery</span>
+    <span class="tag tier-common">Common</span>
+  </div>
+  <h1>Acute Pancreatitis</h1>
+  <div class="definition">Acute inflammatory process of the pancreas, most commonly due to gallstones or alcohol, ranging from mild self-limiting edema to severe necrotizing disease with organ failure.</div>
+</header>
+
+<nav class="toc">
+  <a href="#quickfacts">Quick Facts</a>
+  <a href="#recognition">Recognition</a>
+  <a href="#diagnosis">Diagnosis</a>
+  <a href="#management">Management</a>
+  <a href="#monitoring">Monitoring</a>
+  <a href="#complications">Complications</a>
+  <a href="#redflags">Red Flags</a>
+  <a href="#counseling">Counseling</a>
+  <a href="#references">References</a>
+</nav>
+
+<main>
+
+  <section class="quickfacts" id="quickfacts">
+    <div><div class="label">ICD-10</div><div class="value">K85.9</div></div>
+    <div><div class="label">Setting</div><div class="value">ER / Ward / ICU</div></div>
+    <div><div class="label">Urgency</div><div class="value">High</div></div>
+    <div><div class="label">Prevalence</div><div class="value">Common cause of acute abdomen and surgical admission</div></div>
+  </section>
+
+  <section id="recognition">
+    <h2>1. Recognition</h2>
+    <p>Sudden-onset severe epigastric pain radiating to the back, often after a fatty meal or alcohol binge, with nausea/vomiting. Exam: epigastric tenderness, guarding, reduced bowel sounds; Grey Turner's/Cullen's signs in severe/hemorrhagic disease (late, uncommon).</p>
+  </section>
+
+  <section id="diagnosis">
+    <h2>2. Diagnosis</h2>
+    <p>Diagnosis requires <strong>2 of 3</strong>: (1) characteristic abdominal pain, (2) serum lipase or amylase &gt;3× upper limit of normal, (3) characteristic findings on CT/MRI/ultrasound. <strong>First-line:</strong> serum lipase (more specific than amylase), FBC, U&E, LFTs, calcium, glucose, triglycerides, abdominal ultrasound (for gallstones). <strong>Confirmatory imaging:</strong> contrast-enhanced CT abdomen — best performed 72 h after onset if severity assessment or complications suspected (earlier CT may underestimate necrosis).</p>
+    <h3>Key Differentials</h3>
+    <ul>
+      <li>Perforated peptic ulcer</li>
+      <li>Acute cholecystitis / biliary colic</li>
+      <li>Mesenteric ischemia</li>
+      <li>Inferior wall myocardial infarction</li>
+    </ul>
+  </section>
+
+  <section class="management" id="management">
+    <h2>3. Management</h2>
+
+    <h3>3a. Immediate Steps (first 0–24 h, all patients)</h3>
+    <ol class="steps">
+      <li><strong>0–1 h:</strong> Establish 2 large-bore IV cannulas; send bloods (lipase, FBC, U&E, LFTs, calcium, glucose, triglycerides, CRP, ABG if unwell). <span class="setting">ER</span></li>
+      <li><strong>0–6 h:</strong> Aggressive isotonic IV fluid resuscitation — Ringer's lactate 5–10 mL/kg/h initially, titrated to urine output ≥0.5 mL/kg/h and hemodynamic response; reassess frequently to avoid fluid overload. <span class="setting">ER/WARD</span></li>
+      <li><strong>0–6 h:</strong> Analgesia — IV opioids (e.g., Morphine or Fentanyl, titrated to effect); do not withhold adequate analgesia.</li>
+      <li><strong>0–6 h:</strong> Assess severity using a validated score (e.g., BISAP or Ranson's/APACHE II) to triage ward vs. HDU/ICU.</li>
+      <li>Keep nil-by-mouth only if vomiting/ileus present; otherwise early oral feeding as tolerated (see 3d).</li>
+    </ol>
+
+    <h3>3b. Initial / First-Line Management (first days)</h3>
+    <ol class="steps">
+      <li>Continue IV fluids with reassessment every 6–8 h; convert to maintenance rate once resuscitated.</li>
+      <li>Antiemetics as needed: Ondansetron 4–8 mg IV.</li>
+      <li>Antibiotics are <strong>not</strong> routinely indicated in sterile pancreatitis — reserve for confirmed infected necrosis or extrapancreatic infection (e.g., cholangitis).</li>
+      <li>If gallstone pancreatitis with cholangitis or persistent biliary obstruction: urgent ERCP within 24–72 h.</li>
+      <li>Correct hypocalcemia and hypertriglyceridemia if present (insulin infusion ± apheresis for triglycerides &gt;1000 mg/dL, protocol-dependent).</li>
+    </ol>
+
+    <h3>3c. Definitive / Escalation Management</h3>
+    <ol class="steps">
+      <li>Cholecystectomy for gallstone pancreatitis — during the same admission for mild disease (ideally within 1 week once clinically improving), or interval cholecystectomy after resolution in severe disease. <span class="setting">SURGICAL</span></li>
+      <li>Infected pancreatic necrosis: image-guided percutaneous or endoscopic drainage first-line ("step-up approach"); necrosectomy reserved for those failing minimally invasive drainage. <span class="setting">ICU/SURGICAL</span></li>
+      <li>ICU admission for organ failure (respiratory, renal, cardiovascular) persisting &gt;48 h (defines severe pancreatitis per Revised Atlanta Classification). <span class="setting">ICU</span></li>
+    </ol>
+
+    <h3>3d. Non-Pharmacological / Supportive Care</h3>
+    <ul>
+      <li>Early enteral nutrition (oral or nasoenteric) within 24–72 h once tolerated — reduces infectious complications versus prolonged fasting or parenteral nutrition.</li>
+      <li>Parenteral nutrition only if enteral route not tolerated after several days.</li>
+      <li>Strict fluid balance monitoring; urinary catheter in moderate–severe disease.</li>
+      <li>Alcohol cessation counseling and support if alcohol-related.</li>
+    </ul>
+
+    <h3>3e. Special Populations</h3>
+    <ul>
+      <li><strong>Pregnancy:</strong> gallstone pancreatitis is the most common cause; manage fluids and analgesia as above, involve obstetric team, avoid unnecessary radiation (prefer ultrasound/MRI over CT).</li>
+      <li><strong>Elderly:</strong> more cautious fluid resuscitation to avoid pulmonary edema; monitor closely.</li>
+      <li><strong>Renal impairment:</strong> adjust fluid strategy and monitor electrolytes closely; avoid nephrotoxic agents.</li>
+    </ul>
+  </section>
+
+  <section id="monitoring">
+    <h2>4. Monitoring &amp; Follow-up</h2>
+    <div class="callout blue">
+      <h3>Track</h3>
+      <ul>
+        <li>Vital signs, urine output hourly during resuscitation</li>
+        <li>Serial CRP (peak at 48–72 h correlates with severity), hematocrit, U&E</li>
+        <li>Daily clinical reassessment for organ dysfunction (respiratory rate/SpO₂, creatinine, BP)</li>
+        <li>Repeat/contrast CT only if clinical deterioration or failure to improve — not routinely</li>
+      </ul>
+    </div>
+    <p><strong>Step-down/discharge criteria:</strong> pain controlled on oral analgesia, tolerating oral diet, no organ dysfunction, definitive plan for gallstone management in place.</p>
+  </section>
+
+  <section id="complications">
+    <h2>5. Complications</h2>
+    <ul>
+      <li><strong>Pancreatic necrosis (sterile or infected)</strong> — infected necrosis needs drainage/antibiotics per step-up approach.</li>
+      <li><strong>Pseudocyst</strong> — observe if asymptomatic; drain (endoscopic/percutaneous) if symptomatic, infected, or enlarging beyond 6 weeks.</li>
+      <li><strong>Acute respiratory distress syndrome (ARDS)</strong> — supportive ventilation.</li>
+      <li><strong>Acute kidney injury</strong> — fluid optimization, renal replacement therapy if severe.</li>
+      <li><strong>Abdominal compartment syndrome</strong> — monitor intra-abdominal pressure in severe disease.</li>
+    </ul>
+  </section>
+
+  <section id="redflags">
+    <div class="callout red">
+      <h3>6. Red Flags / When to Escalate</h3>
+      <ul>
+        <li>Persistent organ failure &gt;48 h (severe pancreatitis, Atlanta classification)</li>
+        <li>Hypotension unresponsive to initial fluid resuscitation</li>
+        <li>Rising CRP with new fever suggesting infected necrosis</li>
+        <li>Signs of abdominal compartment syndrome (tense distension, oliguria, rising ventilatory pressures)</li>
+        <li>Grey Turner's or Cullen's sign — suggests retroperitoneal hemorrhage, involve surgical/ICU team urgently</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="counseling">
+    <div class="callout green">
+      <h3>7. Patient Counseling</h3>
+      <ul>
+        <li>Avoid alcohol completely, even after recovery, to prevent recurrence.</li>
+        <li>Follow a low-fat diet until gallstones are definitively managed (surgery if advised).</li>
+        <li>Attend follow-up for gallbladder removal surgery if gallstones caused this episode.</li>
+        <li>Seek urgent care if severe abdominal pain, fever, or vomiting recur.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="references">
+    <h2>8. References</h2>
+    <p class="badge-line">Source guideline bodies (generic, non-fabricated):</p>
+    <ul>
+      <li>American College of Gastroenterology (ACG) Guideline for Acute Pancreatitis</li>
+      <li>International Association of Pancreatology / American Pancreatic Association (IAP/APA) Guidelines</li>
+      <li>Revised Atlanta Classification of Acute Pancreatitis</li>
+      <li>NICE Guideline — Pancreatitis</li>
+    </ul>
+    <footer>Clinical pathway generated for rapid bedside/exam reference. Verify current local protocol before acting.</footer>
+  </section>
+
+</main>
+</body>
+</html>
