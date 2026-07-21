@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Pathways Viewer</title>
+  <!-- Marked.js for MD Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- DOMPurify for XSS Protection -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 20px; background: #f8fafc; color: #1e293b; }
+    .container { max-width: 1000px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    .controls { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 1rem; margin-bottom: 1.5rem; }
+    select, input { padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; }
+    #pathway-output { border-top: 2px solid #e2e8f0; padding-top: 1.5rem; line-height: 1.6; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+    th { background-color: #f1f5f9; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Clinical Pathways Guidelines</h2>
+    
+    <div class="controls">
+      <!-- Subject Filter -->
+      <select id="subject-select">
+        <option value="">Select Subject Domain...</option>
+      </select>
+
+      <!-- Prevalence Tier Filter -->
+      <select id="tier-select">
+        <option value="all">All Tiers</option>
+        <option value="common">Common</option>
+        <option value="lessCommon">Less Common</option>
+        <option value="rare">Rare</option>
+      </select>
+
+      <!-- Disease Selector Dropdown -->
+      <select id="disease-select" disabled>
+        <option value="">Select Disease Pathway...</option>
+      </select>
+    </div>
+
+    <!-- Rendered Markdown Output Target -->
+    <div id="pathway-output">
+      <p style="color: #64748b;">Select a subject and disease to view the clinical pathway guideline.</p>
+    </div>
+  </div>
+
+  <!-- Load Diseases Data -->
+  <script src="diseases-data.js"></script>
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
