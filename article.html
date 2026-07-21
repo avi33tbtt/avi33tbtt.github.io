@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Clinical Reasoning: Integrating Promotion and Provocation Modes in Medical Analytics</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent-promo: #27ae60;
+            --accent-provo: #e74c3c;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 15px 10px; /* Reduced padding for mobile viewports */
+        }
+
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 24px 16px; /* Scaled down padding for smaller devices */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.8em; /* Adjusted base for mobile responsiveness */
+            line-height: 1.2;
+            margin: 0 0 12px 0;
+        }
+
+        .subtitle {
+            font-size: 1.05em;
+            color: var(--secondary);
+            font-weight: 600;
+            margin: 0 0 20px 0;
+        }
+
+        .cta-header-btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .cta-header-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .cta-header-btn:active {
+            transform: scale(0.98);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.4em; /* Scaled for smaller screens */
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.15em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        /* Disclaimer Box */
+        .disclaimer {
+            background: #fffbe6;
+            color: #8a6d3b;
+            padding: 15px 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+            border-left: 5px solid #ffe79a;
+        }
+
+        /* Media Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Table Design with horizontal scroll wrapper for mobile */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            min-width: 550px; /* Prevents text from crushing on small screens */
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Concept Cards */
+        .concept-card {
+            border-left: 5px solid;
+            padding: 16px 18px;
+            margin: 20px 0;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .promo-card { border-color: var(--accent-promo); }
+        .promo-card h3 { color: var(--accent-promo); }
+
+        .provo-card { border-color: var(--accent-provo); }
+        .provo-card h3 { color: var(--accent-provo); }
+
+        .case-card { border-color: var(--primary); }
+
+        .module-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 4px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        /* Interactive Case Walker */
+        .case-walker {
+            background: #f1f5f9;
+            padding: 18px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin: 30px 0;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-start { background-color: var(--primary); }
+        .btn-promo { background-color: var(--accent-promo); }
+        .btn-provo { background-color: var(--accent-provo); }
+
+        ul, ol {
+            padding-left: 18px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .case-link a {
+            color: var(--secondary);
+            font-weight: bold;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .case-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85em;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column; /* Stack footer elements on mobile */
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        footer a {
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Desktop Media Query Adjustments */
+        @media (min-width: 768px) {
+            body {
+                padding: 30px 15px;
+            }
+            .article-container {
+                padding: 50px;
+            }
+            .case-walker {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 2.4em;
+            }
+            h2 {
+                font-size: 1.75em;
+            }
+            .btn {
+                display: inline-block;
+                width: auto;
+            }
+            footer {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="article-container">
+    <header>
+        <h1>Modern Clinical Reasoning & Socratic AI</h1>
+        <p class="subtitle">Integrating Promotion and Provocation Cognitive Modes into Healthcare Analytics</p>
+        <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer" class="cta-header-btn">Get started &rarr;</a>
+    </header>
+
+    <div class="disclaimer">
+        <strong>Architectural Note:</strong> VibeRounds and this builder operate purely as a patient-centered learning stack and study framework, not a clinical decision tool[cite: 1]. These cognitive modes are designed to practice clinical reasoning on deidentified, consented case reports, not for diagnosing real-time patients[cite: 1].
+    </div>
+
+    <!-- Section 1: Introduction -->
+    <section>
+        <h2>1. Introduction: AI as a Tool for Thinking</h2>
+        <p>The translation of raw clinical data into an accurate diagnosis requires immense cognitive bandwidth. In modern healthcare environments, clinicians are frequently bombarded with high-velocity data—labs, imaging, and fragmented patient histories. To mitigate cognitive overload and prevent diagnostic error, the medical community is increasingly turning to Large Language Models (LLMs) not as diagnostic oracles, but as "Tools for Thinking"[cite: 1].</p>
+        
+        <p>Rather than functioning as an automated calculator that produces instant answers, educational platforms like Vibe Rounds operate as Socratic reasoning partners. By structuring interaction models around cognitive scaffolding and stress-testing, AI systems can enhance human critical thinking rather than replacing it[cite: 1].</p>
+
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/3lPnN8omdPA" title="How to Stop AI from Killing Your Critical Thinking | Advait Sarkar | TED" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <!-- Section 2: Cognitive Modes -->
+    <section>
+        <h2>2. The Dual-Mode Architecture of Cognitive Intervention</h2>
+        <p>To safely navigate complex patient presentations, reasoning frameworks must adapt to the clinician's current mental state. In Human-Computer Interaction (HCI) and LLM design, cognitive tools operate across two primary modes: <strong>Promotion</strong> and <strong>Provocation</strong>[cite: 1].</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Promotion Mode (Scaffolding)</th>
+                        <th>Provocation Mode (Stress-Testing)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Core Objective</strong></td>
+                        <td>Structure, organize, and elevate the user's current thought process.</td>
+                        <td>Disrupt, challenge, and audit the user's assumptions.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mechanism</strong></td>
+                        <td>Extracts messy narrative data and bridges it to established pathophysiology.</td>
+                        <td>Hunts for logical fallacies, anchoring bias, and premature closure.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key Modules</strong></td>
+                        <td>#17 (Semantic Qualifiers), #12 (Diff Dx Deepdive), #50 (Reasoning Map)[cite: 1].</td>
+                        <td>#28 (Diagnostic Time-Out), #30 (Anchor Extractor), #45 (Adversarial Shadow)[cite: 1].</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Target State</strong></td>
+                        <td>Enhances rapid, unstructured observations into clear frameworks.</td>
+                        <td>Forces slow, deliberate System 2 thinking by introducing constructive friction[cite: 1].</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="concept-card promo-card">
+            <h3>Promotion Mode: Cognitive Scaffolding</h3>
+            <p>Promotion mode is enabled when the processing pipeline assists the learner in structuring unstructured narrative data[cite: 1]. It builds out the clinical picture, connects pathophysiology to bedside findings, and organizes messy information into clear, actionable frameworks[cite: 1].</p>
+            <p><strong>Common Modules:</strong> 
+                <span class="module-tag">#12 Differential Diagnosis Deepdive</span>
+                <span class="module-tag">#15 Illness Script Acquisition</span>
+                <span class="module-tag">#17 Semantic Qualifiers & Problem Rep</span>
+                <span class="module-tag">#50 Diagnostic Reasoning Map</span>
+                <span class="module-tag">#36 Bayesian Probability Engine</span>[cite: 1]
+            </p>
+        </div>
+
+        <div class="concept-card provo-card">
+            <h3>Provocation Mode: Cognitive Stress-Testing</h3>
+            <p>Provocation mode is enabled when the pipeline is configured to actively challenge biases, introduce friction, and prevent premature closure[cite: 1]. Instead of helping the user build their case, the system acts as an adversarial agent or "speed bump," forcing deeper reflection[cite: 1].</p>
+            <p><strong>Common Modules:</strong> 
+                <span class="module-tag">#28 Diagnostic Time-Out</span>
+                <span class="module-tag">#30 The "Diagnostic Anchor" Extractor</span>
+                <span class="module-tag">#37 Red Herring / Signal-to-Noise Drill</span>
+                <span class="module-tag">#45 Shadow Module - Adversarial Counterpart</span>
+                <span class="module-tag">#54 System 1 & 2 Question Generator</span>[cite: 1]
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 3: Architecture & Workflow -->
+    <section>
+        <h2>3. Implementation Workflow for Case Records</h2>
+        <p>To enable these cognitive modes on a narrative medical text, the system follows a sequential multi-stage workflow[cite: 1]:</p>
+        <ol>
+            <li><strong>Input Intake:</strong> Deidentified narrative case text or electronic health record extracts are fed into the case review environment[cite: 1].</li>
+            <li><strong>Intent Selection:</strong> The learner determines whether they require <em>scaffolding</em> (Promotion) to synthesize complex data, or <em>stress-testing</em> (Provocation) to audit an initial diagnostic hypothesis[cite: 1].</li>
+            <li><strong>Pipeline Construction:</strong> Specific prompt modules are chained chronologically. For example, chaining <em>Semantic Qualifiers &rarr; Differential Deepdive</em> creates a Promotion environment, while chaining <em>Anchor Extractor &rarr; Adversarial Shadow &rarr; Diagnostic Time-Out</em> constructs a Provocation environment[cite: 1].</li>
+            <li><strong>Execution & Synthesis:</strong> The underlying language model processes the clinical text through the pipeline, generating either an augmented structural map or a targeted cognitive challenge[cite: 1].</li>
+        </ol>
+    </section>
+
+    <!-- Section 4: Progressive Case Study -->
+    <section>
+        <h2>4. Applied Walkthrough: A Clinical Case Study</h2>
+        <p>To examine this framework in action, consider a complex emergency department presentation. Below is an interactive progressive walkthrough demonstrating how raw intake data moves through sequential Promotion and Provocation stages.</p>
+
+        <p class="case-link"><strong>Case Reference Link:</strong> <a href="https://suryapradeep01.blogspot.com/2021/02/sjndb.html" target="_blank" rel="noopener noreferrer">Clinical Case Report Source</a></p>
+
+        <div class="case-walker">
+            <!-- Step 1: Case Intake -->
+            <div id="step1" class="step active">
+                <h3 style="color: var(--primary); margin-top:0;">Stage 1: Raw Case Intake & Narrative</h3>
+                
+                <div class="concept-card case-card">
+                    <h3>Patient Profile & Clinical Narrative</h3>
+                    <ul>
+                        <li><strong>Demographics:</strong> 48-year-old female.</li>
+                        <li><strong>Chief Complaints:</strong> Acute shortness of breath (Grade 4) and uneasiness; 1-week history of suprapubic pain; low-grade fever with chills since morning.</li>
+                        <li><strong>Vitals:</strong> Tachypneic (RR 32), PR 123, BP 110/70, Afebrile.</li>
+                        <li><strong>Key Diagnostics:</strong> Initial ABG reveals severe metabolic acidosis (pH 6.77, HCO3 3.8), which corrected to pH 7.42 following 200mEq bicarbonate administration.</li>
+                        <li><strong>Imaging & Labs:</strong> HRCT chest shows ground-glass opacities, CORADS III, severity score 24/25. HbA1c is 6.8%. Urine ketones positive. Total Leukocyte Count (TLC) elevated at 27,400.</li>
+                        <li><strong>Working Diagnosis:</strong> Type 2 Diabetes with Diabetic Ketoacidosis (DKA) secondary to acute sepsis.</li>
+                    </ul>
+                </div>
+                
+                <p>The raw narrative is ingested. Next, we execute the Promotion Pipeline to construct a formal problem representation.</p>
+                <button class="btn btn-promo" onclick="goToStep(2)">Execute Promotion Pipeline &rarr;</button>
+            </div>
+
+            <!-- Step 2: Promotion -->
+            <div id="step2" class="step">
+                <h3 style="color: var(--accent-promo); margin-top:0;">Stage 2: Promotion Mode (Cognitive Scaffolding)</h3>
+                <p>This phase extracts narrative data, maps features, and establishes a clear problem framework.</p>
+                
+                <div class="concept-card promo-card">
+                    <h3><span class="module-tag">#17 Semantic Qualifiers & Problem Rep</span></h3>
+                    <p><strong>Problem Representation:</strong> A 48-year-old female with a history of type 2 diabetes presents with acute severe dyspnea and subacute suprapubic pain, found to have profound high-anion-gap metabolic acidosis and diffuse ground-glass pulmonary opacities.</p>
+                </div>
+
+                <div class="concept-card promo-card">
+                    <h3><span class="module-tag">#12 Differential Diagnosis Deepdive</span></h3>
+                    <p>Bridging pathophysiological findings to potential drivers:</p>
+                    <ul>
+                        <li><strong>Viral Pneumonia triggering DKA:</strong> Supported by the extensive CT severity score (24/25) and severe tachypnea/hypoxemia.</li>
+                        <li><strong>Urosepsis triggering DKA:</strong> Supported by subacute suprapubic pain, marked leukocytosis (TLC 27,400), and glucosuria/ketonuria.</li>
+                    </ul>
+                </div>
+                
+                <p>With the structure established, we now shift from building the case to adversarial stress-testing.</p>
+                <button class="btn btn-provo" onclick="goToStep(3)">Execute Provocation Pipeline &rarr;</button>
+            </div>
+
+            <!-- Step 3: Provocation -->
+            <div id="step3" class="step">
+                <h3 style="color: var(--accent-provo); margin-top:0;">Stage 3: Provocation Mode (Cognitive Stress-Testing)</h3>
+                <p>This phase actively probes for logical inconsistencies, premature closure, and diagnostic anchors.</p>
+
+                <div class="concept-card provo-card">
+                    <h3><span class="module-tag">#30 Diagnostic Anchor Extractor</span></h3>
+                    <p><strong>Identified Anchor:</strong> The team is heavily anchoring on classical DKA secondary to infection due to urine ketones and acidosis. However, the HbA1c is 6.8%. It is highly unusual for a patient with near-normal glycemic control to present with catastrophic, deep ketoacidosis (pH 6.77) unless driven by extreme fulminant stress or an alternate euglycemic/metabolic mechanism.</p>
+                </div>
+
+                <div class="concept-card provo-card">
+                    <h3><span class="module-tag">#37 Red Herring / Signal-to-Noise Drill</span></h3>
+                    <p><strong>Stress Test:</strong> Are the pulmonary ground-glass opacities (CORADS III) a primary infectious etiology or a secondary manifestation? Severe acidemia (pH 6.77) drives massive respiratory compensation. Could the lung changes represent non-cardiogenic pulmonary edema or Acute Respiratory Distress Syndrome (ARDS) secondary to severe metabolic crisis rather than primary viral pneumonia?</p>
+                </div>
+
+                <div class="concept-card provo-card">
+                    <h3><span class="module-tag">#28 Diagnostic Time-Out</span></h3>
+                    <p><strong>Safety Pause:</strong> Evaluate alternative drivers of the high anion gap. The patient takes Metformin 500mg. Could this presentation represent Metformin-Associated Lactic Acidosis (MALA) compounding the metabolic gap? Serum lactate levels must be urgently prioritized alongside LDH (506 IU/L).</p>
+                </div>
+
+                <button class="btn btn-start" onclick="goToStep(4)">View Synthesis & Debrief &rarr;</button>
+            </div>
+
+            <!-- Step 4: Conclusion -->
+            <div id="step4" class="step">
+                <h3 style="color: var(--primary); margin-top:0;">Stage 4: Synthesis & Debrief</h3>
+                <p>By sequentially applying Promotion and Provocation pipelines, the static case text was transformed into an active reasoning exercise:</p>
+                <ul>
+                    <li><strong>Promotion Mode</strong> rapidly organized a chaotic presentation into structured illness scripts and clear semantic summaries.</li>
+                    <li><strong>Provocation Mode</strong> successfully interrupted cognitive momentum, highlighting the HbA1c discrepancy (6.8%) and compelling the clinician to rule out MALA and secondary ARDS.</li>
+                </ul>
+                
+                <button class="btn btn-start" onclick="goToStep(1)">&#8634; Restart Case Walkthrough</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Summary & Strategic Impact -->
+    <section>
+        <h2>5. Strategic Impact on Medical Education</h2>
+        <p>The true value of frameworks like Vibe Rounds lies in their strict adherence to a Socratic paradigm. By declining to generate direct clinical mandates and instead providing structured Promotion and Provocation, these tools train clinicians to think with heightened analytical rigor.</p>
+
+        <p>As computational power in healthcare analytics continues to scale, embedding dual-mode cognitive interventions into learning workflows ensures that human clinical judgment scales in parallel—fostering clinicians who are better equipped to navigate ambiguity and avoid diagnostic errors.</p>
+    </section>
+
+    <footer>
+        <span>Vibe Rounds CCOS Framework • For Educational and Clinical Reasoning Practice Only</span>
+        <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer">Get started &rarr;</a>
+    </footer>
+</div>
+
+<script>
+    function goToStep(stepNumber) {
+        const steps = document.querySelectorAll('.step');
+        steps.forEach(step => {
+            step.classList.remove('active');
+        });
+        
+        const targetStep = document.getElementById('step' + stepNumber);
+        if(targetStep) {
+            targetStep.classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>
