@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ultima Thule of Healthcare: AI, IoT &amp; Sensor Coverage Across the 100 Levels of Clinical Thinking</title>
+<style>
+  :root{
+    --bg:#f7f8fa;
+    --panel:#ffffff;
+    --ink:#1c2430;
+    --muted:#5b6472;
+    --line:#e3e7ed;
+    --accent:#2457c5;
+    --accent-soft:#eaf0fd;
+    --good:#1b8a5a;
+    --good-bg:#e8f7ef;
+    --mid:#b8860b;
+    --mid-bg:#fdf3e0;
+    --low:#b23b3b;
+    --low-bg:#fbe9e9;
+    --code-bg:#eef1f6;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px;}
+  header.hero{
+    background:linear-gradient(135deg,#1b2b53,#2457c5);
+    color:#fff; border-radius:var(--radius);
+    padding:36px 32px; margin-bottom:28px;
+  }
+  header.hero h1{margin:0 0 8px;font-size:1.7rem;line-height:1.3;}
+  header.hero p{margin:0;color:#dbe6ff;font-size:1rem;max-width:70ch;}
+  .badge-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;}
+  .badge{
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
+    color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px;
+  }
+  .note{
+    background:var(--accent-soft); border-left:4px solid var(--accent);
+    padding:14px 18px; border-radius:6px; font-size:.92rem; color:#2b3a55; margin-bottom:28px;
+  }
+  h2{
+    font-size:1.3rem; margin-top:44px; margin-bottom:10px;
+    padding-bottom:8px; border-bottom:2px solid var(--line);
+  }
+  h3{font-size:1.05rem;margin-top:26px;color:#152040;}
+  p{color:#333c47;}
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 26px; margin-bottom:22px;
+  }
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin:14px 0 6px;}
+  th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:#f0f3f8;font-weight:600;color:#1c2430;}
+  tr:last-child td{border-bottom:none;}
+  .lvl{font-weight:700;color:var(--accent);white-space:nowrap;}
+  .tier-tag{
+    display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.03em;
+    text-transform:uppercase; padding:3px 9px; border-radius:5px; margin-bottom:10px;
+  }
+  .tier-bio{background:#e6f4ea;color:#1b6b3a;}
+  .tier-social{background:#e7edfb;color:#2748a3;}
+  .tier-phil{background:#f6e9fb;color:#7a3ba6;}
+  .tier-sys{background:#fdeee0;color:#a45716;}
+  .tier-meta{background:#fdeaea;color:#a3302f;}
+  .mat{
+    display:inline-block; font-size:.72rem; font-weight:700; padding:2px 8px;
+    border-radius:5px; white-space:nowrap;
+  }
+  .m-mature{background:var(--good-bg);color:var(--good);}
+  .m-emerging{background:var(--mid-bg);color:var(--mid);}
+  .m-early{background:var(--low-bg);color:var(--low);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 4px;font-size:.85rem;color:var(--muted);}
+  .legend span.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+  code{
+    background:var(--code-bg); padding:1px 6px; border-radius:4px; font-size:.85em;
+  }
+  .cite{color:var(--muted);font-size:.85rem;}
+  footer{
+    margin-top:50px; padding-top:18px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:.85rem; text-align:center;
+  }
+  a{color:var(--accent);}
+  ul{color:#333c47;}
+  .gap-box{
+    border:1px dashed #cbd3de; border-radius:8px; padding:14px 18px; background:#fbfcfe; margin-top:14px;
+  }
+  .source-link{
+    display:inline-block; margin-bottom:18px; font-size:.9rem;
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:10px 16px; color:var(--ink);
+  }
+  .source-link a{font-weight:600;}
+  .byline{
+    font-size:.85rem; color:var(--muted); margin-top:6px;
+  }
+  .heatmap{
+    display:grid; grid-template-columns:repeat(10,1fr); gap:5px; margin:16px 0;
+  }
+  .cell{
+    aspect-ratio:1/1; border-radius:5px; display:flex; align-items:center; justify-content:center;
+    font-size:.68rem; font-weight:700; color:#fff; cursor:default;
+  }
+  .cell.mature{background:#1b8a5a;}
+  .cell.emerging{background:#c9982a;}
+  .cell.early{background:#c14f4f;}
+  .heatmap-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:8px;}
+  .heatmap-legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:middle;}
+
+  /* Responsive table + layout tuning */
+  @media (min-width:1200px){
+    .wrap{max-width:1180px;}
+  }
+  .radar-wrap{display:flex;justify-content:center;padding:6px 0 4px;overflow:visible;}
+  @media (max-width:720px){
+    .radar-wrap svg{max-width:480px;}
+    .radar-wrap svg text{font-size:9.5px;}
+  }
+  @media (max-width:420px){
+    .radar-wrap svg{max-width:380px;}
+    .radar-wrap svg text{font-size:8.5px;}
+  }
+  .table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:640px;}
+  td.insight-col{min-width:260px;max-width:340px;font-size:.86rem;color:#2b3a55;}
+  @media (max-width:720px){
+    .wrap{padding:18px 12px 60px;}
+    header.hero{padding:24px 18px;}
+    header.hero h1{font-size:1.32rem;}
+    header.hero p{font-size:.92rem;}
+    .panel{padding:16px 14px;}
+    h2{font-size:1.12rem;margin-top:32px;}
+    .heatmap{grid-template-columns:repeat(5,1fr);}
+    table{min-width:0;width:100%;}
+    table, thead, tbody, tr{display:block;width:100%;}
+    thead{display:none;}
+    tr{border:1px solid var(--line);border-radius:8px;margin-bottom:12px;padding:8px 10px;background:#fff;}
+    td{display:flex;gap:8px;border-bottom:1px dashed var(--line);padding:7px 2px;}
+    td:last-child{border-bottom:none;}
+    td::before{
+      content:attr(data-label);
+      font-weight:600; color:var(--muted); flex:0 0 40%; font-size:.72rem;
+      text-transform:uppercase; letter-spacing:.02em;
+    }
+    td.insight-col{max-width:none;}
+    .source-link{font-size:.84rem;padding:9px 12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<h1>The Ultima Thule of Healthcare: Mapping AI, IoT &amp; Sensor Coverage to the 100 Levels of Clinical Thinking</h1>
+<p>A maturity audit of where sensing, connectivity, and machine intelligence currently reach — and where they still cannot — across the biological-to-transcendent hierarchy of a single bedside decision.</p>
+<div class="badge-row">
+<span class="badge">Companion to: 10yr fever / 70yr HTN case</span>
+<span class="badge">Educational framework, not clinical guidance</span>
+<span class="badge">Updated for 2026 technology landscape</span>
+</div>
+</header>
+<div class="source-link">
+  Source hierarchy: <a href="https://classworkdecjan.blogspot.com/2026/05/ultima-thule-10yr-child-with-fever-and.html?m=1" rel="noopener" target="_blank">Ultima Thule — 10Yr child with fever and 70f with HTN</a>
+<div class="byline">Author — Dr. Avinash Kumar Gupta</div>
+</div>
+<div class="note">
+<strong>Architectural note:</strong> This piece takes the "100 Levels of Clinical Thinking" hierarchy (molecular → transcendent) built around a 10-year-old with fever and a 70-year-old with hypertension, and asks a different question of it: for each layer of reasoning, what can today's AI models, IoT devices, and biosensors actually observe, quantify, or reason about — and what remains stubbornly outside their reach? This is a technology-maturity map for learning and planning purposes, not a diagnostic or procurement recommendation.
+</div>
+<div class="panel">
+<h2 style="margin-top:0;border:none;padding-bottom:0;">Where Do the 100 Levels Actually Get Covered? Four Practice Modes</h2>
+<p>Technology maturity is only half the picture — the other half is how much of the 100-level hierarchy any given <em>encounter</em> has time or purpose to touch at all. Before diving into the tech heatmap below, it's worth grounding the whole exercise in four real practice contexts: the volume-driven outpatient visit typical of Indian primary care, the longer scheduled slot typical of US primary care, the deliberately unhurried Slow Medicine consult, and the single-subject N-of-1 research protocol. The bar chart is an <strong>illustrative, hypothetical estimate</strong> — not measured data — of how deep into the hierarchy each mode typically reaches before time, incentive structure, or study design caps it.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:190px">Practice mode</th><th>Typical duration</th><th>Levels realistically reached</th><th>What gets covered</th><th>What gets skipped</th></tr>
+<tr>
+<td data-label="Practice mode"><strong>2-minute OPD (India)</strong></td>
+<td data-label="Duration">~2 minutes, high patient volume</td>
+<td data-label="Levels reached">Solid on Levels 1–8; occasional glance up to ~20–25</td>
+<td data-label="Covered">Chief complaint, vitals, an obvious diagnosis, a prescription — the molecular/physiological core</td>
+<td data-label="Skipped">Almost everything above the biological layer: family context, health literacy, psychosocial and existential dimensions</td>
+</tr>
+<tr>
+<td data-label="Practice mode"><strong>30-minute OPD (USA)</strong></td>
+<td data-label="Duration">~30 minutes, scheduled slot</td>
+<td data-label="Levels reached">Solid to ~Level 35; touches up to ~55–58 opportunistically</td>
+<td data-label="Covered">Biological workup plus social history, medication reconciliation, some shared decision-making and health-system navigation</td>
+<td data-label="Skipped">Deep philosophical, ethical, and meaning-level reasoning; rarely reaches transcendent or idiographic layers</td>
+</tr>
+<tr>
+<td data-label="Practice mode"><strong>Slow Medicine practitioner</strong></td>
+<td data-label="Duration">60–90 min visits, often multi-visit over time</td>
+<td data-label="Levels reached">Solid to ~Level 78; regularly touches up to ~90–92</td>
+<td data-label="Covered">Everything the shorter visits cover, plus narrative, values, therapeutic alliance, cultural framing, and much of the systems/philosophical tier</td>
+<td data-label="Skipped">The most idiographic, single-N idiosyncrasies and the outermost transcendent levels, which need sustained relationship over months/years</td>
+</tr>
+<tr>
+<td data-label="Practice mode"><strong>N-of-1 researcher</strong></td>
+<td data-label="Duration">Weeks to months, single subject, structured protocol</td>
+<td data-label="Levels reached">Rigorous through ~Level 32; deliberately re-engages ~85–100</td>
+<td data-label="Covered">Precise, repeated measurement of the biological/informational base, plus deep idiographic individualization at the top of the hierarchy — the exact tier this design is built for</td>
+<td data-label="Skipped">The broad mid-hierarchy (~33–84) — systems, philosophical, and rhetorical layers a tight single-subject protocol usually isn't designed to capture</td>
+</tr>
+</table></div>
+<div class="radar-wrap" style="margin-top:18px;">
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto;">
+<line x1="210.0" y1="26" x2="210.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="210.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">0</text>
+<line x1="251.0" y1="26" x2="251.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="251.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">10</text>
+<line x1="292.0" y1="26" x2="292.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="292.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">20</text>
+<line x1="333.0" y1="26" x2="333.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="333.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30</text>
+<line x1="374.0" y1="26" x2="374.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="374.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">40</text>
+<line x1="415.0" y1="26" x2="415.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="415.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">50</text>
+<line x1="456.0" y1="26" x2="456.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="456.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">60</text>
+<line x1="497.0" y1="26" x2="497.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="497.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">70</text>
+<line x1="538.0" y1="26" x2="538.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="538.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">80</text>
+<line x1="579.0" y1="26" x2="579.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="579.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">90</text>
+<line x1="620.0" y1="26" x2="620.0" y2="258" stroke="var(--line)" stroke-width="1"/>
+<text x="620.0" y="20" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">100</text>
+<text x="196" y="62" text-anchor="end" font-size="12" font-weight="600" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">2-min OPD (India)</text>
+<text x="196" y="76" text-anchor="end" font-size="10" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">~2 min</text>
+<rect x="210.0" y="48" width="410.0" height="20" rx="4" fill="var(--code-bg)"/>
+<rect x="242.8" y="48" width="69.7" height="20" fill="#f3c6c6" opacity="0.9"/>
+<rect x="210.0" y="48" width="32.8" height="20" fill="var(--low)"/>
+<rect x="210.0" y="48" width="410.0" height="20" rx="4" fill="none" stroke="var(--line)" stroke-width="1"/>
+<text x="196" y="118" text-anchor="end" font-size="12" font-weight="600" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30-min OPD (USA)</text>
+<text x="196" y="132" text-anchor="end" font-size="10" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">~30 min</text>
+<rect x="210.0" y="104" width="410.0" height="20" rx="4" fill="var(--code-bg)"/>
+<rect x="353.5" y="104" width="94.3" height="20" fill="#f3dfab" opacity="0.9"/>
+<rect x="210.0" y="104" width="143.5" height="20" fill="var(--mid)"/>
+<rect x="210.0" y="104" width="410.0" height="20" rx="4" fill="none" stroke="var(--line)" stroke-width="1"/>
+<text x="196" y="174" text-anchor="end" font-size="12" font-weight="600" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Slow Medicine practitioner</text>
+<text x="196" y="188" text-anchor="end" font-size="10" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">60-90 min / multi-visit</text>
+<rect x="210.0" y="160" width="410.0" height="20" rx="4" fill="var(--code-bg)"/>
+<rect x="529.8" y="160" width="57.4" height="20" fill="#bfe6d2" opacity="0.9"/>
+<rect x="210.0" y="160" width="319.8" height="20" fill="var(--good)"/>
+<rect x="210.0" y="160" width="410.0" height="20" rx="4" fill="none" stroke="var(--line)" stroke-width="1"/>
+<text x="196" y="230" text-anchor="end" font-size="12" font-weight="600" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">N-of-1 researcher</text>
+<text x="196" y="244" text-anchor="end" font-size="10" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">weeks-months, single subject</text>
+<rect x="210.0" y="216" width="410.0" height="20" rx="4" fill="var(--code-bg)"/>
+<rect x="341.2" y="216" width="53.3" height="20" fill="#c7d7f7" opacity="0.9"/>
+<rect x="210.0" y="216" width="131.2" height="20" fill="var(--accent)"/>
+<rect x="558.5" y="216" width="61.5" height="20" fill="var(--accent)"/>
+<rect x="210.0" y="216" width="410.0" height="20" rx="4" fill="none" stroke="var(--line)" stroke-width="1"/>
+</svg>
+</div>
+<div class="legend">
+<span><span class="dot" style="background:var(--low)"></span>2-min OPD core reach</span>
+<span><span class="dot" style="background:var(--mid)"></span>30-min OPD core reach</span>
+<span><span class="dot" style="background:var(--good)"></span>Slow Medicine core reach</span>
+<span><span class="dot" style="background:var(--accent)"></span>N-of-1 core reach (two engagement zones)</span>
+</div>
+<div class="gap-box">
+<strong>Note on the numbers:</strong> these level-reach estimates are illustrative and admittedly rough — a reasonable clinician could argue any of these boundaries up or down by ten levels. The point isn't precision; it's that <em>time and study design</em>, independent of technology, already determine how much of the hierarchy an encounter can touch — and that ceiling is what the AI/IoT/sensor maturity map below has to work within.
+</div>
+</div>
+<div class="panel">
+<h2 style="margin-top:0;border:none;padding-bottom:0;">Summary</h2>
+<p>This piece overlays today's AI, IoT, and sensor maturity onto the "100 Levels of Clinical Thinking" hierarchy — a framework built around a 10-year-old with fever and a 70-year-old with hypertension that runs reasoning from molecular biology up to the transcendent. For each decade-band of levels, it grades three technology lanes (AI/LLM, IoT/connectivity, sensors/hardware) as Mature, Emerging, or Early/Aspirational.</p>
+<p>The overall shape: technology is strong and still strengthening through roughly level 40 (wearables, point-of-care assays, imaging AI, closed-loop glucose control), patchy but improving from 41–80 (philosophical and systems-level reasoning that LLMs can narrate but not validate), and largely irrelevant by design for the final 15–20 levels, where trust, meaning, and dignity — not signal — drive the outcome. A short cross-cutting table lists what's genuinely deployable today (retinal/derm imaging AI, ambient scribes, closed-loop insulin, Socratic/adversarial LLM reasoning aids), and the piece closes by arguing that dense sensor data still needs structured reasoning to become a coherent picture, while that picture still needs a disciplined adversary to catch what no sensor was built to see.</p>
+</div>
+<div class="panel">
+<h2 style="margin-top:0;border:none;padding-bottom:0;">How to read this map</h2>
+<p>Each of the five tiers below pulls the relevant levels from the original hierarchy and scores current technology against three lanes:</p>
+<ul>
+<li><strong>AI / LLM &amp; analytics</strong> — pattern recognition, prediction, language reasoning, decision support.</li>
+<li><strong>IoT &amp; connectivity</strong> — remote monitoring, data pipes, interoperability, closed-loop systems.</li>
+<li><strong>Sensors / hardware</strong> — the physical transducers that turn biology into signal.</li>
+</ul>
+<p>Maturity is graded loosely against real-world deployment status, not lab demonstrations:</p>
+<div class="legend">
+<span><span class="dot" style="background:#1b8a5a"></span><span class="mat m-mature">Mature</span> — in routine clinical/consumer use, regulatory-cleared where relevant</span>
+<span><span class="dot" style="background:#b8860b"></span><span class="mat m-emerging">Emerging</span> — pilots, early adopters, partial validation</span>
+<span><span class="dot" style="background:#b23b3b"></span><span class="mat m-early">Early / Aspirational</span> — research stage, conceptual, or largely unaddressed by machines</span>
+</div>
+</div>
+<h2>The Two Cases Behind Every Level</h2>
+<div class="panel">
+<p>Every level in the hierarchy below carries a paired insight/intervention for these same two patients — the child's fever and the elder's hypertension, run side by side from molecular biology up through the transcendent. Keeping both cases visible is what makes the heatmap meaningful: a "mature" cell means current tech can meaningfully help with <em>both</em> scenarios at that level, not just one.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:170px">Case</th><th>Profile</th><th>Level 1 example</th><th>Level 100 example</th></tr>
+<tr>
+<td data-label="Case"><strong>Case A — Pediatric Fever</strong><br/><span class="cite">10-year-old child</span></td>
+<td data-label="Profile">Presents with fever; reasoning runs from hypothalamic cytokine set-point resetting up through family anxiety, school/community exposure, and finally the honoring of the child's infinite worth.</td>
+<td data-label="Level 1 example">Resetting the hypothalamic set-point via cytokines; use Ibuprofen to block prostaglandin.</td>
+<td data-label="Level 100 example">Honoring the infinite value of the child.</td>
+</tr>
+<tr>
+<td data-label="Case"><strong>Case B — Elder Hypertension</strong><br/><span class="cite">70-year-old, HTN</span></td>
+<td data-label="Profile">Presents with chronic hypertension; reasoning runs from calcium-channel vascular smooth-muscle relaxation up through longevity, legacy, and the sacred duty of caring for the elderly.</td>
+<td data-label="Level 1 example">Use Calcium Channel Blockers to relax vascular smooth muscle.</td>
+<td data-label="Level 100 example">Honoring the sacred duty of caring for the elderly.</td>
+</tr>
+</table></div>
+<p style="margin-top:10px;font-size:.88rem;color:var(--muted)">Each tier section further down quotes the original insight/intervention pair for the levels it covers, so the technology-maturity call can be checked directly against the clinical reasoning it's meant to support.</p>
+</div>
+<h2>Radar View: Average Clinical Impact in Patient-Centered Decision Making</h2>
+<div class="panel">
+  <p>The chart below groups the 100 levels into ten decade-bands and plots an <strong>assumption-based average</strong> clinical-impact score (1–10) for patient-centered decision making — how much that band of reasoning typically shapes what the clinician and patient actually decide to do.</p>
+  <div class="radar-wrap">
+    <svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;overflow:visible;">
+  <polygon points="320.0,285.0 340.6,291.7 353.3,309.2 353.3,330.8 340.6,348.3 320.0,355.0 299.4,348.3 286.7,330.8 286.7,309.2 299.4,291.7" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,250.0 361.1,263.4 386.6,298.4 386.6,341.6 361.1,376.6 320.0,390.0 278.9,376.6 253.4,341.6 253.4,298.4 278.9,263.4" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,215.0 381.7,235.1 419.9,287.6 419.9,352.4 381.7,404.9 320.0,425.0 258.3,404.9 220.1,352.4 220.1,287.6 258.3,235.1" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,180.0 402.3,206.7 453.1,276.7 453.1,363.3 402.3,433.3 320.0,460.0 237.7,433.3 186.9,363.3 186.9,276.7 237.7,206.7" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,145.0 422.9,178.4 486.4,265.9 486.4,374.1 422.9,461.6 320.0,495.0 217.1,461.6 153.6,374.1 153.6,265.9 217.1,178.4" fill="none" stroke="var(--line)" stroke-width="1"/>
+  <line x1="320.0" y1="320.0" x2="320.0" y2="145.0" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="422.9" y2="178.4" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="486.4" y2="265.9" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="486.4" y2="374.1" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="422.9" y2="461.6" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="320.0" y2="495.0" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="217.1" y2="461.6" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="153.6" y2="374.1" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="153.6" y2="265.9" stroke="var(--line)" stroke-width="1"/><line x1="320.0" y1="320.0" x2="217.1" y2="178.4" stroke="var(--line)" stroke-width="1"/>
+  <polygon points="320.0,162.5 381.7,235.1 436.5,282.1 403.2,347.0 381.7,404.9 320.0,390.0 248.0,419.1 236.8,347.0 236.8,293.0 237.7,206.7" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="2.2"/>
+  <circle cx="320.0" cy="162.5" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="381.7" cy="235.1" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="436.5" cy="282.1" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="403.2" cy="347.0" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="381.7" cy="404.9" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="320.0" cy="390.0" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="248.0" cy="419.1" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="236.8" cy="347.0" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="236.8" cy="293.0" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="237.7" cy="206.7" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
+  <text x="320.0" y="119.0" text-anchor="middle" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="320.0" dy="0" font-weight="700" fill="var(--ink)">Lvl 1-10</tspan><tspan x="320.0" dy="13" fill="var(--muted)">Molecular→Population</tspan></text><text x="438.1" y="157.4" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="438.1" dy="0" font-weight="700" fill="var(--ink)">Lvl 11-20</tspan><tspan x="438.1" dy="13" fill="var(--muted)">Epigenetic→Philosophical</tspan></text><text x="511.2" y="257.9" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="511.2" dy="0" font-weight="700" fill="var(--ink)">Lvl 21-30</tspan><tspan x="511.2" dy="13" fill="var(--muted)">Informational→Existential</tspan></text><text x="511.2" y="382.1" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="511.2" dy="0" font-weight="700" fill="var(--ink)">Lvl 31-40</tspan><tspan x="511.2" dy="13" fill="var(--muted)">Thermodynamic→Semiotic</tspan></text><text x="438.1" y="482.6" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="438.1" dy="0" font-weight="700" fill="var(--ink)">Lvl 41-50</tspan><tspan x="438.1" dy="13" fill="var(--muted)">Stoic→Transcendental</tspan></text><text x="320.0" y="521.0" text-anchor="middle" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="320.0" dy="0" font-weight="700" fill="var(--ink)">Lvl 51-60</tspan><tspan x="320.0" dy="13" fill="var(--muted)">Combinatorial→Rhetorical</tspan></text><text x="201.9" y="482.6" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="201.9" dy="0" font-weight="700" fill="var(--ink)">Lvl 61-70</tspan><tspan x="201.9" dy="13" fill="var(--muted)">Transhumanist→Volumetric</tspan></text><text x="128.8" y="382.1" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="128.8" dy="0" font-weight="700" fill="var(--ink)">Lvl 71-80</tspan><tspan x="128.8" dy="13" fill="var(--muted)">Socratic→Eschatological</tspan></text><text x="128.8" y="257.9" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="128.8" dy="0" font-weight="700" fill="var(--ink)">Lvl 81-90</tspan><tspan x="128.8" dy="13" fill="var(--muted)">Alliance→Idiographic</tspan></text><text x="201.9" y="157.4" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="201.9" dy="0" font-weight="700" fill="var(--ink)">Lvl 91-100</tspan><tspan x="201.9" dy="13" fill="var(--muted)">Cyber-Physical→Transcendent</tspan></text>
+</svg>
+  </div>
+  <div class="gap-box">
+    <strong>Important caveat:</strong> these scores are illustrative averages across a band of ten levels, not measured data — they exist only to give a rough shape to "where reasoning tends to matter most." Real clinical encounters are not averages. Any single level or domain — a missed cultural belief (Level 17), a jurisprudential refusal (Level 39), a single mis-set thermometer (Level 28), or a moment of therapeutic alliance (Level 81) — can singlehandedly dominate the outcome of a case regardless of what its band's average suggests. Treat this radar as a sensitizing sketch, not a ranking of what to prioritize at the bedside.
+  </div>
+</div>
+
+<h2>Technology Maturity Heatmap — All 100 Levels</h2>
+<div class="panel">
+<p>A single-glance view of current AI/IoT/sensor readiness across the full hierarchy, level by level. Hover any cell for its level number.</p>
+<div class="heatmap">
+<div class="cell emerging" title="Level 1">1</div>
+<div class="cell early" title="Level 2">2</div>
+<div class="cell mature" title="Level 3">3</div>
+<div class="cell mature" title="Level 4">4</div>
+<div class="cell mature" title="Level 5">5</div>
+<div class="cell mature" title="Level 6">6</div>
+<div class="cell emerging" title="Level 7">7</div>
+<div class="cell emerging" title="Level 8">8</div>
+<div class="cell emerging" title="Level 9">9</div>
+<div class="cell emerging" title="Level 10">10</div>
+<div class="cell early" title="Level 11">11</div>
+<div class="cell emerging" title="Level 12">12</div>
+<div class="cell emerging" title="Level 13">13</div>
+<div class="cell emerging" title="Level 14">14</div>
+<div class="cell mature" title="Level 15">15</div>
+<div class="cell early" title="Level 16">16</div>
+<div class="cell early" title="Level 17">17</div>
+<div class="cell early" title="Level 18">18</div>
+<div class="cell early" title="Level 19">19</div>
+<div class="cell early" title="Level 20">20</div>
+<div class="cell mature" title="Level 21">21</div>
+<div class="cell emerging" title="Level 22">22</div>
+<div class="cell emerging" title="Level 23">23</div>
+<div class="cell emerging" title="Level 24">24</div>
+<div class="cell emerging" title="Level 25">25</div>
+<div class="cell emerging" title="Level 26">26</div>
+<div class="cell emerging" title="Level 27">27</div>
+<div class="cell mature" title="Level 28">28</div>
+<div class="cell emerging" title="Level 29">29</div>
+<div class="cell early" title="Level 30">30</div>
+<div class="cell mature" title="Level 31">31</div>
+<div class="cell mature" title="Level 32">32</div>
+<div class="cell mature" title="Level 33">33</div>
+<div class="cell emerging" title="Level 34">34</div>
+<div class="cell emerging" title="Level 35">35</div>
+<div class="cell emerging" title="Level 36">36</div>
+<div class="cell emerging" title="Level 37">37</div>
+<div class="cell early" title="Level 38">38</div>
+<div class="cell early" title="Level 39">39</div>
+<div class="cell early" title="Level 40">40</div>
+<div class="cell emerging" title="Level 41">41</div>
+<div class="cell emerging" title="Level 42">42</div>
+<div class="cell emerging" title="Level 43">43</div>
+<div class="cell emerging" title="Level 44">44</div>
+<div class="cell emerging" title="Level 45">45</div>
+<div class="cell mature" title="Level 46">46</div>
+<div class="cell early" title="Level 47">47</div>
+<div class="cell early" title="Level 48">48</div>
+<div class="cell early" title="Level 49">49</div>
+<div class="cell early" title="Level 50">50</div>
+<div class="cell emerging" title="Level 51">51</div>
+<div class="cell emerging" title="Level 52">52</div>
+<div class="cell emerging" title="Level 53">53</div>
+<div class="cell emerging" title="Level 54">54</div>
+<div class="cell early" title="Level 55">55</div>
+<div class="cell early" title="Level 56">56</div>
+<div class="cell early" title="Level 57">57</div>
+<div class="cell early" title="Level 58">58</div>
+<div class="cell early" title="Level 59">59</div>
+<div class="cell early" title="Level 60">60</div>
+<div class="cell emerging" title="Level 61">61</div>
+<div class="cell early" title="Level 62">62</div>
+<div class="cell emerging" title="Level 63">63</div>
+<div class="cell emerging" title="Level 64">64</div>
+<div class="cell early" title="Level 65">65</div>
+<div class="cell mature" title="Level 66">66</div>
+<div class="cell emerging" title="Level 67">67</div>
+<div class="cell emerging" title="Level 68">68</div>
+<div class="cell mature" title="Level 69">69</div>
+<div class="cell mature" title="Level 70">70</div>
+<div class="cell emerging" title="Level 71">71</div>
+<div class="cell early" title="Level 72">72</div>
+<div class="cell early" title="Level 73">73</div>
+<div class="cell early" title="Level 74">74</div>
+<div class="cell early" title="Level 75">75</div>
+<div class="cell early" title="Level 76">76</div>
+<div class="cell early" title="Level 77">77</div>
+<div class="cell early" title="Level 78">78</div>
+<div class="cell early" title="Level 79">79</div>
+<div class="cell early" title="Level 80">80</div>
+<div class="cell early" title="Level 81">81</div>
+<div class="cell emerging" title="Level 82">82</div>
+<div class="cell emerging" title="Level 83">83</div>
+<div class="cell emerging" title="Level 84">84</div>
+<div class="cell early" title="Level 85">85</div>
+<div class="cell early" title="Level 86">86</div>
+<div class="cell early" title="Level 87">87</div>
+<div class="cell early" title="Level 88">88</div>
+<div class="cell early" title="Level 89">89</div>
+<div class="cell early" title="Level 90">90</div>
+<div class="cell mature" title="Level 91">91</div>
+<div class="cell mature" title="Level 92">92</div>
+<div class="cell mature" title="Level 93">93</div>
+<div class="cell mature" title="Level 94">94</div>
+<div class="cell early" title="Level 95">95</div>
+<div class="cell early" title="Level 96">96</div>
+<div class="cell early" title="Level 97">97</div>
+<div class="cell early" title="Level 98">98</div>
+<div class="cell early" title="Level 99">99</div>
+<div class="cell early" title="Level 100">100</div>
+</div>
+<div class="heatmap-legend">
+<span><span class="sw" style="background:#1b8a5a"></span>Mature (routine deployment)</span>
+<span><span class="sw" style="background:#c9982a"></span>Emerging (pilots / partial validation)</span>
+<span><span class="sw" style="background:#c14f4f"></span>Early / Aspirational</span>
+</div>
+<p style="margin-top:12px;font-size:.88rem;color:var(--muted)">Pattern at a glance: green clusters around the biological and digital-monitoring core (levels 1–6, 15, 21, 28, 31–33, 66, 69–70, 91–94); the middle philosophical band (41–65) is mostly amber; the outer meta/transcendent band (72–90, 95–100) is dominated by red — confirming the tiers described below.</p>
+</div>
+<h2>Tier 1 — Biological (Levels 1–20)</h2>
+<span class="tier-tag tier-bio">Molecular → Philosophical threshold</span>
+<div class="panel">
+<p>This is the tier where modern health tech is genuinely strong. Wearables, point-of-care diagnostics, and imaging AI now cover most of the physiological pipeline from cell to organ system.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:70px">Level</th><th>Insight &amp; Intervention (Fever / HTN)</th><th>What it needs</th><th>AI/LLM</th><th>IoT</th><th>Sensors</th></tr>
+<tr><td class="lvl" data-label="Level">1–2</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Resetting the hypothalamic set-point via cytokines; use Ibuprofen to block prostaglandin. • Immune cell migration to infection; use Calcium Channel Blockers to relax vascular smooth muscle.</td><td data-label="What it needs">Molecular/cellular fever &amp; vascular mechanics</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — cytokine panels + ML risk scoring</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — CRP/procalcitonin point-of-care assays</td></tr>
+<tr><td class="lvl" data-label="Level">3–4</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Localized inflammatory vasodilation; assess arterial stiffness via collagen deposition markers. • Hypothalamic heat regulation; monitor Left Ventricular strain via Echocardiogram.</td><td data-label="What it needs">Tissue/organ level: vasodilation, LV strain</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — echo AI (auto-EF, strain)</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — cloud-linked handheld echo</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — handheld ultrasound, thermal cameras</td></tr>
+<tr><td class="lvl" data-label="Level">5–6</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Immune “defense mode” activation; manage the Cardiovascular system’s chronic mechanical load. • The patient feels systemic malaise; screen for multi-organ comorbidities like renal failure.</td><td data-label="What it needs">Organ-system / whole-organism status</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — sepsis early-warning algorithms</td><td data-label="IoT"><span class="mat m-mature">Mature</span> — ICU multi-parameter telemetry</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — pulse ox, continuous BP cuffs</td></tr>
+<tr><td class="lvl" data-label="Level">7–10</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Fear of missing school/play; address “pill fatigue” and the patient’s desire for independence. • Caregiver anxiety management; involve the family in low-sodium “DASH diet” meal planning. • Tracking local viral outbreaks; utilizing local walking paths and senior wellness centers. • Antibiotic stewardship protocols; advocating for national salt-reduction public health policies.</td><td data-label="What it needs">Person, family, community, population</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — LLM chat triage, syndromic surveillance</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — public-health data feeds</td><td data-label="Sensors"><span class="mat m-early">Early</span> — patchy population-scale sensing</td></tr>
+<tr><td class="lvl" data-label="Level">11–14</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Childhood “immune hits” shaping future health; mitigating stress-induced gene expression in aging. • Evening temperature spikes (circadian); “Chronotherapy” (dosing BP meds at bedtime). • Vector-borne illness risks; air pollution and noise impact on systemic vascular resistance. • Parental loss of work productivity; managing the long-term cost-benefit of stroke prevention.</td><td data-label="What it needs">Epigenetic, chronobiological, ecological, economic</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — polygenic/epigenetic clocks still research-grade</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — circadian wearables (temp, HRV)</td><td data-label="Sensors"><span class="mat m-emerging">Emerging</span> — actigraphy, environmental sensors</td></tr>
+<tr><td class="lvl" data-label="Level">15</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Real-time wearable temp tracking; using Remote Patient Monitoring (RPM) for BP trends.</td><td data-label="What it needs">Digital/AI (wearables, RPM)</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span></td><td data-label="IoT"><span class="mat m-mature">Mature</span> — RPM billing codes, cellular-connected cuffs</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — smartwatches, patches</td></tr>
+<tr><td class="lvl" data-label="Level">16–20</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Balancing child autonomy with proxy consent; established Advanced Directives for care goals. • Addressing “hot/cold” illness beliefs; adapting low-sodium diets to cultural staples. • School vaccination funding; legislating for affordable access to chronic medications. • Fever as an adaptive defense; BP as an evolutionary mismatch with modern sedentary life. • Illness as a growth experience; viewing hypertension as a challenge of successful longevity.</td><td data-label="What it needs">Ethical, cultural, political, evolutionary, philosophical framing</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — LLMs can discuss, not adjudicate, values</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-early">Early</span> — not a sensing problem</td></tr>
+</table></div>
+<div class="gap-box">
+<strong>Where it lags:</strong> continuous, low-cost inflammatory/metabolic biomarker sensing (cytokines, ketones, lactate) outside a lab remains the single biggest hardware gap in this tier — most "molecular-level" insight in the field still comes from a fingerstick or a blood draw, not a wearable.
+  </div>
+</div>
+<h2>Tier 2 — Social &amp; Digital (Levels 21–40)</h2>
+<span class="tier-tag tier-social">Informational → Semiotic</span>
+<div class="panel">
+<p>This tier is where large language models, remote monitoring, and consumer devices genuinely reshape practice — but legal, cultural, and linguistic layers expose the limits of pattern matching.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:70px">Level</th><th>Insight &amp; Intervention (Fever / HTN)</th><th>What it needs</th><th>AI/LLM</th><th>IoT</th><th>Sensors</th></tr>
+<tr><td class="lvl" data-label="Level">21</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Filtering “noise” from temperature data; using Bayesian modeling to predict BP crises.</td><td data-label="What it needs">Informational filtering, Bayesian modeling</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — Bayesian/ML early-warning scores widely deployed</td><td data-label="IoT"><span class="mat m-mature">Mature</span></td><td data-label="Sensors"><span class="mat m-mature">Mature</span></td></tr>
+<tr><td class="lvl" data-label="Level">22</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Documenting “duty of care” for safety; adhering to JNC 8 standards to mitigate liability.</td><td data-label="What it needs">Legal/forensic documentation</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — ambient scribes drafting defensible notes</td><td data-label="IoT"><span class="mat m-mature">Mature</span> — EHR audit trails</td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">23–27</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Pre-antibiotic context of fever; shifting definitions of “normal” BP over the last century. • Fever as a social “nurturing” trigger; high BP as a byproduct of the agricultural shift. • Naming the “germ fight” for clarity; clarifying that “tension” isn't just emotional stress. • Breaking inherited “fever phobia”; the grandmother acting as a health model for grandkids. • Global vaccine supply chain stability; salt taxes as a tool for global health diplomacy.</td><td data-label="What it needs">Historical, anthropological, linguistic, intergenerational, geopolitical</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — LLMs summarize context well, reason about it weakly</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+<tr><td class="lvl" data-label="Level">28</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Infrared vs. oral sensor accuracy; calibrating home digital cuffs against manual standards.</td><td data-label="What it needs">Sensor accuracy, calibration</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — auto-calibration algorithms</td><td data-label="IoT"><span class="mat m-mature">Mature</span></td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — validated home BP cuffs, tympanic/temporal thermometers</td></tr>
+<tr><td class="lvl" data-label="Level">29</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Closed-loop thermoregulation feedback; recalibrating the body's baroreceptor “set-point.”</td><td data-label="What it needs">Cybernetic closed-loop regulation</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — closed-loop insulin delivery is the proof point</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — closed-loop BP/fluid systems still ICU-only</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — CGMs feeding the loop</td></tr>
+<tr><td class="lvl" data-label="Level">30</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Encountering biological vulnerability; finding meaning in the “final chapter” of life.</td><td data-label="What it needs">Existential framing</td><td data-label="AI/LLM"><span class="mat m-early">Early</span></td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">31–33</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Managing entropy/heat dissipation; reducing cardiac “work” through vasodilation. • Stochastic path to a mean temperature; calculating Mean Arterial Pressure (MAP) for safety. • Evaluating skin turgor and “flush”; identifying “silver wiring” art in retinal vessels.</td><td data-label="What it needs">Thermodynamic, mathematical, aesthetic (skin/retina)</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — retinal AI screening (diabetic retinopathy) is FDA-cleared and deployed</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — smartphone fundus attachments</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — fundus cameras, dermatoscopes</td></tr>
+<tr><td class="lvl" data-label="Level">34–36</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Managing pediatric delirium/night terrors; using mindfulness to break “White Coat” spikes. • Sepsis bundle protocol adherence; leveraging nurse-led clinics for frequent BP checks. • Using illness as a biology lesson; re-educating patients on modern sodium/fluid myths.</td><td data-label="What it needs">Psychological, institutional, pedagogical</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — mental-health chatbots, protocol-adherence dashboards</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span></td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+<tr><td class="lvl" data-label="Level">37</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Core vs. peripheral heat distribution; monitoring turbulent flow at arterial bifurcations.</td><td data-label="What it needs">Spatial/geometric flow (bifurcations, turbulence)</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — CFD-informed vascular models in research centers</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-emerging">Emerging</span> — Doppler ultrasound</td></tr>
+<tr><td class="lvl" data-label="Level">38–40</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Temperature-dependent enzyme folding; targeting Ca²⁺ ion channels for electrical signaling. • State vs. Parent rights in refusal; documenting “informed refusal” of chronic treatment. • Interpreting a shiver as a signifier of rising temp; seeing BP as a symbol of future risk.</td><td data-label="What it needs">Quantum, jurisprudential, semiotic</td><td data-label="AI/LLM"><span class="mat m-early">Early</span></td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+</table></div>
+<div class="gap-box">
+<strong>Where it lags:</strong> closed-loop systems outside glucose control (automated BP titration, fluid management) are still confined to ICUs and research trials — general wards and outpatient settings remain open-loop.
+  </div>
+</div>
+<h2>Tier 3 — Philosophical (Levels 41–60)</h2>
+<span class="tier-tag tier-phil">Stoic → Rhetorical</span>
+<div class="panel">
+<p>This is where the "Ultima Thule" of the framework starts to bite. LLMs can narrate and simulate these layers persuasively — practical utility for meaning-making, consent, and framing is real but shallow.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:70px">Level</th><th>Insight &amp; Intervention (Fever / HTN)</th><th>What it needs</th><th>AI/LLM</th><th>IoT</th><th>Sensors</th></tr>
+<tr><td class="lvl" data-label="Level">41–45</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Focusing on controllable rest/fluids; managing “fate” with equanimity and compliance. • Framing illness as a “chapter of resilience”; aligning care with the patient's life story. • Using “Early Warning Scores”; using ASCVD scores to predict 10-year heart attack risk. • Auditing home toxins/allergens; adjusting medication for high-altitude or humid climates. • Providing “Nurturing Mother” care; preserving the dignity of the “Wise Elder” archetype.</td><td data-label="What it needs">Stoic, narratological, predictive, environmental, archetypal</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — predictive scores (ASCVD, early-warning) mature; narrative/archetypal framing is LLM-generated but unvalidated as intervention</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — home environmental sensors (air quality, allergens)</td><td data-label="Sensors"><span class="mat m-emerging">Emerging</span></td></tr>
+<tr><td class="lvl" data-label="Level">46–50</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Following “Fever Without Source” logic gates; recursive “Treat-Measure-Adjust” loops. • Protecting the gut microbiome; treating sleep apnea to holistically lower blood pressure. • Investing in human capital; preventing global economic strain via elder disability reduction. • Purpose: Building immunity; Purpose: Preserving brain function/preventing stroke. • Wonder at biological self-repair; achieving peace despite chronic medical labeling.</td><td data-label="What it needs">Algorithmic, holistic, global-systemic, teleological, transcendental</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> at the algorithmic layer (clinical decision trees); <span class="mat m-early">Early</span> for holistic/teleological reasoning</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span></td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+<tr><td class="lvl" data-label="Level">51–55</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Screening for “viral logic” (co-infections); using polygenic risk scores for drug combos. • Thermographic mapping of infection; CT scoring of high-wear zones in the vascular tree. • “Common things are common” rule; applying the “Rule of Halves” to BP screening. • Standardizing “Fever” definitions; replacing “Essential HTN” with transparent terminology. • Host vs. Pathogen resource theft; rewards for medication “win-win” adherence.</td><td data-label="What it needs">Combinatorial risk, topographic mapping, heuristics, lexicography, game theory</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — polygenic risk scores and heuristic-checking LLM modules exist but are not standard of care</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-emerging">Emerging</span> — thermography</td></tr>
+<tr><td class="lvl" data-label="Level">56–60</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Analyzing daily/weekly temp patterns; protecting the fractal microvasculature of kidneys. • Axiom: Support the patient, not the number; Axiom: BP is dynamic, not static. • Navigating school absence mandates; optimizing documentation for Medicare home aides. • Palpating skin for dehydration; feeling pulse pressure for signs of arterial stiffness. • Persuading the child with “Hero’s Potion” framing; arguing against the patient's risk denial.</td><td data-label="What it needs">Fractal, axiomatic, bureaucratic, haptic, rhetorical</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — rhetorical/persuasive AI coaching for adherence is nascent</td><td data-label="IoT"><span class="mat m-early">Early</span></td><td data-label="Sensors"><span class="mat m-early">Early</span> — haptic/palpation still irreplaceably human</td></tr>
+</table></div>
+<div class="gap-box">
+<strong>Where it lags hardest:</strong> nothing in this tier is truly "sensed." Everything here is language- and reasoning-based, which means the entire tier rides on LLM output quality — and current models still hallucinate, flatten nuance, and cannot verify their own philosophical framing against a patient's actual values. This is squarely the domain the companion "Promption/Provocation" reasoning-framework piece was built to stress-test, not automate.
+  </div>
+</div>
+<h2>Tier 4 — Systems &amp; Science (Levels 61–80)</h2>
+<span class="tier-tag tier-sys">Transhumanist → Eschatological</span>
+<div class="panel">
+<p>Two very different realities live in this tier: near-future hard tech (levels 61–70) that is already shipping, and abstract systems-thinking (71–80) that AI can gesture at but not operationalize.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:70px">Level</th><th>Insight &amp; Intervention (Fever / HTN)</th><th>What it needs</th><th>AI/LLM</th><th>IoT</th><th>Sensors</th></tr>
+<tr><td class="lvl" data-label="Level">61–65</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Future nanobot temperature regulation; synthetic vascular grafts as a permanent cure. • Making the body “alien” to pathogens; researching low-gravity “Space Hypertension.” • Adjusting temp ranges for ethnicity; manually overriding AI age-bias in risk models. • Decoding viral RNA sequences; securing health data via medical blockchain. • Rebuilding the probiotic microbiome; acknowledging the patient as a “techno-symbiotic” unit.</td><td data-label="What it needs">Transhumanist, xenobiological, algorithmic bias, cryptographic, symbiotic</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — bias auditing tools for clinical AI exist and are increasingly mandated; nanobot/xenobiology is speculative</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — blockchain health-record pilots</td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+<tr><td class="lvl" data-label="Level">66–70</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">AI cough analysis for pneumonia; high-fidelity acoustics for Korotkoff sound detection. • Monitoring “rebound energy” in recovery; prescribing “3mph walking” as a kinetic dose. • Mapping the “symptom landscape”; checking inter-arm BP differences for stenosis. • Using pulse oximetry (IR light); measuring pulse wave velocity via light sensors. • Calculating fluid loss in ml/kg; using diuretics to reduce intravascular volume.</td><td data-label="What it needs">Phonetic (cough/voice AI), kinetic, cartographic, spectroscopic, volumetric</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — voice/cough biomarker AI is regulatory-cleared for some respiratory triage</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span> — accelerometer-based activity/kinetic dosing</td><td data-label="Sensors"><span class="mat m-mature">Mature</span> — pulse oximetry, PPG, accelerometers, smart microphones</td></tr>
+<tr><td class="lvl" data-label="Level">71–75</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Questioning assumptions before testing; defining “health” based on patient-led values. • Validating the state of “Being-Unwell”; normalizing the “Being-Elder” with pathology. • Body vs. Germ synthesis (Immunity); Medicine vs. Habit synthesis (Longevity). • Exploring the child's subjective “feeling”; addressing the identity shift from healthy to patient. • Cross-referencing tech data with truth; using population evidence to prove prevention.</td><td data-label="What it needs">Socratic, ontological, dialectical, phenomenological, epistemological</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — Socratic-style LLM questioning (as in the promption/provocation framework) is a genuine, working use case; the rest remain descriptive rather than diagnostic</td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">76–80</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Respecting the biological “Goldilocks Zone”; framing the heart as a pressure-balanced star. • Translating cries into clinical scores; decoding non-compliance as a “life text.” • Targeting only distress (chills/sweat); treating the individual, not the “elderly” category. • Avoiding “immune laziness” from over-treatment; ensuring pills don't replace healthy plates. • Supporting the first encounter with mortality; aligning care with “final chapter” wishes.</td><td data-label="What it needs">Cosmological, hermeneutic, deconstructive, moral-hazard, eschatological</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — LLMs can discuss end-of-life framing; no validated role in eschatological/moral-hazard judgment</td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+</table></div>
+<div class="gap-box">
+<strong>Where it leads:</strong> voice, cough, and gait analysis via smartphone microphones and accelerometers is arguably the most underrated maturing modality — inexpensive, passive, and already validated for several respiratory and neurological screening use cases.
+  </div>
+</div>
+<h2>Tier 5 — Meta &amp; Transcendent (Levels 81–100)</h2>
+<span class="tier-tag tier-meta">Therapeutic Alliance → Transcendent</span>
+<div class="panel">
+<p>This final tier is almost entirely outside what sensors and current AI can do. A handful of levels (probabilistic modeling, synchronous dosing, diachronic tracking) are genuinely automatable; the rest — trust, meaning, sacred duty — sit outside the reach of any current or near-future technology.</p>
+<div class="table-scroll"><table>
+<tr><th style="width:70px">Level</th><th>Insight &amp; Intervention (Fever / HTN)</th><th>What it needs</th><th>AI/LLM</th><th>IoT</th><th>Sensors</th></tr>
+<tr><td class="lvl" data-label="Level">81</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Bonding with the family to ensure care; the trust-based contract for long-term health.</td><td data-label="What it needs">Therapeutic alliance / trust-building</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — chat-based rapport tools exist, trust itself is not machine-buildable</td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">82–83</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Small temp spikes leading to cascades; small lifestyle shifts preventing massive strokes. • Managing random variables in recovery; predicting random drug metabolism in the elderly.</td><td data-label="What it needs">Chaos-theoretic, stochastic modeling</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — deterioration-cascade models in ICU AI</td><td data-label="IoT"><span class="mat m-emerging">Emerging</span></td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">84</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Self-checking diagnostic bias in pediatrics; auditing one's own clinical shortcuts in aging.</td><td data-label="What it needs">Meta-cognitive bias self-checking</td><td data-label="AI/LLM"><span class="mat m-emerging">Emerging</span> — this is exactly the "Provocation Mode" adversarial-audit use case: real, working, still narrow</td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+<tr><td class="lvl" data-label="Level">85–90</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Addressing how clinic layouts affect child stress; addressing systemic drivers of iatrogenesis. • Rejecting “one-size-fits-all” fever care; embracing diverse health outcomes in aging. • Clean water as the primary fever reducer; urban design impact on patient activity. • Fever risks in seasonal heat; managing stroke risks during climate-driven heatwaves. • Applying the Law of Biology to the child; using general population data for her BP goal. • Treating the child as a unique law; recognizing her body’s specific response to drugs.</td><td data-label="What it needs">Structuralist, post-modern, infrastructural, climatological, nomothetic, idiographic</td><td data-label="AI/LLM"><span class="mat m-early">Early</span></td><td data-label="IoT"><span class="mat m-early">Early</span> — municipal infrastructure/climate sensors exist but aren't integrated into bedside care</td><td data-label="Sensors"><span class="mat m-early">Early</span></td></tr>
+<tr><td class="lvl" data-label="Level">91</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Integrating the thermometer with the EHR; the heart as a node in a digital health cloud.</td><td data-label="What it needs">Cyber-physical integration (device ↔ EHR)</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — FHIR-based interoperability is standard in most health systems</td><td data-label="IoT"><span class="mat m-mature">Mature</span></td><td data-label="Sensors"><span class="mat m-emerging">Emerging</span></td></tr>
+<tr><td class="lvl" data-label="Level">92–94</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Calculating the “odds” of bacterial vs. viral; managing the probability of adverse events. • Timing meds with the peak of the virus; timing meds with the body's peak BP hour. • Tracking the fever over 48 hours; tracking BP changes over a 50-year life arc.</td><td data-label="What it needs">Probabilistic, synchronous, diachronic tracking</td><td data-label="AI/LLM"><span class="mat m-mature">Mature</span> — this is core clinical ML (risk scores, longitudinal trend models)</td><td data-label="IoT"><span class="mat m-mature">Mature</span> — continuous trend logging</td><td data-label="Sensors"><span class="mat m-mature">Mature</span></td></tr>
+<tr><td class="lvl" data-label="Level">95–100</td><td class="insight-col" data-label="Insight &amp; Intervention (Fever / HTN)">Contextualizing “high” for a child; contextualizing “normal” BP for a 70-year-old. • Weighing testing pain vs. diagnostic gain; weighing side effects vs. years of life added. • Reducing biological entropy through healing; maximizing the “signal” of cardiovascular health. • Doing “what works” (hydration/rest); using practical, accessible meds for compliance. • Unifying all data points into one diagnosis; creating a single, simple, actionable care plan. • Honoring the infinite value of the child; honoring the sacred duty of caring for the elderly.</td><td data-label="What it needs">Relativistic, utility-theoretic, information-theoretic, pragmatic, synthetic, transcendent</td><td data-label="AI/LLM"><span class="mat m-early">Early</span> — LLMs can synthesize a single care plan (level 99) reasonably well; levels 95–98 and 100 remain judgment calls that resist formalization</td><td data-label="IoT">—</td><td data-label="Sensors">—</td></tr>
+</table></div>
+<div class="gap-box">
+<strong>The honest ceiling:</strong> roughly the top 10–15 levels of this hierarchy describe things that are not sensing problems at all — they're meaning, dignity, and relationship problems. No roadmap of better wearables or bigger models closes that gap; it's a reminder that this tier was never meant to be "solved" by instrumentation.
+  </div>
+</div>
+<h2>Cross-Cutting Summary: What's Actually Deployable Today</h2>
+<div class="panel">
+<div class="table-scroll"><table>
+<tr><th>Modality</th><th>Best covers</th><th>Maturity</th><th>Notes</th></tr>
+<tr><td data-label="Modality">Wearable PPG/ECG/actigraphy</td><td data-label="Best covers">Levels 4–6, 15, 28, 92–94</td><td data-label="Maturity"><span class="mat m-mature">Mature</span></td><td data-label="Notes">Consumer-grade, FDA-cleared arrhythmia detection widely available</td></tr>
+<tr><td data-label="Modality">Continuous glucose / closed-loop insulin</td><td data-label="Best covers">Level 29</td><td data-label="Maturity"><span class="mat m-mature">Mature</span></td><td data-label="Notes">The clearest working example of a true closed loop in this hierarchy</td></tr>
+<tr><td data-label="Modality">Retinal &amp; dermatology imaging AI</td><td data-label="Best covers">Levels 32–33, 66</td><td data-label="Maturity"><span class="mat m-mature">Mature</span></td><td data-label="Notes">Autonomous screening AI cleared in several markets</td></tr>
+<tr><td data-label="Modality">Ambient/voice AI scribes</td><td data-label="Best covers">Levels 22, 66, 84</td><td data-label="Maturity"><span class="mat m-emerging">Emerging</span></td><td data-label="Notes">Fast-growing, but documentation quality still needs clinician review</td></tr>
+<tr><td data-label="Modality">LLM Socratic/adversarial reasoning aids</td><td data-label="Best covers">Levels 30, 46, 71, 84</td><td data-label="Maturity"><span class="mat m-emerging">Emerging</span></td><td data-label="Notes">The exact niche of Socratic frameworks like the promption/provocation model — genuinely useful, explicitly non-diagnostic</td></tr>
+<tr><td data-label="Modality">Point-of-care biomarker assays</td><td data-label="Best covers">Levels 1, 5, 70</td><td data-label="Maturity"><span class="mat m-mature">Mature</span> (single-marker) / <span class="mat m-emerging">Emerging</span> (multiplex panels)</td><td data-label="Notes">Cytokine and multiplex panels still mostly lab-bound</td></tr>
+<tr><td data-label="Modality">Population-level surveillance AI</td><td data-label="Best covers">Levels 10, 21, 27</td><td data-label="Maturity"><span class="mat m-emerging">Emerging</span></td><td data-label="Notes">Strong for outbreak detection, weaker for chronic-disease population management</td></tr>
+<tr><td data-label="Modality">Values/meaning/ethics reasoning</td><td data-label="Best covers">Levels 16, 41, 80–81, 100</td><td data-label="Maturity"><span class="mat m-early">Early</span></td><td data-label="Notes">Not a technology gap — a category error to expect sensors here</td></tr>
+</table></div>
+</div>
+<h2>Reading Across Both Frameworks</h2>
+<div class="panel">
+<p>The original 100-level hierarchy was never a checklist to be automated level-by-level — it's a reminder of how much of clinical reasoning happens outside the biological signal that sensors capture. Overlaying today's AI/IoT/sensor maturity onto it makes the shape of the gap explicit: technology is strong and getting stronger through roughly level 40, patchy but improving through level 80, and largely irrelevant — by design, not by failure — for the last fifteen or so levels.</p>
+<p>That's also the argument for pairing instrumentation with structured reasoning tools rather than expecting either to substitute for the other: dense sensor data still needs a scaffold (promption) to become a coherent picture, and a coherent picture still needs a disciplined adversary (provocation) to catch the anchor no sensor was built to see — the HbA1c that doesn't fit the ketoacidosis story, the metformin that quietly explains the anion gap.</p>
+</div>
+<h2>Radar View: Clinical Impact vs. Technological Maturity, by Decade-Band</h2>
+<div class="panel">
+  <p>The chart below overlays two assumption-based averages (1–10) for each ten-level band: <strong>clinical impact</strong> (solid line) — how much that band of reasoning typically shapes what the clinician and patient actually decide to do — against <strong>technological maturity</strong> (dashed line) — how far AI/LLM, IoT, and sensor coverage currently reach into that band, averaged from the heatmap above.</p>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--accent)"></span>Clinical impact</span>
+    <span><span class="dot" style="background:#1b8a5a"></span>Technological maturity</span>
+  </div>
+  <div class="radar-wrap">
+    <svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;height:auto;display:block;margin:0 auto;overflow:visible;">
+<polygon points="320.0,285.0 340.6,291.7 353.3,309.2 353.3,330.8 340.6,348.3 320.0,355.0 299.4,348.3 286.7,330.8 286.7,309.2 299.4,291.7" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,250.0 361.1,263.4 386.6,298.4 386.6,341.6 361.1,376.6 320.0,390.0 278.9,376.6 253.4,341.6 253.4,298.4 278.9,263.4" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,215.0 381.7,235.1 419.9,287.6 419.9,352.4 381.7,404.9 320.0,425.0 258.3,404.9 220.1,352.4 220.1,287.6 258.3,235.1" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,180.0 402.3,206.7 453.1,276.7 453.1,363.3 402.3,433.3 320.0,460.0 237.7,433.3 186.9,363.3 186.9,276.7 237.7,206.7" fill="none" stroke="var(--line)" stroke-width="1"/><polygon points="320.0,145.0 422.9,178.4 486.4,265.9 486.4,374.1 422.9,461.6 320.0,495.0 217.1,461.6 153.6,374.1 153.6,265.9 217.1,178.4" fill="none" stroke="var(--line)" stroke-width="1"/>
+<line x1="320" y1="320" x2="320.0" y2="145.0" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="422.9" y2="178.4" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="486.4" y2="265.9" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="486.4" y2="374.1" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="422.9" y2="461.6" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="320.0" y2="495.0" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="217.1" y2="461.6" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="153.6" y2="374.1" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="153.6" y2="265.9" stroke="var(--line)" stroke-width="1"/><line x1="320" y1="320" x2="217.1" y2="178.4" stroke="var(--line)" stroke-width="1"/>
+<polygon points="320.0,197.5 361.1,263.4 419.9,287.6 411.5,349.7 366.3,383.7 320.0,372.5 258.3,404.9 286.7,330.8 270.1,303.8 268.6,249.2" fill="#1b8a5a" fill-opacity="0.16" stroke="#1b8a5a" stroke-width="2.2" stroke-dasharray="5,3"/>
+<circle cx="320.0" cy="197.5" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="361.1" cy="263.4" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="419.9" cy="287.6" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="411.5" cy="349.7" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="366.3" cy="383.7" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="320.0" cy="372.5" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="258.3" cy="404.9" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="286.7" cy="330.8" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="270.1" cy="303.8" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/><circle cx="268.6" cy="249.2" r="4.2" fill="#1b8a5a" stroke="#fff" stroke-width="1.5"/>
+<polygon points="320.0,162.5 381.7,235.1 436.5,282.1 403.2,347.0 381.7,404.9 320.0,407.5 258.3,404.9 253.4,341.6 203.5,282.1 237.7,206.7" fill="var(--accent)" fill-opacity="0.16" stroke="var(--accent)" stroke-width="2.2"/>
+<circle cx="320.0" cy="162.5" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="381.7" cy="235.1" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="436.5" cy="282.1" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="403.2" cy="347.0" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="381.7" cy="404.9" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="320.0" cy="407.5" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="258.3" cy="404.9" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="253.4" cy="341.6" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="203.5" cy="282.1" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/><circle cx="237.7" cy="206.7" r="4.2" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>
+<text x="320.0" y="103.0" text-anchor="middle" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="320.0" dy="0" font-weight="700" fill="var(--ink)">Lvl 1-10</tspan><tspan x="320.0" dy="13" fill="var(--muted)">Molecular→Population</tspan></text><text x="447.5" y="144.4" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="447.5" dy="0" font-weight="700" fill="var(--ink)">Lvl 11-20</tspan><tspan x="447.5" dy="13" fill="var(--muted)">Epigenetic→Philosophical</tspan></text><text x="526.4" y="252.9" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="526.4" dy="0" font-weight="700" fill="var(--ink)">Lvl 21-30</tspan><tspan x="526.4" dy="13" fill="var(--muted)">Informational→Existential</tspan></text><text x="526.4" y="387.1" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="526.4" dy="0" font-weight="700" fill="var(--ink)">Lvl 31-40</tspan><tspan x="526.4" dy="13" fill="var(--muted)">Thermodynamic→Semiotic</tspan></text><text x="447.5" y="495.6" text-anchor="start" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="447.5" dy="0" font-weight="700" fill="var(--ink)">Lvl 41-50</tspan><tspan x="447.5" dy="13" fill="var(--muted)">Stoic→Transcendental</tspan></text><text x="320.0" y="537.0" text-anchor="middle" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="320.0" dy="0" font-weight="700" fill="var(--ink)">Lvl 51-60</tspan><tspan x="320.0" dy="13" fill="var(--muted)">Combinatorial→Rhetorical</tspan></text><text x="192.5" y="495.6" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="192.5" dy="0" font-weight="700" fill="var(--ink)">Lvl 61-70</tspan><tspan x="192.5" dy="13" fill="var(--muted)">Transhumanist→Volumetric</tspan></text><text x="113.6" y="387.1" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="113.6" dy="0" font-weight="700" fill="var(--ink)">Lvl 71-80</tspan><tspan x="113.6" dy="13" fill="var(--muted)">Socratic→Eschatological</tspan></text><text x="113.6" y="252.9" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="113.6" dy="0" font-weight="700" fill="var(--ink)">Lvl 81-90</tspan><tspan x="113.6" dy="13" fill="var(--muted)">Alliance→Idiographic</tspan></text><text x="192.5" y="144.4" text-anchor="end" font-size="11.5" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif"><tspan x="192.5" dy="0" font-weight="700" fill="var(--ink)">Lvl 91-100</tspan><tspan x="192.5" dy="13" fill="var(--muted)">Cyber-Physical→Transcendent</tspan></text>
+</svg>
+  </div>
+  <div class="gap-box">
+    <strong>Reading the gap between the lines:</strong> where the solid (impact) line sits well outside the dashed (maturity) line — most visibly at levels 11–20, 71–80, and 81–90 — is where clinical reasoning matters a great deal but current technology barely reaches: cultural framing, therapeutic alliance, existential and ethical judgment. Where the two lines sit close together — levels 1–10, 21–30, 61–70 — is where instrumentation and clinical weight are reasonably well matched today. As with the impact-only radar above, these are illustrative decade-band averages, not measured data.
+  </div>
+</div>
+<h2>Who Closes the Gap? Technology vs. Human Communication vs. What Remains Open</h2>
+<div class="panel">
+<p>The radar above shows impact vs. tech maturity as two lines; this view asks a sharper question per decade-band: of the ground that <em>does</em> get covered, how much is closed by technology (sensors/IoT/AI) versus by human communication and relational skill (history-taking, empathic listening, shared decision-making, therapeutic alliance) — and how much genuinely remains uncovered by either? As with every chart on this page, the percentages are an <strong>illustrative, hypothetical estimate</strong> meant to sketch a pattern, not a validated measurement.</p>
+<div class="radar-wrap">
+<svg viewBox="0 0 700 454" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;height:auto;display:block;margin:0 auto;">
+<line x1="96.0" y1="14" x2="96.0" y2="414" stroke="var(--line)" stroke-width="1"/>
+<text x="96.0" y="430" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">0%</text>
+<line x1="243.0" y1="14" x2="243.0" y2="414" stroke="var(--line)" stroke-width="1"/>
+<text x="243.0" y="430" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<line x1="390.0" y1="14" x2="390.0" y2="414" stroke="var(--line)" stroke-width="1"/>
+<text x="390.0" y="430" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">50%</text>
+<line x1="537.0" y1="14" x2="537.0" y2="414" stroke="var(--line)" stroke-width="1"/>
+<text x="537.0" y="430" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">75%</text>
+<line x1="684.0" y1="14" x2="684.0" y2="414" stroke="var(--line)" stroke-width="1"/>
+<text x="684.0" y="430" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">100%</text>
+<text x="86" y="35" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 1-10</text>
+<rect x="96.0" y="20" width="411.6" height="22" fill="#1b8a5a"/>
+<text x="301.8" y="35.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">70%</text>
+<rect x="507.6" y="20" width="117.6" height="22" fill="var(--accent)"/>
+<text x="566.4" y="35.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">20%</text>
+<rect x="625.2" y="20" width="58.8" height="22" fill="#c9432f"/>
+<text x="654.6" y="35.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">10%</text>
+<text x="86" y="75" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 11-20</text>
+<rect x="96.0" y="60" width="176.4" height="22" fill="#1b8a5a"/>
+<text x="184.2" y="75.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30%</text>
+<rect x="272.4" y="60" width="264.6" height="22" fill="var(--accent)"/>
+<text x="404.7" y="75.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">45%</text>
+<rect x="537.0" y="60" width="147.0" height="22" fill="#c9432f"/>
+<text x="610.5" y="75.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<text x="86" y="115" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 21-30</text>
+<rect x="96.0" y="100" width="323.4" height="22" fill="#1b8a5a"/>
+<text x="257.7" y="115.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">55%</text>
+<rect x="419.4" y="100" width="176.4" height="22" fill="var(--accent)"/>
+<text x="507.6" y="115.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30%</text>
+<rect x="595.8" y="100" width="88.2" height="22" fill="#c9432f"/>
+<text x="639.9" y="115.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">15%</text>
+<text x="86" y="155" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 31-40</text>
+<rect x="96.0" y="140" width="294.0" height="22" fill="#1b8a5a"/>
+<text x="243.0" y="155.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">50%</text>
+<rect x="390.0" y="140" width="176.4" height="22" fill="var(--accent)"/>
+<text x="478.2" y="155.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30%</text>
+<rect x="566.4" y="140" width="117.6" height="22" fill="#c9432f"/>
+<text x="625.2" y="155.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">20%</text>
+<text x="86" y="195" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 41-50</text>
+<rect x="96.0" y="180" width="88.2" height="22" fill="#1b8a5a"/>
+<text x="140.1" y="195.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">15%</text>
+<rect x="184.2" y="180" width="323.4" height="22" fill="var(--accent)"/>
+<text x="345.9" y="195.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">55%</text>
+<rect x="507.6" y="180" width="176.4" height="22" fill="#c9432f"/>
+<text x="595.8" y="195.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30%</text>
+<text x="86" y="235" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 51-60</text>
+<rect x="96.0" y="220" width="205.8" height="22" fill="#1b8a5a"/>
+<text x="198.9" y="235.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">35%</text>
+<rect x="301.8" y="220" width="235.2" height="22" fill="var(--accent)"/>
+<text x="419.4" y="235.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">40%</text>
+<rect x="537.0" y="220" width="147.0" height="22" fill="#c9432f"/>
+<text x="610.5" y="235.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<text x="86" y="275" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 61-70</text>
+<rect x="96.0" y="260" width="264.6" height="22" fill="#1b8a5a"/>
+<text x="228.3" y="275.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">45%</text>
+<rect x="360.6" y="260" width="205.8" height="22" fill="var(--accent)"/>
+<text x="463.5" y="275.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">35%</text>
+<rect x="566.4" y="260" width="117.6" height="22" fill="#c9432f"/>
+<text x="625.2" y="275.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">20%</text>
+<text x="86" y="315" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 71-80</text>
+<rect x="96.0" y="300" width="117.6" height="22" fill="#1b8a5a"/>
+<text x="154.8" y="315.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">20%</text>
+<rect x="213.6" y="300" width="323.4" height="22" fill="var(--accent)"/>
+<text x="375.3" y="315.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">55%</text>
+<rect x="537.0" y="300" width="147.0" height="22" fill="#c9432f"/>
+<text x="610.5" y="315.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<text x="86" y="355" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 81-90</text>
+<rect x="96.0" y="340" width="58.8" height="22" fill="#1b8a5a"/>
+<text x="125.4" y="355.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">10%</text>
+<rect x="154.8" y="340" width="382.2" height="22" fill="var(--accent)"/>
+<text x="345.9" y="355.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">65%</text>
+<rect x="537.0" y="340" width="147.0" height="22" fill="#c9432f"/>
+<text x="610.5" y="355.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<text x="86" y="395" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Lvl 91-100</text>
+<rect x="96.0" y="380" width="147.0" height="22" fill="#1b8a5a"/>
+<text x="169.5" y="395.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">25%</text>
+<rect x="243.0" y="380" width="176.4" height="22" fill="var(--accent)"/>
+<text x="331.2" y="395.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">30%</text>
+<rect x="419.4" y="380" width="264.6" height="22" fill="#c9432f"/>
+<text x="551.7" y="395.0" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">45%</text>
+</svg>
+</div>
+<div class="legend">
+<span><span class="dot" style="background:#1b8a5a"></span>Closed by technology</span>
+<span><span class="dot" style="background:var(--accent)"></span>Closed by human communication</span>
+<span><span class="dot" style="background:#c9432f"></span>Remains uncovered by either</span>
+</div>
+<div class="gap-box">
+<strong>The pattern this suggests:</strong> technology carries the most weight at the biological base (1–10) and in the informational/systems bands (21–30, 61–70), where signal is concrete and measurable. Human communication carries the most weight through the philosophical, rhetorical, and alliance-heavy bands (41–50, 71–90) — exactly where a scripted question or a wearable can't substitute for judgment and trust. And the uncovered slice grows fastest at the very top (91–100), because the transcendent and idiographic layers resist both instrumentation and full articulation in words — they're often only partially reached even by skilled communication, let alone hardware.
+</div>
+</div>
+<footer>
+  Educational synthesis for study purposes only — not a device inventory, procurement guide, or clinical recommendation.<br/>
+  All bar/radar charts on this page (practice-mode reach, clinical-impact-vs-maturity radar, tech/communication/gap split) are illustrative, hypothesis-driven estimates for teaching purposes, not measured or validated data.<br/>
+  Built alongside the Ultima Thule 100-Levels case framework and the Promption/Provocation reasoning model.
+</footer>
+</div>
+</body>
+</html>
