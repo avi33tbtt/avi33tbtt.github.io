@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground-Truth Layers: Knowledge Graphs, Pathways &amp; Evidence in Vibe Rounds</title>
+<style>
+  :root{
+    --ink:#0f1b2d;
+    --ink-soft:#3c4a5e;
+    --paper:#f7f8fa;
+    --card:#ffffff;
+    --line:#e1e5eb;
+    --teal:#0f6e6a;
+    --teal-deep:#0a4f4c;
+    --amber:#b5670a;
+    --red:#a13328;
+    --blue-chip:#1d4e6b;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal-deep);}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px;}
+
+  /* ---- top bar ---- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    background:var(--card);
+    position:sticky; top:0; z-index:50;
+  }
+  .topbar-inner{
+    max-width:880px;margin:0 auto;padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .brand{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--teal-deep);
+    letter-spacing:0.2px;
+    white-space:nowrap;
+  }
+  .brand span{color:var(--ink-soft);font-family:var(--sans);font-weight:500;font-size:0.75rem;display:block;margin-top:1px;}
+  .toc-toggle{display:none;}
+  nav.crumbs{
+    display:flex;gap:14px;flex-wrap:wrap;
+    font-size:0.78rem;
+  }
+  nav.crumbs a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-bottom:1px dotted transparent;
+  }
+  nav.crumbs a:hover{border-bottom-color:var(--teal);color:var(--teal-deep);}
+
+  /* ---- hero ---- */
+  header.hero{
+    padding:52px 0 34px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    background:#e9f4f3;
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:3px;
+    margin-bottom:16px;
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-size:2.1rem;
+    line-height:1.22;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+  .dek{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    max-width:64ch;
+    margin:0 0 22px;
+  }
+  .note{
+    border-left:3px solid var(--amber);
+    background:#fbf3e6;
+    padding:12px 16px;
+    font-size:0.88rem;
+    color:#5c3d0e;
+    border-radius:0 4px 4px 0;
+  }
+  .note b{color:#3f2a08;}
+
+  /* ---- sections ---- */
+  main{padding:8px 0 60px;}
+  section{padding:38px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  h2.h{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    margin:0 0 6px;
+    color:var(--ink);
+    display:flex;align-items:baseline;gap:10px;
+  }
+  h2.h .num{
+    font-family:var(--mono);
+    font-size:0.85rem;
+    color:var(--teal);
+    font-weight:700;
+  }
+  h3.h3{
+    font-family:var(--sans);
+    font-size:1.02rem;
+    font-weight:700;
+    margin:26px 0 8px;
+    color:var(--teal-deep);
+  }
+  p{margin:0 0 14px;color:var(--ink);}
+  ul,ol{margin:0 0 16px;padding-left:22px;}
+  li{margin-bottom:7px;}
+  strong{color:var(--ink);}
+
+  /* ---- badge row (pathway-style) ---- */
+  .badge-row{
+    display:flex;flex-wrap:wrap;gap:10px;
+    margin:18px 0 24px;
+  }
+  .badge{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 12px;
+    min-width:110px;
+  }
+  .badge .k{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    display:block;
+  }
+  .badge .v{
+    font-weight:700;
+    font-size:0.92rem;
+    color:var(--ink);
+  }
+  .badge.urgent .v{color:var(--red);}
+
+  /* ---- comparison table ---- */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:18px 0;border:1px solid var(--line);border-radius:8px;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.88rem;
+    min-width:520px;
+  }
+  th,td{
+    text-align:left;
+    padding:11px 14px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  thead th{
+    background:#eef4f3;
+    color:var(--teal-deep);
+    font-family:var(--mono);
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(odd){background:#fbfcfd;}
+
+  /* ---- card grid ---- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin:18px 0 6px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px;
+  }
+  .card .tag{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    color:var(--teal);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    display:block;
+    margin-bottom:6px;
+  }
+  .card h4{margin:0 0 6px;font-size:0.95rem;color:var(--ink);}
+  .card p{font-size:0.85rem;color:var(--ink-soft);margin:0;}
+
+  /* ---- pipeline chain ---- */
+  .chain{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+    margin:14px 0 20px;
+    font-family:var(--mono);
+    font-size:0.8rem;
+  }
+  .chain .step{
+    background:#eef4f3;
+    border:1px solid #cfe3e1;
+    color:var(--teal-deep);
+    padding:6px 10px;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  .chain .arrow{color:var(--ink-soft);}
+
+  /* ---- source cards ---- */
+  .source-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:4px solid var(--teal);
+    border-radius:0 8px 8px 0;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .source-card .src-label{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--teal);
+    display:block;
+    margin-bottom:6px;
+  }
+  .source-card a.src-link{
+    font-size:0.82rem;
+    word-break:break-all;
+  }
+
+  /* ---- risk callout ---- */
+  .risk{
+    border:1px solid #e3c2bc;
+    background:#fbf1ef;
+    border-radius:8px;
+    padding:14px 16px;
+    margin:16px 0;
+  }
+  .risk .lbl{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--red);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  /* ---- pull quote / conclusion ---- */
+  .thesis{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    line-height:1.5;
+    color:var(--teal-deep);
+    border-top:2px solid var(--teal);
+    border-bottom:2px solid var(--teal);
+    padding:20px 0;
+    margin:22px 0;
+  }
+
+  footer{
+    padding:34px 0 60px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  footer a{color:var(--teal-deep);}
+
+  /* ---- mobile ---- */
+  @media (max-width:680px){
+    h1.title{font-size:1.55rem;}
+    .dek{font-size:0.96rem;}
+    h2.h{font-size:1.25rem;}
+    .grid{grid-template-columns:1fr;}
+    nav.crumbs{display:none;}
+    .topbar-inner{justify-content:flex-start;}
+    section{padding:28px 0;}
+    .thesis{font-size:1.05rem;}
+    table{min-width:0;font-size:0.8rem;}
+    th,td{padding:9px 10px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">Vibe Rounds<span>Cognitive Analytics Series</span></div>
+    <nav class="crumbs">
+      <a href="https://avi33tbtt.github.io/article.html">Article</a>
+      <a href="https://avi33tbtt.github.io/pathways/acute-pancreatitis.html">Pathway</a>
+      <a href="https://avi33tbtt.github.io/tools/concepts/">Data Explorer</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Ground-Truth Layers · Companion Analysis</span>
+    <h1 class="title">Fact Graphs, Pathways &amp; Appraised Evidence: Raising the Floor Under Promption and Provocation</h1>
+    <p class="dek">A closer look at what happens when the Vibe Rounds reasoning stack is anchored to structured ground truth — a chronic kidney disease knowledge graph and an acute pancreatitis clinical pathway — and what that anchoring does and does not fix.</p>
+    <div class="note"><b>Architectural note:</b> this analysis, like Vibe Rounds itself, is a learning-stack companion piece for studying clinical reasoning on deidentified case material — not a clinical decision tool.</div>
+  </header>
+
+  <main>
+
+    <section id="recap">
+      <h2 class="h"><span class="num">§0</span> Recap: two cognitive modes, one shared risk</h2>
+      <p>The base framework runs two modes over case narratives — <strong>Promption</strong>, which scaffolds messy narrative data into structured illness scripts, and <strong>Provocation</strong>, which stress-tests the resulting hypothesis for anchoring and premature closure. Both modes are fluent by design. Neither, on its own, is anchored to anything outside the model's own internal coherence.</p>
+      <div class="chain">
+        <span class="step">#17 Semantic Qualifiers</span><span class="arrow">→</span>
+        <span class="step">#12 Diff Dx Deepdive</span><span class="arrow">→</span>
+        <span class="step">#30 Anchor Extractor</span><span class="arrow">→</span>
+        <span class="step">#45 Adversarial Shadow</span><span class="arrow">→</span>
+        <span class="step">#28 Diagnostic Time-Out</span>
+      </div>
+      <p>That shared blind spot is the subject of this piece: two structured ground-truth layers — a <strong>knowledge graph</strong> and an <strong>institutional pathway</strong> — examined against real published examples, plus a third layer, <strong>appraised evidence</strong>, that answers a question neither of the first two can.</p>
+    </section>
+
+    <section id="graph">
+      <h2 class="h"><span class="num">§1</span> Layer One — the Knowledge Graph</h2>
+      <h3 class="h3">Worked example: Chronic Kidney Disease</h3>
+      <div class="source-card">
+        <span class="src-label">Reference tool</span>
+        <p style="margin-bottom:6px;">Vibe Rounds' <strong>Clinical Data Explorer</strong> is a browsable concept graph: diseases, findings, and investigations linked by system, prevalence tier, and a two-level "single-concept explorer" that shows which diseases connect to a finding, and which further concepts those diseases connect to in turn.</p>
+        <a class="src-link" href="https://avi33tbtt.github.io/tools/concepts/" target="_blank" rel="noopener">avi33tbtt.github.io/tools/concepts/</a>
+      </div>
+      <p>Applied to CKD, the graph does something a free-text answer can't: it turns a hedge into a checkable criterion. Instead of the model asserting "this looks like chronic kidney disease" as an internally coherent but unverified judgment, the graph holds the actual diagnostic threshold — <strong>eGFR below 60 mL/min/1.73m² persisting for three months or more</strong> — as a structured, queryable entry, alongside its linked findings, complications, and differential set.</p>
+
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Before the graph</span>
+          <h4>Qualitative hedge</h4>
+          <p>"Findings are consistent with chronic kidney disease" — fluent, but not falsifiable against anything.</p>
+        </div>
+        <div class="card">
+          <span class="tag">After the graph</span>
+          <h4>Criterion-based claim</h4>
+          <p>eGFR &lt; 60 for ≥ 3 months, cross-checked against the graph's own CKD entry and its linked differential field.</p>
+        </div>
+        <div class="card">
+          <span class="tag">New capability</span>
+          <h4>Coverage flag</h4>
+          <p>A computable overlap score between case findings and graph entries — a visible proxy for "how sparse is my ground truth here."</p>
+        </div>
+      </div>
+
+      <h3 class="h3">What the graph fixes — and what it doesn't</h3>
+      <ul>
+        <li>Converts tacit illness-scripts into explicit, checkable structure, so modules can validate against verified criteria rather than internal coherence alone.</li>
+        <li>Enables a real calibration ledger: confidence tracked against documented criteria across many cases, not just one.</li>
+        <li>Turns the adversarial shadow module into a systematic differential engine, drawing on the graph's own differential-diagnosis field rather than free-associating alternatives.</li>
+        <li>Enables rule-based, auditable red-flag and escalation logic instead of prose-shaped urgency.</li>
+      </ul>
+      <div class="risk">
+        <span class="lbl">Limitation</span>
+        <p style="margin:0;">A graph raises the floor by making fabrication checkable — it does not stop correct data from being misapplied to an atypical or comorbid case that doesn't actually match the entry being invoked.</p>
+      </div>
+    </section>
+
+    <section id="pathway">
+      <h2 class="h"><span class="num">§2</span> Layer Two — the Institutional Pathway</h2>
+      <h3 class="h3">Worked example: Acute Pancreatitis</h3>
+      <div class="source-card">
+        <span class="src-label">Reference pathway</span>
+        <p style="margin-bottom:6px;">Vibe Rounds' <strong>Acute Pancreatitis</strong> pathway page encodes a full time-boxed management sequence: immediate steps (0–24h), first-line management, definitive/escalation care, monitoring, complications, and red flags — each tied to a concrete time window rather than a general instruction.</p>
+        <a class="src-link" href="https://avi33tbtt.github.io/pathways/acute-pancreatitis.html" target="_blank" rel="noopener">avi33tbtt.github.io/pathways/acute-pancreatitis.html</a>
+      </div>
+
+      <div class="badge-row">
+        <div class="badge"><span class="k">ICD-10</span><span class="v">K85.9</span></div>
+        <div class="badge"><span class="k">Setting</span><span class="v">ER / Ward / ICU</span></div>
+        <div class="badge urgent"><span class="k">Urgency</span><span class="v">High</span></div>
+        <div class="badge"><span class="k">Escalation gate</span><span class="v">48h organ failure</span></div>
+      </div>
+
+      <p>Where the CKD graph gives modules a fact to check, the pancreatitis pathway gives them something the fact graph structurally cannot: a <strong>sequence</strong>. Diagnosis requires 2 of 3 criteria; fluid resuscitation is titrated hour-by-hour against urine output; the well-known 48-hour organ-failure threshold defines severe disease under the Revised Atlanta Classification and is exactly the kind of concrete pause point the framework's Diagnostic Time-Out module needs, instead of a generic "pause and reconsider" prompt.</p>
+
+      <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Ground-truth axis</th><th>Knowledge graph (CKD)</th><th>Institutional pathway (pancreatitis)</th></tr></thead>
+        <tbody>
+          <tr><td>What it checks</td><td>Facts &amp; criteria</td><td>Sequence &amp; timing</td></tr>
+          <tr><td>Failure mode it targets</td><td>Fabricated or ungrounded facts</td><td>Right action, wrong time window</td></tr>
+          <tr><td>Concrete anchor</td><td>eGFR &lt; 60 for ≥3 months</td><td>48h organ-failure threshold</td></tr>
+          <tr><td>Module it sharpens</td><td>#45 Adversarial Shadow</td><td>#28 Diagnostic Time-Out</td></tr>
+          <tr><td>New risk introduced</td><td>Misapplied-but-correct data</td><td>False institutional authority ("per protocol")</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3 class="h3">A new risk: borrowed authority</h3>
+      <div class="risk">
+        <span class="lbl">Risk</span>
+        <p style="margin:0;">A pathway-derived module doesn't just state a fact — it issues a timed, directly actionable instruction that carries the implicit weight of "per protocol." A wrong instruction here compounds faster and is trusted more readily than a wrong fact, which argues for stricter provenance and citation requirements on pathway-derived modules than on fact-based ones.</p>
+      </div>
+      <p>The net effect: a mature system needs to separately audit <strong>diagnostic correctness</strong>, <strong>sequencing correctness</strong>, and <strong>contextual/population correctness</strong> (special populations, contraindication branching) — rather than collapsing all three into a single aggregate "reasoning quality" score.</p>
+    </section>
+
+    <section id="evidence">
+      <h2 class="h"><span class="num">§3</span> Layer Three — Appraised Evidence</h2>
+      <p>Facts answer <em>what</em>. Pathways answer <em>when</em>. Appraised evidence — systematic reviews, meta-analyses, GRADE-rated guidelines — answers a third question neither layer touches: <strong>how strong is the justification, and under what conditions does it hold?</strong></p>
+      <ul>
+        <li>Un-flattens uniform declarative confidence into GRADE-style certainty tiers, instead of one flat register of assertion.</li>
+        <li>Surfaces genuine guideline disagreement — ACG vs. IAP/APA vs. NICE on pancreatitis management — as a teaching moment rather than silently picking one synthesis to present as consensus.</li>
+        <li>Converts evidence-based-medicine modules from generic EBM-sounding prose into citation-anchored critique of a specific study's actual limitations.</li>
+        <li>Restores legitimate use of precise, sourced numbers — effect sizes, confidence intervals — in place of unfalsifiable hedge words. The earlier problem was <em>ungrounded</em> precision, not precision itself.</li>
+      </ul>
+      <div class="risk">
+        <span class="lbl">Sharpest new risk</span>
+        <p style="margin:0;">Evidence-appraisal-shaped language is the most convincing hallucination surface in the entire stack, because it carries the highest inherent credibility signal. It is only safe when backed by real, traceable retrieval — not GRADE-style prose generated without an actual retrieval step behind it.</p>
+      </div>
+    </section>
+
+    <section id="tradeoff">
+      <h2 class="h"><span class="num">§4</span> The Complexity/Bias Tradeoff</h2>
+      <p>Stacking all three layers isn't free. For common, densely-documented diseases, the base model is often already close to ground truth — adding a fact graph, a pathway, and an evidence layer adds seams where independently-sourced components can quietly contradict each other, for a comparatively small accuracy gain.</p>
+      <p>For rare or atypical presentations, the picture is sharper: unstructured reasoning over-fits the case to the nearest common script, while a structure-first approach can force a sparse or absent entry into the nearest available match — both produce confident wrongness, just via different mechanisms, and the structured failure is <strong>harder to detect</strong> because it wears the appearance of verified rigor.</p>
+      <div class="thesis">
+        "The highest-leverage fix isn't adding or withholding ground-truth layers uniformly — it's making 'how much ground truth do I actually have for this case' a first-class, visible output of the system itself."
+      </div>
+      <p>A well-designed system can fail <em>loudly</em> — an explicit "no strong match" signal — rather than silently inheriting the base model's overconfidence. Disagreement across layers (fact graph vs. pathway vs. evidence) is itself a usable audit signal, provided the seams are surfaced rather than papered over. That argues for differential deployment: heavy structure is low-value where the base model is already reliable, and highest-value exactly where unstructured reasoning fails worst — conditional on the structure honestly reporting its own coverage density.</p>
+    </section>
+
+    <section id="study">
+      <h2 class="h"><span class="num">§5</span> Proposed Next Step</h2>
+      <p>An empirical study: run matched common and rare cases both with and without the ground-truth layers (fact graph, pathway, evidence), and measure three outcomes across both conditions —</p>
+      <div class="grid">
+        <div class="card"><span class="tag">Metric 1</span><h4>Diagnostic accuracy</h4><p>Does the added structure actually move the answer closer to ground truth?</p></div>
+        <div class="card"><span class="tag">Metric 2</span><h4>Detectability of failure</h4><p>When it's wrong, does it fail loudly (flagged) or quietly (confidently wrong)?</p></div>
+        <div class="card"><span class="tag">Metric 3</span><h4>Learner calibration</h4><p>Does the learner's own confidence track the true reliability of the answer they were given?</p></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Vibe Rounds CCOS Framework · Companion analysis for educational and clinical-reasoning practice only — not a clinical decision tool.<br>
+    Related: <a href="https://avi33tbtt.github.io/article.html" target="_blank" rel="noopener">Main Article</a> ·
+    <a href="https://avi33tbtt.github.io/pathways/acute-pancreatitis.html" target="_blank" rel="noopener">Acute Pancreatitis Pathway</a> ·
+    <a href="https://avi33tbtt.github.io/tools/concepts/" target="_blank" rel="noopener">Clinical Data Explorer</a>
+  </footer>
+
+</div>
+</body>
+</html>
