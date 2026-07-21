@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weighting Ground-Truth Layers by Case Complexity: A Companion Analysis to Vibe Rounds</title>
+<style>
+  :root{
+    --paper:#faf8f5;
+    --ink:#1c1a17;
+    --ink-soft:#4a463f;
+    --rule:#d8d2c6;
+    --accent:#0891B2;
+    --accent-soft:#e0f2f6;
+    --graph:#2f5d50;
+    --pathway:#8a3b2b;
+    --evidence:#3a4a7a;
+    --risk-bg:#fbeee9;
+    --risk-border:#c85a3d;
+    --note-bg:#eef1ea;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    line-height:1.65;
+  }
+  .masthead{
+    border-bottom:1px solid var(--rule);
+    padding:2.2rem 1.5rem 1.4rem;
+    text-align:center;
+  }
+  .masthead .kicker{
+    font-family:"Courier New",monospace;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--accent);
+    margin-bottom:.9rem;
+  }
+  .masthead h1{
+    font-size:2.3rem;
+    margin:0 0 .6rem;
+    max-width:820px;
+    margin-left:auto;
+    margin-right:auto;
+    font-weight:600;
+  }
+  .masthead .sub{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    font-style:italic;
+    max-width:640px;
+    margin:0 auto;
+  }
+  .masthead nav{
+    margin-top:1.2rem;
+    font-family:"Courier New",monospace;
+    font-size:.8rem;
+  }
+  .masthead nav a{
+    color:var(--accent);
+    text-decoration:none;
+    margin:0 .5rem;
+    border-bottom:1px dotted var(--accent);
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:2.4rem 1.5rem 4rem;
+  }
+  .note{
+    background:var(--note-bg);
+    border-left:3px solid var(--graph);
+    padding:.9rem 1.1rem;
+    font-size:.92rem;
+    margin:1.6rem 0 2.2rem;
+    color:var(--ink-soft);
+  }
+  h2{
+    font-size:1.45rem;
+    margin-top:2.6rem;
+    padding-bottom:.4rem;
+    border-bottom:2px solid var(--ink);
+    display:inline-block;
+  }
+  h3{
+    font-size:1.12rem;
+    margin-top:1.8rem;
+    color:var(--accent);
+  }
+  p{ font-size:1.02rem; }
+  .lede{ font-size:1.1rem; color:var(--ink-soft); }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1.4rem 0;
+    font-size:.92rem;
+    background:#fff;
+  }
+  th, td{
+    border:1px solid var(--rule);
+    padding:.55rem .7rem;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--accent-soft);
+    font-weight:600;
+  }
+  .tier{
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:1.1rem 1.3rem;
+    margin:1.3rem 0;
+    background:#fff;
+  }
+  .tier h4{
+    margin:0 0 .3rem;
+    font-size:1.02rem;
+    font-family:"Courier New",monospace;
+    letter-spacing:.02em;
+  }
+  .tier.common h4{ color:var(--graph); }
+  .tier.rare h4{ color:var(--pathway); }
+  .tier.ultra h4{ color:var(--evidence); }
+  .tier .weight{
+    display:inline-block;
+    font-size:.78rem;
+    font-family:"Courier New",monospace;
+    background:var(--accent-soft);
+    padding:.15rem .5rem;
+    border-radius:3px;
+    margin-top:.5rem;
+  }
+  .risk{
+    background:var(--risk-bg);
+    border-left:3px solid var(--risk-border);
+    padding:.9rem 1.1rem;
+    margin:1.2rem 0;
+    font-size:.94rem;
+  }
+  .risk strong{ color:var(--risk-border); }
+  blockquote{
+    font-style:italic;
+    border-left:3px solid var(--ink);
+    margin:1.4rem 0;
+    padding:.3rem 1.2rem;
+    color:var(--ink-soft);
+  }
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
+    margin:1.3rem 0;
+  }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .col{
+    border:1px solid var(--rule);
+    background:#fff;
+    padding:.9rem 1rem;
+    border-radius:4px;
+    font-size:.92rem;
+  }
+  .col.pro{ border-top:3px solid var(--graph); }
+  .col.con{ border-top:3px solid var(--risk-border); }
+  .col h5{ margin:.1rem 0 .5rem; font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; }
+  ul{ padding-left:1.2rem; }
+  li{ margin-bottom:.4rem; }
+  .axis-label{
+    font-family:"Courier New",monospace;
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  footer{
+    border-top:1px solid var(--rule);
+    text-align:center;
+    padding:1.6rem 1rem 2.4rem;
+    font-size:.85rem;
+    color:var(--ink-soft);
+    font-family:"Courier New",monospace;
+  }
+  footer a{ color:var(--accent); }
+  .refs{ font-size:.9rem; }
+  .refs li{ margin-bottom:.7rem; }
+  code{
+    font-family:"Courier New",monospace;
+    background:var(--accent-soft);
+    padding:.1rem .3rem;
+    border-radius:3px;
+    font-size:.88em;
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">Vibe Rounds Cognitive Analytics Series &middot; Companion Analysis</div>
+  <h1>Weighting Ground-Truth Layers by Case Complexity and the Limits of System-Level Grounding</h1>
+  <div class="sub">On when Promption, Provocation, knowledge graphs, institutional pathways, and appraised evidence each earn their weight — and the uncertainty none of them can close.</div>
+  <nav>
+    <a href="https://avi33tbtt.github.io/article.html">Main Article</a> ·
+    <a href="https://avi33tbtt.github.io/ground_truth_layers.html">Ground-Truth Layers</a> ·
+    <a href="https://avi33tbtt.github.io/ebm/prompts.html">EBM Prompt Library</a> ·
+    <a href="https://avi33tbtt.github.io/tools/concepts/">Data Explorer</a>
+  </nav>
+</header>
+
+<main>
+
+<p class="lede">The base Vibe Rounds framework runs two cognitive modes — <strong>Promption</strong> (scaffolding) and <strong>Provocation</strong> (stress-testing) — over case narratives. A companion piece then anchors those modes to structured ground truth: a knowledge graph, an institutional pathway, and appraised evidence. This analysis asks the next question neither piece fully answers: <em>given finite effort, which of these layers deserves the most weight, for which case, and what remains entirely outside all of their reach?</em></p>
+
+<div class="note">
+<strong>Architectural note:</strong> this is a learning-stack companion analysis for studying clinical reasoning frameworks — not a clinical decision tool, and not a substitute for primary literature, institutional protocol, or bedside judgment.
+</div>
+
+<h2>1. The final-stage problem: balancing methods, not ranking them</h2>
+<p>Each method in the stack targets a distinct failure mode rather than competing for the same job. The correct "final stage" is not a vote between methods but a map from output to the specific error each output is built to catch.</p>
+
+<table>
+<tr><th>Method</th><th>What it's good for</th><th>What it misses or risks</th></tr>
+<tr><td>Promption</td><td>Organizing messy narrative into structure, fast</td><td>Fluent but not fact-checked; can scaffold a wrong idea as smoothly as a right one</td></tr>
+<tr><td>Provocation</td><td>Catching anchoring and premature closure</td><td>Can manufacture doubt even where the original hypothesis was sound</td></tr>
+<tr><td>Knowledge graph</td><td>Makes facts checkable and falsifiable</td><td>A correct fact can still be misapplied to an atypical or comorbid case</td></tr>
+<tr><td>Institutional pathway</td><td>Gets timing and sequencing right</td><td>Carries borrowed "per protocol" authority even when wrong</td></tr>
+<tr><td>Appraised evidence</td><td>Grades the strength of the justification itself</td><td>The most convincing hallucination surface if not backed by real retrieval</td></tr>
+</table>
+
+<div class="risk"><strong>Governing principle:</strong> disagreement between layers is a usable audit signal, not noise to be smoothed over. A well-designed synthesis stage fails <em>loudly</em> — an explicit "no strong match" flag — rather than silently inheriting the base model's overconfidence.</div>
+
+<h2>2. Weighting by disease rarity: three tiers</h2>
+<p>The value of stacking ground-truth layers is not uniform. It rises with case rarity up to a point, then falls again once ground truth itself runs out.</p>
+
+<div class="tier common">
+  <h4>Tier 1 &middot; Common presentation, standard workup</h4>
+  <p>The base model is already close to ground truth here. Adding a graph, pathway, and evidence layer mostly adds seams where independently-sourced components can quietly contradict each other, for a small accuracy gain. A random case series of common diseases adds little — other systems are already powerful for this tier.</p>
+  <span class="weight">Weight: Promption alone; light EBM search/screening if needed</span>
+</div>
+
+<div class="tier rare">
+  <h4>Tier 2 &middot; Rare-but-known presentation</h4>
+  <p>This is the highest-leverage zone. The base model tends to over-fit an unusual case to the nearest common script — exactly the failure Provocation's anchor-extraction and the graph's differential field are built to catch. Ground truth <em>exists</em> here; it just has to be actively invoked. A small, well-chosen case series can meaningfully strengthen calibration, because it stress-tests whether the pipeline catches known-but-uncommon patterns reliably, not whether new pathophysiology can be discovered.</p>
+  <div class="grid2">
+    <div class="col pro"><h5>Pros</h5>
+      <ul>
+        <li>Directly tests Provocation + graph-based differential against real premature-closure cases</li>
+        <li>Builds a calibration ledger: confidence tracked against documented criteria across cases</li>
+        <li>High payoff relative to cost — grounding is possible, unlike Tier 3</li>
+      </ul>
+    </div>
+    <div class="col con"><h5>Cons</h5>
+      <ul>
+        <li>Small samples risk overfitting the <em>evaluation</em> to the specific presentations chosen</li>
+        <li>Graph/pathway coverage is uneven even within "rare but known"</li>
+      </ul>
+    </div>
+  </div>
+  <span class="weight">Weight: all three ground-truth layers highest here</span>
+</div>
+
+<div class="tier ultra">
+  <h4>Tier 3 &middot; Ultra-rare or novel presentation</h4>
+  <p>Gains shrink again, but for the opposite reason from Tier 1 — not because the base model is already good, but because there is no ground truth to anchor to. A structure-first approach can force a sparse or absent graph entry into the nearest available match, producing confident wrongness that is harder to detect because it wears the appearance of verified rigor.</p>
+  <div class="risk"><strong>Sharpest risk:</strong> evidence-appraisal-shaped language is the most convincing hallucination surface in the entire stack — it is only safe when backed by real, traceable retrieval, and retrieval is thinnest exactly where it matters most.</div>
+  <span class="weight">Weight: downweight graph/pathway confidence; upweight the coverage/confidence flag itself as the primary deliverable</span>
+</div>
+
+<h2>3. Complexity axis, restated as scenario &times; task</h2>
+<p>The EBM Prompt Library adds a second axis: task type within evidence appraisal, each with its own verification burden. Crossed against the rarity tiers above, weighting becomes sharper.</p>
+
+<table>
+<tr><th>Scenario</th><th>Dominant cognitive tools</th><th>Dominant EBM tasks</th><th>Verification burden</th></tr>
+<tr><td>A &middot; Common</td><td>Promption only</td><td>PICO framing, search string, abstract screening</td><td>Low — mechanical, easy to spot-check</td></tr>
+<tr><td>B &middot; Complex / rare-but-known</td><td>Provocation + graph + pathway</td><td>Methodology extraction, ARR/RRR/NNT arithmetic, stress-test of conclusion</td><td>High — appraising primary literature against an atypical case, not a guideline default</td></tr>
+<tr><td>C &middot; Complex + ultra-rare/novel</td><td>Coverage-flag over confident synthesis</td><td>Methodology extraction and adversarial stress-test at maximum intensity</td><td>Maximal — every number and citation substitutes for missing structured ground truth</td></tr>
+</table>
+
+<div class="risk"><strong>The One Hard Rule, generalized:</strong> the LLM drafts, the human verifies every number and citation against the source — every time, not just when something looks off. As complexity rises from A to C, the proportion of the workflow that must be human-verified rises with it, because the tools' fluency stays constant while the ground truth backing that fluency shrinks.</div>
+
+<h2>4. The uncertainty that none of the layers cover</h2>
+<p>Every layer examined — Promption, Provocation, the knowledge graph, the institutional pathway, appraised evidence, even the EBM prompt tasks — operates on a <em>documented representation</em> of the case. Each trades individual specificity for checkability: a graph can only be a graph because it generalizes across patients; a pathway is a pathway because it is population-level; a PICO population is a category, never this one patient.</p>
+<p>This is not a coverage gap a fourth layer could close by being more thorough. It is a category mismatch. The richest source of uncertainty — how sick the patient looks walking through the door versus what the numbers say, family and functional context, the trajectory of the last hour, what was already tried at bedside and failed — is exactly the information that never survives compression into a structured artifact.</p>
+
+<div class="grid2">
+  <div class="col pro"><h5>What the layers can reduce</h5>
+    <ul>
+      <li>Uncertainty about whether documented facts are real and correctly applied</li>
+      <li>Uncertainty about timing and sequencing against a known protocol</li>
+      <li>Uncertainty about how strong the cited justification actually is</li>
+    </ul>
+  </div>
+  <div class="col con"><h5>What only the human orchestrator can reduce</h5>
+    <ul>
+      <li>Whether the documented case is a faithful compression of the real patient</li>
+      <li>Fidelity of the narrative capture itself — deidentification, completeness, absence of leading framing</li>
+      <li>The gap between the note and the bedside, which no layer ever inspects</li>
+    </ul>
+  </div>
+</div>
+
+<blockquote>A perfect graph match on a poorly-captured case is confidently wrong for a reason no downstream layer will ever surface — the layer only ever sees the text, never the gap between the text and the bedside.</blockquote>
+
+<p>This adds a fourth axis to the diagnostic / sequencing / contextual correctness split proposed for the ground-truth layers: <strong>input curation correctness</strong> — owned entirely by the human orchestrator, and structurally unfixable by any layer downstream of the documentation step.</p>
+
+<h2>5. Conclusion: what the current project actually is, and what remains ahead</h2>
+
+<h3>5.1 What the present toolset genuinely achieves</h3>
+<p>Taken together, the <a href="https://avi33tbtt.github.io/article.html">main article's</a> Promption/Provocation architecture and the ground-truth layers analysis constitute a real, working demonstration at the <em>reasoning-hygiene</em> level: they show, on one worked case, that scaffolding messy narrative and then adversarially stress-testing it surfaces a genuine diagnostic discrepancy (the HbA1c/DKA-severity mismatch) that a single-pass answer would likely have missed. That is a legitimate and non-trivial contribution — it operationalizes System 2 friction in a way that is teachable and repeatable.</p>
+
+<h3>5.2 What it has not yet done</h3>
+<p>The current status is a single-case proof of concept, not a validated pipeline. It has not yet: run a matched case series across rarity tiers to test the accuracy/detectability/calibration metrics proposed in the ground-truth layers piece; integrated the knowledge graph, pathway, and evidence layers into one live pipeline rather than describing them as three separate reference resources; or connected the EBM prompt library's verification discipline into the same case-walkthrough interface used for Promption/Provocation. Each piece currently exists as a strong standalone artifact, not yet as one orchestrated system.</p>
+
+<h3>5.3 Against the full possible plan ahead</h3>
+<p>Relative to the complete plan implied across all three source documents — three ground-truth layers, three rarity tiers with differential weighting, an EBM verification discipline layered on top, and an explicit coverage/confidence output at every stage — the present project sits closer to the <em>architecture and demonstration</em> stage than the <em>validation</em> stage. The proposed empirical study (matched common/rare cases, measured for diagnostic accuracy, failure detectability, and learner calibration) has not been run. The input-curation problem identified in Section 4 has not been addressed by any tooling at all — it remains, correctly, an unassigned human responsibility. In proportion terms: the cognitive-mode architecture is largely built; the ground-truth grounding is designed but not yet wired in as a live system; the tiered weighting logic and cross-task verification discipline are, at this point, analytical recommendations rather than implemented features.</p>
+
+<h2>6. Would a NotebookLM-style import prototype this plan?</h2>
+<p>Importing a knowledge graph export, the acute pancreatitis pathway, relevant guidelines, meta-analyses, and an EBM-prompt-derived appraised-evidence summary into a NotebookLM-style tool, then analyzing a case against that source set, would replicate a meaningful <em>slice</em> of this plan — but not the whole of it, and the gap is informative.</p>
+
+<div class="grid2">
+  <div class="col pro"><h5>What it would replicate well</h5>
+    <ul>
+      <li>Grounding answers in checkable source material rather than free-floating model assertion — the core purpose of all three ground-truth layers</li>
+      <li>Citation-anchored responses, which directly satisfies the EBM library's demand for quotable, locatable claims</li>
+      <li>A crude version of cross-layer disagreement, since a notebook-style tool can be asked to compare what the graph, the pathway, and the evidence summary each imply and flag where they diverge</li>
+    </ul>
+  </div>
+  <div class="col con"><h5>Where it would fall short</h5>
+    <ul>
+      <li>No native Promption/Provocation pipeline sequencing — a notebook tool answers questions against sources, it does not natively enact a scaffold-then-stress-test cognitive workflow</li>
+      <li>No built-in tiering logic — it will not automatically know that a rare-but-known case should weight the graph and pathway higher, or that an ultra-rare case should downweight its own confidence; a human still has to impose that judgment turn by turn</li>
+      <li>No coverage/confidence flag as a first-class output — it can be prompted to produce one, but nothing forces it to fail loudly rather than fluently answering from thin source material</li>
+      <li>Cannot address input curation correctness — it grounds against the sources it is given, with no way to assess whether the case narrative fed into it was itself a faithful capture of the real patient</li>
+    </ul>
+  </div>
+</div>
+
+<div class="risk"><strong>Net assessment:</strong> such a setup would function as a capable <em>manual prototype</em> of the grounding layer specifically — closer to Section 1 and 2 of the ground-truth layers analysis than to the full plan. It would still depend entirely on the human orchestrator to sequence Promption before Provocation, to decide how much weight the sources deserve given the case's rarity tier, to apply the EBM verification discipline number-by-number, and to judge whether the imported case narrative itself was trustworthy. It is a strong grounding substrate, not a replacement for the orchestration layer this whole analysis keeps returning to.</div>
+
+</main>
+
+<footer>
+  <p>Vibe Rounds CCOS Framework &middot; Companion Analysis &middot; For Educational and Clinical Reasoning Practice Only</p>
+  <p>
+    <a href="https://avi33tbtt.github.io/article.html">Main Article</a> &middot;
+    <a href="https://avi33tbtt.github.io/ground_truth_layers.html">Ground-Truth Layers</a> &middot;
+    <a href="https://avi33tbtt.github.io/ebm/prompts.html">EBM Prompt Library</a>
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Using the Stack: A Practical Guide to Self-Audit with Vibe Rounds</title>
+<style>
+  :root{
+    --paper:#fbfaf7;
+    --ink:#26241f;
+    --ink-soft:#5c584e;
+    --rule:#e4dfd3;
+    --sage:#0891B2;
+    --sage-soft:#e0f2f6;
+    --clay:#a3684a;
+    --clay-soft:#f4e9e1;
+    --card:#ffffff;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.7;
+  }
+  .wrap{max-width:740px;margin:0 auto;padding:0 20px;}
+  header.hero{
+    padding:56px 0 30px;
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:.75rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--sage);
+    font-weight:700;
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-size:2.05rem;
+    line-height:1.25;
+    margin:0 0 14px;
+    max-width:640px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .dek{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0 auto;
+  }
+  .note{
+    border-left:3px solid var(--sage);
+    background:var(--sage-soft);
+    padding:12px 16px;
+    font-size:.88rem;
+    color:#334036;
+    border-radius:0 6px 6px 0;
+    margin:24px auto 0;
+    max-width:56ch;
+    text-align:left;
+  }
+  nav.crumbs{
+    margin-top:22px;
+    font-size:.82rem;
+  }
+  nav.crumbs a{
+    color:var(--sage);
+    text-decoration:none;
+    margin:0 8px;
+    border-bottom:1px dotted var(--sage);
+  }
+  main{padding:10px 0 70px;}
+  section{padding:34px 0;border-bottom:1px solid var(--rule);}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-family:var(--serif);
+    font-size:1.4rem;
+    margin:0 0 14px;
+  }
+  h3{
+    font-size:1.02rem;
+    color:var(--clay);
+    margin:22px 0 8px;
+  }
+  p{margin:0 0 14px;}
+  ul,ol{margin:0 0 16px;padding-left:22px;}
+  li{margin-bottom:8px;}
+  .lede{font-size:1.08rem;color:var(--ink-soft);}
+  .checklist{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .checklist h4{
+    margin:0 0 10px;
+    font-size:.95rem;
+    font-family:var(--serif);
+    color:var(--sage);
+  }
+  .checklist ul{margin-bottom:0;}
+  .checklist li{list-style:none; position:relative; padding-left:26px;}
+  .checklist li::before{
+    content:"☐";
+    position:absolute;
+    left:0;
+    color:var(--sage);
+    font-size:1.05em;
+  }
+  .compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:18px 0;
+  }
+  @media (max-width:600px){ .compare{grid-template-columns:1fr;} }
+  .col{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .col.was{border-top:3px solid var(--clay);}
+  .col.now{border-top:3px solid var(--sage);}
+  .col h5{margin:0 0 8px;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);}
+  .quiet{
+    font-style:italic;
+    color:var(--ink-soft);
+    border-left:3px solid var(--rule);
+    padding-left:16px;
+    margin:18px 0;
+  }
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem;background:var(--card);border:1px solid var(--rule);border-radius:8px;overflow:hidden;}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top;}
+  th{background:var(--sage-soft);color:#2f4a38;font-weight:600;}
+  tbody tr:last-child td{border-bottom:none;}
+  .thesis{
+    font-family:var(--serif);
+    font-size:1.15rem;
+    line-height:1.55;
+    color:#334036;
+    border-top:2px solid var(--sage);
+    border-bottom:2px solid var(--sage);
+    padding:18px 0;
+    margin:20px 0;
+    text-align:center;
+  }
+  footer{
+    padding:30px 0 60px;
+    font-size:.82rem;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  footer a{color:var(--sage);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Vibe Rounds Cognitive Analytics Series · Part 4</div>
+    <h1>Using the Stack: A Practical Guide to Auditing Your Own Reasoning</h1>
+    <p class="dek">The first three pieces built the architecture — Promption and Provocation, then a knowledge graph, a pathway, and appraised evidence stacked on top. This one asks a quieter question: on an ordinary Tuesday, with one real case in front of you, what do you actually open?</p>
+    <div class="note"><strong>Architectural note:</strong> this is a usage guide for a learning-stack framework, written for the person sitting down to study a case — not a clinical decision tool, and not a call to add more layers.</div>
+    <nav class="crumbs">
+      <a href="https://avi33tbtt.github.io/article.html">Main Article</a> ·
+      <a href="https://avi33tbtt.github.io/ground_truth_layers.html">Ground-Truth Layers</a> ·
+      <a href="https://avi33tbtt.github.io/research_article.html">Weighting Companion</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="why">
+      <h2>1. Why this piece exists</h2>
+      <p class="lede">Three pieces in, the series has been adding: a second cognitive mode, then a knowledge graph, an institutional pathway, an evidence layer, a rarity-weighting scheme, an EBM verification burden that scales with complexity. Each addition was justified on its own terms. Taken together, they describe a system that could, in principle, out-think most single-pass answers.</p>
+      <p>Almost nobody needs all of it, most of the time. The honest failure mode of a growing framework isn't that it's wrong — it's that it becomes something people admire from a distance and never actually open. This piece is the opposite instinct: not what could the stack become, but what is the smallest, most repeatable way to actually use it, this week, on a real case, to check your own thinking rather than replace it.</p>
+    </section>
+
+    <section id="shift">
+      <h2>2. The shift: from building the tool to using it</h2>
+      <div class="compare">
+        <div class="col was">
+          <h5>Where the series has been</h5>
+          <ul>
+            <li>Which layer should I add next</li>
+            <li>How do I weight graph vs. pathway vs. evidence</li>
+            <li>How do I formally measure calibration across a case series</li>
+            <li>What is the complete, validated pipeline</li>
+          </ul>
+        </div>
+        <div class="col now">
+          <h5>Where this piece starts</h5>
+          <ul>
+            <li>What's the one question I should ask about this case, right now</li>
+            <li>Which single module actually earns its five minutes today</li>
+            <li>How do I know, afterward, whether the exercise changed my thinking</li>
+            <li>How do I keep doing this often enough that it becomes a habit, not a project</li>
+          </ul>
+        </div>
+      </div>
+      <p>Nothing below contradicts the earlier pieces. It's a different lens on the same stack: usability and habit-formation rather than architecture and validation. A tool used inconsistently at full complexity teaches less than a smaller tool used every week.</p>
+    </section>
+
+    <section id="minimum">
+      <h2>3. The minimum viable loop</h2>
+      <p>Most study sessions don't need the graph, the pathway, and the evidence layer at once. They need one pass through two questions, applied to one case, in about ten minutes.</p>
+
+      <div class="checklist">
+        <h4>The ten-minute self-audit</h4>
+        <ul>
+          <li>Write the one-line problem representation from memory, before looking anything up</li>
+          <li>Name the single finding you're leaning on hardest to support your working diagnosis</li>
+          <li>Ask: what would have to be true for that finding to point somewhere else entirely</li>
+          <li>Check exactly one fact against a source you trust — not everything, one thing</li>
+          <li>Write one sentence on what you'd do differently next time you see something like this</li>
+        </ul>
+      </div>
+
+      <p>That's Promption's first module, one Provocation question, and a single spot-check — not the full pipeline, not the graph, not a rarity tier assignment. It's deliberately small enough to survive a busy week.</p>
+    </section>
+
+    <section id="when-more">
+      <h2>4. When it's actually worth reaching for more</h2>
+      <p>The earlier pieces are right that heavier tooling pays off unevenly. In practice, that means most cases don't need it, and a few clearly do. A simple gut-check, not a formal tier assignment:</p>
+
+      <table>
+        <tr><th>Signal</th><th>What to reach for</th></tr>
+        <tr><td>Common presentation, textbook workup, nothing nags at you</td><td>Just the ten-minute loop above. Move on.</td></tr>
+        <tr><td>Something about the case doesn't sit right, or a number seems to fight the story</td><td>Add one Provocation pass and one fact-check against a graph or reference source — the specific thing that's bugging you, not a full audit.</td></tr>
+        <tr><td>You genuinely haven't seen a presentation like this before</td><td>Slow all the way down. This is worth the pathway, the evidence layer, and writing down your reasoning so you can revisit it later.</td></tr>
+      </table>
+
+      <p class="quiet">The tell that you've reached for too much: you spent longer assembling ground truth than you did thinking about the patient. The tell that you've reached for too little: you can't say, out loud, what would have changed your mind.</p>
+    </section>
+
+    <section id="habits">
+      <h2>5. Three habits that matter more than more tooling</h2>
+
+      <h3>5.1 Keep a one-line ledger, not a database</h3>
+      <p>The earlier pieces propose a formal calibration ledger tracked across a matched case series. That's a research design. The usable version is a single running note: case, your initial call, what changed your mind if anything did, and whether you were right. A few dozen entries in a plain document tell you more about your own blind spots than a well-designed study you never run.</p>
+
+      <h3>5.2 Pick one recurring question, not five new ones</h3>
+      <p>Don't rotate through the whole Provocation module list every time. Pick one question that keeps catching you out — anchoring on the first diagnosis that fits, or under-weighting a lab value that doesn't match the story — and ask it on purpose, every case, until it stops being useful. Then pick a different one.</p>
+
+      <h3>5.3 Let disagreement be the point, not the failure</h3>
+      <p>If your gut read and a quick fact-check land in different places, that's the exercise working, not a sign you did something wrong. Write down both, and why they diverged, instead of quietly picking the one that sounds more confident.</p>
+
+      <div class="thesis">
+        "A framework you actually run ten minutes a week beats a validated pipeline you never open. Start small, stay consistent, and let complexity earn its way back in only when a specific case actually demands it."
+      </div>
+    </section>
+
+    <section id="closing">
+      <h2>6. What this piece is not saying</h2>
+      <p>This isn't an argument against the graph, the pathway, the evidence layer, or the rarity-weighted deployment logic described earlier in the series — those remain the right answer for the cases that need them, and for anyone building or validating the system itself. It's a reminder that the entry point to the whole stack should be small, repeatable, and honest about what a single ten-minute pass can and can't tell you. The uncertainty that no layer can close — how the patient actually looked, what was tried and failed at the bedside — isn't solved by more tooling either. It's solved by staying close to the case, which a heavy pipeline can just as easily distract from as support.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    Vibe Rounds CCOS Framework · Usage guide for educational and self-audit practice only — not a clinical decision tool.<br>
+    Series: <a href="https://avi33tbtt.github.io/modern_clinical_reasoning.html">1. Modern Clinical Reasoning</a> ·
+    <a href="https://avi33tbtt.github.io/ground_truth_layers.html">2. Ground-Truth Layers</a> ·
+    <a href="https://avi33tbtt.github.io/research_article.html">3. Weighting Companion</a> ·
+    <a href="https://avi33tbtt.github.io/using_the_stack.html">4. Using the Stack</a>
+  </footer>
+</div>
+</body>
+</html>
