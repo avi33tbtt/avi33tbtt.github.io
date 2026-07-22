@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - Clinical Decision Science · Interactive Decision Lab</title>
+<style>
+:root{
+  --bg:#14232c; --bg-deep:#0e1a21; --paper:#ffffff; --panel:#f4f6f5; --ink:#1b2a30; --ink-soft:#526670;
+  --line:#dde3e1; --teal:#0f7c88; --teal-deep:#0b5a63; --rust:#c1622f; --amber:#c9922f;
+  --sage:#3f7a63; --crit:#b03a3a; --gold:#d99a52; --cream:#f2ede1; --cream-soft:#b7c6c3;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'Source Serif Pro',Georgia,serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--panel);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px 100px;}
+a{color:inherit;}
+
+/* ===== TOP DISCLAIMER + SITE BAR ===== */
+.disclaimer-bar{
+  background:var(--teal-deep);color:#eaf6f5;text-align:center;font-family:var(--mono);font-size:12.5px;
+  letter-spacing:.03em;padding:9px 16px;border-bottom:1px solid var(--bg-deep);
+}
+.site-bar{background:var(--bg-deep);border-bottom:1px solid #253c44;padding:14px 28px;}
+.site-bar-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.site-brand{font-family:var(--serif);font-size:18px;color:var(--cream);font-weight:600;}
+.site-brand-sub{font-family:var(--sans);font-size:13.5px;color:var(--cream-soft);font-weight:400;margin-left:4px;}
+.site-links{display:flex;gap:18px;}
+.site-links a{
+  font-family:var(--mono);font-size:12.5px;color:#9fd8db;text-decoration:none;border-bottom:1px dotted #3a5e63;
+  padding-bottom:1px;transition:.15s;
+}
+.site-links a:hover{color:#c9f0f2;border-color:#9fd8db;}
+
+/* ===== HEADER / CASE STRIP (shared by both modes) ===== */
+header.hero{
+  background:radial-gradient(1100px 380px at 12% -10%,rgba(15,124,136,.35),transparent),
+             linear-gradient(180deg,var(--bg-deep),#17282f);
+  color:var(--cream);padding:52px 28px 36px;border-bottom:6px solid var(--rust);
+}
+.hero-inner{max-width:1180px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);letter-spacing:.16em;text-transform:uppercase;font-size:12.5px;
+  color:#9fd8db;border:1px solid #2c464d;padding:5px 11px;border-radius:3px;display:inline-block;}
+h1{font-family:var(--serif);font-size:clamp(27px,3.6vw,41px);line-height:1.18;margin:18px 0 12px;max-width:900px;}
+h1 em{font-style:italic;color:var(--gold);}
+.subtitle{font-size:16px;color:var(--cream-soft);max-width:760px;line-height:1.65;}
+.case-strip{display:flex;flex-wrap:wrap;gap:0;margin-top:28px;border-top:1px solid #2c464d;}
+.cs-item{flex:1 1 150px;padding:13px 16px;border-right:1px solid #2c464d;}
+.cs-item:last-child{border-right:none;}
+.cs-item .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#83b5b9;text-transform:uppercase;}
+.cs-item .v{font-family:var(--serif);font-size:18.5px;margin-top:3px;color:var(--cream);}
+
+.vitals-strip{display:flex;flex-wrap:wrap;gap:0;margin-top:30px;border-top:1px solid #2c464d;}
+.vital{flex:1 1 140px;padding:14px 18px;border-right:1px solid #2c464d;}
+.vital:last-child{border-right:none;}
+.vital .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#83b5b9;text-transform:uppercase;}
+.vital .v{font-family:var(--serif);font-size:20px;color:var(--cream);margin-top:3px;}
+.vital .v.flag{color:#e59a6d;}
+
+/* ===== MODE SWITCHER (prominent cards below title) ===== */
+.mode-switcher{display:flex;gap:14px;margin:24px 0 26px;flex-wrap:wrap;}
+.mode-switcher .mode-tab{
+  flex:1 1 260px;text-align:left;background:#18293060;border:1.5px solid #2c464d;border-radius:9px;
+  padding:17px 19px;cursor:pointer;transition:.15s;display:flex;flex-direction:column;gap:6px;color:inherit;
+}
+.mode-switcher .mode-tab:hover{border-color:var(--teal);background:#1a2f36;}
+.mode-switcher .mode-tab.active{border-color:var(--teal);background:#1c343b;box-shadow:0 0 0 1px var(--teal) inset;}
+.mode-tab-title{font-family:var(--serif);font-size:17.5px;font-weight:600;color:var(--cream);display:flex;align-items:center;gap:8px;}
+.mode-tab-desc{font-family:var(--sans);font-size:13.5px;color:#a9c2c5;line-height:1.55;}
+.mode-switcher .mode-tab .mtag{background:var(--teal);color:#04222b;font-family:var(--mono);font-size:9.5px;padding:2px 8px;border-radius:9px;letter-spacing:.03em;}
+
+/* legacy top mode-bar (unused but kept safe) */
+.mode-bar{background:var(--bg-deep);border-bottom:1px solid #2c464d;padding:0 28px;display:flex;gap:0;}
+.mode-bar-inner{max-width:1180px;margin:0 auto;display:flex;gap:0;}
+.mode-tab{
+  font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+  color:#83b5b9;background:transparent;border:none;border-bottom:3px solid transparent;
+  padding:16px 22px;cursor:pointer;transition:.15s;
+}
+.mode-tab:hover{color:var(--cream);}
+.mode-tab.active{color:var(--cream);border-bottom-color:var(--rust);}
+.mode-tab .mtag{display:inline-block;margin-left:8px;font-size:10px;background:var(--rust);color:#fff;padding:1px 8px;border-radius:9px;letter-spacing:.03em;}
+
+/* ===== CONTROL BAR ===== */
+.control-bar{
+  position:sticky;top:0;z-index:50;background:var(--bg-deep);border-bottom:1px solid #253c44;
+  padding:13px 28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+}
+.cb-inner{max-width:1180px;margin:0 auto;display:flex;gap:14px;align-items:center;flex-wrap:wrap;width:100%;}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;}
+.tab{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:#a9c2c5;
+  background:transparent;border:1px solid #2c464d;padding:8px 14px;border-radius:20px;
+  cursor:pointer;transition:.15s;
+}
+.tab:hover{border-color:var(--teal);color:var(--cream);}
+.tab.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+.spacer{flex:1;}
+.resource-toggle{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;color:#a9c2c5;}
+.switch{position:relative;width:46px;height:24px;background:#243a3f;border-radius:14px;cursor:pointer;border:1px solid #3a5257;}
+.switch .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#a9c2c5;transition:.2s;}
+.switch.on{background:var(--rust);border-color:var(--rust);}
+.switch.on .knob{left:24px;background:#fff;}
+.solve-all-btn{
+  font-family:var(--mono);font-size:12.5px;background:var(--gold);color:#2a1c04;border:none;
+  padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:600;letter-spacing:.02em;
+}
+.solve-all-btn:hover{background:#e6ac6f;}
+
+/* ===== LEGEND ===== */
+.legend-band{background:var(--panel);border-bottom:1px solid var(--line);padding:16px 28px;}
+.legend-inner{max-width:1180px;margin:0 auto;display:flex;gap:28px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-soft);align-items:center;}
+.legend-title{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink);}
+.legend-scale{display:flex;align-items:center;gap:6px;}
+.chip{display:inline-flex;align-items:center;gap:5px;}
+.chip .dot,.dot{width:9px;height:9px;border-radius:50%;}
+.ci-dot{background:var(--teal);}
+.tu-dot{background:var(--rust);}
+.rating-demo{display:flex;gap:2px;}
+.rating-demo span{width:14px;height:6px;background:var(--line);border-radius:1px;}
+.rating-demo span.on.ci{background:var(--teal);}
+.rating-demo span.on.tu{background:var(--rust);}
+.chip-text{display:inline;}
+.chip-text b{color:var(--ink);}
+
+/* ===== SECTION HEADS ===== */
+section.cat-block, section.block{padding-top:48px;}
+.cat-head, .block-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:11px;margin-bottom:20px;}
+.cat-icon, .block-num{font-family:var(--mono);color:var(--rust);font-size:13px;}
+.cat-head h2, .block-head h2{font-family:var(--serif);color:var(--ink);font-size:22px;margin:0;font-weight:600;}
+.cat-sub, .block-desc{color:var(--ink-soft);font-size:14px;max-width:700px;margin:0 0 22px;line-height:1.6;}
+
+/* ===== DECISION CARD ===== */
+.dcard{
+  background:var(--paper);border:1px solid var(--line);border-radius:7px;
+  padding:0;margin-bottom:26px;overflow:hidden;box-shadow:0 16px 36px -26px rgba(20,35,44,.35);
+}
+.dcard-top{padding:22px 24px 16px;border-bottom:1px solid var(--line);}
+.dcard-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.ratings-inline{display:flex;gap:14px;}
+.rmini{display:flex;align-items:center;gap:4px;}
+.rmini .bars{display:flex;gap:2px;}
+.rmini .bars span{width:10px;height:7px;background:#e4ddc9;border-radius:1px;}
+.rmini .bars span.on-ci{background:var(--teal);}
+.rmini .bars span.on-tu{background:var(--rust);}
+.mystery{
+  font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:15.5px;
+  margin:11px 0 7px;line-height:1.6;border-left:3px solid var(--gold);padding-left:13px;
+}
+.question{font-family:var(--serif);font-size:20.5px;font-weight:600;color:var(--teal-deep);margin:11px 0 0;}
+
+.options{padding:18px 24px 6px;display:flex;flex-direction:column;gap:11px;}
+.opt{
+  border:1.5px solid var(--line);border-radius:6px;padding:13px 15px;cursor:pointer;background:#fff;
+  transition:.15s;position:relative;
+}
+.opt:hover{border-color:var(--teal);}
+.opt .opt-label{font-size:15px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;gap:10px;}
+.opt .opt-letter{font-family:var(--mono);color:var(--ink-soft);margin-right:6px;}
+.opt .feedback{
+  display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);
+  font-size:14px;line-height:1.65;color:var(--ink-soft);
+}
+.opt .feedback b{color:var(--ink);}
+.opt.picked .feedback{display:block;}
+.opt.correct{border-color:var(--sage);background:#f2f6ef;}
+.opt.correct .opt-label::after{content:"✓ best choice";font-family:var(--mono);font-size:10.5px;color:var(--sage);font-weight:700;}
+.opt.wrong{border-color:var(--crit);background:#fdf3f2;}
+.opt.wrong .opt-label::after{content:"✕ pitfall";font-family:var(--mono);font-size:10.5px;color:var(--crit);font-weight:700;}
+.opt.reasonable{border-color:var(--amber);background:#fffaf0;}
+.opt.reasonable .opt-label::after{content:"~ context-dependent";font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:700;}
+
+.solve-row{padding:8px 24px 20px;display:flex;gap:10px;flex-wrap:wrap;}
+.solve-btn{
+  font-family:var(--mono);font-size:12.5px;background:var(--teal-deep);color:#fff;border:none;
+  padding:9px 15px;border-radius:5px;cursor:pointer;
+}
+.solve-btn:hover{background:var(--teal);}
+.reset-btn{
+  font-family:var(--mono);font-size:12.5px;background:transparent;color:var(--ink-soft);
+  border:1px solid var(--line);padding:9px 15px;border-radius:5px;cursor:pointer;
+}
+
+.evidence-box, .sdm-box, .resource-box{
+  margin:0 24px 18px;padding:14px 16px;border-radius:5px;font-size:14px;line-height:1.65;display:none;
+}
+.evidence-box{background:#eef4f2;border-left:3px solid var(--teal);}
+.sdm-box{background:#fbf0e4;border-left:3px solid var(--gold);}
+.resource-box{background:#fdeee9;border-left:3px solid var(--rust);}
+.evidence-box.show, .sdm-box.show{display:block;}
+.box-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;display:block;}
+body.resource-on .resource-box{display:block;}
+body.resource-on .dcard{border-color:#e0a98f;}
+
+/* ===== SUMMARY SPINE ===== */
+.spine-card{background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:23px 24px;margin-top:16px;}
+.spine-list{list-style:none;margin:0;padding:0;counter-reset:step;}
+.spine-list li{
+  counter-increment:step;position:relative;padding:9px 0 9px 36px;font-size:14.5px;color:var(--ink-soft);
+  border-left:2px solid var(--line);margin-left:8px;
+}
+.spine-list li::before{
+  content:counter(step);position:absolute;left:-14px;top:7px;width:26px;height:26px;border-radius:50%;
+  background:var(--teal-deep);color:#fff;font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;
+}
+.spine-list li b{color:var(--ink);}
+.spine-list li:last-child{border-left:2px solid transparent;}
+
+footer{margin-top:60px;padding:26px 0;border-top:1px solid var(--line);color:var(--ink-soft);font-family:var(--mono);font-size:12px;line-height:1.75;}
+@media(max-width:760px){.ratings-inline{flex-direction:column;gap:4px;align-items:flex-start;}}
+
+/* ===== PASSIVE MODE: MAP CARDS / FLOW DIAGRAM ===== */
+#mapsMode{background:var(--panel);}
+#mapsMode, #activeMode{display:none;}
+#mapsMode.show, #activeMode.show{display:block;}
+
+.map-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:27px 27px 23px;margin-bottom:28px;position:relative;
+  box-shadow:0 18px 40px -28px rgba(20,35,44,.4);
+}
+.map-card.large{padding-bottom:28px;}
+.map-topline{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.map-title{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--teal-deep);max-width:560px;}
+.map-title .tag{
+  display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:5px;
+}
+.ratings{display:flex;gap:16px;flex-shrink:0;}
+.rating-box{border:1px solid var(--line);border-radius:4px;padding:7px 11px;min-width:120px;background:#fff;}
+.rating-box .label{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  display:flex;justify-content:space-between;
+}
+.rating-box .num{font-weight:700;}
+.rating-box .bars{display:flex;gap:2.5px;margin-top:6px;}
+.rating-box .bars span{flex:1;height:8px;border-radius:1px;background:#e4ddc9;}
+.rating-box .bars span.on-ci{background:var(--teal);}
+.rating-box .bars span.on-tu{background:var(--rust);}
+.rating-box.ci .num{color:var(--teal);}
+.rating-box.tu .num{color:var(--rust);}
+
+.flow{display:flex;flex-direction:column;gap:0;}
+.flow-row{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap;}
+.node{
+  background:#fff;border:1.5px solid var(--teal-deep);border-radius:5px;padding:11px 14px;
+  font-size:14px;line-height:1.5;flex:1 1 240px;color:var(--ink);position:relative;
+}
+.node.start{border-color:var(--teal);background:#f3f8f7;}
+.node.decision{border-color:var(--amber);background:#fffaf0;}
+.node.action{border-color:var(--sage);background:#f3f8f2;}
+.node.critical{border-color:var(--crit);background:#fdf3f2;font-weight:600;}
+.node.endpoint{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff;font-weight:600;}
+.node .n-tag{
+  display:block;margin-top:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;
+  color:var(--ink-soft);font-weight:400;
+}
+.node.endpoint .n-tag{color:#cfe8e6;}
+.node .n-tag.mid{color:var(--amber);}
+.node .n-tag.warn{color:var(--crit);font-weight:600;}
+.arrow-down{text-align:center;font-size:19px;color:var(--ink-soft);padding:5px 0;line-height:1;}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.split{grid-template-columns:1fr;}}
+
+.map-card.small .flow-row{gap:10px;}
+.map-card.small .node{font-size:13px;padding:9px 12px;min-width:140px;}
+.clin-note{
+  margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--ink-soft);line-height:1.6;
+}
+.clin-note b{color:var(--ink);}
+
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+@media (max-width:820px){
+  .pair-grid{grid-template-columns:1fr;}
+  .vitals-strip{border-top:none;}
+  .vital{border-right:none;border-top:1px solid #2c464d;}
+}
+
+/* ===== DIFFERENTIAL TRACKER SIDEBAR ===== */
+.lab-layout{display:flex;gap:26px;align-items:flex-start;}
+.lab-main{flex:1;min-width:0;}
+.tracker{
+  width:260px;flex-shrink:0;position:sticky;top:80px;
+  background:var(--bg-deep);border:1px solid #2c464d;border-radius:8px;padding:17px 17px 15px;color:#dfe9eb;
+}
+.tracker h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 5px;color:#9fd8db;}
+.tracker .tracker-sub{font-size:12.5px;color:#a9c2c5;line-height:1.55;margin:0 0 12px;}
+.diff-item{border-top:1px solid #2c464d;padding:11px 0;}
+.diff-item:first-of-type{border-top:none;}
+.diff-name{font-size:13.5px;font-weight:600;color:var(--cream);}
+.diff-status{
+  display:inline-block;margin-top:6px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;
+  text-transform:uppercase;padding:2px 9px;border-radius:9px;background:#243a44;color:#a9c2c5;
+}
+.diff-status.st-open{background:#2a3d47;color:#aab9bf;}
+.diff-status.st-considering{background:#4a3a1a;color:#e3bd6f;}
+.diff-status.st-ruled-out{background:#1a3a2b;color:#83d9ab;}
+.diff-status.st-confirmed{background:#0e454f;color:#7fe0e6;}
+.diff-status.st-misclassified{background:#4a1c1c;color:#f19a9a;}
+.diff-note{font-size:11.5px;color:#a9c2c5;line-height:1.55;margin-top:6px;display:none;}
+.diff-item.updated .diff-note{display:block;}
+.tracker-reset{
+  margin-top:12px;width:100%;font-family:var(--mono);font-size:11px;background:transparent;
+  border:1px solid #3a5760;color:#a9c2c5;padding:7px 8px;border-radius:5px;cursor:pointer;
+}
+.tracker-reset:hover{border-color:var(--teal);color:var(--cream);}
+.tracker-mobile-toggle{display:none;}
+
+/* ===== MOBILE ===== */
+@media(max-width:860px){
+  .lab-layout{flex-direction:column;}
+  .tracker{position:relative;top:0;width:100%;order:-1;}
+}
+@media(max-width:720px){
+  .disclaimer-bar{font-size:10.5px;padding:7px 10px;}
+  .site-bar{padding:10px 14px;}
+  .site-bar-inner{flex-direction:column;align-items:flex-start;}
+  .site-links{gap:12px;}
+  .mode-switcher{flex-direction:column;margin:16px 0 20px;}
+  .mode-switcher .mode-tab{flex:1 1 auto;}
+  header.hero{padding:38px 18px 26px;}
+  .wrap{padding:0 16px 60px;}
+  .case-strip{flex-direction:column;border-top:none;}
+  .cs-item{border-right:none;border-top:1px solid #2c464d;padding:10px 4px;}
+  .mode-bar{padding:0 10px;overflow-x:auto;}
+  .mode-tab{padding:13px 14px;white-space:nowrap;}
+  .control-bar{padding:10px 14px;position:static;}
+  .cb-inner{flex-direction:column;align-items:stretch;gap:10px;}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+  .tab{white-space:nowrap;}
+  .spacer{display:none;}
+  .resource-toggle{justify-content:space-between;}
+  .solve-all-btn{width:100%;}
+  .legend-band{padding:12px 14px;}
+  .legend-inner{gap:12px;font-size:12.5px;}
+  .dcard-top{padding:16px 16px 12px;}
+  .dcard-eyebrow{flex-direction:column;align-items:flex-start;gap:8px;}
+  .question{font-size:18px;}
+  .options{padding:14px 16px 4px;}
+  .opt{padding:11px 13px;}
+  .opt .opt-label{flex-direction:column;gap:4px;}
+  .opt .opt-label::after{margin-top:2px;}
+  .solve-row{padding:6px 16px 14px;flex-direction:column;}
+  .solve-btn,.reset-btn{width:100%;text-align:center;}
+  .evidence-box,.sdm-box,.resource-box{margin:0 16px 14px;}
+  .map-topline{flex-direction:column;align-items:flex-start;}
+  .ratings{width:100%;}
+  .rating-box{min-width:0;flex:1;}
+  .flow-row{flex-direction:column;}
+  .node{min-width:0;}
+  .vitals-strip{flex-direction:column;}
+  .vital{border-right:none;border-top:1px solid #2c464d;}
+}
+</style>
+</head>
+<body>
+<div class="disclaimer-bar">For learning clinical reasoning and educational purpose use only — not a diagnostic or clinical decision-support tool.</div>
+<div class="site-bar">
+  <div class="site-bar-inner">
+    <span class="site-brand">Vibe Rounds <span class="site-brand-sub">— Clinical Decision Science · Interactive Decision Lab</span></span>
+    <div class="site-links">
+      <a href="https://classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html" target="_blank" rel="noopener">Case source ↗</a>
+    </div>
+  </div>
+</div>
+<div id="activeMode" class="show">
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Clinical Decision Science &middot; Interactive Decision Lab</span>
+    <h1>Unfold the mystery: <em>why doesn't one diagnosis explain a lifetime of "everything"?</em></h1>
+
+    <div class="mode-switcher">
+      <button class="mode-tab active" data-mode="active">
+        <span class="mode-tab-title">Active Mode <span class="mtag">Live</span></span>
+        <span class="mode-tab-desc">Interactive — click through decisions, get rationale, pitfalls, and a live differential tracker</span>
+      </button>
+      <button class="mode-tab" data-mode="maps">
+        <span class="mode-tab-title">Passive Mode</span>
+        <span class="mode-tab-desc">Read-only — quick-scan flow diagrams of the same decision pathways</span>
+      </button>
+    </div>
+
+    <p class="subtitle">Every box below is a real fork this patient's clinicians (and her own self-research) faced across four decades of edema, hemolytic-range fatigue, migraines-with-aura, and a transient stroke-like episode. Click an option to test your reasoning against the rationale, the tempting pitfall, the evidence, and — for a patient this let-down by prior medical care — what shared decision-making actually requires.</p>
+    <div class="case-strip">
+      <div class="cs-item"><div class="k">Age / Sex</div><div class="v">42F</div></div>
+      <div class="cs-item"><div class="k">Presenting pattern</div><div class="v">Lifelong episodic edema, fatigue, migraine w/ aura</div></div>
+      <div class="cs-item"><div class="k">Confirmed genetics</div><div class="v">G6PD (Seattle), AMPD1 het</div></div>
+      <div class="cs-item"><div class="k">Working leads</div><div class="v">VUS: GSD type III / IX</div></div>
+      <div class="cs-item"><div class="k">Acute red-flag episode</div><div class="v">Transient dysarthria + facial droop</div></div>
+      <div class="cs-item"><div class="k">Confirmed 2020</div><div class="v">Behçet's disease</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="control-bar">
+  <div class="cb-inner">
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-cat="all">All decisions</button>
+      <button class="tab" data-cat="triage">Red-Flag &amp; Triage</button>
+      <button class="tab" data-cat="history">History &amp; Shared Decisions</button>
+      <button class="tab" data-cat="diagnostic">Diagnostic Reasoning</button>
+      <button class="tab" data-cat="treatment">Treatment &amp; Monitoring</button>
+      <button class="tab" data-cat="resource">Resource-Constrained Care</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="resource-toggle">
+      <span>Low-resource setting</span>
+      <div class="switch" id="resourceSwitch"><div class="knob"></div></div>
+    </div>
+    <button class="solve-all-btn" id="solveAll">Solve entire case for me</button>
+  </div>
+</div>
+
+<div class="legend-band">
+  <div class="legend-inner">
+    <span class="legend-title">Legend</span>
+    <span class="chip"><span class="dot" style="background:var(--teal)"></span>Clinical importance</span>
+    <span class="chip"><span class="dot" style="background:var(--rust)"></span>Time urgency</span>
+    <span class="chip chip-text">Click any option to reveal <b>rationale + pitfall</b>. Use <b>Solve for me</b> for the expert path. Toggle <b>Low-resource setting</b> to see the pragmatic alternative when genetic testing/specialist referral aren't available.</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="lab-layout">
+    <div class="tracker" id="tracker">
+      <h3>Differential tracker</h3>
+      <p class="tracker-sub">Updates live as you (or "Solve for me") make choices — this case is unusual because several of these are true simultaneously, not mutually exclusive.</p>
+      <div id="trackerList"></div>
+      <button class="tracker-reset" id="trackerReset">Reset tracker</button>
+    </div>
+    <div class="lab-main" id="app"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap" style="padding:0;">
+    Case source: classworkdecjan.blogspot.com, "Clinical complexity and multi gene interaction case — 42 Year old woman with multiple health events since birth" (de-identified open patient e-log, posted 17 May 2019 by Avinash Kumar, BMJ Elective Student) &middot;
+    Built as an interactive teaching aid for case-based learning. Ratings and rationale reflect educational judgment, not a validated clinical algorithm — always follow local protocols and supervising clinician guidance.
+  </div>
+</footer>
+
+<script>
+const DECISIONS = [
+{
+  id:"d1", cat:"triage", ci:5, tu:5,
+  mystery:"She wakes feeling like she's falling and spinning, then over the following weeks develops stuttering, transient left face and arm weakness, and — after the worst headache of her life — a loud 'pop' in her head followed by clear fluid running from her left nostril for ten minutes. Scans and bloodwork keep coming back 'normal.' It would be easy to file this under 'her baseline is weird anyway.'",
+  question:"How do you triage this new neurological episode?",
+  options:[
+    {letter:"A", label:"Reassure — she has a lifelong pattern of unusual symptoms and normal labs, this is probably more of the same", cls:"wrong",
+     text:"<b>Pitfall:</b> this is diagnostic momentum, not reasoning — using her long unexplained history as a reason to discount a genuinely new, focal, red-flag symptom set (transient hemiparesis, dysarthria, and fluid loss suggestive of a CSF leak) is exactly how a stroke, TIA, or intracranial hypotension gets missed in a patient whose baseline is already noisy.",
+     diffUpdates:[{id:"neuro",status:"open",note:"Dismissed as 'more of the same' — never formally worked up."}]},
+    {letter:"B", label:"Treat this as a new, time-critical neurological presentation — urgent stroke-protocol imaging plus targeted CSF-leak evaluation, independent of her chronic history", cls:"correct",
+     text:"<b>Rationale:</b> transient unilateral weakness plus speech disturbance meets stroke-mimic criteria regardless of what else is going on, and clear rhinorrhea after a 'pop' and severe headache is the classic description of a CSF leak — both are time-sensitive and both are worked up the same way in this patient as in anyone else. A chronic complex history raises the differential, it doesn't lower the urgency.",
+     diffUpdates:[{id:"neuro",status:"considering",note:"Flagged as possible hemiplegic migraine vs TIA vs CSF leak — imaging + neuro referral initiated."},{id:"csf",status:"considering",note:"Rhinorrhea after headstrike-like 'pop' — beta-2 transferrin / CSF leak workup indicated."}]},
+    {letter:"C", label:"Attribute it to hemiplegic migraine based on her aura history and manage as an outpatient migraine flare", cls:"reasonable",
+     text:"<b>Context-dependent:</b> hemiplegic migraine is a real and plausible explanation given her lifelong migraine-with-aura pattern, and it's reasonable to keep on the differential — but it's a diagnosis of exclusion. Calling it that <i>before</i> ruling out stroke and CSF leak, rather than after, is the wrong order of operations for a first episode with these features."},
+    {letter:"D", label:"Order the same 'standard' bloodwork and scans that were normal before, and consider the case closed if they're normal again", cls:"wrong",
+     text:"<b>Pitfall:</b> routine labs and a non-contrast scan have already been shown, in her own history, not to explain her symptoms — repeating the same tests without escalating to what the specific new symptoms demand (vascular imaging, CSF-leak-specific workup) gives false reassurance rather than an answer."}
+  ],
+  evidence:"Sudden unilateral weakness with speech disturbance meets FAST/stroke-mimic screening criteria irrespective of comorbidity burden; clear unilateral rhinorrhea following a headache/'pop' has a recognized association with spontaneous CSF leak and is worked up with beta-2 transferrin testing, not dismissed as post-migraine drainage.",
+  resource:"Where urgent MRI/CTA and beta-2 transferrin testing aren't available, the priority is still triage, not testing: any focal, asymmetric, or lateralizing neurological sign in this patient should trigger the fastest available route to a center that can image her, exactly as it would for a patient with no complex history at all."
+},
+{
+  id:"d2", cat:"triage", ci:4, tu:4,
+  mystery:"As an infant she screamed constantly, slept 2–4 hours a day, vomited everything but water and very salty broth, and swelled severely in the face and abdomen. Her weight fluctuated so much that her parents were accused of abuse and lost custody. Decades later, it turns out the swelling wasn't the trigger for that accusation — abnormal liver findings were, misread as evidence of alcohol exposure.",
+  question:"Faced with an infant who won't feed, swells episodically, and has wildly fluctuating weight, what should have anchored the initial work-up?",
+  options:[
+    {letter:"A", label:"Weight fluctuation plus feeding refusal is presumptively a caregiving/nutritional-neglect problem until proven otherwise", cls:"wrong",
+     text:"<b>Pitfall:</b> this is precisely the anchor that caused a real, decades-long harm here — a child with a probable inherited metabolic disorder was treated as a child-protection case, fracturing the family and delaying any biological work-up by decades. Caregiving concerns and organic disease are not mutually exclusive, but treating the social explanation as the default forecloses the medical one."},
+    {letter:"B", label:"Treat unexplained infantile edema, feeding intolerance, and abnormal liver-pattern labs as signals for a metabolic/genetic work-up, run in parallel with — not instead of — a standard safeguarding assessment", cls:"correct",
+     text:"<b>Rationale:</b> severe jaundice, an inability to tolerate anything but water and very salty broth, episodic facial/abdominal swelling, and abnormal liver tests in infancy are a recognizable pattern pointing toward an inborn error of metabolism (later borne out by her G6PD, AMPD1, and glycogen-storage-disease findings). Running both tracks at once protects the child either way, rather than betting the whole work-up on one explanation.",
+     diffUpdates:[{id:"abuse",status:"ruled-out",note:"Liver-pattern labs, not weight swings, actually drove the historical concern — and both have a metabolic explanation on later review."}]},
+    {letter:"C", label:"Defer any metabolic work-up until the child is old enough for a detailed history to be taken directly from her", cls:"wrong",
+     text:"<b>Pitfall:</b> infancy is exactly when many inborn errors of metabolism are most dangerous and most treatable — waiting for verbal self-report abandons the window where intervention (dietary, in particular) has the most benefit."},
+    {letter:"D", label:"Request a full genetic panel immediately, before any bedside evaluation", cls:"reasonable",
+     text:"<b>Context-dependent:</b> reasonable in a well-resourced setting with rapid genetics access, but a genetic panel without a clinical/biochemical picture to interpret it against is expensive and easy to misread — bedside pattern recognition (feeding pattern, swelling, liver labs) should still frame what the genetics are being asked to explain."}
+  ],
+  evidence:"Salt-craving with preferential tolerance of very salty broth over standard feeds, in combination with episodic edema and abnormal transaminases in infancy, is a pattern consistent with several inherited metabolic disorders, including glycogen-storage and ion-transport conditions — not a specific marker of neglect.",
+  resource:"Where genetic testing isn't available in infancy, the low-cost equivalent is a careful feeding/growth diary plus basic liver-panel trending over time — a pattern of edema clustering with illness or fasting, rather than with caregiving changes, is itself a clinically useful clue that argues against a purely psychosocial explanation."
+},
+{
+  id:"d3", cat:"history", ci:5, tu:2,
+  mystery:"She has spent most of her adult life avoiding doctors — she once endured two weeks of ectopic-pregnancy pain rather than seek care, and was tied down and tube-fed as a teenager after being wrongly diagnosed with anorexia for refusing food that caused her physical pain. Now, at 42, you need an accurate, detailed history from her to make any progress.",
+  question:"How do you approach history-taking with a patient who has this specific history of medical trauma?",
+  options:[
+    {letter:"A", label:"Proceed with a standard structured intake — thoroughness now matters more than easing into it", cls:"wrong",
+     text:"<b>Pitfall:</b> a standard rapid-fire intake, however thorough, replicates the dynamic that already failed her twice — being processed rather than heard. Patients with a history of being disbelieved or restrained by medical staff often under-report or flatten their history when they don't feel safe, which degrades the very data you're trying to collect."},
+    {letter:"B", label:"Explicitly acknowledge her prior experiences, let her set the pace, and treat her own extensive self-research (support-group patterns, VUS findings) as data worth reviewing together rather than dismissing", cls:"correct",
+     text:"<b>Rationale:</b> she has independently identified a plausible genetic lead (GSD types III/IX) that a formal work-up later took seriously enough to test for — that's a direct signal that engaging with her research collaboratively, rather than defensively, produces better data, not worse. For a patient failed by 'we know best' medicine before, restoring some agency is itself part of accurate history-taking.",
+     diffUpdates:[{id:"gsd",status:"considering",note:"Patient-identified VUS lead taken seriously and incorporated into work-up, rather than dismissed."}]},
+    {letter:"C", label:"Refer her directly to psychiatry given her history of an eating-disorder diagnosis and mood symptoms, before pursuing the medical history further", cls:"wrong",
+     text:"<b>Pitfall:</b> the original anorexia diagnosis was itself likely a misreading of pain-driven food avoidance in an undiagnosed metabolic condition; leading with a psychiatric referral risks repeating that exact error and further damages trust before the medical picture has even been reviewed."},
+    {letter:"D", label:"Accept her self-collected genetic and symptom research at face value and skip independent verification", cls:"reasonable",
+     text:"<b>Context-dependent:</b> her research has been a genuinely useful lead, but VUS results and support-group symptom overlap are hypothesis-generating, not confirmatory — the right move is to take her research seriously as a starting point while still independently verifying findings (biopsy, specialist review) before treating them as diagnostic."}
+  ],
+  evidence:"Variants of uncertain significance (VUS) are, by definition, not yet classified as pathogenic or benign — patient-sourced VUS leads warrant collaborative follow-up (segregation data, phenotype match, specialist review) rather than either blanket dismissal or blanket acceptance.",
+  sdm:"This is a shared-decision-making relationship that has to be actively rebuilt, not assumed. Name the prior harms explicitly if she raises them, ask how she'd like information delivered (data-forward vs. narrative), and be transparent about uncertainty rather than projecting false confidence — for a patient who has been overridden by clinicians before, being told 'I don't know yet, let's find out together' is itself therapeutic.",
+  resource:"Where formal genetic counselling isn't available, the low-cost equivalent is structured documentation: keep a running, dated symptom-and-trigger log co-authored with the patient, which becomes valuable evidence for whichever specialist eventually reviews the case, even years later."
+},
+{
+  id:"d4", cat:"history", ci:4, tu:2,
+  mystery:"She's had two prior surgeries during which she woke up mid-procedure — once while intubated, unable to breathe or speak. Her grandmother has the same history. Now a diagnostic biopsy is being discussed to confirm a possible glycogen storage disease.",
+  question:"How should her anesthesia history shape the plan for any future procedure, including this biopsy?",
+  options:[
+    {letter:"A", label:"Proceed with standard anesthesia protocol — two isolated incidents years apart don't necessarily indicate a pattern", cls:"wrong",
+     text:"<b>Pitfall:</b> two intraoperative awareness events in the same patient, plus a similar history in a first-degree relative, is exactly the kind of signal that should raise suspicion for a possible pharmacogenetic or dosing-related susceptibility — treating it as coincidence risks a third traumatic event."},
+    {letter:"B", label:"Flag the intraoperative-awareness history explicitly to the anesthesia team ahead of any procedure, request a documented awareness-prevention plan, and discuss it directly with her as part of consent", cls:"correct",
+     text:"<b>Rationale:</b> a documented history of awareness under anesthesia — especially with a family pattern — is actionable information that changes anesthetic management (depth monitoring, drug selection) and should never be left for the anesthesia team to discover mid-case. For a patient already fearful of procedures, proactively addressing this is what makes informed consent to biopsy genuinely informed.",
+     diffUpdates:[{id:"gsd",status:"considering",note:"Biopsy being planned with explicit anesthesia-awareness precautions built in."}]},
+    {letter:"C", label:"Avoid the biopsy altogether given her anesthesia fears, and rely on symptom response to diet alone", cls:"reasonable",
+     text:"<b>Context-dependent:</b> avoiding an invasive procedure in a needle-phobic, trauma-affected patient is a legitimate shared decision if she chooses it — but it should be her informed choice after the awareness-prevention plan is discussed, not a default made for her out of assumed fragility."},
+    {letter:"D", label:"Sedate more lightly than usual to reduce cardiovascular risk from her suspected metabolic and cardiac vulnerabilities", cls:"wrong",
+     text:"<b>Pitfall:</b> lighter sedation in a patient with a documented history of intraoperative awareness moves in exactly the wrong direction — her metabolic risk needs to be managed by drug selection and monitoring, not by depth of sedation, which is what caused the original harm."}
+  ],
+  evidence:"Documented intraoperative awareness is an indication for depth-of-anesthesia monitoring (e.g., processed EEG) on subsequent procedures per major anesthesiology society guidance, and a family history of the same event strengthens rather than weakens that indication.",
+  sdm:"Consent for the biopsy has to explicitly include her prior trauma: ask what would make the experience tolerable (a support person present at induction and emergence, written confirmation of the awareness-prevention plan, control over timing), rather than assuming standard consent language covers what she actually needs to agree freely."
+},
+{
+  id:"d5", cat:"diagnostic", ci:5, tu:3,
+  mystery:"She's found two variants of uncertain significance in glycogen-storage-disease genes (types III and IX) that seem to explain almost everything — the swollen belly, the sleep issues since birth, the PCOS, the oral ulcers, the fatty liver. It's tempting to declare the case solved.",
+  question:"How should a VUS-based hypothesis this compelling actually be handled?",
+  options:[
+    {letter:"A", label:"Accept the diagnosis based on phenotype match and start definitive GSD-specific treatment now", cls:"wrong",
+     text:"<b>Pitfall:</b> a compelling phenotype match with a VUS is still not a confirmed diagnosis — VUS status means the variant's clinical significance is unresolved. Committing to a lifelong-diagnosis label and its specific treatments prematurely can misdirect future care and close the door on other explanations, including ones that coexist rather than compete."},
+    {letter:"B", label:"Treat the VUS as a strong, testable hypothesis: pursue confirmatory steps (biopsy, specialist review, family segregation data) while starting a low-risk empirical trial (dietary modification) that would help either way", cls:"correct",
+     text:"<b>Rationale:</b> a modified-Atkins/low-carbohydrate approach is low-risk and has independent evidence for several GSD subtypes' symptom control, so trialling it doesn't require the diagnosis to be confirmed first — while biopsy and specialist review run in parallel to actually resolve the VUS. This captures the benefit of acting without overcommitting to an unconfirmed label.",
+     diffUpdates:[{id:"gsd",status:"considering",note:"Empirical low-carb trial underway; biopsy/specialist confirmation pending, VUS still unresolved."}]},
+    {letter:"C", label:"Dismiss the VUS lead entirely since it wasn't found by a treating physician", cls:"wrong",
+     text:"<b>Pitfall:</b> the source of a hypothesis doesn't determine its validity — this same lead motivated a treating rheumatologist's own liver work-up and was taken seriously enough for a genetics referral. Dismissing patient-sourced findings on principle discards useful signal."},
+    {letter:"D", label:"Wait for the specialist appointment (4–6 months out) before making any changes at all", cls:"reasonable",
+     text:"<b>Context-dependent:</b> reasonable if the interim interventions carried meaningful risk, but a dietary trial with close symptom tracking doesn't need to wait for a specialist slot — and starting it earlier generates exactly the kind of response data (does Hb/CRP/ALT trend improve on the diet?) the eventual specialist visit will want to see."}
+  ],
+  evidence:"A variant of uncertain significance is, by ClinVar/ACMG classification convention, distinct from 'likely pathogenic' or 'pathogenic' — phenotype concordance strengthens suspicion but formal reclassification requires additional evidence (functional studies, segregation, biopsy/enzymatic confirmation).",
+  resource:"Where biopsy and specialist review are 4–6 months out or unavailable, a structured empirical trial with objective tracking (a symptom/lab diary — CRP, ALT, edema frequency, sleep hours — against dietary changes) is a legitimate lower-resource substitute for building the evidence base a formal diagnosis would need."
+},
+{
+  id:"d6", cat:"diagnostic", ci:4, tu:3,
+  mystery:"She swells with wildfire smoke, exercise, emotional stress, certain foods, and sometimes nothing identifiable at all. Someone has already suggested this looks like angioedema related to her G6PD deficiency. It's tempting to just call it 'her allergies.'",
+  question:"How do you reason through this multi-trigger swelling pattern?",
+  options:[
+    {letter:"A", label:"Treat it as classic IgE-mediated allergy/anaphylaxis and pursue allergen avoidance and epinephrine planning as the primary strategy", cls:"wrong",
+     text:"<b>Pitfall:</b> she has been formally allergy-tested multiple times with no significant findings, and her own observation is sharp here — if this were true anaphylaxis, this many disparate triggers (smoke, exercise, stress, specific foods) should show up on allergen testing or basic labs, and they haven't. Forcing an IgE framework onto a non-IgE pattern leads to ineffective avoidance strategies and misses the actual mechanism."},
+    {letter:"B", label:"Reframe the pattern around a shared final common pathway — oxidative stress overwhelming reduced antioxidant capacity from G6PD deficiency, with AMPD1 deficiency compounding energy-dependent ion transport — rather than a single allergic trigger", cls:"correct",
+     text:"<b>Rationale:</b> G6PD is rate-limiting for NADPH generation, which drives glutathione-based antioxidant defense; smoke, exercise, and physiological stress are all independent generators of oxidative stress, which explains why triggers this varied can converge on the same swelling phenotype without any of them being a classic allergen. This reframing is what makes an otherwise-baffling multi-trigger pattern medically coherent.",
+     diffUpdates:[{id:"anaphylaxis",status:"ruled-out",note:"Repeated allergy testing negative; pattern better explained by oxidative-stress/ion-transport mechanism than IgE-mediated allergy."},{id:"g6pd_ampd1",status:"considering",note:"Multi-trigger edema reframed around shared oxidative-stress/energy-transport mechanism."}]},
+    {letter:"C", label:"Label it 'idiopathic angioedema' and manage symptomatically without further mechanistic work-up", cls:"reasonable",
+     text:"<b>Context-dependent:</b> a reasonable interim label if no further investigation is possible, and it does avoid over-medicalizing an uncertain picture — but for a patient with two identified genetic contributors and a research-active support community, 'idiopathic' undersells what's actually already known about probable mechanism."},
+    {letter:"D", label:"Assume it's psychosomatic given her prior psychiatric history and the absence of a clear trigger on some episodes", cls:"wrong",
+     text:"<b>Pitfall:</b> this is the same error that produced a wrongful eating-disorder diagnosis in her teens — using diagnostic uncertainty as license to default to a psychological explanation, rather than tolerating uncertainty about mechanism while still pursuing it."}
+  ],
+  evidence:"G6PD is the rate-limiting enzyme of the pentose phosphate pathway's oxidative branch, the principal cellular source of NADPH; NADPH depletion reduces glutathione-based reactive-oxygen-species detoxification capacity, providing a mechanistic link between diverse oxidative triggers (smoke, exertion, physiological stress) and a shared clinical phenotype.",
+  resource:"Where mechanistic lab work-up (redox markers, muscle enzyme studies) isn't available, a practical resource-limited approach is trigger-and-severity diary-keeping to identify which of the plausible mechanisms (oxidative load vs. energy/ion transport) tracks best with her actual episodes, guiding which low-cost interventions (antioxidant support, salt/fluid strategy, exertion pacing) to prioritize first."
+},
+{
+  id:"d7", cat:"treatment", ci:5, tu:4,
+  mystery:"Cimetidine has meaningfully reduced her swelling. She's on it long-term. But she has a confirmed G6PD deficiency, and a new diagnosis of Behçet's disease is now on the table — with colchicine as the standard first-line drug.",
+  question:"What has to happen before adding or continuing any drug in this patient?",
+  options:[
+    {letter:"A", label:"Start colchicine at standard dose per Behçet's guidelines, since it's the guideline-recommended first-line agent", cls:"wrong",
+     text:"<b>Pitfall:</b> treating 'guideline first-line' as automatically safe ignores the single most important modifier in this patient's chart — colchicine is not classically high-risk for G6PD-related hemolysis, but any new drug in a G6PD-deficient patient needs an explicit oxidant-risk check before starting, not an assumption of safety by default. This is precisely the step her own doctor was already cautious about."},
+    {letter:"B", label:"Explicitly cross-check any new or continued drug (colchicine included) against a G6PD-safe drug list before starting, and involve her directly in weighing symptom benefit against oxidant risk", cls:"correct",
+     text:"<b>Rationale:</b> her own physician's hesitation about colchicine because of her G6PD status was clinically appropriate — G6PD deficiency carries a real risk of drug-induced hemolytic crisis with certain oxidant medications, and screening every new agent against that risk (not just the ones traditionally flagged) is now a standing rule for her care, not a one-off decision.",
+     diffUpdates:[{id:"behcets",status:"confirmed",note:"Behçet's diagnosed; treatment plan requires explicit G6PD-safe drug screening before any new agent starts."}]},
+    {letter:"C", label:"Avoid all pharmacologic treatment for Behçet's given the G6PD risk, and manage with lifestyle measures only", cls:"reasonable",
+     text:"<b>Context-dependent:</b> reasonable if her Behçet's manifestations are mild and non-organ-threatening, but untreated Behçet's can progress to more serious complications (ocular, vascular) — blanket avoidance of all pharmacotherapy trades a manageable drug-safety problem for an unmanaged disease-progression risk, when a safer within-class alternative may exist instead."},
+    {letter:"D", label:"Assume cimetidine's benefit means the swelling was never related to G6PD-triggered hemolysis, and stop screening future drugs for G6PD risk", cls:"wrong",
+     text:"<b>Pitfall:</b> the patient herself has raised a sharper hypothesis — that cimetidine's benefit may come from its cornstarch filler acting as a slow-release carbohydrate source (relevant if glycogen-storage disease is confirmed) rather than from any G6PD-specific mechanism. Treating an unconfirmed benefit as proof of a mechanism, in either direction, is premature and shouldn't change ongoing G6PD drug-safety vigilance."}
+  ],
+  evidence:"G6PD deficiency carries a recognized risk of oxidative hemolysis with specific drug classes (e.g., certain antimalarials, sulfonamides — both of which she has already reacted to); any new agent, including colchicine, warrants an explicit safety check against her specific G6PD variant rather than reliance on general familiarity with 'classic' G6PD-unsafe drugs alone.",
+  resource:"Where a pharmacist-run G6PD drug-interaction database isn't accessible, printed G6PD-safe/unsafe drug reference lists (widely available from G6PD deficiency foundations) are a practical low-cost substitute for real-time cross-checking before starting any new medication."
+},
+{
+  id:"d8", cat:"treatment", ci:4, tu:2,
+  mystery:"On a near-zero-carbohydrate diet she's been in a persistent low-level ketosis even on days she eats fruit and cake — which shouldn't happen on a physiologically normal metabolism. She wants to know if the diet is actually helping, or if she's just restricting.",
+  question:"How do you evaluate whether a self-directed diet change is a legitimate therapeutic response versus something else?",
+  options:[
+    {letter:"A", label:"Take the reported symptom improvement at face value without any objective tracking, given her extensive self-monitoring history", cls:"wrong",
+     text:"<b>Pitfall:</b> she has an actual history of an eating disorder diagnosis (even if likely misapplied) and of losing significant weight through undisclosed fasting — self-report of a restrictive diet 'helping' deserves objective corroboration, both to confirm a real physiological effect and to make sure restriction isn't being reinforced for its own sake."},
+    {letter:"B", label:"Track objective markers (weight/edema pattern, CRP, ALT, ketone strips, sleep hours) alongside the diet change, and interpret persistent ketosis on a mixed diet as itself a diagnostically useful clue rather than dismissing it", cls:"correct",
+     text:"<b>Rationale:</b> unexplained ketosis despite carbohydrate intake is a genuine physiological signal — consistent with impaired glycogen mobilization, as would be expected in glycogen storage disease — and pairing that with trended labs (CRP, ALT) turns 'I feel better' into an interpretable data set that can support or challenge the GSD hypothesis over time.",
+     diffUpdates:[{id:"gsd",status:"considering",note:"Objective marker trending (ketosis pattern, CRP, ALT) being used to test the diet-response hypothesis."}]},
+    {letter:"C", label:"Recommend she stop tracking symptoms altogether to reduce anxiety and food preoccupation", cls:"wrong",
+     text:"<b>Pitfall:</b> given that her diet change is plausibly addressing a real metabolic problem, removing all structured tracking removes the only tool available to distinguish 'this diet is medically appropriate' from 'this is disordered restriction' — the goal is better tracking, not none."},
+    {letter:"D", label:"Refer for formal metabolic ward admission and controlled fasting/refeeding studies before endorsing any further dietary changes", cls:"reasonable",
+     text:"<b>Context-dependent:</b> the gold-standard way to characterize a suspected glycogen-storage disorder, and appropriate if accessible — but not necessary before offering interim guidance on a diet she is already following, provided it's monitored."}
+  ],
+  evidence:"Modified-Atkins-style diets (roughly 10–20g carbohydrate/day in published series) have documented benefit for hypoglycemia, myopathy, and hepatic markers in several glycogen storage disease subtypes, providing external evidence for why an empirical trial here is not merely restrictive eating.",
+  resource:"In the absence of lab access for CRP/ALT trending, urine ketone strips plus a simple symptom-and-weight diary are an inexpensive way to generate the same kind of before/after signal, and can be reviewed remotely by a specialist once access becomes available."
+},
+{
+  id:"d9", cat:"resource", ci:4, tu:3,
+  mystery:"The one specialist who understood her likely diagnosis well enough to guide treatment has just retired, and her support group says there's no clear successor. A confirmatory biopsy and formal work-up are 4–6 months away at best.",
+  question:"With definitive specialist input months away, what's the right interim strategy?",
+  options:[
+    {letter:"A", label:"Pause all management decisions until the specialist appointment, to avoid acting on an unconfirmed diagnosis", cls:"wrong",
+     text:"<b>Pitfall:</b> a 4–6 month pause on all decision-making abandons months of a patient's quality of life to diagnostic perfectionism, when a structured interim plan (low-risk dietary trial, objective symptom tracking, drug-safety screening) can safely proceed without waiting for biopsy confirmation."},
+    {letter:"B", label:"Build a structured interim plan — continue the evidence-supported low-carbohydrate trial, keep a shared symptom/lab diary, maintain G6PD-safe prescribing discipline, and pre-specify what would trigger urgent escalation before the specialist visit", cls:"correct",
+     text:"<b>Rationale:</b> this is the same clinical logic used in any resource-constrained setting — the sequence of good questions doesn't change when a specific tool (a subspecialist) is unavailable, only the tools used to answer them. A general practitioner or generalist can safely run this interim plan, using red-flag criteria (worsening liver markers, new neuro deficits, hemolytic crisis signs) to decide when the 4–6 month wait needs to be shortened.",
+     diffUpdates:[{id:"gsd",status:"confirmed",note:"Interim structured plan running under generalist care; diagnostic confirmation still pending specialist/biopsy access."}]},
+    {letter:"C", label:"Pursue whole genome sequencing immediately as a substitute for the retiring specialist's expertise", cls:"reasonable",
+     text:"<b>Context-dependent:</b> she has expressed interest in this and it could eventually add value, but WGS without a specialist available to interpret novel findings in clinical context risks generating more unresolved VUS results rather than answers — useful as a parallel long-term step, not a substitute for the near-term interim plan."},
+    {letter:"D", label:"Send her to the busiest tertiary center available, regardless of whether they have relevant subspecialty expertise", cls:"wrong",
+     text:"<b>Pitfall:</b> referral without matching expertise doesn't solve the actual problem (no one currently understands this specific disease well) and consumes a scarce specialist slot that could go to a patient whose needs match that center's actual expertise."}
+  ],
+  evidence:"Structured empirical trials of low-risk, guideline-supported interventions (dietary modification, symptom/lab-marker tracking) alongside pre-specified escalation criteria are a recognized approach to managing suspected rare disease during specialist-access gaps, without requiring diagnostic certainty to act.",
+  resource:"This card <i>is</i> the resource-constrained pathway — the point being taught is that a missing specialist changes who executes each step, not the underlying logic: still screen red flags first, still take a careful history, still track a defined hypothesis against objective data, still know in advance what would make you escalate sooner."
+}
+];
+
+const app = document.getElementById('app');
+const CATS = {
+  triage:{title:"Category I — Red-Flag &amp; Triage Decisions", sub:"The decisions that determine how fast a new or historical presentation needs to move, before any unifying diagnosis is known."},
+  history:{title:"Category II — History-Taking &amp; Shared Decision-Making", sub:"Decisions about how to rebuild trust and gather accurate data from a patient repeatedly failed by prior medical encounters."},
+  diagnostic:{title:"Category III — Diagnostic Reasoning", sub:"Decisions about how to weigh uncertain genetic findings (VUS) and multi-trigger symptom patterns without anchoring prematurely."},
+  treatment:{title:"Category IV — Treatment &amp; Monitoring", sub:"Decisions about starting, continuing, or screening medications and diet changes safely against her specific genetic risks."},
+  resource:{title:"Category V — Resource-Constrained Care", sub:"The same clinical logic, rebuilt for a setting where the one specialist who understood this case is gone and biopsy access is months away."}
+};
+
+function render(filter){
+  app.innerHTML = "";
+  const order = ["triage","history","diagnostic","treatment","resource"];
+  order.forEach(cat=>{
+    if(filter!=="all" && filter!==cat) return;
+    const items = DECISIONS.filter(d=>d.cat===cat);
+    if(!items.length) return;
+    const sec = document.createElement('section');
+    sec.className = "cat-block";
+    sec.innerHTML = `<div class="cat-head"><span class="cat-icon">${cat.toUpperCase()}</span><h2>${CATS[cat].title}</h2></div><p class="cat-sub">${CATS[cat].sub}</p>`;
+    items.forEach(d=>sec.appendChild(buildCard(d)));
+    app.appendChild(sec);
+  });
+
+  if(filter==="all"){
+    const spine = document.createElement('section');
+    spine.className = "cat-block";
+    spine.innerHTML = `
+      <div class="cat-head"><span class="cat-icon">SPINE</span><h2>The whole case as one decision sequence</h2></div>
+      <div class="spine-card">
+        <ol class="spine-list">
+          <li><b>New neuro episode:</b> triage as time-critical (stroke-mimic + possible CSF leak) regardless of her chronic baseline</li>
+          <li><b>Infancy, retrospectively:</b> feeding intolerance + edema + abnormal liver labs should trigger a metabolic work-up alongside, not instead of, a safeguarding assessment</li>
+          <li><b>History-taking now:</b> rebuild trust explicitly, engage with her self-research collaboratively rather than defensively</li>
+          <li><b>Procedural planning:</b> flag her intraoperative-awareness history proactively before any biopsy or surgery</li>
+          <li><b>VUS interpretation:</b> treat GSD III/IX variants as a strong testable hypothesis, not a confirmed diagnosis, until biopsy/specialist review</li>
+          <li><b>Multi-trigger edema:</b> reframe around shared oxidative-stress/energy-transport mechanism rather than forcing an allergy or psychiatric label</li>
+          <li><b>New drug decisions:</b> screen every agent (colchicine included) against her G6PD status before starting</li>
+          <li><b>Diet response:</b> track objective markers (ketosis pattern, CRP, ALT) rather than accepting or dismissing symptom report alone</li>
+          <li><b>Specialist gap:</b> run a structured interim plan with pre-specified escalation triggers while biopsy/specialist access is pending</li>
+        </ol>
+      </div>`;
+    app.appendChild(spine);
+  }
+}
+
+function buildCard(d){
+  const card = document.createElement('div');
+  card.className = "dcard";
+  card.id = d.id;
+
+  const ciBars = Array.from({length:5},(_,i)=>`<span class="${i<d.ci?'on-ci':''}"></span>`).join('');
+  const tuBars = Array.from({length:5},(_,i)=>`<span class="${i<d.tu?'on-tu':''}"></span>`).join('');
+
+  const options = shuffle(d.options.map(o=>({...o})));
+  options.forEach((o,i)=>{ o.letter = String.fromCharCode(65+i); });
+
+  card.innerHTML = `
+    <div class="dcard-top">
+      <div class="dcard-eyebrow">
+        <span>Decision ${d.id.toUpperCase()}</span>
+        <div class="ratings-inline">
+          <div class="rmini">Importance <div class="bars">${ciBars}</div></div>
+          <div class="rmini">Urgency <div class="bars">${tuBars}</div></div>
+        </div>
+      </div>
+      <p class="mystery">${d.mystery}</p>
+      <p class="question">${d.question}</p>
+    </div>
+    <div class="options">
+      ${options.map((o,i)=>`
+        <div class="opt" data-idx="${i}">
+          <div class="opt-label"><span><span class="opt-letter">${o.letter}</span>${o.label}</span></div>
+          <div class="feedback">${o.text}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="solve-row">
+      <button class="solve-btn" data-solve="${d.id}">Solve for me</button>
+      <button class="reset-btn" data-reset="${d.id}">Reset</button>
+    </div>
+    ${d.evidence?`<div class="evidence-box" data-box="evidence"><span class="box-label">Evidence</span>${d.evidence}</div>`:""}
+    ${d.sdm?`<div class="sdm-box" data-box="sdm"><span class="box-label">Shared decision-making / patient autonomy</span>${d.sdm}</div>`:""}
+    ${d.resource?`<div class="resource-box" data-box="resource"><span class="box-label">Low-resource setting adaptation</span>${d.resource}</div>`:""}
+  `;
+
+  card.querySelectorAll('.opt').forEach(optEl=>{
+    optEl.addEventListener('click', ()=>{
+      const idx = +optEl.dataset.idx;
+      const o = options[idx];
+      card.querySelectorAll('.opt').forEach(e=>e.classList.remove('picked','correct','wrong','reasonable'));
+      optEl.classList.add('picked', o.cls);
+      const ev = card.querySelector('[data-box="evidence"]');
+      const sd = card.querySelector('[data-box="sdm"]');
+      if(ev) ev.classList.add('show');
+      if(sd) sd.classList.add('show');
+      if(o.diffUpdates) applyDiffUpdates(o.diffUpdates);
+    });
+  });
+
+  card.querySelector('[data-solve]').addEventListener('click', ()=>{
+    const correctIdx = options.findIndex(o=>o.cls==='correct');
+    const o = options[correctIdx];
+    const optEl = card.querySelectorAll('.opt')[correctIdx];
+    card.querySelectorAll('.opt').forEach(e=>e.classList.remove('picked','correct','wrong','reasonable'));
+    optEl.classList.add('picked','correct');
+    const ev = card.querySelector('[data-box="evidence"]');
+    const sd = card.querySelector('[data-box="sdm"]');
+    if(ev) ev.classList.add('show');
+    if(sd) sd.classList.add('show');
+    if(o.diffUpdates) applyDiffUpdates(o.diffUpdates);
+    optEl.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  card.querySelector('[data-reset]').addEventListener('click', ()=>{
+    card.querySelectorAll('.opt').forEach(e=>e.classList.remove('picked','correct','wrong','reasonable'));
+    const ev = card.querySelector('[data-box="evidence"]');
+    const sd = card.querySelector('[data-box="sdm"]');
+    if(ev) ev.classList.remove('show');
+    if(sd) sd.classList.remove('show');
+  });
+
+  return card;
+}
+
+/* ===== Differential tracker ===== */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+const DIFF_META = [
+  {id:"neuro", name:"Acute stroke / TIA / hemiplegic migraine"},
+  {id:"csf", name:"CSF leak / intracranial pressure event"},
+  {id:"abuse", name:"Non-accidental injury / neglect (historical mislabel)"},
+  {id:"gsd", name:"Glycogen storage disease (VUS type III / IX)"},
+  {id:"g6pd_ampd1", name:"G6PD + AMPD1 oxidative-stress / energy-transport disorder"},
+  {id:"anaphylaxis", name:"True IgE-mediated allergy / anaphylaxis"},
+  {id:"behcets", name:"Behçet's disease"}
+];
+const STATUS_LABEL = {open:"Open", considering:"Considering", "ruled-out":"Ruled out", confirmed:"Confirmed", misclassified:"Misclassified (historical)"};
+let diffState = {};
+function resetDiffState(){
+  diffState = {};
+  renderTracker();
+}
+function applyDiffUpdates(updates){
+  updates.forEach(u=>{
+    diffState[u.id] = {status:u.status, note:u.note||"", updated:true};
+  });
+  renderTracker();
+}
+function renderTracker(){
+  const list = document.getElementById('trackerList');
+  if(!list) return;
+  list.innerHTML = DIFF_META.map(m=>{
+    const s = diffState[m.id] || {status:"open", note:"", updated:false};
+    return `
+      <div class="diff-item ${s.updated?'updated':''}">
+        <div class="diff-name">${m.name}</div>
+        <span class="diff-status st-${s.status}">${STATUS_LABEL[s.status]}</span>
+        ${s.note?`<div class="diff-note">${s.note}</div>`:""}
+      </div>`;
+  }).join('');
+}
+resetDiffState();
+document.getElementById('trackerReset')?.addEventListener('click', resetDiffState);
+
+render("all");
+
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('.tab');
+  if(!btn) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.cat);
+});
+
+document.getElementById('resourceSwitch').addEventListener('click', function(){
+  this.classList.toggle('on');
+  document.body.classList.toggle('resource-on');
+});
+
+document.getElementById('solveAll').addEventListener('click', ()=>{
+  document.querySelectorAll('.dcard').forEach(card=>{
+    card.querySelector('[data-solve]')?.click();
+  });
+  window.scrollTo({top: document.querySelector('.control-bar').offsetTop, behavior:'smooth'});
+});
+</script>
+</div><div id="mapsMode">
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Clinical Decision Science &middot; Learner Map Set</span>
+    <h1>Four decades of "everything": mapping the decisions behind <em>a multi-gene interaction case</em></h1>
+
+    <div class="mode-switcher">
+      <button class="mode-tab" data-mode="active">
+        <span class="mode-tab-title">Active Mode <span class="mtag">Live</span></span>
+        <span class="mode-tab-desc">Interactive — click through decisions, get rationale, pitfalls, and a live differential tracker</span>
+      </button>
+      <button class="mode-tab active" data-mode="maps">
+        <span class="mode-tab-title">Passive Mode</span>
+        <span class="mode-tab-desc">Read-only — quick-scan flow diagrams of the same decision pathways</span>
+      </button>
+    </div>
+    <p class="subtitle">A 42-year-old woman with lifelong episodic edema, chronic fatigue, migraine with aura, and a transient stroke-like episode, against a backdrop of confirmed G6PD (Seattle variant) and AMPD1 deficiency, VUS findings for glycogen storage disease, and a 2020 diagnosis of Behçet's disease. Each map below isolates one decision point actually faced across her history.</p>
+
+    <div class="vitals-strip">
+      <div class="vital"><div class="k">Age / Sex</div><div class="v">42F</div></div>
+      <div class="vital"><div class="k">Core pattern</div><div class="v">Episodic edema + fatigue, lifelong</div></div>
+      <div class="vital"><div class="k">Acute flag</div><div class="v flag">Transient dysarthria + facial droop</div></div>
+      <div class="vital"><div class="k">Confirmed genetics</div><div class="v">G6PD (Seattle), AMPD1 het</div></div>
+      <div class="vital"><div class="k">Working lead</div><div class="v flag">VUS: GSD type III / IX</div></div>
+      <div class="vital"><div class="k">Confirmed 2020</div><div class="v">Behçet's disease</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="legend-band">
+  <div class="legend-inner">
+    <span class="legend-title">How to read each map</span>
+    <span class="legend-scale"><span class="dot ci-dot"></span> Clinical Importance (1–5) — how much this decision changes management or outcome</span>
+    <span class="legend-scale"><span class="dot tu-dot"></span> Time Urgency (1–5) — how quickly the decision must be acted on</span>
+    <span class="legend-scale">Node colors: <b style="color:#1f6f78">teal</b> = action/data-gather, <b style="color:#c9922f">amber</b> = decision branch, <b style="color:#a63a3a">red</b> = red-flag/critical check, <b style="color:#5c7a5e">green</b> = endpoint</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ SECTION 1: TRIAGE ============ -->
+<section class="block">
+  <div class="block-head"><span class="block-num">MAP 01</span><h2>First minutes — triaging the new neurological episode</h2></div>
+  <p class="block-desc">Before folding this into her chronic pattern, the clinician must decide whether it's something time-critical.</p>
+
+  <div class="map-card large">
+    <div class="map-topline">
+      <div class="map-title"><span class="tag">Large map — acute triage logic</span>Is this "more of the same," or a new time-critical event?</div>
+      <div class="ratings">
+        <div class="rating-box ci"><div class="label">Importance <span class="num">5/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span></div></div>
+        <div class="rating-box tu"><div class="label">Urgency <span class="num">5/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span></div></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-row"><div class="node start" style="flex:0 1 420px;margin:0 auto;">Spinning, stuttering, transient left face/arm weakness, worst-ever headache, then a 'pop' + clear fluid from left nostril x10 min</div></div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node critical"><span class="n-label">Stroke-mimic screen</span>Unilateral weakness + speech disturbance?<span class="n-tag warn">Meets FAST criteria — image urgently</span></div>
+        <div class="node critical"><span class="n-label">CSF-leak screen</span>Unilateral clear rhinorrhea after headstrike-like 'pop'?<span class="n-tag warn">Beta-2 transferrin workup indicated</span></div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node decision" style="flex:0 1 100%;">Tempting anchor: "her baseline labs/scans are always normal" &rarr; do NOT let chronic history lower urgency for a genuinely new, focal symptom set.</div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node endpoint">Decision: urgent stroke-protocol imaging + targeted CSF-leak workup, independent of her chronic history — hemiplegic migraine stays on the differential, but only after red flags are excluded</div>
+      </div>
+    </div>
+    <div class="clin-note"><b>Teaching point:</b> a noisy chronic history is a reason to widen the differential, never a reason to lower urgency for a new focal neurological symptom.</div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: HISTORY FORKS ============ -->
+<section class="block">
+  <div class="block-head"><span class="block-num">MAP 02–03</span><h2>Two history forks shaped by prior medical trauma</h2></div>
+  <p class="block-desc">Small, focused maps — each a fork a clinician must recognize while rebuilding trust with this patient.</p>
+
+  <div class="pair-grid">
+
+    <div class="map-card small">
+      <div class="map-topline">
+        <div class="map-title"><span class="tag">Small map — infancy, retrospectively</span>Weight swings + edema + abnormal liver labs: neglect or metabolic disease?</div>
+        <div class="ratings">
+          <div class="rating-box ci"><div class="label">Importance <span class="num">4/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span></span></div></div>
+          <div class="rating-box tu"><div class="label">Urgency <span class="num">4/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span></span></div></div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-row"><div class="node start" style="flex:0 1 100%;">Infant: severe jaundice, refuses all but water/salty broth, episodic facial/abdominal edema, wild weight swings, abnormal liver labs</div></div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row">
+          <div class="node decision">Parents accused of abuse based on liver labs (misread as alcohol exposure) — custody lost<span class="n-tag warn">Social explanation adopted as default</span></div>
+        </div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row">
+          <div class="node action">Run metabolic/genetic work-up in parallel with any safeguarding assessment — never as an either/or</div>
+        </div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row"><div class="node endpoint">Decision (decades later, in hindsight): pattern consistent with inherited metabolic disorder — G6PD, AMPD1, probable GSD — not confirmed until adulthood</div></div>
+      </div>
+      <div class="clin-note"><b>Why this is easy to miss:</b> safeguarding concern and organic disease can look identical on the surface; anchoring on one forecloses the other for decades.</div>
+    </div>
+
+    <div class="map-card small">
+      <div class="map-topline">
+        <div class="map-title"><span class="tag">Small map — self-research as data</span>Patient-found VUS genes: dismiss, or investigate together?</div>
+        <div class="ratings">
+          <div class="rating-box ci"><div class="label">Importance <span class="num">5/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span></div></div>
+          <div class="rating-box tu"><div class="label">Urgency <span class="num">2/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span></span><span></span><span></span></div></div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-row"><div class="node start" style="flex:0 1 100%;">Patient independently identifies GSD type III/IX VUS genes matching her lifelong phenotype</div></div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row">
+          <div class="node decision">History of being disbelieved (wrongful anorexia diagnosis, tube-feeding, custody loss) shapes how safe she feels sharing this<span class="n-tag mid">Trust has to be actively rebuilt</span></div>
+        </div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row">
+          <div class="node action">Review VUS findings collaboratively; neither accept nor dismiss without independent verification (biopsy, specialist)</div>
+        </div>
+        <div class="arrow-down">&#8595;</div>
+        <div class="flow-row"><div class="node endpoint">Decision: treat her research as a testable hypothesis worth formal follow-up, restoring some agency in a relationship that previously overrode her</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ SECTION 3: DIAGNOSTIC REASONING ============ -->
+<section class="block">
+  <div class="block-head"><span class="block-num">MAP 04</span><h2>Reframing the multi-trigger edema pattern</h2></div>
+  <p class="block-desc">Smoke, exercise, stress, specific foods, sometimes nothing — how a "confusing allergy" becomes a coherent mechanism.</p>
+
+  <div class="map-card large">
+    <div class="map-topline">
+      <div class="map-title"><span class="tag">Large map — mechanism, not allergen, first</span>What actually connects this many different triggers?</div>
+      <div class="ratings">
+        <div class="rating-box ci"><div class="label">Importance <span class="num">4/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span></span></div></div>
+        <div class="rating-box tu"><div class="label">Urgency <span class="num">3/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span></span><span></span></div></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="flow-row"><div class="node start" style="flex:0 1 100%;">Repeated negative allergy testing, yet swelling with smoke, exertion, stress, specific foods</div></div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node decision" style="flex:1 1 100%;">Force an IgE-allergy framework, or look for a shared underlying pathway?</div>
+      </div>
+      <div class="split">
+        <div><div class="node critical">IgE framework<span class="n-tag warn">Doesn't fit — testing negative repeatedly</span></div></div>
+        <div><div class="node action">Oxidative-stress framework<span class="n-tag">G6PD limits NADPH/glutathione defense; AMPD1 affects energy-dependent ion transport — both plausibly converge on edema</span></div></div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row"><div class="node endpoint">Decision: reframe around shared mechanism rather than allergen-chasing or defaulting to a psychiatric explanation</div></div>
+    </div>
+    <div class="clin-note"><b>Teaching point:</b> when a pattern doesn't fit the first framework tried, the right move is to change the framework, not to force-fit the data or dismiss it as unexplained/psychosomatic.</div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: TREATMENT & MONITORING ============ -->
+<section class="block">
+  <div class="block-head"><span class="block-num">MAP 05</span><h2>New drug decisions in a G6PD-deficient patient</h2></div>
+  <p class="block-desc">Behçet's is confirmed. Colchicine is first-line. Her G6PD status changes how that decision gets made.</p>
+
+  <div class="map-card small">
+    <div class="map-topline">
+      <div class="map-title"><span class="tag">Small map — drug safety screening</span>Guideline first-line drug, but is it G6PD-safe for her specifically?</div>
+      <div class="ratings">
+        <div class="rating-box ci"><div class="label">Importance <span class="num">5/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span></div></div>
+        <div class="rating-box tu"><div class="label">Urgency <span class="num">4/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span></span></div></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="flow-row"><div class="node start" style="flex:0 1 100%;">Behçet's confirmed &rarr; colchicine indicated per guideline</div></div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node decision">Cross-check against her specific G6PD variant before prescribing<span class="n-tag warn">Don't assume "not classically flagged" = safe</span></div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row"><div class="node endpoint">Decision: standing rule — every new agent gets a G6PD-safety check, discussed with her directly, before it starts</div></div>
+    </div>
+    <div class="clin-note"><b>Why this is easy to miss:</b> it's tempting to treat "guideline first-line" as interchangeable with "safe for this patient" — her chart requires an extra explicit step every time.</div>
+  </div>
+
+  <div class="map-card small">
+    <div class="map-topline">
+      <div class="map-title"><span class="tag">Small map — diet as diagnostic trial</span>Persistent ketosis despite carbs: restriction, or a real metabolic signal?</div>
+      <div class="ratings">
+        <div class="rating-box ci"><div class="label">Importance <span class="num">4/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span></span></div></div>
+        <div class="rating-box tu"><div class="label">Urgency <span class="num">2/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span></span><span></span><span></span></div></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="flow-row"><div class="node start" style="flex:0 1 100%;">Ketosis persists even on days with fruit/cake — physiologically unexpected</div></div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node decision">Take symptom report at face value, or track objective markers (ketone strips, CRP, ALT, weight/edema)?<span class="n-tag mid">History of eating-disorder misdiagnosis raises the stakes of getting this right</span></div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row"><div class="node endpoint">Decision: pair the diet trial with objective tracking — turns "I feel better" into interpretable evidence for or against the GSD hypothesis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5: CONSOLIDATED SUMMARY MAP ============ -->
+<section class="block">
+  <div class="block-head"><span class="block-num">MAP 06</span><h2>The whole case as one decision spine</h2></div>
+  <p class="block-desc">A single large map stringing the prior decisions together in sequence, for revision.</p>
+
+  <div class="map-card large">
+    <div class="map-topline">
+      <div class="map-title"><span class="tag">Large map — full case spine</span>Four decades of symptoms to a working, multi-diagnosis picture, in one line of decisions</div>
+      <div class="ratings">
+        <div class="rating-box ci"><div class="label">Importance <span class="num">5/5</span></div><div class="bars"><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span><span class="on-ci"></span></div></div>
+        <div class="rating-box tu"><div class="label">Urgency <span class="num">4/5</span></div><div class="bars"><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span class="on-tu"></span><span></span></div></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node start">1. Triage acute neuro episode as time-critical</div>
+        <div class="node start">2. Reassess infancy pattern: metabolic work-up alongside safeguarding</div>
+        <div class="node start">3. Rebuild trust; treat self-research as data</div>
+        <div class="node start">4. Flag anesthesia-awareness history before any procedure</div>
+        <div class="node start">5. Hold GSD VUS as hypothesis, not diagnosis</div>
+      </div>
+      <div class="arrow-down">&#8595;</div>
+      <div class="flow-row">
+        <div class="node endpoint" style="flex:1 1 100%;">6. Reframe multi-trigger edema around oxidative stress &rarr; 7. Screen every new drug against G6PD status &rarr; 8. Track diet trial with objective markers &rarr; 9. Run a structured interim plan while the one specialist who understood this case is gone</div>
+      </div>
+    </div>
+    <div class="clin-note"><b>How to use this map:</b> each numbered step corresponds to one of Maps 01–05 above. A learner who can explain why step 1's urgency doesn't change because of steps 2–9's complexity — and why step 5's uncertainty doesn't excuse skipping step 8's tracking — has understood the case.</div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<footer>
+  <div class="wrap" style="padding:0;">
+    Case source: classworkdecjan.blogspot.com, "Clinical complexity and multi gene interaction case — 42 Year old woman with multiple health events since birth" (de-identified open patient e-log, posted 17 May 2019) &middot;
+    Built as a teaching aid — ratings reflect educational judgment for case-based learning, not a validated clinical scoring system.
+  </div>
+</footer>
+
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      document.getElementById('activeMode').classList.remove('show');
+      document.getElementById('mapsMode').classList.remove('show');
+      document.getElementById(t.dataset.mode==='active' ? 'activeMode' : 'mapsMode').classList.add('show');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+});
+</script>
+</body>
+</html>
