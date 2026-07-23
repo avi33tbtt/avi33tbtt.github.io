@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Decision Lab: Anemia</title>
+<style>
+  :root{
+    --teal:#0891B2; --teal-dark:#0e7490; --teal-light:#e0f7fa;
+    --ink:#0f172a; --muted:#5b6b7c; --line:#e2e8f0; --bg:#f7fafc;
+    --card:#ffffff; --good:#0d9488; --bad:#dc2626; --warn:#d97706;
+    --radius:14px; --shadow:0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55;
+  }
+  a{color:var(--teal-dark);}
+
+  /* ===== HEADER / HERO ===== */
+  .hero{
+    background:linear-gradient(135deg,#083344 0%, #0891B2 55%, #14b8c4 100%);
+    color:#fff; padding:36px 22px 30px;
+  }
+  .hero-inner{max-width:980px; margin:0 auto;}
+  .eyebrow{
+    display:inline-block; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;
+    background:rgba(255,255,255,.15); padding:4px 10px; border-radius:999px; margin-bottom:12px;
+  }
+  .hero h1{margin:0 0 6px; font-size:1.7rem; font-weight:700;}
+  .hero p.sub{margin:0; color:#d3f1f5; font-size:.95rem; max-width:640px;}
+  .tags{display:flex; gap:7px; flex-wrap:wrap; margin-top:16px;}
+  .tag{
+    font-size:.72rem; padding:4px 11px; border-radius:999px; background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.35); color:#fff;
+  }
+
+  /* ===== CONTROL BAR ===== */
+  .control-bar{
+    max-width:980px; margin:-22px auto 0; padding:0 22px;
+  }
+  .control-card{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    border:1px solid var(--line); padding:16px 18px; display:flex; gap:18px; flex-wrap:wrap;
+    align-items:center; justify-content:space-between;
+  }
+  .control-group{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .control-label{font-size:.78rem; color:var(--muted); font-weight:600; white-space:nowrap;}
+  .seg{
+    display:flex; background:var(--teal-light); border-radius:999px; padding:3px; gap:2px;
+  }
+  .seg button{
+    border:none; background:transparent; padding:7px 14px; border-radius:999px; font-size:.82rem;
+    font-weight:600; color:var(--teal-dark); cursor:pointer;
+  }
+  .seg button.active{background:var(--teal); color:#fff;}
+  .seg.difficulty button.active.intermediate{background:var(--warn);}
+  .seg.difficulty button.active.advanced{background:var(--bad);}
+
+  select#chapter-select{
+    border:1px solid var(--line); border-radius:8px; padding:7px 10px; font-size:.85rem;
+    color:var(--ink); background:#fff;
+  }
+
+  /* ===== MAIN ===== */
+  main{max-width:980px; margin:0 auto; padding:26px 22px 100px;}
+
+  nav.toc{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; margin-bottom:22px; box-shadow:var(--shadow);
+  }
+  nav.toc h3{margin:0 0 8px; font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);}
+  nav.toc .toc-links{display:flex; flex-wrap:wrap; gap:8px;}
+  nav.toc a{
+    font-size:.82rem; padding:5px 10px; border-radius:8px; background:var(--teal-light);
+    text-decoration:none; color:var(--teal-dark); font-weight:600;
+  }
+
+  section.chapter{margin-bottom:34px;}
+  section.chapter > h2{
+    font-size:1.25rem; margin:0 0 4px; padding-top:6px; border-top:3px solid var(--teal);
+    padding-top:10px;
+  }
+  section.chapter > .chapter-desc{color:var(--muted); font-size:.88rem; margin-bottom:16px;}
+
+  .progress{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:.82rem; margin-bottom:14px;}
+  .progress .bar{flex:1; height:5px; background:var(--teal-light); border-radius:99px; overflow:hidden;}
+  .progress .fill{height:100%; width:0%; background:var(--teal); transition:width .3s;}
+
+  .lab-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 22px 18px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  .lab-card .node-tag{
+    font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--teal-dark); margin-bottom:6px; display:block;
+  }
+  .lab-card h3{margin:0 0 10px; font-size:1.02rem;}
+  .stem{color:var(--ink); margin-bottom:12px; font-size:.94rem;}
+  .stem .vitals{display:block; color:var(--muted); font-size:.86rem; margin-top:4px;}
+
+  .diff-badge{
+    display:inline-block; font-size:.68rem; font-weight:700; padding:2px 9px; border-radius:999px;
+    margin-left:8px; vertical-align:middle;
+  }
+  .diff-badge.beginner{background:#dcfce7; color:#15803d;}
+  .diff-badge.intermediate{background:#fef3c7; color:#b45309;}
+  .diff-badge.advanced{background:#fee2e2; color:#b91c1c;}
+
+  .choices{display:flex; flex-direction:column; gap:8px; margin:12px 0;}
+  .choice-btn{
+    text-align:left; padding:11px 14px; border-radius:10px; border:1px solid var(--line);
+    background:#fafcfd; color:var(--ink); cursor:pointer; font-size:.9rem;
+  }
+  .choice-btn:hover:not(:disabled){border-color:var(--teal);}
+  .choice-btn:disabled{cursor:default; opacity:.6;}
+  .choice-btn.correct{border-color:var(--good); background:#ecfdf7;}
+  .choice-btn.incorrect{border-color:var(--bad); background:#fef2f2;}
+
+  .feedback{
+    margin-top:10px; padding:12px 14px; border-radius:10px; font-size:.88rem;
+    border:1px solid var(--line); background:#f8fafc; display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback .verdict{font-weight:700; margin-bottom:4px;}
+  .feedback .verdict.correct{color:var(--good);}
+  .feedback .verdict.incorrect{color:var(--bad);}
+
+  .next-btn{
+    margin-top:12px; padding:8px 16px; border-radius:8px; border:1px solid var(--teal);
+    background:transparent; color:var(--teal-dark); cursor:pointer; font-size:.83rem; font-weight:700;
+    display:none;
+  }
+  .next-btn.show{display:inline-block;}
+  .next-btn:hover{background:var(--teal-light);}
+
+  /* passive transcript */
+  .transcript{display:none;}
+  .transcript.show{display:block;}
+  .t-turn{margin-bottom:12px; padding-bottom:12px; border-bottom:1px dashed var(--line);}
+  .t-turn:last-child{border-bottom:none;}
+  .t-role{font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:3px; font-weight:700;}
+  .t-role.learner{color:var(--teal-dark);}
+  .t-role.attending{color:var(--good);}
+  .t-choice-made{
+    display:inline-block; padding:2px 9px; border-radius:7px; background:#f1f5f9;
+    border:1px solid var(--line); font-size:.85rem;
+  }
+
+  .active-only{display:block;}
+  .passive-only{display:none;}
+  body.passive-mode .active-only{display:none;}
+  body.passive-mode .passive-only{display:block;}
+  body.passive-mode .lab-card{display:block !important;}
+  body.passive-mode .progress{display:none;}
+
+  /* difficulty visibility */
+  body.diff-beginner .lab-card[data-diff="intermediate"],
+  body.diff-beginner .lab-card[data-diff="advanced"]{display:none !important;}
+  body.diff-intermediate .lab-card[data-diff="advanced"]{display:none !important;}
+
+  .final-summary{
+    background:linear-gradient(135deg,#083344,#0891B2); color:#fff;
+    border-radius:var(--radius); padding:22px; display:none; margin-top:6px;
+  }
+  .final-summary.show{display:block;}
+  .final-summary h3{margin-top:0;}
+
+  /* ===== ALGORITHM ===== */
+  .algo-wrap{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; box-shadow:var(--shadow); overflow-x:auto;
+  }
+  .flow{display:flex; flex-direction:column; align-items:center; gap:0; min-width:640px;}
+  .fnode{
+    background:#fff; border:2px solid var(--teal); border-radius:12px; padding:10px 16px;
+    font-size:.85rem; text-align:center; max-width:420px; font-weight:600; color:var(--ink);
+  }
+  .fnode.decision{
+    border-radius:999px; background:var(--teal-light); border-color:var(--teal-dark);
+  }
+  .fnode.terminal{
+    background:#0891B2; color:#fff; border-color:#0891B2;
+  }
+  .arrow{width:2px; height:20px; background:var(--line); position:relative;}
+  .arrow::after{
+    content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--line);
+  }
+  .branch-row{display:flex; gap:28px; justify-content:center; width:100%; margin:0;}
+  .branch{display:flex; flex-direction:column; align-items:center; flex:1; max-width:300px;}
+  .branch-label{font-size:.72rem; font-weight:700; color:var(--teal-dark); margin:6px 0 2px; text-transform:uppercase;}
+
+  footer{
+    max-width:980px; margin:0 auto; padding:0 22px 46px; color:var(--muted); font-size:.78rem;
+    border-top:1px solid var(--line); padding-top:20px; margin-top:20px;
+  }
+
+  h2 .diff-note{font-size:.7rem; font-weight:600; color:var(--muted); margin-left:8px;}
+</style>
+</head>
+<body class="diff-beginner">
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Vibe Rounds · Guided Discovery</span>
+    <h1>Decision Lab — Anemia (Full)</h1>
+    <p class="sub">A commitment-gated reasoning walk-through across the diagnostic, therapeutic, and prognostic landscape of anemia — with a passive transcript mode and a printable clinical algorithm.</p>
+    <div class="tags">
+      <span class="tag">Disease: Anemia</span>
+      <span class="tag">Chapters: Diagnosis · Therapy · Prognosis · Screening</span>
+      <span class="tag">Lens: Clinical Reasoning</span>
+      <span class="tag">Levels: Beginner / Intermediate / Advanced</span>
+    </div>
+  </div>
+</div>
+
+<div class="control-bar">
+  <div class="control-card">
+    <div class="control-group">
+      <span class="control-label">Mode</span>
+      <div class="seg" id="mode-seg">
+        <button class="active" onclick="setMode('active')" id="btn-active">Active</button>
+        <button onclick="setMode('passive')" id="btn-passive">Passive (read-through)</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Difficulty</span>
+      <div class="seg difficulty" id="diff-seg">
+        <button class="active" onclick="setDifficulty('beginner')" id="btn-beginner">Beginner</button>
+        <button onclick="setDifficulty('intermediate')" id="btn-intermediate">Intermediate</button>
+        <button onclick="setDifficulty('advanced')" id="btn-advanced">Advanced</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Jump to</span>
+      <select id="chapter-select" onchange="jumpTo(this.value)">
+        <option value="">Chapter…</option>
+        <option value="ch-diagnosis">1. Diagnosis</option>
+        <option value="ch-therapy">2. Therapy</option>
+        <option value="ch-prognosis">3. Prognosis</option>
+        <option value="ch-screening">4. Screening / Harm</option>
+        <option value="ch-algorithm">5. Clinical Algorithm</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <nav class="toc">
+    <h3>On this page</h3>
+    <div class="toc-links">
+      <a href="#ch-diagnosis">1 · Diagnosis</a>
+      <a href="#ch-therapy">2 · Therapy</a>
+      <a href="#ch-prognosis">3 · Prognosis</a>
+      <a href="#ch-screening">4 · Screening &amp; Harm</a>
+      <a href="#ch-algorithm">5 · Clinical Algorithm</a>
+    </div>
+  </nav>
+
+  <!-- =========================================================
+       CHAPTER 1 — DIAGNOSIS
+  ========================================================== -->
+  <section class="chapter" id="ch-diagnosis" data-chapter="diagnosis">
+    <h2>1 · Diagnosis <span class="diff-note">— beginner nodes always shown; toggle difficulty above to add more</span></h2>
+    <p class="chapter-desc">Working through classification, workup sequencing, and the microcytic / normocytic / macrocytic split.</p>
+
+    <div class="progress" data-chapter-progress="diagnosis">
+      <span class="progress-label">Decision point 1 of 5</span>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+
+    <!-- D1 — Beginner -->
+    <div class="lab-card" data-node="d1" data-diff="beginner" data-chapter="diagnosis" style="display:block;">
+      <span class="node-tag">Diagnosis · Node 1<span class="diff-badge beginner">Beginner</span></span>
+      <h3>Framing a new anemia</h3>
+      <p class="stem">A 34-year-old woman presents with fatigue. Hb 9.8 g/dL, MCV 68 fL, RDW 18%.
+        <span class="vitals">No overt GI bleeding reported. Ferritin pending.</span></p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Ferritin alone doesn\'t settle the differential — it needs to be interpreted alongside MCV, RDW, and history.')">Order ferritin alone and wait</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct: a microcytic, high-RDW anemia in a woman of reproductive age should prompt iron studies plus a focused bleeding/diet history — not one isolated test.')">Order iron studies and take a focused bleeding/diet history</button>
+          <button class="choice-btn" onclick="choose(this,false,'Electrophoresis is reasonable later if iron studies are equivocal or thalassemia trait is suspected — not the first move.')">Go straight to hemoglobin electrophoresis</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Order iron studies and take a focused bleeding/diet history</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct: a microcytic, high-RDW anemia in a woman of reproductive age should prompt iron studies plus a focused bleeding/diet history — not one isolated test.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2 — Beginner -->
+    <div class="lab-card" data-node="d2" data-diff="beginner" data-chapter="diagnosis" style="display:none;">
+      <span class="node-tag">Diagnosis · Node 2<span class="diff-badge beginner">Beginner</span></span>
+      <h3>Reading the ferritin with inflammation present</h3>
+      <p class="stem">Ferritin returns at 45 ng/mL. CRP is mildly elevated at 12 mg/L.
+        <span class="vitals">History reveals heavy menstrual bleeding for 6 months.</span></p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Right call — with inflammation, the ferritin threshold for excluding iron deficiency rises (~70–100 ng/mL). A ferritin of 45 with a clear bleeding source is consistent with IDA despite being nominally \"normal.\"')">Treat as iron deficiency despite the "normal" ferritin</button>
+          <button class="choice-btn" onclick="choose(this,false,'A ferritin of 45 does not rule out IDA once inflammation is present — labeling this ACD and stopping risks missing a treatable, bleeding-driven deficiency.')">Label anemia of chronic disease and stop workup</button>
+          <button class="choice-btn" onclick="choose(this,false,'Reasonable as confirmation, but not the first move — history plus the adjusted ferritin threshold already make IDA likely enough to act on.')">Order sTfR before deciding</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Treat as iron deficiency despite the "normal" ferritin</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Right call — with inflammation, the ferritin threshold for excluding iron deficiency rises (~70–100 ng/mL). A ferritin of 45 with a clear bleeding source is consistent with IDA despite being nominally "normal."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3 — Intermediate -->
+    <div class="lab-card" data-node="d3" data-diff="intermediate" data-chapter="diagnosis" style="display:none;">
+      <span class="node-tag">Diagnosis · Node 3<span class="diff-badge intermediate">Intermediate</span></span>
+      <h3>Macrocytic anemia — B12 vs folate</h3>
+      <p class="stem">62-year-old man, Hb 8.9 g/dL, MCV 112 fL. Mild peripheral paresthesias noted on exam.
+        <span class="vitals">B12 and folate levels both pending, expected in 48 hours.</span></p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Waiting is reasonable if there are no neurologic findings — but this patient already has paresthesias, so empiric B12 shouldn\'t be delayed on that basis alone.')">Wait for both levels before treating either deficiency</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct — with neurologic signs present, start empiric B12 (don\'t wait), and specifically avoid folate alone until B12 deficiency is excluded: folate can normalize the blood count while neurologic damage silently progresses.')">Start empiric B12 replacement now; hold folate until B12 deficiency is excluded</button>
+          <button class="choice-btn" onclick="choose(this,false,'Giving both together doesn\'t let you distinguish which deficiency is driving the paresthesias, and folate given in undiagnosed B12 deficiency can mask the anemia while neurologic injury continues.')">Start both B12 and folate empirically together</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Start empiric B12 replacement now; hold folate until B12 deficiency is excluded</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — with neurologic signs present, start empiric B12 (don't wait), and specifically avoid folate alone until B12 deficiency is excluded: folate can normalize the blood count while neurologic damage silently progresses.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D4 — Intermediate -->
+    <div class="lab-card" data-node="d4" data-diff="intermediate" data-chapter="diagnosis" style="display:none;">
+      <span class="node-tag">Diagnosis · Node 4<span class="diff-badge intermediate">Intermediate</span></span>
+      <h3>Suspected hemolysis</h3>
+      <p class="stem">28-year-old man, Hb 8.2 g/dL, elevated LDH, low haptoglobin, indirect hyperbilirubinemia, reticulocytosis.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — a direct antiglobulin (Coombs) test should be obtained early alongside LDH, haptoglobin, and bilirubin, since it is what separates immune from non-immune hemolysis and directs the entire downstream workup.')">Obtain a direct antiglobulin test (Coombs) now</button>
+          <button class="choice-btn" onclick="choose(this,false,'A smear is useful and often complementary, but it doesn\'t replace the Coombs test for distinguishing immune from non-immune hemolysis — order both, but Coombs is the pivotal early step.')">Order peripheral smear only, skip Coombs</button>
+          <button class="choice-btn" onclick="choose(this,false,'Bone marrow biopsy isn\'t the first step in an ambulatory hemolysis workup with clear hemolytic labs already present — it\'s reserved for suspected marrow failure or infiltration, not routine hemolysis.')">Proceed directly to bone marrow biopsy</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Obtain a direct antiglobulin test (Coombs) now</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — a direct antiglobulin (Coombs) test should be obtained early alongside LDH, haptoglobin, and bilirubin, since it is what separates immune from non-immune hemolysis and directs the entire downstream workup.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D5 — Advanced -->
+    <div class="lab-card" data-node="d5" data-diff="advanced" data-chapter="diagnosis" style="display:none;">
+      <span class="node-tag">Diagnosis · Node 5<span class="diff-badge advanced">Advanced</span></span>
+      <h3>Unexplained IDA in a postmenopausal woman</h3>
+      <p class="stem">67-year-old woman, incidental IDA on routine labs. No menstrual bleeding (postmenopausal), no overt GI symptoms, stool occult blood not yet checked.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Oral iron treats the anemia but ignores the point of this node: unexplained IDA in a postmenopausal woman carries a real risk of occult GI malignancy and warrants endoscopic evaluation regardless of symptom absence.')">Start oral iron and reassess in 3 months, no further workup</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct — unexplained IDA in this population (no menses, no obvious source) has a meaningfully elevated pretest probability of occult GI malignancy; bidirectional endoscopy (upper and lower) finds a source in roughly one-third to half of such adults, and yield rises with age.')">Pursue bidirectional (upper and lower) GI endoscopy</button>
+          <button class="choice-btn" onclick="choose(this,false,'Repeating ferritin doesn\'t change management here — the diagnosis of IDA is already established; the open question is the source, which repeat ferritin cannot answer.')">Repeat ferritin in 6 weeks before deciding on endoscopy</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Pursue bidirectional (upper and lower) GI endoscopy</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — unexplained IDA in this population carries meaningfully elevated pretest probability of occult GI malignancy; bidirectional endoscopy finds a source in roughly one-third to half of such adults, with yield rising with age.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       CHAPTER 2 — THERAPY
+  ========================================================== -->
+  <section class="chapter" id="ch-therapy" data-chapter="therapy">
+    <h2>2 · Therapy / Intervention</h2>
+    <p class="chapter-desc">Choosing between oral and IV iron, transfusion thresholds, ESAs, and disease-specific therapy.</p>
+
+    <div class="progress" data-chapter-progress="therapy">
+      <span class="progress-label">Decision point 1 of 4</span>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+
+    <!-- T1 — Beginner -->
+    <div class="lab-card" data-node="t1" data-diff="beginner" data-chapter="therapy" style="display:block;">
+      <span class="node-tag">Therapy · Node 1<span class="diff-badge beginner">Beginner</span></span>
+      <h3>First-line therapy for straightforward IDA</h3>
+      <p class="stem">Diagnosis: iron deficiency anemia secondary to menorrhagia. No GI symptoms, tolerates oral intake.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — oral iron (alternate-day dosing improves absorption and tolerability) plus gynecologic referral for the menorrhagia addresses both the deficiency and its cause.')">Start oral iron (alternate-day dosing) and refer for gynecologic evaluation</button>
+          <button class="choice-btn" onclick="choose(this,false,'IV iron is reasonable if oral is not tolerated, absorption is impaired, or correction is urgent — none apply here, so it isn\'t first-line.')">Start IV iron infusion immediately</button>
+          <button class="choice-btn" onclick="choose(this,false,'Transfusion is reserved for symptomatic/severe anemia or hemodynamic instability — this patient doesn\'t meet that threshold.')">Transfuse packed red cells</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Start oral iron (alternate-day dosing) and refer for gynecologic evaluation</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — oral iron (alternate-day dosing improves absorption and tolerability) plus gynecologic referral for the menorrhagia addresses both the deficiency and its cause.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T2 — Intermediate -->
+    <div class="lab-card" data-node="t2" data-diff="intermediate" data-chapter="therapy" style="display:none;">
+      <span class="node-tag">Therapy · Node 2<span class="diff-badge intermediate">Intermediate</span></span>
+      <h3>Anemia of CKD — how far to push the hemoglobin?</h3>
+      <p class="stem">CKD stage 4 patient, Hb 9.1 g/dL, symptomatic fatigue. Considering an erythropoiesis-stimulating agent (ESA).</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Targeting Hb above ~13 g/dL with ESAs increases stroke and thromboembolic risk without a mortality benefit — this overshoots the evidence-based target.')">Start ESA and target Hb >13 g/dL for symptom relief</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct — ESAs raise hemoglobin but do not improve mortality or cardiovascular outcomes in CKD, and conservative targets (roughly 10–11.5 g/dL) are recommended to avoid the stroke/thromboembolic risk seen at higher targets.')">Start ESA with a conservative target (~10–11.5 g/dL)</button>
+          <button class="choice-btn" onclick="choose(this,false,'Iron studies should be optimized alongside or before ESA therapy, but withholding ESA entirely ignores this patient\'s symptomatic anemia when iron deficiency isn\'t the primary driver in CKD-associated anemia.')">Avoid ESA entirely; treat with iron alone</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Start ESA with a conservative target (~10–11.5 g/dL)</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — ESAs raise hemoglobin but do not improve mortality or cardiovascular outcomes in CKD, and conservative targets are recommended to avoid stroke/thromboembolic risk seen at higher targets.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T3 — Intermediate -->
+    <div class="lab-card" data-node="t3" data-diff="intermediate" data-chapter="therapy" style="display:none;">
+      <span class="node-tag">Therapy · Node 3<span class="diff-badge intermediate">Intermediate</span></span>
+      <h3>Transfusion threshold in a stable ICU patient</h3>
+      <p class="stem">Hemodynamically stable ICU patient, Hb 7.8 g/dL, no active bleeding, no cardiac ischemia.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — a restrictive transfusion strategy (transfusing at Hb <7 g/dL) is non-inferior to liberal strategies in most critically ill and stable cardiac patients, with less transfusion exposure and no increase in mortality.')">Hold transfusion; use a restrictive threshold (transfuse if Hb <7 g/dL)</button>
+          <button class="choice-btn" onclick="choose(this,false,'Transfusing now at Hb 7.8 in a stable patient without ischemia or active bleeding exceeds the evidence-based restrictive threshold and adds unnecessary transfusion exposure.')">Transfuse now to reach Hb ~9–10 g/dL</button>
+          <button class="choice-btn" onclick="choose(this,false,'ESAs are not the appropriate acute tool here — they act over days to weeks and don\'t address an acute stable anemia decision in the ICU.')">Start an ESA instead of deciding on transfusion</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Hold transfusion; use a restrictive threshold (transfuse if Hb <7 g/dL)</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — a restrictive strategy is non-inferior to liberal strategies in most critically ill/stable cardiac patients, with less exposure and no mortality increase.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T4 — Advanced -->
+    <div class="lab-card" data-node="t4" data-diff="advanced" data-chapter="therapy" style="display:none;">
+      <span class="node-tag">Therapy · Node 4<span class="diff-badge advanced">Advanced</span></span>
+      <h3>Iron-deficient HFrEF, not anemic</h3>
+      <p class="stem">Patient with HFrEF (EF 30%), Hb 12.8 g/dL (not anemic by standard cutoffs), ferritin 90 ng/mL with transferrin saturation 15%, meeting criteria for iron deficiency.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Deferring iron because the patient isn\'t anemic misses the point of this node: benefit here is tied to iron-deficiency status, not hemoglobin level.')">Defer iron therapy since the patient isn't anemic</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct — IV ferric carboxymaltose improves functional status and reduces heart-failure hospitalizations in iron-deficient HFrEF regardless of anemia status, though a mortality benefit remains unproven.')">Start IV iron (e.g. ferric carboxymaltose) despite the near-normal hemoglobin</button>
+          <button class="choice-btn" onclick="choose(this,false,'Oral iron has not shown the same functional/hospitalization benefit in HFrEF as IV iron, largely due to poor absorption in this population — it isn\'t the evidence-based choice here.')">Start oral iron instead of IV</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Start IV iron (e.g. ferric carboxymaltose) despite the near-normal hemoglobin</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — IV ferric carboxymaltose improves functional status and reduces HF hospitalizations in iron-deficient HFrEF regardless of anemia status, though mortality benefit remains unproven.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       CHAPTER 3 — PROGNOSIS
+  ========================================================== -->
+  <section class="chapter" id="ch-prognosis" data-chapter="prognosis">
+    <h2>3 · Prognosis</h2>
+    <p class="chapter-desc">What anemia signals about outcomes, independent of correcting the number itself.</p>
+
+    <div class="progress" data-chapter-progress="prognosis">
+      <span class="progress-label">Decision point 1 of 2</span>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+
+    <!-- P1 — Beginner -->
+    <div class="lab-card" data-node="p1" data-diff="beginner" data-chapter="prognosis" style="display:block;">
+      <span class="node-tag">Prognosis · Node 1<span class="diff-badge beginner">Beginner</span></span>
+      <h3>Mild anemia in an elderly patient, cause unclear</h3>
+      <p class="stem">82-year-old with mild normocytic anemia (Hb 10.9 g/dL). Renal function, iron studies, B12/folate, and inflammatory markers are all unremarkable.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,false,'Even mild, otherwise-unexplained anemia in the elderly isn\'t inconsequential — dismissing it overlooks a real, independent association with adverse outcomes.')">Reassure the patient — mild anemia at this age is not clinically significant</button>
+          <button class="choice-btn" onclick="choose(this,true,'Correct — unexplained anemia in older adults is independently associated with increased mortality and frailty, even at mild severity, once nutritional, renal, and inflammatory causes are excluded. It warrants ongoing attention, not dismissal.')">Note the association with increased mortality/frailty and monitor closely</button>
+          <button class="choice-btn" onclick="choose(this,false,'Bone marrow biopsy is not indicated for mild, unexplained anemia without cytopenias, blasts, or other red flags — this jumps ahead of the evidence.')">Proceed directly to bone marrow biopsy</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Note the association with increased mortality/frailty and monitor closely</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — unexplained anemia in older adults is independently associated with increased mortality and frailty, even at mild severity, once nutritional, renal, and inflammatory causes are excluded.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 — Advanced -->
+    <div class="lab-card" data-node="p2" data-diff="advanced" data-chapter="prognosis" style="display:none;">
+      <span class="node-tag">Prognosis · Node 2<span class="diff-badge advanced">Advanced</span></span>
+      <h3>Anemia at a new cancer diagnosis</h3>
+      <p class="stem">Newly diagnosed solid-tumor patient found to be anemic at staging workup.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — anemia at diagnosis is associated with worse overall survival across most solid tumors, though this partly reflects disease burden rather than pure causality, so it should inform risk stratification without being over-interpreted as an independently modifiable target.')">Recognize it as a marker of worse overall survival, largely reflecting disease burden</button>
+          <button class="choice-btn" onclick="choose(this,false,'Aggressively correcting the hemoglobin with an ESA to a normal target has not been shown to reverse the prognostic association and, in cancer-related anemia, carries added thromboembolic risk.')">Aggressively correct with ESA to normalize hemoglobin as a priority</button>
+          <button class="choice-btn" onclick="choose(this,false,'The association is real and worth noting for risk stratification — dismissing it as incidental misses prognostic information relevant to counseling and monitoring.')">Disregard it as an incidental finding unrelated to prognosis</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Recognize it as a marker of worse overall survival, largely reflecting disease burden</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — anemia at diagnosis is associated with worse overall survival across most solid tumors, though this partly reflects disease burden rather than pure causality.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       CHAPTER 4 — SCREENING / HARM
+  ========================================================== -->
+  <section class="chapter" id="ch-screening" data-chapter="screening">
+    <h2>4 · Screening &amp; Harm</h2>
+    <p class="chapter-desc">When to look for anemia proactively, and iatrogenic or drug-related contributors.</p>
+
+    <div class="progress" data-chapter-progress="screening">
+      <span class="progress-label">Decision point 1 of 2</span>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+
+    <!-- S1 — Beginner -->
+    <div class="lab-card" data-node="s1" data-diff="beginner" data-chapter="screening" style="display:block;">
+      <span class="node-tag">Screening · Node 1<span class="diff-badge beginner">Beginner</span></span>
+      <h3>Screening in pregnancy</h3>
+      <p class="stem">Antenatal clinic setting up a screening protocol for anemia across a general obstetric population.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — universal screening (at least once per trimester) is standard given high prevalence and low cost/harm, and is favored over risk-based approaches, which miss asymptomatic cases.')">Screen universally, at least once per trimester</button>
+          <button class="choice-btn" onclick="choose(this,false,'Risk-based screening alone misses asymptomatic cases in a population where prevalence is high enough that universal screening is favored.')">Screen only patients with risk factors for anemia</button>
+          <button class="choice-btn" onclick="choose(this,false,'Skipping screening entirely ignores the high prevalence of anemia in pregnancy and its associated adverse outcomes, which is exactly why universal screening is recommended.')">Do not screen unless the patient is symptomatic</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Screen universally, at least once per trimester</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — universal screening is standard given high prevalence and low cost/harm, and is favored over risk-based approaches, which miss asymptomatic cases.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 — Intermediate -->
+    <div class="lab-card" data-node="s2" data-diff="intermediate" data-chapter="screening" style="display:none;">
+      <span class="node-tag">Screening · Node 2<span class="diff-badge intermediate">Intermediate</span></span>
+      <h3>Chronic PPI use and iron/B12 deficiency</h3>
+      <p class="stem">Patient on long-term PPI therapy for reflux presents with new mild anemia.</p>
+      <div class="active-only">
+        <div class="choices">
+          <button class="choice-btn" onclick="choose(this,true,'Correct — long-term PPI use modestly increases the risk of both iron and B12 deficiency anemia, due to reduced acid-dependent absorption, with risk rising with duration of therapy — worth considering as a reversible contributor.')">Consider PPI use as a plausible, reversible contributor and check iron/B12 status</button>
+          <button class="choice-btn" onclick="choose(this,false,'Assuming PPIs are unrelated overlooks a real, dose/duration-dependent association with reduced iron and B12 absorption.')">Assume the anemia is unrelated to the PPI and look elsewhere first</button>
+          <button class="choice-btn" onclick="choose(this,false,'Stopping the PPI outright without evaluating the reflux or confirming the anemia\'s cause is premature — assess first, then weigh a deprescribing conversation.')">Stop the PPI immediately without further workup</button>
+        </div>
+        <div class="feedback"></div>
+        <button class="next-btn" onclick="advance(this)">Continue →</button>
+      </div>
+      <div class="passive-only">
+        <div class="transcript show">
+          <div class="t-turn"><div class="t-role learner">Learner selects</div><span class="t-choice-made">Consider PPI use as a plausible, reversible contributor and check iron/B12 status</span></div>
+          <div class="t-turn"><div class="t-role attending">Attending</div>Correct — long-term PPI use modestly increases risk of both iron and B12 deficiency anemia, due to reduced acid-dependent absorption, with risk rising with duration.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="final-summary" id="final-summary">
+      <h3>Session complete</h3>
+      <p id="final-text"></p>
+      <p style="opacity:.85; font-size:.85rem;">In the full unified map, each node here would deep-link to its matching CAT entry and to adjacent labs sharing the same disease/lens tags.</p>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       CHAPTER 5 — CLINICAL ALGORITHM
+  ========================================================== -->
+  <section class="chapter" id="ch-algorithm" data-chapter="algorithm">
+    <h2>5 · Clinical Algorithm — Approach to Anemia</h2>
+    <p class="chapter-desc">A morphology-first pathway from initial CBC/indices to a working diagnosis. For orientation only — always confirm against current guidelines and full clinical context.</p>
+
+    <div class="algo-wrap">
+      <div class="flow">
+        <div class="fnode terminal">Anemia confirmed on CBC (Hb below age/sex reference range)</div>
+        <div class="arrow"></div>
+        <div class="fnode decision">Check MCV — microcytic, normocytic, or macrocytic?</div>
+        <div class="arrow"></div>
+
+        <div class="branch-row">
+          <div class="branch">
+            <div class="branch-label">Microcytic (MCV &lt;80)</div>
+            <div class="fnode decision">Ferritin low or RDW high?</div>
+            <div class="arrow"></div>
+            <div class="fnode">Iron deficiency anemia → find the bleeding/absorption source</div>
+            <div class="arrow"></div>
+            <div class="fnode decision">RDW normal + ferritin normal?</div>
+            <div class="arrow"></div>
+            <div class="fnode">Consider thalassemia trait → Hb electrophoresis</div>
+          </div>
+
+          <div class="branch">
+            <div class="branch-label">Normocytic (MCV 80–100)</div>
+            <div class="fnode decision">Reticulocyte count elevated?</div>
+            <div class="arrow"></div>
+            <div class="fnode">Yes → hemolysis or blood loss → Coombs, LDH, haptoglobin, bilirubin</div>
+            <div class="arrow"></div>
+            <div class="fnode">No → check renal function, inflammatory markers → CKD / ACD / early marrow process</div>
+          </div>
+
+          <div class="branch">
+            <div class="branch-label">Macrocytic (MCV &gt;100)</div>
+            <div class="fnode decision">B12 / folate low, or marrow/liver/thyroid cause?</div>
+            <div class="arrow"></div>
+            <div class="fnode">Megaloblastic (B12/folate deficiency) → correct B12 before/with folate</div>
+            <div class="arrow"></div>
+            <div class="fnode">Non-megaloblastic → consider liver disease, hypothyroidism, myelodysplasia, alcohol</div>
+          </div>
+        </div>
+
+        <div class="arrow" style="margin-top:6px;"></div>
+        <div class="fnode terminal">Unexplained or discordant picture at any branch → peripheral smear review ± bone marrow biopsy</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Sample teaching content — Vibe Rounds design theme, built for demonstration. Not a clinical decision-support tool; verify against current literature and guidelines before applying to practice. Compiled 2026.
+</footer>
+
+<script>
+  let mode = 'active';
+  const chapters = {
+    diagnosis: ['d1','d2','d3','d4','d5'],
+    therapy: ['t1','t2','t3','t4'],
+    prognosis: ['p1','p2'],
+    screening: ['s1','s2']
+  };
+  let currentIndex = { diagnosis:0, therapy:0, prognosis:0, screening:0 };
+
+  function visibleNodesFor(chapterKey){
+    const body = document.body;
+    let diffs = ['beginner'];
+    if(body.classList.contains('diff-intermediate')) diffs = ['beginner','intermediate'];
+    if(body.classList.contains('diff-advanced')) diffs = ['beginner','intermediate','advanced'];
+    return chapters[chapterKey].filter(id=>{
+      const card = document.querySelector('.lab-card[data-node="'+id+'"]');
+      return diffs.includes(card.getAttribute('data-diff'));
+    });
+  }
+
+  function renderChapter(chapterKey){
+    const nodes = chapters[chapterKey];
+    const visible = visibleNodesFor(chapterKey);
+    nodes.forEach(id=>{
+      const card = document.querySelector('.lab-card[data-node="'+id+'"]');
+      card.style.display = 'none';
+    });
+    if(mode==='passive'){
+      visible.forEach(id=>{
+        document.querySelector('.lab-card[data-node="'+id+'"]').style.display='block';
+      });
+      return;
+    }
+    if(currentIndex[chapterKey] >= visible.length) currentIndex[chapterKey] = visible.length-1;
+    if(currentIndex[chapterKey] < 0) currentIndex[chapterKey] = 0;
+    const activeId = visible[currentIndex[chapterKey]];
+    if(activeId){
+      document.querySelector('.lab-card[data-node="'+activeId+'"]').style.display='block';
+    }
+    const progEl = document.querySelector('.progress[data-chapter-progress="'+chapterKey+'"]');
+    if(progEl){
+      progEl.querySelector('.progress-label').textContent =
+        `Decision point ${currentIndex[chapterKey]+1} of ${visible.length}`;
+      progEl.querySelector('.fill').style.width = `${(currentIndex[chapterKey]/visible.length)*100}%`;
+    }
+  }
+
+  function renderAll(){
+    Object.keys(chapters).forEach(renderChapter);
+  }
+
+  function choose(btn, isCorrect, explanation){
+    const container = btn.parentElement;
+    container.querySelectorAll('.choice-btn').forEach(b=>{
+      b.disabled = true;
+      if(b===btn) b.classList.add(isCorrect?'correct':'incorrect');
+    });
+    const card = btn.closest('.lab-card');
+    const fb = card.querySelector('.feedback');
+    fb.classList.add('show');
+    fb.innerHTML = `<div class="verdict ${isCorrect?'correct':'incorrect'}">${isCorrect?'On target':'Not the best next step'}</div>${explanation}`;
+    card.querySelector('.next-btn').classList.add('show');
+  }
+
+  function advance(nextBtn){
+    const card = nextBtn.closest('.lab-card');
+    const chapterKey = card.getAttribute('data-chapter');
+    const visible = visibleNodesFor(chapterKey);
+    if(currentIndex[chapterKey] < visible.length-1){
+      currentIndex[chapterKey]++;
+      renderChapter(chapterKey);
+    } else {
+      // chapter finished
+      card.style.display='none';
+      const progEl = document.querySelector('.progress[data-chapter-progress="'+chapterKey+'"]');
+      if(progEl) progEl.querySelector('.fill').style.width='100%';
+      if(chapterKey==='screening'){
+        document.getElementById('final-summary').classList.add('show');
+        document.getElementById('final-text').textContent =
+          'You\'ve completed the active-mode walk-through across Diagnosis, Therapy, Prognosis, and Screening at the current difficulty level. Raise the difficulty above to unlock intermediate and advanced nodes, or switch to Passive to re-read the whole set as a transcript.';
+      }
+    }
+  }
+
+  function setMode(m){
+    mode = m;
+    document.body.classList.toggle('passive-mode', m==='passive');
+    document.getElementById('btn-active').classList.toggle('active', m==='active');
+    document.getElementById('btn-passive').classList.toggle('active', m==='passive');
+    if(m==='active'){
+      document.getElementById('final-summary').classList.remove('show');
+    }
+    renderAll();
+  }
+
+  function setDifficulty(level){
+    document.body.classList.remove('diff-beginner','diff-intermediate','diff-advanced');
+    document.body.classList.add('diff-'+level);
+    ['btn-beginner','btn-intermediate','btn-advanced'].forEach(id=>{
+      document.getElementById(id).classList.remove('active','intermediate','advanced');
+    });
+    const btn = document.getElementById('btn-'+level);
+    btn.classList.add('active');
+    if(level==='intermediate') btn.classList.add('intermediate');
+    if(level==='advanced') btn.classList.add('advanced');
+    Object.keys(currentIndex).forEach(k=>currentIndex[k]=0);
+    renderAll();
+  }
+
+  function jumpTo(id){
+    if(!id) return;
+    document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  renderAll();
+</script>
+
+</body>
+</html>
