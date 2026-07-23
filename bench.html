@@ -8,12 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <!-- Google Analytics (GA4) — replace G-XXXXXXXXXX with your own Measurement ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-541054383"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-541054383');
   // Safe wrapper so the app never breaks if GA hasn't loaded (e.g. ad-blockers)
   function trackEvent(name, params){
     try{ if(typeof gtag === 'function') gtag('event', name, params || {}); }catch(e){}
@@ -1397,7 +1397,7 @@ $('downloadTranscriptBtn').addEventListener('click', ()=>{
 // Paste the "Web app URL" you get from deploying the Apps Script (see setup
 // instructions) between the quotes below. Leave it empty and the button will
 // just tell the user contribution isn't configured yet.
-const CONTRIBUTE_ENDPOINT = "";
+const CONTRIBUTE_ENDPOINT = "https://script.google.com/macros/s/AKfycbwWpGO_4RfgB7JImI4Et3V1wI95E-Am3z9OvKhDu8Qx_BNipOa4ZkgWKQ-qHiPlN2ze/exec";
 
 $('contributeBtn').addEventListener('click', async ()=>{
   const btn = $('contributeBtn');
