@@ -1272,7 +1272,7 @@ async function callModel(systemPrompt, userPrompt){
       },
       body: JSON.stringify({
         model: model,
-        max_tokens: 1400,
+        max_tokens: 2500,
         system: systemPrompt,
         messages: [{role:'user', content:userPrompt}]
       })
@@ -1283,7 +1283,9 @@ async function callModel(systemPrompt, userPrompt){
     }
     const data = await resp.json();
     const block = data.content && data.content.find(b=>b.type==='text');
-    return block ? block.text.trim() : '(no text returned)';
+    let out = block ? block.text.trim() : '(no text returned)';
+    if(data.stop_reason === 'max_tokens') out += '\n\n[⚠ response hit the token limit and was cut off mid-thought — raise max_tokens in the code, or click Next again for a fresh continuation]';
+    return out;
   } else if(provider==='gemini') {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`;
     const resp = await fetch(url, {
@@ -1292,7 +1294,7 @@ async function callModel(systemPrompt, userPrompt){
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
         contents: [{ role:'user', parts: [{ text: userPrompt }] }],
-        generationConfig: { maxOutputTokens: 1400 }
+        generationConfig: { maxOutputTokens: 2500 }
       })
     });
     if(!resp.ok){
@@ -1302,7 +1304,9 @@ async function callModel(systemPrompt, userPrompt){
     const data = await resp.json();
     const cand = data.candidates && data.candidates[0];
     const text = cand && cand.content && cand.content.parts && cand.content.parts.map(p=>p.text||'').join('');
-    return text ? text.trim() : '(no text returned)';
+    let out = text ? text.trim() : '(no text returned)';
+    if(cand && cand.finishReason === 'MAX_TOKENS') out += '\n\n[⚠ response hit the token limit and was cut off mid-thought — raise maxOutputTokens in the code, or click Next again for a fresh continuation]';
+    return out;
   } else {
     const url = endpoint || 'https://api.openai.com/v1/chat/completions';
     const resp = await fetch(url, {
@@ -1313,7 +1317,7 @@ async function callModel(systemPrompt, userPrompt){
       },
       body: JSON.stringify({
         model: model,
-        max_tokens: 1400,
+        max_tokens: 2500,
         messages: [
           {role:'system', content:systemPrompt},
           {role:'user', content:userPrompt}
@@ -1325,8 +1329,11 @@ async function callModel(systemPrompt, userPrompt){
       throw new Error(`API error (${resp.status}): ${errText.slice(0,300)}`);
     }
     const data = await resp.json();
-    const msg = data.choices && data.choices[0] && data.choices[0].message;
-    return msg ? msg.content.trim() : '(no text returned)';
+    const choice = data.choices && data.choices[0];
+    const msg = choice && choice.message;
+    let out = msg ? msg.content.trim() : '(no text returned)';
+    if(choice && choice.finish_reason === 'length') out += '\n\n[⚠ response hit the token limit and was cut off mid-thought — raise max_tokens in the code, or click Next again for a fresh continuation]';
+    return out;
   }
 }
 
