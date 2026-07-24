@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Case Simulator</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-541054383"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-541054383');
+</script>
+<style>
+  :root{
+    --bg:#fbfaf7;
+    --ink:#14161a;
+    --dim:#6b6f76;
+    --line:#d8d6cf;
+    --accent:#1f6f4a;
+    --accent-dim:#e6efe9;
+    --warn:#a14b2a;
+    --panel:#ffffff;
+    --mono: 'IBM Plex Mono','SFMono-Regular',Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--mono); font-size:14px; line-height:1.5;
+  }
+  a{color:var(--accent);}
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 20px 80px;}
+  header.top{border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:22px;}
+  .brandline{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+  h1{font-size:20px; margin:0; letter-spacing:.2px; font-weight:700;}
+  .rx{color:var(--dim); font-size:12.5px;}
+  .tags{margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;}
+  .tag{border:1px solid var(--line); padding:2px 8px; font-size:11px; color:var(--dim); border-radius:2px; text-transform:uppercase; letter-spacing:.06em;}
+  .disclaimer{margin-top:12px; font-size:12px; color:var(--dim); border-left:2px solid var(--warn); padding-left:10px;}
+  .disclaimer b{color:var(--ink);}
+
+  .step{margin-bottom:26px;}
+  .step-head{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+  .num{width:20px; height:20px; border:1px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex:none;}
+  .step-title{font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.06em;}
+  .step-body{border:1px solid var(--line); background:var(--panel); padding:16px;}
+
+  label.field-label{display:block; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--dim); margin-bottom:5px;}
+  input[type=text], input[type=password], select, textarea{
+    width:100%; font-family:var(--mono); font-size:13px; padding:8px 10px;
+    border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:2px;
+  }
+  textarea{resize:vertical;}
+  .row{display:grid; gap:14px;}
+  .row.cols-2{grid-template-columns:1fr 1fr;}
+  .row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:720px){ .row.cols-2, .row.cols-3{grid-template-columns:1fr;} }
+
+  button{
+    font-family:var(--mono); font-size:12.5px; cursor:pointer;
+    border:1px solid var(--ink); background:var(--ink); color:#fff;
+    padding:9px 16px; border-radius:2px; letter-spacing:.02em;
+  }
+  button.secondary{background:#fff; color:var(--ink); border:1px solid var(--line);}
+  button.peer{background:var(--accent-dim); color:var(--accent); border:1px solid var(--accent);}
+  button:disabled{opacity:.45; cursor:not-allowed;}
+  button:hover:not(:disabled){filter:brightness(1.08);}
+
+  #specialtySelect{margin-bottom:14px;}
+
+  .hint{font-size:11.5px; color:var(--dim); margin-top:6px;}
+  .status-line{font-size:11.5px; color:var(--dim); margin-top:10px; min-height:14px;}
+  .status-line.err{color:var(--warn);}
+
+  /* Workspace */
+  #workspace{display:none;}
+  .case-banner{display:flex; justify-content:space-between; align-items:center; border:1px solid var(--line); background:var(--panel); padding:12px 16px; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
+  .case-banner .meta{font-size:12px; color:var(--dim);}
+  .case-banner .meta b{color:var(--ink);}
+  .case-status{font-size:11px; padding:3px 8px; border-radius:2px; border:1px solid var(--line); text-transform:uppercase; letter-spacing:.05em;}
+  .case-status.ongoing{color:var(--accent); border-color:var(--accent);}
+  .case-status.complete{color:var(--warn); border-color:var(--warn);}
+
+  .grid-main{display:grid; grid-template-columns:1.15fr 1fr; gap:18px;}
+  @media (max-width:960px){ .grid-main{grid-template-columns:1fr;} }
+
+  .panel{border:1px solid var(--line); background:var(--panel);}
+  .panel-head{border-bottom:1px solid var(--line); padding:9px 14px; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); display:flex; justify-content:space-between; align-items:center;}
+  .panel-body{padding:14px;}
+
+  /* console */
+  #console{height:420px; overflow-y:auto; padding:14px; font-size:13px;}
+  .msg{margin-bottom:14px; padding-bottom:12px; border-bottom:1px dashed var(--line);}
+  .msg:last-child{border-bottom:none;}
+  .msg .who{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin-bottom:4px;}
+  .msg.user .who{color:var(--accent);}
+  .msg.case .who{color:var(--ink);}
+  .msg .body{white-space:pre-wrap;}
+  .msg.peer{background:var(--accent-dim);}
+  .msg.peer .who{color:var(--accent);}
+
+  .composer{border-top:1px solid var(--line); padding:12px 14px;}
+  .composer-row{display:flex; gap:8px;}
+  .composer textarea{flex:1; min-height:52px;}
+  .composer-actions{display:flex; flex-direction:column; gap:6px;}
+
+  /* dashboard */
+  .vitals-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px;}
+  .vital{border:1px solid var(--line); padding:8px 10px; text-align:center; border-radius:2px;}
+  .vital .k{font-size:10px; color:var(--dim); text-transform:uppercase;}
+  .vital .v{font-size:15px; font-weight:700; margin-top:2px;}
+  .vital.flag-high .v, .vital.flag-low .v{color:var(--warn);}
+
+  table.labs{width:100%; border-collapse:collapse; font-size:12.5px; margin-bottom:4px;}
+  table.labs th, table.labs td{border-bottom:1px solid var(--line); padding:5px 6px; text-align:left;}
+  table.labs th{color:var(--dim); font-weight:600; text-transform:uppercase; font-size:10.5px;}
+  table.labs td.flag-high, table.labs td.flag-low{color:var(--warn); font-weight:700;}
+  .empty-note{color:var(--dim); font-size:12px; font-style:italic;}
+
+  .tabbar{display:flex; border-bottom:1px solid var(--line);}
+  .tabbtn{flex:1; padding:9px 6px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; text-align:center; color:var(--dim); border-right:1px solid var(--line); cursor:pointer; background:#fff;}
+  .tabbtn:last-child{border-right:none;}
+  .tabbtn.active{color:var(--accent); font-weight:700; background:var(--accent-dim);}
+  .tabpane{display:none; padding:14px; font-size:13px;}
+  .tabpane.active{display:block;}
+
+  .soap-block{margin-bottom:12px;}
+  .soap-block .lbl{font-size:10.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; display:block;}
+  .soap-block .txt{white-space:pre-wrap;}
+
+  ol.ddx{margin:0; padding-left:18px;}
+  ol.ddx li{margin-bottom:6px;}
+
+  ul.pearls{margin:0; padding-left:18px;}
+  ul.pearls li{margin-bottom:8px;}
+  ul.pearls li::marker{color:var(--accent);}
+
+  .footer-note{margin-top:30px; text-align:center; font-size:11px; color:var(--dim);}
+  .spinner{display:inline-block; width:11px; height:11px; border:2px solid var(--line); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; vertical-align:middle; margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brandline">
+      <h1>Vibe Rounds — Case Simulator</h1>
+      <span class="rx">Rx: cases, not answers</span>
+    </div>
+    <div class="links-row" style="margin-top:10px; font-size:12px;">
+      <a href="https://avi33tbtt.github.io/" target="_blank">Project website</a>
+      &nbsp;·&nbsp;
+      <a href="https://avi33tbtt.github.io/clinical-polemos.html" target="_blank">Healthcare Debate Bench</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank">Dr. Avinash — LinkedIn</a>
+    </div>
+    <div class="disclaimer">
+      <b>Educational use only.</b> All case content is LLM-generated and may contain errors. Not a diagnostic tool and not for real patient care. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.
+    </div>
+  </header>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-head"><div class="num">1</div><div class="step-title">Model</div></div>
+    <div class="step-body">
+      <div class="row cols-3">
+        <div>
+          <label class="field-label">Provider</label>
+          <select id="provider">
+            <option value="anthropic">Claude</option>
+            <option value="other">Other (OpenAI-compatible)</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Model name</label>
+          <input type="text" id="modelName" value="claude-sonnet-4-5" placeholder="e.g. claude-sonnet-4-5">
+        </div>
+        <div id="endpointField" style="display:none;">
+          <label class="field-label">API endpoint</label>
+          <input type="text" id="endpoint" placeholder="https://.../chat/completions">
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <label class="field-label">API key</label>
+        <input type="password" id="apiKey" placeholder="sk-ant-...">
+      </div>
+      <div class="hint">Key is saved to <code>localStorage</code> on this device only. <a href="https://console.anthropic.com/settings/keys" target="_blank">Get a Claude key →</a></div>
+      <div class="status-line" id="keyStatus"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SPECIALTY -->
+  <div class="step">
+    <div class="step-head"><div class="num">2</div><div class="step-title">Specialty</div></div>
+    <div class="step-body">
+      <label class="field-label">Choose a specialty for the case</label>
+      <select id="specialtySelect">
+        <option value="" selected disabled>Select a specialty…</option>
+      </select>
+      <div class="row cols-2">
+        <div>
+          <label class="field-label">Difficulty</label>
+          <select id="difficulty">
+            <option value="foundational">Foundational</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced / atypical</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Setting</label>
+          <select id="setting">
+            <option value="emergency department">Emergency department</option>
+            <option value="general ward">General ward</option>
+            <option value="outpatient clinic">Outpatient clinic</option>
+            <option value="ICU">ICU</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <button id="startBtn" disabled>Start case</button>
+        <span class="status-line" id="startStatus"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="case-banner">
+      <div class="meta">Specialty: <b id="bannerSpecialty">—</b> &nbsp;·&nbsp; Setting: <b id="bannerSetting">—</b> &nbsp;·&nbsp; Difficulty: <b id="bannerDifficulty">—</b></div>
+      <div class="case-status ongoing" id="caseStatusPill">ongoing</div>
+    </div>
+
+    <div class="grid-main">
+      <!-- LEFT: console -->
+      <div class="panel">
+        <div class="panel-head">
+          <span>Console</span>
+          <span id="turnCount" style="text-transform:none; letter-spacing:0;">turn 0</span>
+        </div>
+        <div id="console"></div>
+        <div class="composer">
+          <div class="composer-row">
+            <textarea id="userInput" placeholder="Ask the patient a question, request an exam finding, order a test, or state your management plan..."></textarea>
+            <div class="composer-actions">
+              <button id="sendBtn">Send</button>
+              <button class="peer" id="peerBtn">Peer</button>
+            </div>
+          </div>
+          <div class="status-line" id="consoleStatus"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: dashboard + tabs -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="panel">
+          <div class="panel-head"><span>Dashboard</span></div>
+          <div class="panel-body">
+            <div class="vitals-grid" id="vitalsGrid"></div>
+            <table class="labs" id="labsTable">
+              <thead><tr><th>Test</th><th>Value</th><th>Flag</th></tr></thead>
+              <tbody id="labsBody"></tbody>
+            </table>
+            <div class="empty-note" id="labsEmpty">No labs resulted yet.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="tabbar">
+            <div class="tabbtn active" data-tab="soap">SOAP</div>
+            <div class="tabbtn" data-tab="reasoning">Reasoning</div>
+            <div class="tabbtn" data-tab="pearls">Pearls</div>
+          </div>
+          <div class="tabpane active" id="tab-soap">
+            <div class="soap-block"><span class="lbl">S — Subjective</span><div class="txt" id="soapS">—</div></div>
+            <div class="soap-block"><span class="lbl">O — Objective</span><div class="txt" id="soapO">—</div></div>
+            <div class="soap-block"><span class="lbl">A — Assessment</span><div class="txt" id="soapA">—</div></div>
+            <div class="soap-block"><span class="lbl">P — Plan</span><div class="txt" id="soapP">—</div></div>
+          </div>
+          <div class="tabpane" id="tab-reasoning">
+            <span class="lbl" style="display:block; margin-bottom:8px;">Differential (ranked)</span>
+            <ol class="ddx" id="ddxList"><li class="empty-note" style="list-style:none; margin-left:-18px;">Not yet generated.</li></ol>
+          </div>
+          <div class="tabpane" id="tab-pearls">
+            <ul class="pearls" id="pearlsList"><li class="empty-note" style="list-style:none; margin-left:-18px;">Pearls will appear here as the case unfolds.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">Vibe Rounds - Case Simulator · runs entirely in your browser · bring your own key</div>
+</div>
+
+<script>
+const SPECIALTIES = ["Cardiology","Respiratory","Gastroenterology","Neurology","Endocrine","Renal / Electrolyte",
+  "Infectious Disease","Emergency / Trauma","Psychiatry","Pediatrics","Hematology / Oncology","Rheumatology"];
+
+const specialtySelect = document.getElementById('specialtySelect');
+let selectedSpecialty = null;
+SPECIALTIES.forEach(s=>{
+  const opt = document.createElement('option');
+  opt.value = s; opt.textContent = s;
+  specialtySelect.appendChild(opt);
+});
+specialtySelect.addEventListener('change', ()=>{
+  selectedSpecialty = specialtySelect.value || null;
+  refreshStart();
+  if(typeof gtag==='function') gtag('event','specialty_selected',{specialty:selectedSpecialty});
+});
+
+// ---- provider / key persistence ----
+const providerSel = document.getElementById('provider');
+const endpointField = document.getElementById('endpointField');
+const endpointInput = document.getElementById('endpoint');
+const modelInput = document.getElementById('modelName');
+const keyInput = document.getElementById('apiKey');
+const keyStatus = document.getElementById('keyStatus');
+
+function loadStored(){
+  try{
+    const s = JSON.parse(localStorage.getItem('vr_case_sim_cfg')||'{}');
+    if(s.provider) providerSel.value = s.provider;
+    if(s.model) modelInput.value = s.model;
+    if(s.endpoint) endpointInput.value = s.endpoint;
+    if(s.key) { keyInput.value = s.key; keyStatus.textContent = 'Key loaded from this browser.'; }
+  }catch(e){}
+  toggleEndpointField();
+}
+function persist(){
+  localStorage.setItem('vr_case_sim_cfg', JSON.stringify({
+    provider: providerSel.value, model: modelInput.value,
+    endpoint: endpointInput.value, key: keyInput.value
+  }));
+}
+function toggleEndpointField(){
+  endpointField.style.display = providerSel.value === 'other' ? 'block' : 'none';
+}
+providerSel.addEventListener('change', ()=>{ toggleEndpointField(); persist(); refreshStart(); });
+[modelInput, endpointInput, keyInput].forEach(el=>el.addEventListener('input', ()=>{ persist(); refreshStart(); }));
+loadStored();
+
+// ---- start gating ----
+const startBtn = document.getElementById('startBtn');
+const startStatus = document.getElementById('startStatus');
+function refreshStart(){
+  const ok = selectedSpecialty && keyInput.value.trim().length>0 && modelInput.value.trim().length>0
+    && (providerSel.value!=='other' || endpointInput.value.trim().length>0);
+  startBtn.disabled = !ok;
+}
+refreshStart();
+
+// ---- state ----
+let history = []; // {role:'user'|'assistant', content:'...'} raw text turns for API
+let turnCount = 0;
+let caseComplete = false;
+
+const SYSTEM_PROMPT_BASE = (specialty, setting, difficulty) => `You are the simulation engine for "Vibe Rounds Case Simulator," a clinical-reasoning training tool for medical learners. You play the roles of patient, nurse, and diagnostic results, and you track structured case state.
+
+Case parameters:
+- Specialty focus: ${specialty}
+- Setting: ${setting}
+- Difficulty: ${difficulty}
+
+Rules:
+- This is a simulation for educational reasoning practice only, never real patient care. Never break character to give real-world medical advice.
+- On the FIRST turn (when the user message is exactly "__BEGIN__"), invent a plausible, internally consistent case (chief complaint, brief history, initial vitals) appropriate to the specialty/setting/difficulty, and present the opening scenario as "message". Do not reveal the diagnosis. Also populate an initial differential and initial vitals.
+- On every subsequent turn, respond to the learner's action (a question to the patient, an exam maneuver, an ordered test, or a management step) with what would realistically happen or be found, advancing the case coherently. Reveal new labs/vitals/exam findings only when the learner's action would elicit them.
+- Keep the underlying case internally consistent turn to turn (same past history, same true diagnosis, same values already given).
+- Continuously update: vitals (only include vitals that exist/are known so far), labs (append newly resulted labs; do not repeat old ones already sent unless they change), a cumulative SOAP note (subjective/objective/assessment/plan, each as a short running paragraph reflecting everything known so far), a ranked differential list (most to least likely, 3-6 items, each with a few-word rationale), and any NEW clinical pearls worth surfacing this turn (short, specific, non-repeating; can be empty array most turns).
+- Mark caseStatus "complete" only once the learner has committed to a final diagnosis and management plan and you have delivered a brief closing debrief; otherwise "ongoing".
+- Respond ONLY with a single valid JSON object, no markdown fences, no prose outside the JSON, matching exactly this shape:
+{"message": "string, what the patient/environment says or shows this turn, 1-6 sentences",
+ "vitals": {"HR": "string or omit key", "BP": "string or omit key", "RR": "string or omit key", "Temp": "string or omit key", "SpO2": "string or omit key"},
+ "labs": [{"name":"string","value":"string","flag":"high|low|normal"}],
+ "soap": {"s":"string","o":"string","a":"string","p":"string"},
+ "differential": ["ranked item 1 with brief rationale", "..."],
+ "newPearls": ["string", "..."],
+ "caseStatus": "ongoing" or "complete"}
+Only include lab/vital entries that are newly known or updated; omit unknown fields rather than inventing placeholders.`;
+
+function currentSystemPrompt(){
+  return SYSTEM_PROMPT_BASE(selectedSpecialty, document.getElementById('setting').value, document.getElementById('difficulty').value);
+}
+
+// ---- API call ----
+async function callModel(userText){
+  const provider = providerSel.value;
+  const model = modelInput.value.trim();
+  const key = keyInput.value.trim();
+  history.push({role:'user', content:userText});
+
+  if(provider === 'anthropic'){
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model: model,
+        max_tokens: 1400,
+        system: currentSystemPrompt(),
+        messages: history
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = (data.content||[]).map(b=>b.text||'').join('\n').trim();
+    history.push({role:'assistant', content:text});
+    return text;
+  } else {
+    const endpoint = endpointInput.value.trim();
+    const resp = await fetch(endpoint, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+key },
+      body: JSON.stringify({
+        model: model,
+        messages: [{role:'system', content: currentSystemPrompt()}, ...history]
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = data.choices?.[0]?.message?.content?.trim() || '';
+    history.push({role:'assistant', content:text});
+    return text;
+  }
+}
+
+function parseJsonLoose(text){
+  let t = text.trim();
+  t = t.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+  const start = t.indexOf('{'); const end = t.lastIndexOf('}');
+  if(start>=0 && end>start) t = t.slice(start, end+1);
+  return JSON.parse(t);
+}
+
+// ---- UI render helpers ----
+const consoleEl = document.getElementById('console');
+function appendMsg(who, text, cls){
+  const div = document.createElement('div');
+  div.className = 'msg ' + (cls||'');
+  div.innerHTML = `<div class="who">${who}</div><div class="body"></div>`;
+  div.querySelector('.body').textContent = text;
+  consoleEl.appendChild(div);
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+const vitalsGrid = document.getElementById('vitalsGrid');
+let vitalsState = {};
+function renderVitals(newVitals){
+  Object.assign(vitalsState, newVitals||{});
+  vitalsGrid.innerHTML = '';
+  const keys = Object.keys(vitalsState);
+  if(keys.length===0){ vitalsGrid.innerHTML = '<div class="empty-note">No vitals yet.</div>'; return; }
+  keys.forEach(k=>{
+    const v = document.createElement('div');
+    v.className = 'vital';
+    v.innerHTML = `<div class="k">${k}</div><div class="v">${vitalsState[k]}</div>`;
+    vitalsGrid.appendChild(v);
+  });
+}
+
+const labsBody = document.getElementById('labsBody');
+const labsEmpty = document.getElementById('labsEmpty');
+let labsState = [];
+function renderLabs(newLabs){
+  if(newLabs && newLabs.length){
+    newLabs.forEach(nl=>{
+      const idx = labsState.findIndex(l=>l.name.toLowerCase()===nl.name.toLowerCase());
+      if(idx>=0) labsState[idx]=nl; else labsState.push(nl);
+    });
+  }
+  labsBody.innerHTML='';
+  labsEmpty.style.display = labsState.length ? 'none':'block';
+  labsState.forEach(l=>{
+    const tr = document.createElement('tr');
+    const flagCls = l.flag==='high'?'flag-high':(l.flag==='low'?'flag-low':'');
+    tr.innerHTML = `<td>${l.name}</td><td>${l.value}</td><td class="${flagCls}">${l.flag||'normal'}</td>`;
+    labsBody.appendChild(tr);
+  });
+}
+
+function renderSoap(soap){
+  if(!soap) return;
+  if(soap.s) document.getElementById('soapS').textContent = soap.s;
+  if(soap.o) document.getElementById('soapO').textContent = soap.o;
+  if(soap.a) document.getElementById('soapA').textContent = soap.a;
+  if(soap.p) document.getElementById('soapP').textContent = soap.p;
+}
+
+function renderDifferential(list){
+  if(!list || !list.length) return;
+  const ol = document.getElementById('ddxList');
+  ol.innerHTML='';
+  list.forEach(item=>{
+    const li = document.createElement('li'); li.textContent = item; ol.appendChild(li);
+  });
+}
+
+function renderPearls(newPearls){
+  if(!newPearls || !newPearls.length) return;
+  const ul = document.getElementById('pearlsList');
+  if(ul.querySelector('.empty-note')) ul.innerHTML='';
+  newPearls.forEach(p=>{
+    const li = document.createElement('li'); li.textContent = p; ul.appendChild(li);
+  });
+}
+
+function setCaseStatus(status){
+  const pill = document.getElementById('caseStatusPill');
+  caseComplete = status === 'complete';
+  pill.textContent = status;
+  pill.className = 'case-status ' + (caseComplete ? 'complete':'ongoing');
+  document.getElementById('sendBtn').disabled = caseComplete;
+  document.getElementById('peerBtn').disabled = caseComplete;
+}
+
+// tabs
+document.querySelectorAll('.tabbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- start case ----
+startBtn.addEventListener('click', async ()=>{
+  document.getElementById('bannerSpecialty').textContent = selectedSpecialty;
+  document.getElementById('bannerSetting').textContent = document.getElementById('setting').value;
+  document.getElementById('bannerDifficulty').textContent = document.getElementById('difficulty').value;
+  document.getElementById('workspace').style.display = 'block';
+  document.getElementById('workspace').scrollIntoView({behavior:'smooth'});
+  startBtn.disabled = true; startStatus.innerHTML = '<span class="spinner"></span>Generating case...';
+  history = []; turnCount = 0; vitalsState = {}; labsState = [];
+  try{
+    const raw = await callModel('__BEGIN__');
+    const parsed = parseJsonLoose(raw);
+    applyTurn(parsed, 'case');
+    startStatus.textContent = '';
+    if(typeof gtag==='function') gtag('event','case_started',{
+      specialty: selectedSpecialty,
+      setting: document.getElementById('setting').value,
+      difficulty: document.getElementById('difficulty').value
+    });
+  }catch(err){
+    startStatus.textContent = 'Failed to start: ' + err.message;
+    startStatus.classList.add('err');
+  }
+  startBtn.disabled = false;
+});
+
+function applyTurn(parsed, who){
+  appendMsg(who==='case' ? 'Case' : 'Case', parsed.message || '(no message returned)', 'case');
+  renderVitals(parsed.vitals);
+  renderLabs(parsed.labs);
+  renderSoap(parsed.soap);
+  renderDifferential(parsed.differential);
+  renderPearls(parsed.newPearls);
+  setCaseStatus(parsed.caseStatus || 'ongoing');
+  turnCount++;
+  document.getElementById('turnCount').textContent = 'turn ' + turnCount;
+}
+
+// ---- send / peer ----
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const peerBtn = document.getElementById('peerBtn');
+const consoleStatus = document.getElementById('consoleStatus');
+
+async function sendTurn(){
+  const text = userInput.value.trim();
+  if(!text || caseComplete) return;
+  appendMsg('You', text, 'user');
+  userInput.value = '';
+  sendBtn.disabled = true; peerBtn.disabled = true;
+  consoleStatus.innerHTML = '<span class="spinner"></span>Working...';
+  consoleStatus.classList.remove('err');
+  try{
+    const raw = await callModel(text);
+    const parsed = parseJsonLoose(raw);
+    applyTurn(parsed, 'case');
+    consoleStatus.textContent = '';
+    if(typeof gtag==='function'){
+      gtag('event','turn_sent',{specialty: selectedSpecialty, turn: turnCount});
+      if((parsed.caseStatus||'ongoing')==='complete'){
+        gtag('event','case_completed',{specialty: selectedSpecialty, total_turns: turnCount});
+      }
+    }
+  }catch(err){
+    consoleStatus.textContent = 'Error: ' + err.message;
+    consoleStatus.classList.add('err');
+  }
+  sendBtn.disabled = caseComplete; peerBtn.disabled = caseComplete;
+}
+sendBtn.addEventListener('click', sendTurn);
+userInput.addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ sendTurn(); }
+});
+
+peerBtn.addEventListener('click', async ()=>{
+  if(caseComplete) return;
+  peerBtn.disabled = true; sendBtn.disabled = true;
+  consoleStatus.innerHTML = '<span class="spinner"></span>Asking a peer...';
+  consoleStatus.classList.remove('err');
+  const peerAsk = `__PEER_HELP__ The learner is stuck and has not typed a next step. Based on everything known about the case so far, suggest ONE concrete next question, exam maneuver, test order, or management step they could take, phrased as if a fellow resident were quietly coaching them (2-3 sentences, supportive, do not reveal the diagnosis outright). Respond ONLY with this JSON shape: {"suggestion":"string"} and do not advance the case state.`;
+  try{
+    // side-channel call: don't touch main history's case-state consistency expectations beyond an extra turn
+    const raw = await callModel(peerAsk);
+    let suggestion = '';
+    try{ suggestion = parseJsonLoose(raw).suggestion; }catch(e){ suggestion = raw; }
+    appendMsg('Peer', suggestion, 'peer');
+    userInput.value = suggestion;
+    consoleStatus.textContent = 'Peer suggestion loaded into the input — edit and send when ready.';
+    if(typeof gtag==='function') gtag('event','peer_used',{specialty: selectedSpecialty, turn: turnCount});
+  }catch(err){
+    consoleStatus.textContent = 'Error: ' + err.message;
+    consoleStatus.classList.add('err');
+  }
+  peerBtn.disabled = caseComplete; sendBtn.disabled = caseComplete;
+});
+</script>
+</body>
+</html>
