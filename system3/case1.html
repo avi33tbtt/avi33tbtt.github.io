@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module S3 Case Run — 42F with G6PD/AMPD1/Suspected GSD</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --ink: #1f2320;
+    --muted: #5b6560;
+    --accent: #7a4f2b;
+    --accent-soft: #f1e6d8;
+    --line: #ddd6c8;
+    --rank1: #fbeceb;
+    --rank2: #fdf3e6;
+    --rank3: #fbf6df;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  header.page {
+    border-bottom: 3px double var(--accent);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 1.65rem;
+    margin: 0 0 6px;
+    color: var(--accent);
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .tag-row {
+    margin-top: 14px;
+    font-size: 0.85rem;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin: 4px 6px 4px 0;
+    color: var(--accent);
+  }
+  .disclaimer {
+    background: #fff8f6;
+    border-left: 4px solid #b5443a;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    margin: 20px 0 30px;
+    color: #4a2a25;
+  }
+  .disclaimer strong { color: #b5443a; }
+  .note-box {
+    background: #f5f7f2;
+    border-left: 4px solid #6d8a5f;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin: 20px 0;
+  }
+  h2 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+    margin-top: 40px;
+  }
+  h3 { font-size: 1.05rem; color: var(--ink); margin-top: 24px; }
+  .scan-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 18px 0;
+  }
+  @media (max-width: 640px) { .scan-summary { grid-template-columns: 1fr; } }
+  .scan-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .scan-card h4 {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .scan-card.touched { border-top: 4px solid #6d8a5f; }
+  .scan-card.silent { border-top: 4px solid #b5443a; }
+
+  table.enrichment {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 10px;
+    font-size: 0.92rem;
+  }
+  table.enrichment th {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  table.enrichment td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.enrichment tr:nth-child(1) td { background: var(--rank1); }
+  table.enrichment tr:nth-child(2) td { background: var(--rank1); }
+  table.enrichment tr:nth-child(3) td { background: var(--rank1); }
+  table.enrichment tr:nth-child(4) td { background: var(--rank2); }
+  table.enrichment tr:nth-child(5) td { background: var(--rank2); }
+  table.enrichment tr:nth-child(6) td { background: var(--rank2); }
+  table.enrichment tr:nth-child(7) td { background: var(--rank3); }
+  table.enrichment tr:nth-child(8) td { background: var(--rank3); }
+  table.enrichment tr:nth-child(9) td { background: var(--rank3); }
+  table.enrichment tr:nth-child(10) td { background: #fbfbf6; }
+
+  .rank-num {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+  .impact {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .impact.i10, .impact.i9 { color: #b5443a; }
+  .impact.i8, .impact.i7 { color: #b8863b; }
+  .impact.i6, .impact.i5 { color: #6d8a5f; }
+
+  .tier-pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    background: var(--accent-soft);
+    border-radius: 5px;
+    padding: 2px 6px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .verdict {
+    font-style: italic;
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 24px 0;
+  }
+
+  footer {
+    margin-top: 50px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <h1>Module S3 — Ultima Thule Socratic Enrichment Engine</h1>
+    <p class="subtitle">Case Run: 42-year-old woman, G6PD (Seattle variant) &amp; AMPD1 deficiency, suspected Glycogen Storage Disease, Behçet's, lifelong multi-system illness since birth</p>
+    <div class="tag-row">
+      <span class="tag">System 3 — Domain-Guided Enrichment</span>
+      <span class="tag">VibeRounds Companion Module</span>
+      <span class="tag">Source: classworkdecjan.blogspot.com, 2019/2020</span>
+    </div>
+  </header>
+
+  <div class="disclaimer">
+    <strong>Clinical Disclaimer.</strong> This is a learner's educational reasoning-enrichment exercise, not a diagnostic or care-planning output. Every question below requires independent clinical verification before being acted upon. This module plays a Socratic, educational role only.
+  </div>
+
+  <h2>Domain Scan Verdict</h2>
+  <p>This is an extremely dense, self-researched narrative — genetically rich, diet/supplement rich, and biomedically hyper-literate. That density is itself a trap: nearly everything already on offer sits in Tier 1–2 (molecular / genetic) territory the patient already dominates. The silent domains are elsewhere.</p>
+
+  <div class="scan-summary">
+    <div class="scan-card touched">
+      <h4>Heavily Touched</h4>
+      <p>Genetics &amp; SNP panel, diet/supplement self-trials, family medical history, symptom trigger mapping, self-directed research and patient-advocacy narrative.</p>
+    </div>
+    <div class="scan-card silent">
+      <h4>Heavily Silent</h4>
+      <p>Current psychiatric safety status, anesthesia/perioperative risk pattern, structural identity/meaning, and several "mentioned once, never followed up" threads (CSF leak, cardiac family pattern, cycle-timing).</p>
+    </div>
+  </div>
+
+  <h2>Top-10 Ultima Thule Socratic Enrichment Table</h2>
+
+  <table class="enrichment">
+    <thead>
+      <tr>
+        <th style="width:4%">#</th>
+        <th style="width:12%">Tier &amp; Level</th>
+        <th style="width:14%">Domain</th>
+        <th style="width:36%">Socratic Question</th>
+        <th style="width:5%">Impact</th>
+        <th style="width:29%">Why this could change the picture</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rank-num">1</td>
+        <td><span class="tier-pill">Tier 2 · Lvl 38</span><br>Pharmacogenomic / quantum</td>
+        <td>Anesthesia awareness — familial pattern</td>
+        <td>Both you and your grandmother have woken up during surgery. Has anyone ever formally worked this up as a pharmacogenomic anesthesia-metabolism issue, or documented it as a standing anesthesia-risk alert for future procedures?</td>
+        <td class="impact i10">10</td>
+        <td>A two-generation pattern of intraoperative awareness is not an anecdote — it's a documented rare but real phenomenon, often tied to drug metabolism variants. Undocumented, it will recur at the next surgery, with real harm potential.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">2</td>
+        <td><span class="tier-pill">Tier 5 · Lvl 84</span><br>Meta-cognitive / safety self-check</td>
+        <td>Current psychiatric safety status</td>
+        <td>Given the suicide attempt at 15 and the lifelong "sudden snap" mood states you still describe — what does your current safety plan look like, and who checks in on that, separate from the biomedical workup?</td>
+        <td class="impact i9">9</td>
+        <td>A 27-year-old psychiatric history plus an ongoing, undiagnosed paroxysmal mood/rage state is read entirely through a metabolic lens (G6PD/AMPD1/GSD) here. If that framing displaces active mental-health monitoring, a known risk factor goes unmanaged.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">3</td>
+        <td><span class="tier-pill">Tier 1 · Lvl 5-6</span><br>Organ-system, unresolved sensor gap</td>
+        <td>CSF leak / raised ICP</td>
+        <td>You've had "fluid mentioned in scans since childhood," a fluid discharge from your nose after a loud head "pop," and you've asked docs to check your ICP and were dismissed. Has anyone ever ordered a formal CSF-leak workup (beta-2-transferrin, dedicated imaging) or opening-pressure LP?</td>
+        <td class="impact i9">9</td>
+        <td>A concrete, testable, high-yield gap — a symptom cluster narratively normalized rather than worked up, despite being one of the more mechanistically tractable threads in the whole case.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">4</td>
+        <td><span class="tier-pill">Tier 1 · Lvl 9-10</span><br>Population/genetic, forward-looking</td>
+        <td>Cardiac family pattern</td>
+        <td>Your father died at 52 looking decades older with heart issues and a pacemaker before 40; your grandfather died early. Has your own cardiac risk — structural, rhythm, or premature-aging pattern — ever been screened independent of the rare-disease workup?</td>
+        <td class="impact i8">8</td>
+        <td>A strong premature-cardiac-death family pattern is mentioned once, in passing, about her father's autopsy, and never pulled forward into the patient's own risk stratification.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">5</td>
+        <td><span class="tier-pill">Tier 2 · Lvl 34</span><br>Institutional/psychological, care-seeking behavior</td>
+        <td>Medical trauma and current care-seeking</td>
+        <td>You were tied down and force-fed at 15, and later refused care through two weeks of ectopic pregnancy pain until you collapsed. Does that pattern of avoidance until crisis still operate today with your current, apparently trusted, medical team — or has it genuinely resolved?</td>
+        <td class="impact i7">7</td>
+        <td>Avoidant care-seeking under crisis is a documented pattern across decades. Whether it's truly resolved (vs. just less visible with a more sympathetic team) affects how urgently new red-flag symptoms will actually reach a clinician.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">6</td>
+        <td><span class="tier-pill">Tier 2 · Lvl 21</span><br>Informational/temporal pattern</td>
+        <td>Menstrual-cycle correlation with flares</td>
+        <td>You mention heavy bleeding days, PCOS, and swelling episodes — has anyone actually charted flare/edema/hemolysis timing against your cycle phase, rather than treating them as separately triggered events?</td>
+        <td class="impact i7">7</td>
+        <td>Hormonal-phase correlation with edema and hemolytic-type episodes is plausible (PCOS, androgen findings, DHEAS/17-OHP already abnormal) but never systematically tracked — an inexpensive, high-yield gap.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">7</td>
+        <td><span class="tier-pill">Tier 1 · Lvl 3-4</span><br>Tissue/organ, bone</td>
+        <td>Fracture pattern and bone health</td>
+        <td>You've broken bones from things "just snapping," had a childhood pain-insensitivity pattern, and low intake for years — has bone density (DEXA) or a broader bone-fragility workup ever actually been done?</td>
+        <td class="impact i7">7</td>
+        <td>Two leg fractures ("just snapped"), chronic under-nutrition, possible malabsorption, and blunted pain perception together suggest bone fragility narratively absorbed into "clumsiness" rather than investigated.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">8</td>
+        <td><span class="tier-pill">Tier 3 · Lvl 41-45</span><br>Narrative/identity framing</td>
+        <td>Identity after decades of diagnostic limbo</td>
+        <td>After 40 years of being the unexplained "runt," the abuse suspect's daughter, the psychiatric patient, and now the genetics detective — which of these identities do you feel is actually you, and does chasing one more diagnosis risk becoming another identity rather than a resolution?</td>
+        <td class="impact i6">6</td>
+        <td>The self-directed genetic detective work has driven real improvement (ribose, L-serine, diet), but the narrative shows no space for asking whether the search itself has become the coping mechanism.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">9</td>
+        <td><span class="tier-pill">Tier 2 · Lvl 7-10</span><br>Access/structural</td>
+        <td>Current access and continuity of care</td>
+        <td>The GSD confirmation is 4-6 months out, insurance was a barrier for the leg fracture, and the leading GSD expert just retired with "no one else who understands it in the states" — concretely, who is your continuity-of-care backup if this specialist search stalls again?</td>
+        <td class="impact i6">6</td>
+        <td>A named structural access gap (retiring sole expert, prior lack of insurance) sits right next to a life-altering diagnostic pathway, with no stated contingency.</td>
+      </tr>
+      <tr>
+        <td class="rank-num">10</td>
+        <td><span class="tier-pill">Tier 5 · Lvl 92-94</span><br>Diachronic tracking</td>
+        <td>Formal sleep study validation</td>
+        <td>L-serine and cimetidine reportedly gave you REM sleep for the first time in 40 years — has this actually been validated with a formal polysomnogram, or is it self-reported only?</td>
+        <td class="impact i5">5</td>
+        <td>A dramatic, self-reported physiological reversal (zero REM since birth to 2hrs/night) is clinically striking enough to deserve objective confirmation, both to validate the mechanism hypothesis and rule out a placebo/behavioral explanation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="verdict">
+    <strong>Most under-represented tier:</strong> Tier 5 (Meta &amp; Transcendent — trust, safety, identity, synthesis). This is the riskiest gap, because the entire 40-year narrative has trained everyone involved — patient, students, and clinicians in the comments — to hunt for one more rare gene, while the two domains most likely to cause near-term harm (undocumented anesthesia-awareness risk, and current psychiatric safety) sit completely outside that hunt.
+  </div>
+
+  <div class="note-box">
+    <strong>Handoff suggestion:</strong> Rank 1 and 2 are safety-critical and shouldn't wait for the GSD biopsy — worth a direct, real-world conversation with her current care team, separate from any further genetic workup. Rank 3 and 6 are the cheapest, most testable clinical gaps if you want to chain into <em>Module 12 (Differential Diagnosis Deepdive)</em> next.
+  </div>
+
+  <footer>
+    Module S3 — Ultima Thule Socratic Enrichment Engine · VibeRounds Prompt Modules · Companion to Module S1S2<br>
+    Case source: <a href="https://classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html?m=1" target="_blank" rel="noopener">classworkdecjan.blogspot.com, de-identified patient record</a> · Not peer-reviewed · Educational reasoning exercise only
+  </footer>
+
+</div>
+</body>
+</html>
