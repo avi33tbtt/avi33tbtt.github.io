@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Module S4 — Exhaustive Domain Sweep — 60M, Fever/Ascites/CKD/AKI</title>
+<style>
+  :root{
+    --ink:#1c1c1e; --sub:#5b5b60; --line:#e3e2df; --bg:#faf9f6; --card:#ffffff;
+    --touched:#3f7a4f; --touched-bg:#eaf3ec;
+    --partial:#a9781f; --partial-bg:#faf1de;
+    --silent:#b3413a; --silent-bg:#faeae9;
+    --accent:#6d4fc2;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Iowan Old Style',serif;line-height:1.5;}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 20px 80px;}
+  h1{font-size:1.6rem;margin-bottom:.2em;}
+  h2{font-size:1.2rem;border-bottom:2px solid var(--line);padding-bottom:.3em;margin-top:2.2em;}
+  h3{font-size:1.02rem;color:var(--accent);margin-top:1.6em;}
+  .meta{color:var(--sub);font-size:.9rem;margin-bottom:1.2em;}
+  .disclaimer{background:#fff7e6;border:1px solid #e8d8ad;border-radius:8px;padding:14px 18px;font-size:.88rem;color:#5a4a1e;margin-bottom:1.6em;}
+  .case{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;font-size:.92rem;color:var(--sub);}
+  table{width:100%;border-collapse:collapse;margin:1em 0 1.8em;font-size:.9rem;}
+  th,td{border:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left;}
+  th{background:#f1efe9;font-weight:600;}
+  tr:nth-child(even) td{background:#fcfcfa;}
+  .status{font-weight:700;border-radius:5px;padding:2px 8px;display:inline-block;font-size:.82rem;}
+  .Touched{color:var(--touched);background:var(--touched-bg);}
+  .Partial{color:var(--partial);background:var(--partial-bg);}
+  .Silent{color:var(--silent);background:var(--silent-bg);}
+  .band-tag{font-family:Menlo,Consolas,monospace;font-size:.8rem;color:var(--accent);font-weight:700;}
+  .yield-section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:1.2em;}
+  .yield-section.high{border-left:5px solid var(--touched);}
+  .yield-section.low{border-left:5px solid var(--sub);}
+  .ratio{font-style:italic;color:var(--accent);margin-top:1em;}
+  ol li{margin-bottom:.5em;}
+  .footer{margin-top:3em;padding-top:1em;border-top:1px solid var(--line);font-size:.8rem;color:var(--sub);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Module S4 — Ultima Thule Exhaustive Domain Sweep</h1>
+<div class="meta">Run on case: "60 years old male with ascites, hypoproteinemia, renal dysfunction, with decreased urine output" (ashakiran923.blogspot.com, UNIT 2 case record, March 2021) · Forced System 3, all 20 bands, no pre-filtering</div>
+
+<div class="disclaimer">
+<strong>Clinical Disclaimer.</strong> This is an educational reasoning-enrichment exercise (VibeRounds Module S4), run on a de-identified, publicly posted teaching case record. It is not a diagnosis, not a management plan, and not a validated instrument — every row below requires independent clinical judgment. The source record already documents that this patient died; nothing here is prospective care guidance.
+</div>
+
+<div class="case">
+<strong>Case as given (condensed from the source record):</strong> 60-year-old male, known CKD on conservative management, chronic smoker and chronic alcoholic (stopped 3 months prior), presented with 15 days of high-grade intermittent fever and 3 days of progressive dyspnea (exertional → rest). Burning micturition, intermittent facial puffiness, possible aphthous ulcers with dysphagia. No chest pain, no orthopnea/PND, no pedal edema at admission. Exam: pallor, distended/everted abdomen with shifting dullness and dilated superficial abdominal veins, guarding, organomegaly not appreciable. Working assessment: UTI, BPH, CKD, fever under evaluation, later "?CAD," grade 1 hypertension. Course: fluctuating fever, decreasing urine output, loose stools, then progression to labeled "hepatic encephalopathy," and the record ends in a documented death summary around day 9. A companion exam post on the same blog independently frames the working diagnosis as UTI with cirrhosis of the liver and portal hypertension, citing low SAAG and hypoalbuminemia as points of discussion — this is external commentary, not part of the original clinical note, and is treated here as context only.
+</div>
+
+<h2>Phase 2 — Full 20-Band Sweep</h2>
+<table>
+<tr><th>Band</th><th>Levels</th><th>Status</th><th>Justification</th></tr>
+<tr><td class="band-tag">B1</td><td>1–5</td><td><span class="status Silent">Silent</span></td><td>No cytokine, inflammatory-marker, or molecular mechanism is discussed anywhere — 15 days of fever is described only phenomenologically, never mechanistically (e.g. no CRP/procalcitonin/complement trend given).</td></tr>
+<tr><td class="band-tag">B2</td><td>6–10</td><td><span class="status Partial">Partial</span></td><td>Organ systems are named (renal, hepatic-adjacent, urinary) but no family history or population-pattern data appears at all — CKD etiology, familial renal/liver disease, and alcohol-use family patterns are never asked about.</td></tr>
+<tr><td class="band-tag">B3</td><td>11–15</td><td><span class="status Silent">Silent</span></td><td>No diurnal fever pattern, no cumulative-load framing (years of smoking/drinking vs. "stopped 3 months ago") is explored as a trajectory — the note treats the 3-month cessation as a fact, not a turning point to interrogate.</td></tr>
+<tr><td class="band-tag">B4</td><td>16–20</td><td><span class="status Silent">Silent</span></td><td>No cultural, religious, or belief framing of the illness appears anywhere in the record.</td></tr>
+<tr><td class="band-tag">B5</td><td>21–25</td><td><span class="status Partial">Partial</span></td><td>This is a formal teaching/ward record with named residents and daily SOAP notes — documentation exists — but there's no legal/consent trail (e.g. no mention of informed consent for procedures, no next-of-kin documentation around the death).</td></tr>
+<tr><td class="band-tag">B6</td><td>26–30</td><td><span class="status Silent">Silent</span></td><td>No intergenerational or historical pattern (e.g. prior family deaths from liver/renal disease, generational alcohol use patterns) is recorded.</td></tr>
+<tr><td class="band-tag">B7</td><td>31–35</td><td><span class="status Partial">Partial</span></td><td>The patient reached tertiary/teaching-hospital care and was on "conservative management" for CKD before this admission — that phrase implies prior access decisions (dialysis deferred? unavailable? declined?) that are never explained.</td></tr>
+<tr><td class="band-tag">B8</td><td>36–40</td><td><span class="status Silent">Silent</span></td><td>No existential response to the CKD diagnosis or to clinical deterioration is documented, and no digital/informational trace (what the patient/family looked up, believed, or were told outside rounds) appears.</td></tr>
+<tr><td class="band-tag">B9</td><td>41–45</td><td><span class="status Partial">Partial</span></td><td>There's a bare narrative thread — chronic smoker/alcoholic who stopped 3 months ago, then fell ill — but the note never asks *why* he stopped (illness onset already present? a health scare? external pressure?), which is the actual life-story hinge.</td></tr>
+<tr><td class="band-tag">B10</td><td>46–50</td><td><span class="status Partial">Partial</span></td><td>Medications are listed daily (Lasix, nitrofurantoin, atorvastatin, ecosprin, clopidogrel, lactulose, Vit K, erythromycin/desmopressin-like agents) but the *purpose* of several is never stated in the assessment — e.g. why dual antiplatelets for a "?CAD" that's never confirmed, why erythromycin-class injection appears without a documented indication.</td></tr>
+<tr><td class="band-tag">B11</td><td>51–55</td><td><span class="status Silent">Silent</span></td><td>No explicit heuristic is named, but one is clearly operating unstated: burning micturition + fever → "UTI" is anchored on day 1 and persists in the assessment line through day 5 even as the picture evolves toward liver failure — a silent anchoring heuristic, never flagged as such by the treating team.</td></tr>
+<tr><td class="band-tag">B12</td><td>56–60</td><td><span class="status Silent">Silent</span></td><td>No rhetorical framing used to describe the illness to family or to the patient himself is recorded — the notes are exam-room/rounds language only.</td></tr>
+<tr><td class="band-tag">B13</td><td>61–65</td><td><span class="status Partial">Partial</span></td><td>No formal risk score is used at all (no MELD, no Child-Pugh, no CKD-EPI staging, no qSOFA) despite ascites + hypoalbuminemia + renal dysfunction + fever being exactly the constellation those scores were built for — this is itself a finding: absence of scoring tool use.</td></tr>
+<tr><td class="band-tag">B14</td><td>66–70</td><td><span class="status Silent">Silent</span></td><td>No phenomenological description of what the fever, dyspnea, or abdominal distension actually *felt like* to the patient — everything is externally observed (vitals, exam signs), nothing subjective beyond symptom checklist items.</td></tr>
+<tr><td class="band-tag">B15</td><td>71–75</td><td><span class="status Partial">Partial</span></td><td>Fluid restriction to 1L/day plus daily Lasix 40mg plus a low SAAG differential under discussion elsewhere raises a real moral-hazard question — is diuresis/fluid restriction being titrated against a renal-dysfunction picture that could just as easily reflect intravascular depletion — but the record shows no titration rationale, just a flat daily order.</td></tr>
+<tr><td class="band-tag">B16</td><td>76–80</td><td><span class="status Silent">Silent</span></td><td>No end-of-life or goals-of-care conversation is documented anywhere before the death summary — encephalopathy is charted as a diagnosis label, not as a trigger for a goals-of-care discussion.</td></tr>
+<tr><td class="band-tag">B17</td><td>81–85</td><td><span class="status Silent">Silent</span></td><td>No mention anywhere of the patient's or family's trust in the treating team, satisfaction with explanations, or therapeutic alliance.</td></tr>
+<tr><td class="band-tag">B18</td><td>86–90</td><td><span class="status Touched">Touched</span></td><td>The case is already fairly idiographic by construction — CKD + recent alcohol cessation + dilated abdominal veins + hypoalbuminemia is a specific enough constellation that it doesn't reduce to a population average; the companion exam post explicitly interrogates this uniqueness (why low SAAG, why hypoalbuminemia) — no further gap to flag here.</td></tr>
+<tr><td class="band-tag">B19</td><td>91–95</td><td><span class="status Silent">Silent</span></td><td>Almost nothing is diachronically validated — no serial albumin, no serial ascitic fluid analysis (SAAG, cell count, culture) is shown despite ascites being a dominant finding for 9 days; renal function trend is inferred only from urine output charting, not serial creatinine values.</td></tr>
+<tr><td class="band-tag">B20</td><td>96–100</td><td><span class="status Partial">Partial</span></td><td>The record ends abruptly at "DEATH SUMMARY" with an image link and no narrative synthesis of the patient as a person underneath the numbers — the teaching-case framing (residents' names, daily vitals) is complete, but the dignity/closure layer is structurally absent from a ward SOAP-note format, which is itself worth naming rather than silently accepting as "just how notes look."</td></tr>
+</table>
+
+<h2>Phase 3 — Question / Insight Generation (Partial &amp; Silent bands only)</h2>
+<table>
+<tr><th>Band</th><th>Domain (plain language)</th><th>Question / Insight</th><th>Why real, even if low-yield</th></tr>
+<tr><td class="band-tag">B1</td><td>Molecular/cytokine mechanism</td><td>What inflammatory markers (CRP, procalcitonin, ferritin) were actually trended across the 15-day pre-admission fever and the 9-day admission — was this ever mechanistically characterized as infective vs. inflammatory vs. malignant?</td><td>Even if it doesn't change bedside management today, it retrospectively distinguishes "unexplained fever that was never mechanistically pinned down" from "fever that was investigated and just didn't resolve" — different teaching lessons.</td></tr>
+<tr><td class="band-tag">B2</td><td>Organ-system / family pattern</td><td>Is there a family history of liver disease, renal disease, or alcohol use disorder that would reframe this as a familial-risk case rather than an isolated one?</td><td>Not present in the note at all, and would matter for family counseling even though it wouldn't change this patient's course.</td></tr>
+<tr><td class="band-tag">B5</td><td>Documentation / legal trail</td><td>Was informed consent documented for escalation decisions, and was next-of-kin communication about deteriorating status logged anywhere before the death summary?</td><td>Real institutional/legal question, unlikely to have changed the clinical trajectory but relevant to record completeness and family communication practice.</td></tr>
+<tr><td class="band-tag">B7</td><td>Institutional/access friction</td><td>What specifically kept this known CKD patient on "conservative management" rather than dialysis before this admission — was renal replacement therapy ever offered, declined, or inaccessible?</td><td>High-yield candidate on its face (see Phase 4) — access to dialysis materially changes both this admission's trajectory and the interpretation of "renal dysfunction with decreased urine output" as either de novo AKI-on-CKD or an expected progression of undialyzed CKD.</td></tr>
+<tr><td class="band-tag">B9</td><td>Narrative / life-story fit</td><td>Why did the patient stop smoking and drinking three months before this admission — was that a response to early symptoms already present, or an unrelated life event?</td><td>Genuinely diagnostic: if cessation followed early symptom onset, the "15 days of fever" undercounts true illness duration by months.</td></tr>
+<tr><td class="band-tag">B10</td><td>Purpose framing of treatment</td><td>What was the documented indication for dual antiplatelet therapy (ecosprin + clopidogrel) given "?CAD" was never confirmed on this admission, and for the erythropoiesis-stimulating/erythromycin-class injection added late in the course?</td><td>Genuinely high-yield: unindicated dual antiplatelets in a patient with ascites, hypoalbuminemia, and possible varices materially raises bleeding risk — this is not a low-yield curiosity.</td></tr>
+<tr><td class="band-tag">B11</td><td>Silent heuristic in use</td><td>Was "UTI" ever actively reconsidered once shifting dullness, dilated abdominal veins, and hypoalbuminemia dominated the picture, or did it persist in the assessment line by inertia from day 1?</td><td>This is the single most clinically consequential gap in the whole sweep — an anchored diagnosis that never got revised even as the clinical picture moved toward cirrhosis/portal hypertension and hepatic encephalopathy.</td></tr>
+<tr><td class="band-tag">B12</td><td>Rhetorical framing to family</td><td>How was "hepatic encephalopathy" — a diagnosis that appears suddenly in the assessment line with no preceding workup shown — explained to the family when it appeared?</td><td>Real communication-quality question; wouldn't have changed the outcome but matters for how the family understood what was happening.</td></tr>
+<tr><td class="band-tag">B13</td><td>Bias in risk tool/protocol use</td><td>Given ascites + hypoalbuminemia + renal dysfunction + fever, why was no MELD, Child-Pugh, or SAAG-based scoring ever calculated or documented, despite ascitic fluid apparently never being tapped for analysis?</td><td>High-yield: a Child-Pugh/MELD score, or a single diagnostic paracentesis, would have directly reframed the working diagnosis and predicted mortality risk earlier than day 9.</td></tr>
+<tr><td class="band-tag">B15</td><td>Moral hazard / over-under treatment</td><td>Was daily Lasix 40mg plus 1L fluid restriction titrated against volume status at all, or run on autopilot while renal function and urine output were simultaneously worsening?</td><td>Directly plausible driver of the renal deterioration itself — diuresis in a hypoalbuminemic, possibly intravascularly-depleted patient can precipitate exactly the AKI-on-CKD picture seen here.</td></tr>
+<tr><td class="band-tag">B19</td><td>Diachronic validation vs. self-report</td><td>Were serial creatinine, albumin, and ascitic fluid values ever trended numerically, or is the entire 9-day course narrated only through vitals and exam findings ("shifting dullness present" repeated daily) without lab trend data shown?</td><td>Foundational for everything else in the sweep — without trended labs, several other "Partial" bands (B10, B13, B15) can't be resolved even retrospectively.</td></tr>
+<tr><td class="band-tag">B20</td><td>Synthesis / patient dignity</td><td>Beyond the clinical timeline, what do we know about this man — occupation, family role, what he wanted from this admission — that the ward-note format never captured?</td><td>No case-specific angle found beyond a generic restatement; the source is a teaching SOAP note, not a narrative interview, so this is a structural limitation of the document rather than a clinical gap to chase.</td></tr>
+</table>
+
+<h2>Phase 4 — Yield Sort</h2>
+
+<div class="yield-section high">
+<h3 style="margin-top:0;color:var(--touched);">High-Yield Clinical</h3>
+<ul>
+<li><span class="band-tag">B11</span> — Whether "UTI" was ever actively reconsidered as the picture shifted toward hepatic/portal pathology, or persisted purely by anchoring.</li>
+<li><span class="band-tag">B10</span> — Indication (or lack of one) for dual antiplatelet therapy in a patient with likely portal hypertension and hypoalbuminemia.</li>
+<li><span class="band-tag">B13</span> — Absence of MELD/Child-Pugh scoring or diagnostic paracentesis despite a textbook ascites-plus-hypoalbuminemia presentation.</li>
+<li><span class="band-tag">B15</span> — Whether diuretic/fluid-restriction orders were titrated against volume status, or plausibly contributed to the renal decline.</li>
+<li><span class="band-tag">B7</span> — What specifically kept this patient on "conservative management" for CKD rather than renal replacement therapy before this admission.</li>
+<li><span class="band-tag">B9</span> — Whether smoking/alcohol cessation three months prior followed early symptom onset, which would extend true illness duration well beyond the charted 15 days.</li>
+</ul>
+</div>
+
+<div class="yield-section low">
+<h3 style="margin-top:0;color:var(--sub);">Rough Work / Low Yield</h3>
+<ul>
+<li><span class="band-tag">B1</span> — Whether inflammatory markers were mechanistically trended across the fever course.</li>
+<li><span class="band-tag">B2</span> — Family history of liver/renal disease or alcohol use disorder.</li>
+<li><span class="band-tag">B5</span> — Documentation of consent and next-of-kin communication before the death summary.</li>
+<li><span class="band-tag">B12</span> — How the sudden "hepatic encephalopathy" label was communicated to the family.</li>
+<li><span class="band-tag">B19</span> — Whether labs (creatinine, albumin, ascitic fluid) were ever trended numerically rather than narrated by exam finding alone.</li>
+<li><span class="band-tag">B20</span> — What is known of the patient as a person beyond the ward-note timeline.</li>
+</ul>
+</div>
+
+<p class="ratio">Ratio: 6 of 12 Partial/Silent bands were sorted High-Yield; 6 were Rough Work. Notably, the "No case-specific angle found" band (B20) still appears in Rough Work per the module rule — nothing is dropped. The eight fully <span class="status Touched">Touched</span>/Silent-with-nothing-to-ask bands not carried into Phase 3 (B3, B4, B6, B8, B14, B16, B17, B18) are recorded above in the Phase 2 table only, per the module's instruction not to force a question where none exists.</p>
+
+<h2>Phase 5 — Sweep Debrief</h2>
+<ol>
+<li><strong>Split:</strong> Of 20 bands — 1 Touched (B18), 11 Partial, 8 Silent. That's a heavily Silent/Partial split, which is expected: this is a terse ward SOAP-note record, not a narrative case history, so most non-biomedical bands were structurally never going to be filled in by the source document itself.</li>
+<li><strong>Assumed-covered-but-Silent:</strong> B13 (risk-tool/scoring bias) is the one that's easy to assume is "covered" because the case *looks* clinically thorough — daily vitals, daily assessment lines, a long medication list — but no actual risk stratification tool was ever applied. Volume of documentation was mistaken for depth of reasoning.</li>
+<li><strong>Rough Work re-weighing:</strong> B19 (diachronic lab trending) arguably belongs in High-Yield rather than Rough Work — it's not just background curiosity, it's the missing data that would let B10, B13, and B15 actually be resolved. It's kept in Rough Work here per the sort criterion (it doesn't itself change a decision, it enables other decisions to be checked), but the sort is a judgment call and this is exactly the kind of borderline case Phase 4 warns about.</li>
+<li><strong>Default depth:</strong> A near-total absence of psychosocial, existential, and trust-related documentation (B4, B8, B12, B16, B17 all Silent) suggests this source document's "default depth" is strictly biomedical-procedural — appropriate for a ward SOAP note, but a reminder that the same case retold by the patient's family would likely light up an entirely different set of bands.</li>
+</ol>
+
+<div class="footer">
+Module S4 — Ultima Thule Exhaustive Domain Sweep · Status: 🟡 Proposed, not yet tested live · Case source: ashakiran923.blogspot.com (UNIT 2 teaching case, March 2021), publicly posted, de-identified as given · No output here should be treated as a vetted clinical reference or entered into any patient record.
+</div>
+
+</div>
+</body>
+</html>

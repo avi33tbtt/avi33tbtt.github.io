@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Module S4 — Ultima Thule Exhaustive Domain Sweep — 42F, G6PD/AMPD1/GSD case</title>
+<style>
+  :root{
+    --ink:#1c1c1e; --sub:#5b5f66; --line:#e3e5e8; --bg:#fbfbfa;
+    --touched:#1f7a4d; --touched-bg:#e9f6ef;
+    --partial:#a3660a; --partial-bg:#fdf3e2;
+    --silent:#b3261e; --silent-bg:#fdeceb;
+    --hi:#8a3ffc; --hi-bg:#f4edfe;
+    --lo:#565a60; --lo-bg:#eef0f2;
+    --accent:#2f5fa8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.55;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:40px 28px 90px;}
+  h1{font-size:1.7rem;margin:0 0 4px;letter-spacing:.2px;}
+  .subtitle{color:var(--sub);font-size:.98rem;margin-bottom:22px;}
+  .disclaimer{
+    background:var(--partial-bg); border-left:4px solid var(--partial);
+    padding:14px 18px; border-radius:6px; font-size:.9rem; color:#4a3610; margin-bottom:28px;
+  }
+  h2{
+    font-family:'Helvetica Neue',Arial,sans-serif; font-size:1.05rem; text-transform:uppercase;
+    letter-spacing:1.2px; color:var(--accent); border-bottom:2px solid var(--line);
+    padding-bottom:6px; margin-top:44px;
+  }
+  h3{font-size:1.15rem;margin-top:26px;margin-bottom:8px;}
+  p.lede{color:var(--sub);font-size:.94rem;margin-top:-4px;}
+  table{width:100%;border-collapse:collapse;margin:16px 0 8px;font-size:.92rem;}
+  th{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.6px;text-align:left;color:var(--sub);border-bottom:1px solid var(--line);
+    padding:8px 10px;
+  }
+  td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .band{font-weight:600;white-space:nowrap;}
+  .levels{color:var(--sub);font-size:.82rem;white-space:nowrap;}
+  .status{
+    display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;
+    font-family:'Helvetica Neue',Arial,sans-serif;font-weight:600;white-space:nowrap;
+  }
+  .Touched{color:var(--touched);background:var(--touched-bg);}
+  .Partial{color:var(--partial);background:var(--partial-bg);}
+  .Silent{color:var(--silent);background:var(--silent-bg);}
+  .yield-tag{
+    display:inline-block;padding:2px 9px;border-radius:20px;font-size:.72rem;
+    font-family:'Helvetica Neue',Arial,sans-serif;font-weight:600;margin-right:6px;
+  }
+  .hi{color:var(--hi);background:var(--hi-bg);}
+  .lo{color:var(--lo);background:var(--lo-bg);}
+  .qtitle{font-weight:600;}
+  .why{color:var(--sub);font-size:.87rem;}
+  .ratio{
+    font-family:'Helvetica Neue',Arial,sans-serif; font-size:.95rem; font-weight:600;
+    background:#eef1f6;border-radius:8px;padding:12px 16px;margin-top:14px;color:#2c3b52;
+  }
+  .band-tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;font-weight:700;
+    color:#fff;background:var(--accent);padding:1px 7px;border-radius:4px;margin-right:6px;
+  }
+  ol.debrief li{margin-bottom:10px;}
+  footer{margin-top:50px;color:var(--sub);font-size:.82rem;border-top:1px solid var(--line);padding-top:14px;}
+  .case-tag{
+    font-family:'Helvetica Neue',Arial,sans-serif;font-size:.78rem;color:var(--sub);
+    background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin-bottom:18px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Module S4 — Ultima Thule Exhaustive Domain Sweep</h1>
+  <div class="subtitle">Forced System 3 · Full 20-band visible sweep, no pre-filtering</div>
+
+  <div class="case-tag">
+    <strong>Case:</strong> "42 F with severe regular edema with G6PD (Seattle variant) &amp; AMPD1 deficiency" —
+    de-identified open patient record, as told to and compiled by Dr. Avinash Kumar Gupta (VibeRounds/classwork blog, posted May 2019, with updates through Aug 2020).
+    Source: <span style="word-break:break-all;">classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html</span>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Clinical disclaimer.</strong> This sweep is an educational reasoning-enrichment exercise, not a diagnosis, care plan, or vetted clinical reference. The Ultima Thule hierarchy is an illustrative, hypothesis-driven teaching construct. Nothing here should enter a patient record or management plan without independent clinician review — this is already an actively co-managed case with its own treating team, and the sweep below does not override or second-guess that team's judgment.
+  </div>
+
+  <h2>Phase 2 — Full 20-Band Sweep</h2>
+  <p class="lede">Every band gets a verdict. Silent bands are valid output, not gaps in the exercise.</p>
+
+  <table>
+    <tr><th>Band</th><th>Levels</th><th>Status</th><th>Justification</th></tr>
+
+    <tr><td class="band">B1</td><td class="levels">1–5</td><td><span class="status Touched">Touched</span></td>
+    <td>Molecular mechanism is extensively present and self-taught by the patient: G6PD/NADPH/glutathione pathway, oxidative stress cascade, AMPD1's role in muscle energy metabolism, MTHFR C677T homocysteine handling, and glycolysis-to-glycine links to sleep are all explicitly discussed with citations.</td></tr>
+
+    <tr><td class="band">B2</td><td class="levels">6–10</td><td><span class="status Touched">Touched</span></td>
+    <td>Multi-organ-system involvement (renal, hepatic, GI, cardiac, neuro, dermatologic) is mapped across the narrative, and a dense family/population pattern is given (parental spectrum traits, maternal fibromyalgia, paternal early cardiac death, sibling heights, 15+ named genetic variants with population-level risk figures).</td></tr>
+
+    <tr><td class="band">B3</td><td class="levels">11–15</td><td><span class="status Partial">Partial</span></td>
+    <td>Sleep pattern is described in granular detail across the lifespan (2–4 hrs since birth → 6–8 hrs on L-serine/cimetidine → 6–8 hrs even off supplements once diet changed). But there is no explicit cumulative-load framing — e.g. whether decades of severe sleep deprivation plus repeated hemolytic/inflammatory flares have a compounding, non-linear effect on the current phenotype, as opposed to being read as independent, restart-able events.</td></tr>
+
+    <tr><td class="band">B4</td><td class="levels">16–20</td><td><span class="status Silent">Silent</span></td>
+    <td>No cultural, religious, or belief-system framing of the illness appears anywhere — not how she or her family culturally interpret repeated unexplained swelling/screaming/non-eating in infancy, nor any faith-based or folk-illness framework layered onto the medical one.</td></tr>
+
+    <tr><td class="band">B5</td><td class="levels">21–25</td><td><span class="status Partial">Partial</span></td>
+    <td>Legal/documentation exposure is touched historically and vividly (parents accused of abuse over weight fluctuation, custody transferred to grandmother, an anorexia diagnosis and involuntary tube-feeding at 15) but is not revisited for the present day — e.g. whether any of that historical abuse-suspicion documentation still lives in her adult chart and could be silently biasing current clinicians' pattern-matching.</td></tr>
+
+    <tr><td class="band">B6</td><td class="levels">26–30</td><td><span class="status Touched">Touched</span></td>
+    <td>Strong intergenerational pattern: grandfather's early death, father's heart attack in his 40s with a pacemaker and an autopsy that reportedly aged him decades, mother's undiagnosed spectrum traits and fibromyalgia, grandmother's own intraoperative-awareness history mirroring the patient's.</td></tr>
+
+    <tr><td class="band">B7</td><td class="levels">31–35</td><td><span class="status Touched">Touched</span></td>
+    <td>Institutional/access friction is named directly and repeatedly: 2–3 week waits for blood-test follow-up, surgery performed without adequate anesthesia twice, no CT/MRI done for headache "because bloodwork looked great," an uninsured leg fracture managed without needed surgery, and the field's leading GSD expert having just retired with reportedly no clear successor.</td></tr>
+
+    <tr><td class="band">B8</td><td class="levels">36–40</td><td><span class="status Partial">Partial</span></td>
+    <td>The digital/informational trace is very strong — she independently mined SNPedia/Promethease, PubMed, and patient support-group anecdote to arrive at the GSD III/IX hypothesis, and even tried (unsuccessfully) to get a researcher to engage with her self-written paper. What is not explicit is the existential register underneath that research drive — how she experienced 40 years without a unifying explanation, versus how she experiences finally having one.</td></tr>
+
+    <tr><td class="band">B9</td><td class="levels">41–45</td><td><span class="status Touched">Touched</span></td>
+    <td>The entire document is a first-person life narrative with the patient as her own most consistent narrator, deliberately organized chronologically from birth to present by the case-teller.</td></tr>
+
+    <tr><td class="band">B10</td><td class="levels">46–50</td><td><span class="status Partial">Partial</span></td>
+    <td>She states what each self-chosen intervention is "for" in granular functional terms (ribose for exercise fatigue, L-serine for sleep, cimetidine for swelling/androgens, NAC for glutathione). Largely absent is any matching statement, from a clinician, of what the overall treatment strategy is for — i.e., is the current plan oriented at symptom control, at disease-modifying management pending biopsy/trial eligibility, or at diagnostic confirmation, and does the patient understand which one she's currently in.</td></tr>
+
+    <tr><td class="band">B11</td><td class="levels">51–55</td><td><span class="status Partial">Partial</span></td>
+    <td>Patient has clearly built her own working heuristics ("if I don't eat and stay calm I don't swell," "fasting for 3 days is when I really deflate," "more salt needed when feeling sick") which function as self-titrated rules of thumb. These are stated as facts rather than examined as heuristics — it is not addressed whether any of them (particularly extended fasting and 2–4 Tbsp/day of salt) carry their own risk that the heuristic itself may be obscuring.</td></tr>
+
+    <tr><td class="band">B12</td><td class="levels">56–60</td><td><span class="status Silent">Silent</span></td>
+    <td>No description anywhere of how she explains the illness to people outside the medical/research relationship — employers, friends, new partners, her children if any. The entire rhetorical register of the document is clinical/investigative, aimed at doctors and researchers.</td></tr>
+
+    <tr><td class="band">B13</td><td class="levels">61–65</td><td><span class="status Silent">Silent</span></td>
+    <td>No standardized scoring system or validated risk/severity tool is mentioned as being in use anywhere — not for Behçet's activity (e.g. BDCAF), not for angioedema severity, not for hemolysis risk stratification. All severity assessment in the record is self-report ("worst ever," "really sick") or ad hoc clinician impression.</td></tr>
+
+    <tr><td class="band">B14</td><td class="levels">66–70</td><td><span class="status Touched">Touched</span></td>
+    <td>Extremely rich phenomenological detail throughout — "brain completely stops working... like being in a heavy fog," "like my head is going to explode from the inside," "like a deflated balloon," the specific left-sided aura progression, the sensation of air not being enough despite normal-appearing lungs.</td></tr>
+
+    <tr><td class="band">B15</td><td class="levels">71–75</td><td><span class="status Partial">Partial</span></td>
+    <td>A long self-tried list (20 items) shows active, largely clinician-unsupervised titration of supplements/drugs including high-dose Cimetidine, NAC, iron at 500% RDA, and various dose escalations in a patient with G6PD deficiency (a condition where certain agents carry defined oxidative/hemolytic risk). The moral-hazard question of over-treatment via self-experimentation is visible in the raw material but not evaluated as such anywhere in the case.</td></tr>
+
+    <tr><td class="band">B16</td><td class="levels">76–80</td><td><span class="status Silent">Silent</span></td>
+    <td>No eschatological or end-of-life framing appears. Her father's death at 52 and grandfather's "early death" are reported as family-history facts, not engaged with as mortality risk that might apply to her own trajectory (particularly given the cardiac pattern — early MI, pacemaker before 40 — sitting alongside her own POTS and autonomic symptoms).</td></tr>
+
+    <tr><td class="band">B17</td><td class="levels">81–85</td><td><span class="status Touched">Touched</span></td>
+    <td>Trust in the treating team is a major and explicit throughline — the abuse-suspicion history creating decades of medical avoidance ("that distrust in docs lasted most of my life"), the ectopic pregnancy delay directly attributed to fear of doctors, and the current explicit statement "Now I have a great medical team," marking a real, named shift in therapeutic alliance.</td></tr>
+
+    <tr><td class="band">B18</td><td class="levels">86–90</td><td><span class="status Touched">Touched</span></td>
+    <td>Idiographic uniqueness is stated outright and repeatedly: "No one in either the G6PDD or AMPD1 patient groups has both like me," and the case-teller's own reflection that specialists individually "look at their one part" and miss the combination.</td></tr>
+
+    <tr><td class="band">B19</td><td class="levels">91–95</td><td><span class="status Partial">Partial</span></td>
+    <td>Some objective tracking exists — heart-rate photos, side-by-side edema photos a week apart, lab panels, imaging referenced. But the largest and most consequential claims in the case (the GSD III/IX hypothesis itself, ribose/L-serine/cimetidine "working," the felt severity of any given day) remain self-report or patient-community anecdote pending the planned biopsy/second genetic test — the diachronic record mixes validated and unvalidated data without a clear marker of which is which.</td></tr>
+
+    <tr><td class="band">B20</td><td class="levels">96–100</td><td><span class="status Silent">Silent</span></td>
+    <td>No explicit synthesis statement addresses the dignity/worth of the patient as a person underneath the accumulating gene list and lab panel — the closest the case comes is her own stated goals (hike, steady cognition), which are functional rather than a broader reflection on personhood amid 40 years of fragmented, occasionally disbelieving care.</td></tr>
+
+  </table>
+
+  <h2>Phase 3 — Question &amp; Insight Generation</h2>
+  <p class="lede">One entry per Partial/Silent band (12 of 20). Not capped, not ranked yet.</p>
+
+  <table>
+    <tr><th>Band</th><th>Domain</th><th>Question / Insight</th><th>Why real even if low-yield</th></tr>
+
+    <tr><td class="band">B3</td><td>Cumulative load</td>
+    <td class="qtitle">Across four decades of near-continuous 2–4 hr sleep plus recurrent inflammatory/hemolytic flares, is there any way to distinguish which current symptoms are from an active trigger versus accumulated, possibly only partially reversible, chronic load?</td>
+    <td class="why">Reframes "what's active right now" against "what's baseline damage" — relevant to how aggressively the current diet/supplement trial should be judged as working versus simply stabilizing a floor.</td></tr>
+
+    <tr><td class="band">B4</td><td>Cultural/belief framing</td>
+    <td class="qtitle">Did the family (grandmother especially, given she raised the patient after custody transfer) hold any cultural or folk explanation for the infant symptoms, separate from what doctors told them?</td>
+    <td class="why">Could surface an early, non-medicalized description of the phenotype that predates any diagnostic label and might sharpen the childhood timeline.</td></tr>
+
+    <tr><td class="band">B5</td><td>Legal/record trail</td>
+    <td class="qtitle">Does the historical "abuse suspected" documentation from infancy/adolescence still exist anywhere in accessible medical records, and could it be visible to (or silently coloring the judgment of) any current treating clinician?</td>
+    <td class="why">Old chart flags for suspected abuse or eating-disorder-driven weight change can anchor new clinicians' interpretation of unrelated symptoms like edema or "non-compliance."</td></tr>
+
+    <tr><td class="band">B8</td><td>Existential/digital trace</td>
+    <td class="qtitle">Now that she has a working hypothesis (GSD III/IX) after 40 years without one, how has that changed her day-to-day relationship to the illness — separate from whether the hypothesis proves correct?</td>
+    <td class="why">The shift from "unexplained" to "provisionally explained" often changes coping and adherence independent of the biology, and is worth naming directly rather than inferring.</td></tr>
+
+    <tr><td class="band">B10</td><td>Purpose/teleology of treatment</td>
+    <td class="qtitle">Does she and her treating team currently agree on whether the diet/supplement regimen is symptom control, disease-modifying management, or a diagnostic probe pending biopsy — and has that been said out loud?</td>
+    <td class="why">Real gap: a patient self-managing 20 interventions needs to know if she's testing a hypothesis or treating a confirmed condition, since the risk tolerance for each differs.</td></tr>
+
+    <tr><td class="band">B11</td><td>Silent heuristics</td>
+    <td class="qtitle">Has anyone examined the safety of her self-derived heuristic of multi-day fasting to "deflate," specifically in the context of G6PD deficiency and the muscle-energy limits of AMPD1, rather than accepting it only as an effective symptom-control strategy?</td>
+    <td class="why">A heuristic that reliably relieves a symptom can still carry its own risk profile that the relief itself makes easy to overlook.</td></tr>
+
+    <tr><td class="band">B12</td><td>Rhetorical framing to others</td>
+    <td class="qtitle">How does she describe this condition to people outside medicine — work, family, new relationships — and does that framing match or diverge from how she describes it here?</td>
+    <td class="why">Mismatch between the clinical narrative and the social one is common in complex chronic illness and can flag isolation or under-disclosure that affects support and safety nets.</td></tr>
+
+    <tr><td class="band">B13</td><td>Bias in risk tool/protocol</td>
+    <td class="qtitle">Is a validated severity/activity instrument (for Behçet's, for angioedema, or for hemolytic crisis) being used at all, or is every "worse than usual" judgment being made ad hoc?</td>
+    <td class="why">Without a standardized instrument, trend data (is she actually improving on the new diet, or does it just feel that way this month) is harder to defend, especially heading into a trial-eligibility discussion.</td></tr>
+
+    <tr><td class="band">B15</td><td>Moral hazard / self-titration risk</td>
+    <td class="qtitle">Of the 20 self-tried interventions, which (if any) were undertaken with clinician awareness and monitoring versus entirely independently, particularly the ones with known G6PD-relevant oxidative risk?</td>
+    <td class="why">This is the single most safety-relevant gap in the sweep — self-titrated high-dose supplementation in a G6PD-deficient patient is exactly the scenario where oxidative-trigger exposure is possible without either party tracking it as such.</td></tr>
+
+    <tr><td class="band">B16</td><td>Eschatological/mortality framing</td>
+    <td class="qtitle">Given a father who died at 52 looking "decades older" per autopsy, a pacemaker before 40, and her own POTS/autonomic symptoms, has cardiac risk in her specifically (not just family history in general) ever been formally assessed?</td>
+    <td class="why">The family cardiac pattern is presented as color/backstory but reads as a distinct, potentially high-stakes line of inquiry that the rest of the case's metabolic focus may be crowding out.</td></tr>
+
+    <tr><td class="band">B19</td><td>Diachronic/objective tracking</td>
+    <td class="qtitle">Which specific claims in this case are backed by a lab value, image, or biopsy versus resting on self-report or patient-group anecdote — and is that distinction being kept visible going into the pending biopsy/trial-eligibility decision?</td>
+    <td class="why">Not a challenge to her account, but a structural note: as the case moves toward a confirmatory biopsy, separating validated from self-reported data protects both her credibility and the diagnostic process.</td></tr>
+
+    <tr><td class="band">B20</td><td>Dignity/synthesis</td>
+    <td class="qtitle">Setting the gene list and lab panel aside for a moment — what does she want a clinician meeting her for the first time to understand about her as a person, before they get to the differential?</td>
+    <td class="why">No case-specific angle beyond a generic restatement was found in the narrative itself; this is included because the module requires the band to appear, not because the case supplies a unique answer to it.</td></tr>
+
+  </table>
+
+  <h2>Phase 4 — Yield Sort</h2>
+
+  <h3><span class="yield-tag hi">High-Yield Clinical</span></h3>
+  <p class="lede">Could plausibly change diagnosis, urgency, safety plan, or care access if answered differently than assumed.</p>
+  <table>
+    <tr><th>Band</th><th>Item</th></tr>
+    <tr><td><span class="band-tag">B15</span></td><td>Which self-titrated interventions were clinician-monitored vs. fully independent, especially agents with G6PD-relevant oxidative risk.</td></tr>
+    <tr><td><span class="band-tag">B16</span></td><td>Whether her cardiac risk has been formally assessed, given the family MI/pacemaker pattern plus her own POTS/autonomic symptoms.</td></tr>
+    <tr><td><span class="band-tag">B10</span></td><td>Whether patient and treating team agree the current regimen is symptom control, disease-modifying management, or a diagnostic probe.</td></tr>
+    <tr><td><span class="band-tag">B13</span></td><td>Absence of any validated severity/activity scoring tool for Behçet's, angioedema, or hemolysis — trend judgments are currently all ad hoc.</td></tr>
+    <tr><td><span class="band-tag">B11</span></td><td>Safety of the self-derived multi-day-fasting heuristic in the specific context of G6PD deficiency and AMPD1-limited muscle energy.</td></tr>
+    <tr><td><span class="band-tag">B19</span></td><td>Which claims are lab/imaging/biopsy-validated versus self-report or support-group anecdote, ahead of the biopsy/trial-eligibility decision.</td></tr>
+  </table>
+
+  <h3><span class="yield-tag lo">Rough Work / Low Yield</span></h3>
+  <p class="lede">Real and honest, but unlikely on their own to change clinical decisions — kept, not dropped.</p>
+  <table>
+    <tr><th>Band</th><th>Item</th></tr>
+    <tr><td><span class="band-tag">B3</span></td><td>Distinguishing active-trigger symptoms from accumulated chronic load across four decades.</td></tr>
+    <tr><td><span class="band-tag">B4</span></td><td>Whether the family held any cultural/folk explanation for the infant symptoms.</td></tr>
+    <tr><td><span class="band-tag">B5</span></td><td>Whether historical abuse-suspicion documentation is still live in her accessible chart.</td></tr>
+    <tr><td><span class="band-tag">B8</span></td><td>How finally having a working hypothesis after 40 years has changed her day-to-day relationship to the illness.</td></tr>
+    <tr><td><span class="band-tag">B12</span></td><td>How she describes the condition to people outside medicine, and whether that framing diverges from the clinical narrative.</td></tr>
+    <tr><td><span class="band-tag">B20</span></td><td>What she wants a new clinician to understand about her as a person before the differential begins.</td></tr>
+  </table>
+
+  <div class="ratio">6 of 12 silent/partial bands were high-yield; 6 were rough work — a roughly even split, suggesting the original narrative is neither narrowly diagnosis-driven nor purely anecdotal, but is genuinely thin in a specific, recurring place: <em>safety oversight of self-directed intervention</em> (B11, B13, B15) and <em>validated vs. self-reported evidence</em> (B19) — the same seam runs through four of the six high-yield items.</div>
+
+  <h2>Phase 5 — Closure / Review</h2>
+  <h3>Sweep Debrief</h3>
+  <ol class="debrief">
+    <li><strong>Split:</strong> 8 Touched, 7 Partial, 5 Silent. Not surprising for a document this dense and self-authored — the patient is an unusually thorough narrator of mechanism (B1), family history (B6), phenomenology (B14), and therapeutic alliance (B17), which is why those bands land Touched. The Silent bands (B4, B12, B13, B16, B20) cluster around domains the case-teller had no particular reason to volunteer unprompted: cultural framing, social presentation, formal scoring tools, mortality, and personhood-level synthesis.</li>
+    <li><strong>Expected-Touched-but-Silent:</strong> B13 (bias in risk tool/protocol) is the one most likely to be mistakenly assumed covered — the case is so lab- and gene-dense that it reads as quantitatively rigorous, but none of that quantification is organized into a validated severity instrument. The volume of data can substitute, on a fast read, for the presence of a structured measure.</li>
+    <li><strong>Rough-work item worth promoting:</strong> B16 (eschatological/mortality framing) was initially sorted rough-work-adjacent but was moved to high-yield on inspection — a family pattern of early cardiac death sitting next to her own autonomic symptoms is not "color," it's an unassessed risk line that the case's metabolic-genetic focus may be crowding out.</li>
+    <li><strong>What the split says about this case-teller's default depth:</strong> the narrative goes very deep on mechanism, family pattern, and lived experience, and comparatively shallow on structured/validated measurement and on how the illness is held or explained outside the clinical-research relationship — a bias toward explanatory depth over verificatory or social depth.</li>
+  </ol>
+
+  <footer>
+    Generated per VibeRounds Module S4 (Ultima Thule Exhaustive Domain Sweep), companion to Module S3. Educational reasoning-enrichment exercise only — not a diagnostic or care-planning output. Independent clinical verification required before any item here informs an actual decision.
+  </footer>
+
+</div>
+</body>
+</html>
