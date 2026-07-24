@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polemos Debate: The Future of Clinical Practice</title>
+<style>
+  :root{
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --ink:#2b2620;
+    --muted:#6b6255;
+    --accent:#8a3b2f;
+    --accent-soft:#f1e2dc;
+    --cs:#2f5d8a;
+    --ph:#6b3f8a;
+    --hi:#3f7a4d;
+    --border:#e7e0d6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Georgia, 'Times New Roman', serif;
+    line-height:1.6;
+    -webkit-text-size-adjust:100%;
+  }
+  header{
+    position:sticky;
+    top:0;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:14px 16px;
+    z-index:10;
+    box-shadow:0 2px 6px rgba(0,0,0,0.04);
+  }
+  h1{
+    font-size:1.3rem;
+    margin:0 0 2px 0;
+    font-weight:700;
+  }
+  .subtitle{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  button{
+    border:none;
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:0.9rem;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:transform 0.08s ease, opacity 0.15s ease;
+  }
+  button:active{transform:scale(0.97);}
+  #playBtn{background:var(--accent);color:#fff;}
+  #pauseBtn{background:var(--accent-soft);color:var(--accent);}
+  #stopBtn{background:var(--accent-soft);color:var(--accent);}
+  button:disabled{opacity:0.45;cursor:default;}
+  select{
+    font-family:inherit;
+    font-size:0.85rem;
+    padding:8px 8px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--ink);
+  }
+  .rate-label{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:0.8rem;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:20px 16px 60px;
+  }
+  .case-label{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-size:0.75rem;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .case-title{
+    font-size:1.5rem;
+    font-weight:700;
+    margin:0 0 20px 0;
+  }
+  .round-divider{
+    text-align:center;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:0.72rem;
+    color:var(--muted);
+    margin:34px 0 14px;
+    position:relative;
+  }
+  .round-divider::before,.round-divider::after{
+    content:"";
+    display:inline-block;
+    width:30px;
+    height:1px;
+    background:var(--border);
+    vertical-align:middle;
+    margin:0 10px;
+  }
+  .speaker-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:5px solid var(--muted);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:16px;
+    scroll-margin-top:170px;
+  }
+  .speaker-card.cs{border-left-color:var(--cs);}
+  .speaker-card.ph{border-left-color:var(--ph);}
+  .speaker-card.hi{border-left-color:var(--hi);}
+  .speaker-name{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    margin-bottom:8px;
+  }
+  .cs .speaker-name{color:var(--cs);}
+  .ph .speaker-name{color:var(--ph);}
+  .hi .speaker-name{color:var(--hi);}
+  .speaker-card p{
+    margin:0 0 12px 0;
+    font-size:1rem;
+  }
+  .speaker-card p:last-child{margin-bottom:0;}
+  .prompt-note{
+    text-align:center;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-style:italic;
+    color:var(--muted);
+    font-size:0.85rem;
+    margin:20px 0;
+  }
+  .end-note{
+    text-align:center;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--muted);
+    font-size:0.85rem;
+    margin-top:30px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .reading{
+    background:#fff8ec !important;
+    box-shadow:0 0 0 2px #e8c98a inset;
+  }
+  @media (max-width:480px){
+    h1{font-size:1.1rem;}
+    .case-title{font-size:1.3rem;}
+    .controls{gap:6px;}
+    button{padding:9px 11px;font-size:0.85rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗣️ Polemos Debate Transcript</h1>
+  <div class="subtitle">The Future of Clinical Practice</div>
+  <div class="controls">
+    <button id="playBtn">▶️ Read Aloud</button>
+    <button id="pauseBtn" disabled>⏸️ Pause</button>
+    <button id="stopBtn" disabled>⏹️ Stop</button>
+    <select id="voiceSelect"></select>
+    <span class="rate-label">Speed
+      <select id="rateSelect">
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+      </select>
+    </span>
+  </div>
+</header>
+
+<main id="content">
+  <div class="case-label">The Case</div>
+  <div class="case-title">Future of Clinical Practice</div>
+
+  <div class="speaker-card cs" data-speaker="The Computer Scientist">
+    <div class="speaker-name">The Computer Scientist</div>
+    <p>When people glibly discuss the "future of clinical practice," they usually mean wrapping black-box probabilistic models around dirty hospital telemetry and pretending we have automated medicine. Strip away the marketing, and what is the actual computational problem? You are running inference on incomplete, highly unnormalized time-series data with extreme class imbalance and massive covariate shift between training sets and live patient populations. A diagnostic neural network trained on high-resolution imagery from a tertiary academic center inevitably collapses when fed noisy inputs from a low-throughput regional facility because the underlying data distribution has fundamentally shifted. The core trade-off here isn't raw accuracy versus execution speed; it is model capacity versus out-of-distribution fragility. If your software architecture cannot formally bound its uncertainty when presented with tail-end edge cases, then optimizing for a high area under the ROC curve on a static benchmark is a dangerous distraction from how distributed control systems fail in real environments.</p>
+    <p>Take real-time sepsis prediction as a concrete case study. On paper, these models boast impressive sensitivity, but in an operational clinical pipeline, their low positive predictive value floods the human-in-the-loop with false positives. The system-level consequence isn't optimized care; it is catastrophic alarm fatigue, where clinicians systematically desensitize to the alert state, rendering the computational signal worse than useless. If software tools are to genuinely advance clinical practice, we must abandon the fantasy of the AI oracle and build resilient software architectures. That requires hard systems engineering: explicit out-of-distribution detection at the data ingestion layer, deterministic state-machine fallbacks when model confidence breaches a parameterized threshold, and immutable data lineage to audit every state mutation. We do not need larger parameter counts; we need guaranteed failure modes, strict latency bounds, and formal verification of the clinical decision pipeline.</p>
+  </div>
+
+  <div class="speaker-card ph" data-speaker="The Philosopher">
+    <div class="speaker-name">The Philosopher</div>
+    <p>When we speak of the "future of clinical practice," we invariably smuggle in a deeply contentious epistemic and metaphysical assumption: that clinical practice is fundamentally an information-processing problem awaiting technical optimization. We tend to conflate the empirical mechanics of pathology with the normative, lived reality of illness. Pathology is a physical state subject to statistical modeling, but clinical practice—praxis in the classical sense—is an interpretive and evaluative encounter between a person seeking care and a practitioner wielding practical judgment, or phronesis. To assume that the future of this domain lies merely in accelerating diagnostic speed or predictive accuracy is to commit a category mistake. It reduces the clinical encounter to a sequence of informational inputs and outputs, ignoring that a diagnosis is not merely a descriptive statement about biological matter, but a normative proposition that re-orders a patient's existential and moral world. If we define "clinical practice" purely by its measurable empirical yield, we quietly eliminate its ethical core: the duty to interpret human suffering, negotiate competing values, and bear moral responsibility when clinical evidence is fundamentally incomplete.</p>
+    <p>Now, the strongest objection to my position is straightforwardly consequentialist: if automated predictive systems or standardized algorithmic pipelines measurably lower diagnostic error rates and reduce mortality, then insisting on the irreducibility of human relationality is not just pedantic—it is morally indefensible. If a computational protocol saves more lives, who cares about the "existential encounter"? Yet this counter-argument rests on a circular definition of what a clinical outcome actually is. Consider a concrete scenario: an eighty-year-old patient with complex multimorbidity facing a choice between aggressive, toxic intervention that offers a ten percent chance of six additional months, and palliative comfort care. "Optimization" here is a vacuous concept until a non-empirical value judgment is made regarding what constitutes a meaningful life or an acceptable trade-off between longevity and suffering. An algorithm can quantify survival probabilities, but it cannot establish the normative weight of those probabilities for a specific human life. Epistemic efficiency cannot generate normative authority. Therefore, what must be concluded is clear: we must explicitly reject the techno-reductionist assumption that clinical practice is merely applied data science. The future of clinical practice must be deliberately structured around the formal preservation of moral agency and interpretive judgment, ensuring that technical tools serve as instruments for clinical reasoning rather than surrogates for it.</p>
+  </div>
+
+  <div class="speaker-card hi" data-speaker="The Historian">
+    <div class="speaker-name">The Historian</div>
+    <p>When we speak of the "future of clinical practice," I must immediately caution this panel against the naive, presentist assumption that we are standing at an unprecedented precipice driven solely by technological innovation. History tells us a far more structural story. The clinical encounter has never been a static, purely scientific exercise waiting to be optimized by better tools; it is a historically contingent socio-political institution. Consider the late eighteenth and early nineteenth centuries—the transition from the fluid-based, narrative bedside medicine of the early modern era to the Paris Clinical School of Xavier Bichat and René Laennec. The introduction of physical examination and the stethoscope did not merely "improve diagnostics"; it fundamentally reordered the power dynamic between physician and patient, transforming the sick individual from an active narrator of suffering into a passive site of anatomical lesion. Likewise, the 1910 Flexner Report in the United States was framed as a neutral, scientific modernization of medical education, yet its actual historical effect was the systematic closure of Black and women's medical colleges, cartellizing clinical authority under a specific elite, institutionalized class. Every major evolution in clinical practice is, at its root, a renegotiation of social power, institutional monopoly, and state interest.</p>
+    <p>If we want to understand where clinical practice is heading, we must stop treating emerging algorithmic diagnostics and automated care systems as neutral, revolutionary forces descending from a vacuum. They are merely the latest iteration of a process that accelerated in the mid-twentieth century: the systematic abstraction of care away from local human intuition and toward centralized, extractable data. When standardized laboratory assays and mechanized record-keeping were introduced in the postwar era, techno-utopians promised a democratization of care; instead, those mechanisms were absorbed by insurance cartels, hospital conglomerates, and state bureaucracies to discipline medical labor, shorten consultation times, and maximize throughput. The future of clinical practice will not be decided by the raw computational capacity of a machine learning model, but by the same material friction that governed the rise of the modern hospital. The real historical battleground will be over who owns the clinical dataset, who absorbs legal liability, and whether the clinician is reduced entirely to a piece-rate administrative operator verifying automated outputs. We must judge the future of medicine not by utopian promises, but by the archival reality of how institutions historically capture, commodify, and weaponize clinical authority.</p>
+  </div>
+
+  <div class="round-divider">Round 2</div>
+
+  <div class="speaker-card cs" data-speaker="The Computer Scientist, round 2">
+    <div class="speaker-name">The Computer Scientist — round 2</div>
+    <p>The Philosopher attempts to draw a sharp line between "empirical information processing" and human phronesis, claiming that computational systems can only output static probabilities while humans make normative value judgments. But this reveals a fundamental misunderstanding of modern decision theory and constraint optimization. When a clinician and an eighty-year-old patient choose between aggressive chemotherapy and palliative care, they are not stepping outside the bounds of structured reasoning; they are defining an explicit loss function over a high-dimensional state space with conflicting objective criteria. The failure of current clinical AI is not that it processes information, but that it relies on uncalibrated, single-objective deep neural networks that implicitly hardcode an opaque loss function—usually raw cross-entropy on survival—without exposing parameter knobs for user-defined safety bounds or preference trade-offs. If we want to preserve moral agency, we don't do it by retreating into non-empirical mysticism; we build multi-objective optimization systems with explicit Pareto frontiers and interactive constraint solvers. A clinician using a formally verified decision system can explicitly parameterize toxicity tolerances and quality-of-life bounds, turning the computational engine into a provably bounded space for decision support rather than a prescriptive black box.</p>
+    <p>The Historian correctly identifies that medical technology is routinely captured by hospital cartels to discipline labor and maximize throughput, but misses the precise architectural flaw that enables this capture. Systems vendors sell brittle, high-variance probabilistic models—like poorly calibrated sepsis alerts—precisely because current software architectures allow them to offload exception handling onto human clinicians. In systems design terms, the clinician has been reduced to an uncompensated, high-latency error handler in a badly designed asynchronous pipeline. When a vendor deploys an alert system with a ninety-percent false-positive rate, hospital administrators use the clinician's license as a liability sink, relying on human cognitive overhead to filter out the model's out-of-distribution hallucinations. The institutional exploitation the Historian highlights is directly enabled by sloppy software design that lacks explicit uncertainty thresholds and deterministic fallbacks. If you want to prevent institutional capture and data commodification, you do not rely on policy manifestos; you enforce technical guarantees—using zero-knowledge proofs for data provenance, federated compute architectures that prevent monolithic data hoarding, and strict, legally binding software invariants that fail safely when inputs drift outside the model's verified operational envelope.</p>
+  </div>
+
+  <div class="speaker-card ph" data-speaker="The Philosopher, round 2">
+    <div class="speaker-name">The Philosopher — round 2</div>
+    <p>The Computer Scientist offers a commendably pragmatic critique of probabilistic fragility, rightly exposing how brittle machine learning models fail when confronted with real-world distribution shifts and alarm fatigue. Yet, in replacing the "AI oracle" with the paradigm of control systems engineering—complete with deterministic fallbacks, formal verification, and parameterized thresholds—the Computer Scientist merely shifts the unstated premise down one layer of abstraction. A control system, no matter how rigorously bounded, requires a predefined state space and an objective function that defines what a "safe" or "optimal" state actually is. In mechanical or aerospace engineering, a valid state can be defined by physical invariants like stress tolerances or aerodynamic stability. In clinical practice, however, defining a safe or acceptable state is never a purely empirical or computational decision; it is a value judgment. Consider the Computer Scientist's sepsis fallback pipeline: when the predictive model's confidence breaches a threshold, the system triggers a deterministic fallback protocol—say, aggressive fluid resuscitation. But that fallback rule itself encodes implicit normative choices regarding the acceptable risk of fluid overload versus delayed intervention, choices that vary radically depending on a patient's unique physiological vulnerabilities and personal care goals. By mistaking an epistemic problem of software safety for a resolution of clinical judgment, the Computer Scientist assumes that if we can formally bound computational behavior, we have successfully governed clinical practice. Bounded system behavior is an engineering virtue, but it is not a substitute for normative justification.</p>
+    <p>The Historian, conversely, provides a vital antidote to technological determinism by showing how clinical innovation has historically functioned as a vehicle for institutional consolidation, labor discipline, and socio-political power. Yet the Historian succumbs to a different unstated reductionism: the assumption that clinical practice is exhaustively explained by its political and economic conditions. By framing every shift in medical practice—from the stethoscope to algorithmic data extraction—as fundamentally a struggle over institutional monopoly and the commodification of medical labor, the Historian commits a classic genetic fallacy. Conflating the political mechanisms through which a practice is institutionalized with the conceptual structure of clinical judgment itself collapses the normative into the sociological. If clinical practice is nothing more than an arena of institutional capture and state interests, then the Historian leaves us with no internal standard by which to criticize those very abuses. To declare that a hospital conglomerate has degraded care by disciplining clinical labor requires a prior, non-sociological concept of what good care actually entails. The Historian's critique silently relies on the very moral and phronetic core of clinical practice that their materialist analysis purports to reduce to institutional power. Thus, while the Computer Scientist reduces clinical practice to deterministic control inputs and the Historian reduces it to socio-economic mechanics, both avoid the inescapable metaphysical reality: clinical practice is fundamentally an evaluative, interpretive duty that cannot be fully automated by a control system nor fully explained by a historical audit of power.</p>
+  </div>
+
+  <div class="speaker-card hi" data-speaker="The Historian, round 2">
+    <div class="speaker-name">The Historian — round 2</div>
+    <p>My colleague in Computer Science diagnoses the failure modes of modern clinical algorithms—alarm fatigue, distribution shifts, and brittle out-of-distribution performance—as if they were purely technical deficiencies awaiting more rigorous software architecture. But this ignores the long, material history of technology deployment in medical institutions. When continuous electronic fetal monitoring was introduced into American labor wards in the late 1960s, it suffered from the exact same structural flaw: high sensitivity, abysmal positive predictive value, and a perpetual flood of false positives that drastically increased unnecessary surgical interventions. Did hospital boards and insurance cartels roll it back or wait for formal verification? Absolutely not. It was universally adopted because it created a paper trail that protected institutions against malpractice liability and allowed hospitals to run leaner staffing ratios of registered nurses. What my computational colleague critiques as a "dangerous distraction" of uncalibrated models is, in archival reality, a well-understood institutional feature. Automated alerts have historically been deployed not when they are technically flawless, but when they allow hospital management to deskill labor, enforce administrative compliance, and shift institutional risk onto lower-paid operators.</p>
+    <p>Turning to my philosophical colleague, I must challenge the romantic, ahistorical invocation of phronesis and the untainted "normative relationality" of the traditional clinical encounter. To frame algorithmic reductionism as a modern "category mistake" is to misread how human clinical judgment actually operated long before the advent of machine learning. Historically, the unquantified, unmonitored "intuitive judgment" of the solitary physician was frequently the exact vehicle through which class prejudice, racial bias, and outright state coercion were executed—from the subjective diagnostic criteria that justified the involuntary commitment of working-class women for "hysteria" in the nineteenth century to the unchecked clinical discretion that drove eugenic sterilizations in the 1920s under Buck v. Bell. The mid-twentieth-century push toward statistical clinical trials and standardized diagnostic manuals was not invented by tech-monopolists; it was spearheaded by reform-minded epidemiologists and state regulators explicitly seeking to curb the arbitrary, unaccountable tyranny of individual medical elites. The erosion of human-centered praxis that the Philosopher laments is not a metaphysical misstep; it is the predictable, material consequence of Taylorism applied to corporate healthcare, where the state and capital have spent over a century dismantling clinician autonomy to ensure predictable, measurable, and commodifiable institutional yields.</p>
+  </div>
+
+  <div class="prompt-note">— moderator: "give final summary" —</div>
+
+  <div class="round-divider">Round 3</div>
+
+  <div class="speaker-card cs" data-speaker="The Computer Scientist, round 3, final summary">
+    <div class="speaker-name">The Computer Scientist — round 3</div>
+    <p>The Philosopher claims that parameterizing state spaces and constraint solvers merely shifts the normative choice down a layer of abstraction. This reveals a persistent misunderstanding of multi-objective optimization. In systems design, exposing the Pareto frontier—the non-dominated set of vectors balancing survival probability, acute toxicity, and long-term functional impairment—does not make the value judgment for the clinician. It does the exact opposite: it prevents the system from making an implicit, uncalibrated choice behind a single scalar output. In a standard end-to-end deep neural network, the loss function silently bakes in arbitrary exchange rates between life extension and side-effect severity. By replacing that black box with an interactive constraint solver, we force the computational engine to output the complete set of mathematically non-dominated execution paths, leaving the point selection on the Pareto surface entirely to the clinician and patient. The Philosopher's romantic phronesis is useless if the underlying information pipeline feeds the clinician a single, uncalibrated probability that hides its state representations. Formal verification and explicit multi-objective state spaces are not a retreat into mechanical reductionism; they are the necessary, mathematically rigorous substrate that keeps human value choices from being silently erased by optimization artifacts.</p>
+    <p>To the Historian, who insists that high false-positive rates and brittle models are retained simply because they serve institutional labor discipline, I offer a hard systems reality: sloppy software design is the literal attack vector that enables institutional capture. Hospital cartels can only reduce clinicians to underpaid, high-latency error handlers because vendors are permitted to ship uncalibrated, unverified probabilistic systems without enforceable runtime invariants. When an algorithm has no built-in out-of-distribution detector or deterministic fallback state, the systemic failure modes are offloaded onto human cognitive bandwidth. If you enforce cryptographic provenance over training data via zero-knowledge proofs, mandate local federated execution, and bake hard deterministic fallbacks into software licenses—such that a model automatically revokes its operational mandate when input drift exceeds formal bounds—the administrative mechanism for labor extraction collapses. My summary position is clear: the future of clinical practice will not be saved by nostalgic appeals to human intuition or passive historical critique. It will be decided by whether we build software systems with explicit multi-objective frontiers, formally verified safety invariants, and mathematically bounded state spaces, or continue to allow uncalibrated, opaque black boxes to dictate human failure modes.</p>
+  </div>
+
+  <div class="end-note">— debate stopped —</div>
+</main>
+
+<script>
+(function(){
+  const synth = window.speechSynthesis;
+  const playBtn = document.getElementById('playBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateSelect = document.getElementById('rateSelect');
+
+  if(!synth){
+    playBtn.textContent = "🔇 Not supported";
+    playBtn.disabled = true;
+  }
+
+  // Gather readable paragraphs in document order
+  const paragraphs = Array.from(document.querySelectorAll('.speaker-card p, .speaker-card .speaker-name, .prompt-note, .end-note, .case-title'));
+
+  let queue = [];
+  let queueIndex = 0;
+  let isPaused = false;
+  let selectedVoice = null;
+
+  function buildQueue(){
+    queue = [];
+    document.querySelectorAll('.speaker-card').forEach(card => {
+      const name = card.querySelector('.speaker-name').textContent;
+      queue.push({text: name, el: card});
+      card.querySelectorAll('p').forEach(p => {
+        queue.push({text: p.textContent, el: card});
+      });
+    });
+  }
+  buildQueue();
+
+  function populateVoices(){
+    const voices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+    voiceSelect.innerHTML = '';
+    (voices.length ? voices : synth.getVoices()).forEach((v,i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      voiceSelect.appendChild(opt);
+    });
+    selectedVoice = (voices.length ? voices : synth.getVoices())[0] || null;
+  }
+  if(synth){
+    populateVoices();
+    synth.onvoiceschanged = populateVoices;
+  }
+
+  voiceSelect.addEventListener('change', () => {
+    const voices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+    const list = voices.length ? voices : synth.getVoices();
+    selectedVoice = list[voiceSelect.value] || null;
+  });
+
+  function clearHighlight(){
+    document.querySelectorAll('.reading').forEach(el => el.classList.remove('reading'));
+  }
+
+  function speakNext(){
+    if(queueIndex >= queue.length){
+      resetControls();
+      clearHighlight();
+      return;
+    }
+    const item = queue[queueIndex];
+    clearHighlight();
+    item.el.classList.add('reading');
+    if(queueIndex === 0 || !document.body.contains(document.activeElement)){}
+    item.el.scrollIntoView({behavior:'smooth', block:'center'});
+
+    const utter = new SpeechSynthesisUtterance(item.text);
+    if(selectedVoice) utter.voice = selectedVoice;
+    utter.rate = parseFloat(rateSelect.value);
+    utter.onend = () => {
+      queueIndex++;
+      speakNext();
+    };
+    utter.onerror = () => {
+      queueIndex++;
+      speakNext();
+    };
+    synth.speak(utter);
+  }
+
+  function resetControls(){
+    playBtn.disabled = false;
+    playBtn.textContent = "▶️ Read Aloud";
+    pauseBtn.disabled = true;
+    pauseBtn.textContent = "⏸️ Pause";
+    stopBtn.disabled = true;
+    queueIndex = 0;
+    isPaused = false;
+  }
+
+  playBtn.addEventListener('click', () => {
+    if(!synth) return;
+    synth.cancel();
+    buildQueue();
+    queueIndex = 0;
+    isPaused = false;
+    playBtn.disabled = true;
+    pauseBtn.disabled = false;
+    stopBtn.disabled = false;
+    speakNext();
+  });
+
+  pauseBtn.addEventListener('click', () => {
+    if(!synth) return;
+    if(!isPaused){
+      synth.pause();
+      isPaused = true;
+      pauseBtn.textContent = "▶️ Resume";
+    } else {
+      synth.resume();
+      isPaused = false;
+      pauseBtn.textContent = "⏸️ Pause";
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    if(!synth) return;
+    synth.cancel();
+    clearHighlight();
+    resetControls();
+  });
+
+  // Stop speech if user navigates away
+  window.addEventListener('beforeunload', () => {
+    if(synth) synth.cancel();
+  });
+})();
+</script>
+
+</body>
+</html>
