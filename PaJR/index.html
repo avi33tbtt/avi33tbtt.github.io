@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>65M — Metabolic Syndrome &amp; Dyspnea, West Bengal | Vibe Rounds PaJR Analytics</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --primary:#0891B2;
+  --primary-dark:#0B4A57;
+  --flag:#B91C1C;
+  --flag-soft:#C2410C;
+  --good:#0D9488;
+  --watch:#B45309;
+  --paper:#F0F7F8;
+  --panel:#FFFFFF;
+  --border:#D6E4E7;
+  --muted:#4B6168;
+  --ink:#0B2226;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+}
+h1,h2,h3,h4{font-family:'Fraunces',serif;margin:0;color:var(--ink);}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:var(--primary-dark);}
+
+header.top{
+  background:linear-gradient(135deg,var(--primary-dark),#0d5f70);
+  color:#eaf7f8;
+  padding:38px 24px 30px;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.85;
+  margin-bottom:10px;
+}
+header.top h1{font-size:clamp(24px,4vw,36px);color:#fff;font-weight:700;margin-bottom:10px;}
+header.top .subhead{max-width:760px;font-size:15px;color:#d5eef0;margin-bottom:20px;}
+.chips{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:20px;
+  padding:6px 14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:#eaf7f8;
+}
+
+main{max-width:1180px;margin:0 auto;padding:30px 20px 60px;}
+section{margin-bottom:52px;}
+.section-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  border-bottom:2px solid var(--border);
+  padding-bottom:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.section-head .idx{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  color:var(--primary);
+  font-weight:500;
+}
+.section-head h2{font-size:22px;flex:1;min-width:200px;}
+.section-head .desc{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);text-align:right;}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
+.kpi{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-left:4px solid var(--border);
+  border-radius:8px;
+  padding:16px 16px 14px;
+}
+.kpi.flag{border-left-color:var(--flag);}
+.kpi.good{border-left-color:var(--good);}
+.kpi.watch{border-left-color:var(--watch);}
+.kpi .label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+.kpi .value{font-family:'Fraunces',serif;font-size:26px;font-weight:600;margin:6px 0 4px;}
+.kpi .value span{font-size:13px;font-weight:400;color:var(--muted);}
+.kpi .foot{font-size:12px;color:var(--muted);}
+
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.tab-btn{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--muted);
+  cursor:pointer;
+}
+.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted);}
+.legend span{display:inline-flex;align-items:center;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+table th,table td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);}
+table th{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;color:var(--muted);}
+
+/* timeline */
+.timeline{position:relative;padding-left:26px;border-left:2px solid var(--border);}
+.t-entry{position:relative;margin-bottom:22px;}
+.t-entry:before{
+  content:'';
+  position:absolute;left:-32px;top:4px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 2px var(--border);
+}
+.t-entry.milestone:before{background:var(--flag-soft);}
+.t-entry.data:before{background:#2563EB;}
+.t-entry .date{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);}
+.t-entry h4{font-size:15.5px;margin:3px 0 4px;}
+.t-entry p{margin:0;font-size:13.5px;color:var(--ink);}
+
+/* insight cards */
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.icard{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:8px;padding:14px 16px;}
+.icard.strength{border-left-color:var(--good);}
+.icard.risk{border-left-color:var(--flag);}
+.icard h4{font-size:14.5px;margin-bottom:6px;}
+.icard p{font-size:13px;margin:0 0 8px;color:var(--ink);}
+.icard .src{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);}
+
+/* stakeholders */
+.stake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.scard{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.scard .role{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--primary);}
+.scard h4{font-size:15px;margin:4px 0 6px;}
+.scard p{font-size:12.5px;color:var(--muted);margin:0 0 10px;}
+.bar-bg{background:var(--border);border-radius:4px;height:6px;overflow:hidden;}
+.bar-fill{background:var(--primary);height:100%;}
+
+/* soap + insight blocks */
+.soap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.soap-block h3{font-size:15px;color:var(--primary-dark);margin-bottom:8px;}
+.soap-block{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.soap-block ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;}
+.soap-block p{font-size:13.5px;margin:0 0 8px;}
+
+.audience-block{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px 22px;font-size:14px;}
+.audience-block h3{font-size:16px;margin-bottom:10px;color:var(--primary-dark);}
+.audience-block ul{padding-left:18px;}
+.audience-block .q{font-style:italic;color:var(--muted);}
+
+/* make your own */
+.mko{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:22px;}
+.mko pre{
+  position:relative;
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px 46px 16px 16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.copy-btn{
+  position:absolute;top:10px;right:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  background:var(--primary);
+  color:#fff;border:none;border-radius:6px;
+  padding:6px 10px;cursor:pointer;
+}
+.mko-wrap{position:relative;}
+
+footer{
+  background:var(--primary-dark);
+  color:#dff2f4;
+  padding:28px 20px 40px;
+  font-size:12.5px;
+  line-height:1.6;
+}
+footer .wrap{max-width:1180px;margin:0 auto;}
+footer a{color:#8fe0e8;}
+.warn{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:8px;
+  padding:14px 16px;
+  margin-top:14px;
+  font-size:12px;
+}
+
+@media (max-width:900px){
+  .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .two-col,.insight-grid,.soap-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Vibe Rounds · PaJR Analytics — Patient Journey Record</div>
+    <h1>65M — Metabolic Syndrome &amp; Dyspnea, West Bengal</h1>
+    <p class="subhead">A self-monitored, community-supported chronic disease journey: two-times-daily narrative diary entries, hourly self-measured blood pressure clusters, a multi-stakeholder discussion thread (family physician, supervising clinician, visiting consultants, students, and two AI analytic bots), and periodic thematic re-analyses of the record itself.</p>
+    <div class="chips">
+      <span class="chip">Group created: 14 Sep 2024</span>
+      <span class="chip">Log analyzed: 02 Dec 2025 → 25 Jul 2026 (~236 days)</span>
+      <span class="chip">2,529 messages · 15 participants</span>
+      <span class="chip">Off antihypertensives since Feb 2025</span>
+      <span class="chip">Primary theme: lifestyle-driven BP control in metabolic syndrome</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 KPI -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">01</span>
+    <h2>Case snapshot</h2>
+    <span class="desc mono">key numbers, at a glance</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi watch">
+      <div class="label">Age at log start → now</div>
+      <div class="value">63 <span>→ 65 yrs</span></div>
+      <div class="foot">Group retitled "65M…" on 07 Jun 2026</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">Antihypertensive status</div>
+      <div class="value">0 <span>meds</span></div>
+      <div class="foot">Telmisartan 40mg discontinued Feb 2025; none resumed through Jul 2026</div>
+    </div>
+    <div class="kpi">
+      <div class="label">BP readings logged</div>
+      <div class="value">53 <span>self-measured</span></div>
+      <div class="foot">Across 4 intensive-monitoring days (11–12 readings each) + 2 sparse checks</div>
+    </div>
+    <div class="kpi flag">
+      <div class="label">Systolic range (intensive days)</div>
+      <div class="value">93–158 <span>mmHg</span></div>
+      <div class="foot">Widest swing on a single day: 30 Apr 2026 (93→146)</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">Weight change</div>
+      <div class="value">−10 <span>kg</span></div>
+      <div class="foot">Waist circumference plateaued (−0.5 in only) — diet, not exercise, is the gap</div>
+    </div>
+    <div class="kpi watch">
+      <div class="label">Diagnosed comorbidities</div>
+      <div class="value">3</div>
+      <div class="foot">Metabolic syndrome · Grade 2 fatty liver · situational hypertension</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Stakeholder mix</div>
+      <div class="value">15</div>
+      <div class="foot">Patient, 4 clinicians, 2 AI bots, 8 other participants/students</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 telemetry -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">02</span>
+    <h2>Primary telemetry — blood pressure</h2>
+    <span class="desc mono">4 intensive monitoring days</span>
+  </div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="tabs" id="dayTabs">
+        <button class="tab-btn active" data-day="d1">09 Dec 2025</button>
+        <button class="tab-btn" data-day="d2">18 Jan 2026</button>
+        <button class="tab-btn" data-day="d3">25 Mar 2026</button>
+        <button class="tab-btn" data-day="d4">30 Apr 2026</button>
+      </div>
+      <svg id="bpChart" viewBox="0 0 640 320" style="width:100%;height:auto;"></svg>
+      <div class="legend">
+        <span><span class="dot" style="background:#0891B2"></span>Systolic</span>
+        <span><span class="dot" style="background:#0D9488"></span>Diastolic</span>
+        <span><span class="dot" style="background:#B45309"></span>Pulse</span>
+        <span>┈┈ 140/90 hypertension threshold</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:15px;margin-bottom:10px;">Time-of-day pattern</h3>
+      <table>
+        <tr><th>Window</th><th>Typical systolic</th><th>Note</th></tr>
+        <tr><td>Early AM (03:00–06:00)</td><td>116–150</td><td>Highest variance; overnight/pre-walk spikes</td></tr>
+        <tr><td>Mid-morning (09:00–12:00)</td><td>93–158</td><td>Post-walk dip common, but not universal</td></tr>
+        <tr><td>Afternoon (12:00–15:00)</td><td>110–153</td><td>Post-lunch rebound seen most days</td></tr>
+        <tr><td>Evening (17:00–22:30)</td><td>111–151</td><td>Alcohol-linked dips on social evenings</td></tr>
+      </table>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">Distribution across all 53 logged readings: <strong>62%</strong> below 140/90, <strong>38%</strong> at or above — consistent with the record's own description of "fluctuating but often-controlled" readings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 timeline -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">03</span>
+    <h2>Care journey timeline</h2>
+    <span class="desc mono">dated, synthesized events</span>
+  </div>
+  <div class="timeline">
+    <div class="t-entry milestone">
+      <div class="date mono">Mar 2021</div>
+      <h4>Hypertension diagnosed under acute stress</h4>
+      <p>BP first detected and medication started while the patient's wife was hospitalized with a stroke and, in close succession, COVID-19. The patient believes the onset was situational rather than primary.</p>
+    </div>
+    <div class="t-entry milestone">
+      <div class="date mono">2 Nov (year prior to log)</div>
+      <h4>Bereavement</h4>
+      <p>Wife's death. Patient reports weight gain, insomnia, and emotional volatility afterward, alongside a persisting dyspnea/breathlessness sensation that had begun around the 2021 illness. Daily morning walks began around this time and have continued since.</p>
+    </div>
+    <div class="t-entry milestone">
+      <div class="date mono">Feb 2025</div>
+      <h4>Antihypertensive medication discontinued</h4>
+      <p>Telmisartan 40mg stopped on the patient's own initiative, replaced with fortnightly (later much more frequent) manual BP self-monitoring. No physician-directed re-titration is documented in this period.</p>
+    </div>
+    <div class="t-entry data">
+      <div class="date mono">14 Sep 2024</div>
+      <h4>PaJR group created</h4>
+      <p>Group instituted for longitudinal, patient-driven journey recording; active narrative logging in this dataset begins 02 Dec 2025.</p>
+    </div>
+    <div class="t-entry data">
+      <div class="date mono">09 Dec 2025</div>
+      <h4>First intensive BP monitoring day</h4>
+      <p>12 hourly readings in one day (125/81 → 158/93 → 131/82), establishing the "measure many times a day, not once" self-monitoring practice referenced repeatedly later.</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">03 Jan 2026</div>
+      <h4>AI bot thematic re-analysis of the full record</h4>
+      <p>An analytic assistant bot summarized BP trends across Jun–Dec 2025, surfacing the "walks lower BP" and "alcohol transiently lowers BP" patterns from the raw log — later scrutinized by the clinical team for hallucinated citations.</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">17 Oct 2025 (referenced)</div>
+      <h4>Possible REM sleep behavior disorder flagged</h4>
+      <p>Nighttime vocalizations/physical movements during dreams noted; team links this to alcohol use for "dreamless sleep," raising a differential beyond simple insomnia.</p>
+    </div>
+    <div class="t-entry data">
+      <div class="date mono">18 Jan 2026</div>
+      <h4>Second intensive BP day, including first overnight readings</h4>
+      <p>12 readings starting at 01:11 AM; captures the widest early-morning range of the dataset (116–142 systolic before 06:00).</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">19 Feb 2026</div>
+      <h4>HFpEF literature review requested</h4>
+      <p>Supervising clinician asks the team to check heart-failure-with-preserved-ejection-fraction literature against the patient's stable NYHA Class 2 status and walk-based routine.</p>
+    </div>
+    <div class="t-entry data">
+      <div class="date mono">25 Mar 2026</div>
+      <h4>Third intensive BP day</h4>
+      <p>12 readings from 03:49 to 21:18; systolic swings from 110 to 151, illustrating persistent variability despite the lifestyle-only regimen.</p>
+    </div>
+    <div class="t-entry data">
+      <div class="date mono">30 Apr 2026</div>
+      <h4>Fourth intensive BP day — lowest single reading of the dataset</h4>
+      <p>11 readings including a 93/66 low at 09:13, alongside highs to 146/85 later the same day.</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">Apr–May 2026</div>
+      <h4>"Retro-walking" introduced as a supervised add-on</h4>
+      <p>A short (~100-step) backward-walking segment added to the morning routine on clinical suggestion, cited to rehabilitation literature (Alghadir et al. 2019); restricted to the start of the walk for fall-risk safety.</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">07 Jun 2026</div>
+      <h4>Group retitled "65M…"</h4>
+      <p>Case title updated to reflect the patient's birthday, marking roughly 20 months of continuous PaJR engagement.</p>
+    </div>
+    <div class="t-entry">
+      <div class="date mono">Jun–Jul 2026</div>
+      <h4>Routine continues; no new BP-crisis events logged</h4>
+      <p>Daily diary entries continue in the same structure (wake time → walk → tea shop → market → home), with retro-walking now a stable fixture and no medication resumed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 insights -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">04</span>
+    <h2>Synthesized insights</h2>
+    <span class="desc mono">strength / risk / neutral, cited to source</span>
+  </div>
+  <div class="insight-grid">
+    <div class="icard strength">
+      <h4>Morning walks associate with lower same-day BP</h4>
+      <p>Multiple entries show a higher pre-walk reading followed by a lower post-walk reading within 2–3 hours (e.g. 109/69 at 05:20 falling to 97/65 by 08:43 on 28 Jun 2025, per the bot's retrospective analysis).</p>
+      <div class="src mono">source: 03 Jan 2026 thematic-analysis thread</div>
+    </div>
+    <div class="icard strength">
+      <h4>Off antihypertensives for 17+ months without a sustained hypertensive crisis</h4>
+      <p>No physician-recorded emergency BP event appears in the log since Telmisartan was stopped Feb 2025, despite readings occasionally exceeding 140/90.</p>
+      <div class="src mono">source: 14 Dec 2025 PA note; 30 Apr 2026 monitoring day</div>
+    </div>
+    <div class="icard strength">
+      <h4>−10 kg weight loss sustained over the log period</h4>
+      <p>Reported alongside the record's own diet commentary; a clear behavioral win even though waist circumference has not moved proportionally.</p>
+      <div class="src mono">source: 03 Jan 2026 PA/bot exchange</div>
+    </div>
+    <div class="icard risk">
+      <h4>Alcohol used as a sleep aid, with a possible parasomnia link</h4>
+      <p>Patient reports drinking for "dreamless sleep"; team flags nighttime vocalizations/movement as a possible REM sleep behavior disorder, not addressed by a sleep-medicine referral in this log.</p>
+      <div class="src mono">source: 17 Oct 2025 note; 03 Jan 2026 alcohol-BP analysis</div>
+    </div>
+    <div class="icard risk">
+      <h4>Alcohol's BP-lowering effect is being read as reassurance rather than risk</h4>
+      <p>A transient drop after "2–3 pegs of whiskey" (e.g. 163/85 → 128/79) is framed in the thread as an "antihypertensive effect," while literature cited later in the same thread notes high-dose alcohol raises BP after ~13 hours — the acute/chronic distinction risks being lost in the patient-facing framing.</p>
+      <div class="src mono">source: 03 Jan 2026 alcohol-BP analysis thread</div>
+    </div>
+    <div class="icard risk">
+      <h4>Grade 2 fatty liver with a stalled metabolic marker</h4>
+      <p>Waist circumference has moved only ~0.5 inch despite 10 kg of weight loss — attributed in-thread to hidden sugar load from alcohol (beer especially) and continuing high-carbohydrate meals.</p>
+      <div class="src mono">source: 03 Jan 2026 nutrition discussion</div>
+    </div>
+    <div class="icard">
+      <h4>Daily tobacco/vape use persists throughout the log</h4>
+      <p>A cigarette and vapor inhalation are logged as a near-daily fixture of the early-morning routine across nearly the entire 8-month window, unremarked on by the clinical team in the reviewed thread.</p>
+      <div class="src mono">source: recurring daily diary entries, Dec 2025–Jul 2026</div>
+    </div>
+    <div class="icard">
+      <h4>Retro-walking added as a low-risk mobility intervention</h4>
+      <p>A brief, supervised backward-walking segment was incorporated with an explicit safety cap (100 steps, controlled surface) rather than extended to the full walk — a good example of matching an evidence-based intervention to real-world constraints.</p>
+      <div class="src mono">source: Apr–May 2026 retro-walking safety discussion</div>
+    </div>
+    <div class="icard risk">
+      <h4>Formal salt/sodium intake is estimated, not measured</h4>
+      <p>Sodium consumption is inferred from tracking the depletion rate of a 1 kg household salt pack (≈750 g used over roughly two months) rather than from a validated dietary-sodium assessment — useful as a proxy, not a substitute for a real measurement.</p>
+      <div class="src mono">source: 17 Feb 2026 salt-inventory note</div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 stakeholders -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">05</span>
+    <h2>Stakeholder engagement</h2>
+    <span class="desc mono">by message share, of 2,529 total</span>
+  </div>
+  <div class="stake-grid">
+    <div class="scard">
+      <div class="role mono">Patient</div>
+      <h4>Participant 1</h4>
+      <p>Self-logs a twice-daily narrative diary (wake, walk, meals, errands) plus all hourly BP readings; the primary data source for the entire record.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:77%"></div></div>
+      <div class="src mono" style="margin-top:4px;">1,941 msgs · 77%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Case Coordinator</div>
+      <h4>Participant 2</h4>
+      <p>Drives clinical questioning, requests literature reviews, and steers the AI bots' analyses toward specific hypotheses (walk–BP, alcohol–BP, HFpEF).</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:7%"></div></div>
+      <div class="src mono" style="margin-top:4px;">183 msgs · 7%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Supervising Physician</div>
+      <h4>Participant 3</h4>
+      <p>Provides overarching clinical framing, connects the case to broader teaching points, and periodically redirects the group's management focus.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:6%"></div></div>
+      <div class="src mono" style="margin-top:4px;">144 msgs · 6%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">AI Health Bot</div>
+      <h4>PaJR Health</h4>
+      <p>Runs on-demand thematic analyses of the log (BP trends, nutrition red-flags, literature summaries) when prompted by clinicians.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:5%"></div></div>
+      <div class="src mono" style="margin-top:4px;">135 msgs · 5%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">AI Clinical Analyst Bot</div>
+      <h4>Participant 4 (bot)</h4>
+      <p>A second AI assistant used for deeper retrospective/database-search style analysis; produced the Jan 2026 BP and alcohol thematic reviews (including one hallucinated citation, later corrected in-thread).</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:2%"></div></div>
+      <div class="src mono" style="margin-top:4px;">44 msgs · 2%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Visiting Consultant</div>
+      <h4>Participant 5</h4>
+      <p>Contributes specialty commentary, including on Ayurvedic/complementary-medicine product safety and cultural/linguistic asides.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:1%"></div></div>
+      <div class="src mono" style="margin-top:4px;">31 msgs · 1%</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Consulting Clinician</div>
+      <h4>Participant 6</h4>
+      <p>Occasional clinical input on specific queries raised in the thread.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:0.4%"></div></div>
+      <div class="src mono" style="margin-top:4px;">11 msgs</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Medical Student (Elective)</div>
+      <h4>Participant 7</h4>
+      <p>Trainee following the case as part of a clinical elective; low-volume, learner-perspective participation.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:0.3%"></div></div>
+      <div class="src mono" style="margin-top:4px;">7 msgs</div>
+    </div>
+    <div class="scard">
+      <div class="role mono">Other participants</div>
+      <h4>Participants 8–14</h4>
+      <p>Seven further individuals (family/social contacts, an assistant AI tool, and single-message contributors) with light, occasional engagement.</p>
+      <div class="bar-bg"><div class="bar-fill" style="width:1.2%"></div></div>
+      <div class="src mono" style="margin-top:4px;">≈33 msgs combined</div>
+    </div>
+  </div>
+  <div class="audience-block" style="margin-top:16px;">
+    <h3>What the stakeholder mix teaches</h3>
+    <p>This case is a working example of a <strong>multi-agent, human-in-the-loop care team</strong>: a single patient's self-reported narrative feeds a coordinator, a supervising physician, two distinct AI analytic tools, and a rotating cast of consultants and learners. The AI bots are useful for pattern surfacing at scale (hundreds of BP readings, months of diary text) but visibly hallucinate at least once (a fabricated PMID), which the human team caught and corrected in real time — a concrete illustration of why AI-generated clinical synthesis needs a clinician in the loop, not as a formality but as an active check.</p>
+  </div>
+</section>
+
+<!-- 06 SOAP -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">06</span>
+    <h2>SOAP note</h2>
+    <span class="desc mono">compressed clinical summary, as of 25 Jul 2026</span>
+  </div>
+  <div class="soap-grid">
+    <div class="soap-block">
+      <h3>S — Subjective</h3>
+      <p>63(→65)-year-old man reports breathlessness/dyspnea that began around a 2021 illness (temporally close to his wife's stroke and his own COVID exposure), alongside insomnia and emotional volatility that intensified after his wife's death. He describes his hypertension as "situational," worsened by stress and periods of poor concentration, and uses alcohol on some evenings as a sleep aid. He continues daily tobacco/vapor use. He reports good functional capacity — sustaining 1.5–2 hour structured morning walks most days.</p>
+    </div>
+    <div class="soap-block">
+      <h3>O — Objective</h3>
+      <p>53 self-measured BP readings across the log; systolic range 93–158 mmHg, diastolic 64–93 mmHg, pulse 68–93 bpm. No current antihypertensive medication (Telmisartan 40mg stopped Feb 2025). Reported 10 kg weight loss; waist circumference reduced only ~0.5 inch. Grade 2 fatty liver on record. NYHA Class 2 functional status referenced by the care team as stable. Nighttime vocalization/movement noted, raising a possible REM sleep behavior disorder differential — not formally worked up in this log.</p>
+    </div>
+    <div class="soap-block">
+      <h3>A — Assessment</h3>
+      <p>Metabolic syndrome with situational hypertension currently managed without pharmacotherapy, apparently supported by a disciplined walking routine and self-monitoring; blood pressure remains variable and intermittently exceeds hypertensive thresholds. Grade 2 fatty liver and abdominal adiposity are metabolically active despite overall weight loss, most plausibly driven by alcohol-associated caloric/sugar load and diet composition rather than exercise volume. Possible parasomnia (RBD) is an unaddressed differential that overlaps with, and may be worsened by, alcohol use.</p>
+    </div>
+    <div class="soap-block">
+      <h3>P — Plan</h3>
+      <ul>
+        <li>Continue structured morning walk + newly added supervised retro-walking (100 steps, controlled surface).</li>
+        <li>Continue hourly/intensive BP self-monitoring on periodic "check days" rather than isolated single readings.</li>
+        <li>Target diet composition (not just weight) to address the fatty liver / waist-circumference plateau — particularly beer and refined-carbohydrate intake.</li>
+        <li>Consider a formal sleep-medicine or psychiatric referral for the alcohol-use pattern and possible RBD, rather than continuing to informally track it in-thread.</li>
+        <li>Continue holding off antihypertensive resumption only under active clinical review, given intermittent readings above 140/90.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 patient -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">07</span>
+    <h2>Insight for the patient</h2>
+    <span class="desc mono">plain language</span>
+  </div>
+  <div class="audience-block">
+    <p>You've done something genuinely hard and kept it up for months: a daily walking routine, honest self-tracking, and a 10 kg weight loss without going back on blood pressure medicine. Your own data backs up what you've felt — your BP tends to come down after your walks, and it stayed reasonably controlled through a long stretch without medication.</p>
+    <p>Two things are worth your attention, though, not as criticism but as honest next steps. First, your waist size hasn't come down as much as your weight — that usually points to what's being eaten and drunk, not how much exercise is happening, and beer in particular seems to be working against you here. Second, the evenings you drink to help you sleep may actually be part of why your sleep is restless (the shouting/moving during dreams that's been noticed) — worth raising with a doctor directly rather than just noting it in the group chat.</p>
+    <p>You're clearly capable of sticking with a plan. The next step is making sure the plan covers diet and sleep as carefully as it already covers walking and blood pressure.</p>
+  </div>
+</section>
+
+<!-- 08 local doctor -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">08</span>
+    <h2>Insight for the local doctor</h2>
+    <span class="desc mono">clinically dense</span>
+  </div>
+  <div class="audience-block">
+    <p><strong>Trends already covered by the remote group</strong> (no need to re-derive): morning-walk-associated acute BP reduction; 17+ months off Telmisartan without a documented hypertensive emergency; a persistent systolic ceiling around 140–158 mmHg on roughly a third of readings despite the lifestyle regimen; Grade 2 fatty liver with a stalled waist-circumference response to weight loss, attributed to alcohol/dietary sugar load.</p>
+    <p><strong>Not yet addressed and worth your independent evaluation:</strong></p>
+    <ul>
+      <li>Possible REM sleep behavior disorder (nocturnal vocalization/movement, alcohol-associated) — no formal sleep study or neurology referral documented.</li>
+      <li>Alcohol use pattern (self-described escalation from social to solitary drinking, used as a sleep aid) — a candidate for a structured brief-intervention conversation, distinct from the group's "antihypertensive effect of alcohol" framing, which risks normalizing the behavior.</li>
+      <li>No formal lipid panel, HbA1c, or renal function values appear anywhere in this log — the metabolic syndrome and fatty-liver labels rest on self-report and prior unlogged workup; worth confirming current labs are on file.</li>
+      <li>The AI bot(s) used by this group have fabricated at least one citation (PMID) in a clinical discussion, later caught by the supervising clinician — a reminder to independently verify any literature claims sourced from this thread before acting on them.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 09 care manager -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">09</span>
+    <h2>Insight for the care manager team</h2>
+    <span class="desc mono">logistics &amp; coordination</span>
+  </div>
+  <div class="audience-block">
+    <p><strong>Adherence pattern:</strong> Excellent for self-monitoring and lifestyle logging (near-daily entries over 8 months); the medication side of adherence is moot since none is currently prescribed, but this also means there's no adherence infrastructure in place if a clinician does re-prescribe.</p>
+    <p><strong>Communication gaps:</strong> The record shows two parallel AI tools (PaJR Health and a second analyst bot) being invoked somewhat interchangeably by different team members, which risks duplicated or conflicting analyses (as seen with the alcohol-BP thread). Consider standardizing which bot answers which type of query.</p>
+    <p><strong>Follow-up scheduling:</strong> No fixed cadence for clinician-led (as opposed to patient-initiated) review is evident; BP "intensive monitoring days" appear to occur roughly every 4–6 weeks but on the patient's own initiative rather than a scheduled protocol.</p>
+    <p><strong>Escalation triggers worth setting explicitly:</strong> a clear systolic/diastolic threshold and reading-frequency rule for when to prompt a same-week clinician review (rather than only periodic retrospective thematic analysis), plus a defined trigger for the sleep/alcohol issue to move from group discussion to formal referral.</p>
+  </div>
+</section>
+
+<!-- 10 learners -->
+<section>
+  <div class="section-head">
+    <span class="idx mono">10</span>
+    <h2>Insight for case-based learners</h2>
+    <span class="desc mono">teaching points &amp; Socratic questions</span>
+  </div>
+  <div class="audience-block">
+    <p>This case exercises the skill of <strong>distinguishing correlation from causation in dense self-reported data</strong> — the record is full of plausible-sounding patterns (walks lower BP, alcohol lowers BP) that are real in the short term but each carry a different long-term clinical meaning. A first read is likely to accept the "medicine-free life" framing at face value; a closer read shows BP still crosses 140/90 on a meaningful minority of readings, and the fatty liver / waist-circumference data quietly contradicts the overall "success story" tone.</p>
+    <p class="q">Socratic questions to sit with:</p>
+    <ul>
+      <li>If roughly a third of this patient's readings are in a hypertensive range, what specific evidence would justify continuing to withhold medication versus what evidence would justify restarting it — and who should be weighing that trade-off?</li>
+      <li>The AI bot's "antihypertensive effect of alcohol" framing is technically accurate for the acute window but potentially harmful as patient-facing advice. Where is the line between an interesting pattern and a dangerous conclusion, and whose job is it to draw that line?</li>
+      <li>What single piece of missing objective data (a lab, a sleep study, a validated dietary assessment) would most change your confidence in this patient's current management plan — and why hasn't it been obtained yet?</li>
+    </ul>
+  </div>
+</section>
+
+<!-- make your own -->
+<section class="mko">
+  <div class="section-head" style="border:none;margin-bottom:14px;">
+    <span class="idx mono">Make your own</span>
+    <h2>Generate a dashboard for another PaJR case</h2>
+  </div>
+  <p style="font-size:13.5px;color:var(--muted);margin-bottom:12px;">Paste the prompt below into an LLM (Claude, ChatGPT, etc.), then replace the bracketed line with your own case — a link, pasted WhatsApp export text, or an attached <code>.txt</code>/<code>.csv</code> file.</p>
+  <div class="mko-wrap">
+    <pre id="promptBlock"><button class="copy-btn" id="copyBtn">Copy prompt</button>Using the Vibe Rounds – PaJR Analytics spec at
+https://avi33tbtt.github.io/Prompts/Vibe_Rounds_PaJR_Analytics.html, build a
+self-contained HTML dashboard for this case:
+
+[paste a link, OR pasted WhatsApp export text, OR attach a .txt/.csv file here]</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Vibe Rounds · PaJR Analytics — generated from a WhatsApp group-chat export ("65M Metabolic syn Dyspnea 2 years WB PaJR") · identifiers redacted to role labels · for learning and care-team review, not a diagnostic instrument. Vibe Rounds is a Socratic, AI-augmented clinical-reasoning learning tool — outputs require independent clinical verification and are not a substitute for clinical judgment. Part of the <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Vibe Rounds project</a>.</p>
+    <div class="warn">
+      ⚠️ <strong>This entire dashboard was generated by a large language model</strong>, which read and synthesized de-identified chat text from the source WhatsApp export. It was not produced or verified by a clinician. The LLM may have misread, mis-dated, mistranslated, or misinterpreted entries, and its pattern claims (correlations, trends, "insights") reflect statistical association in a small, self-reported dataset — not confirmed causation. All values, dates, and interpretations should be independently checked against the original log before any clinical, educational, or personal decision is based on them.
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---- BP data per intensive monitoring day ----
+const bpData = {
+  d1: { label:"09 Dec 2025", points:[
+    ["04:52",125,81,89],["05:46",143,88,83],["09:29",153,86,84],["10:28",158,93,90],
+    ["11:35",121,76,87],["12:55",145,91,84],["13:54",153,88,81],["14:54",132,83,84],
+    ["15:54",108,66,84],["15:55",117,68,84],["17:37",136,78,80],["18:34",131,82,84]
+  ]},
+  d2: { label:"18 Jan 2026", points:[
+    ["01:11",121,74,85],["03:10",116,82,78],["04:10",120,79,80],["05:09",141,88,81],
+    ["05:49",132,85,84],["09:22",142,88,89],["10:49",127,81,88],["11:48",135,77,85],
+    ["12:47",144,82,88],["14:02",127,83,93],["15:01",146,80,84],["17:31",133,86,78]
+  ]},
+  d3: { label:"25 Mar 2026", points:[
+    ["03:49",135,80,75],["04:49",130,83,74],["05:49",147,90,74],["08:46",141,87,81],
+    ["09:53",131,81,89],["10:53",118,64,73],["11:47",123,73,70],["13:50",149,91,74],
+    ["14:50",110,68,81],["15:46",114,76,78],["17:20",151,85,75],["21:18",150,93,80]
+  ]},
+  d4: { label:"30 Apr 2026", points:[
+    ["06:03",124,80,75],["09:13",93,66,74],["09:58",122,74,76],["11:03",112,72,74],
+    ["12:01",134,80,72],["12:58",144,86,76],["14:00",120,80,77],["15:00",111,73,78],
+    ["17:28",146,85,73],["18:29",137,84,74],["19:29",130,83,77],["21:29",132,84,68]
+  ]}
+};
+
+const svgNS = "http://www.w3.org/2000/svg";
+function drawChart(key){
+  const svg = document.getElementById('bpChart');
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  const data = bpData[key].points;
+  const W=640,H=320,padL=42,padR=16,padT=16,padB=40;
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const yMin=55, yMax=165;
+  const xFor = i => padL + (i/(data.length-1))*plotW;
+  const yFor = v => padT + (1-(v-yMin)/(yMax-yMin))*plotH;
+
+  function line(vals,color){
+    let d = data.map((p,i)=>`${i===0?'M':'L'}${xFor(i)},${yFor(vals(p))}`).join(' ');
+    const path = document.createElementNS(svgNS,'path');
+    path.setAttribute('d',d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke',color);
+    path.setAttribute('stroke-width','2.2');
+    svg.appendChild(path);
+    data.forEach((p,i)=>{
+      const c = document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',xFor(i));
+      c.setAttribute('cy',yFor(vals(p)));
+      c.setAttribute('r',3);
+      c.setAttribute('fill',color);
+      svg.appendChild(c);
+    });
+  }
+  // gridlines
+  for(let v=60; v<=160; v+=20){
+    const y = yFor(v);
+    const gl = document.createElementNS(svgNS,'line');
+    gl.setAttribute('x1',padL); gl.setAttribute('x2',W-padR);
+    gl.setAttribute('y1',y); gl.setAttribute('y2',y);
+    gl.setAttribute('stroke','#D6E4E7'); gl.setAttribute('stroke-width','1');
+    svg.appendChild(gl);
+    const t = document.createElementNS(svgNS,'text');
+    t.setAttribute('x',padL-8); t.setAttribute('y',y+4);
+    t.setAttribute('text-anchor','end'); t.setAttribute('font-size','10');
+    t.setAttribute('font-family','IBM Plex Mono, monospace'); t.setAttribute('fill','#4B6168');
+    t.textContent = v;
+    svg.appendChild(t);
+  }
+  // threshold lines 140 / 90
+  [140,90].forEach(th=>{
+    const y=yFor(th);
+    const l = document.createElementNS(svgNS,'line');
+    l.setAttribute('x1',padL); l.setAttribute('x2',W-padR);
+    l.setAttribute('y1',y); l.setAttribute('y2',y);
+    l.setAttribute('stroke','#B91C1C'); l.setAttribute('stroke-width','1.2');
+    l.setAttribute('stroke-dasharray','4,4');
+    svg.appendChild(l);
+  });
+  // x labels (times)
+  data.forEach((p,i)=>{
+    if(i%2===0 || data.length<=6){
+      const t = document.createElementNS(svgNS,'text');
+      t.setAttribute('x',xFor(i)); t.setAttribute('y',H-padB+16);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('font-size','9');
+      t.setAttribute('font-family','IBM Plex Mono, monospace'); t.setAttribute('fill','#4B6168');
+      t.setAttribute('transform',`rotate(45 ${xFor(i)} ${H-padB+16})`);
+      t.textContent = p[0];
+      svg.appendChild(t);
+    }
+  });
+  line(p=>p[1], '#0891B2'); // systolic
+  line(p=>p[2], '#0D9488'); // diastolic
+  line(p=>p[3], '#B45309'); // pulse
+}
+drawChart('d1');
+document.querySelectorAll('#dayTabs .tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#dayTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    drawChart(btn.dataset.day);
+  });
+});
+
+// copy prompt button
+document.getElementById('copyBtn').addEventListener('click', function(){
+  const pre = document.getElementById('promptBlock');
+  const text = pre.textContent.replace('Copy prompt','').trim();
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById('copyBtn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(()=>{ btn.textContent = orig; }, 1800);
+  });
+});
+</script>
+
+</body>
+</html>
