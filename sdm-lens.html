@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Rounds - Case Lens — 8-Lens Critical Thinking Audit</title>
+<title>Vibe Rounds - SDM Lens — 7-Domain Shared Decision-Making Query Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -236,6 +236,8 @@
   }
 
   .output-body{white-space:pre-wrap;font-size:13.5px;color:var(--ink);line-height:1.6;}
+  .output-body .impact-5{color:var(--alert);font-weight:700;}
+  .output-body .impact-4{color:#B3791A;font-weight:700;}
   .empty-note{color:var(--muted);font-size:13px;font-style:italic;padding:20px 0;text-align:center;}
 
   .loading-line{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;}
@@ -261,11 +263,11 @@
 
   <header class="top">
     <div class="brand">
-      <h1>Vibe Rounds - Case Lens</h1>
-      <span class="rx">8-Lens Critical Thinking Audit</span>
+      <h1>Vibe Rounds - SDM Lens</h1>
+      <span class="rx">7-Domain Shared Decision-Making Query Generator</span>
     </div>
     <div class="top-right">
-      <div class="tagline">clinical reasoning aid · not for patient care</div>
+      <div class="tagline">patient-advocacy prep aid · not a decision aid</div>
       <div class="top-links">
         <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project site</a>
         <a href="https://avi33tbtt.github.io/bench.html" target="_blank" rel="noopener">Case Bench</a>
@@ -273,8 +275,8 @@
     </div>
   </header>
 
-  <div class="banner">Not a diagnosis tool. This runs the Case Lens module from the Vibe Rounds prompt library: load a case once, then fire each lens (or all eight) to generate case-specific, impact-scored questions — followed by a Phase 3 roll-up and reflection debrief.</div>
-  <div class="banner warn"><strong>Educational use only.</strong> To be used on personal responsibility and only for learning — not for clinical decision-making. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.</div>
+  <div class="banner">Not a decision-making tool. This runs the Module SDM — Shared Decision-Making Query Generator from the Vibe Rounds prompt library: load a case once, then fire each of the 7 query domains (or all of them) to generate patient-voiced, first-person questions — followed by a Phase 3 synthesis: a consolidated question set, an "Ask 3" priority distillation, a case-data gap check, and a reflection debrief. It never recommends a treatment or ranks options for the patient — its only output is the questions a patient or advocate should be asking.</div>
+  <div class="banner warn"><strong>Educational use only.</strong> To be used on personal responsibility and only for learning and preparation — not for clinical decision-making. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.</div>
 
   <!-- STEP 1 — MODEL -->
   <div class="step">
@@ -305,8 +307,8 @@
   <div class="step">
     <div class="step-label collapsed" id="label-case"><span class="num">2</span>Case<span class="collapse-arrow" id="arrow-case">&#9662;</span></div>
     <div class="card collapsed" id="card-case">
-      <label for="caseText">Paste the case — vignette, summary, discharge note, or paste a link to fetch it from</label>
-      <textarea id="caseText" placeholder="Paste the case here, or paste a link (e.g. https://example.com/case-report) and click Fetch below — the more specific (actual values, timing, meds), the sharper the questions each lens will generate."></textarea>
+      <label for="caseText">Paste the case — diagnosis, options being offered, prognosis, and anything documented about the patient's values — or paste a link to fetch it from</label>
+      <textarea id="caseText" placeholder="Paste the case here, or paste a link (e.g. https://example.com/case-report) and click Fetch below — the more specific (the actual options on the table, evidence, and any documented patient preferences), the sharper the questions each domain will generate."></textarea>
 
       <div class="link-detect" id="linkDetectRow" style="display:none;">
         <span id="linkDetectText">Link detected —</span>
@@ -336,12 +338,12 @@
 
   <!-- STEP 3 — LENSES -->
   <div class="step">
-    <div class="step-label collapsed" id="label-lenses"><span class="num">3</span>Lenses <span class="badge-count" id="lensDoneCount">0 / 8 run</span><span class="collapse-arrow" id="arrow-lenses">&#9662;</span></div>
+    <div class="step-label collapsed" id="label-lenses"><span class="num">3</span>Query Domains <span class="badge-count" id="lensDoneCount">0 / 7 run</span><span class="collapse-arrow" id="arrow-lenses">&#9662;</span></div>
     <div class="card collapsed" id="card-lenses">
       <div class="select-all-row">
-        <label><input type="checkbox" id="selectAll"> Select all 8 lenses</label>
-        <button id="runSelectedBtn" type="button">▶ Run selected lenses</button>
-        <button class="secondary small" id="resetLensesBtn" type="button">Reset lens outputs</button>
+        <label><input type="checkbox" id="selectAll"> Select all 7 domains</label>
+        <button id="runSelectedBtn" type="button">▶ Run selected domains</button>
+        <button class="secondary small" id="resetLensesBtn" type="button">Reset domain outputs</button>
       </div>
       <div class="lens-grid" id="lensGrid"></div>
     </div>
@@ -351,9 +353,11 @@
   <div class="step">
     <div class="step-label collapsed" id="label-phase3"><span class="num">4</span>Closure / Review<span class="collapse-arrow" id="arrow-phase3">&#9662;</span></div>
     <div class="card collapsed" id="card-phase3">
-      <div class="hint" style="margin-top:0;">Run after at least one lens has produced output — these consolidate everything generated so far.</div>
+      <div class="hint" style="margin-top:0;">Run after at least one domain has produced output — these consolidate everything generated so far into what the patient actually brings into the room.</div>
       <div class="phase3-buttons">
-        <button id="rollupBtn" type="button">▶ Key Questions Roll-Up</button>
+        <button id="questionSetBtn" type="button">▶ Patient Question Set</button>
+        <button id="ask3Btn" type="button">▶ "Ask 3" Priority Distillation</button>
+        <button id="gapsBtn" type="button">▶ Gaps in the Case Data</button>
         <button id="reflectionBtn" type="button">▶ Reflection Debrief</button>
       </div>
     </div>
@@ -380,62 +384,61 @@
 </div>
 
 <footer>
-  Case Lens is a Vibe Rounds tool · Dr. Avinash Kumar Gupta · CC BY 4.0 · runs entirely in your browser · bring your own key.<br>
-  All outputs require independent clinical verification. Not a diagnostic tool. See <a href="https://avi33tbtt.github.io/" target="_blank">avi33tbtt.github.io</a> for the full module library.
+  SDM Lens is a Vibe Rounds tool · Dr. Avinash Kumar Gupta · CC BY 4.0 · runs entirely in your browser · bring your own key.<br>
+  All outputs require independent clinical verification. Not a decision aid — it generates questions, not recommendations. See <a href="https://avi33tbtt.github.io/" target="_blank">avi33tbtt.github.io</a> for the full module library.
 </footer>
 
 <script>
-/* ---------------- Lens definitions (from the Case Lens module) ---------------- */
+/* ---------------- Domain definitions (from the Module SDM prompt library) ---------------- */
 const LENSES = [
   {
-    id: 1, key:"framing", name:"Framing the Problem",
-    focus:"Differential completeness, can't-miss diagnoses, Occam vs. Hickam, history reliability",
-    prompt:`Apply Lens 1 — Framing the Problem — to this case. Generate 2-4 questions covering: whether the differential is complete (use a systematic sieve, not just pattern recognition), whether any "can't-miss" diagnosis has been adequately excluded, whether one unifying diagnosis truly fits or multiple concurrent problems are being forced into one story (Occam vs. Hickam), and whether the history itself is reliable given who gave it and how.`
+    id: 1, key:"decision", name:"The Decision Itself",
+    focus:"What's actually being decided, is it urgent, whose decision is it, is a false binary being presented",
+    prompt:`Apply Domain 1 — The Decision Itself — to this case. Generate 5-7 patient-voiced, first-person questions that clarify what is actually being decided: variants of "What exactly am I being asked to decide right now?", "Is this decision urgent, or do I have time to think about it?", "Who is making this decision — me, my family, or the team, and whose decision is it supposed to be?", "What happens if I don't decide today?", and whether "doing nothing for now" is actually one of the choices even if no one has said so. Then generate 3-4 questions that test whether the decision has been artificially narrowed into a false binary — other unmentioned options, variations in dose/timing/partial approaches, or whether the choice has been shaped by what's available/covered here rather than what exists everywhere. Flag explicitly if the case data itself only presents one option. Phrase every question in first person, as the patient would say it aloud, not in clinical third person.`
   },
   {
-    id: 2, key:"uncertainty", name:"Reasoning Under Uncertainty",
-    focus:"Pre-test probability, Bayesian updating, base rates, absolute vs. relative risk",
-    prompt:`Apply Lens 2 — Reasoning Under Uncertainty — to this case. Generate 2-4 questions covering: whether the pre-test probability actually justifies the tests ordered or planned, whether a negative/positive result is being over- or under-interpreted given the prior probability, whether a rare diagnosis is being chased ahead of common ones, and whether any risk being discussed with the patient is absolute or just relative.`
+    id: 2, key:"options", name:"Options on the Table",
+    focus:"Full option list including doing nothing, side-by-side comparison across every option present",
+    prompt:`Apply Domain 2 — Options on the Table — to this case. Generate 5-6 patient-voiced questions that force a complete option list to surface, including under-discussed ones: "What are all the ways this could be managed, including watching and waiting?", "Is there a non-surgical / non-pharmacological option I haven't been told about?", "What would happen if I chose to do nothing at all?", "Are there options that exist but aren't offered here — at another centre, on a trial, or through a specialist?" — calibrated to the specific decision type in the case (surgical vs. medication vs. screening vs. goals-of-care). Then, for each option actually identified in the case data, generate one parallel comparison question ("For [Option], what would my day-to-day life actually look like?"), repeated for every option present. Close with a question asking the clinician to describe what a "good outcome" and a "bad outcome" would look like for each option, in plain terms.`
   },
   {
-    id: 3, key:"bias", name:"Cognitive Biases",
-    focus:"Anchoring, premature closure, availability, confirmation bias, diagnostic momentum",
-    prompt:`Apply Lens 3 — Cognitive Biases — to this case. Scan the case narrative itself for signs of anchoring, premature closure, availability bias, confirmation bias, diagnostic momentum (a label passed uncritically between notes/providers), or framing effects in how risk was presented. Generate 2-4 questions that would expose whether any of these are currently shaping the plan.`
+    id: 3, key:"benefits", name:"Benefits & Harms",
+    focus:"Specific/numeric benefit, harm and trade-off specificity, who has weighed gain vs. loss",
+    prompt:`Apply Domain 3 — Benefits & Harms — to this case. Generate questions that push past vague reassurance toward specific, numeric, or concrete answers: "What specifically will get better, and by when, if I choose this option?", "Out of 100 people like me who choose this, roughly how many are helped in the way I'd care about?", "Is the benefit about living longer, feeling better, or both — and which one does this option actually target?", "What does 'success' mean here, in terms I would notice in my own life, not just in test results?" Then generate the harm-side counterpart: most common side effects/complications and how often, the worst realistic outcome even if rare, symptoms or losses nobody has mentioned yet (pain, fatigue, appearance, function, independence), and whether a harm would only become clear months or years later. Close with a synthesis question asking who has actually weighed the gains against the losses — the team, or is it being left to the patient alone.`
   },
   {
-    id: 4, key:"evidence", name:"Evaluating Evidence",
-    focus:"Guideline strength, statistical vs. clinical significance, surrogate endpoints, generalizability",
-    prompt:`Apply Lens 4 — Evaluating Evidence — to this case. Generate 2-4 questions covering: whether any guideline being applied here is backed by strong evidence or expert opinion, whether a treatment's benefit is statistically significant but clinically marginal, whether any endpoint being chased is a surrogate rather than a hard outcome, and whether the evidence being relied on actually generalizes to this patient's age/comorbidity profile.`
+    id: 4, key:"certainty", name:"Certainty & Evidence Quality",
+    focus:"How confident anyone is, whether evidence applies to this patient, source and bias of the numbers",
+    prompt:`Apply Domain 4 — Certainty & Evidence Quality — to this case. Generate patient-voiced questions that surface how confident the evidence actually is, without requiring the patient to understand statistics: "How much evidence is there for this option — has it been well studied, or is this based on a smaller or newer body of research?", "Is this recommendation based on strong trial evidence, or is it more of an expert best-guess for a case like mine?", "Is there anything about my specific situation — my age, other conditions, or history — that makes the usual evidence less certain to apply to me?", "What don't we know yet that could change this decision later?" Then generate questions clarifying the source and possible bias of any numbers presented: where the numbers come from (this hospital's own results vs. a national average vs. a study population that may not look like the patient), whether a second opinion or multidisciplinary discussion has been sought, and whether a different specialist would likely give a different answer and why.`
   },
   {
-    id: 5, key:"testing", name:"Testing & Diagnostic Strategy",
-    focus:"Test sequencing, serial data, discordant results, sensitivity/specificity purpose",
-    prompt:`Apply Lens 5 — Testing & Diagnostic Strategy — to this case. Generate 2-4 questions covering: whether the next test actually changes management, whether any result is being trusted as a snapshot when a trend would be more informative, whether a discordant result has been chased down or dismissed, and whether a "normal" result is being treated as more reassuring than its sensitivity actually justifies.`
+    id: 5, key:"values", name:"Fit With What Matters to Me",
+    focus:"Patient's own values elicitation, then matching each option against those stated values",
+    prompt:`Apply Domain 5 — Fit With What Matters to Me — to this case. This domain generates questions the patient asks THEMSELVES, not the clinician, to clarify their own values. Generate 5-6 self-directed reflective questions: "What matters most to me right now — living as long as possible, staying independent, staying comfortable, being able to keep doing a specific activity or role?", "What would I be most afraid of losing if this goes badly?", "Is there a line I would not want crossed, regardless of the medical benefit?", "Whose voice, if anyone, do I want in this decision with me?" — incorporating any patient values already documented in the case data directly into the phrasing rather than asking generically. Then generate questions that connect those stated values to the specific options on the table: "Given that [stated value] matters most to me, which of these options is actually built around that, and which one isn't?", whether an option technically works clinically but doesn't fit how the patient wants to live, and whether anyone asked what matters to the patient before an option was recommended.`
   },
   {
-    id: 6, key:"treatment", name:"Treatment & Response Reasoning",
-    focus:"Risk/benefit under uncertainty, therapeutic-trial interpretation, non-response workup",
-    prompt:`Apply Lens 6 — Treatment & Response Reasoning — to this case. Generate 2-4 questions covering: whether a symptom improvement is being credited to treatment when natural history or placebo response could explain it, whether non-response has been worked through systematically (wrong diagnosis / wrong dose / non-adherence / true resistance) rather than jumped to "resistant disease," whether a new symptom could be iatrogenic, and whether timing/delay itself matters for this condition.`
+    id: 6, key:"logistics", name:"Practical & Logistical Reality",
+    focus:"Time, cost, and burden of each option; support and preparation needed to actually carry it out",
+    prompt:`Apply Domain 6 — Practical & Logistical Reality — to this case. Generate questions covering the non-clinical costs of each option: how much time it will take (appointments, recovery, travel) and whether that fits into the patient's life, what it will cost and whether any of it is covered, whether the patient will need a carer or someone to take time off work and whether that person has been asked if they can, and what happens to the patient's other responsibilities (work, children, caregiving they already do) while going through this. Then generate questions about what the patient would need in place to actually carry out each option: equipment or changes needed at home before starting, who to contact if something goes wrong after hours or after discharge, and whether support is available to help decide — a decision aid, a patient navigator, or a second conversation after time to think.`
   },
   {
-    id: 7, key:"individualizing", name:"Individualizing Care",
-    focus:"Guideline vs. patient fit, patient values, explanatory models, social contributors",
-    prompt:`Apply Lens 7 — Individualizing Care — to this case. Generate 2-4 questions covering: whether the standard guideline plan actually fits this patient's comorbidities, frailty, or stated goals, whether the patient's own explanatory model of their illness has been incorporated or dismissed, and whether a social or systemic factor (cost, access, literacy) could be masquerading as "non-adherence."`
-  },
-  {
-    id: 8, key:"systems", name:"Systems, Communication & Self-Monitoring",
-    focus:"Handoff clarity, cross-checking automation, self-audit, post-hoc reflection",
-    prompt:`Apply Lens 8 — Systems, Communication & Self-Monitoring — to this case. Generate 2-4 questions covering: whether the current plan and its uncertainty have been communicated clearly enough for the next clinician to re-evaluate rather than anchor, whether any automated output (EHR alert, auto-read) is being trusted without a manual check, and what a structured post-hoc review of this case would flag if the outcome were bad.`
+    id: 7, key:"reversibility", name:"Reversibility & Next Steps",
+    focus:"How locked-in each option is, the real deadline, and what happens step by step after deciding",
+    prompt:`Apply Domain 7 — Reversibility & Next Steps — to this case. Generate questions that clarify how locked-in each option is: "If I choose this and it isn't right for me, can I stop or change course later?", "Is this decision permanent, or can it be revisited?", "If I choose to wait or do nothing for now, does that close off any of the other options later?", "What is the actual deadline for this decision, and what happens if I miss it?" Then close with process questions: "Once I decide, what happens next, step by step?", "How and when will I know if the option I chose is working?", "Who do I tell if I change my mind, and how much notice do they need?", "Can I get a written or recorded summary of this conversation so I don't have to rely on memory alone?"`
   },
 ];
 
-const AUDITOR_SYSTEM = `You are a clinical reasoning auditor. You will be given a case (paste, summary, or excerpt) and asked to apply an 8-lens critical thinking framework to it. Your job is not to diagnose or manage the patient — it is to generate sharp, case-specific questions the user should be asking themselves, tied to actual details in the case, not generic textbook questions. Format each lens response as a numbered list of questions. Do not add unrelated commentary. This is a learning/reasoning-audit tool, not a diagnostic or treatment tool.`;
+const AUDITOR_SYSTEM = `You are a Shared Decision-Making Query Coach — a rigorous, compassionate reasoning partner whose sole job is to help a learner or patient advocate generate the exact questions a patient should ask before consenting to, declining, or choosing between options in this case. You will not recommend a treatment. You will not rank the options for the patient. You will not say what you would do in their position. Your only output is well-formed, patient-voiced, first-person questions, organized by the domain given in each prompt. Use only clinical facts provided or clearly implied in the case data — do not invent diagnoses, options, numbers, or patient values that were never stated; if a domain can't be fully answered from the case data, say so plainly within that domain's output rather than inventing detail. Format each domain's response as a numbered list of first-person questions. Do not add unrelated commentary. This is a learning/preparation tool, not a clinical decision aid, and it never tells the patient what to decide.`;
 
-const ROLLUP_PROMPT = `Collect the most important questions generated across all 8 lenses. Present them as a single prioritized list, with the lens each came from. For each, state in one line what answering it would change about the current plan.`;
+const ROLLUP_PROMPT = `Consolidate all domains generated so far into a single Patient Question Set, ready to bring into the actual conversation. Format as a table with columns: # | Domain | Question (first-person, plain language) | Why this question matters. Limit to the 12-15 highest-value questions overall — not every question generated across the domains, but the ones most load-bearing for THIS specific case's decision. Order them in the sequence a patient would naturally want to ask them in conversation, not by domain number.`;
 
-const REFLECTION_PROMPT = `Now step back. Of everything generated across all 8 lenses: (1) which single question, if you only had time to answer one, would most change management for this patient? (2) which lens surfaced the least for this particular case, and is that because the case genuinely doesn't have much exposure there, or because the case as written doesn't give you enough to probe it? (3) what is one thing about the reasoning on this case — not the patient — that this audit revealed?`;
+const ASK3_PROMPT = `From everything generated across the domains so far, distil the three questions that matter most if the patient only gets to ask three. For each, state: (a) the question in plain first-person language; (b) why it was chosen over the others; (c) what a good, complete answer from the clinician should sound like, so the patient can recognise if the question has actually been answered or just acknowledged.`;
 
-const SAMPLE_CASE = `62F, 3 days of worsening dyspnea and bilateral leg swelling. History of hypertension, no known cardiac disease. On exam: O2 sat 91% on room air, JVP raised, bibasal crackles, pitting oedema to the knees. No chest pain. Started on furosemide 40mg by her GP two days ago with mild improvement in swelling but dyspnea unchanged. No echo yet ordered. Labs: creatinine 1.3 (baseline unknown), BNP pending.`;
+const GAPS_PROMPT = `Separately from the patient's questions, identify what is MISSING from the case data that would be needed to answer the generated questions well — e.g. no documented discussion of patient values, no mention of a "watch and wait" option, no numeric estimate of benefit given. Present this as a short list: "Not found in the case data: ___." This list is for the learner or advocate, not the patient — it flags where the advocate should push for more information before or during the conversation.`;
+
+const REFLECTION_PROMPT = `Close with a three-level Bloom's reflection on everything generated across the domains: (1) [Remember] Which question in the generated set would the learner not have thought to ask before working through this module? (2) [Analyse] Was the original case data presented as a genuine choice, or as a decision already made and merely being explained — what told you which one it was? (3) [Evaluate] If this patient walks into the real conversation with only these questions and nothing else, what is the single biggest way their outcome could be better because of it? Affirm that generating good questions on someone else's behalf, without putting words in their mouth, is one of the hardest and most protective advocacy skills in medicine.`;
+
+const SAMPLE_CASE = `58M, newly diagnosed localized intermediate-risk prostate cancer on biopsy (Gleason 3+4), PSA 7.2, no nodal or distant spread on staging. Otherwise fit, no major comorbidities, active and working full-time. Urology has presented two options so far: radical prostatectomy or external-beam radiotherapy with short-course hormone therapy; active surveillance was mentioned once in passing but not discussed in detail. No documentation yet of what matters most to the patient (e.g. continence, sexual function, avoiding ongoing hospital visits). Decision has been framed as needing to be made "within the next few weeks."`;
 
 /* ---------------- State ---------------- */
 let lensState = {}; // key -> {status:'idle'|'running'|'done', output:string}
@@ -459,7 +462,7 @@ setupCollapse('label-phase3', 'card-phase3');
 
 /* ---------------- Provider config ---------------- */
 const PROVIDER_DEFAULTS = {
-  claude: {label:"Claude", keyLabel:"Claude API key", modelDefault:"claude-sonnet-4-5-20250929", showEndpoint:false},
+  claude: {label:"Claude", keyLabel:"Claude API key", modelDefault:"claude-sonnet-4-6", showEndpoint:false},
   gemini: {label:"Gemini", keyLabel:"Gemini API key", modelDefault:"gemini-2.5-flash", showEndpoint:false},
   openai: {label:"ChatGPT", keyLabel:"OpenAI API key", modelDefault:"gpt-4o", showEndpoint:false},
   other:  {label:"Other", keyLabel:"API key", modelDefault:"", showEndpoint:true}
@@ -468,7 +471,7 @@ let currentProvider = "claude";
 
 function renderProviderFields(){
   const cfg = PROVIDER_DEFAULTS[currentProvider];
-  const saved = JSON.parse(localStorage.getItem('caselens_'+currentProvider) || '{}');
+  const saved = JSON.parse(localStorage.getItem('sdmlens_'+currentProvider) || '{}');
   const container = document.getElementById('providerFields');
   container.innerHTML = `
     ${cfg.showEndpoint ? `
@@ -492,7 +495,7 @@ function renderProviderFields(){
 }
 
 function updateKeyStatus(){
-  const saved = JSON.parse(localStorage.getItem('caselens_'+currentProvider) || '{}');
+  const saved = JSON.parse(localStorage.getItem('sdmlens_'+currentProvider) || '{}');
   const el = document.getElementById('keyStatus');
   if(saved.key){
     el.textContent = `Key saved locally for ${PROVIDER_DEFAULTS[currentProvider].label}.`;
@@ -517,12 +520,12 @@ document.getElementById('saveKeyBtn').addEventListener('click', ()=>{
   const model = document.getElementById('modelInput').value.trim() || PROVIDER_DEFAULTS[currentProvider].modelDefault;
   const endpointEl = document.getElementById('endpointInput');
   const endpoint = endpointEl ? endpointEl.value.trim() : '';
-  localStorage.setItem('caselens_'+currentProvider, JSON.stringify({key, model, endpoint}));
+  localStorage.setItem('sdmlens_'+currentProvider, JSON.stringify({key, model, endpoint}));
   updateKeyStatus();
 });
 
 document.getElementById('clearKeyBtn').addEventListener('click', ()=>{
-  localStorage.removeItem('caselens_'+currentProvider);
+  localStorage.removeItem('sdmlens_'+currentProvider);
   renderProviderFields();
 });
 
@@ -766,12 +769,12 @@ document.getElementById('resetLensesBtn').addEventListener('click', ()=>{
 
 function updateDoneCount(){
   const done = Object.values(lensState).filter(s=>s.status==='done').length;
-  document.getElementById('lensDoneCount').textContent = `${done} / 8 run`;
+  document.getElementById('lensDoneCount').textContent = `${done} / 7 run`;
 }
 
 /* ---------------- Output rendering ---------------- */
 function formatOutput(text){
-  return escapeHtml(text);
+  return text;
 }
 
 const TTS_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/><path class="tts-wave tts-wave-1" d="M15.3 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="tts-wave tts-wave-2" d="M18.2 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
@@ -798,7 +801,7 @@ function ensureOutputBlock(id, title, subtitle){
 
 /* ---------------- API calls ---------------- */
 async function callModel(systemPrompt, messages){
-  const cfg = JSON.parse(localStorage.getItem('caselens_'+currentProvider) || '{}');
+  const cfg = JSON.parse(localStorage.getItem('sdmlens_'+currentProvider) || '{}');
   if(!cfg.key){
     throw new Error(`No API key saved for ${PROVIDER_DEFAULTS[currentProvider].label}. Set it in Step 1.`);
   }
@@ -838,12 +841,7 @@ async function callModel(systemPrompt, messages){
     });
     const data = await resp.json();
     if(data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-    const parts = data.candidates?.[0]?.content?.parts;
-    if(!parts || !parts.length){
-      const reason = data.promptFeedback?.blockReason || data.candidates?.[0]?.finishReason;
-      throw new Error(reason ? `Gemini returned no content (${reason}).` : 'Gemini returned no content.');
-    }
-    return parts.map(p=>p.text||'').join('\n');
+    return (data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n');
   }
 
   // openai + other (OpenAI-compatible chat/completions)
@@ -901,7 +899,7 @@ async function runLens(key){
 function buildPhase3Context(){
   if(conversationLog.length === 0) return null;
   const caseText = document.getElementById('caseText').value.trim();
-  let ctx = `CASE:\n${caseText}\n\nOutputs generated so far across the 8 lenses:\n\n`;
+  let ctx = `CASE:\n${caseText}\n\nOutputs generated so far across the 7 domains:\n\n`;
   conversationLog.forEach(c => {
     ctx += `--- Lens ${c.id} — ${c.lens} ---\n${c.output}\n\n`;
   });
@@ -934,8 +932,14 @@ async function runPhase3(promptText, title, targetId){
   }
 }
 
-document.getElementById('rollupBtn').addEventListener('click', ()=>{
-  runPhase3(ROLLUP_PROMPT, 'Phase 3 · Key Questions Roll-Up', 'rollup');
+document.getElementById('questionSetBtn').addEventListener('click', ()=>{
+  runPhase3(ROLLUP_PROMPT, 'Phase 3 · Patient Question Set', 'rollup');
+});
+document.getElementById('ask3Btn').addEventListener('click', ()=>{
+  runPhase3(ASK3_PROMPT, 'Phase 3 · "Ask 3" Priority Distillation', 'ask3');
+});
+document.getElementById('gapsBtn').addEventListener('click', ()=>{
+  runPhase3(GAPS_PROMPT, 'Phase 3 · Gaps in the Case Data', 'gaps');
 });
 document.getElementById('reflectionBtn').addEventListener('click', ()=>{
   runPhase3(REFLECTION_PROMPT, 'Phase 3 · Reflection Debrief', 'reflection');
@@ -986,7 +990,7 @@ document.getElementById('speakAllBtn').addEventListener('click', ()=>{
   clearSpeakingIcons();
   const ids = [
     ...LENSES.map(l=>l.key).filter(k => lensState[k].status==='done'),
-    ...['rollup','reflection'].filter(id => document.getElementById('out-'+id))
+    ...['rollup','ask3','gaps','reflection'].filter(id => document.getElementById('out-'+id))
   ];
   if(ids.length === 0){
     alert('No outputs to read yet — run a lens or Phase 3 step first.');
@@ -1019,11 +1023,15 @@ function collectResults(){
     .filter(l => lensState[l.key].status === 'done')
     .map(l => ({ id:l.id, name:l.name, focus:l.focus, output: lensState[l.key].output }));
   const rollupEl = document.getElementById('body-rollup');
+  const ask3El = document.getElementById('body-ask3');
+  const gapsEl = document.getElementById('body-gaps');
   const reflectionEl = document.getElementById('body-reflection');
   return {
     caseText,
     lensResults,
     rollup: rollupEl ? rollupEl.innerText.trim() : '',
+    ask3: ask3El ? ask3El.innerText.trim() : '',
+    gaps: gapsEl ? gapsEl.innerText.trim() : '',
     reflection: reflectionEl ? reflectionEl.innerText.trim() : ''
   };
 }
@@ -1042,23 +1050,29 @@ function triggerDownload(filename, content, mime){
 
 function buildTextExport(){
   const r = collectResults();
-  let out = `CASE LENS — 8-LENS CRITICAL THINKING AUDIT\n`;
+  let out = `SDM LENS — 7-DOMAIN SHARED DECISION-MAKING QUERY GENERATOR\n`;
   out += `Generated: ${new Date().toLocaleString()}\n`;
   out += `${'='.repeat(60)}\n\nCASE\n${'-'.repeat(60)}\n${r.caseText || '(no case entered)'}\n\n`;
   if(r.lensResults.length === 0){
-    out += `No lenses have been run yet.\n\n`;
+    out += `No domains have been run yet.\n\n`;
   } else {
     r.lensResults.forEach(l=>{
-      out += `LENS ${l.id} — ${l.name}\n${l.focus}\n${'-'.repeat(60)}\n${l.output}\n\n`;
+      out += `DOMAIN ${l.id} — ${l.name}\n${l.focus}\n${'-'.repeat(60)}\n${l.output}\n\n`;
     });
   }
   if(r.rollup){
-    out += `PHASE 3 — HIGH-IMPACT ROLL-UP\n${'-'.repeat(60)}\n${r.rollup}\n\n`;
+    out += `PHASE 3 — PATIENT QUESTION SET\n${'-'.repeat(60)}\n${r.rollup}\n\n`;
+  }
+  if(r.ask3){
+    out += `PHASE 3 — "ASK 3" PRIORITY DISTILLATION\n${'-'.repeat(60)}\n${r.ask3}\n\n`;
+  }
+  if(r.gaps){
+    out += `PHASE 3 — GAPS IN THE CASE DATA\n${'-'.repeat(60)}\n${r.gaps}\n\n`;
   }
   if(r.reflection){
     out += `PHASE 3 — REFLECTION DEBRIEF\n${'-'.repeat(60)}\n${r.reflection}\n\n`;
   }
-  out += `Case Lens is a Vibe Rounds tool · CC BY 4.0 · Educational use only, not for clinical decision-making.\n`;
+  out += `SDM Lens is a Vibe Rounds tool · CC BY 4.0 · Educational use only, not a clinical decision aid.\n`;
   return out;
 }
 
@@ -1068,24 +1082,30 @@ function escapeHtml(str){
 
 function buildHtmlExport(){
   const r = collectResults();
-  let body = `<h1>Case Lens — 8-Lens Critical Thinking Audit</h1>`;
+  let body = `<h1>SDM Lens — 7-Domain Shared Decision-Making Query Generator</h1>`;
   body += `<p class="meta">Generated: ${new Date().toLocaleString()}</p>`;
   body += `<h2>Case</h2><pre>${escapeHtml(r.caseText || '(no case entered)')}</pre>`;
   if(r.lensResults.length === 0){
-    body += `<p><em>No lenses have been run yet.</em></p>`;
+    body += `<p><em>No domains have been run yet.</em></p>`;
   } else {
     r.lensResults.forEach(l=>{
-      body += `<div class="block"><h3>Lens ${l.id} — ${escapeHtml(l.name)}</h3><p class="focus">${escapeHtml(l.focus)}</p><pre>${escapeHtml(l.output)}</pre></div>`;
+      body += `<div class="block"><h3>Domain ${l.id} — ${escapeHtml(l.name)}</h3><p class="focus">${escapeHtml(l.focus)}</p><pre>${escapeHtml(l.output)}</pre></div>`;
     });
   }
   if(r.rollup){
-    body += `<div class="block"><h3>Phase 3 — High-Impact Roll-Up</h3><pre>${escapeHtml(r.rollup)}</pre></div>`;
+    body += `<div class="block"><h3>Phase 3 — Patient Question Set</h3><pre>${escapeHtml(r.rollup)}</pre></div>`;
+  }
+  if(r.ask3){
+    body += `<div class="block"><h3>Phase 3 — "Ask 3" Priority Distillation</h3><pre>${escapeHtml(r.ask3)}</pre></div>`;
+  }
+  if(r.gaps){
+    body += `<div class="block"><h3>Phase 3 — Gaps in the Case Data</h3><pre>${escapeHtml(r.gaps)}</pre></div>`;
   }
   if(r.reflection){
     body += `<div class="block"><h3>Phase 3 — Reflection Debrief</h3><pre>${escapeHtml(r.reflection)}</pre></div>`;
   }
   return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><title>Case Lens Export</title>
+<html lang="en"><head><meta charset="UTF-8"><title>SDM Lens Export</title>
 <style>
   body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:800px;margin:40px auto;padding:0 20px;color:#0B2530;background:#F7FAFB;line-height:1.6;}
   h1{font-size:22px;} h2{font-size:17px;margin-top:32px;} h3{font-size:15px;color:#0A6E85;margin-bottom:4px;}
@@ -1097,15 +1117,15 @@ function buildHtmlExport(){
 }
 
 document.getElementById('downloadTxtBtn').addEventListener('click', ()=>{
-  triggerDownload('case-lens-export.txt', buildTextExport(), 'text/plain');
+  triggerDownload('sdm-lens-export.txt', buildTextExport(), 'text/plain');
 });
 document.getElementById('downloadHtmlBtn').addEventListener('click', ()=>{
-  triggerDownload('case-lens-export.html', buildHtmlExport(), 'text/html');
+  triggerDownload('sdm-lens-export.html', buildHtmlExport(), 'text/html');
 });
 
 /* ---------------- Reset run ---------------- */
 document.getElementById('resetAllBtn').addEventListener('click', ()=>{
-  if(!confirm('Reset everything? This clears the case, all lens outputs, and Phase 3 results. Your saved API key is kept.')) return;
+  if(!confirm('Reset everything? This clears the case, all domain outputs, and Phase 3 results. Your saved API key is kept.')) return;
   window.speechSynthesis.cancel();
   clearSpeakingIcons();
   document.getElementById('caseText').value = '';
