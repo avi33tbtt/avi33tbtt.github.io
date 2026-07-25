@@ -182,6 +182,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Patient Needs Assessment](Module-PN-Patient-Needs-Assessment.md) | Patient Needs Assessment |
 | -- | [Socratic Question Generator](Socratic_Question_Generator.md) | Socratic Question Generator |
 | -- | [Vibe Rounds — PaJR Analytics](Vibe_Rounds_PaJR_Analytics.md) | Vibe Rounds — PaJR Analytics |
+| -- | [Module — Case Lens: Critical Thinking Audit](Module-Case-Lens-Critical-Thinking.md) | Module — Case Lens: Critical Thinking Audit |
 
 
 
