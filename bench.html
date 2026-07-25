@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - Case Bench — Clinical Reasoning Aid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Google Analytics (GA4) — replace G-XXXXXXXXXX with your own Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-541054383"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-541054383');
+  // Safe wrapper so the app never breaks if GA hasn't loaded (e.g. ad-blockers)
+  function trackEvent(name, params){
+    try{ if(typeof gtag === 'function') gtag('event', name, params || {}); }catch(e){}
+  }
+</script>
+
+<!-- File-upload text extraction: pdf.js (PDF) and mammoth.js (Word .docx) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --line:#DCE7EA;
+    --line-soft:#E9F1F3;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-soft:#E3F4F8;
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --muted:#5B7480;
+    --tab-inactive:#EEF4F6;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+  }
+
+  /* Theme: Minimalist — grayscale, no color pop */
+  html[data-theme="minimalist"]{
+    --paper:#FFFFFF;
+    --card:#FFFFFF;
+    --ink:#161616;
+    --line:#E4E4E4;
+    --line-soft:#F0F0F0;
+    --accent:#161616;
+    --accent-dark:#000000;
+    --accent-soft:#F2F2F2;
+    --alert:#B3261E;
+    --alert-soft:#F8E7E6;
+    --muted:#757575;
+    --tab-inactive:#F2F2F2;
+    --radius:3px;
+    --body-font:'Inter',sans-serif;
+  }
+
+  /* Theme: Terminal — Bloomberg-style dark/amber monospace */
+  html[data-theme="terminal"]{
+    --paper:#000000;
+    --card:#0A0A0A;
+    --ink:#FFB238;
+    --line:#3A2A00;
+    --line-soft:#231A00;
+    --accent:#FFB238;
+    --accent-dark:#FFCB6B;
+    --accent-soft:#1C1400;
+    --alert:#FF4D3D;
+    --alert-soft:#2B0C08;
+    --muted:#9C7A32;
+    --tab-inactive:#141414;
+    --radius:2px;
+    --body-font:'IBM Plex Mono',monospace;
+  }
+  html[data-theme="terminal"] .msg.user .bubble,
+  html[data-theme="terminal"] header.top .rx{color:#000;}
+  html[data-theme="terminal"] .banner strong{color:#FFCB6B;}
+  html[data-theme="terminal"] .card,
+  html[data-theme="terminal"] .transcript,
+  html[data-theme="terminal"] .msg.assistant .bubble{border-color:var(--line);}
+
+  html{transition:background .15s ease;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body-font);
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background .15s ease,color .15s ease,font-family .1s ease;
+  }
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* header */
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:18px;margin-bottom:28px;
+    flex-wrap:wrap;gap:10px;
+  }
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{
+    font-family:var(--body-font);font-weight:800;
+    font-size:24px;margin:0;letter-spacing:-0.02em;color:var(--ink);
+  }
+  header.top .rx{
+    font-family:var(--body-font);font-weight:600;font-size:11.5px;color:#fff;
+    background:var(--accent);border-radius:20px;padding:4px 11px;
+    letter-spacing:.01em;
+  }
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-family:var(--body-font);font-weight:500;}
+
+  header.top .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .theme-select{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--tab-inactive);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--body-font);font-weight:600;font-size:12px;
+    border-radius:999px;padding:6px 30px 6px 12px;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%235B7480' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:10px;
+  }
+  .theme-select:hover{border-color:var(--accent);}
+  .top-links{display:flex;gap:8px;font-family:var(--body-font);}
+  .top-links a{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12.5px;font-weight:700;color:var(--accent-dark);
+    background:var(--accent-soft);border:1px solid var(--line);
+    border-radius:999px;padding:6px 13px;text-decoration:none;
+  }
+  .top-links a:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  html[data-theme="terminal"] .top-links a:hover{color:#000;}
+
+  /* section labels — merged "block" look, collapsed by default */
+  .step{margin-bottom:20px;}
+  .step-label{
+    font-family:var(--body-font);font-size:12.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink);font-weight:700;
+    display:flex;align-items:center;gap:10px;margin-bottom:0;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius) var(--radius) 0 0;
+    padding:14px 20px;transition:box-shadow .15s ease,border-color .15s ease,color .15s ease;
+  }
+  .step-label.collapsed{border-radius:var(--radius);}
+  .step-label .num{
+    width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:700;
+  }
+  .step-label.done .num{background:var(--accent-dark);}
+  .step-label.collapsible{cursor:pointer;user-select:none;}
+  .step-label.collapsible:hover{color:var(--accent-dark);box-shadow:0 6px 16px -10px rgba(11,37,48,.3);}
+  .collapse-arrow{font-size:11px;margin-left:auto;transition:transform .15s ease;color:var(--muted);padding-left:8px;}
+  .step-label.collapsed .collapse-arrow{transform:rotate(-90deg);}
+  .card.collapsed{display:none;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);border-top:none;
+    border-radius:0 0 var(--radius) var(--radius);
+    padding:22px 22px 20px;
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+  }
+
+  textarea, input[type=text], input[type=password], select{
+    width:100%;
+    font-family:var(--body-font);
+    font-size:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:9px 11px;
+    color:var(--ink);
+  }
+  textarea:focus, input:focus, select:focus, button:focus-visible{
+    outline:2px solid var(--accent);outline-offset:1px;
+  }
+  textarea{resize:vertical;min-height:90px;line-height:1.5;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  .upload-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+  .upload-row label{margin-bottom:6px;}
+  .upload-row input[type=file]{
+    width:100%;font-family:var(--body-font);font-size:12.5px;color:var(--muted);
+    border:1px dashed var(--line);border-radius:var(--radius);padding:8px 10px;background:var(--paper);
+  }
+  .upload-row input[type=file]::file-selector-button{
+    font-family:var(--body-font);font-weight:600;font-size:12px;color:#fff;
+    background:var(--accent);border:none;border-radius:999px;padding:6px 13px;margin-right:10px;cursor:pointer;
+  }
+  #uploadStatus.ok{color:var(--accent-dark);}
+  #uploadStatus.err{color:var(--alert);}
+
+  /* provider tabs — segmented pill control */
+  .tabrow{display:flex;gap:4px;background:var(--tab-inactive);padding:4px;border-radius:999px;margin-bottom:16px;width:fit-content;}
+  .tabrow .tab{
+    font-family:var(--body-font);font-weight:600;font-size:12.5px;
+    padding:7px 16px;
+    background:transparent;
+    border:none;border-radius:999px;
+    cursor:pointer;color:var(--muted);
+    transition:background .12s,color .12s;
+  }
+  .tabrow .tab.active{
+    background:var(--accent);color:#fff;
+  }
+  .providerpane{padding:0;background:transparent;}
+  .providerpane .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media(max-width:600px){.providerpane .row{grid-template-columns:1fr;}}
+  .key-status{font-size:12px;font-family:var(--body-font);font-weight:500;margin-top:8px;}
+  .key-status.ok{color:var(--accent-dark);}
+  .key-status.empty{color:var(--muted);}
+
+  details.settings summary{
+    cursor:pointer;font-size:12.5px;color:var(--accent-dark);font-weight:600;
+    list-style:none;display:flex;align-items:center;gap:6px;
+  }
+  details.settings summary::-webkit-details-marker{display:none;}
+  details.settings summary::before{content:"▸";font-size:10px;}
+  details.settings[open] summary::before{content:"▾";}
+  details.settings{margin-top:10px;}
+
+  .mode-hint{font-size:12.5px;color:var(--muted);margin:10px 0 12px;}
+  .mode-pane{margin-top:2px;}
+
+  .activity.pipeline-tile{position:relative;}
+  .order-badge{
+    position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#fff;font-family:var(--body-font);font-weight:700;font-size:11px;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(11,37,48,.2);
+  }
+  .pipeline-order{
+    margin-top:14px;font-size:12.5px;color:var(--muted);
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  }
+  .pipeline-order .chip{
+    background:var(--tab-inactive);color:var(--ink);font-weight:600;font-size:12px;
+    padding:4px 10px;border-radius:999px;
+  }
+  .pipeline-order .arrow{color:var(--muted);}
+  .pipeline-order .chip-remove{color:var(--muted);text-decoration:none;margin-left:5px;font-weight:700;}
+  .pipeline-order .chip-remove:hover{color:var(--alert);}
+
+  /* activity cards */
+  .activities{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media(max-width:760px){.activities{grid-template-columns:repeat(2,1fr);}}
+  .activity{
+    background:var(--card);border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    padding:15px 14px;cursor:pointer;transition:border-color .12s, box-shadow .12s, transform .06s;
+    text-align:left;font-family:var(--body-font);
+    box-shadow:0 1px 2px rgba(11,37,48,.04);
+  }
+  .activity:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 6px 16px -8px rgba(8,145,178,.35);}
+  .activity.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 6px 16px -8px rgba(8,145,178,.35);}
+  .activity .aname{font-weight:700;font-size:13.5px;margin-bottom:4px;color:var(--ink);}
+  .activity .adesc{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+  /* workspace */
+  #workspace{margin-top:30px;display:none;}
+  #workspace.visible{display:block;}
+  .ws-header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-bottom:12px;margin-bottom:14px;
+  }
+  .ws-header .wtitle{font-family:var(--body-font);font-size:18px;font-weight:800;color:var(--ink);}
+  .ws-header .wsub{font-size:12px;color:var(--muted);font-family:var(--body-font);font-weight:500;}
+  .ws-actions button{margin-left:8px;}
+  .ws-progress{margin-top:8px;display:flex;align-items:center;gap:8px;}
+  .ws-progress-bar{width:140px;height:6px;border-radius:999px;background:var(--tab-inactive);overflow:hidden;flex-shrink:0;}
+  .ws-progress-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .25s ease;width:0%;}
+  .ws-progress-label{font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap;}
+
+  @media(max-width:600px){
+    header.top h1{font-size:20px;}
+    .ws-header{flex-direction:column;align-items:flex-start;gap:10px;}
+    .ws-actions{display:flex;flex-wrap:wrap;gap:8px;}
+    .ws-actions button{margin-left:0;}
+    .pipeline-picker > div{flex-direction:column;}
+    .pipeline-picker select{width:100%;}
+    .composer{flex-direction:column;align-items:stretch;}
+    .msg{max-width:100%;}
+  }
+
+  .transcript{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--card);
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+    min-height:120px;max-height:520px;overflow-y:auto;
+    padding:16px;margin-bottom:12px;
+  }
+  .msg{margin-bottom:16px;max-width:88%;}
+  .msg.user{margin-left:auto;}
+  .msg .who{font-family:var(--body-font);font-size:10.5px;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+  .msg.user .who{text-align:right;}
+
+  /* text-to-speech control on assistant answers */
+  .who-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .who-row .who{margin-bottom:0;}
+  .tts-btn{
+    display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+    width:20px;height:20px;padding:0;
+    background:transparent;color:var(--muted);
+    border:1px solid transparent;border-radius:50%;
+    cursor:pointer;transition:background .12s ease,color .12s ease;
+  }
+  .tts-btn:hover{background:var(--accent-soft);color:var(--accent-dark);}
+  .tts-btn svg{width:12px;height:12px;display:block;}
+  .tts-btn.speaking{background:var(--accent-soft);color:var(--accent-dark);border-color:var(--line);}
+  .tts-btn.speaking .tts-wave-1{animation:ttsPulse 1s ease-in-out infinite;}
+  .tts-btn.speaking .tts-wave-2{animation:ttsPulse 1s ease-in-out infinite .18s;}
+  @keyframes ttsPulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+  @media(prefers-reduced-motion:reduce){
+    .tts-btn.speaking .tts-wave-1,.tts-btn.speaking .tts-wave-2{animation:none;opacity:1;}
+  }
+
+  .msg .bubble{
+    padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.55;white-space:pre-wrap;
+  }
+  .msg.assistant .bubble{background:var(--accent-soft);border:1px solid #cdeaf0;border-top-left-radius:4px;}
+  .msg.user .bubble{background:var(--accent);color:#fff;border-top-right-radius:4px;}
+  .msg.system .bubble{background:transparent;border:1px dashed var(--line);color:var(--muted);font-style:italic;font-size:12.5px;border-radius:8px;}
+
+  .composer{display:flex;gap:8px;align-items:flex-end;}
+  .composer textarea{min-height:56px;flex:1;}
+
+  button{
+    font-family:var(--body-font);font-weight:700;font-size:13px;
+    background:var(--accent);color:#fff;border:none;
+    border-radius:999px;padding:10px 18px;cursor:pointer;
+    transition:background .12s, transform .06s;
+  }
+  button:hover{background:var(--accent-dark);}
+  button.secondary{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  button.secondary:hover{background:var(--tab-inactive);color:var(--ink);border-color:var(--line);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  .banner{
+    font-size:12.5px;color:var(--ink);border:1px solid var(--line-soft);
+    background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:24px;
+  }
+  .banner strong{color:var(--accent-dark);}
+
+  .error-note{font-size:12.5px;color:var(--alert);background:var(--alert-soft);border:1px solid #f0c8ac;border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;display:none;}
+  .error-note.show{display:block;}
+
+  .typing{font-family:var(--body-font);font-size:12px;color:var(--muted);font-weight:500;}
+  .typing::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+
+  footer{margin-top:50px;font-size:11.5px;color:var(--muted);text-align:center;font-family:var(--body-font);font-weight:500;}
+
+  .contact-card{
+    margin-top:36px;
+    border:1px solid var(--line);
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    text-align:center;
+    box-shadow:0 1px 2px rgba(11,37,48,.04);
+  }
+  .contact-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6;}
+  .contact-card a{color:var(--accent-dark);font-weight:600;text-decoration:none;}
+  .contact-card a:hover{text-decoration:underline;}
+
+  .legal-note{
+    margin-top:16px;
+    font-size:11.5px;color:var(--muted);text-align:center;
+    line-height:1.6;font-family:var(--body-font);
+  }
+  .legal-note em{font-style:italic;}
+  .legal-note a{color:var(--muted);text-decoration:underline;}
+  .legal-note a:hover{color:var(--accent-dark);}
+
+  .contribute-card{
+    margin-top:16px;
+    border:1px dashed var(--line);
+    background:var(--accent-soft);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    text-align:center;
+  }
+  .contribute-card h3{
+    margin:0 0 6px;font-size:13.5px;font-weight:700;color:var(--ink);
+    font-family:var(--body-font);
+  }
+  .contribute-card p{
+    margin:0 0 12px;font-size:12.5px;color:var(--muted);
+    line-height:1.6;font-family:var(--body-font);max-width:560px;
+    margin-left:auto;margin-right:auto;
+  }
+  .contribute-card label.consent{
+    display:flex;align-items:flex-start;gap:7px;justify-content:center;
+    font-size:12px;color:var(--muted);margin:0 0 12px;text-align:left;
+    max-width:520px;margin-left:auto;margin-right:auto;font-weight:500;
+  }
+  .contribute-card label.consent input{margin-top:2px;flex-shrink:0;}
+  .contribute-btn{
+    font-family:var(--body-font);font-weight:700;font-size:13px;
+    background:var(--accent);color:#fff;border:none;border-radius:999px;
+    padding:9px 22px;cursor:pointer;transition:background .12s;
+  }
+  .contribute-btn:hover:not(:disabled){background:var(--accent-dark);}
+  .contribute-btn:disabled{opacity:.6;cursor:default;}
+  .contribute-status{
+    font-size:12px;font-weight:600;margin-top:10px;font-family:var(--body-font);min-height:16px;
+  }
+  .contribute-status.ok{color:var(--accent-dark);}
+  .contribute-status.err{color:var(--alert);}
+</style>
+<!-- ===== VibeRounds Suite Bar ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .vr-suitebar{
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFA 65%);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 16px;
+  }
+  .vr-suitebar .vr-brand{
+    font-family: 'DM Mono','IBM Plex Mono',monospace;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: #0F172A; text-decoration: none; display:flex; align-items:center; gap:0;
+  }
+  .vr-suitebar .vr-brand span{ color: #0891B2; }
+  .vr-suitebar .vr-nav{ display:flex; gap:6px; flex-wrap:wrap; }
+  .vr-suitebar .vr-nav a{
+    font-family:'DM Mono','IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#475569; text-decoration:none; padding:6px 10px; border-radius:999px;
+    border:1px solid #E2E8F0; background:#FFFFFF; transition:.15s ease;
+  }
+  .vr-suitebar .vr-nav a:hover{ color:#fff; background:#0891B2; border-color:#0891B2; }
+  .vr-suitebar .vr-nav a.active{ color:#fff; background:#0E7490; border-color:#0E7490; }
+  @media (max-width:640px){
+    .vr-suitebar{ padding:10px 14px; }
+    .vr-suitebar .vr-nav a{ padding:5px 8px; font-size:10px; }
+  }
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/bench.html" class="active">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/clinical-polemos.html">Clinical Polemos</a>
+    <a href="https://avi33tbtt.github.io/case-lens.html">Case Lens</a>
+    <a href="https://avi33tbtt.github.io/sdm-lens.html">SDM Lens</a>
+  </nav>
+</header>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <h1>Vibe Rounds - Case Bench</h1>
+      <span class="rx">Rx: reasoning, not answers</span>
+    </div>
+    <div class="top-right">
+      <select id="themeSelect" class="theme-select" aria-label="Theme">
+        <option value="simple">Simple</option>
+        <option value="minimalist">Minimalist</option>
+        <option value="terminal">Terminal</option>
+      </select>
+      <div class="tagline">clinical reasoning aid · not for patient care</div>
+      <div class="top-links">
+        <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project website</a>
+        <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank" rel="noopener">Dr. Avinash — LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner"><strong>Educational use only.</strong> Not a diagnostic tool. This is a working implementation of the <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Vibe Rounds</a> paradigm for clinical case reasoning. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.</div>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-label collapsible" id="label-model"><span class="num">1</span>Model<span class="collapse-arrow" id="arrow-model">&#9662;</span></div>
+    <div class="card" id="card-model">
+      <div class="tabrow" id="providerTabs">
+        <div class="tab active" data-provider="claude">Claude</div>
+        <div class="tab" data-provider="gemini">Gemini</div>
+        <div class="tab" data-provider="openai">ChatGPT</div>
+        <div class="tab" data-provider="other">Other</div>
+      </div>
+      <div class="providerpane">
+        <div class="row" id="endpointRow" style="display:none;">
+          <div style="grid-column:1/-1;">
+            <label for="apiEndpoint">API endpoint (OpenAI-compatible chat/completions URL)</label>
+            <input type="text" id="apiEndpoint" placeholder="https://api.groq.com/openai/v1/chat/completions">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label id="apiKeyLabel" for="apiKey">Claude API key</label>
+            <input type="password" id="apiKey" placeholder="sk-ant-...">
+          </div>
+          <div>
+            <label for="modelName">Model name</label>
+            <input type="text" id="modelName" placeholder="claude-sonnet-4-6">
+          </div>
+        </div>
+        <div class="key-status empty" id="keyStatus">No key saved for this provider yet.</div>
+        <details class="settings">
+          <summary>Where do I get a key?</summary>
+          <div class="hint" style="margin-top:8px;" id="keyHelp"></div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: CASE -->
+  <div class="step">
+    <div class="step-label collapsible" id="label-case"><span class="num">2</span>Case<span class="collapse-arrow" id="arrow-case">&#9662;</span></div>
+    <div class="card" id="card-case">
+      <label for="caseText">Paste the case — vignette text, discharge summary, your own clerking notes, or a case link</label>
+      <textarea id="caseText" placeholder="Paste case text directly, e.g. 'A 45 year man presented with pain in right leg and reticular lesion on skin on posterior side of right leg. He met with a road traffic accident 2 years back when he was a professional driver and...'"></textarea>
+      <div class="hint">If link can't be fetched automatically — paste the case text itself for best results. &nbsp;<a href="#" id="sampleCaseBtn" style="font-weight:600;color:var(--accent-dark);text-decoration:none;">Try a sample case &#8594;</a></div>
+
+      <div class="upload-row">
+        <label for="caseFile">Or upload a case file — PDF, Word (.doc/.docx), or plain text (.txt), max 10MB</label>
+        <input type="file" id="caseFile" accept=".pdf,.doc,.docx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+        <div class="hint" id="uploadStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: ACTIVITY -->
+  <div class="step">
+    <div class="step-label" id="label-activity"><span class="num">3</span>Activity</div>
+    <div class="tabrow" id="modeTabs">
+      <div class="tab active" data-mode="dialogue">Dialogue</div>
+      <div class="tab" data-mode="analytics">Analytics Mode</div>
+      <div class="tab" data-mode="pipeline">Pipeline Builder</div>
+    </div>
+
+    <div id="modeDialogue" class="mode-pane">
+      <div class="mode-hint">One activity, a live back-and-forth. Good for step-by-step reasoning practice.</div>
+      <div class="activities" id="activities"></div>
+
+      <div id="quizPatternPicker" style="display:none;margin-top:14px;">
+        <div class="hint" style="margin-bottom:8px;">Choose a quiz pattern:</div>
+        <div class="tabrow" id="quizPatternTabs">
+          <div class="tab active" data-pattern="Clinical Reasoning Focused">Clinical Reasoning (default)</div>
+          <div class="tab" data-pattern="NEET PG">NEET PG</div>
+          <div class="tab" data-pattern="USMLE">USMLE</div>
+          <div class="tab" data-pattern="MRCP">MRCP</div>
+          <div class="tab" data-pattern="PLAB">PLAB</div>
+          <div class="tab" data-pattern="Other">Other</div>
+        </div>
+        <input type="text" id="quizPatternOther" placeholder="Specify the exam / pattern…" style="display:none;margin-top:8px;">
+        <button id="startQuizBtn" style="margin-top:10px;">Start quiz</button>
+      </div>
+    </div>
+
+    <div id="modeAnalytics" class="mode-pane" style="display:none;">
+      <div class="mode-hint">Pick one lens. One structured report comes back in a single pass — no back-and-forth required, though you can still ask follow-ups after. Promption/Provocation modules are sourced from the <a href="https://avi33tbtt.github.io/#ccos-builder-panel" target="_blank">VibeRounds CCOS Builder</a>.</div>
+
+      <div class="module-group-label">Promption &mdash; cognitive scaffolding</div>
+      <div class="activities" id="analyticsPromption"></div>
+
+      <div class="module-group-label">Provocation &mdash; cognitive stress-testing</div>
+      <div class="activities" id="analyticsProvocation"></div>
+
+      <button id="runAnalyticsBtn" style="margin-top:14px;" disabled>Run analysis</button>
+    </div>
+
+    <div id="modePipeline" class="mode-pane" style="display:none;">
+      <div class="mode-hint">Choose a module from the dropdown and add it to build your pipeline in order. Each stage sees the case plus every prior stage's output. Full module library (57 modules) and readymade pipelines: <a href="https://avi33tbtt.github.io/#ccos-builder-panel" target="_blank">avi33tbtt.github.io — CCOS Builder</a>.</div>
+      <div class="pipeline-picker">
+        <input type="text" id="pipelineModuleSearch" placeholder="Search modules by name or number…" style="margin-bottom:8px;">
+        <div style="display:flex;gap:16px;">
+          <select id="pipelineModuleSelect" style="flex:1;"></select>
+          <button id="addPipelineModuleBtn" class="secondary">Add to pipeline</button>
+        </div>
+      </div>
+      <div class="pipeline-order" id="pipelineOrder"></div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button id="runPipelineBtn" disabled>Run pipeline</button>
+        <button class="secondary" id="clearPipelineBtn">Clear selection</button>
+      </div>
+      <div class="hint" style="margin-top:10px;">Looking for a pre-built chain instead of assembling one here? See the <a href="https://avi33tbtt.github.io/#ccos-builder-panel" target="_blank">readymade pipelines list</a> on the CCOS Builder panel, then reproduce your favorite chain using the dropdown above.</div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="ws-header">
+      <div>
+        <div class="wtitle" id="wsTitle"></div>
+        <div class="wsub" id="wsSub"></div>
+        <div class="ws-progress" id="wsProgress" style="display:none;">
+          <div class="ws-progress-bar"><div class="ws-progress-fill" id="wsProgressFill"></div></div>
+          <div class="ws-progress-label" id="wsProgressLabel"></div>
+        </div>
+      </div>
+      <div class="ws-actions">
+        <button class="secondary" id="copyTranscriptBtn">Copy transcript</button>
+        <button class="secondary" id="downloadTranscriptBtn">Download .txt</button>
+        <button class="secondary" id="downloadHtmlBtn">Download HTML</button>
+        <button class="secondary" id="resetBtn">Reset run</button>
+      </div>
+    </div>
+    <div class="error-note" id="errorNote"></div>
+    <div class="transcript" id="transcript"></div>
+    <div class="composer">
+      <textarea id="composerInput" placeholder="Your response..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <p>If you're interested in working together, contributing, or just want help getting started, feel free to reach out — email <a href="mailto:avi33tbtt@gmail.com">avi33tbtt@gmail.com</a> or WhatsApp <a href="https://wa.me/9779817599973" target="_blank" rel="noopener">+977 981 759 9973</a>. Happy to hear from anyone curious about the project.</p>
+  </div>
+
+  <div class="legal-note">
+    <em>"To be used on personal responsibility and only for learning. Not to be used for clinical purpose."</em><br>
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> — free to share and adapt with attribution.
+  </div>
+
+  <div class="contribute-card">
+    <h3>Help improve Case Bench</h3>
+    <p>
+      Anonymously contribute this session's transcript for educational and research purposes.
+      No names, emails, or API keys are ever included — only the case type, the back-and-forth, and a timestamp.
+    </p>
+    <label class="consent">
+      <input type="checkbox" id="contributeConsent">
+      I understand this transcript will be submitted anonymously and used only for education/research.
+    </label>
+    <br>
+    <button class="contribute-btn" id="contributeBtn">Submit</button>
+    <div class="contribute-status" id="contributeStatus"></div>
+  </div>
+
+  <footer>Vibe Rounds - Case Bench · runs entirely in your browser · bring your own key</footer>
+</div>
+
+<script>
+/* ---------- config: providers ---------- */
+const PROVIDERS = {
+  claude: {
+    label: 'Claude',
+    keyPlaceholder: 'sk-ant-...',
+    modelPlaceholder: 'claude-sonnet-4-6',
+    help: 'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there — model names change over time, so if a call fails, double check the current model string.'
+  },
+  gemini: {
+    label: 'Gemini',
+    keyPlaceholder: 'AIza...',
+    modelPlaceholder: 'gemini-2.5-flash',
+    help: 'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>. Check the current model name in Google AI Studio if a call fails.'
+  },
+  openai: {
+    label: 'ChatGPT',
+    keyPlaceholder: 'sk-...',
+    modelPlaceholder: 'gpt-4o-mini',
+    help: 'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>. Check the current model name in the OpenAI docs if a call fails.'
+  },
+  other: {
+    label: 'Other',
+    keyPlaceholder: 'API key (leave blank if none)',
+    modelPlaceholder: 'model-name-as-required-by-provider',
+    needsEndpoint: true,
+    help: 'Works with any provider that exposes an OpenAI-compatible <code>/chat/completions</code> endpoint — this covers most of the LLM ecosystem beyond the big three: Groq, Together AI, Mistral, DeepSeek, xAI (Grok), Perplexity, OpenRouter (which itself proxies dozens more models), Fireworks, local servers like Ollama or LM Studio, and more. Paste the full endpoint URL, the key that provider gave you, and the exact model name it expects. If a call fails, check that provider\'s docs — the request/response shape is standardized, but model names and auth details vary.'
+  }
+};
+
+/* ---------- config: activities ---------- */
+const ACTIVITIES = {
+  socratic: {
+    name: 'Socratic Rounds',
+    desc: 'One pointed question at a time. You find the gap yourself.',
+    subtitle: 'One question at a time — commit before you get the answer.',
+    systemPrompt: (c) => `#VibeRounds You are a warm, encouraging educational assistant who uses the Socratic method to guide clinical reasoning. I am a learner working through a clinical case. Your role is to ask me one question at a time, wait for my response, and acknowledge what I got right before gently probing further. Only reveal the answer after I have made a genuine attempt and then explicitly surrendered — if I ask for the answer outright without attempting one, redirect me once with: 'Give your best guess, differential, or next step first,' and only proceed to reveal the answer if I still cannot or will not attempt one after that. Start every session by telling me one thing you believe I will find interesting about this case. Confirm you understand the rules before we begin.\n\nHere is the case:\n\n${c}\n\nBegin now: first confirm you understand the rules above in one short line, then tell me the one interesting thing about this case, then ask your first question.`
+  },
+  audit: {
+    name: 'Case Audit',
+    desc: 'Write up your own reasoning. Get audited for gaps, not given answers.',
+    subtitle: 'Submit your working diagnosis and reasoning — get audited, not corrected.',
+    systemPrompt: (c) => `Act as a diagnostic-safety auditor reviewing a clerkship student's written clinical reasoning. Here is the case:\n\n${c}\n\nThe student will paste their own working diagnosis, differential, and reasoning below. When they do:\n- Do not state the "correct" diagnosis unless the student already has it right and asks you to confirm.\n- Identify the single most significant gap in their reasoning (a missed red flag, an unweighted piece of evidence, premature closure, or an untested alternative) — not a list, just the one that matters most.\n- Phrase this gap as a question that would let the student find it themselves, not as a correction.
+- Name explicitly if you notice a common cognitive bias at play (anchoring, premature closure, framing effect, availability bias) and briefly why it might apply here — without telling them they're wrong yet.
+- Ask them to revise and resubmit before you'll confirm anything.
+- Keep responses tight — a real audit note, not an essay.
+- Wait for the student's first submission before auditing anything. Start by asking them to state their working diagnosis and reasoning for this case.`
+  },
+  differential: {
+    name: 'Differential Challenge',
+    desc: 'Rank your differentials. Get probed on the weakest link.',
+    subtitle: 'Submit a ranked differential — the weakest one gets probed first.',
+    systemPrompt: (c) => `Act as a clinical mentor running a differential-diagnosis drill. Here is the case:\n\n${c}\n\nAsk the student to list their differential diagnoses, ranked by likelihood, each with one line of justification. Once they submit:\n- Identify the differential in their list that is weakest — least justified, or most likely to be wrong — and probe it with one pointed question, without telling them it's wrong yet.\n- Also ask one question about a plausible differential that is conspicuously missing from their list, if one exists — again as a question, not a statement.\n- Do not reveal the true diagnosis or rank order until the student has responded to your probes at least once.\n- Once they've responded, give a brief verdict: which differentials survive scrutiny, which don't, and why — grounded only in evidence from the case.\n- Keep it concise. Begin by asking for their ranked list now.`
+  },
+  quiz: {
+    name: 'Quick Quiz',
+    desc: 'Reasoning-focused MCQs, one at a time, with explanation after each.',
+    subtitle: 'One question at a time — reasoning tested, not recall.',
+    needsPattern: true,
+    systemPrompt: (c) => {
+      const pattern = state.quizPattern || 'Clinical Reasoning Focused';
+      const styleNotes = {
+        'Clinical Reasoning Focused': 'General clinical-reasoning style — test decision-making and pattern recognition rather than any specific national exam\u2019s format.',
+        'NEET PG': 'NEET PG (India) style — single best answer, terse stems, Indian clinical-practice conventions and drug/brand naming where relevant.',
+        'USMLE': 'USMLE (USA) Step-style — long, detailed clinical vignette stems, US clinical-practice conventions, single best answer from 4-5 options.',
+        'MRCP': 'MRCP (UK) style — concise but nuanced vignettes, UK clinical-practice/NICE-guideline conventions, single best answer.',
+        'PLAB': 'PLAB (UK) style — practical, safety- and communication-oriented vignettes reflecting UK primary/secondary care practice, single best answer.'
+      };
+      const styleNote = styleNotes[pattern] || `Custom/other exam style requested by the student: "${pattern}". Infer and follow that exam's typical conventions as best you can.`;
+      return `Act as an exam writer generating reasoning-focused multiple-choice questions from this case:\n\n${c}\n\nQuiz pattern requested: ${pattern}.\n${styleNote}\n\nRules:\n- Before question 1, state in one short line which quiz pattern/style you are using for this session, so the student knows what to expect.\n- Write questions that test clinical reasoning and decision-making (e.g. "what changes management here," "what test best discriminates X from Y"), not simple recall of facts stated in the case, while matching the tone, stem length, and conventions of the requested pattern above.\n- Give exactly one question at a time, with 4 labeled options (A-D). Do not reveal the answer yet.\n- Wait for the student's answer. Then tell them if they're right, explain the reasoning briefly (including why the wrong options are wrong), and only then move to the next question.\n- Keep every question in this session consistent with the stated pattern.\n- After 5 questions, stop and give a one-line summary of the pattern in what they got wrong, if anything.\n- Begin now: state the quiz pattern in one line, then give question 1.`;
+    }
+  }
+};
+
+/* ---------- config: CCOS modules — all 57 (+ Module 0), tagged Promption / Provocation / Other ----------
+   Source: the CCOS module directory at https://avi33tbtt.github.io/Prompts/Prompts.html (index of all
+   58 module pages, #0-#57), read against the Promption/Provocation dual-mode framework explained at
+   https://avi33tbtt.github.io/modern_clinical_reasoning.html and surfaced via the CCOS Builder panel at
+   https://avi33tbtt.github.io/#ccos-builder-panel.
+
+   Only ~10 modules are explicitly named as Promption or Provocation examples on the source pages; the
+   rest aren't tagged either way there (the site groups them into other categories instead — patient
+   advocacy, analytics, safety, education, operations, meta-design). For those, the lens below is this
+   app's own classification — Promption where a module scaffolds/structures/organizes the case,
+   Provocation where it challenges, audits, or stress-tests an assumption — and "other" where a module
+   is neither. Treat that classification as a best-effort reading, not something asserted by the source.
+
+   Ten modules keep hand-written, case-specific prompts. The rest use a generated single-pass prompt
+   built from the module's own directory description, since transcribing the full step text of all 57
+   module pages individually wasn't practical here — each still links back to its source page. */
+
+const CCOS_TAILORED_PROMPTS = {
+  17: (c)=>`Run CCOS Module #17 — "Semantic Qualifiers & Problem Representation" — on this case:\n\n${c}\n\nRewrite the presentation as a single, tightly-worded problem representation using semantic qualifiers (e.g. acute vs. chronic, progressive vs. stable, painful vs. painless) rather than restating the narrative verbatim. This is a single-pass output, not a dialogue.`,
+  12: (c)=>`Run CCOS Module #12 — "Differential Diagnosis Deepdive" — on this case:\n\n${c}\n\nFor each plausible diagnosis, bridge the pathophysiological mechanism to the specific bedside findings in this case that support or argue against it. Structure as one short paragraph per candidate. Single-pass output, not a dialogue.`,
+  15: (c)=>`Run CCOS Module #15 — "Illness Script Acquisition" — on this case:\n\n${c}\n\nConstruct the canonical illness script (typical onset, course, epidemiology, and key findings) for the leading diagnosis, then note where this specific case matches or deviates from that script. Single-pass output, not a dialogue.`,
+  36: (c)=>`Run CCOS Module #36 — "Bayesian Probability / Likelihood Ratio Engine" — on this case:\n\n${c}\n\nFor the leading diagnosis, talk through pre-test probability given demographics/context, then show qualitatively how each major finding or test result shifts that probability up or down toward a post-test estimate. Use ordinal language (low/moderate/high), not invented precise percentages. Single-pass output, not a dialogue.`,
+  50: (c)=>`Run CCOS Module #50 — "Diagnostic Reasoning Map" — on this case:\n\n${c}\n\nProduce a structured, step-numbered map from raw findings → pattern recognition → hypothesis generation → the leading conclusion, showing explicitly which finding fed which step. Single-pass output, not a dialogue.`,
+  28: (c)=>`Run CCOS Module #28 — "Diagnostic Time-Out" — on this case:\n\n${c}\n\nCall a deliberate safety pause. Identify one alternative driver of this presentation that hasn't yet been ruled out by the findings given, and state exactly what test or history point would rule it in or out. Single-pass output, not a dialogue.`,
+  30: (c)=>`Run CCOS Module #30 — "The Diagnostic Anchor Extractor" — on this case:\n\n${c}\n\nIdentify the single finding or early impression a clinician is most likely to anchor on in this case, and state one piece of evidence in the case itself that argues against over-weighting it. Single-pass output, not a dialogue.`,
+  37: (c)=>`Run CCOS Module #37 — "Red Herring / Signal-to-Noise Drill" — on this case:\n\n${c}\n\nPick the single most visually or numerically striking finding in this case. Argue both readings: (a) that it's a primary, causal finding, and (b) that it's a secondary/downstream red herring. State which reading the rest of the case evidence favors, and why. Single-pass output, not a dialogue.`,
+  45: (c)=>`Run CCOS Module #45 — "Shadow Module 44 — Clinical Genetics Adversarial Counterpart" — on this case:\n\n${c}\n\nTake the leading diagnosis (or its genetic/heritable contributors, if any are plausible here) and build the strongest possible adversarial case AGAINST it using only evidence already present in the case text. Then state what single new piece of information would resolve the disagreement. Single-pass output, not a dialogue.`,
+  54: (c)=>`Run CCOS Module #54 — "System 1 & System 2 Thinking Question Generator" — on this case:\n\n${c}\n\nState the fast, pattern-recognition (System 1) diagnosis a clinician would reach for immediately. Then generate 2-3 System-2 questions that force slower, deliberate checking before committing to it. Single-pass output, not a dialogue.`
+};
+
+const CCOS_MODULE_INDEX = [
+  {num:0,  name:'Cold-Start Orientation', lens:'other', desc:'Pre-module entry point — identifies a new user\u2019s role and goal and routes them to the right module.', slug:'Module-00-Cold-Start-Orientation'},
+  {num:1,  name:'Socratic Clinical Reasoning', lens:'promption', desc:'Pushes a learner to reason through a case actively rather than passively receive the answer.', slug:'Module-01-Socratic-Clinical-Reasoning'},
+  {num:2,  name:'Patient-Advocate Case Documentation', lens:'other', desc:'A 4-step workflow for a family member to build a structured case record with an AI documentation companion.', slug:'Module-02-Patient-Advocate-Case-Documentation'},
+  {num:3,  name:'Extended Patient-Advocate Monitoring', lens:'other', desc:'Longitudinal domain tracking (lifestyle, mood, medication, red flags) that extends Module 2.', slug:'Module-03-Extended-Patient-Advocate-Monitoring'},
+  {num:4,  name:'Peer-Level Ward Round Preparation', lens:'other', desc:'Rehearses rounds, admissions, pre-op clearance, polypharmacy screening, and overnight triage.', slug:'Module-04-Peer-Level-Ward-Round-Preparation'},
+  {num:5,  name:'Real-Time Case Review & Data Audit', lens:'other', desc:'Queries and cleans a single patient\u2019s live case log during active management.', slug:'Module-05-Real-Time-Case-Review-and-Data-Audit'},
+  {num:6,  name:'Registry-Level Analytics', lens:'other', desc:'Queries an entire case registry across nine escalating levels of analytic depth.', slug:'Module-06-Registry-Level-Analytics'},
+  {num:7,  name:'Longitudinal & Cross-Case Learning', lens:'other', desc:'Turns the registry itself into a cross-case, cross-time learning system.', slug:'Module-07-Longitudinal-and-Cross-Case-Learning'},
+  {num:8,  name:'Socratic-Mode Design Specification', lens:'other', desc:'A 12-point QA specification for authoring or revising any new Socratic-mode prompt.', slug:'Module-08-Socratic-Mode-Design-Specification'},
+  {num:9,  name:'N-of-1 Case Research Protocol', lens:'other', desc:'Running the seven-stage research protocol on your own complex case.', slug:'Module-09-Case-Research_Protocol'},
+  {num:10, name:'Journal & Article Reading', lens:'other', desc:'Structured close-reading of a journal article or case report alongside your own case.', slug:'Module-10-Medical-Journal-Article-Reading'},
+  {num:11, name:'Patient Education Query Intelligence', lens:'other', desc:'Turns a patient/caregiver question into a well-targeted, plain-language explanation.', slug:'Module-11-Patient-Education-Query-Intelligence'},
+  {num:12, name:'Differential Diagnosis Deepdive', lens:'promption', desc:'Bridges pathophysiology to bedside findings across each candidate diagnosis.', slug:'Module-12-Differential-Diagnosis-Deepdive'},
+  {num:13, name:'Medication Reconciliation & Polypharmacy Audit', lens:'other', desc:'Checks a medication list for interactions, duplication, and reconciliation gaps.', slug:'Module-13-Medication-Reconciliation-Polypharmacy-Audit'},
+  {num:14, name:'Resource-Constrained Clinical Reasoning', lens:'promption', desc:'Structures work-up and reasoning when imaging, labs, or referral access is limited.', slug:'Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning'},
+  {num:15, name:'Illness Script Acquisition', lens:'promption', desc:'Builds the canonical illness script(s) this presentation should be checked against.', slug:'Module-15-Illness-Script-Acquisition'},
+  {num:16, name:'Basic Science \u2194 Clinical Integration', lens:'promption', desc:'Bridges bedside findings back to the underlying basic-science mechanism, bidirectionally.', slug:'Module-16-Bidirectional-Basic-Science-Clinical-Integration'},
+  {num:17, name:'Semantic Qualifiers & Problem Representation', lens:'promption', desc:'Converts messy narrative into a tight, qualifier-rich problem representation.', slug:'Module-17-Semantic-Qualifiers-Problem-Representation'},
+  {num:18, name:'Causal vs. Probabilistic (Network) Reasoning', lens:'promption', desc:'Structures reasoning explicitly as causal-mechanistic vs. probabilistic/associative.', slug:'Module-18-Causal-vs-Probabilistic-Network-Reasoning'},
+  {num:19, name:'Community & Social Medicine Insights', lens:'other', desc:'Surfaces population-health and social-determinant angles on an individual case.', slug:'Module-19-Community-and-Social-Medicine-Insights'},
+  {num:20, name:'Naturalistic Decision Making (Recognition-Primed)', lens:'promption', desc:'Models expert pattern-recognition decision-making rather than exhaustive differential-building.', slug:'Module-20-Recognition-Primed-Decision-Model'},
+  {num:21, name:'Evidence Frontier Search', lens:'other', desc:'Locates the most current literature bearing on this case\u2019s key question.', slug:'Module-21-Evidence-Frontier-Search'},
+  {num:22, name:'Nested Analysis', lens:'other', desc:'Compares this case against a small set of related cases, nested within one another.', slug:'Module-22-Nested-Analysis'},
+  {num:23, name:'Counterfactual Analysis', lens:'other', desc:'Explores how the case and its outcome would change under altered starting conditions.', slug:'Module-23-Counterfactual-Analysis'},
+  {num:24, name:'Heuristic Analysis', lens:'other', desc:'Names the cognitive heuristics (rules of thumb) implicitly at work in this case\u2019s reasoning.', slug:'Module-24-Heuristic-Analysis'},
+  {num:25, name:'Thematic Analysis', lens:'other', desc:'Extracts recurring themes across the case narrative for qualitative-style review.', slug:'Module-25-Thematic-Analysis'},
+  {num:26, name:'Bias Auditing', lens:'provocation', desc:'Checks the case reasoning against a standard list of clinical cognitive biases.', slug:'Module-26-Bias-Auditing'},
+  {num:27, name:'Time-Series & Velocity Analyzer', lens:'other', desc:'Reads the rate of change across serial vitals/labs, not just single values.', slug:'Module-27-Time-Series-Velocity-Analyzer'},
+  {num:28, name:'Diagnostic Time-Out', lens:'provocation', desc:'A forced pause: what alternative driver of the same picture hasn\u2019t been ruled out.', slug:'Module-28-Diagnostic-Time-Out'},
+  {num:29, name:'The Iatrogenic Domino Effect', lens:'provocation', desc:'Traces how one intervention could cascade into a chain of downstream harms.', slug:'Module-29-Iatrogenic-Domino-Effect'},
+  {num:30, name:'The "Diagnostic Anchor" Extractor', lens:'provocation', desc:'Names the specific finding a clinician is most likely anchoring on, and why it may mislead.', slug:'Module-30-Diagnostic-Anchor-Extractor'},
+  {num:31, name:'First-Principles Pathophysiology Mapping', lens:'promption', desc:'Rebuilds the case\u2019s findings from first-principles mechanism rather than pattern-matching.', slug:'Module-31-First-Principles-Pathophysiology-Mapping'},
+  {num:32, name:'Clinical Cognition Loop', lens:'promption', desc:'Runs the case through the full observe \u2192 hypothesize \u2192 test \u2192 revise cognition loop.', slug:'Module-32-Clinical-Cognition-Loop'},
+  {num:33, name:'The "Why Now?" (Precipitant) Hunter', lens:'provocation', desc:'Forces an explicit answer to why this presentation happened now rather than earlier or later.', slug:'Module-33-Why-Now-Precipitant-Hunter'},
+  {num:34, name:'The High-Value Care (HVC) Auditor', lens:'provocation', desc:'Audits the likely work-up for low-value, non-indicated testing or intervention.', slug:'Module-34-High-Value-Care-Auditor'},
+  {num:35, name:'Epistemic Certainty Mapping & Calibration', lens:'provocation', desc:'Maps confidence explicitly across each claim and checks it against the evidence supporting it.', slug:'Module-35-Epistemic-Certainty-Mapping-Calibration'},
+  {num:36, name:'The Bayesian Probability / Likelihood Ratio Engine', lens:'promption', desc:'Walks pre-test to post-test probability explicitly as each finding is added.', slug:'Module-36-Bayesian-Probability-Likelihood-Ratio-Engine'},
+  {num:37, name:'Red Herring / Signal-to-Noise Drill', lens:'provocation', desc:'Tests whether a striking finding is actually the primary driver or a downstream distractor.', slug:'Module-37-Red-Herring-Signal-to-Noise-Drill'},
+  {num:38, name:'Poly-Crisis & Cascading Failure Simulator', lens:'provocation', desc:'Simulates multiple simultaneous system failures compounding around the same case.', slug:'Module-38-Poly-Crisis-Cascading-Failure-Simulator'},
+  {num:39, name:'The "Global Knowledge Network" Diagnostic Matrix', lens:'promption', desc:'Organizes global/cross-population diagnostic knowledge into a matrix bearing on this case.', slug:'Module-39-Global-Knowledge-Network-Diagnostic-Matrix'},
+  {num:40, name:'The Operational & Throughput Strategist', lens:'other', desc:'Looks at this case through ward/department throughput and operational-efficiency constraints.', slug:'Module-40-Operational-Throughput-Strategist'},
+  {num:41, name:'Clinical Workflow Implementation Science', lens:'other', desc:'Applies implementation-science thinking to how a protocol would actually be adopted at the bedside.', slug:'Module-41-Clinical-Workflow-Implementation-Science'},
+  {num:42, name:'Clinical Pre-Mortem', lens:'provocation', desc:'Imagine the leading diagnosis is wrong \u2014 work backward to why.', slug:'Module-42-Clinical-Pre-Mortem'},
+  {num:43, name:'Health Economics & Value-Based Care Alignment', lens:'other', desc:'Weighs the case\u2019s likely management pathway against cost and value-based-care considerations.', slug:'Module-43-Health-Economics-Value-Based-Care-Alignment'},
+  {num:44, name:'Clinical Genetics Reasoning', lens:'other', desc:'Builds out the heritable/genetic contributors plausible for this presentation.', slug:'Module-44-Clinical-Genetics-Reasoning'},
+  {num:45, name:'Shadow Module 44 \u2014 Clinical Genetics Adversarial Counterpart', lens:'provocation', desc:'Argues the adversarial counter-case to Module 44\u2019s genetics reasoning.', slug:'Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart'},
+  {num:46, name:'Evidence-Based Medicine Insights', lens:'other', desc:'Frames the case\u2019s key clinical question as an appraisable, evidence-based-medicine question.', slug:'Module-45-Evidence-Based-Medicine-Insights'},
+  {num:47, name:'Shadow Module 47 \u2014 Evidence-Based Medicine Adversarial Counterpart', lens:'provocation', desc:'Argues the adversarial counter-case to Module 46\u2019s evidence framing.', slug:'Shadow-Module-45-EBM-Adversarial-Counterpart'},
+  {num:48, name:'Treatment Comparative Analysis & Evidence-Informed Prognosis Trajectory', lens:'other', desc:'Compares plausible treatment paths and their evidence-informed prognosis trajectories.', slug:'Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory'},
+  {num:49, name:'FMEA Analysis', lens:'provocation', desc:'Runs a Failure Modes & Effects Analysis on the likely management plan for this case.', slug:'Module-49-FMEA-Analysis-and-Insights'},
+  {num:50, name:'Diagnostic Reasoning Map', lens:'promption', desc:'Lays out the full reasoning chain from finding to conclusion as a structured map.', slug:'Module-50-DRM-Diagnostic-Reasoning-Map'},
+  {num:51, name:'Systems-Based Clinical Analysis', lens:'other', desc:'Reads the case through systems-based-practice competency lenses.', slug:'Module-51-Systems-Based-Clinical-Analysis-and-Insights'},
+  {num:52, name:'Clinical Pearls Distillation', lens:'promption', desc:'Distills the case down to a short list of transferable clinical pearls.', slug:'Module-52-CP-Clinical-Pearls'},
+  {num:53, name:'Clinical Guideline Intelligence Navigator', lens:'other', desc:'Locates and applies the relevant clinical practice guideline(s) to this case.', slug:'Module-53-Clinical-Guideline-Intelligence-Navigator'},
+  {num:54, name:'System 1 & System 2 Thinking Question Generator', lens:'provocation', desc:'Separates the fast pattern-match answer from what slow, deliberate checking would add.', slug:'Module-54-System1-System2-Question-Generator'},
+  {num:55, name:'Patient Needs Assessment', lens:'promption', desc:'Structures a systematic read of the patient\u2019s needs beyond the presenting complaint.', slug:'Module-55-Patient-Needs-Assessment'},
+  {num:56, name:'Hypothetico-Deductive Reasoning', lens:'promption', desc:'Runs the classic generate-hypothesis \u2192 deduce-test \u2192 confirm/refute cycle explicitly.', slug:'Module-HDM-Hypothetico-Deductive-Model'},
+  {num:57, name:'Clinical Cognition Deep Dive', lens:'promption', desc:'The deepest single-run synthesis across the full clinical-cognition module set.', slug:'Module-CC-Clinical-Cognition-Deep-Dive'}
+];
+
+function genPrompt(num, name, desc, slug){
+  return (c) => `Run CCOS Module #${num} — "${name}" — on this case:\n\n${c}\n\nTask: ${desc} Produce a single structured, well-organized report addressing this task directly against the case details above — do not restate the case, and do not end with a question to the reader. This is a single-pass output, not a dialogue. (Full module specification: https://avi33tbtt.github.io/Prompts/${slug}.html)`;
+}
+
+const CCOS_MODULES = {};
+CCOS_MODULE_INDEX.forEach(m=>{
+  CCOS_MODULES['m'+m.num] = {
+    num: m.num,
+    name: m.name,
+    mode: m.lens,
+    desc: m.desc,
+    url: `https://avi33tbtt.github.io/Prompts/${m.slug}.html`,
+    prompt: CCOS_TAILORED_PROMPTS[m.num] || genPrompt(m.num, m.name, m.desc, m.slug)
+  };
+});
+
+/* ---------- config: analytics / pipeline modules (single-lens, one-shot) ---------- */
+const CUSTOM_MODULES = {
+  illness_script: {
+    name: 'Illness Script Map',
+    desc: 'Match findings against canonical illness scripts — fit and misfit.',
+    prompt: (c) => `Run a single-pass "Illness Script Mapping" analysis on this case:\n\n${c}\n\nProduce a structured report (use headers) with:\n1. The 2-3 canonical illness scripts (onset, course, key findings) this case most resembles.\n2. For each: which findings FIT the script, and which findings DON'T FIT or are unexplained by it.\n3. A one-line verdict on which script fits best and why, flagging any finding that remains unexplained regardless of which script is chosen.\nBe concrete and grounded only in what's in the case text. This is a single-pass report, not a dialogue — do not ask the reader questions.`
+  },
+  differential: {
+    name: 'Differential Landscape',
+    desc: 'Full weighted differential with likelihood language.',
+    prompt: (c) => `Run a single-pass "Differential Landscape" analysis on this case:\n\n${c}\n\nProduce a structured report with a table or list of 4-6 differentials, each with: likelihood (high/moderate/low), the supporting findings, and the one finding or test that would most efficiently rule it in or out. End with a one-line note on which two differentials are closest to each other and hardest to distinguish given the information in the case. Single-pass report, no questions to the reader.`
+  },
+  bias_audit: {
+    name: 'Bias Audit',
+    desc: 'Anchoring, premature closure, framing, availability bias — checked against this case.',
+    prompt: (c) => `Run a single-pass "Bias Audit" on this case:\n\n${c}\n\nFor each of: anchoring, premature closure, framing effect, availability bias, and confirmation bias — state whether that bias is plausible in how this specific case could be mis-reasoned, and if so, exactly what wrong turn it would produce here (not a generic definition). Skip any bias that has no real foothold in this case rather than forcing all five. End with the single most likely bias to trip up a learner on this specific case. Single-pass report, no questions to the reader.`
+  },
+  red_flags: {
+    name: 'Red Flag & Safety Net',
+    desc: 'Explicit checklist of red flags: present, absent, or not yet elicited.',
+    prompt: (c) => `Run a single-pass "Red Flag & Safety Net" analysis on this case:\n\n${c}\n\nList every red flag relevant to this presentation as a checklist, marking each PRESENT, ABSENT (per the case text), or NOT ELICITED (case doesn't say). For each PRESENT or NOT ELICITED item, give one line on why it matters here. End with a one-line safety verdict: is this presentation adequately safety-netted by what's documented, or is there a gap. Single-pass report, no questions to the reader.`
+  },
+  evidence_anchor: {
+    name: 'Evidence Anchoring',
+    desc: 'Ties each major claim back to a mechanism or evidence type — flags what is unverified.',
+    prompt: (c) => `Run a single-pass "Evidence Anchoring" analysis on this case:\n\n${c}\n\nFor the 3-4 most load-bearing clinical claims or decisions in this case, state the mechanism or type of evidence that would justify each (e.g. "supported by pathophysiology," "supported by population-level epidemiology," "supported by this case's own labs," "not verifiable from the text given"). Be honest about which claims are asserted without evidence being shown. Do not fabricate citations or exact study names. Single-pass report, no questions to the reader.`
+  },
+  pre_mortem: {
+    name: 'Clinical Pre-Mortem',
+    desc: 'Imagine the leading diagnosis is wrong — work backward to why.',
+    prompt: (c) => `Run a single-pass "Clinical Pre-Mortem" on this case:\n\n${c}\n\nAssume the most likely diagnosis for this case turns out to be wrong 48 hours from now. Working backward: what are the 2-3 most plausible reasons that could happen (a missed alternative, an unchecked red flag, an over-weighted finding)? For each, state what single piece of missing information would have caught it earlier. Single-pass report, no questions to the reader.`
+  },
+  systems_lens: {
+    name: 'Systems & Cost Lens',
+    desc: 'What changes if imaging, labs, or referral access is limited.',
+    prompt: (c) => `Run a single-pass "Systems & Cost Lens" analysis on this case:\n\n${c}\n\nIdentify which steps in this case's likely work-up depend on resources (imaging, specialist referral, specific labs) that may not be available in a low-resource setting. For each, give the pragmatic alternative a clinician without that resource would reasonably fall back on, and what's lost by doing so. Single-pass report, no questions to the reader.`
+  },
+  equity_lens: {
+    name: 'Equity & Context Lens',
+    desc: 'Social, financial, and access factors the case raises or omits.',
+    prompt: (c) => `Run a single-pass "Equity & Context Lens" analysis on this case:\n\n${c}\n\nIdentify what social, occupational, financial, or access-to-care factors are documented in this case and how they plausibly shaped the presentation or delay in care. Then flag what's conspicuously NOT documented (social history, financial constraints, health literacy) that would matter for this patient's actual management, as a gap rather than a finding. Single-pass report, no questions to the reader.`
+  }
+};
+
+/* Combined map used by the Analytics grid and the Pipeline Builder dropdown —
+   all 58 CCOS modules (#0-#57), keyed m0..m57, plus the 8 additional custom lenses. */
+const ALL_MODULES = Object.assign({}, CCOS_MODULES, CUSTOM_MODULES);
+
+/* CCOS modules split by lens, for the three Analytics-mode headings + the "Additional lenses" bucket
+   (which also carries the custom, non-CCOS-numbered lenses defined above). */
+const PROMPTION_MODULES = {}, PROVOCATION_MODULES = {}, OTHER_MODULES = {};
+Object.entries(CCOS_MODULES).forEach(([key, m])=>{
+  if(m.mode === 'promption') PROMPTION_MODULES[key] = m;
+  else if(m.mode === 'provocation') PROVOCATION_MODULES[key] = m;
+  else OTHER_MODULES[key] = m;
+});
+const ADDITIONAL_LENS_MODULES = Object.assign({}, OTHER_MODULES, CUSTOM_MODULES);
+
+/* Analytics mode shows only a curated, "most important" subset of Promption/Provocation
+   modules (the full sets remain available in the Pipeline Builder dropdown via ALL_MODULES). */
+const IMPORTANT_PROMPTION_NUMS = [1, 12, 15, 17, 36, 50, 52, 56];
+const IMPORTANT_PROVOCATION_NUMS = [26, 28, 30, 37, 42, 54];
+const ANALYTICS_PROMPTION_MODULES = {};
+IMPORTANT_PROMPTION_NUMS.forEach(n => { if(PROMPTION_MODULES['m'+n]) ANALYTICS_PROMPTION_MODULES['m'+n] = PROMPTION_MODULES['m'+n]; });
+const ANALYTICS_PROVOCATION_MODULES = {};
+IMPORTANT_PROVOCATION_NUMS.forEach(n => { if(PROVOCATION_MODULES['m'+n]) ANALYTICS_PROVOCATION_MODULES['m'+n] = PROVOCATION_MODULES['m'+n]; });
+
+/* ---------- state ---------- */
+let state = {
+  provider: 'claude',
+  activity: null,
+  mode: 'dialogue',
+  analyticsModule: null,
+  pipelineSelection: [], // ordered array of module keys
+  messages: [], // {role:'user'|'assistant', content:string, auto?:boolean}
+  running: false,
+  runKind: null, // 'dialogue' | 'analytics' | 'pipeline'
+  quizPattern: null
+};
+
+const $ = (id) => document.getElementById(id);
+
+/* ---------- localStorage helpers ---------- */
+function loadKeys(){
+  try{ return JSON.parse(localStorage.getItem('casebench_keys')||'{}'); }catch(e){ return {}; }
+}
+function saveKeys(k){ localStorage.setItem('casebench_keys', JSON.stringify(k)); }
+function loadModels(){
+  try{ return JSON.parse(localStorage.getItem('casebench_models')||'{}'); }catch(e){ return {}; }
+}
+function saveModels(m){ localStorage.setItem('casebench_models', JSON.stringify(m)); }
+function loadEndpoints(){
+  try{ return JSON.parse(localStorage.getItem('casebench_endpoints')||'{}'); }catch(e){ return {}; }
+}
+function saveEndpoints(e){ localStorage.setItem('casebench_endpoints', JSON.stringify(e)); }
+function loadCaseText(){
+  try{ return localStorage.getItem('casebench_case') || ''; }catch(e){ return ''; }
+}
+function saveCaseText(t){ try{ localStorage.setItem('casebench_case', t); }catch(e){} }
+const SAMPLE_CASE_PROMPT = 'Generate one realistic, self-contained clinical vignette for a medical learner to practice diagnostic reasoning on. Cover a single adult or pediatric patient presenting with a common or classic presentation (your choice — vary it each time). Include age, sex, presenting complaint, relevant history, and pertinent exam/vital sign findings, and a couple of relevant labs or initial test results if appropriate. Do not reveal or hint at the diagnosis name, and do not include headers, labels, or any framing text — output ONLY the vignette itself as a single flowing paragraph of 4-7 sentences, written the way a case would appear in a textbook.';
+
+$('sampleCaseBtn') && $('sampleCaseBtn').addEventListener('click', async (e)=>{
+  e.preventDefault();
+  const btn = $('sampleCaseBtn');
+  const keys = loadKeys();
+  const models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+
+  if(!apiKey && !PROVIDERS[state.provider].needsEndpoint){
+    alert('Add an API key for ' + PROVIDERS[state.provider].label + ' in Step 1 first, then try again.');
+    return;
+  }
+
+  const original = btn.textContent;
+  btn.textContent = 'Generating…';
+  btn.style.pointerEvents = 'none';
+
+  try{
+    let sample;
+    const msgs = [{role:'user', content:'Begin.'}];
+    if(state.provider === 'claude'){
+      sample = await callClaude(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+    } else if(state.provider === 'gemini'){
+      sample = await callGemini(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+    } else if(state.provider === 'other'){
+      const endpoints = loadEndpoints();
+      sample = await callCustom(endpoints['other'], apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+    } else {
+      sample = await callOpenAI(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+    }
+    sample = (sample || '').trim();
+    if(!sample) throw new Error('Empty response.');
+    $('caseText').value = sample;
+    saveCaseText(sample);
+    trackEvent('sample_case_generated', {provider: state.provider});
+  } catch(err){
+    alert('Could not generate a sample case: ' + err.message);
+  } finally {
+    btn.textContent = original;
+    btn.style.pointerEvents = '';
+  }
+});
+
+function loadCollapseState(){
+  try{ return JSON.parse(localStorage.getItem('casebench_collapse')||'{}'); }catch(e){ return {}; }
+}
+function saveCollapseState(c){ localStorage.setItem('casebench_collapse', JSON.stringify(c)); }
+
+/* ---------- theme selector (Simple / Book / Minimalist / Terminal) ---------- */
+const VALID_THEMES = ['simple', 'minimalist', 'terminal'];
+function applyTheme(theme){
+  if(!VALID_THEMES.includes(theme)) theme = 'simple';
+  document.documentElement.setAttribute('data-theme', theme);
+  if($('themeSelect')) $('themeSelect').value = theme;
+}
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('casebench_theme'); }catch(e){}
+  applyTheme(saved || 'simple');
+}
+initTheme();
+$('themeSelect') && $('themeSelect').addEventListener('change', (e)=>{
+  const next = e.target.value;
+  applyTheme(next);
+  try{ localStorage.setItem('casebench_theme', next); }catch(e){}
+  trackEvent('change_theme', {theme: next});
+});
+
+/* ---------- render: provider tabs ---------- */
+function renderProviderPane(){
+  const p = PROVIDERS[state.provider];
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('keyHelp').innerHTML = p.help;
+
+  const keys = loadKeys();
+  const models = loadModels();
+  $('apiKey').value = keys[state.provider] || '';
+  $('modelName').value = models[state.provider] || '';
+
+  $('endpointRow').style.display = p.needsEndpoint ? '' : 'none';
+  if(p.needsEndpoint){
+    const endpoints = loadEndpoints();
+    $('apiEndpoint').value = endpoints[state.provider] || '';
+  }
+
+  updateKeyStatus();
+}
+function updateKeyStatus(){
+  const keys = loadKeys();
+  const el = $('keyStatus');
+  if(keys[state.provider]){
+    el.textContent = 'Key saved locally for ' + PROVIDERS[state.provider].label + '.';
+    el.className = 'key-status ok';
+  } else {
+    el.textContent = 'No key saved for this provider yet.';
+    el.className = 'key-status empty';
+  }
+}
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    const targetProvider = tab.dataset.provider;
+    if(state.messages.length > 0 && targetProvider !== state.provider){
+      const ok = confirm(
+        'You have an active conversation with ' + PROVIDERS[state.provider].label + '. ' +
+        'Switching models mid-run can produce inconsistent results since context formatting ' +
+        'differs between providers. Switch to ' + PROVIDERS[targetProvider].label + ' anyway?'
+      );
+      if(!ok) return;
+    }
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.provider = targetProvider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', ()=>{
+  const keys = loadKeys();
+  const hadKeyBefore = !!keys[state.provider];
+  keys[state.provider] = $('apiKey').value.trim();
+  saveKeys(keys);
+  updateKeyStatus();
+  // Auto-collapse Model once a key is first saved, unless the user has already
+  // made an explicit choice about this section's collapsed state.
+  const saved = loadCollapseState();
+  if(!hadKeyBefore && keys[state.provider] && !saved.hasOwnProperty('model')){
+    applyCollapsed('model', true);
+  }
+});
+$('modelName').addEventListener('input', ()=>{
+  const models = loadModels();
+  models[state.provider] = $('modelName').value.trim();
+  saveModels(models);
+});
+$('apiEndpoint').addEventListener('input', ()=>{
+  const endpoints = loadEndpoints();
+  endpoints[state.provider] = $('apiEndpoint').value.trim();
+  saveEndpoints(endpoints);
+});
+
+/* ---------- shared preflight check ---------- */
+function preflightOk(){
+  const caseText = $('caseText').value.trim();
+  if(!caseText){
+    applyCollapsed('case', false);
+    alert('Paste a case first — Step 2.');
+    return false;
+  }
+  const keys = loadKeys();
+  if(!keys[state.provider] && !PROVIDERS[state.provider].needsEndpoint){
+    applyCollapsed('model', false);
+    alert('Add an API key for ' + PROVIDERS[state.provider].label + ' in Step 1 first.');
+    return false;
+  }
+  if(PROVIDERS[state.provider].needsEndpoint){
+    const endpoints = loadEndpoints();
+    if(!endpoints[state.provider]){
+      applyCollapsed('model', false);
+      alert('Add an API endpoint URL in Step 1 first.');
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ---------- mode tabs ---------- */
+document.querySelectorAll('#modeTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#modeTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.mode = tab.dataset.mode;
+    $('modeDialogue').style.display = state.mode==='dialogue' ? '' : 'none';
+    $('modeAnalytics').style.display = state.mode==='analytics' ? '' : 'none';
+    $('modePipeline').style.display = state.mode==='pipeline' ? '' : 'none';
+  });
+});
+
+/* ---------- render: dialogue activities ---------- */
+function renderActivities(){
+  const wrap = $('activities');
+  wrap.innerHTML = '';
+  Object.entries(ACTIVITIES).forEach(([key, a])=>{
+    const div = document.createElement('div');
+    div.className = 'activity' + (state.activity===key ? ' selected':'');
+    div.innerHTML = `<div class="aname">${a.name}</div><div class="adesc">${a.desc}</div>`;
+    div.addEventListener('click', ()=>{
+      state.activity = key;
+      renderActivities();
+      if(a.needsPattern){
+        $('quizPatternPicker').style.display = 'block';
+        $('quizPatternPicker').scrollIntoView({behavior:'smooth', block:'nearest'});
+      } else {
+        $('quizPatternPicker').style.display = 'none';
+        startDialogueRun();
+      }
+    });
+    wrap.appendChild(div);
+  });
+}
+
+/* ---------- quiz pattern picker ---------- */
+document.querySelectorAll('#quizPatternTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#quizPatternTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    $('quizPatternOther').style.display = tab.dataset.pattern === 'Other' ? 'block' : 'none';
+  });
+});
+$('startQuizBtn') && $('startQuizBtn').addEventListener('click', ()=>{
+  const activeTab = document.querySelector('#quizPatternTabs .tab.active');
+  let pattern = activeTab ? activeTab.dataset.pattern : 'Clinical Reasoning Focused';
+  if(pattern === 'Other'){
+    const custom = $('quizPatternOther').value.trim();
+    pattern = custom || 'Other (unspecified)';
+  }
+  state.quizPattern = pattern;
+  startDialogueRun();
+});
+
+/* ---------- render: analytics modules (single-select, grouped Promption / Provocation / Additional lenses) ---------- */
+function renderAnalyticsGroup(wrapId, groupModules){
+  const wrap = $(wrapId);
+  wrap.innerHTML = '';
+  Object.entries(groupModules).forEach(([key, m])=>{
+    const div = document.createElement('div');
+    div.className = 'activity' + (state.analyticsModule===key ? ' selected':'');
+    const label = m.num!=null ? `#${m.num} ${m.name}` : m.name;
+    div.innerHTML = `<div class="aname">${label}</div><div class="adesc">${m.desc}</div>`;
+    div.addEventListener('click', ()=>{
+      state.analyticsModule = key;
+      renderAnalyticsModules();
+      $('runAnalyticsBtn').disabled = false;
+    });
+    wrap.appendChild(div);
+  });
+}
+function renderAnalyticsModules(){
+  renderAnalyticsGroup('analyticsPromption', ANALYTICS_PROMPTION_MODULES);
+  renderAnalyticsGroup('analyticsProvocation', ANALYTICS_PROVOCATION_MODULES);
+}
+$('runAnalyticsBtn').addEventListener('click', startAnalyticsRun);
+
+/* ---------- render: pipeline modules — dropdown of all 57 CCOS modules + custom lenses, added in the order picked ---------- */
+function renderPipelineModules(){
+  const sel = $('pipelineModuleSelect');
+  const prevValue = sel.value;
+  const query = ($('pipelineModuleSearch') ? $('pipelineModuleSearch').value : '').trim().toLowerCase();
+  sel.innerHTML = '';
+
+  function matches(key, m){
+    if(!query) return true;
+    const hay = (String(m.num!=null ? m.num : '') + ' ' + m.name + ' ' + (m.desc||'')).toLowerCase();
+    return hay.includes(query);
+  }
+  function addGroup(label, groupModules){
+    const filtered = Object.entries(groupModules).filter(([key, m]) => matches(key, m));
+    if(!filtered.length) return;
+    const og = document.createElement('optgroup');
+    og.label = label;
+    filtered.forEach(([key, m])=>{
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = (m.num!=null ? `#${m.num} — ` : '') + m.name;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  }
+  addGroup('Promption — cognitive scaffolding', PROMPTION_MODULES);
+  addGroup('Provocation — cognitive stress-testing', PROVOCATION_MODULES);
+  addGroup('Additional lenses', ADDITIONAL_LENS_MODULES);
+
+  if(!sel.options.length){
+    const opt = document.createElement('option');
+    opt.disabled = true;
+    opt.textContent = 'No modules match “' + query + '”';
+    sel.appendChild(opt);
+  } else if(prevValue && ALL_MODULES[prevValue] && Array.from(sel.options).some(o=>o.value===prevValue)){
+    sel.value = prevValue;
+  }
+}
+$('pipelineModuleSearch') && $('pipelineModuleSearch').addEventListener('input', renderPipelineModules);
+$('addPipelineModuleBtn').addEventListener('click', ()=>{
+  const key = $('pipelineModuleSelect').value;
+  if(!key || !ALL_MODULES[key]) return;
+  state.pipelineSelection.push(key);
+  renderPipelineOrder();
+});
+function renderPipelineOrder(){
+  const el = $('pipelineOrder');
+  const has = state.pipelineSelection.length>0;
+  $('runPipelineBtn').disabled = !has;
+  if(!has){ el.innerHTML = 'No modules selected yet.'; return; }
+  el.innerHTML = state.pipelineSelection.map((k,i)=>{
+    const m = ALL_MODULES[k];
+    const label = (m.num!=null ? `#${m.num} ` : '') + m.name;
+    return (i>0 ? '<span class="arrow">→</span>' : '') + `<span class="chip">${label} <a href="#" data-idx="${i}" class="chip-remove" title="Remove">✕</a></span>`;
+  }).join(' ');
+  el.querySelectorAll('.chip-remove').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      state.pipelineSelection.splice(Number(a.dataset.idx), 1);
+      renderPipelineOrder();
+    });
+  });
+}
+$('clearPipelineBtn').addEventListener('click', ()=>{
+  state.pipelineSelection = [];
+  renderPipelineOrder();
+});
+$('runPipelineBtn').addEventListener('click', startPipelineRun);
+
+renderActivities();
+renderAnalyticsModules();
+renderPipelineModules();
+renderPipelineOrder();
+renderProviderPane();
+
+/* ---------- case text persistence ---------- */
+$('caseText').value = loadCaseText();
+$('caseText').addEventListener('input', ()=>{
+  saveCaseText($('caseText').value);
+});
+
+/* ---------- case file upload (PDF / Word / text) ---------- */
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB
+if(typeof pdfjsLib !== 'undefined'){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+function setUploadStatus(msg, kind){
+  const el = $('uploadStatus');
+  el.textContent = msg;
+  el.className = 'hint' + (kind ? ' ' + kind : '');
+}
+
+async function extractPdfText(file){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data: buf}).promise;
+  let out = [];
+  for(let i = 1; i <= pdf.numPages; i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    out.push(content.items.map(it => it.str).join(' '));
+  }
+  return out.join('\n\n').trim();
+}
+
+async function extractDocxText(file){
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({arrayBuffer: buf});
+  return (result.value || '').trim();
+}
+
+function extractTxtText(file){
+  return file.text();
+}
+
+$('caseFile').addEventListener('change', async (e)=>{
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+
+  if(file.size > MAX_UPLOAD_BYTES){
+    setUploadStatus(`"${file.name}" is ${(file.size/1024/1024).toFixed(1)}MB — max allowed is 10MB.`, 'err');
+    e.target.value = '';
+    return;
+  }
+
+  const name = file.name.toLowerCase();
+  const isPdf = name.endsWith('.pdf') || file.type === 'application/pdf';
+  const isDocx = name.endsWith('.docx') || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  const isDoc = name.endsWith('.doc') && !isDocx;
+  const isTxt = name.endsWith('.txt') || file.type === 'text/plain';
+
+  if(!isPdf && !isDocx && !isDoc && !isTxt){
+    setUploadStatus('Unsupported file type. Please upload a PDF, Word (.doc/.docx), or .txt file.', 'err');
+    e.target.value = '';
+    return;
+  }
+
+  setUploadStatus(`Reading "${file.name}"…`);
+
+  try{
+    let text = '';
+    if(isPdf){
+      text = await extractPdfText(file);
+    } else if(isDocx){
+      text = await extractDocxText(file);
+    } else if(isDoc){
+      setUploadStatus('Legacy .doc files can\'t be parsed in-browser — please save as .docx or .pdf and re-upload.', 'err');
+      e.target.value = '';
+      return;
+    } else {
+      text = await extractTxtText(file);
+    }
+
+    if(!text){
+      setUploadStatus(`Couldn't find any readable text in "${file.name}". Try a different file or paste the case manually.`, 'err');
+      e.target.value = '';
+      return;
+    }
+
+    const existing = $('caseText').value.trim();
+    $('caseText').value = existing ? existing + '\n\n' + text : text;
+    saveCaseText($('caseText').value);
+    setUploadStatus(`Loaded case text from "${file.name}".`, 'ok');
+    trackEvent('upload_case_file', {fileType: isPdf ? 'pdf' : (isDocx ? 'docx' : 'txt')});
+  } catch(err){
+    setUploadStatus('Could not read that file: ' + err.message, 'err');
+  } finally {
+    e.target.value = '';
+  }
+});
+
+/* ---------- collapsible sections: init + persistence ---------- */
+initCollapsibleSections();
+
+/* ---------- run lifecycle: dialogue ---------- */
+function startDialogueRun(){
+  if(!preflightOk()){ state.activity=null; renderActivities(); return; }
+  const caseText = $('caseText').value.trim();
+  const a = ACTIVITIES[state.activity];
+  state.messages = [];
+  state.runKind = 'dialogue';
+  state.systemPrompt = a.systemPrompt(caseText);
+
+  $('quizPatternPicker').style.display = 'none';
+  const sub = a.needsPattern && state.quizPattern ? a.subtitle + ' · ' + state.quizPattern : a.subtitle;
+  openWorkspace(a.name, sub);
+  appendMsg('system', 'Session started — ' + a.name + '.');
+  trackEvent('start_dialogue', {activity: state.activity, provider: state.provider});
+  callModel([]); // system prompt instructs model to begin
+}
+
+/* ---------- run lifecycle: analytics (single-shot) ---------- */
+function startAnalyticsRun(){
+  if(!state.analyticsModule) return;
+  if(!preflightOk()) return;
+  const caseText = $('caseText').value.trim();
+  const m = ALL_MODULES[state.analyticsModule];
+  state.messages = [];
+  state.runKind = 'analytics';
+  state.systemPrompt = 'You are running one focused analytic module on a clinical case. Respond with a single structured, well-organized report. Do not end with a question to the reader — this is a one-shot analysis, not a dialogue. If the student asks a follow-up afterward, answer normally.';
+
+  openWorkspace('Analytics — ' + m.name, 'Single-pass structured report.');
+  appendMsg('system', 'Running module: ' + m.name + '.');
+  trackEvent('run_analytics', {module: state.analyticsModule, provider: state.provider});
+  state.messages.push({role:'user', content: m.prompt(caseText), auto:true});
+  callModel(state.messages);
+}
+
+/* ---------- run lifecycle: pipeline (sequential multi-module) ---------- */
+async function startPipelineRun(){
+  if(!state.pipelineSelection.length) return;
+  if(!preflightOk()) return;
+  const caseText = $('caseText').value.trim();
+  const names = state.pipelineSelection.map(k=>ALL_MODULES[k].name).join(' → ');
+  const total = state.pipelineSelection.length;
+  state.messages = [];
+  state.runKind = 'pipeline';
+  state.systemPrompt = 'You are running one stage of a multi-stage clinical reasoning pipeline. Each stage builds on the case and on the outputs of prior stages, which will be provided. Respond with a single structured, well-organized report for THIS stage only. Do not end with a question to the reader.';
+
+  openWorkspace('Pipeline', names);
+  appendMsg('system', 'Running pipeline: ' + names);
+  trackEvent('run_pipeline', {stages: total, provider: state.provider});
+  showProgress(0, total, 'Starting…');
+
+  let priorOutput = '';
+  for(let i=0;i<total;i++){
+    const key = state.pipelineSelection[i];
+    const m = ALL_MODULES[key];
+    appendMsg('system', `Stage ${i+1} of ${total} — ${m.name}`);
+    showProgress(i, total, `Stage ${i+1} of ${total} — ${m.name}`);
+    const stagePrompt = m.prompt(caseText) + (priorOutput ? `\n\nPrior stage output so far, for context (do not repeat it, build on it):\n\n${priorOutput}` : '');
+    state.running = true;
+    $('sendBtn').disabled = true;
+    $('runPipelineBtn').disabled = true;
+    appendTyping();
+    try{
+      const keys = loadKeys();
+      const models = loadModels();
+      const apiKey = keys[state.provider];
+      const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+      let reply;
+      const stageMsgs = [{role:'user', content: stagePrompt}];
+      if(state.provider === 'claude') reply = await callClaude(apiKey, model, state.systemPrompt, stageMsgs);
+      else if(state.provider === 'gemini') reply = await callGemini(apiKey, model, state.systemPrompt, stageMsgs);
+      else reply = await callOpenAI(apiKey, model, state.systemPrompt, stageMsgs);
+      removeTyping();
+      appendMsg('assistant', `[${m.name}]\n\n` + reply);
+      // Keep full stage history in state.messages so follow-up questions (and transcript
+      // export) have the actual pipeline context, not just the completion system prompt.
+      state.messages.push({role:'user', content: stagePrompt, auto:true});
+      state.messages.push({role:'assistant', content: `[${m.name}]\n\n${reply}`});
+      priorOutput += `\n\n### ${m.name}\n${reply}`;
+      showProgress(i+1, total, `Stage ${i+1} of ${total} complete`);
+    } catch(err){
+      removeTyping();
+      $('errorNote').textContent = 'Pipeline stopped at stage ' + (i+1) + ' (' + m.name + '): ' + err.message;
+      $('errorNote').classList.add('show');
+      showProgress(i, total, `Stopped at stage ${i+1}`);
+      break;
+    }
+  }
+  state.running = false;
+  $('sendBtn').disabled = false;
+  $('runPipelineBtn').disabled = false;
+  state.systemPrompt = 'The pipeline above has completed. Answer any follow-up questions about the case or the combined findings above, grounded in what was already produced.';
+  hideProgressSoon();
+}
+
+/* ---------- progress bar (pipeline runs) ---------- */
+function showProgress(done, total, label){
+  const wrap = $('wsProgress');
+  if(!wrap) return;
+  wrap.style.display = 'flex';
+  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+  $('wsProgressFill').style.width = pct + '%';
+  $('wsProgressLabel').textContent = label;
+}
+function hideProgressSoon(){
+  const wrap = $('wsProgress');
+  if(!wrap) return;
+  setTimeout(()=>{ wrap.style.display = 'none'; }, 2000);
+}
+
+/* ---------- shared workspace open ---------- */
+function openWorkspace(title, sub){
+  stopSpeaking();
+  $('wsTitle').textContent = title;
+  $('wsSub').textContent = sub;
+  $('transcript').innerHTML = '';
+  $('errorNote').classList.remove('show');
+  $('wsProgress').style.display = 'none';
+  $('workspace').classList.add('visible');
+  $('workspace').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+$('resetBtn').addEventListener('click', ()=>{
+  stopSpeaking();
+  state.activity = null;
+  state.analyticsModule = null;
+  state.pipelineSelection = [];
+  state.messages = [];
+  state.runKind = null;
+  state.quizPattern = null;
+  $('workspace').classList.remove('visible');
+  $('quizPatternPicker').style.display = 'none';
+  document.querySelectorAll('#quizPatternTabs .tab').forEach(t=>t.classList.remove('active'));
+  const defaultTab = document.querySelector('#quizPatternTabs .tab[data-pattern="Clinical Reasoning Focused"]');
+  if(defaultTab) defaultTab.classList.add('active');
+  $('quizPatternOther').style.display = 'none';
+  $('quizPatternOther').value = '';
+  renderActivities();
+  renderAnalyticsModules();
+  renderPipelineModules();
+  renderPipelineOrder();
+  $('runAnalyticsBtn').disabled = true;
+});
+
+/* ---------- text-to-speech ---------- */
+const TTS_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/><path class="tts-wave tts-wave-1" d="M15.3 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="tts-wave tts-wave-2" d="M18.2 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+const ttsSupported = 'speechSynthesis' in window;
+let ttsActiveBtn = null;
+
+function setBtnSpeaking(btn, speaking){
+  btn.classList.toggle('speaking', speaking);
+  btn.title = speaking ? 'Stop reading' : 'Read aloud';
+  btn.setAttribute('aria-label', speaking ? 'Stop reading answer aloud' : 'Read answer aloud');
+}
+function cleanTextForSpeech(raw){
+  // Pipeline replies are stored as "[Stage Name]\n\n<content>" — that label is
+  // already shown visually, so skip it here rather than reading it aloud.
+  const staged = raw.match(/^\[[^\]]+\]\n+([\s\S]*)$/);
+  const body = staged ? staged[1] : raw;
+  return body
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/\n{2,}/g, '. ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function stopSpeaking(){
+  if(!ttsSupported) return;
+  window.speechSynthesis.cancel();
+  if(ttsActiveBtn) setBtnSpeaking(ttsActiveBtn, false);
+  ttsActiveBtn = null;
+}
+function toggleSpeak(btn, rawText){
+  const wasThisOne = (ttsActiveBtn === btn);
+  stopSpeaking();
+  if(wasThisOne) return; // clicking the already-speaking button just stops it
+  const spoken = cleanTextForSpeech(rawText);
+  if(!spoken) return;
+  const utter = new SpeechSynthesisUtterance(spoken);
+  const reset = ()=>{ if(ttsActiveBtn===btn) ttsActiveBtn=null; setBtnSpeaking(btn, false); };
+  utter.onend = reset;
+  utter.onerror = reset;
+  setBtnSpeaking(btn, true);
+  ttsActiveBtn = btn;
+  trackEvent('tts_play', {runKind: state.runKind, provider: state.provider});
+  window.speechSynthesis.speak(utter);
+}
+
+/* ---------- transcript rendering ---------- */
+function appendMsg(role, text){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const who = role==='user' ? 'You' : role==='assistant' ? PROVIDERS[state.provider].label : 'System';
+  if(role === 'assistant'){
+    div.innerHTML = `<div class="who-row"><div class="who">${who}</div><button type="button" class="tts-btn" aria-label="Read answer aloud" title="Read aloud">${TTS_ICON}</button></div><div class="bubble"></div>`;
+    div.querySelector('.bubble').textContent = text;
+    const ttsBtn = div.querySelector('.tts-btn');
+    if(ttsSupported){
+      ttsBtn.addEventListener('click', ()=> toggleSpeak(ttsBtn, text));
+    } else {
+      ttsBtn.disabled = true;
+      ttsBtn.title = "This browser doesn't support text-to-speech";
+      ttsBtn.setAttribute('aria-label', "Text-to-speech isn't supported in this browser");
+    }
+  } else {
+    div.innerHTML = `<div class="who">${who}</div><div class="bubble"></div>`;
+    div.querySelector('.bubble').textContent = text;
+  }
+  t.appendChild(div);
+  t.scrollTop = t.scrollHeight;
+  return div;
+}
+function appendTyping(){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'typingIndicator';
+  div.innerHTML = `<div class="who">${PROVIDERS[state.provider].label}</div><div class="bubble typing">thinking</div>`;
+  t.appendChild(div);
+  t.scrollTop = t.scrollHeight;
+}
+function removeTyping(){
+  const el = $('typingIndicator');
+  if(el) el.remove();
+}
+
+/* ---------- collapsible sections: persisted state + smart default ---------- */
+function applyCollapsed(sectionId, collapsed){
+  const label = $('label-' + sectionId);
+  const card = $('card-' + sectionId);
+  if(!label || !card) return;
+  label.classList.toggle('collapsed', collapsed);
+  card.classList.toggle('collapsed', collapsed);
+}
+function setupCollapsible(sectionId){
+  const label = $('label-' + sectionId);
+  const card = $('card-' + sectionId);
+  if(!label || !card) return;
+  label.addEventListener('click', ()=>{
+    const collapsed = !card.classList.contains('collapsed');
+    applyCollapsed(sectionId, collapsed);
+    const saved = loadCollapseState();
+    saved[sectionId] = collapsed;
+    saveCollapseState(saved);
+  });
+}
+function initCollapsibleSections(){
+  const saved = loadCollapseState();
+  // Smart default: if the user hasn't explicitly chosen, auto-collapse Model once a key
+  // is already saved for the current provider (nothing to fill in, so get it out of the way).
+  applyCollapsed('model', saved.hasOwnProperty('model') ? saved.model : true);
+  applyCollapsed('case', saved.hasOwnProperty('case') ? saved.case : true);
+  setupCollapsible('model');
+  setupCollapsible('case');
+}
+
+/* ---------- transcript export ---------- */
+function buildTranscriptText(){
+  const title = $('wsTitle') ? $('wsTitle').textContent.trim() : 'Vibe Rounds - Case Bench';
+  const sub = $('wsSub') ? $('wsSub').textContent.trim() : '';
+  const isReport = state.runKind === 'analytics' || state.runKind === 'pipeline';
+  const lines = [];
+  lines.push(isReport ? '# ' + title : title);
+  if(sub) lines.push(sub);
+  lines.push('Exported: ' + new Date().toLocaleString());
+  lines.push('----------------------------------------');
+  lines.push('');
+  state.messages.forEach(m=>{
+    if(m.auto) return; // skip internal module/stage prompts — not useful in an export
+    if(isReport && m.role === 'assistant'){
+      // Pipeline replies are stored as "[Stage Name]\n\n<content>" — surface the stage
+      // name as a markdown header instead of a chat bubble label.
+      const staged = m.content.match(/^\[(.+?)\]\n\n([\s\S]*)$/);
+      if(staged){
+        lines.push('## ' + staged[1]);
+        lines.push(staged[2]);
+      } else {
+        lines.push(m.content);
+      }
+      lines.push('');
+    } else {
+      const who = m.role === 'user' ? 'You' : (PROVIDERS[state.provider] ? PROVIDERS[state.provider].label : 'Assistant');
+      lines.push(who + ':');
+      lines.push(m.content);
+      lines.push('');
+    }
+  });
+  return lines.join('\n');
+}
+function flashBtn(btn, msg){
+  const original = btn.textContent;
+  btn.textContent = msg;
+  btn.disabled = true;
+  setTimeout(()=>{ btn.textContent = original; btn.disabled = false; }, 1400);
+}
+$('copyTranscriptBtn').addEventListener('click', async ()=>{
+  const text = buildTranscriptText();
+  const btn = $('copyTranscriptBtn');
+  try{
+    await navigator.clipboard.writeText(text);
+    trackEvent('copy_transcript', {runKind: state.runKind});
+    flashBtn(btn, 'Copied!');
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); flashBtn(btn, 'Copied!'); }
+    catch(e){ flashBtn(btn, 'Copy failed'); }
+    document.body.removeChild(ta);
+  }
+});
+$('downloadTranscriptBtn').addEventListener('click', ()=>{
+  const text = buildTranscriptText();
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = 'case-bench-transcript-' + stamp + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  trackEvent('download_transcript', {runKind: state.runKind});
+  flashBtn($('downloadTranscriptBtn'), 'Downloaded!');
+});
+
+$('downloadHtmlBtn').addEventListener('click', async ()=>{
+  const btn = $('downloadHtmlBtn');
+  if(!state.messages || !state.messages.length){
+    flashBtn(btn, 'Nothing to export');
+    return;
+  }
+  const keys = loadKeys();
+  const models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+  if(!apiKey && state.provider !== 'other'){
+    $('errorNote').textContent = 'Add an API key for ' + (PROVIDERS[state.provider] ? PROVIDERS[state.provider].label : state.provider) + ' before generating a formatted HTML export.';
+    $('errorNote').classList.add('show');
+    return;
+  }
+
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Formatting…';
+  $('errorNote').classList.remove('show');
+
+  const transcriptText = buildTranscriptText();
+  const formatSystem = 'You convert clinical-case transcripts into a single, complete, self-contained HTML document. ' +
+    'Output ONLY raw HTML — no markdown code fences, no commentary before or after. ' +
+    'Include <!DOCTYPE html>, <head> with a <title> and embedded <style> (clean, readable, print-friendly typography, sensible spacing, clear visual separation between speakers/turns), and <body>. ' +
+    'At the very top of the body, before any transcript content, include a branded header for "Vibe Rounds" with two links: ' +
+    'one reading "Vibe Rounds" linking to https://avi33tbtt.github.io/ , and one reading "Case Bench" linking to https://avi33tbtt.github.io/bench.html — style this header distinctly (e.g. a top bar) so it is clearly separated from the transcript below. ' +
+    'Preserve all the original content faithfully (do not summarize, omit, or invent anything) but present it with proper headings, paragraphs, and styled turn-by-turn structure so it reads as a polished report rather than a raw chat log.';
+  const formatUserMsg = 'Format this transcript as a well-formatted standalone HTML document:\n\n' + transcriptText;
+
+  try{
+    let html;
+    if(state.provider === 'claude'){
+      html = await callClaude(apiKey, model, formatSystem, [{role:'user', content: formatUserMsg}]);
+    } else if(state.provider === 'gemini'){
+      html = await callGemini(apiKey, model, formatSystem, [{role:'user', content: formatUserMsg}]);
+    } else if(state.provider === 'other'){
+      const endpoints = loadEndpoints();
+      html = await callCustom(endpoints['other'], apiKey, model, formatSystem, [{role:'user', content: formatUserMsg}]);
+    } else {
+      html = await callOpenAI(apiKey, model, formatSystem, [{role:'user', content: formatUserMsg}]);
+    }
+
+    // Strip markdown code fences some models wrap output in, just in case.
+    html = html.trim().replace(/^```(?:html)?\s*/i, '').replace(/```\s*$/i, '').trim();
+    if(!/^<!DOCTYPE|<html/i.test(html)){
+      // Fallback: wrap plain content in a minimal document so the download is still valid HTML.
+      html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Case Bench Transcript</title></head><body>' + html + '</body></html>';
+    }
+
+    // Belt-and-suspenders: guarantee the branding header is present even if the
+    // model omitted or mangled it.
+    const brandHeader = '<div style="font-family:Inter,sans-serif;background:#0B2530;color:#fff;padding:12px 20px;' +
+      'display:flex;align-items:center;gap:16px;font-size:14px;">' +
+      '<a href="https://avi33tbtt.github.io/" style="color:#fff;font-weight:800;text-decoration:none;letter-spacing:-0.02em;">Vibe Rounds</a>' +
+      '<a href="https://avi33tbtt.github.io/bench.html" style="color:#9FE3F2;text-decoration:none;font-weight:600;">Case Bench</a>' +
+      '</div>';
+    if(!/avi33tbtt\.github\.io/i.test(html)){
+      if(/<body[^>]*>/i.test(html)){
+        html = html.replace(/(<body[^>]*>)/i, '$1' + brandHeader);
+      } else {
+        html = brandHeader + html;
+      }
+    }
+
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+    a.href = url;
+    a.download = 'case-bench-transcript-' + stamp + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    trackEvent('download_html_transcript', {runKind: state.runKind, provider: state.provider});
+    flashBtn(btn, 'Downloaded!');
+  } catch(err){
+    $('errorNote').textContent = 'HTML export failed: ' + err.message + ' — check your API key, model name, and that the provider allows browser requests.';
+    $('errorNote').classList.add('show');
+    btn.textContent = original;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* ---------- anonymous contribution ---------- */
+// Paste the "Web app URL" you get from deploying the Apps Script (see setup
+// instructions) between the quotes below. Leave it empty and the button will
+// just tell the user contribution isn't configured yet.
+const CONTRIBUTE_ENDPOINT = "https://script.google.com/macros/s/AKfycbwWpGO_4RfgB7JImI4Et3V1wI95E-Am3z9OvKhDu8Qx_BNipOa4ZkgWKQ-qHiPlN2ze/exec";
+
+$('contributeBtn').addEventListener('click', async ()=>{
+  const btn = $('contributeBtn');
+  const statusEl = $('contributeStatus');
+  statusEl.className = 'contribute-status';
+  statusEl.textContent = '';
+
+  if(!$('contributeConsent').checked){
+    statusEl.textContent = 'Please check the box to confirm before submitting.';
+    statusEl.classList.add('err');
+    return;
+  }
+  if(!state.messages || !state.messages.length){
+    statusEl.textContent = 'Nothing to submit yet — start a session first.';
+    statusEl.classList.add('err');
+    return;
+  }
+  if(!CONTRIBUTE_ENDPOINT){
+    statusEl.textContent = 'Contribution isn\'t configured yet on this deployment.';
+    statusEl.classList.add('err');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Anonymized payload only — no keys, no identifying info.
+  const payload = {
+    transcript: buildTranscriptText(),
+    runKind: state.runKind || '',
+    provider: state.provider || '',
+    pattern: state.quizPattern || '',
+    submittedAt: new Date().toISOString()
+  };
+
+  try{
+    // 'text/plain' + no-cors avoids a CORS preflight against the Apps Script
+    // web app; we don't need to read the response, just fire-and-forget.
+    await fetch(CONTRIBUTE_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    trackEvent('contribute_session', {runKind: state.runKind});
+    statusEl.textContent = 'Thank you — your session was submitted anonymously.';
+    statusEl.classList.add('ok');
+    $('contributeConsent').checked = false;
+  } catch(err){
+    statusEl.textContent = 'Submission failed. Please try again later.';
+    statusEl.classList.add('err');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Submit';
+  }
+});
+
+/* ---------- composer ---------- */
+$('sendBtn').addEventListener('click', sendComposer);
+$('composerInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendComposer();
+  }
+});
+function sendComposer(){
+  const val = $('composerInput').value.trim();
+  if(!val || state.running) return;
+  $('composerInput').value = '';
+  appendMsg('user', val);
+  state.messages.push({role:'user', content: val});
+  trackEvent('send_message', {runKind: state.runKind, provider: state.provider});
+  callModel(state.messages);
+}
+
+/* ---------- model dispatch ---------- */
+async function callModel(messagesSoFar){
+  state.running = true;
+  $('sendBtn').disabled = true;
+  $('errorNote').classList.remove('show');
+  appendTyping();
+
+  const keys = loadKeys();
+  const models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+
+  try{
+    let reply;
+    if(state.provider === 'claude'){
+      reply = await callClaude(apiKey, model, state.systemPrompt, messagesSoFar);
+    } else if(state.provider === 'gemini'){
+      reply = await callGemini(apiKey, model, state.systemPrompt, messagesSoFar);
+    } else if(state.provider === 'other'){
+      const endpoints = loadEndpoints();
+      reply = await callCustom(endpoints['other'], apiKey, model, state.systemPrompt, messagesSoFar);
+    } else {
+      reply = await callOpenAI(apiKey, model, state.systemPrompt, messagesSoFar);
+    }
+    removeTyping();
+    appendMsg('assistant', reply);
+    state.messages.push({role:'assistant', content: reply});
+  } catch(err){
+    removeTyping();
+    $('errorNote').textContent = 'Request failed: ' + err.message + ' — check your API key, model name, and that the provider allows browser requests.';
+    $('errorNote').classList.add('show');
+  } finally {
+    state.running = false;
+    $('sendBtn').disabled = false;
+  }
+}
+
+/* ---------- provider API calls ---------- */
+async function callClaude(apiKey, model, system, msgs){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: model,
+      max_tokens: 800,
+      system: system,
+      messages: msgs.length ? msgs.map(m=>({role:m.role, content:m.content})) : [{role:'user', content:'Begin.'}]
+    })
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error(res.status + ' ' + t.slice(0,200));
+  }
+  const data = await res.json();
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+
+async function callGemini(apiKey, model, system, msgs){
+  const contents = (msgs.length ? msgs : [{role:'user', content:'Begin.'}]).map(m=>({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{text: m.content}]
+  }));
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      systemInstruction: {parts: [{text: system}]},
+      contents: contents
+    })
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error(res.status + ' ' + t.slice(0,200));
+  }
+  const data = await res.json();
+  const cand = data.candidates && data.candidates[0];
+  const parts = cand && cand.content && cand.content.parts || [];
+  return parts.map(p=>p.text||'').join('\n').trim();
+}
+
+async function callCustom(endpoint, apiKey, model, system, msgs){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const messages = [{role:'system', content: system}].concat(
+    (msgs.length ? msgs : [{role:'user', content:'Begin.'}])
+  );
+  const headers = {'Content-Type': 'application/json'};
+  if(apiKey) headers['Authorization'] = 'Bearer ' + apiKey;
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      model: model,
+      messages: messages,
+      max_tokens: 800
+    })
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error(res.status + ' ' + t.slice(0,200));
+  }
+  const data = await res.json();
+  // Most OpenAI-compatible APIs return this shape; fall back to a couple of
+  // other common shapes (Ollama's /api/chat, bare "content" field) just in case.
+  if(data.choices && data.choices[0] && data.choices[0].message){
+    return (data.choices[0].message.content || '').trim();
+  }
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+
+async function callOpenAI(apiKey, model, system, msgs){
+  const messages = [{role:'system', content: system}].concat(
+    (msgs.length ? msgs : [{role:'user', content:'Begin.'}])
+  );
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: model,
+      messages: messages,
+      max_tokens: 800
+    })
+  });
+  if(!res.ok){
+    const t = await res.text();
+    throw new Error(res.status + ' ' + t.slice(0,200));
+  }
+  const data = await res.json();
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+</script>
+</body>
+</html>

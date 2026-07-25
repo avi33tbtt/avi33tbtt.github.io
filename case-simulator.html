@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Case Simulator</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-541054383"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-541054383');
+</script>
+<style>
+  :root{
+    --bg:#F7FAFB;
+    --ink:#0B2530;
+    --dim:#5B7480;
+    --line:#DCE7EA;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-dim:#E3F4F8;
+    --warn:#C2410C;
+    --warn-soft:#FCE9DD;
+    --panel:#FFFFFF;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+    --mono: 'IBM Plex Mono','SFMono-Regular',Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--body-font); font-size:14.5px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent-dark);}
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 20px 80px;}
+  header.top{border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:22px;}
+  .brandline{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;}
+  h1{font-size:22px; margin:0; letter-spacing:-0.01em; font-weight:800;}
+  .rx{color:#fff; font-size:11.5px; font-weight:600; background:var(--accent); border-radius:20px; padding:4px 11px; letter-spacing:.01em;}
+  .tags{margin-top:6px; display:flex; gap:8px; flex-wrap:wrap;}
+  .tag{border:1px solid var(--line); padding:2px 8px; font-size:11px; color:var(--dim); border-radius:20px; text-transform:uppercase; letter-spacing:.06em;}
+  .disclaimer{margin-top:12px; font-size:12.5px; color:var(--dim); border-left:3px solid var(--accent); padding:10px 14px; background:var(--accent-dim); border-radius:0 8px 8px 0;}
+  .disclaimer b{color:var(--ink);}
+  .top-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .top-links a{
+    display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;
+    color:var(--accent-dark);background:var(--accent-dim);border:1px solid var(--line);
+    border-radius:999px;padding:6px 12px;text-decoration:none;transition:background .12s,color .12s,border-color .12s;
+  }
+  .top-links a:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  .step{margin-bottom:20px;}
+  .step-head{
+    display:flex; align-items:center; gap:10px; margin-bottom:0; cursor:pointer; user-select:none;
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius) var(--radius) 0 0;
+    padding:14px 20px; transition:box-shadow .15s ease,color .15s ease;
+  }
+  .step-head:hover{color:var(--accent-dark); box-shadow:0 6px 16px -10px rgba(11,37,48,.3);}
+  .step.collapsed .step-head{border-radius:var(--radius);}
+  .num{width:24px; height:24px; background:var(--accent); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex:none;}
+  .step-title{font-weight:700; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink);}
+  .step-arrow{margin-left:auto; font-size:11px; color:var(--dim); transition:transform .15s ease; padding-left:8px;}
+  .step.collapsed .step-arrow{transform:rotate(-90deg);}
+  .step.collapsed .step-body{display:none;}
+  .step-body{border:1px solid var(--line); border-top:none; background:var(--panel); border-radius:0 0 var(--radius) var(--radius); padding:20px 18px 18px; box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);}
+
+  label.field-label{display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--dim); margin-bottom:5px; font-weight:600;}
+  input[type=text], input[type=password], select, textarea{
+    width:100%; font-family:var(--body-font); font-size:14px; padding:9px 11px;
+    border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:8px;
+  }
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  textarea{resize:vertical;}
+  .row{display:grid; gap:14px;}
+  .row.cols-2{grid-template-columns:1fr 1fr;}
+  .row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:720px){ .row.cols-2, .row.cols-3{grid-template-columns:1fr;} }
+
+  button{
+    font-family:var(--body-font); font-weight:700; font-size:13px; cursor:pointer;
+    border:none; background:var(--accent); color:#fff;
+    padding:10px 18px; border-radius:999px; letter-spacing:.01em;
+    transition:background .12s, transform .06s;
+  }
+  button:hover:not(:disabled){background:var(--accent-dark);}
+  button.secondary{background:transparent; color:var(--dim); border:1.5px solid var(--line);}
+  button.secondary:hover:not(:disabled){background:var(--accent-dim); color:var(--ink); border-color:var(--line);}
+  button.peer{background:var(--accent-dim); color:var(--accent-dark); border:1.5px solid var(--accent);}
+  button.peer:hover:not(:disabled){background:var(--accent); color:#fff;}
+  button:disabled{opacity:.45; cursor:not-allowed;}
+
+  #specialtySelect{margin-bottom:14px;}
+
+  .hint{font-size:12px; color:var(--dim); margin-top:6px;}
+  .status-line{font-size:12px; color:var(--dim); margin-top:10px; min-height:14px;}
+  .status-line.err{color:var(--warn);}
+
+  /* Workspace */
+  #workspace{display:none;}
+  .case-banner{display:flex; justify-content:space-between; align-items:center; border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); padding:12px 16px; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
+  .case-banner .meta{font-size:12.5px; color:var(--dim);}
+  .case-banner .meta b{color:var(--ink);}
+  .case-status{font-size:11px; padding:3px 10px; border-radius:20px; border:1px solid var(--line); text-transform:uppercase; letter-spacing:.05em; font-weight:600;}
+  .case-status.ongoing{color:var(--accent-dark); border-color:var(--accent); background:var(--accent-dim);}
+  .case-status.complete{color:var(--warn); border-color:var(--warn); background:var(--warn-soft);}
+
+  .grid-main{display:grid; grid-template-columns:1.15fr 1fr; gap:18px;}
+  @media (max-width:960px){ .grid-main{grid-template-columns:1fr;} }
+
+  .panel{border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); overflow:hidden;}
+  .panel-head{border-bottom:1px solid var(--line); padding:10px 14px; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--dim); font-weight:600; display:flex; justify-content:space-between; align-items:center;}
+  .panel-body{padding:14px;}
+
+  /* console */
+  #console{height:420px; overflow-y:auto; padding:14px; font-size:13.5px;}
+  .msg{margin-bottom:14px; padding-bottom:12px; border-bottom:1px dashed var(--line);}
+  .msg:last-child{border-bottom:none;}
+  .msg .who{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin-bottom:4px; font-weight:600;}
+  .msg.user .who{color:var(--accent-dark);}
+  .msg.case .who{color:var(--ink);}
+  .msg .body{white-space:pre-wrap;}
+  .msg.peer{background:var(--accent-dim); border-radius:8px; padding:8px 10px;}
+  .msg.peer .who{color:var(--accent-dark);}
+
+  .composer{border-top:1px solid var(--line); padding:12px 14px;}
+  .composer-row{display:flex; gap:8px;}
+  .composer textarea{flex:1; min-height:52px;}
+  .composer-actions{display:flex; flex-direction:column; gap:6px;}
+
+  /* dashboard */
+  .vitals-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px;}
+  .vital{border:1px solid var(--line); background:var(--accent-dim); padding:8px 10px; text-align:center; border-radius:8px;}
+  .vital .k{font-size:10px; color:var(--dim); text-transform:uppercase;}
+  .vital .v{font-size:15px; font-weight:700; margin-top:2px; color:var(--ink);}
+  .vital.flag-high .v, .vital.flag-low .v{color:var(--warn);}
+
+  table.labs{width:100%; border-collapse:collapse; font-size:12.5px; margin-bottom:4px;}
+  table.labs th, table.labs td{border-bottom:1px solid var(--line); padding:6px 6px; text-align:left;}
+  table.labs th{color:var(--dim); font-weight:600; text-transform:uppercase; font-size:10.5px;}
+  table.labs td.flag-high, table.labs td.flag-low{color:var(--warn); font-weight:700;}
+  .empty-note{color:var(--dim); font-size:12px; font-style:italic;}
+
+  .tabbar{display:flex; border-bottom:1px solid var(--line); background:var(--accent-dim);}
+  .tabbtn{flex:1; padding:10px 6px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; text-align:center; color:var(--dim); border-right:1px solid var(--line); cursor:pointer; background:transparent; font-weight:600;}
+  .tabbtn:last-child{border-right:none;}
+  .tabbtn.active{color:#fff; font-weight:700; background:var(--accent);}
+  .tabpane{display:none; padding:14px; font-size:13px;}
+  .tabpane.active{display:block;}
+
+  .soap-block{margin-bottom:12px;}
+  .soap-block .lbl{font-size:10.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; display:block; font-weight:600;}
+  .soap-block .txt{white-space:pre-wrap;}
+
+  ol.ddx{margin:0; padding-left:18px;}
+  ol.ddx li{margin-bottom:6px;}
+
+  ul.pearls{margin:0; padding-left:18px;}
+  ul.pearls li{margin-bottom:8px;}
+  ul.pearls li::marker{color:var(--accent);}
+
+  .toolbar-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
+  .toolbar-row button{padding:8px 14px; font-size:12px;}
+  #voiceBtn.voice-on{background:var(--accent-dark); border-color:var(--accent-dark);}
+  #voiceBtn .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.6); margin-right:6px; vertical-align:middle;}
+  #voiceBtn.voice-on .dot{background:#fff; animation:pulse 1s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .footer-note{margin-top:30px; text-align:center; font-size:11px; color:var(--dim);}
+  .spinner{display:inline-block; width:11px; height:11px; border:2px solid var(--line); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; vertical-align:middle; margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+<!-- ===== VibeRounds Suite Bar ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .vr-suitebar{
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFA 65%);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 16px;
+  }
+  .vr-suitebar .vr-brand{
+    font-family: 'DM Mono','IBM Plex Mono',monospace;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: #0F172A; text-decoration: none; display:flex; align-items:center; gap:0;
+  }
+  .vr-suitebar .vr-brand span{ color: #0891B2; }
+  .vr-suitebar .vr-nav{ display:flex; gap:6px; flex-wrap:wrap; }
+  .vr-suitebar .vr-nav a{
+    font-family:'DM Mono','IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#475569; text-decoration:none; padding:6px 10px; border-radius:999px;
+    border:1px solid #E2E8F0; background:#FFFFFF; transition:.15s ease;
+  }
+  .vr-suitebar .vr-nav a:hover{ color:#fff; background:#0891B2; border-color:#0891B2; }
+  .vr-suitebar .vr-nav a.active{ color:#fff; background:#0E7490; border-color:#0E7490; }
+  @media (max-width:640px){
+    .vr-suitebar{ padding:10px 14px; }
+    .vr-suitebar .vr-nav a{ padding:5px 8px; font-size:10px; }
+  }
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/bench.html">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html" class="active">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/clinical-polemos.html">Clinical Polemos</a>
+    <a href="https://avi33tbtt.github.io/case-lens.html">Case Lens</a>
+    <a href="https://avi33tbtt.github.io/sdm-lens.html">SDM Lens</a>
+  </nav>
+</header>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brandline">
+      <h1>Vibe Rounds — Case Simulator</h1>
+      <span class="rx">Rx: cases, not answers</span>
+    </div>
+    <div class="top-links">
+      <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project website</a>
+      <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank" rel="noopener">Dr. Avinash — LinkedIn</a>
+    </div>
+    <div class="disclaimer">
+      <b>Educational use only.</b> All case content is LLM-generated and may contain errors. Not a diagnostic tool and not for real patient care. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.
+    </div>
+  </header>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step collapsed" id="step-model">
+    <div class="step-head" onclick="toggleStep('step-model')"><div class="num">1</div><div class="step-title">Model</div><span class="step-arrow">&#9662;</span></div>
+    <div class="step-body">
+      <div class="row cols-3">
+        <div>
+          <label class="field-label">Provider</label>
+          <select id="provider">
+            <option value="anthropic">Claude</option>
+            <option value="openai">ChatGPT (OpenAI)</option>
+            <option value="gemini">Gemini</option>
+            <option value="other">Other (OpenAI-compatible)</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Model name</label>
+          <input type="text" id="modelName" value="claude-sonnet-4-5" placeholder="e.g. claude-sonnet-4-5">
+        </div>
+        <div id="endpointField" style="display:none;">
+          <label class="field-label">API endpoint</label>
+          <input type="text" id="endpoint" placeholder="https://.../chat/completions">
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <label class="field-label">API key</label>
+        <input type="password" id="apiKey" placeholder="sk-ant-...">
+      </div>
+      <div class="hint" id="keyHelpHint">Key is saved to <code>localStorage</code> on this device only. <a href="https://console.anthropic.com/settings/keys" target="_blank">Get a Claude key →</a></div>
+      <div class="status-line" id="keyStatus"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SPECIALTY -->
+  <div class="step collapsed" id="step-specialty">
+    <div class="step-head" onclick="toggleStep('step-specialty')"><div class="num">2</div><div class="step-title">Specialty</div><span class="step-arrow">&#9662;</span></div>
+    <div class="step-body">
+      <label class="field-label">Choose a specialty for the case</label>
+      <select id="specialtySelect">
+        <option value="" selected disabled>Select a specialty…</option>
+      </select>
+      <div class="row cols-2">
+        <div>
+          <label class="field-label">Difficulty</label>
+          <select id="difficulty">
+            <option value="foundational">Foundational</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced / atypical</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Setting</label>
+          <select id="setting">
+            <option value="emergency department">Emergency department</option>
+            <option value="general ward">General ward</option>
+            <option value="outpatient clinic">Outpatient clinic</option>
+            <option value="ICU">ICU</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <button id="startBtn" disabled>Start case</button>
+        <span class="status-line" id="startStatus"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="case-banner">
+      <div class="meta">Specialty: <b id="bannerSpecialty">—</b> &nbsp;·&nbsp; Setting: <b id="bannerSetting">—</b> &nbsp;·&nbsp; Difficulty: <b id="bannerDifficulty">—</b></div>
+      <div class="case-status ongoing" id="caseStatusPill">ongoing</div>
+    </div>
+
+    <div class="toolbar-row">
+      <button class="secondary" id="downloadHtmlBtn">Download HTML</button>
+      <button class="secondary" id="downloadTxtBtn">Download .txt</button>
+      <button class="secondary" id="voiceBtn"><span class="dot"></span>Voice: Off</button>
+      <select id="voiceSelect" class="secondary" style="max-width:220px; display:none; font-family:var(--mono); font-size:11.5px; padding:7px 10px; border:1px solid var(--line); border-radius:2px;"></select>
+    </div>
+
+    <div class="grid-main">
+      <!-- LEFT: console -->
+      <div class="panel">
+        <div class="panel-head">
+          <span>Console</span>
+          <span id="turnCount" style="text-transform:none; letter-spacing:0;">turn 0</span>
+        </div>
+        <div id="console"></div>
+        <div class="composer">
+          <div class="composer-row">
+            <textarea id="userInput" placeholder="Ask the patient a question, request an exam finding, order a test, or state your management plan..."></textarea>
+            <div class="composer-actions">
+              <button id="sendBtn">Send</button>
+              <button class="peer" id="peerBtn">Peer</button>
+            </div>
+          </div>
+          <div class="status-line" id="consoleStatus"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: dashboard + tabs -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="panel">
+          <div class="panel-head"><span>Dashboard</span></div>
+          <div class="panel-body">
+            <div class="vitals-grid" id="vitalsGrid"></div>
+            <table class="labs" id="labsTable">
+              <thead><tr><th>Test</th><th>Value</th><th>Flag</th></tr></thead>
+              <tbody id="labsBody"></tbody>
+            </table>
+            <div class="empty-note" id="labsEmpty">No labs resulted yet.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="tabbar">
+            <div class="tabbtn active" data-tab="soap">SOAP</div>
+            <div class="tabbtn" data-tab="reasoning">Reasoning</div>
+            <div class="tabbtn" data-tab="pearls">Pearls</div>
+          </div>
+          <div class="tabpane active" id="tab-soap">
+            <div class="soap-block"><span class="lbl">S — Subjective</span><div class="txt" id="soapS">—</div></div>
+            <div class="soap-block"><span class="lbl">O — Objective</span><div class="txt" id="soapO">—</div></div>
+            <div class="soap-block"><span class="lbl">A — Assessment</span><div class="txt" id="soapA">—</div></div>
+            <div class="soap-block"><span class="lbl">P — Plan</span><div class="txt" id="soapP">—</div></div>
+          </div>
+          <div class="tabpane" id="tab-reasoning">
+            <span class="lbl" style="display:block; margin-bottom:8px;">Differential (ranked)</span>
+            <ol class="ddx" id="ddxList"><li class="empty-note" style="list-style:none; margin-left:-18px;">Not yet generated.</li></ol>
+          </div>
+          <div class="tabpane" id="tab-pearls">
+            <ul class="pearls" id="pearlsList"><li class="empty-note" style="list-style:none; margin-left:-18px;">Pearls will appear here as the case unfolds.</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">Vibe Rounds - Case Simulator · runs entirely in your browser · bring your own key</div>
+</div>
+
+<script>
+function toggleStep(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('collapsed');
+}
+const SPECIALTY_GROUPS = [
+  { group: "Internal Medicine & Subspecialties", items: [
+    "Cardiology","Respiratory / Pulmonology","Gastroenterology","Hepatology","Neurology","Endocrinology / Diabetes",
+    "Renal / Nephrology / Electrolyte","Infectious Disease","Hematology","Oncology","Rheumatology","Allergy / Immunology",
+    "Geriatric Medicine","General / Internal Medicine"
+  ]},
+  { group: "Surgical Specialties", items: [
+    "General Surgery","Orthopedics","Neurosurgery","Cardiothoracic Surgery","Vascular Surgery","Urology",
+    "Plastic / Reconstructive Surgery","ENT / Otolaryngology","Ophthalmology","Transplant Surgery","Pediatric Surgery"
+  ]},
+  { group: "Emergency & Critical Care", items: [
+    "Emergency Medicine / Trauma","Critical Care / ICU","Anesthesiology / Perioperative Medicine","Toxicology"
+  ]},
+  { group: "Women's & Children's Health", items: [
+    "Obstetrics & Gynecology","Pediatrics","Neonatology","Adolescent Medicine"
+  ]},
+  { group: "Mental Health & Neuro-behavioral", items: [
+    "Psychiatry","Child & Adolescent Psychiatry","Addiction Medicine","Behavioral / Developmental Pediatrics"
+  ]},
+  { group: "Primary Care & Community", items: [
+    "Family Medicine","Community / Public Health Medicine","Occupational Medicine","Sports Medicine",
+    "Palliative Care / Hospice"
+  ]},
+  { group: "Diagnostics & Imaging", items: [
+    "Radiology","Nuclear Medicine","Pathology","Clinical Genetics / Genomics"
+  ]},
+  { group: "Skin, Bone & Sensory", items: [
+    "Dermatology","Rheumatology / Musculoskeletal","Audiology / Otology"
+  ]},
+  { group: "Reproductive & Sexual Health", items: [
+    "Reproductive Endocrinology / Fertility","Sexual Health / Genitourinary Medicine"
+  ]},
+  { group: "Other", items: [
+    "Dentistry / Oral & Maxillofacial","Physical Medicine & Rehabilitation","Sleep Medicine","Travel / Tropical Medicine",
+    "Wilderness / Austere Medicine","Forensic Medicine","Medical Ethics / Bioethics Case"
+  ]}
+];
+
+const specialtySelect = document.getElementById('specialtySelect');
+let selectedSpecialty = null;
+SPECIALTY_GROUPS.forEach(g=>{
+  const og = document.createElement('optgroup');
+  og.label = g.group;
+  g.items.forEach(s=>{
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    og.appendChild(opt);
+  });
+  specialtySelect.appendChild(og);
+});
+specialtySelect.addEventListener('change', ()=>{
+  selectedSpecialty = specialtySelect.value || null;
+  refreshStart();
+  if(typeof gtag==='function') gtag('event','specialty_selected',{specialty:selectedSpecialty});
+});
+
+// ---- provider / key persistence ----
+const providerSel = document.getElementById('provider');
+const endpointField = document.getElementById('endpointField');
+const endpointInput = document.getElementById('endpoint');
+const modelInput = document.getElementById('modelName');
+const keyInput = document.getElementById('apiKey');
+const keyStatus = document.getElementById('keyStatus');
+
+function loadStored(){
+  try{
+    const s = JSON.parse(localStorage.getItem('vr_case_sim_cfg')||'{}');
+    if(s.provider) providerSel.value = s.provider;
+    if(s.model) modelInput.value = s.model;
+    if(s.endpoint) endpointInput.value = s.endpoint;
+    if(s.key) { keyInput.value = s.key; keyStatus.textContent = 'Key loaded from this browser.'; }
+  }catch(e){}
+  toggleEndpointField();
+  applyProviderDefaults();
+}
+function persist(){
+  localStorage.setItem('vr_case_sim_cfg', JSON.stringify({
+    provider: providerSel.value, model: modelInput.value,
+    endpoint: endpointInput.value, key: keyInput.value
+  }));
+}
+function toggleEndpointField(){
+  endpointField.style.display = providerSel.value === 'other' ? 'block' : 'none';
+}
+const PROVIDER_INFO = {
+  anthropic: { hint: 'Key is saved to <code>localStorage</code> on this device only. <a href="https://console.anthropic.com/settings/keys" target="_blank">Get a Claude key →</a>', placeholder:'sk-ant-...', defaultModel:'claude-sonnet-4-5' },
+  openai: { hint: 'Key is saved to <code>localStorage</code> on this device only. <a href="https://platform.openai.com/api-keys" target="_blank">Get an OpenAI key →</a>', placeholder:'sk-...', defaultModel:'gpt-4o' },
+  gemini: { hint: 'Key is saved to <code>localStorage</code> on this device only. <a href="https://aistudio.google.com/apikey" target="_blank">Get a Gemini key →</a>', placeholder:'AIza...', defaultModel:'gemini-2.0-flash' },
+  other: { hint: 'Key is saved to <code>localStorage</code> on this device only.', placeholder:'sk-...', defaultModel:'' }
+};
+function applyProviderDefaults(){
+  const info = PROVIDER_INFO[providerSel.value] || PROVIDER_INFO.other;
+  document.getElementById('keyHelpHint').innerHTML = info.hint;
+  keyInput.placeholder = info.placeholder;
+  if(!modelInput.value.trim() || Object.values(PROVIDER_INFO).some(i=>i.defaultModel===modelInput.value.trim())){
+    modelInput.value = info.defaultModel;
+  }
+}
+providerSel.addEventListener('change', ()=>{ toggleEndpointField(); applyProviderDefaults(); persist(); refreshStart(); });
+[modelInput, endpointInput, keyInput].forEach(el=>el.addEventListener('input', ()=>{ persist(); refreshStart(); }));
+loadStored();
+
+// ---- start gating ----
+const startBtn = document.getElementById('startBtn');
+const startStatus = document.getElementById('startStatus');
+function refreshStart(){
+  const ok = selectedSpecialty && keyInput.value.trim().length>0 && modelInput.value.trim().length>0
+    && (providerSel.value!=='other' || endpointInput.value.trim().length>0);
+  startBtn.disabled = !ok;
+}
+refreshStart();
+
+// ---- state ----
+let history = []; // {role:'user'|'assistant', content:'...'} raw text turns for API
+let turnCount = 0;
+let caseComplete = false;
+
+const SYSTEM_PROMPT_BASE = (specialty, setting, difficulty) => `You are the simulation engine for "Vibe Rounds Case Simulator," a clinical-reasoning training tool for medical learners. You play the roles of patient, nurse, and diagnostic results, and you track structured case state.
+
+Case parameters:
+- Specialty focus: ${specialty}
+- Setting: ${setting}
+- Difficulty: ${difficulty}
+
+Rules:
+- This is a simulation for educational reasoning practice only, never real patient care. Never break character to give real-world medical advice.
+- On the FIRST turn (when the user message is exactly "__BEGIN__"), invent a plausible, internally consistent case (chief complaint, brief history, initial vitals) appropriate to the specialty/setting/difficulty, and present the opening scenario as "message". Do not reveal the diagnosis. Also populate an initial differential and initial vitals.
+- On every subsequent turn, respond to the learner's action (a question to the patient, an exam maneuver, an ordered test, or a management step) with what would realistically happen or be found, advancing the case coherently. Reveal new labs/vitals/exam findings only when the learner's action would elicit them.
+- Keep the underlying case internally consistent turn to turn (same past history, same true diagnosis, same values already given).
+- Continuously update: vitals (only include vitals that exist/are known so far), labs (append newly resulted labs; do not repeat old ones already sent unless they change), a cumulative SOAP note (subjective/objective/assessment/plan, each as a short running paragraph reflecting everything known so far), a ranked differential list (most to least likely, 3-6 items, each with a few-word rationale), and any NEW clinical pearls worth surfacing this turn (short, specific, non-repeating; can be empty array most turns).
+- Mark caseStatus "complete" only once the learner has committed to a final diagnosis and management plan and you have delivered a brief closing debrief; otherwise "ongoing".
+- Respond ONLY with a single valid JSON object, no markdown fences, no prose outside the JSON, matching exactly this shape:
+{"message": "string, what the patient/environment says or shows this turn, 1-6 sentences",
+ "vitals": {"HR": "string or omit key", "BP": "string or omit key", "RR": "string or omit key", "Temp": "string or omit key", "SpO2": "string or omit key"},
+ "labs": [{"name":"string","value":"string","flag":"high|low|normal"}],
+ "soap": {"s":"string","o":"string","a":"string","p":"string"},
+ "differential": ["ranked item 1 with brief rationale", "..."],
+ "newPearls": ["string", "..."],
+ "caseStatus": "ongoing" or "complete"}
+Only include lab/vital entries that are newly known or updated; omit unknown fields rather than inventing placeholders.`;
+
+function currentSystemPrompt(){
+  return SYSTEM_PROMPT_BASE(selectedSpecialty, document.getElementById('setting').value, document.getElementById('difficulty').value);
+}
+
+// ---- API call ----
+async function callModel(userText){
+  const provider = providerSel.value;
+  const model = modelInput.value.trim();
+  const key = keyInput.value.trim();
+  history.push({role:'user', content:userText});
+
+  if(provider === 'anthropic'){
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model: model,
+        max_tokens: 1400,
+        system: currentSystemPrompt(),
+        messages: history
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = (data.content||[]).map(b=>b.text||'').join('\n').trim();
+    history.push({role:'assistant', content:text});
+    return text;
+
+  } else if(provider === 'openai'){
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+key },
+      body: JSON.stringify({
+        model: model,
+        messages: [{role:'system', content: currentSystemPrompt()}, ...history]
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = data.choices?.[0]?.message?.content?.trim() || '';
+    history.push({role:'assistant', content:text});
+    return text;
+
+  } else if(provider === 'gemini'){
+    const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: currentSystemPrompt() }] },
+        contents: history.map(h=>({
+          role: h.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: h.content }]
+        }))
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = (data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('\n').trim();
+    history.push({role:'assistant', content:text});
+    return text;
+
+  } else {
+    const endpoint = endpointInput.value.trim();
+    const resp = await fetch(endpoint, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+key },
+      body: JSON.stringify({
+        model: model,
+        messages: [{role:'system', content: currentSystemPrompt()}, ...history]
+      })
+    });
+    if(!resp.ok){
+      const t = await resp.text();
+      throw new Error('API error '+resp.status+': '+t.slice(0,300));
+    }
+    const data = await resp.json();
+    const text = data.choices?.[0]?.message?.content?.trim() || '';
+    history.push({role:'assistant', content:text});
+    return text;
+  }
+}
+
+function parseJsonLoose(text){
+  let t = text.trim();
+  t = t.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+  const start = t.indexOf('{'); const end = t.lastIndexOf('}');
+  if(start>=0 && end>start) t = t.slice(start, end+1);
+  return JSON.parse(t);
+}
+
+// ---- UI render helpers ----
+const consoleEl = document.getElementById('console');
+let transcriptLog = []; // {who, text, cls}
+function appendMsg(who, text, cls){
+  const div = document.createElement('div');
+  div.className = 'msg ' + (cls||'');
+  div.innerHTML = `<div class="who">${who}</div><div class="body"></div>`;
+  div.querySelector('.body').textContent = text;
+  consoleEl.appendChild(div);
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+  transcriptLog.push({who, text, cls: cls||''});
+  if((cls==='case' || cls==='peer') && voiceOn) speakText(text);
+}
+
+const vitalsGrid = document.getElementById('vitalsGrid');
+let vitalsState = {};
+function renderVitals(newVitals){
+  Object.assign(vitalsState, newVitals||{});
+  vitalsGrid.innerHTML = '';
+  const keys = Object.keys(vitalsState);
+  if(keys.length===0){ vitalsGrid.innerHTML = '<div class="empty-note">No vitals yet.</div>'; return; }
+  keys.forEach(k=>{
+    const v = document.createElement('div');
+    v.className = 'vital';
+    v.innerHTML = `<div class="k">${k}</div><div class="v">${vitalsState[k]}</div>`;
+    vitalsGrid.appendChild(v);
+  });
+}
+
+const labsBody = document.getElementById('labsBody');
+const labsEmpty = document.getElementById('labsEmpty');
+let labsState = [];
+function renderLabs(newLabs){
+  if(newLabs && newLabs.length){
+    newLabs.forEach(nl=>{
+      const idx = labsState.findIndex(l=>l.name.toLowerCase()===nl.name.toLowerCase());
+      if(idx>=0) labsState[idx]=nl; else labsState.push(nl);
+    });
+  }
+  labsBody.innerHTML='';
+  labsEmpty.style.display = labsState.length ? 'none':'block';
+  labsState.forEach(l=>{
+    const tr = document.createElement('tr');
+    const flagCls = l.flag==='high'?'flag-high':(l.flag==='low'?'flag-low':'');
+    tr.innerHTML = `<td>${l.name}</td><td>${l.value}</td><td class="${flagCls}">${l.flag||'normal'}</td>`;
+    labsBody.appendChild(tr);
+  });
+}
+
+let soapState = {s:'',o:'',a:'',p:''};
+let ddxState = [];
+let pearlsState = [];
+
+function renderSoap(soap){
+  if(!soap) return;
+  if(soap.s){ document.getElementById('soapS').textContent = soap.s; soapState.s = soap.s; }
+  if(soap.o){ document.getElementById('soapO').textContent = soap.o; soapState.o = soap.o; }
+  if(soap.a){ document.getElementById('soapA').textContent = soap.a; soapState.a = soap.a; }
+  if(soap.p){ document.getElementById('soapP').textContent = soap.p; soapState.p = soap.p; }
+}
+
+function renderDifferential(list){
+  if(!list || !list.length) return;
+  ddxState = list.slice();
+  const ol = document.getElementById('ddxList');
+  ol.innerHTML='';
+  list.forEach(item=>{
+    const li = document.createElement('li'); li.textContent = item; ol.appendChild(li);
+  });
+}
+
+function renderPearls(newPearls){
+  if(!newPearls || !newPearls.length) return;
+  pearlsState = pearlsState.concat(newPearls);
+  const ul = document.getElementById('pearlsList');
+  if(ul.querySelector('.empty-note')) ul.innerHTML='';
+  newPearls.forEach(p=>{
+    const li = document.createElement('li'); li.textContent = p; ul.appendChild(li);
+  });
+}
+
+function setCaseStatus(status){
+  const pill = document.getElementById('caseStatusPill');
+  caseComplete = status === 'complete';
+  pill.textContent = status;
+  pill.className = 'case-status ' + (caseComplete ? 'complete':'ongoing');
+  document.getElementById('sendBtn').disabled = caseComplete;
+  document.getElementById('peerBtn').disabled = caseComplete;
+}
+
+// tabs
+document.querySelectorAll('.tabbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- start case ----
+startBtn.addEventListener('click', async ()=>{
+  document.getElementById('bannerSpecialty').textContent = selectedSpecialty;
+  document.getElementById('bannerSetting').textContent = document.getElementById('setting').value;
+  document.getElementById('bannerDifficulty').textContent = document.getElementById('difficulty').value;
+  document.getElementById('workspace').style.display = 'block';
+  document.getElementById('workspace').scrollIntoView({behavior:'smooth'});
+  startBtn.disabled = true; startStatus.innerHTML = '<span class="spinner"></span>Generating case...';
+  history = []; turnCount = 0; vitalsState = {}; labsState = [];
+  try{
+    const raw = await callModel('__BEGIN__');
+    const parsed = parseJsonLoose(raw);
+    applyTurn(parsed, 'case');
+    startStatus.textContent = '';
+    if(typeof gtag==='function') gtag('event','case_started',{
+      specialty: selectedSpecialty,
+      setting: document.getElementById('setting').value,
+      difficulty: document.getElementById('difficulty').value
+    });
+  }catch(err){
+    startStatus.textContent = 'Failed to start: ' + err.message;
+    startStatus.classList.add('err');
+  }
+  startBtn.disabled = false;
+});
+
+function applyTurn(parsed, who){
+  appendMsg(who==='case' ? 'Case' : 'Case', parsed.message || '(no message returned)', 'case');
+  renderVitals(parsed.vitals);
+  renderLabs(parsed.labs);
+  renderSoap(parsed.soap);
+  renderDifferential(parsed.differential);
+  renderPearls(parsed.newPearls);
+  setCaseStatus(parsed.caseStatus || 'ongoing');
+  turnCount++;
+  document.getElementById('turnCount').textContent = 'turn ' + turnCount;
+}
+
+// ---- send / peer ----
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const peerBtn = document.getElementById('peerBtn');
+const consoleStatus = document.getElementById('consoleStatus');
+
+async function sendTurn(){
+  const text = userInput.value.trim();
+  if(!text || caseComplete) return;
+  appendMsg('You', text, 'user');
+  userInput.value = '';
+  sendBtn.disabled = true; peerBtn.disabled = true;
+  consoleStatus.innerHTML = '<span class="spinner"></span>Working...';
+  consoleStatus.classList.remove('err');
+  try{
+    const raw = await callModel(text);
+    const parsed = parseJsonLoose(raw);
+    applyTurn(parsed, 'case');
+    consoleStatus.textContent = '';
+    if(typeof gtag==='function'){
+      gtag('event','turn_sent',{specialty: selectedSpecialty, turn: turnCount});
+      if((parsed.caseStatus||'ongoing')==='complete'){
+        gtag('event','case_completed',{specialty: selectedSpecialty, total_turns: turnCount});
+      }
+    }
+  }catch(err){
+    consoleStatus.textContent = 'Error: ' + err.message;
+    consoleStatus.classList.add('err');
+  }
+  sendBtn.disabled = caseComplete; peerBtn.disabled = caseComplete;
+}
+sendBtn.addEventListener('click', sendTurn);
+userInput.addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ sendTurn(); }
+});
+
+peerBtn.addEventListener('click', async ()=>{
+  if(caseComplete) return;
+  peerBtn.disabled = true; sendBtn.disabled = true;
+  consoleStatus.innerHTML = '<span class="spinner"></span>Asking a peer...';
+  consoleStatus.classList.remove('err');
+  const peerAsk = `__PEER_HELP__ The learner is stuck and has not typed a next step. Based on everything known about the case so far, suggest ONE concrete next question, exam maneuver, test order, or management step they could take, phrased as if a fellow resident were quietly coaching them (2-3 sentences, supportive, do not reveal the diagnosis outright). Respond ONLY with this JSON shape: {"suggestion":"string"} and do not advance the case state.`;
+  try{
+    // side-channel call: don't touch main history's case-state consistency expectations beyond an extra turn
+    const raw = await callModel(peerAsk);
+    let suggestion = '';
+    try{ suggestion = parseJsonLoose(raw).suggestion; }catch(e){ suggestion = raw; }
+    appendMsg('Peer', suggestion, 'peer');
+    userInput.value = suggestion;
+    consoleStatus.textContent = 'Peer suggestion loaded into the input — edit and send when ready.';
+    if(typeof gtag==='function') gtag('event','peer_used',{specialty: selectedSpecialty, turn: turnCount});
+  }catch(err){
+    consoleStatus.textContent = 'Error: ' + err.message;
+    consoleStatus.classList.add('err');
+  }
+  peerBtn.disabled = caseComplete; sendBtn.disabled = caseComplete;
+});
+
+// ---- text-to-speech voice reader ----
+let voiceOn = false;
+let voices = [];
+const voiceBtn = document.getElementById('voiceBtn');
+const voiceSelect = document.getElementById('voiceSelect');
+
+function populateVoices(){
+  voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  if(!voices.length) return;
+  voiceSelect.innerHTML = '';
+  voices.filter(v=>v.lang.startsWith('en')).concat(voices.filter(v=>!v.lang.startsWith('en')))
+    .forEach(v=>{
+      const opt = document.createElement('option');
+      opt.value = v.name; opt.textContent = v.name + ' (' + v.lang + ')';
+      voiceSelect.appendChild(opt);
+    });
+}
+if('speechSynthesis' in window){
+  populateVoices();
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+}
+
+function speakText(text){
+  if(!('speechSynthesis' in window) || !text) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  const chosenName = voiceSelect.value;
+  const v = voices.find(v=>v.name===chosenName);
+  if(v) utt.voice = v;
+  utt.rate = 1; utt.pitch = 1;
+  window.speechSynthesis.speak(utt);
+}
+
+voiceBtn.addEventListener('click', ()=>{
+  voiceOn = !voiceOn;
+  voiceBtn.classList.toggle('voice-on', voiceOn);
+  voiceBtn.innerHTML = '<span class="dot"></span>Voice: ' + (voiceOn ? 'On' : 'Off');
+  voiceSelect.style.display = voiceOn ? 'inline-block' : 'none';
+  if(!voiceOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+  if(typeof gtag==='function') gtag('event','voice_toggled',{on:voiceOn});
+});
+
+// ---- export helpers ----
+function exportMeta(){
+  return {
+    specialty: selectedSpecialty || document.getElementById('bannerSpecialty').textContent,
+    setting: document.getElementById('setting').value,
+    difficulty: document.getElementById('difficulty').value,
+    status: caseComplete ? 'complete' : 'ongoing',
+    turns: turnCount,
+    timestamp: new Date().toISOString()
+  };
+}
+
+function buildExportText(){
+  const m = exportMeta();
+  let out = '';
+  out += 'VIBE ROUNDS - CASE SIMULATOR EXPORT\n';
+  out += '====================================\n';
+  out += `Specialty: ${m.specialty}\nSetting: ${m.setting}\nDifficulty: ${m.difficulty}\nStatus: ${m.status}\nTurns: ${m.turns}\nExported: ${m.timestamp}\n\n`;
+
+  out += 'CASE CHAT LOG\n-------------\n';
+  transcriptLog.forEach(t=>{
+    out += `[${t.who}] ${t.text}\n\n`;
+  });
+
+  out += '\nSOAP NOTE\n---------\n';
+  out += `S — Subjective:\n${soapState.s || '—'}\n\n`;
+  out += `O — Objective:\n${soapState.o || '—'}\n\n`;
+  out += `A — Assessment:\n${soapState.a || '—'}\n\n`;
+  out += `P — Plan:\n${soapState.p || '—'}\n\n`;
+
+  out += '\nDIFFERENTIAL (RANKED)\n----------------------\n';
+  out += ddxState.length ? ddxState.map((d,i)=>`${i+1}. ${d}`).join('\n') : 'Not generated.';
+  out += '\n\n';
+
+  out += '\nCLINICAL PEARLS\n---------------\n';
+  out += pearlsState.length ? pearlsState.map(p=>`• ${p}`).join('\n') : 'None yet.';
+  out += '\n\n';
+
+  if(Object.keys(vitalsState).length){
+    out += '\nLATEST VITALS\n-------------\n';
+    Object.keys(vitalsState).forEach(k=>{ out += `${k}: ${vitalsState[k]}\n`; });
+    out += '\n';
+  }
+  if(labsState.length){
+    out += '\nLABS\n----\n';
+    labsState.forEach(l=>{ out += `${l.name}: ${l.value} (${l.flag||'normal'})\n`; });
+    out += '\n';
+  }
+  out += '\n— Vibe Rounds Case Simulator · educational use only, not for real patient care —\n';
+  return out;
+}
+
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function buildExportHtml(){
+  const m = exportMeta();
+  const chatHtml = transcriptLog.map(t=>
+    `<div class="msg ${esc(t.cls)}"><div class="who">${esc(t.who)}</div><div class="body">${esc(t.text)}</div></div>`
+  ).join('\n');
+  const ddxHtml = ddxState.length
+    ? '<ol class="ddx">' + ddxState.map(d=>`<li>${esc(d)}</li>`).join('') + '</ol>'
+    : '<p class="empty-note">Not generated.</p>';
+  const pearlsHtml = pearlsState.length
+    ? '<ul class="pearls">' + pearlsState.map(p=>`<li>${esc(p)}</li>`).join('') + '</ul>'
+    : '<p class="empty-note">None yet.</p>';
+  const vitalsHtml = Object.keys(vitalsState).length
+    ? '<div class="vitals-grid">' + Object.keys(vitalsState).map(k=>
+        `<div class="vital"><div class="k">${esc(k)}</div><div class="v">${esc(vitalsState[k])}</div></div>`
+      ).join('') + '</div>'
+    : '<p class="empty-note">No vitals recorded.</p>';
+  const labsHtml = labsState.length
+    ? `<table class="labs"><thead><tr><th>Test</th><th>Value</th><th>Flag</th></tr></thead><tbody>` +
+      labsState.map(l=>`<tr><td>${esc(l.name)}</td><td>${esc(l.value)}</td><td class="${l.flag==='high'?'flag-high':(l.flag==='low'?'flag-low':'')}">${esc(l.flag||'normal')}</td></tr>`).join('') +
+      `</tbody></table>`
+    : '<p class="empty-note">No labs resulted.</p>';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Case Export — ${esc(m.specialty)}</title>
+<style>
+  :root{
+    --bg:#F7FAFB; --ink:#0B2530; --dim:#5B7480; --line:#DCE7EA;
+    --accent:#0891B2; --accent-dim:#E3F4F8; --warn:#C2410C; --panel:#ffffff;
+    --mono:'IBM Plex Mono','SFMono-Regular',Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',-apple-system,Segoe UI,Roboto,sans-serif; font-size:14px; line-height:1.5;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 20px 60px;}
+  header{border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:20px;}
+  h1{font-size:19px; margin:0 0 6px;}
+  .meta-line{font-size:12px; color:var(--dim);}
+  h2{font-size:12.5px; text-transform:uppercase; letter-spacing:.06em; border-bottom:1px solid var(--line); padding-bottom:6px; margin:28px 0 12px;}
+  .msg{margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed var(--line);}
+  .msg .who{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); margin-bottom:3px;}
+  .msg.user .who{color:var(--accent);}
+  .msg.peer{background:var(--accent-dim); padding:8px;}
+  .msg .body{white-space:pre-wrap;}
+  .soap-block{margin-bottom:12px;}
+  .soap-block .lbl{font-size:10.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:3px;}
+  .soap-block .txt{white-space:pre-wrap;}
+  ol.ddx{margin:0; padding-left:18px;} ol.ddx li{margin-bottom:6px;}
+  ul.pearls{margin:0; padding-left:18px;} ul.pearls li{margin-bottom:8px;} ul.pearls li::marker{color:var(--accent);}
+  .vitals-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px;}
+  .vital{border:1px solid var(--line); padding:8px 10px; text-align:center; border-radius:2px;}
+  .vital .k{font-size:10px; color:var(--dim); text-transform:uppercase;}
+  .vital .v{font-size:15px; font-weight:700; margin-top:2px;}
+  table.labs{width:100%; border-collapse:collapse; font-size:12.5px;}
+  table.labs th, table.labs td{border-bottom:1px solid var(--line); padding:5px 6px; text-align:left;}
+  table.labs th{color:var(--dim); text-transform:uppercase; font-size:10.5px;}
+  .flag-high, .flag-low{color:var(--warn); font-weight:700;}
+  .empty-note{color:var(--dim); font-size:12px; font-style:italic;}
+  .footer-note{margin-top:30px; text-align:center; font-size:11px; color:var(--dim);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Vibe Rounds — Case Export</h1>
+    <div class="meta-line">Specialty: <b>${esc(m.specialty)}</b> · Setting: <b>${esc(m.setting)}</b> · Difficulty: <b>${esc(m.difficulty)}</b> · Status: <b>${esc(m.status)}</b> · Turns: ${m.turns}</div>
+    <div class="meta-line">Exported ${esc(m.timestamp)}</div>
+  </header>
+
+  <h2>Case Chat Log</h2>
+  ${chatHtml || '<p class="empty-note">No messages.</p>'}
+
+  <h2>SOAP Note</h2>
+  <div class="soap-block"><span class="lbl">S — Subjective</span><div class="txt">${esc(soapState.s) || '—'}</div></div>
+  <div class="soap-block"><span class="lbl">O — Objective</span><div class="txt">${esc(soapState.o) || '—'}</div></div>
+  <div class="soap-block"><span class="lbl">A — Assessment</span><div class="txt">${esc(soapState.a) || '—'}</div></div>
+  <div class="soap-block"><span class="lbl">P — Plan</span><div class="txt">${esc(soapState.p) || '—'}</div></div>
+
+  <h2>Differential (ranked)</h2>
+  ${ddxHtml}
+
+  <h2>Clinical Pearls</h2>
+  ${pearlsHtml}
+
+  <h2>Vitals</h2>
+  ${vitalsHtml}
+
+  <h2>Labs</h2>
+  ${labsHtml}
+
+  <div class="footer-note">Vibe Rounds - Case Simulator export · educational use only · not for real patient care</div>
+</div>
+</body>
+</html>`;
+}
+
+function downloadBlob(content, filename, mime){
+  const blob = new Blob([content], {type: mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('downloadTxtBtn').addEventListener('click', ()=>{
+  downloadBlob(buildExportText(), `vibe-rounds-case-${Date.now()}.txt`, 'text/plain');
+  if(typeof gtag==='function') gtag('event','export_txt',{specialty:selectedSpecialty});
+});
+document.getElementById('downloadHtmlBtn').addEventListener('click', ()=>{
+  downloadBlob(buildExportHtml(), `vibe-rounds-case-${Date.now()}.html`, 'text/html');
+  if(typeof gtag==='function') gtag('event','export_html',{specialty:selectedSpecialty});
+});
+</script>
+</body>
+</html>
