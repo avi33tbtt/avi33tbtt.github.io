@@ -1,4 +1,4 @@
-# Module — Case Lens: 8-Lens Critical Thinking Audit
+# Module — Case Lens: Critical Thinking Audit
 
 **Objective:** Take a single clinical case and run it through eight distinct critical-thinking lenses (framing, uncertainty, bias, evidence, testing, treatment, individualization, systems) to generate case-specific questions, each rated 1–5 on potential clinical impact — surfacing what's worth double-checking before it's acted on.
 
