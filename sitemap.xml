@@ -1,9 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Home / Core -->
   <url>
     <loc>https://avi33tbtt.github.io/</loc>
-    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/home.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/article.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/project_report.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Courses -->
+  <url>
+    <loc>https://avi33tbtt.github.io/courseware/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/ebm/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/cc/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Prompts / Modules / Frameworks -->
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Prompts.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Module-00-Cold-Start-Orientation.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/VibeRounds-Master-Protocol.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/VibeRounds_Guided_Discovery_Agent.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Framework-A-Humanistic-Persona.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Framework-B-Finks-FLINK-Taxonomy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Framework-C-Blooms-Taxonomy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Framework-D-Critical-Awareness-Framework.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/CKD_Class_Tutorial.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/VibeRounds_Case_Practice.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/pajr-viberounds-prompts.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Prompts/Demo/cases.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Interactive Demos & Tools -->
+  <url>
+    <loc>https://avi33tbtt.github.io/terminal/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/terminal/case1.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/phronesis/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/phronesis/case1.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/Decision-Lab/anemia.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/CATBank/anemia.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/tools/concepts/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/tools/concepts/tutor.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/tools/concepts/reasoning-atlas.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/tools/concepts/concept-atlas.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Case Demos / Dashboards -->
+  <url>
+    <loc>https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-14M-MicrocyticAnemia-UrinaryObstruction.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/demo/casereader/case1.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/demo/lightweightgcka/eai.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/demo/lightweightgcka/case_analysis.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avi33tbtt.github.io/demo/lightweightgcka/eai_case_comparison.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>
