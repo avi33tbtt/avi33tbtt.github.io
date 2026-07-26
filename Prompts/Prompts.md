@@ -184,6 +184,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Vibe Rounds — PaJR Analytics](Vibe_Rounds_PaJR_Analytics.md) | Vibe Rounds — PaJR Analytics |
 | -- | [Module — Case Lens: Critical Thinking Audit](Module-Case-Lens-Critical-Thinking.md) | Module — Case Lens: Critical Thinking Audit |
 | -- | [Module SDM — Shared Decision-Making Query Generator](Module-SDM-Shared-Decision-Making-Query-Generator.md) | Module SDM — Shared Decision-Making Query Generator |
+| -- | [Module EBM — Case → Critical Appraisal Query Generator](ebm-case-query-generator.md) | Module EBM — Case → Critical Appraisal Query Generator |
 
 
 
@@ -297,6 +298,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 ├── Socratic_Question_Generator.md
 ├── Vibe_Rounds_PaJR_Analytics.md
 ├── Module-SDM-Shared-Decision-Making-Query-Generator.md
+├── ebm-case-query-generator.md
 ├── VibeRounds_Guided_Discovery_Agent.md
 ├── Framework-A-Humanistic-Persona.md
 ├── Framework-B-Finks-FLINK-Taxonomy.md
