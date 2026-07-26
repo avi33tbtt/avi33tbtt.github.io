@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+  <defs>
+    <!-- Complex Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050811" />
+      <stop offset="40%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#141E38" />
+    </linearGradient>
+
+    <linearGradient id="accentCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="100%" stop-color="#0080FF" />
+    </linearGradient>
+
+    <linearGradient id="accentTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2DD4BF" />
+      <stop offset="100%" stop-color="#0F766E" />
+    </linearGradient>
+
+    <linearGradient id="accentIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+
+    <!-- Glassmorphism Panel Filter -->
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
+    </linearGradient>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40" result="blur" />
+    </filter>
+
+    <!-- Analytical Hex Grid Pattern -->
+    <pattern id="hexGrid" width="40" height="69.28" patternUnits="userSpaceOnUse">
+      <path d="M40 17.32l-20 11.55L0 17.32V-5.77l20-11.55 20 11.55zm0 46.19l-20 11.55-20-11.55V40.41l20-11.55 20 11.55z" fill="none" stroke="#38BDF8" stroke-width="0.5" stroke-opacity="0.07" />
+    </pattern>
+  </defs>
+
+  <!-- ================= BACKGROUND LAYER ================= -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#hexGrid)" />
+
+  <!-- Ambient Light Sources -->
+  <circle cx="1000" cy="100" r="250" fill="#0EA5E9" opacity="0.08" filter="url(#softGlow)" />
+  <circle cx="150" cy="550" r="300" fill="#4F46E5" opacity="0.06" filter="url(#softGlow)" />
+  <circle cx="600" cy="315" r="200" fill="#2DD4BF" opacity="0.05" filter="url(#softGlow)" />
+
+  <!-- ================= MIDGROUND: NEURAL / COGNITIVE NETWORK ================= -->
+  <g opacity="0.4">
+    <!-- Complex Data Streams -->
+    <path d="M-100,200 C150,150 250,450 600,315 C850,200 1000,500 1300,450" fill="none" stroke="url(#accentCyan)" stroke-width="1.5" stroke-dasharray="10 5" opacity="0.6" />
+    <path d="M-50,400 C200,450 350,150 600,315 C800,450 950,150 1250,200" fill="none" stroke="url(#accentIndigo)" stroke-width="2" opacity="0.4" />
+    <path d="M300,-50 C350,200 450,250 600,315 C750,380 850,450 900,700" fill="none" stroke="url(#accentTeal)" stroke-width="1" stroke-dasharray="4 8" opacity="0.5" />
+
+    <!-- Analytical Nodes -->
+    <circle cx="203" cy="272" r="4" fill="#00F0FF" filter="url(#glow)" />
+    <circle cx="431" cy="402" r="3" fill="#818CF8" />
+    <circle cx="778" cy="265" r="5" fill="#2DD4BF" filter="url(#glow)" />
+    <circle cx="945" cy="415" r="4" fill="#00F0FF" />
+    
+    <!-- Node Connection Lines -->
+    <line x1="203" y1="272" x2="431" y2="402" stroke="#4F46E5" stroke-width="0.5" opacity="0.5" />
+    <line x1="431" y1="402" x2="600" y2="315" stroke="#38BDF8" stroke-width="1" opacity="0.5" />
+    <line x1="600" y1="315" x2="778" y2="265" stroke="#2DD4BF" stroke-width="1" opacity="0.5" />
+    <line x1="778" y1="265" x2="945" y2="415" stroke="#4F46E5" stroke-width="0.5" opacity="0.5" />
+  </g>
+
+  <!-- ================= FOREGROUND: HUD / LEARNING TOOLS CARDS ================= -->
+  
+  <!-- HUD Card 1: Left (Cognitive / Analytical) -->
+  <g transform="translate(60, 150)">
+    <rect x="0" y="0" width="280" height="140" rx="12" fill="url(#glassGrad)" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.3" />
+    <line x1="20" y1="40" x2="260" y2="40" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.2" />
+    <circle cx="30" cy="22" r="4" fill="#00F0FF" />
+    <text x="45" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#38BDF8" letter-spacing="1">MODULE 42 ACTIVE</text>
+    <text x="20" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#F8FAFC">Cognitive Bias Check</text>
+    <text x="20" y="95" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#94A3B8">Evaluating analytical heuristics</text>
+    <text x="20" y="115" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#94A3B8">and anchoring vulnerabilities.</text>
+  </g>
+
+  <!-- HUD Card 2: Bottom Left (Socratic Layer) -->
+  <g transform="translate(60, 320)">
+    <rect x="0" y="0" width="240" height="110" rx="12" fill="url(#glassGrad)" stroke="#818CF8" stroke-width="1" stroke-opacity="0.3" />
+    <rect x="0" y="0" width="4" height="110" fill="url(#accentIndigo)" rx="2" />
+    <text x="20" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="bold" fill="#818CF8" letter-spacing="1">TEACHING PERSONA</text>
+    <text x="20" y="55" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="600" fill="#E2E8F0">Socratic Attending</text>
+    <path d="M20 75 L180 75" stroke="#4F46E5" stroke-width="4" stroke-opacity="0.3" stroke-linecap="round" />
+    <path d="M20 75 L120 75" stroke="#818CF8" stroke-width="4" stroke-linecap="round" />
+    <text x="20" y="95" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#94A3B8">Tiered hints processing...</text>
+  </g>
+
+  <!-- HUD Card 3: Right (Pipeline / CCOS) -->
+  <g transform="translate(880, 200)">
+    <rect x="0" y="0" width="260" height="180" rx="12" fill="url(#glassGrad)" stroke="#2DD4BF" stroke-width="1" stroke-opacity="0.3" />
+    <line x1="20" y1="40" x2="240" y2="40" stroke="#2DD4BF" stroke-width="1" stroke-opacity="0.2" />
+    <circle cx="230" cy="22" r="4" fill="#2DD4BF" filter="url(#glow)" />
+    <text x="20" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="bold" fill="#2DD4BF" letter-spacing="1">CCOS BUILDER</text>
+    
+    <!-- Mini Pipeline UI -->
+    <g transform="translate(20, 65)">
+      <circle cx="10" cy="10" r="8" fill="#1E293B" stroke="#2DD4BF" stroke-width="2" />
+      <line x1="10" y1="18" x2="10" y2="32" stroke="#334155" stroke-width="2" />
+      <circle cx="10" cy="40" r="8" fill="#1E293B" stroke="#00F0FF" stroke-width="2" />
+      <line x1="10" y1="48" x2="10" y2="62" stroke="#334155" stroke-width="2" />
+      <circle cx="10" cy="70" r="8" fill="#1E293B" stroke="#818CF8" stroke-width="2" />
+      
+      <text x="35" y="14" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#E2E8F0">Clinical Pre-Mortem</text>
+      <text x="35" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#E2E8F0">Reasoning Module</text>
+      <text x="35" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#E2E8F0">Evidence Anchoring</text>
+    </g>
+  </g>
+
+  <!-- ================= CENTER FOCUS: BRANDING & MAIN URL ================= -->
+  
+  <g transform="translate(600, 240)">
+    <!-- Complex Central Core -->
+    <!-- Outer Orbiting Rings -->
+    <ellipse cx="0" cy="0" rx="140" ry="40" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.3" transform="rotate(30)" />
+    <ellipse cx="0" cy="0" rx="140" ry="40" fill="none" stroke="#2DD4BF" stroke-width="1" opacity="0.3" transform="rotate(-30)" />
+    <circle cx="0" cy="0" r="100" fill="none" stroke="url(#accentIndigo)" stroke-width="1.5" stroke-dasharray="1 6" stroke-linecap="round" opacity="0.8" />
+    
+    <!-- Inner Glowing Core -->
+    <circle cx="0" cy="0" r="75" fill="#070B19" stroke="url(#accentCyan)" stroke-width="2" filter="url(#glow)" />
+    
+    <!-- Intricate Medical / Cognitive Icon -->
+    <g transform="scale(1.2)">
+      <!-- Cross Base -->
+      <path d="M-15,-40 L15,-40 L15,-15 L40,-15 L40,15 L15,15 L15,40 L-15,40 L-15,15 L-40,15 L-40,-15 L-15,-15 Z" fill="#0F172A" stroke="#334155" stroke-width="2" />
+      <!-- Neural / Pulse Overlay -->
+      <path d="M-35,0 L-15,0 L-5,-20 L5,25 L15,0 L35,0" fill="none" stroke="#00F0FF" stroke-width="2.5" stroke-linejoin="round" filter="url(#glow)" />
+      <!-- Central Spark -->
+      <circle cx="5" cy="2.5" r="3" fill="#FFFFFF" filter="url(#glow)" />
+    </g>
+  </g>
+
+  <!-- Title & Typography -->
+  <text x="600" y="425" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="52" font-weight="900" fill="#FFFFFF" letter-spacing="4">
+    VIBE <tspan fill="url(#accentCyan)">ROUNDS</tspan>
+  </text>
+
+  <text x="600" y="465" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#94A3B8" letter-spacing="6">
+    LEARNING TOOLS &amp; AI FRAMEWORKS
+  </text>
+
+  <!-- Prominent Home URL Pill -->
+  <g transform="translate(460, 500)">
+    <rect x="0" y="0" width="280" height="40" rx="20" fill="#0F172A" stroke="url(#accentTeal)" stroke-width="1.5" filter="url(#glow)" />
+    <circle cx="24" cy="20" r="5" fill="#2DD4BF" />
+    <text x="42" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#F8FAFC" letter-spacing="1">
+      avi33tbtt.github.io/home.html
+    </text>
+  </g>
+
+  <!-- Creator Badge -->
+  <g transform="translate(600, 580)">
+    <path d="M -180,-4 L -130,-4" stroke="#334155" stroke-width="1" opacity="0.6" />
+    <path d="M 130,-4 L 180,-4" stroke="#334155" stroke-width="1" opacity="0.6" />
+    <circle cx="-130" cy="-4" r="2" fill="#00F0FF" opacity="0.6" />
+    <circle cx="130" cy="-4" r="2" fill="#00F0FF" opacity="0.6" />
+    <text x="0" y="0" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#64748B" letter-spacing="2">
+      DEVELOPED BY <tspan fill="#00F0FF" font-weight="800">DR. AVINASH KUMAR GUPTA</tspan>
+    </text>
+  </g>
+
+  <!-- Corner Framing Lines -->
+  <path d="M 30,30 L 80,30 M 30,30 L 30,80" fill="none" stroke="#38BDF8" stroke-width="3" opacity="0.6" />
+  <path d="M 1170,30 L 1120,30 M 1170,30 L 1170,80" fill="none" stroke="#2DD4BF" stroke-width="3" opacity="0.6" />
+  <path d="M 30,600 L 80,600 M 30,600 L 30,550" fill="none" stroke="#818CF8" stroke-width="3" opacity="0.6" />
+  <path d="M 1170,600 L 1120,600 M 1170,600 L 1170,550" fill="none" stroke="#38BDF8" stroke-width="3" opacity="0.6" />
+</svg>
