@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - EBM Query Results — Heart Failure / T2D Case</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --line:#DCE7EA;
+    --line-soft:#E9F1F3;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-soft:#E3F4F8;
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --muted:#5B7480;
+    --tab-inactive:#EEF4F6;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+    --mono-font:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body-font);
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:18px;margin-bottom:24px;flex-wrap:wrap;gap:10px;
+  }
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{font-weight:800;font-size:23px;margin:0;letter-spacing:-0.02em;color:var(--ink);}
+  header.top .rx{
+    font-weight:600;font-size:11.5px;color:#fff;background:var(--accent);
+    border-radius:20px;padding:4px 11px;letter-spacing:.01em;
+  }
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-weight:500;}
+
+  .banner{
+    font-size:12.5px;color:var(--ink);border:1px solid var(--line-soft);
+    background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:24px;
+  }
+  .banner strong{color:var(--accent-dark);}
+
+  .case-meta{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;
+  }
+  .case-meta .chip{
+    background:var(--tab-inactive);color:var(--ink);font-weight:600;font-size:12px;
+    padding:5px 12px;border-radius:999px;
+  }
+
+  .section-heading{
+    display:flex;align-items:center;gap:10px;margin:32px 0 14px;
+  }
+  .section-heading .num{
+    width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;
+  }
+  .section-heading h2{font-size:16px;font-weight:800;margin:0;color:var(--ink);}
+  .section-heading .timestamp{font-size:11.5px;color:var(--muted);font-weight:500;margin-left:auto;}
+
+  .result-card{
+    border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:8px;padding:18px 20px;margin-bottom:16px;background:var(--card);
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+  }
+  .result-card h3{
+    margin:0 0 14px;font-size:15px;color:var(--accent-dark);font-weight:700;
+    padding-bottom:10px;border-bottom:1px dashed var(--line);
+  }
+  .field{margin-bottom:10px;font-size:13.5px;}
+  .field:last-child{margin-bottom:0;}
+  .field .flabel{font-weight:700;color:var(--ink);}
+  .pico-list{margin:6px 0 0;padding-left:18px;}
+  .pico-list li{margin-bottom:4px;}
+  .pico-list li b{color:var(--accent-dark);}
+
+  pre.search-string{
+    font-family:var(--mono-font);
+    font-size:12.5px;
+    background:var(--tab-inactive);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    margin:6px 0 0;
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .checklist-tag{
+    display:inline-block;font-size:12px;font-weight:600;color:var(--accent-dark);
+    background:var(--accent-soft);border-radius:999px;padding:3px 11px;margin-top:4px;
+  }
+
+  .stress-card{
+    border:1px solid var(--line);border-left:4px solid var(--alert);
+    border-radius:8px;padding:16px 20px;margin-bottom:14px;background:var(--card);
+    box-shadow:0 1px 2px rgba(11,37,48,.04);
+  }
+  .stress-card .thread-name{font-size:12.5px;font-weight:700;color:var(--alert);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+  .stress-card blockquote{
+    margin:0;font-style:italic;font-size:14px;color:var(--ink);line-height:1.5;
+    padding-left:14px;border-left:3px solid var(--alert-soft);
+  }
+
+  .priority-card{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--accent-soft);padding:20px 22px;
+    text-align:center;
+  }
+  .priority-card p{margin:0;font-size:15px;font-weight:600;color:var(--accent-dark);line-height:1.6;font-style:italic;}
+  .priority-card .label{
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--muted);margin-bottom:8px;
+  }
+
+  .incomplete-note{
+    font-size:12px;color:var(--muted);font-style:italic;margin-top:10px;
+    border-top:1px dashed var(--line);padding-top:8px;
+  }
+
+  .legal-note{
+    margin-top:40px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6;
+  }
+  .legal-note em{font-style:italic;}
+  footer{margin-top:24px;font-size:11.5px;color:var(--muted);text-align:center;}
+  footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <h1>Vibe Rounds - EBM Query Results</h1>
+      <span class="rx">Rx: questions, not answers</span>
+    </div>
+    <div class="tagline">clinical reasoning aid · not for patient care</div>
+  </header>
+
+  <div class="banner"><strong>Educational use only.</strong> All AI-generated queries, PICO breakdowns, and search strings below require independent clinical verification before being acted upon. This is a draft list of questions and search strategies — not answers, not a diagnosis, and not a treatment recommendation.</div>
+
+  <div class="case-meta">
+    <span class="chip">Therapy</span>
+    <span class="chip">Diagnosis</span>
+    <span class="chip">Prognosis</span>
+    <span class="chip">Harm</span>
+    <span class="chip">Cost-effectiveness</span>
+    <span class="chip">Guideline</span>
+  </div>
+
+  <!-- SECTION: STRUCTURED EBM QUERIES -->
+  <div class="section-heading">
+    <span class="num">1</span>
+    <h2>Structured EBM Queries</h2>
+    <span class="timestamp">7/26/2026, 11:18:29 PM</span>
+  </div>
+
+  <div class="result-card">
+    <h3>1. Therapy Query</h3>
+    <div class="field"><span class="flabel">Best Study Design:</span> Systematic Review and Meta-Analysis of Double-Blind Randomized Controlled Trials (RCTs), or a Large Multicenter RCT</div>
+    <div class="field">
+      <span class="flabel">Draft PICO(T):</span>
+      <ul class="pico-list">
+        <li><b>P:</b> Adults with heart failure with reduced ejection fraction (LVEF ≤ 40%) and concomitant type 2 diabetes mellitus</li>
+        <li><b>I:</b> Addition of an SGLT2 inhibitor (e.g., dapagliflozin or empagliflozin) to standard medical therapy</li>
+        <li><b>C:</b> Placebo or standard therapy alone without an SGLT2 inhibitor</li>
+        <li><b>O:</b> Reduction in heart failure hospitalizations, improvement in functional status/exercise tolerance, and all-cause/cardiovascular mortality</li>
+        <li><b>T:</b> Medium to long-term (≥6 to 24 months)</li>
+      </ul>
+    </div>
+    <div class="field">
+      <span class="flabel">Draft PubMed-Ready Search String:</span>
+      <pre class="search-string">("Sodium-Glucose Transporter 2 Inhibitors"[Mesh] OR "SGLT2 inhibitors" OR "dapagliflozin" OR "empagliflozin") AND ("Heart Failure"[Mesh] OR "HFrEF" OR "heart failure with reduced ejection fraction") AND ("Diabetes Mellitus, Type 2"[Mesh]) AND ("Patient Hospitalization"[Mesh] OR "hospitalization" OR "Quality of Life"[Mesh] OR "exercise tolerance" OR "dyspnea") AND (randomized controlled trial[pt] OR systematic review[pt])</pre>
+    </div>
+    <div class="field">
+      <span class="flabel">Appraisal Checklist:</span>
+      <span class="checklist-tag">CASP RCT Checklist</span>
+      <span class="checklist-tag">PRISMA (if systematic review)</span>
+    </div>
+  </div>
+
+  <div class="result-card">
+    <h3>2. Diagnosis Query</h3>
+    <div class="field"><span class="flabel">Best Study Design:</span> Prospective Cross-Sectional Diagnostic Accuracy Study with consecutive sampling and blinded reference standard comparison</div>
+    <div class="field">
+      <span class="flabel">Draft PICO(T):</span>
+      <ul class="pico-list">
+        <li><b>P:</b> Adults with type 2 diabetes presenting with exertional dyspnea and lower extremity edema in an outpatient setting</li>
+        <li><b>I (Index Test):</b> Serum B-type natriuretic peptide (BNP) or N-terminal pro-BNP (NT-proBNP) level</li>
+        <li><b>C (Reference Standard):</b> Comprehensive cardiology evaluation including echocardiogram and clinical diagnostic criteria for decompensated heart failure</li>
+        <li><b>O:</b> Diagnostic accuracy metrics (sensitivity, specificity, PPV/NPV, likelihood ratios, AUC) for identifying active congestive heart failure</li>
+        <li><b>T:</b> Point-of-care / initial clinical evaluation</li>
+      </ul>
+    </div>
+    <div class="field">
+      <span class="flabel">Draft PubMed-Ready Search String:</span>
+      <pre class="search-string">("Natriuretic Peptide, Brain"[Mesh] OR "NT-proBNP" OR "BNP") AND ("Heart Failure"[Mesh] OR "dyspnea") AND ("Diabetes Mellitus, Type 2"[Mesh]) AND ("Sensitivity and Specificity"[Mesh] OR "Predictive Value of Tests"[Mesh] OR "ROC Curve")</pre>
+    </div>
+    <div class="field">
+      <span class="flabel">Appraisal Checklist:</span>
+      <span class="checklist-tag">QUADAS-2</span>
+      <span class="checklist-tag">CASP Diagnostic Test Checklist</span>
+    </div>
+  </div>
+
+  <div class="result-card">
+    <h3>3. Prognosis Query</h3>
+    <div class="field"><span class="flabel">Best Study Design:</span> Prospective Longitudinal Cohort Study</div>
+    <div class="field">
+      <span class="flabel">Draft PICO(T):</span>
+      <ul class="pico-list">
+        <li><b>P:</b> Adults with type 2 diabetes and newly diagnosed heart failure with reduced ejection fraction (LVEF ≤ 40%) receiving incomplete guideline-directed medical therapy</li>
+        <li><b>I/E:</b> Baseline LVEF, functional class, and comorbidity burden (diabetes, hypertension)</li>
+        <li><b>C:</b> N/A (or comparison across baseline risk-stratification tiers / ejection-fraction categories)</li>
+        <li><b>O:</b> Incidence of heart failure hospitalization, functional decline, and 1-to-5-year all-cause mortality</li>
+        <li><b>T:</b> 1 to 5 years follow-up</li>
+      </ul>
+    </div>
+    <div class="field">
+      <span class="flabel">Draft PubMed-Ready Search String:</span>
+      <pre class="search-string">("Heart Failure"[Mesh] OR "HFrEF") AND ("Diabetes Mellitus, Type 2"[Mesh]) AND ("Prognosis"[Mesh] OR "Prognostic Factors" OR "Mortality"[Mesh] OR "Hospitalization"[Mesh]) AND ("Cohort Studies"[Mesh] OR "prognostic study")</pre>
+    </div>
+    <div class="field">
+      <span class="flabel">Appraisal Checklist:</span>
+      <span class="checklist-tag">CASP Cohort Study Checklist</span>
+      <span class="checklist-tag">QUIPS</span>
+    </div>
+  </div>
+
+  <div class="result-card">
+    <h3>4. Harm Query</h3>
+    <div class="field"><span class="flabel">Best Study Design:</span> Systematic Review of RCTs or Prospective Cohort Study / Case-Control Study (for rare adverse events)</div>
+    <div class="field">
+      <span class="flabel">Draft PICO(T):</span>
+      <ul class="pico-list">
+        <li><b>P:</b> Older adult women (age ≥ 60) with type 2 diabetes and heart failure</li>
+        <li><b>I/Exposure:</b> Initiation of SGLT2 inhibitor therapy</li>
+        <li><b>C:</b> Non-exposure / placebo / alternative antihyperglycemic regimen</li>
+        <li><b>O:</b> Incidence of severe adverse events (e.g., euglycemic diabetic ketoacidosis, mycotic genital infections, urinary tract infections, volume depletion/hypotension, acute kidney injury)</li>
+        <li><b>T:</b> Short to long-term (weeks to 2 years)</li>
+      </ul>
+    </div>
+    <div class="incomplete-note">Search string generation was cut off in the original run before completing this query, and no Cost-effectiveness or Guideline-check query threads were produced. Re-run generation to fill these in.</div>
+  </div>
+
+  <!-- SECTION: STRESS-TEST QUERIES -->
+  <div class="section-heading">
+    <span class="num">2</span>
+    <h2>Stress-Test Queries</h2>
+    <span class="timestamp">7/26/2026, 11:19:05 PM</span>
+  </div>
+
+  <div class="stress-card">
+    <div class="thread-name">Therapy Thread</div>
+    <blockquote>What is the strongest argument that the mortality and hospitalization benefits of adding SGLT2 inhibitors to standard therapy in patients with HFrEF and type 2 diabetes are wrong or overstated, given the evidence?</blockquote>
+  </div>
+  <div class="stress-card">
+    <div class="thread-name">Diagnosis Thread</div>
+    <blockquote>What is the strongest argument that the diagnostic accuracy of BNP/NT-proBNP for identifying active heart failure in patients with type 2 diabetes is wrong or overstated, given the confounding effects of obesity and diabetic nephropathy on biomarker levels?</blockquote>
+  </div>
+  <div class="stress-card">
+    <div class="thread-name">Prognosis Thread</div>
+    <blockquote>What is the strongest argument that baseline comorbidity burden and incomplete GDMT are overstated as the primary independent prognostic drivers of 1-to-5-year mortality in T2D patients with newly diagnosed HFrEF, given the evidence?</blockquote>
+  </div>
+  <div class="stress-card">
+    <div class="thread-name">Harm Thread</div>
+    <blockquote>What is the strongest argument that the clinical risk of severe adverse events (such as euglycemic DKA, volume depletion, or AKI) from SGLT2 inhibitors in older adult women with heart failure and T2D is wrong or overstated, given the evidence?</blockquote>
+  </div>
+
+  <!-- SECTION: PATIENT PRIORITY -->
+  <div class="section-heading">
+    <span class="num">3</span>
+    <h2>Patient Priority Restated</h2>
+    <span class="timestamp">7/26/2026, 11:19:22 PM</span>
+  </div>
+
+  <div class="priority-card">
+    <div class="label">In her own words</div>
+    <p>"Staying out of the hospital and being able to walk my dog without stopping to catch my breath."</p>
+  </div>
+
+  <div class="legal-note">
+    <em>"To be used on personal responsibility and only for learning. Not to be used for clinical purpose."</em><br>
+    <b>The LLM drafts. You verify every number and citation against the source.</b>
+  </div>
+
+  <footer>Vibe Rounds - EBM Query Generator · <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a></footer>
+</div>
+</body>
+</html>
