@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Home Monitoring Assistant</title>
+<style>
+  :root{
+    --bg:#F4F8FA;
+    --panel:#FFFFFF;
+    --panel-raised:#EEF4F6;
+    --border:#D6E2E6;
+    --border-soft:#E4ECEF;
+    --text:#12262E;
+    --text-soft:#5B7480;
+    --text-faint:#8AA0AA;
+    --cyan:#1AB4C4;
+    --cyan-strong:#0E93A3;
+    --cyan-bright:#0C7E92;
+    --cyan-dim:#E3F7FA;
+    --cyan-ink:#063B44;
+    --amber:#B45E09;
+    --amber-soft:#FBF0DD;
+    --red:#C4453A;
+    --red-soft:#FBEAE8;
+    --radius:8px;
+    --sans:"Plus Jakarta Sans","Inter","Segoe UI",-apple-system,BlinkMacSystemFont,sans-serif;
+    --heading:"Lexend","Plus Jakarta Sans",var(--sans);
+    --mono:"IBM Plex Mono","SF Mono",Consolas,monospace;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lexend:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(8,145,178,0.07), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(8,145,178,0.05), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.55;
+  }
+  a{color:var(--cyan-bright);}
+
+  /* ===== Disclaimers ===== */
+  .disclaimer-bar{
+    padding:10px 24px;
+    font-size:12.5px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .disclaimer-bar.privacy{
+    background:var(--red-soft);
+    color:#8C3128;
+  }
+  .disclaimer-bar.accuracy{
+    background:var(--amber-soft);
+    color:#7A4A08;
+  }
+  .disclaimer-bar b{color:inherit; filter:brightness(0.7);}
+  .disclaimer-bar .mark{font-weight:800; flex-shrink:0;}
+
+  /* ===== Masthead ===== */
+  .masthead{
+    padding:26px 28px 18px;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, rgba(8,145,178,0.06), transparent);
+  }
+  .brand-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .logo-mark{
+    width:30px; height:30px;
+    border-radius:8px;
+    background:linear-gradient(135deg, var(--cyan), var(--cyan-bright));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:14px;
+    color:var(--cyan-ink);
+    flex-shrink:0;
+  }
+  .masthead h1{
+    font-family:var(--heading);
+    font-weight:800;
+    font-size:23px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .masthead h1 .thin{font-weight:400; color:var(--text-soft);}
+  .masthead .sub{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--text-soft);
+    margin-left:40px;
+  }
+  .pill{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:20px;
+    border:1px solid #A9D3DE;
+    color:var(--cyan-bright);
+    background:var(--cyan-dim);
+    margin-left:10px;
+  }
+
+  /* ===== Layout ===== */
+  .shell{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:calc(100vh - 170px);
+  }
+  @media (max-width:880px){
+    .shell{grid-template-columns:1fr;}
+    .nav{border-right:none;border-bottom:1px solid var(--border);}
+  }
+
+  /* ===== Nav ===== */
+  .nav{
+    border-right:1px solid var(--border);
+    background:var(--panel);
+    padding:16px 14px 40px;
+    overflow-y:auto;
+    transition:width .2s ease, padding .2s ease, opacity .15s ease;
+  }
+  .shell.nav-collapsed{grid-template-columns:0px 1fr;}
+  .shell.nav-collapsed .nav{
+    width:0; padding-left:0; padding-right:0; opacity:0; pointer-events:none;
+    overflow:hidden; border-right:none;
+  }
+  .menu-toggle-btn{
+    display:flex; align-items:center; gap:6px;
+    background:var(--panel-raised);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:7px 12px;
+    border-radius:var(--radius);
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    margin-left:auto;
+    flex-shrink:0;
+  }
+  .menu-toggle-btn:hover{border-color:var(--cyan); color:var(--cyan-bright);}
+  .menu-toggle-btn svg{width:15px;height:15px; stroke:currentColor; flex-shrink:0;}
+  @media (max-width:880px){
+    .shell.nav-collapsed{grid-template-columns:1fr;}
+  }
+  .search-wrap{position:relative; margin-bottom:14px;}
+  .search-wrap input{
+    width:100%;
+    padding:9px 12px 9px 30px;
+    font-family:var(--sans);
+    font-size:13.5px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:var(--panel);
+    color:var(--text);
+  }
+  .search-wrap input::placeholder{color:var(--text-faint, #5E7A8C);}
+  .search-wrap input:focus{outline:2px solid var(--cyan); outline-offset:1px;}
+  .search-wrap svg{
+    position:absolute; left:9px; top:50%; transform:translateY(-50%);
+    width:14px;height:14px; stroke:var(--text-soft);
+  }
+
+  .narrative-nav-btn{
+    width:100%;
+    display:flex; align-items:center; gap:8px;
+    background:var(--panel-raised);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:var(--radius);
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    margin-bottom:14px;
+  }
+  .narrative-nav-btn:hover{border-color:var(--cyan);}
+  .narrative-nav-btn.active{background:var(--cyan-dim); border-color:var(--cyan);}
+
+  .cat-title{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--text-soft);
+    padding:11px 6px 5px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .cat-title::before{content:""; width:5px;height:5px;border-radius:50%;background:var(--cyan-bright); flex-shrink:0;}
+  .param-list{list-style:none; margin:0; padding:0;}
+  .param-item button{
+    width:100%; text-align:left; background:none; border:none;
+    padding:6px 8px 6px 17px;
+    font-family:var(--sans); font-size:13.5px; color:var(--text);
+    border-radius:var(--radius); cursor:pointer;
+    display:flex; justify-content:space-between; gap:6px;
+  }
+  .param-item button:hover{background:var(--panel-raised);}
+  .param-item button.active{background:var(--cyan); color:var(--cyan-ink); font-weight:700;}
+  .param-item .unit-hint{font-family:var(--mono); font-size:10.5px; color:var(--text-soft);}
+  .param-item button.active .unit-hint{color:#08303A;}
+  .no-results{padding:20px 8px; color:var(--text-soft); font-size:13px;}
+
+  /* ===== Main ===== */
+  main{padding:28px 34px 60px; max-width:820px;}
+  .empty-state{padding:60px 10px; color:var(--text-soft);}
+  .empty-state h2{font-family:var(--sans); font-weight:700; font-size:22px; color:var(--text); margin-bottom:8px;}
+
+  .param-header{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:14px; margin-bottom:6px;
+  }
+  .param-header h2{font-family:var(--heading); font-weight:700; font-size:25px; margin:0; letter-spacing:-0.01em;}
+  .cat-eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--cyan-bright); display:block; margin-bottom:3px;
+  }
+
+  .callout{
+    display:flex; gap:10px; padding:11px 13px; border-radius:var(--radius);
+    font-size:13.5px; margin:12px 0; align-items:flex-start; border:1px solid var(--border);
+  }
+  .callout .icon{flex-shrink:0; margin-top:1px;}
+  .callout-guidance{background:var(--panel);}
+  .callout-reference{background:var(--amber-soft); border-color:#E8CE9C; color:#7A4A08;}
+  .callout-media{background:var(--cyan-dim); border-color:#B7DEE7; color:#0B5568;}
+  .callout-devices{background:var(--panel-raised); border-color:var(--border); color:var(--text-soft);}
+  .callout b{font-weight:700; color:inherit;}
+
+  form.logform{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 20px 20px;
+    margin-top:16px;
+  }
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;}
+  @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+  label{
+    display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--text-soft); margin-bottom:5px;
+  }
+  input[type=text], input[type=number], input[type=date], input[type=time], select, textarea{
+    width:100%; padding:8px 10px; font-family:var(--sans); font-size:14px;
+    border:1px solid var(--border); border-radius:var(--radius);
+    background:var(--panel-raised); color:var(--text);
+  }
+  textarea{resize:vertical; min-height:64px;}
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--cyan); outline-offset:1px;}
+
+  .scale-row{display:flex; gap:5px; flex-wrap:wrap;}
+  .scale-row button{
+    width:32px; height:32px; border:1px solid var(--border); background:var(--panel-raised);
+    border-radius:50%; font-family:var(--mono); font-size:12.5px; cursor:pointer; color:var(--text);
+  }
+  .scale-row button.picked{background:var(--cyan); border-color:var(--cyan); color:var(--cyan-ink); font-weight:700;}
+
+  .media-note{font-size:12.5px; color:var(--text-soft); margin:-6px 0 14px;}
+  .media-note strong{color:var(--text);}
+
+  .actions-row{display:flex; gap:10px; margin-top:6px; flex-wrap:wrap;}
+  button.primary{
+    background:var(--cyan); color:var(--cyan-ink); border:none; padding:10px 18px;
+    font-family:var(--sans); font-weight:700; font-size:13.5px; border-radius:var(--radius); cursor:pointer;
+  }
+  button.primary:hover{background:var(--cyan-bright);}
+  button.ghost{
+    background:none; border:1px solid var(--border); padding:10px 16px;
+    font-family:var(--sans); font-size:13.5px; border-radius:var(--radius); cursor:pointer; color:var(--text);
+  }
+  button.ghost:hover{border-color:var(--cyan);}
+
+  /* ===== Chart ===== */
+  .chart-block{
+    margin-top:24px; background:var(--panel); border:1px solid var(--border);
+    border-radius:var(--radius); padding:16px 18px 12px;
+  }
+  .chart-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;}
+  .chart-head h3{font-family:var(--sans); font-size:15.5px; font-weight:700; margin:0;}
+  .chart-empty{color:var(--text-soft); font-size:13px; padding:10px 0;}
+
+  /* ===== Ledger ===== */
+  .ledger{margin-top:26px;}
+  .ledger-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;}
+  .ledger-head h3{font-family:var(--heading); font-size:15.5px; font-weight:700; margin:0;}
+  .export-row{display:flex; gap:8px;}
+  .export-row button{
+    font-family:var(--mono); font-size:11.5px; padding:6px 10px; border:1px solid var(--border);
+    background:var(--panel-raised); border-radius:var(--radius); cursor:pointer; color:var(--text);
+  }
+  .export-row button:hover{border-color:var(--cyan); color:var(--cyan-bright);}
+
+  .entry{
+    border-top:1px dashed var(--border); padding:11px 0;
+    display:grid; grid-template-columns:130px 1fr auto; gap:12px; align-items:start; font-size:13.5px;
+  }
+  .entry:last-child{border-bottom:1px dashed var(--border);}
+  .entry .ts{font-family:var(--mono); color:var(--text-soft); font-size:12px; line-height:1.5;}
+  .entry .val{font-weight:700; color:var(--cyan-bright);}
+  .entry .note{color:var(--text-soft); margin-top:2px;}
+  .entry .media-tag{
+    display:inline-block; font-family:var(--mono); font-size:10px; background:var(--amber-soft);
+    color:#7A4A08; padding:1px 6px; border-radius:8px; margin-top:4px; margin-right:4px;
+  }
+  .entry .del{background:none; border:none; color:var(--text-soft); cursor:pointer; font-size:12px; font-family:var(--mono);}
+  .entry .del:hover{color:var(--red);}
+  .no-entries{color:var(--text-soft); font-size:13.5px; padding:14px 0;}
+
+  /* ===== Narrative view ===== */
+  .narrative-header{margin-bottom:14px;}
+  .narrative-header h2{font-family:var(--heading); font-weight:700; font-size:25px; margin:0 0 4px; letter-spacing:-0.01em;}
+
+  /* ===== About view ===== */
+  .about-view{max-width:720px;}
+  .about-view h2{font-family:var(--heading); font-weight:700; font-size:24px; margin:2px 0 12px; letter-spacing:-0.01em;}
+  .about-view h3{font-family:var(--heading); font-weight:600; font-size:16px; margin:26px 0 10px; color:var(--cyan-bright);}
+  .about-view p{margin:0 0 12px; color:var(--text);}
+  .about-view b{color:var(--text); font-weight:700;}
+  .about-list{list-style:none; margin:0 0 4px; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .about-list li{
+    background:var(--panel); border:1px solid var(--border-soft); border-radius:var(--radius);
+    padding:11px 14px; font-size:13.5px; line-height:1.55;
+  }
+  .narrative-header p{color:var(--text-soft); font-size:13.5px; margin:0;}
+
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--panel-raised); border:1px solid var(--cyan); color:var(--text);
+    padding:10px 18px; border-radius:var(--radius); font-size:13px; font-family:var(--sans);
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:50;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+</style>
+</head>
+<body>
+
+<div class="disclaimer-bar privacy">
+  <span class="mark">⚠</span>
+  <span><b>Do not enter personal health identifiers</b> — no full name, contact number, address, national ID, or other directly identifying details. Use a nickname or code if you need to label anything.</span>
+</div>
+<div class="disclaimer-bar accuracy">
+  <span class="mark">ⓘ</span>
+  <span><b>You are responsible for checking accuracy.</b> This page performs no clinical calculations, storage, or verification of its own — it does not guarantee the accuracy of any value, chart, or export. Cross-check everything and confirm with a qualified clinician before acting on it.</span>
+</div>
+
+<header class="masthead">
+  <div class="brand-row">
+    <div class="logo-mark">VR</div>
+    <h1>Vibe Rounds <span class="thin">— Home Monitoring Assistant</span></h1>
+    <span class="pill">Learning stack</span>
+    <button class="menu-toggle-btn" id="menuToggleBtn" type="button" aria-expanded="true" aria-controls="mainShell">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span id="menuToggleLabel">Hide menu</span>
+    </button>
+  </div>
+  <div class="sub">Entries stay in this browser tab only · nothing is uploaded or synced</div>
+</header>
+
+<div class="shell" id="mainShell">
+  <nav class="nav">
+    <button class="narrative-nav-btn" id="aboutBtn">ℹ️ About this project</button>
+    <button class="narrative-nav-btn" id="narrativeBtn">📓 Narrative / subjective history</button>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Search a parameter…" autocomplete="off">
+    </div>
+    <div id="navTree"></div>
+  </nav>
+
+  <main id="mainPanel">
+    <div class="empty-state">
+      <h2>Pick something to track.</h2>
+      <p>Search above, or browse a category on the left — vitals, symptoms, diabetes, heart failure, mental health, and more. Each parameter opens with logging guidance, a reference to study, device/app suggestions, and — once you've logged a few points — a trend chart.</p>
+      <p>Or open <b>Narrative / subjective history</b> for a free-text diary of how things are going, separate from any single number.</p>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+const PARAMS = [
+// VITAL SIGNS
+{id:"hr", cat:"Vital Signs", name:"Heart rate", unit:"bpm", type:"number", step:"1", range:{low:60, high:100},
+  guidance:"Rest quietly for 5 minutes before measuring. Note if resting, post-exercise, or symptomatic.",
+  devices:"Wearable watch or fitness band. General health-tracking app."},
+{id:"bp", cat:"Vital Signs", name:"Blood pressure", unit:"mmHg", type:"bp", range:{sys:{low:90, high:120}, dia:{low:60, high:80}},
+  guidance:"Sit with back supported, feet flat, arm at heart level. Take two readings a minute apart.",
+  devices:"Validated digital upper-arm blood pressure monitor. BP tracking app."},
+{id:"rr", cat:"Vital Signs", name:"Respiratory rate", unit:"breaths/min", type:"number", step:"1", range:{low:12, high:20},
+  guidance:"Count breaths for a full 60 seconds while the person is unaware they're being counted, if possible."},
+{id:"temp", cat:"Vital Signs", name:"Body temperature", unit:"°C", type:"number", step:"0.1", range:{low:36.1, high:37.2},
+  guidance:"Use the same site and thermometer each time (oral, tympanic, or axillary) for comparable trends.",
+  devices:"Digital thermometer, infrared (IR) scan thermometer, or mercury thermometer."},
+{id:"spo2", cat:"Vital Signs", name:"Oxygen saturation (SpO₂)", unit:"%", type:"number", step:"1", range:{low:95, high:100},
+  guidance:"Warm hands improve accuracy. Sit still for 30 seconds and record the stable reading, not the lowest transient dip.",
+  devices:"Fingertip pulse oximeter, or a wearable watch with SpO₂ sensing."},
+{id:"weight", cat:"Vital Signs", name:"Weight", unit:"kg", type:"number", step:"0.1",
+  guidance:"Weigh at the same time each day (commonly on waking, after voiding, before eating) in similar clothing.",
+  devices:"Digital bathroom scale (smart or standard). Weight-tracking app."},
+{id:"bmi", cat:"Vital Signs", name:"Height / BMI (baseline)", unit:"cm / kg·m⁻²", type:"text",
+  guidance:"Record height once as a baseline; BMI can be recalculated automatically as weight changes."},
+
+// SYMPTOMS
+{id:"pain", cat:"Symptoms", name:"Pain score", unit:"/10", type:"scale10",
+  guidance:"Rate worst pain in the last 24 hours. Note location, character, and what eases or worsens it.",
+  reference:"Compare against a standard 0–10 numeric pain rating scale for consistency between entries.",
+  media:"photo"},
+{id:"dyspnea", cat:"Symptoms", name:"Dyspnea severity", unit:"/10", type:"scale10",
+  guidance:"Rate breathlessness at rest and, separately, with your usual activity.",
+  reference:"The mMRC dyspnea scale (0–4) is a useful anchor if you want a standardized version."},
+{id:"fatigue", cat:"Symptoms", name:"Fatigue", unit:"/10", type:"scale10",
+  guidance:"Rate how much fatigue limited your activities today, not just how tired you felt."},
+{id:"fever_sub", cat:"Symptoms", name:"Fever (subjective)", unit:"yes/no", type:"select", options:["No","Yes — felt hot/chilled"],
+  guidance:"Pair with an objective temperature reading when possible."},
+{id:"cough", cat:"Symptoms", name:"Cough", unit:"description", type:"select", options:["None","Dry","Productive — mild","Productive — significant"],
+  guidance:"Note frequency (occasional / frequent / constant) and timing (worse at night, on exertion, etc.).",
+  media:"audio"},
+{id:"sputum", cat:"Symptoms", name:"Sputum characteristics", unit:"description", type:"select", options:["Clear","White/mucoid","Yellow","Green","Blood-streaked","Frankly bloody"],
+  guidance:"Colour and volume change is often more meaningful than a single reading.", media:"photo"},
+{id:"chestpain", cat:"Symptoms", name:"Chest pain", unit:"description", type:"text",
+  guidance:"Describe onset, character (sharp/pressure/burning), radiation, and triggers. Seek urgent care for new severe chest pain."},
+{id:"palpitations", cat:"Symptoms", name:"Palpitations", unit:"episode", type:"text",
+  guidance:"Note duration, regular vs. irregular sensation, and any associated dizziness or chest discomfort.", media:"audio",
+  devices:"A single-lead ECG wearable or handheld ECG device can capture rhythm during an episode."},
+{id:"dizziness", cat:"Symptoms", name:"Dizziness", unit:"description", type:"text",
+  guidance:"Distinguish lightheadedness, spinning (vertigo), or unsteadiness, and note position changes involved."},
+{id:"syncope", cat:"Symptoms", name:"Syncope episodes", unit:"count", type:"number", step:"1",
+  guidance:"Record triggers, warning symptoms, duration of loss of consciousness, and recovery time.", media:"video"},
+{id:"headache", cat:"Symptoms", name:"Headache", unit:"/10", type:"scale10",
+  guidance:"Note location, quality, and any visual, light, or nausea symptoms alongside the pain score."},
+{id:"nausea", cat:"Symptoms", name:"Nausea", unit:"/10", type:"scale10",
+  guidance:"Note relation to meals or medication timing."},
+{id:"vomiting", cat:"Symptoms", name:"Vomiting", unit:"episodes/24h", type:"number", step:"1",
+  guidance:"Note volume, contents (bile, blood, food), and any dehydration signs.", media:"photo"},
+{id:"diarrhea", cat:"Symptoms", name:"Diarrhea", unit:"episodes/24h", type:"number", step:"1",
+  reference:"Use the Bristol Stool Chart (types 1–7) to describe consistency precisely — types 6–7 indicate diarrhea.",
+  guidance:"Log stool type using the Bristol scale alongside frequency for a much more useful trend.", media:"photo"},
+{id:"constipation", cat:"Symptoms", name:"Constipation", unit:"days since last stool", type:"number", step:"1",
+  reference:"The Bristol Stool Chart types 1–2 correspond to constipation; worth studying to describe stool consistently.",
+  guidance:"Note straining, incomplete evacuation, and stool consistency.", media:"photo"},
+{id:"appetite", cat:"Symptoms", name:"Appetite", unit:"description", type:"select", options:["Normal","Reduced","Markedly reduced","Increased"],
+  guidance:"Compare against usual intake, not an abstract standard."},
+{id:"sleepquality", cat:"Symptoms", name:"Sleep quality", unit:"/10", type:"scale10",
+  guidance:"Rate how rested you felt on waking, not just hours slept.",
+  devices:"Sleep-tracking ring or wearable watch. Sleep-tracking app."},
+{id:"extol", cat:"Symptoms", name:"Exercise tolerance", unit:"description", type:"text",
+  guidance:"Describe the activity and distance/duration before symptoms (breathlessness, pain, fatigue) stopped you."},
+{id:"falls", cat:"Symptoms", name:"Falls", unit:"count", type:"number", step:"1",
+  guidance:"Record circumstances, injuries, and whether dizziness or tripping was involved.", media:"video",
+  devices:"Wearable watch with fall detection, or a medical alert pendant."},
+{id:"funcdecline", cat:"Symptoms", name:"Functional decline", unit:"description", type:"text",
+  guidance:"Note any new difficulty with tasks that were previously manageable independently."},
+
+// FUNCTIONAL STATUS
+{id:"adl", cat:"Functional Status", name:"Activities of Daily Living (ADL)", unit:"independent/assisted", type:"select",
+  options:["Fully independent","Needs some assistance","Needs substantial assistance","Fully dependent"],
+  guidance:"Covers bathing, dressing, toileting, transferring, continence, and feeding."},
+{id:"iadl", cat:"Functional Status", name:"Instrumental ADL", unit:"independent/assisted", type:"select",
+  options:["Fully independent","Needs some assistance","Needs substantial assistance","Fully dependent"],
+  guidance:"Covers managing finances, medications, transport, shopping, and housework."},
+{id:"mobility", cat:"Functional Status", name:"Mobility", unit:"description", type:"text",
+  guidance:"Note use of aids (cane, walker, wheelchair) and any change from baseline.", media:"video"},
+{id:"walkdist", cat:"Functional Status", name:"Walking distance", unit:"metres", type:"number", step:"1",
+  guidance:"A 6-minute walk distance, measured the same way each time, is a useful trend marker.",
+  devices:"A GPS-enabled wearable or phone step-counting app can help standardize this."},
+{id:"stairs", cat:"Functional Status", name:"Stair climbing ability", unit:"flights", type:"number", step:"1",
+  guidance:"Note breathlessness, pain, or need to stop partway."},
+{id:"frailty", cat:"Functional Status", name:"Frailty score", unit:"scale", type:"scale10",
+  reference:"The Clinical Frailty Scale (1–9) is a common standardized reference if you'd like to align your rating.",
+  guidance:"Rate overall physical reserve and vulnerability to stressors."},
+{id:"ecog", cat:"Functional Status", name:"ECOG performance status", unit:"0–4", type:"select",
+  options:["0 — Fully active","1 — Restricted strenuous activity","2 — Ambulatory, up >50% of day","3 — Limited self-care, in bed/chair >50%","4 — Completely disabled"],
+  reference:"Study the ECOG scale definitions (0–4) — precise wording matters for consistent scoring.",
+  guidance:"Used mainly in oncology to track functional capacity over time."},
+
+// MEDICATION
+{id:"adherence", cat:"Medication", name:"Medication adherence", unit:"description", type:"select",
+  options:["Took all doses as prescribed","Missed 1 dose","Missed 2+ doses","Took extra/incorrect dose"],
+  guidance:"Note which medication and reason for any deviation (forgot, side effect, ran out, chose to skip).",
+  devices:"Medication reminder app. Smart pill dispenser or pill organizer with an alarm."},
+{id:"sideeffects", cat:"Medication", name:"Side effects", unit:"description", type:"text",
+  guidance:"Name the medication, the effect, onset timing, and severity.", media:"photo"},
+{id:"prn", cat:"Medication", name:"PRN (as-needed) medication use", unit:"description", type:"text",
+  guidance:"Record drug, dose, time taken, and reason (e.g. breakthrough pain, rescue inhaler)."},
+{id:"refill", cat:"Medication", name:"Refill status", unit:"days remaining", type:"number", step:"1",
+  guidance:"A running countdown helps avoid unplanned gaps in therapy.",
+  devices:"Medication reminder app, or your pharmacy's own app, for refill reminders."},
+{id:"doses_taken", cat:"Medication", name:"Doses taken vs. prescribed", unit:"doses/day", type:"goal", step:"1",
+  guidance:"Log how many doses were actually taken today against how many were prescribed — useful for spotting a slow drift in adherence.",
+  devices:"Medication reminder app with a daily dose counter."},
+{id:"medlog", cat:"Medication", name:"Medication taken (name, dose, time)", unit:"description", type:"text",
+  guidance:"Record which medication, the dose, and the time taken — useful when more than one medication is in play.",
+  devices:"Medication reminder app for a running log of what was taken and when."},
+{id:"adherence_pct", cat:"Medication", name:"Adherence percentage", unit:"%", type:"number", step:"1",
+  guidance:"If your reminder app reports a weekly or monthly adherence percentage, log it here to watch the trend.",
+  devices:"Medication reminder app that reports an adherence percentage."},
+{id:"polypharmacy", cat:"Medication", name:"Number of medications currently taken", unit:"medications", type:"number", step:"1",
+  guidance:"A running count of all regular medications — useful context when reviewing interactions or a medication list with a clinician."},
+
+// LIFESTYLE
+{id:"smoking", cat:"Lifestyle", name:"Smoking", unit:"cigarettes/day", type:"number", step:"1",
+  guidance:"Include any use of vapes or other nicotine products in the notes."},
+{id:"alcohol", cat:"Lifestyle", name:"Alcohol", unit:"units", type:"number", step:"0.5",
+  guidance:"One unit ≈ a small glass of wine or a single measure of spirits — note local equivalents if different."},
+{id:"physactivity", cat:"Lifestyle", name:"Physical activity", unit:"minutes", type:"number", step:"1",
+  guidance:"Note type and intensity (light/moderate/vigorous) alongside duration.",
+  devices:"Wearable watch or fitness band. Activity-tracking app."},
+{id:"dietadherence", cat:"Lifestyle", name:"Diet adherence", unit:"description", type:"select",
+  options:["Fully followed plan","Mostly followed","Significant deviation"], media:"photo",
+  devices:"Food-logging / calorie-counting app with photo entries."},
+{id:"fluid", cat:"Lifestyle", name:"Fluid intake", unit:"mL", type:"number", step:"50",
+  guidance:"Particularly important to track closely in heart failure and CKD.",
+  devices:"Smart water bottle or a hydration-tracking app can log intake automatically."},
+{id:"sleepdur", cat:"Lifestyle", name:"Sleep duration", unit:"hours", type:"number", step:"0.25",
+  guidance:"Include time to fall asleep and any nighttime waking in the notes.",
+  devices:"Sleep-tracking ring or wearable watch. Sleep-tracking app."},
+
+// LIFESTYLE INTERVENTIONS — reduction / goal tracking
+{id:"smoking_goal", cat:"Lifestyle Interventions", name:"Cigarette reduction", unit:"cigarettes/day", type:"goal", step:"1", defaultTarget:0,
+  guidance:"Log today's actual cigarette count against your reduction target — a slow, steady decline is more sustainable than a sudden drop.",
+  devices:"Smoking-cessation app with a cigarette counter and milestone tracking."},
+{id:"alcohol_goal", cat:"Lifestyle Interventions", name:"Alcohol reduction", unit:"units/day", type:"goal", step:"0.5", defaultTarget:0,
+  guidance:"Track daily units against a target; note any social or stress triggers behind higher days in your notes.",
+  devices:"Alcohol-reduction app with daily unit tracking."},
+{id:"weight_goal", cat:"Lifestyle Interventions", name:"Weight vs. target", unit:"kg", type:"goal", step:"0.1",
+  guidance:"Weigh under consistent conditions (see Vital Signs → Weight) and compare against your agreed target for this stage of the plan.",
+  devices:"Digital bathroom scale. Weight-tracking app."},
+{id:"exercise_goal", cat:"Lifestyle Interventions", name:"Exercise minutes vs. target", unit:"minutes/day", type:"goal", step:"5", defaultTarget:30,
+  guidance:"Compare today's active minutes against your target — intensity matters too, so note it alongside duration.",
+  devices:"Wearable watch or fitness band. Activity-tracking app."},
+{id:"steps_goal", cat:"Lifestyle Interventions", name:"Steps vs. target", unit:"steps/day", type:"goal", step:"100", defaultTarget:8000,
+  guidance:"A common starting target is 7,000–10,000 steps/day — set yours with your care team and track actual vs. target here.",
+  devices:"Wearable watch or fitness band with a step counter."},
+{id:"sleep_goal", cat:"Lifestyle Interventions", name:"Sleep hours vs. target", unit:"hours", type:"goal", step:"0.25", defaultTarget:8,
+  guidance:"Compare last night's sleep duration against your target — pair with Symptoms → Sleep quality for the fuller picture.",
+  devices:"Sleep-tracking ring or wearable watch."},
+{id:"sodium_goal", cat:"Lifestyle Interventions", name:"Salt/sodium reduction", unit:"description", type:"select",
+  options:["Fully within target","Mostly within target","Noticeably over target","Not tracked today"],
+  guidance:"Relevant for hypertension and heart failure plans — pair with home BP or daily weight to see the effect.",
+  devices:"Food-logging app that tracks sodium against a daily target."},
+{id:"screentime_goal", cat:"Lifestyle Interventions", name:"Screen time vs. target", unit:"minutes/day", type:"goal", step:"10", defaultTarget:120,
+  guidance:"Useful for sleep-hygiene or digital-wellbeing plans; most phones report this automatically.",
+  devices:"Your phone's built-in screen-time tracking feature."},
+{id:"caffeine_goal", cat:"Lifestyle Interventions", name:"Caffeine reduction", unit:"mg/day", type:"goal", step:"25", defaultTarget:200,
+  guidance:"A standard cup of coffee is roughly 80–100 mg; log an estimated daily total against your target.",
+  devices:"Caffeine-tracking app."},
+
+// MENTAL HEALTH
+{id:"mood", cat:"Mental Health", name:"Mood", unit:"/10", type:"scale10",
+  guidance:"Rate overall mood today, 0 = lowest, 10 = best.",
+  devices:"A simple daily mood-tracker app pairs well with this log."},
+{id:"anxiety", cat:"Mental Health", name:"Anxiety", unit:"/10", type:"scale10",
+  guidance:"Note specific triggers or physical symptoms (racing heart, tension) if present."},
+{id:"phq9", cat:"Mental Health", name:"Depression screening", unit:"score", type:"number", step:"1",
+  reference:"The PHQ-9 questionnaire is a widely used 9-item standardized reference for this — worth reviewing its exact wording.",
+  guidance:"Score reflects symptoms over the past two weeks if using a standardized tool."},
+{id:"stress", cat:"Mental Health", name:"Stress level", unit:"/10", type:"scale10",
+  guidance:"Note major stressors contributing to the score.",
+  devices:"A wearable watch or ring that reports stress or heart-rate variability."},
+{id:"cognitive", cat:"Mental Health", name:"Cognitive complaints", unit:"description", type:"text", media:"video",
+  guidance:"Describe specific instances (forgetting appointments, word-finding difficulty) rather than a general impression."},
+
+// DIABETES
+{id:"glucose", cat:"Diabetes", name:"Finger-stick glucose", unit:"mg/dL", type:"number", step:"1", range:{low:70, high:140},
+  guidance:"Record time relative to meals (fasting, pre-meal, 2h post-meal, bedtime).",
+  devices:"Fingerstick blood glucose meter. Glucose-tracking app."},
+{id:"cgm", cat:"Diabetes", name:"CGM summary (time in range)", unit:"%", type:"number", step:"1",
+  guidance:"Log daily or weekly time-in-range plus notable highs/lows if not auto-exported.",
+  devices:"Continuous glucose monitor (CGM) sensor. Its companion glucose-tracking app."},
+{id:"hypo", cat:"Diabetes", name:"Hypoglycemia episodes", unit:"count", type:"number", step:"1",
+  guidance:"Note symptoms, glucose value if measured, and what was eaten to treat it."},
+{id:"hyper", cat:"Diabetes", name:"Hyperglycemia episodes", unit:"count", type:"number", step:"1",
+  guidance:"Note associated symptoms and any ketone testing performed."},
+
+// HEART FAILURE
+{id:"dailyweight", cat:"Heart Failure", name:"Daily weight", unit:"kg", type:"number", step:"0.1",
+  guidance:"A gain of >1–1.5 kg overnight or >2 kg in 3 days is a common early-warning threshold — confirm your own care plan's target.",
+  devices:"Digital bathroom scale, ideally one that syncs automatically."},
+{id:"edema", cat:"Heart Failure", name:"Peripheral edema", unit:"grade", type:"select",
+  options:["None","Mild — ankles only","Moderate — up to knees","Severe — above knees"],
+  reference:"The 1+ to 4+ pitting edema scale is a common clinical reference for grading severity.",
+  guidance:"Press gently over the shin for 5 seconds and note how deep and how long the indentation lasts.", media:"photo"},
+{id:"orthopnea", cat:"Heart Failure", name:"Orthopnea", unit:"pillows needed", type:"number", step:"1",
+  guidance:"Record how many pillows are needed to sleep comfortably without breathlessness."},
+{id:"pnd", cat:"Heart Failure", name:"Paroxysmal nocturnal dyspnea", unit:"episodes", type:"number", step:"1",
+  guidance:"Note time of night, how long it took to resolve, and whether sitting upright helped."},
+
+// RESPIRATORY
+{id:"homespo2", cat:"Respiratory Disease", name:"Home SpO₂", unit:"%", type:"number", step:"1", range:{low:95, high:100},
+  guidance:"Measure at rest and, if instructed, after exertion for comparison.",
+  devices:"Fingertip pulse oximeter."},
+{id:"rescueinhaler", cat:"Respiratory Disease", name:"Rescue inhaler use", unit:"puffs/day", type:"number", step:"1",
+  guidance:"Rising use is often an earlier warning sign than symptoms alone.",
+  devices:"A smart inhaler attachment can log puffs automatically."},
+{id:"peakflow", cat:"Respiratory Disease", name:"Peak flow", unit:"L/min", type:"number", step:"1",
+  guidance:"Take best of three attempts, standing, at the same time each day.",
+  devices:"Peak flow meter, or a connected home spirometer."},
+
+// HYPERTENSION
+{id:"homebp", cat:"Hypertension", name:"Home BP log", unit:"mmHg", type:"bp", range:{sys:{low:90, high:120}, dia:{low:60, high:80}},
+  guidance:"Take morning and evening readings, twice each, after 5 minutes seated rest.",
+  devices:"Validated digital upper-arm blood pressure monitor."},
+{id:"orthobp", cat:"Hypertension", name:"Orthostatic BP", unit:"mmHg", type:"bp", range:{sys:{low:90, high:120}, dia:{low:60, high:80}},
+  guidance:"Measure lying, then again at 1 and 3 minutes standing; note any dizziness."},
+
+// SLEEP
+{id:"cpapadh", cat:"Sleep", name:"CPAP adherence", unit:"hours/night", type:"number", step:"0.25",
+  guidance:"Most devices auto-log this — record manually only if unavailable.",
+  devices:"Your CPAP machine's companion app usually syncs this automatically."},
+{id:"ahi", cat:"Sleep", name:"AHI (apnea-hypopnea index)", unit:"events/hr", type:"number", step:"0.1", range:{low:0, high:5},
+  guidance:"Typically read from a home sleep study or CPAP device report."},
+
+// NEUROLOGY
+{id:"tremor", cat:"Neurology", name:"Tremor severity", unit:"/10", type:"scale10", media:"video",
+  guidance:"A short video capturing the tremor at rest and with action is far more useful than a description alone."},
+{id:"seizure", cat:"Neurology", name:"Seizure diary", unit:"count", type:"number", step:"1",
+  guidance:"Record duration, type of movements, triggers, and recovery time for each event.", media:"video",
+  devices:"A wearable seizure-detection device can alert and log automatically."},
+{id:"gait", cat:"Neurology", name:"Gait", unit:"description", type:"text", media:"video",
+  guidance:"A short walking video, filmed from the side and front, shows changes far better than words."},
+
+// RENAL
+{id:"urineprotein", cat:"Renal", name:"Urine protein (dipstick)", unit:"result", type:"select",
+  options:["Negative","Trace","1+","2+","3+","4+"], media:"photo",
+  guidance:"Compare the test strip colour to the bottle's chart under good light and record promptly."},
+{id:"urineoutput", cat:"Renal", name:"Urine output", unit:"mL/24h", type:"number", step:"50",
+  guidance:"Especially relevant when fluid-restricted or on diuretics."},
+
+// GI / STOOL
+{id:"stooltype", cat:"Gastrointestinal", name:"Stool consistency", unit:"Bristol type 1–7", type:"select",
+  options:["Type 1 — separate hard lumps","Type 2 — lumpy sausage","Type 3 — sausage with cracks","Type 4 — smooth soft sausage","Type 5 — soft blobs, clear edges","Type 6 — mushy, ragged edges","Type 7 — watery, no solid pieces"],
+  reference:"This entry follows the Bristol Stool Chart directly — worth studying the chart's images once so your own ratings stay consistent over time.",
+  guidance:"Rate the most representative stool of the day, not an average.", media:"photo"},
+
+// DERMATOLOGY / WOUND
+{id:"woundsize", cat:"Dermatology / Wound", name:"Wound / ulcer size", unit:"cm (L×W)", type:"text",
+  guidance:"Measure longest length and width perpendicular to it; note depth and surrounding skin colour.",
+  reference:"Photographing wounds against a ruler, from a fixed distance and angle each time, makes size trends far more reliable.",
+  media:"photo"},
+{id:"lesion", cat:"Dermatology / Wound", name:"Skin lesion", unit:"description", type:"text",
+  guidance:"Note colour, borders, size, and any change from prior appearance.", media:"photo"},
+
+// PREGNANCY
+{id:"fetalmove", cat:"Pregnancy", name:"Fetal movement count", unit:"movements/2h", type:"number", step:"1",
+  reference:"The 'count to 10' kick chart method is a common standardized reference for timing this.",
+  guidance:"Count in a quiet position, ideally after a meal, at a similar time each day."},
+{id:"preg_bp", cat:"Pregnancy", name:"Blood pressure (pregnancy)", unit:"mmHg", type:"bp", range:{sys:{low:90, high:120}, dia:{low:60, high:80}},
+  guidance:"Report readings above your care team's threshold promptly, especially with headache or visual changes."},
+
+// ONCOLOGY
+{id:"symptomburden", cat:"Oncology", name:"Symptom burden", unit:"/10", type:"scale10",
+  reference:"The ESAS (Edmonton Symptom Assessment System) is a standardized multi-symptom reference tool worth reviewing.",
+  guidance:"Rate overall symptom burden today across pain, fatigue, nausea, and mood together."},
+{id:"chemotox", cat:"Oncology", name:"Chemotherapy toxicity checklist", unit:"description", type:"text",
+  guidance:"Note specific toxicities (mucositis, neuropathy, rash, GI symptoms) with grade/severity if known.", media:"photo"},
+
+// RHEUMATOLOGY
+{id:"jointcount", cat:"Rheumatology", name:"Joint counts", unit:"number tender/swollen", type:"text",
+  guidance:"List which joints are tender vs. swollen; a hand/foot diagram alongside your notes can help.", media:"photo"},
+{id:"morningstiff", cat:"Rheumatology", name:"Morning stiffness", unit:"minutes", type:"number", step:"5",
+  guidance:"Time from waking until joints feel their usual flexibility."},
+
+// GERIATRICS / PALLIATIVE
+{id:"caregiverburden", cat:"Palliative / Caregiver", name:"Caregiver burden", unit:"/10", type:"scale10",
+  guidance:"Rate the caregiver's own strain today — this matters for sustaining home-based care."},
+{id:"delirium", cat:"Palliative / Caregiver", name:"Delirium / confusion", unit:"description", type:"text", media:"video",
+  guidance:"Note onset speed, fluctuation through the day, and any disorientation or hallucination."},
+
+// WEARABLE / PASSIVE (manual entry)
+{id:"steps", cat:"Wearable Data", name:"Step count", unit:"steps", type:"number", step:"1",
+  guidance:"Enter manually if not syncing automatically from a wearable or phone.",
+  devices:"Wearable watch or fitness band with a step counter."},
+{id:"hrv", cat:"Wearable Data", name:"Heart rate variability", unit:"ms", type:"number", step:"1",
+  guidance:"Trends over weeks matter far more than any single day's value.",
+  devices:"A wearable watch or ring that reports daily heart-rate variability."},
+{id:"restinghr", cat:"Wearable Data", name:"Resting heart rate", unit:"bpm", type:"number", step:"1",
+  guidance:"Best measured immediately on waking, before getting out of bed.",
+  devices:"Wearable watch or fitness band worn overnight or on waking."},
+
+// PROMS
+{id:"qol", cat:"Patient-Reported Outcomes", name:"Quality of life", unit:"/10", type:"scale10",
+  reference:"Standardized instruments like the EQ-5D or SF-36 give a more structured version of this if you want one.",
+  guidance:"Rate overall quality of life today, considering physical, emotional, and social factors together."},
+{id:"treatsat", cat:"Patient-Reported Outcomes", name:"Treatment satisfaction", unit:"/10", type:"scale10",
+  guidance:"Rate satisfaction with current treatment plan, not just today's symptoms."},
+];
+
+const MEDIA_TEXT = {
+  photo: {label:"Photo", note:"A clear, well-lit <strong>photo</strong> — ideally from a consistent angle and distance each time — makes this entry far easier to compare over time."},
+  audio: {label:"Audio", note:"A short <strong>audio recording</strong> (e.g. of a cough) can capture character and severity that's hard to put into words."},
+  video: {label:"Video", note:"A brief <strong>video clip</strong> is often the most useful record here — movement, gait, and tremor are hard to describe accurately in text."},
+};
+
+/* ============ STATE ============ */
+let activeParam = null;
+let activeView = null; // 'param' or 'narrative'
+const entries = {};
+PARAMS.forEach(p => entries[p.id] = []);
+const narrativeEntries = [];
+
+/* ============ NAV BUILD ============ */
+const categories = [...new Set(PARAMS.map(p=>p.cat))];
+const navTree = document.getElementById('navTree');
+
+function buildNav(filterText){
+  navTree.innerHTML = "";
+  const q = (filterText||"").trim().toLowerCase();
+  let anyMatch = false;
+
+  categories.forEach(cat=>{
+    const items = PARAMS.filter(p=>p.cat===cat && (!q || p.name.toLowerCase().includes(q)));
+    if(items.length===0) return;
+    anyMatch = true;
+    const block = document.createElement('div');
+    block.className = 'cat-block';
+    const title = document.createElement('div');
+    title.className = 'cat-title';
+    title.textContent = cat;
+    block.appendChild(title);
+    const ul = document.createElement('ul');
+    ul.className = 'param-list';
+    items.forEach(p=>{
+      const li = document.createElement('li');
+      li.className = 'param-item';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.innerHTML = `<span>${p.name}</span><span class="unit-hint">${p.unit && p.type!=='text' && p.type!=='select' ? p.unit : ''}</span>`;
+      if(activeView==='param' && activeParam && activeParam.id===p.id) btn.classList.add('active');
+      btn.addEventListener('click', ()=>selectParam(p.id));
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+    block.appendChild(ul);
+    navTree.appendChild(block);
+  });
+
+  if(!anyMatch){
+    const div = document.createElement('div');
+    div.className = 'no-results';
+    div.textContent = 'No parameters match your search.';
+    navTree.appendChild(div);
+  }
+}
+buildNav();
+
+document.getElementById('searchInput').addEventListener('input', e=>{ buildNav(e.target.value); });
+document.getElementById('narrativeBtn').addEventListener('click', selectNarrative);
+document.getElementById('aboutBtn').addEventListener('click', selectAbout);
+
+/* ============ MENU TOGGLE ============ */
+function setMenuState(collapsed){
+  const shell = document.getElementById('mainShell');
+  const btn = document.getElementById('menuToggleBtn');
+  const label = document.getElementById('menuToggleLabel');
+  shell.classList.toggle('nav-collapsed', collapsed);
+  btn.setAttribute('aria-expanded', String(!collapsed));
+  label.textContent = collapsed ? 'Show menu' : 'Hide menu';
+}
+document.getElementById('menuToggleBtn').addEventListener('click', ()=>{
+  const shell = document.getElementById('mainShell');
+  setMenuState(!shell.classList.contains('nav-collapsed'));
+});
+
+/* ============ HELPERS ============ */
+function nowParts(){
+  const d = new Date();
+  return {date:d.toISOString().slice(0,10), time:d.toTimeString().slice(0,5)};
+}
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+let toastTimer;
+function flashToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function updateNarrativeBtnState(){
+  document.getElementById('narrativeBtn').classList.toggle('active', activeView==='narrative');
+  document.getElementById('aboutBtn').classList.toggle('active', activeView==='about');
+}
+
+/* ============ PARAM VIEW ============ */
+function selectParam(id){
+  activeView = 'param';
+  activeParam = PARAMS.find(p=>p.id===id);
+  buildNav(document.getElementById('searchInput').value);
+  updateNarrativeBtnState();
+  renderParamView();
+}
+
+function extractNumeric(p, entry){
+  // returns {label, series:[{x,y}]} single or dual-line numeric value, or null
+  if(p.type === 'bp'){
+    const m = entry.value.match(/(\d+(\.\d+)?)\s*\/\s*(\d+(\.\d+)?)/);
+    if(!m) return null;
+    return {sys:parseFloat(m[1]), dia:parseFloat(m[3])};
+  }
+  if(p.type === 'goal'){
+    const nums = entry.value.match(/-?\d+(\.\d+)?/g);
+    if(!nums || nums.length < 2) return null;
+    return {sys:parseFloat(nums[0]), dia:parseFloat(nums[1])};
+  }
+  if(p.type === 'number' || p.type === 'scale10'){
+    const m = entry.value.match(/-?\d+(\.\d+)?/);
+    if(!m) return null;
+    return {val:parseFloat(m[0])};
+  }
+  return null;
+}
+
+function entryTimestamp(e){
+  // Combine date + time into a real Date so points can be placed by true elapsed time,
+  // not just by their position in the list.
+  const t = e.time && e.time.length ? e.time : '00:00';
+  const d = new Date(`${e.date}T${t}`);
+  return isNaN(d.getTime()) ? null : d.getTime();
+}
+
+function buildChartSVG(p, list){
+  // list is chronological ascending as passed in, but we re-sort by true timestamp
+  // (date + time) so entries logged out of order still plot in correct temporal position.
+  let points = list
+    .map(e=>({...e, ts: entryTimestamp(e)}))
+    .filter(e=>e.ts !== null)
+    .sort((a,b)=>a.ts-b.ts)
+    .slice(-24);
+  if(points.length < 2) return null;
+
+  const W = 680, H = 250, padL = 46, padR = 16, padT = 16, padB = 34, padDisclaimer = 26;
+  const plotW = W - padL - padR, plotH = H - padDisclaimer - padT - padB;
+
+  let series1 = [], series2 = null, tsUsed = [], isBp = (p.type === 'bp'), isGoal = (p.type === 'goal'), isDual = isBp || isGoal;
+  points.forEach(e=>{
+    const n = extractNumeric(p, e);
+    if(!n) return;
+    tsUsed.push(e.ts);
+    if(isDual){ series1.push(n.sys); if(!series2) series2=[]; series2.push(n.dia); }
+    else series1.push(n.val);
+  });
+  if(series1.length < 2) return null;
+
+  // Safe-range band (only drawn where the parameter has a clinically-general reference range)
+  let rangeLow1=null, rangeHigh1=null, rangeLow2=null, rangeHigh2=null;
+  if(p.range){
+    if(isDual && p.range.sys && p.range.dia){
+      rangeLow1 = p.range.sys.low; rangeHigh1 = p.range.sys.high;
+      rangeLow2 = p.range.dia.low; rangeHigh2 = p.range.dia.high;
+    } else if(!isDual && typeof p.range.low === 'number'){
+      rangeLow1 = p.range.low; rangeHigh1 = p.range.high;
+    }
+  }
+
+  const allVals = series2 ? series1.concat(series2) : series1.slice();
+  const rangeVals = [rangeLow1, rangeHigh1, rangeLow2, rangeHigh2].filter(v=>v !== null);
+  const spanVals = allVals.concat(rangeVals);
+  let minV = Math.min(...spanVals), maxV = Math.max(...spanVals);
+  if(minV === maxV){ minV -= 1; maxV += 1; }
+  const pad = (maxV-minV)*0.14;
+  minV -= pad; maxV += pad;
+
+  // X position reflects true elapsed time between readings, not just list order —
+  // evenly-spaced entries in time look evenly spaced; clustered/gappy entries do too.
+  const tsMin = Math.min(...tsUsed), tsMax = Math.max(...tsUsed);
+  const tsSpan = tsMax - tsMin;
+  function xAt(i){ return tsSpan > 0 ? padL + ((tsUsed[i]-tsMin)/tsSpan)*plotW : padL + (i/(series1.length-1))*plotW; }
+  function yAt(v){ return padT + plotH - ((v-minV)/(maxV-minV))*plotH; }
+
+  function pathFor(arr){
+    return arr.map((v,i)=>`${i===0?'M':'L'}${xAt(i).toFixed(1)},${yAt(v).toFixed(1)}`).join(' ');
+  }
+
+  const gridLines = [0,1,2,3,4].map(i=>{
+    const y = padT + (i/4)*plotH;
+    const val = maxV - (i/4)*(maxV-minV);
+    return `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#DCE7EA" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B7480">${val.toFixed(1)}</text>`;
+  }).join('');
+
+  function rangeBand(low, high, fill){
+    if(low === null || high === null) return '';
+    const yTop = yAt(high), yBot = yAt(low);
+    return `<rect x="${padL}" y="${yTop.toFixed(1)}" width="${plotW}" height="${(yBot-yTop).toFixed(1)}" fill="${fill}" opacity="0.55"/>
+      <line x1="${padL}" y1="${yTop.toFixed(1)}" x2="${W-padR}" y2="${yTop.toFixed(1)}" stroke="${fill}" stroke-width="1" stroke-dasharray="3,3" opacity="0.9"/>
+      <line x1="${padL}" y1="${yBot.toFixed(1)}" x2="${W-padR}" y2="${yBot.toFixed(1)}" stroke="${fill}" stroke-width="1" stroke-dasharray="3,3" opacity="0.9"/>`;
+  }
+  const rangeBands = `${rangeBand(rangeLow1, rangeHigh1, '#CFF3E8')}${rangeBand(rangeLow2, rangeHigh2, '#FDEBD3')}`;
+  const rangeLegendBits = [];
+  if(rangeLow1 !== null) rangeLegendBits.push(isDual ? `Systolic safe range ${rangeLow1}–${rangeHigh1}` : `Safe range ${rangeLow1}–${rangeHigh1}${p.unit ? ' '+p.unit : ''}`);
+  if(rangeLow2 !== null) rangeLegendBits.push(`Diastolic safe range ${rangeLow2}–${rangeHigh2}`);
+  const rangeLegend = rangeLegendBits.length ? `<text x="${padL}" y="${padT+10}" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#3E7A63">${rangeLegendBits.join('   ·   ')}</text>` : '';
+
+  // X-axis labels: show date and time so true temporal gaps between readings are visible,
+  // not just a fixed date per slot.
+  const xLabels = points.map((e,i)=>{
+    if(points.length>8 && i% Math.ceil(points.length/6) !==0 && i!==points.length-1) return '';
+    const label = `${e.date.slice(5)} ${e.time || ''}`.trim();
+    return `<text x="${xAt(i).toFixed(1)}" y="${H-padDisclaimer-8}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5B7480">${label}</text>`;
+  }).join('');
+
+  const dots1 = series1.map((v,i)=>`<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(v).toFixed(1)}" r="3" fill="#1AB4C4"/>`).join('');
+  const dots2 = series2 ? series2.map((v,i)=>`<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(v).toFixed(1)}" r="3" fill="#B45E09"/>`).join('') : '';
+
+  const s1Label = isGoal ? 'Actual' : 'Systolic';
+  const s2Label = isGoal ? 'Target' : 'Diastolic';
+  const legend = (isBp || isGoal) ? `
+    <circle cx="${padL}" cy="${H-padDisclaimer-24}" r="3" fill="#1AB4C4"/><text x="${padL+8}" y="${H-padDisclaimer-20}" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B7480">${s1Label}</text>
+    <circle cx="${padL+90}" cy="${H-padDisclaimer-24}" r="3" fill="#B45E09"/><text x="${padL+98}" y="${H-padDisclaimer-20}" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5B7480">${s2Label}</text>
+  ` : '';
+
+  const disclaimer = `<rect x="0" y="${H-padDisclaimer}" width="${W}" height="${padDisclaimer}" fill="#FBF0DD"/>
+    <text x="${W/2}" y="${H-padDisclaimer/2+3}" text-anchor="middle" font-family="Plus Jakarta Sans, Inter, sans-serif" font-size="10" fill="#7A4A08">⚠ Quick visual for insight only — high chance of inaccuracy. Do not use for clinical decision-making.</text>`;
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; background:#FFFFFF; border:1px solid #E4ECEF; border-radius:6px;">
+    ${gridLines}
+    ${rangeBands}
+    <path d="${pathFor(series1)}" fill="none" stroke="#1AB4C4" stroke-width="2"/>
+    ${dots1}
+    ${series2 ? `<path d="${pathFor(series2)}" fill="none" stroke="#B45E09" stroke-width="2" stroke-dasharray="${isGoal ? '5,4' : '0'}"/>${dots2}` : ''}
+    ${xLabels}
+    ${legend}
+    ${rangeLegend}
+    ${disclaimer}
+  </svg>`;
+}
+
+function downloadSVGAsPNG(svgEl, filename){
+  const svgData = new XMLSerializer().serializeToString(svgEl);
+  const svgBlob = new Blob([svgData], {type:'image/svg+xml;charset=utf-8'});
+  const url = URL.createObjectURL(svgBlob);
+  const img = new Image();
+  img.onload = function(){
+    const vb = svgEl.viewBox.baseVal;
+    const scale = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = (vb.width || svgEl.clientWidth) * scale;
+    canvas.height = (vb.height || svgEl.clientHeight) * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    URL.revokeObjectURL(url);
+    canvas.toBlob(blob=>{
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    });
+  };
+  img.src = url;
+}
+
+function renderParamView(){
+  const main = document.getElementById('mainPanel');
+  const p = activeParam;
+  const {date, time} = nowParts();
+
+  let refHtml = p.reference ? `<div class="callout callout-reference"><span class="icon">📖</span><span><b>Worth studying:</b> ${p.reference}</span></div>` : "";
+  let mediaHtml = (p.media && MEDIA_TEXT[p.media]) ? `<div class="callout callout-media"><span class="icon">🎙️</span><span><b>${MEDIA_TEXT[p.media].label} helps here:</b> ${MEDIA_TEXT[p.media].note}</span></div>` : "";
+  let devicesHtml = p.devices ? `<div class="callout callout-devices"><span class="icon">⌚</span><span><b>Devices / apps that can help:</b> ${p.devices}</span></div>` : "";
+
+  let inputHtml = "";
+  if(p.type === "scale10"){
+    inputHtml = `<div class="scale-row" id="scaleRow"></div><input type="hidden" id="valueField">`;
+  } else if(p.type === "bp"){
+    inputHtml = `<div style="display:flex; gap:8px; align-items:center;">
+      <input type="number" id="sysField" placeholder="Systolic" style="flex:1">
+      <span style="color:var(--text-soft); font-family:var(--mono);">/</span>
+      <input type="number" id="diaField" placeholder="Diastolic" style="flex:1">
+    </div>`;
+  } else if(p.type === "goal"){
+    inputHtml = `<div style="display:flex; gap:8px; align-items:center;">
+      <div style="flex:1;"><label style="margin-bottom:3px;">Actual ${p.unit||''}</label><input type="number" step="${p.step||'any'}" id="actualField" placeholder="Today's actual"></div>
+      <div style="flex:1;"><label style="margin-bottom:3px;">Target ${p.unit||''}</label><input type="number" step="${p.step||'any'}" id="targetField" placeholder="Your goal" value="${p.defaultTarget!==undefined?p.defaultTarget:''}"></div>
+    </div>`;
+  } else if(p.type === "select"){
+    inputHtml = `<select id="valueField">${p.options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
+  } else if(p.type === "text"){
+    inputHtml = `<input type="text" id="valueField" placeholder="Describe…">`;
+  } else {
+    inputHtml = `<input type="number" step="${p.step||'any'}" id="valueField" placeholder="${p.unit||''}">`;
+  }
+
+  main.innerHTML = `
+    <div class="param-header">
+      <div><span class="cat-eyebrow">${p.cat}</span><h2>${p.name}</h2></div>
+    </div>
+
+    <div class="callout callout-guidance"><span class="icon">✎</span><span><b>How to log it:</b> ${p.guidance||"Log the value that best represents today."}</span></div>
+    ${refHtml}
+    ${mediaHtml}
+    ${devicesHtml}
+
+    <form class="logform" id="logForm">
+      <div class="field-row">
+        <div><label for="dateField">Date</label><input type="date" id="dateField" value="${date}"></div>
+        <div><label for="timeField">Time</label><input type="time" id="timeField" value="${time}"></div>
+      </div>
+      <div style="margin-bottom:14px;">
+        ${p.type==='goal' ? '' : `<label>${p.type==='bp' ? 'Reading (mmHg)' : 'Value' + (p.unit && p.type!=='select' && p.type!=='text' ? ' ('+p.unit+')' : '')}</label>`}
+        ${inputHtml}
+      </div>
+      <div style="margin-bottom:14px;">
+        <label for="noteField">Notes</label>
+        <textarea id="noteField" placeholder="Context, triggers, anything worth remembering…"></textarea>
+      </div>
+      <div style="margin-bottom:6px;">
+        <label>Media captured (optional)</label>
+        <div style="display:flex; gap:14px; font-size:13px; color:var(--text-soft);">
+          <label style="display:flex; align-items:center; gap:5px; text-transform:none; font-family:var(--sans); font-size:13px;"><input type="checkbox" id="mPhoto" style="width:auto;"> Photo taken</label>
+          <label style="display:flex; align-items:center; gap:5px; text-transform:none; font-family:var(--sans); font-size:13px;"><input type="checkbox" id="mAudio" style="width:auto;"> Audio recorded</label>
+          <label style="display:flex; align-items:center; gap:5px; text-transform:none; font-family:var(--sans); font-size:13px;"><input type="checkbox" id="mVideo" style="width:auto;"> Video recorded</label>
+        </div>
+        <p class="media-note">This log stores text only — tick what you captured elsewhere (camera roll, voice memo app) so it's noted alongside the entry.</p>
+      </div>
+      <div class="actions-row">
+        <button type="submit" class="primary">Add entry</button>
+        <button type="button" class="ghost" id="clearFormBtn">Clear</button>
+      </div>
+    </form>
+
+    <div class="chart-block" id="chartBlock">
+      <div class="chart-head"><h3>Trend</h3>
+        <div class="export-row"><button type="button" id="chartDownloadBtn">Download chart (PNG)</button></div>
+      </div>
+      <div id="chartWrap"></div>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-head">
+        <h3>Logged entries — ${p.name}</h3>
+        <div class="export-row">
+          <button type="button" id="copyBtn">Copy to clipboard</button>
+          <button type="button" id="downloadBtn">Download .txt</button>
+        </div>
+      </div>
+      <div id="entriesWrap"></div>
+    </div>
+  `;
+
+  if(p.type === "scale10"){
+    const row = document.getElementById('scaleRow');
+    for(let i=0;i<=10;i++){
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = i;
+      b.addEventListener('click', ()=>{
+        document.getElementById('valueField').value = i;
+        row.querySelectorAll('button').forEach(x=>x.classList.remove('picked'));
+        b.classList.add('picked');
+      });
+      row.appendChild(b);
+    }
+  }
+
+  document.getElementById('logForm').addEventListener('submit', onSubmitParam);
+  document.getElementById('clearFormBtn').addEventListener('click', renderParamView);
+  document.getElementById('copyBtn').addEventListener('click', ()=>exportParamEntries('copy'));
+  document.getElementById('downloadBtn').addEventListener('click', ()=>exportParamEntries('download'));
+  document.getElementById('chartDownloadBtn').addEventListener('click', ()=>{
+    const svg = document.querySelector('#chartWrap svg');
+    if(!svg){ flashToast('No chart to download yet.'); return; }
+    downloadSVGAsPNG(svg, `${p.id}-trend.png`);
+  });
+
+  renderChart();
+  renderEntries();
+}
+
+function onSubmitParam(e){
+  e.preventDefault();
+  const p = activeParam;
+  const date = document.getElementById('dateField').value;
+  const time = document.getElementById('timeField').value;
+  let value;
+  if(p.type === 'bp'){
+    const sys = document.getElementById('sysField').value;
+    const dia = document.getElementById('diaField').value;
+    if(!sys || !dia){ flashToast('Enter both systolic and diastolic values.'); return; }
+    value = `${sys}/${dia} mmHg`;
+  } else if(p.type === 'goal'){
+    const actual = document.getElementById('actualField').value;
+    const target = document.getElementById('targetField').value;
+    if(actual === '' || target === ''){ flashToast('Enter both an actual value and a target.'); return; }
+    value = `${actual} actual vs ${target} target${p.unit ? ' '+p.unit : ''}`;
+  } else {
+    value = document.getElementById('valueField').value;
+    if(value === ''){ flashToast('Enter a value before saving.'); return; }
+    if(p.type !== 'select' && p.type !== 'text' && p.unit) value = `${value} ${p.unit}`;
+  }
+  const note = document.getElementById('noteField').value.trim();
+  const media = [];
+  if(document.getElementById('mPhoto').checked) media.push('Photo');
+  if(document.getElementById('mAudio').checked) media.push('Audio');
+  if(document.getElementById('mVideo').checked) media.push('Video');
+
+  entries[p.id].unshift({date, time, value, note, media});
+  renderParamView();
+  flashToast('Entry added.');
+}
+
+function renderChart(){
+  const wrap = document.getElementById('chartWrap');
+  const p = activeParam;
+  const list = entries[p.id].slice().reverse(); // chronological ascending
+  const svg = buildChartSVG(p, list);
+  if(!svg){
+    wrap.innerHTML = `<div class="chart-empty">Log at least two numeric entries to see a trend chart here.</div>`;
+    return;
+  }
+  wrap.innerHTML = svg;
+}
+
+function renderEntries(){
+  const wrap = document.getElementById('entriesWrap');
+  const p = activeParam;
+  const list = entries[p.id];
+  if(!list.length){
+    wrap.innerHTML = `<div class="no-entries">No entries yet for ${p.name.toLowerCase()}. Add one above.</div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((e,idx)=>`
+    <div class="entry">
+      <div class="ts">${e.date}<br>${e.time}</div>
+      <div>
+        <div class="val">${escapeHtml(e.value)}</div>
+        ${e.note ? `<div class="note">${escapeHtml(e.note)}</div>` : ''}
+        ${e.media.length ? e.media.map(m=>`<span class="media-tag">${m}</span>`).join('') : ''}
+      </div>
+      <button class="del" data-idx="${idx}" title="Delete entry">✕</button>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      entries[p.id].splice(parseInt(btn.dataset.idx),1);
+      renderChart();
+      renderEntries();
+    });
+  });
+}
+
+function formatParamExport(){
+  const p = activeParam;
+  const list = entries[p.id];
+  let out = `Vibe Rounds — Home Monitoring Assistant\n${p.name} — logged entries\nExported ${new Date().toLocaleString()}\n${'-'.repeat(40)}\n\n`;
+  if(!list.length){ out += "(no entries)\n"; return out; }
+  list.slice().reverse().forEach(e=>{
+    out += `${e.date} ${e.time}\n  Value: ${e.value}\n`;
+    if(e.note) out += `  Notes: ${e.note}\n`;
+    if(e.media.length) out += `  Media captured: ${e.media.join(', ')}\n`;
+    out += `\n`;
+  });
+  out += `\nDisclaimer: user-entered data, not verified for clinical accuracy. Cross-check before acting on it.\n`;
+  return out;
+}
+
+function exportParamEntries(mode){
+  const text = formatParamExport();
+  if(mode === 'copy'){
+    navigator.clipboard.writeText(text).then(()=>flashToast('Copied to clipboard.')).catch(()=>flashToast('Could not copy — select and copy manually.'));
+  } else {
+    triggerTextDownload(text, `${activeParam.id}-log.txt`);
+    flashToast('Downloaded .txt file.');
+  }
+}
+
+function triggerTextDownload(text, filename){
+  const blob = new Blob([text], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ============ ABOUT VIEW ============ */
+function selectAbout(){
+  activeView = 'about';
+  activeParam = null;
+  buildNav(document.getElementById('searchInput').value);
+  updateNarrativeBtnState();
+  renderAboutView();
+}
+
+function renderAboutView(){
+  const main = document.getElementById('mainPanel');
+  main.innerHTML = `
+    <div class="about-view">
+      <span class="cat-eyebrow">About</span>
+      <h2>What this is</h2>
+      <p>This tracker is a tool built as part of <b>Vibe Rounds</b> (<a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">avi33tbtt.github.io</a>).</p>
+
+      <h3>What it does</h3>
+      <ul class="about-list">
+        <li><b>A single place to log the numbers that matter.</b> Vital signs, symptoms, functional status, medication adherence, lifestyle, mental health, and condition-specific parameters (heart failure, diabetes, respiratory disease, pregnancy, oncology, and more) — over 60 trackable items, organized by category and searchable.</li>
+        <li><b>Guidance built into every parameter.</b> Each one comes with a short note on how to measure or describe it consistently, a reference scale to anchor against where one exists (e.g. Bristol Stool Chart, mMRC dyspnea scale, ECOG status), and suggestions for the kind of device or app that could capture it.</li>
+        <li><b>Goal tracking.</b> Parameters like exercise minutes, sleep hours, steps, or medication doses can be logged as actual-vs-target, so progress toward a goal is visible over time, not just a raw number.</li>
+        <li><b>Automatic trend charts.</b> Once two or more numeric entries exist for a parameter, a chart appears — points are placed by true elapsed time (not just entry order), so real gaps or clusters in your logging show up honestly. A shaded band marks a general safe range where one applies (e.g. blood pressure, heart rate, SpO₂, glucose), and every chart carries a visible disclaimer that it's a quick visual aid, not a clinical-grade plot.</li>
+        <li><b>A narrative diary.</b> A free-text space for the things that don't reduce to a number — how someone's doing overall, context around a rough day, or a change worth remembering.</li>
+        <li><b>Export, anytime.</b> Copy or download any parameter's log — or the narrative — as plain text, ready to paste into an email, message, or portal, or print out before an appointment.</li>
+      </ul>
+
+      <h3>Why it's useful</h3>
+      <ul class="about-list">
+        <li><b>Closes the gap between visits.</b> A lot gets lost between "how have you been?" and what actually happened over the past two weeks. A running, dated log turns vague recollection into something concrete to review together.</li>
+        <li><b>One format for many conditions.</b> Instead of juggling a paper diary, a blood pressure app, a separate mood tracker, and a notes app, related parameters live in one searchable list.</li>
+        <li><b>Encourages consistency.</b> The built-in guidance (same time of day, same site, same scale) nudges toward measurements that are actually comparable to each other over time — which matters more for a useful trend than any single reading does.</li>
+        <li><b>Zero setup, zero friction.</b> No account, no app store, no onboarding. Open the page and start logging.</li>
+      </ul>
+
+      <h3>How your data is handled</h3>
+      <p>Everything you type lives only in this browser tab's memory, for as long as the tab stays open. There is no server, no database, no account, no sync, and no analytics call carrying your entries anywhere. Nothing is written to disk, to browser storage, or to the network — closing or reloading the tab clears it, which is also why the export buttons exist, so you can save anything worth keeping before you do.</p>
+      <p>Because no personal health data ever leaves your device or is stored anywhere, there's nothing here to consent to sharing, no data-retention policy needed, and no server-side record that could be breached, subpoenaed, or leaked — the usual data-safety and hacking risks that come with a hosted health app largely don't apply to a tool that never stores or transmits anything in the first place. That said, ordinary local risks still apply — anyone with access to your unlocked device or screen while the tab is open could see what's on it, so treat it the way you'd treat any open document with personal health notes in it.</p>
+
+      <h3>Limits, worth being upfront about</h3>
+      <ul class="about-list">
+        <li>This is a logging and visualization aid, not a diagnostic or monitoring device. It performs no clinical calculation or validation of what you enter.</li>
+        <li>The "safe range" bands shown on some charts are general population reference values, not personalized targets — a clinician may set a different individual target for you.</li>
+        <li>Charts are a quick visual aid built from whatever you've typed in; always cross-check anything important against the raw entries, and never use this tool in place of professional medical advice, diagnosis, or emergency care.</li>
+      </ul>
+    </div>
+  `;
+}
+
+/* ============ NARRATIVE VIEW ============ */
+function selectNarrative(){
+  activeView = 'narrative';
+  activeParam = null;
+  buildNav(document.getElementById('searchInput').value);
+  updateNarrativeBtnState();
+  renderNarrativeView();
+}
+
+function renderNarrativeView(){
+  const main = document.getElementById('mainPanel');
+  const {date, time} = nowParts();
+  main.innerHTML = `
+    <div class="narrative-header">
+      <h2>Narrative / subjective history</h2>
+      <p>A free-text diary for how things are going overall — context, concerns, or events that don't fit a single number. Written in your own words, timestamped alongside your other logs.</p>
+    </div>
+
+    <form class="logform" id="narrativeForm">
+      <div class="field-row">
+        <div><label for="nDateField">Date</label><input type="date" id="nDateField" value="${date}"></div>
+        <div><label for="nTimeField">Time</label><input type="time" id="nTimeField" value="${time}"></div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label for="nTitleField">Headline (optional)</label>
+        <input type="text" id="nTitleField" placeholder="e.g. Rough night, better by morning">
+      </div>
+      <div style="margin-bottom:6px;">
+        <label for="nBodyField">Entry</label>
+        <textarea id="nBodyField" style="min-height:120px;" placeholder="How are things today — overall, in your own words? Avoid entering any name, contact detail, or other identifying information."></textarea>
+      </div>
+      <div class="actions-row">
+        <button type="submit" class="primary">Add entry</button>
+        <button type="button" class="ghost" id="nClearBtn">Clear</button>
+      </div>
+    </form>
+
+    <div class="ledger">
+      <div class="ledger-head">
+        <h3>Narrative history</h3>
+        <div class="export-row">
+          <button type="button" id="nCopyBtn">Copy to clipboard</button>
+          <button type="button" id="nDownloadBtn">Download .txt</button>
+        </div>
+      </div>
+      <div id="narrativeEntriesWrap"></div>
+    </div>
+  `;
+
+  document.getElementById('narrativeForm').addEventListener('submit', onSubmitNarrative);
+  document.getElementById('nClearBtn').addEventListener('click', renderNarrativeView);
+  document.getElementById('nCopyBtn').addEventListener('click', ()=>exportNarrative('copy'));
+  document.getElementById('nDownloadBtn').addEventListener('click', ()=>exportNarrative('download'));
+  renderNarrativeEntries();
+}
+
+function onSubmitNarrative(e){
+  e.preventDefault();
+  const date = document.getElementById('nDateField').value;
+  const time = document.getElementById('nTimeField').value;
+  const title = document.getElementById('nTitleField').value.trim();
+  const body = document.getElementById('nBodyField').value.trim();
+  if(!body){ flashToast('Write something before saving.'); return; }
+  narrativeEntries.unshift({date, time, title, body});
+  renderNarrativeView();
+  flashToast('Narrative entry added.');
+}
+
+function renderNarrativeEntries(){
+  const wrap = document.getElementById('narrativeEntriesWrap');
+  if(!narrativeEntries.length){
+    wrap.innerHTML = `<div class="no-entries">No narrative entries yet. Write your first one above.</div>`;
+    return;
+  }
+  wrap.innerHTML = narrativeEntries.map((e,idx)=>`
+    <div class="entry" style="grid-template-columns:130px 1fr auto;">
+      <div class="ts">${e.date}<br>${e.time}</div>
+      <div>
+        ${e.title ? `<div class="val">${escapeHtml(e.title)}</div>` : ''}
+        <div class="note" style="color:var(--text); white-space:pre-wrap;">${escapeHtml(e.body)}</div>
+      </div>
+      <button class="del" data-idx="${idx}" title="Delete entry">✕</button>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      narrativeEntries.splice(parseInt(btn.dataset.idx),1);
+      renderNarrativeEntries();
+    });
+  });
+}
+
+function formatNarrativeExport(){
+  let out = `Vibe Rounds — Home Monitoring Assistant\nNarrative / subjective history\nExported ${new Date().toLocaleString()}\n${'-'.repeat(40)}\n\n`;
+  if(!narrativeEntries.length){ out += "(no entries)\n"; return out; }
+  narrativeEntries.slice().reverse().forEach(e=>{
+    out += `${e.date} ${e.time}${e.title ? '  —  '+e.title : ''}\n${e.body}\n\n`;
+  });
+  out += `\nDisclaimer: user-entered data, not verified for clinical accuracy. Cross-check before acting on it.\n`;
+  return out;
+}
+
+function exportNarrative(mode){
+  const text = formatNarrativeExport();
+  if(mode === 'copy'){
+    navigator.clipboard.writeText(text).then(()=>flashToast('Copied to clipboard.')).catch(()=>flashToast('Could not copy — select and copy manually.'));
+  } else {
+    triggerTextDownload(text, `narrative-log.txt`);
+    flashToast('Downloaded .txt file.');
+  }
+}
+</script>
+</body>
+</html>
