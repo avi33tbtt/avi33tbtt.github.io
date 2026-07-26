@@ -524,6 +524,22 @@
     <div class="card" id="card-case">
       <label for="caseText">Paste the case — vignette text, discharge summary, your own clerking notes, or a case link</label>
       <textarea id="caseText" placeholder="Paste case text directly, e.g. 'A 45 year man presented with pain in right leg and reticular lesion on skin on posterior side of right leg. He met with a road traffic accident 2 years back when he was a professional driver and...'"></textarea>
+      <div class="sample-case-controls" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+        <div style="flex:1;min-width:150px;">
+          <label for="sampleDifficulty" style="margin-bottom:4px;">Sample case difficulty</label>
+          <select id="sampleDifficulty">
+            <option value="Any">Any</option>
+            <option value="Student / early learner — classic, textbook presentation">Student / early learner</option>
+            <option value="Intern / junior resident — common presentation with a couple of distractors">Intern / junior resident</option>
+            <option value="Senior resident — moderate complexity, some atypical features">Senior resident</option>
+            <option value="Attending / expert — atypical, complex, or multi-system presentation">Attending / expert</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:150px;">
+          <label for="sampleSpecialty" style="margin-bottom:4px;">Sample case specialty</label>
+          <select id="sampleSpecialty"></select>
+        </div>
+      </div>
       <div class="hint">If link can't be fetched automatically — paste the case text itself for best results. &nbsp;<a href="#" id="sampleCaseBtn" style="font-weight:600;color:var(--accent-dark);text-decoration:none;">Try a sample case &#8594;</a></div>
 
       <div class="upload-row">
@@ -891,7 +907,88 @@ function loadCaseText(){
   try{ return localStorage.getItem('casebench_case') || ''; }catch(e){ return ''; }
 }
 function saveCaseText(t){ try{ localStorage.setItem('casebench_case', t); }catch(e){} }
-const SAMPLE_CASE_PROMPT = 'Generate one realistic, self-contained clinical vignette for a medical learner to practice diagnostic reasoning on. Cover a single adult or pediatric patient presenting with a common or classic presentation (your choice — vary it each time). Include age, sex, presenting complaint, relevant history, and pertinent exam/vital sign findings, and a couple of relevant labs or initial test results if appropriate. Do not reveal or hint at the diagnosis name, and do not include headers, labels, or any framing text — output ONLY the vignette itself as a single flowing paragraph of 4-7 sentences, written the way a case would appear in a textbook.';
+const SPECIALTIES = [
+  'Any',
+  'Allergy and Immunology',
+  'Anesthesiology',
+  'Cardiology',
+  'Cardiothoracic Surgery',
+  'Colon and Rectal Surgery',
+  'Critical Care / Intensive Care Medicine',
+  'Dermatology',
+  'Emergency Medicine',
+  'Endocrinology',
+  'Family Medicine',
+  'Gastroenterology',
+  'General Surgery',
+  'Geriatrics',
+  'Gynecologic Oncology',
+  'Hematology',
+  'Hematology-Oncology',
+  'Hepatology',
+  'Hospice and Palliative Medicine',
+  'Infectious Disease',
+  'Internal Medicine',
+  'Interventional Radiology',
+  'Medical Genetics',
+  'Nephrology',
+  'Neonatology',
+  'Neurology',
+  'Neurosurgery',
+  'Obstetrics and Gynecology',
+  'Occupational Medicine',
+  'Oncology',
+  'Ophthalmology',
+  'Orthopedic Surgery',
+  'Otolaryngology (ENT)',
+  'Pain Medicine',
+  'Pathology',
+  'Pediatrics',
+  'Pediatric Cardiology',
+  'Pediatric Emergency Medicine',
+  'Pediatric Surgery',
+  'Physical Medicine and Rehabilitation',
+  'Plastic Surgery',
+  'Podiatry',
+  'Preventive Medicine',
+  'Psychiatry',
+  'Pulmonology',
+  'Radiation Oncology',
+  'Radiology',
+  'Rheumatology',
+  'Sleep Medicine',
+  'Sports Medicine',
+  'Toxicology',
+  'Transplant Medicine',
+  'Trauma Surgery',
+  'Urology',
+  'Vascular Surgery'
+];
+
+(function populateSpecialties(){
+  const sel = $('sampleSpecialty');
+  if(!sel) return;
+  SPECIALTIES.forEach(spec=>{
+    const opt = document.createElement('option');
+    opt.value = spec;
+    opt.textContent = spec;
+    sel.appendChild(opt);
+  });
+})();
+
+function buildSampleCasePrompt(difficulty, specialty){
+  let ask = 'Generate one realistic, self-contained clinical vignette for a medical learner to practice diagnostic reasoning on. ';
+  if(specialty && specialty !== 'Any'){
+    ask += `The case must fall within the specialty of ${specialty}. `;
+  }
+  if(difficulty && difficulty !== 'Any'){
+    ask += `Pitch the case difficulty at the level of: ${difficulty}. `;
+  } else {
+    ask += 'Cover a single adult or pediatric patient presenting with a common or classic presentation (your choice — vary it each time). ';
+  }
+  ask += 'Include age, sex, presenting complaint, relevant history, and pertinent exam/vital sign findings, and a couple of relevant labs or initial test results if appropriate. Do not reveal or hint at the diagnosis name, and do not include headers, labels, or any framing text — output ONLY the vignette itself as a single flowing paragraph of 4-7 sentences, written the way a case would appear in a textbook.';
+  return ask;
+}
 
 $('sampleCaseBtn') && $('sampleCaseBtn').addEventListener('click', async (e)=>{
   e.preventDefault();
@@ -906,6 +1003,10 @@ $('sampleCaseBtn') && $('sampleCaseBtn').addEventListener('click', async (e)=>{
     return;
   }
 
+  const difficulty = $('sampleDifficulty') ? $('sampleDifficulty').value : 'Any';
+  const specialty = $('sampleSpecialty') ? $('sampleSpecialty').value : 'Any';
+  const prompt = buildSampleCasePrompt(difficulty, specialty);
+
   const original = btn.textContent;
   btn.textContent = 'Generating…';
   btn.style.pointerEvents = 'none';
@@ -914,20 +1015,20 @@ $('sampleCaseBtn') && $('sampleCaseBtn').addEventListener('click', async (e)=>{
     let sample;
     const msgs = [{role:'user', content:'Begin.'}];
     if(state.provider === 'claude'){
-      sample = await callClaude(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+      sample = await callClaude(apiKey, model, prompt, msgs);
     } else if(state.provider === 'gemini'){
-      sample = await callGemini(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+      sample = await callGemini(apiKey, model, prompt, msgs);
     } else if(state.provider === 'other'){
       const endpoints = loadEndpoints();
-      sample = await callCustom(endpoints['other'], apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+      sample = await callCustom(endpoints['other'], apiKey, model, prompt, msgs);
     } else {
-      sample = await callOpenAI(apiKey, model, SAMPLE_CASE_PROMPT, msgs);
+      sample = await callOpenAI(apiKey, model, prompt, msgs);
     }
     sample = (sample || '').trim();
     if(!sample) throw new Error('Empty response.');
     $('caseText').value = sample;
     saveCaseText(sample);
-    trackEvent('sample_case_generated', {provider: state.provider});
+    trackEvent('sample_case_generated', {provider: state.provider, difficulty: difficulty, specialty: specialty});
   } catch(err){
     alert('Could not generate a sample case: ' + err.message);
   } finally {
