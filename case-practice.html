@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7FAFB">
+<title>Case Practice — Vibe Rounds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7FAFB;
+    --panel:#FFFFFF;
+    --panel-sunken:#F3F6F8;
+    --ink:#0B2530;
+    --ink-dim:#5B7480;
+    --ink-faint:#94A7AE;
+    --line:#DCE7EA;
+    --line-soft:rgba(11,37,48,0.08);
+    --bronze:#5B7480;
+    --bronze-dim:#43606B;
+    --bronze-bright:#0A6E85;
+    --ember:#0891B2;
+    --ember-dim:#0A6E85;
+    --ember-bright:#0A6E85;
+    --ember-glow:rgba(8,145,178,0.22);
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --good:#0F766E;
+    --good-soft:#DCFCE9;
+    --display:'Inter',sans-serif;
+    --mono:'IBM Plex Mono','JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+    --shadow-sm:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+    --shadow-md:0 4px 14px rgba(11,37,48,.08), 0 12px 28px -12px rgba(11,37,48,.12);
+    --shadow-lg:0 10px 30px rgba(11,37,48,.10), 0 24px 48px -18px rgba(11,37,48,.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--display);
+    font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--bronze-bright);}
+  a:hover{color:var(--ember-bright);}
+  ::selection{background:rgba(8,145,178,0.20);color:var(--ink);}
+
+  .vr-suitebar{
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFA 65%);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 16px;
+  }
+  .vr-suitebar .vr-brand{
+    font-family: 'DM Mono','IBM Plex Mono',monospace;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: #0F172A; text-decoration: none; display:flex; align-items:center; gap:0;
+  }
+  .vr-suitebar .vr-brand span{ color: #0891B2; }
+  .vr-suitebar .vr-nav{ display:flex; gap:6px; flex-wrap:wrap; }
+  .vr-suitebar .vr-nav a{
+    font-family:'DM Mono','IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#475569; text-decoration:none; padding:6px 10px; border-radius:999px;
+    border:1px solid #E2E8F0; background:#FFFFFF; transition:.15s ease;
+  }
+  .vr-suitebar .vr-nav a:hover{ color:#fff; background:#0891B2; border-color:#0891B2; }
+  .vr-suitebar .vr-nav a.active{ color:#fff; background:#0E7490; border-color:#0E7490; }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:34px 20px 90px;}
+
+  .kicker{
+    font-family:'DM Mono','IBM Plex Mono',monospace;color:var(--bronze-bright);
+    letter-spacing:.14em;text-transform:uppercase;font-size:11.5px;margin-bottom:14px;font-weight:600;
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  }
+  .kicker .gr{color:var(--ember-bright);letter-spacing:.04em;font-family:var(--display);text-transform:none;}
+  .kicker .sep{color:var(--line);}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(28px, 4.5vw, 40px);margin:0 0 12px;color:var(--ink);letter-spacing:-0.01em;line-height:1.16;}
+  h1 em{font-style:normal;color:var(--ember-bright);}
+  .subhead{color:var(--ink-dim);font-size:15px;max-width:70ch;}
+
+  .disclaimer{
+    margin-top:20px;font-size:13.5px;color:var(--ink-dim);
+    padding:12px 16px;background:var(--panel);border-radius:0 10px 10px 0;
+    border:1px solid var(--line);border-left:3px solid var(--bronze-bright);
+  }
+  .disclaimer strong{color:var(--ink);}
+
+  .ornament{
+    display:flex;align-items:center;gap:12px;margin:22px 0 26px;color:var(--bronze);font-size:13px;user-select:none;
+  }
+  .ornament::before,.ornament::after{content:'';flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--line-soft));}
+  .ornament::after{background:linear-gradient(90deg, var(--line-soft), transparent);}
+
+  .section-title{
+    font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bronze-bright);font-weight:700;margin:32px 0 14px;display:flex;align-items:center;gap:10px;
+  }
+  .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg, var(--line-soft), transparent);}
+
+  /* step labels (model / case config) */
+  .step{margin-bottom:26px;}
+  .step-label{
+    font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bronze-bright);font-weight:700;margin:32px 0 14px;display:flex;align-items:center;gap:10px;
+  }
+  .step-label .num{
+    width:20px;height:20px;border-radius:50%;background:var(--ember);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700;
+  }
+  .step-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg, var(--line-soft), transparent);}
+
+  /* provider tabs */
+  .tabrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+  .tab{
+    font-family:var(--display);font-size:13px;font-weight:600;color:var(--ink-dim);
+    background:var(--panel-sunken);border:1px solid var(--line);border-radius:9px;
+    padding:8px 14px;cursor:pointer;transition:.12s;
+  }
+  .tab:hover{color:var(--ink);border-color:var(--bronze-bright);}
+  .tab.active{color:#fff;background:var(--ember);border-color:var(--ember);}
+
+  .cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media (max-width:600px){ .cfg-row{grid-template-columns:1fr;} }
+  .cfg-row label,.field label{
+    font-size:12.5px;color:var(--ink-dim);display:block;margin-bottom:4px;font-weight:500;
+  }
+  .cfg-row input, .cfg-row select, .field input, .field select{
+    width:100%;font-family:var(--display);font-size:13.5px;border:1px solid var(--line);
+    border-radius:9px;padding:9px 11px;color:var(--ink);background:var(--panel-sunken);
+  }
+  .cfg-row input:focus, .cfg-row select:focus, .field input:focus{outline:2px solid var(--ember-glow);border-color:var(--ember);}
+
+  .key-status{font-size:12px;color:var(--ink-dim);margin-top:6px;}
+  .key-status.saved{color:var(--good);}
+
+  details.settings{margin-top:10px;}
+  details.settings summary{font-size:12.5px;color:var(--bronze-bright);cursor:pointer;font-weight:600;}
+
+  .field{margin-bottom:12px;}
+
+  .gen-status{font-size:13px;color:var(--ink-dim);margin-top:10px;min-height:18px;}
+  .gen-status.error{color:var(--alert);}
+  .gen-status.busy{color:var(--ember-bright);}
+
+  /* layout */
+  .term-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:20px;align-items:start;}
+  @media (max-width:900px){ .term-grid{grid-template-columns:1fr;} }
+
+  .panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow-sm);padding:20px 22px;
+  }
+  .panel h2{font-size:14px;margin:0 0 14px;color:var(--ink);font-weight:700;display:flex;align-items:center;gap:8px;}
+  .panel h2 .dot{width:7px;height:7px;border-radius:50%;background:var(--ember);display:inline-block;}
+  .panel h2.collapsible-h2{cursor:pointer;user-select:none;}
+  .panel h2.collapsible-h2:hover{color:var(--bronze-bright);}
+  .collapse-arrow{font-size:11px;margin-left:auto;color:var(--ink-faint);transition:transform .15s ease;}
+  .collapse-arrow.open{transform:rotate(180deg);}
+
+  /* terminal log */
+  .term-screen{
+    background:var(--panel-sunken);border:1px solid var(--line);border-radius:10px;
+    padding:16px 18px;font-family:var(--mono);font-size:13px;color:var(--ink);
+    max-height:440px;overflow-y:auto;
+  }
+  .term-line{margin-bottom:14px;}
+  .term-line .prompt{color:var(--bronze-bright);font-weight:700;}
+  .term-line .stage-label{color:var(--ember-bright);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.06em;}
+  .term-line .body-text{color:var(--ink);white-space:pre-wrap;}
+  .term-line.user{color:var(--ink-dim);}
+  .term-line.user .arrow{color:var(--ink-faint);}
+  .term-cursor{display:inline-block;width:7px;height:14px;background:var(--ember);vertical-align:middle;animation:blink 1s step-start infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .stage-progress{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap;}
+  .stage-dot{
+    font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:20px;
+    border:1px solid var(--line);color:var(--ink-faint);background:var(--panel);
+  }
+  .stage-dot.done{color:var(--good);border-color:var(--good);background:var(--good-soft);}
+  .stage-dot.current{color:#fff;background:var(--ember);border-color:var(--ember);}
+
+  .actions-row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--display);font-weight:700;font-size:13px;border-radius:9px;
+    padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--panel);
+    color:var(--ink);transition:.12s;
+  }
+  .btn:hover{border-color:var(--bronze-bright);color:var(--bronze-bright);}
+  .btn.primary{background:var(--ember);border-color:var(--ember);color:#fff;}
+  .btn.primary:hover{background:var(--ember-dim);border-color:var(--ember-dim);color:#fff;}
+  .btn.alert{color:var(--alert);}
+  .btn.alert:hover{border-color:var(--alert);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  textarea.reasoning-box{
+    width:100%;min-height:70px;resize:vertical;font-family:var(--display);font-size:13.5px;
+    border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--ink);
+    background:var(--panel-sunken);margin-top:10px;
+  }
+  textarea.reasoning-box:focus{outline:2px solid var(--ember-glow);border-color:var(--ember);}
+
+  /* differential tracker */
+  .dx-add-row{display:flex;gap:8px;margin-bottom:12px;}
+  .dx-input{flex:1;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:13.5px;font-family:var(--display);background:var(--panel-sunken);}
+  .dx-list{display:flex;flex-direction:column;gap:8px;}
+  .dx-item{
+    display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;
+    padding:8px 10px;background:var(--panel-sunken);
+  }
+  .dx-item .dx-name{flex:1;font-size:13.5px;font-weight:600;color:var(--ink);}
+  .dx-status{
+    font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;
+    border-radius:20px;padding:3px 9px;border:1px solid transparent;cursor:pointer;
+  }
+  .dx-status[data-s="leading"]{background:var(--ember-glow);color:var(--ember-bright);}
+  .dx-status[data-s="considering"]{background:var(--panel);color:var(--ink-dim);border-color:var(--line);}
+  .dx-status[data-s="ruled-out"]{background:var(--alert-soft);color:var(--alert);text-decoration:line-through;}
+  .dx-remove{background:transparent;border:none;color:var(--ink-faint);cursor:pointer;font-size:13px;}
+  .dx-remove:hover{color:var(--alert);}
+  .empty-note{color:var(--ink-dim);font-size:13px;font-style:italic;}
+
+  /* clinical pearls */
+  .pearl-list{display:flex;flex-direction:column;gap:10px;}
+  .pearl-item{
+    display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink-dim);
+    border-left:3px solid var(--ember);background:var(--panel-sunken);border-radius:0 8px 8px 0;
+    padding:9px 12px;
+  }
+  .pearl-item .pearl-mark{color:var(--ember-bright);font-weight:700;flex-shrink:0;}
+
+  /* debrief */
+  .debrief{display:none;}
+  .debrief.active{display:block;}
+  .debrief-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+  @media (max-width:700px){ .debrief-grid{grid-template-columns:1fr;} }
+  .debrief-card{background:var(--panel-sunken);border:1px solid var(--line);border-radius:10px;padding:16px 18px;}
+  .debrief-card h3{margin:0 0 8px;font-size:13px;color:var(--bronze-bright);text-transform:uppercase;letter-spacing:.05em;}
+  .teaching-point{
+    border-left:3px solid var(--good);background:var(--good-soft);border-radius:0 8px 8px 0;
+    padding:10px 14px;font-size:13.5px;color:var(--ink);margin-top:10px;
+  }
+  .final-dx-banner{
+    background:linear-gradient(135deg, var(--ember-glow), rgba(8,145,178,0.06));
+    border:1px solid var(--ember-dim);border-radius:10px;padding:14px 18px;margin-top:14px;
+    font-size:14.5px;font-weight:600;color:var(--ink);
+  }
+  .final-dx-banner .label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember-bright);font-weight:700;margin-bottom:4px;}
+
+  footer{margin-top:50px;font-size:11.5px;color:var(--ink-dim);text-align:center;font-weight:500;}
+
+  @media (max-width:640px){
+    .wrap{padding:20px 14px 60px;}
+    h1{font-size:clamp(22px,7vw,28px);}
+    .panel{padding:16px 16px;}
+  }
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/home.html">Home</a>
+    <a href="https://avi33tbtt.github.io/bench.html">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/bench_lite.html">Bench Lite</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/case-practice.html" class="active">Clinical Practice</a>
+    <a href="https://avi33tbtt.github.io/clinical-polemos.html">Clinical Polemos</a>
+    <a href="https://avi33tbtt.github.io/case-lens.html">Case Lens</a>
+    <a href="https://avi33tbtt.github.io/sdm-lens.html">SDM Lens</a>
+    <a href="https://avi33tbtt.github.io/ebm.html">EBM Query Generator</a>
+    <a href="https://avi33tbtt.github.io/ccos-builder.html">CCOS Builder</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker"><span class="gr">Vibe Rounds</span><span class="sep">·</span>Case Practice</div>
+    <h1>A clinical reasoning &amp; learning <em>terminal</em></h1>
+    <div class="subhead">Cases reveal one stage at a time. Before each reveal, log your differential and the reasoning behind it — the terminal keeps the full trail so you can see where your thinking held up, and where it anchored too early.</div>
+    <div class="disclaimer">
+      <strong>Runs entirely in your browser.</strong> No data leaves this page — nothing is sent to a server. Educational reasoning practice only, not diagnostic guidance and not for real patient care.
+    </div>
+  </header>
+
+  <div class="ornament">◆</div>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-label"><span class="num">1</span>Model</div>
+    <div class="panel">
+      <div class="tabrow" id="providerTabs">
+        <div class="tab active" data-provider="claude">Claude</div>
+        <div class="tab" data-provider="gemini">Gemini</div>
+        <div class="tab" data-provider="openai">ChatGPT</div>
+        <div class="tab" data-provider="other">Other</div>
+      </div>
+      <div class="cfg-row" id="endpointRow" style="display:none;">
+        <div style="grid-column:1/-1;">
+          <label for="apiEndpoint">API endpoint (OpenAI-compatible chat/completions URL)</label>
+          <input type="text" id="apiEndpoint" placeholder="https://api.groq.com/openai/v1/chat/completions">
+        </div>
+      </div>
+      <div class="cfg-row">
+        <div>
+          <label id="apiKeyLabel" for="apiKey">Claude API key</label>
+          <input type="password" id="apiKey" placeholder="sk-ant-...">
+        </div>
+        <div>
+          <label for="modelName">Model name</label>
+          <input type="text" id="modelName" placeholder="claude-sonnet-4-6">
+        </div>
+      </div>
+      <div class="key-status" id="keyStatus">No key saved for this provider yet.</div>
+      <details class="settings">
+        <summary>Where do I get a key?</summary>
+        <div class="hint" style="margin-top:8px;" id="keyHelp"></div>
+      </details>
+    </div>
+  </div>
+
+  <!-- STEP 2: CASE -->
+  <div class="step">
+    <div class="step-label"><span class="num">2</span>Case</div>
+    <div class="panel">
+      <div class="cfg-row">
+        <div class="field">
+          <label for="caseTopic">Topic / specialty (optional)</label>
+          <input type="text" id="caseTopic" placeholder="e.g. cardiology, a toddler with a limp, an electrolyte disturbance…">
+        </div>
+        <div class="field">
+          <label for="caseDifficulty">Difficulty</label>
+          <select id="caseDifficulty">
+            <option value="Student / early learner — classic, textbook presentation">Student / early learner</option>
+            <option value="Intern / junior resident — common presentation with a couple of distractors" selected>Intern / junior resident</option>
+            <option value="Senior resident — moderate complexity, some atypical features">Senior resident</option>
+            <option value="Attending / expert — atypical, complex, or multi-system presentation">Attending / expert</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions-row">
+        <button class="btn primary" id="generateCaseBtn">Generate case &amp; start terminal →</button>
+      </div>
+      <div class="gen-status" id="genStatus"></div>
+    </div>
+  </div>
+
+  <div class="term-grid" id="termGrid" style="display:none;">
+    <div class="panel">
+      <h2><span class="dot"></span>Case terminal</h2>
+      <div class="stage-progress" id="stageProgress"></div>
+      <div class="term-screen" id="termScreen"></div>
+      <textarea class="reasoning-box" id="reasoningBox" placeholder="Log your reasoning at this stage — what's on your differential, what data point moved you, what you'd ask or order next…"></textarea>
+      <div class="actions-row">
+        <button class="btn primary" id="revealBtn">Reveal next →</button>
+        <button class="btn" id="lockBtn">Lock diagnosis &amp; debrief</button>
+        <button class="btn alert" id="resetBtn">Reset case</button>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="panel">
+        <h2><span class="dot"></span>Differential tracker</h2>
+        <div class="dx-add-row">
+          <input type="text" class="dx-input" id="dxInput" placeholder="Add a diagnosis to track…">
+          <button class="btn primary" id="dxAddBtn">Add</button>
+        </div>
+        <div class="dx-list" id="dxList"></div>
+        <div class="empty-note" id="dxEmpty">No hypotheses yet — add at least one before revealing new data.</div>
+      </div>
+
+      <div class="panel">
+        <h2 class="collapsible-h2" id="pearlToggle"><span class="dot"></span>Clinical pearls<span class="collapse-arrow" id="pearlArrow">&#9662;</span></h2>
+        <div class="pearl-list" id="pearlList" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel debrief" id="debrief">
+    <h2><span class="dot"></span>Debrief</h2>
+    <div class="final-dx-banner" id="finalDxBanner"></div>
+    <div class="debrief-grid">
+      <div class="debrief-card">
+        <h3>Your reasoning trail</h3>
+        <div id="debriefTrail" style="font-family:var(--mono);font-size:12.5px;color:var(--ink-dim);white-space:pre-wrap;"></div>
+      </div>
+      <div class="debrief-card">
+        <h3>Differential evolution</h3>
+        <div id="debriefDx" style="font-size:13.5px;"></div>
+      </div>
+    </div>
+    <div id="teachingPoints"></div>
+    <div class="actions-row">
+      <button class="btn" id="exportBtn">Export session notes (.txt)</button>
+      <button class="btn primary" id="newCaseBtn">Try another case</button>
+    </div>
+  </div>
+
+  <footer>Vibe Rounds · Case Practice · runs client-side, no key required · for medical education, not clinical advice.</footer>
+</div>
+
+<script>
+
+/* ---------- provider config (shared across the Vibe Rounds suite) ---------- */
+const PROVIDERS = {
+  claude: {
+    label: 'Claude',
+    keyPlaceholder: 'sk-ant-...',
+    modelPlaceholder: 'claude-sonnet-4-6',
+    help: 'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there — model names change over time, so if a call fails, double check the current model string.'
+  },
+  gemini: {
+    label: 'Gemini',
+    keyPlaceholder: 'AIza...',
+    modelPlaceholder: 'gemini-2.5-flash',
+    help: 'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>. Check the current model name in Google AI Studio if a call fails.'
+  },
+  openai: {
+    label: 'ChatGPT',
+    keyPlaceholder: 'sk-...',
+    modelPlaceholder: 'gpt-4o-mini',
+    help: 'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>. Check the current model name in the OpenAI docs if a call fails.'
+  },
+  other: {
+    label: 'Other',
+    keyPlaceholder: 'API key (leave blank if none)',
+    modelPlaceholder: 'model-name-as-required-by-provider',
+    needsEndpoint: true,
+    help: 'Works with any provider that exposes an OpenAI-compatible <code>/chat/completions</code> endpoint — Groq, Together AI, Mistral, DeepSeek, xAI (Grok), Perplexity, OpenRouter, Fireworks, local servers like Ollama or LM Studio, and more. Paste the full endpoint URL, the key that provider gave you, and the exact model name it expects.'
+  }
+};
+
+let state = null;
+let cfg = { provider: 'claude' };
+const $ = (id) => document.getElementById(id);
+
+function loadKeys(){ try{ return JSON.parse(localStorage.getItem('casebench_keys')||'{}'); }catch(e){ return {}; } }
+function saveKeys(k){ localStorage.setItem('casebench_keys', JSON.stringify(k)); }
+function loadModels(){ try{ return JSON.parse(localStorage.getItem('casebench_models')||'{}'); }catch(e){ return {}; } }
+function saveModels(m){ localStorage.setItem('casebench_models', JSON.stringify(m)); }
+function loadEndpoints(){ try{ return JSON.parse(localStorage.getItem('casebench_endpoints')||'{}'); }catch(e){ return {}; } }
+function saveEndpoints(e){ localStorage.setItem('casebench_endpoints', JSON.stringify(e)); }
+
+function renderProviderPane(){
+  const p = PROVIDERS[cfg.provider];
+  const keys = loadKeys(), models = loadModels(), endpoints = loadEndpoints();
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('apiKey').value = keys[cfg.provider] || '';
+  $('modelName').value = models[cfg.provider] || '';
+  $('endpointRow').style.display = p.needsEndpoint ? 'grid' : 'none';
+  if(p.needsEndpoint) $('apiEndpoint').value = endpoints[cfg.provider] || '';
+  $('keyHelp').innerHTML = p.help;
+  const statusEl = $('keyStatus');
+  if(keys[cfg.provider]){
+    statusEl.textContent = 'Key saved locally for ' + p.label + '.';
+    statusEl.classList.add('saved');
+  } else {
+    statusEl.textContent = 'No key saved for this provider yet.';
+    statusEl.classList.remove('saved');
+  }
+}
+
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    cfg.provider = tab.dataset.provider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', () => {
+  const keys = loadKeys(); keys[cfg.provider] = $('apiKey').value.trim(); saveKeys(keys);
+  renderProviderPane();
+});
+$('modelName').addEventListener('input', () => {
+  const models = loadModels(); models[cfg.provider] = $('modelName').value.trim(); saveModels(models);
+});
+$('apiEndpoint').addEventListener('input', () => {
+  const endpoints = loadEndpoints(); endpoints[cfg.provider] = $('apiEndpoint').value.trim(); saveEndpoints(endpoints);
+});
+renderProviderPane();
+
+function beginCase(def){
+  state = { stageIndex:0, dxList:[], log:[], caseDef: def };
+  document.getElementById('termGrid').style.display = 'grid';
+  document.getElementById('debrief').classList.remove('active');
+  document.getElementById('reasoningBox').value = '';
+  renderPearlList();
+  renderStageProgress();
+  renderTerminal();
+  renderDxList();
+  document.getElementById('termGrid').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+$('generateCaseBtn').addEventListener('click', generateCase);
+
+async function generateCase(){
+  const statusEl = $('genStatus');
+  const keys = loadKeys(), models = loadModels(), endpoints = loadEndpoints();
+  const apiKey = keys[cfg.provider];
+  const model = models[cfg.provider] || PROVIDERS[cfg.provider].modelPlaceholder;
+  const provider = PROVIDERS[cfg.provider];
+  if(!apiKey && !provider.needsEndpoint){
+    statusEl.textContent = 'Add an API key for ' + provider.label + ' in Step 1 first, then try again.';
+    statusEl.className = 'gen-status error';
+    return;
+  }
+  if(provider.needsEndpoint && !endpoints[cfg.provider]){
+    statusEl.textContent = 'Add an API endpoint URL in Step 1 first.';
+    statusEl.className = 'gen-status error';
+    return;
+  }
+  const topic = $('caseTopic').value.trim();
+  const difficulty = $('caseDifficulty').value;
+  statusEl.textContent = 'Generating case…';
+  statusEl.className = 'gen-status busy';
+  $('generateCaseBtn').disabled = true;
+
+  const system = `You are a clinical case-writer for a medical education tool. Generate ONE realistic, internally consistent clinical case for stepwise reveal.
+
+Respond with ONLY valid JSON, no markdown fences, no commentary, matching exactly this shape:
+{
+  "name": "short case title, e.g. 'Chest Pain, 58M'",
+  "stages": [
+    {"label": "Chief complaint", "text": "...", "pearl": "one clinical reasoning pearl tied specifically to what this stage reveals"},
+    {"label": "History", "text": "...", "pearl": "..."},
+    {"label": "Exam & vitals", "text": "...", "pearl": "..."},
+    {"label": "Labs" (or "Imaging" or other relevant workup label), "text": "...", "pearl": "..."},
+    {"label": "Course", "text": "...", "pearl": "..."}
+  ],
+  "finalDx": "the actual diagnosis",
+  "teaching": ["teaching point 1", "teaching point 2", "teaching point 3"]
+}
+Use 5-7 stages total, ending with a "Course" stage. Each stage should reveal new information, building toward the diagnosis without giving it away too early. Each stage's "pearl" must be a short (1-2 sentence), stage-specific clinical reasoning insight about THIS case — e.g. what the data at that stage should or shouldn't change about the differential, a trap it's easy to fall into at that exact point, or why that finding matters. Do not write generic definitions of cognitive biases — every pearl must reference specifics of this case.`;
+
+  const userPrompt = `Generate a case.${topic ? ' Topic/specialty focus: ' + topic + '.' : ' Any specialty.'}${difficulty && difficulty !== 'Any' ? ' Target learner level: ' + difficulty + '.' : ''}`;
+
+  try{
+    let raw;
+    if(cfg.provider === 'claude'){
+      raw = await callClaude(apiKey, model, system, [{role:'user', content:userPrompt}]);
+    } else if(cfg.provider === 'gemini'){
+      raw = await callGemini(apiKey, model, system, [{role:'user', content:userPrompt}]);
+    } else if(cfg.provider === 'other'){
+      raw = await callCustom(endpoints['other'], apiKey, model, system, [{role:'user', content:userPrompt}]);
+    } else {
+      raw = await callOpenAI(apiKey, model, system, [{role:'user', content:userPrompt}]);
+    }
+    const cleaned = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const parsed = JSON.parse(cleaned);
+    if(!parsed.stages || !parsed.stages.length || !parsed.finalDx) throw new Error('Model response was missing required fields.');
+    const def = {
+      id: 'gen-' + Date.now(),
+      name: parsed.name || 'Generated case',
+      stages: parsed.stages,
+      finalDx: parsed.finalDx,
+      teaching: parsed.teaching || []
+    };
+    statusEl.textContent = '';
+    statusEl.className = 'gen-status';
+    beginCase(def);
+  } catch(err){
+    statusEl.textContent = 'Could not generate a case: ' + err.message;
+    statusEl.className = 'gen-status error';
+  } finally {
+    $('generateCaseBtn').disabled = false;
+  }
+}
+
+async function callClaude(apiKey, model, system, msgs){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: model,
+      max_tokens: 4096,
+      system: system,
+      messages: msgs.length ? msgs.map(m=>({role:m.role, content:m.content})) : [{role:'user', content:'Begin.'}]
+    })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+
+async function callGemini(apiKey, model, system, msgs){
+  const contents = (msgs.length ? msgs : [{role:'user', content:'Begin.'}]).map(m=>({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{text: m.content}]
+  }));
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ systemInstruction: {parts: [{text: system}]}, contents: contents })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  const cand = data.candidates && data.candidates[0];
+  const parts = cand && cand.content && cand.content.parts || [];
+  return parts.map(p=>p.text||'').join('\n').trim();
+}
+
+async function callCustom(endpoint, apiKey, model, system, msgs){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const messages = [{role:'system', content: system}].concat(msgs.length ? msgs : [{role:'user', content:'Begin.'}]);
+  const headers = {'Content-Type': 'application/json'};
+  if(apiKey) headers['Authorization'] = 'Bearer ' + apiKey;
+  const res = await fetch(endpoint, {
+    method: 'POST', headers: headers,
+    body: JSON.stringify({ model: model, messages: messages, max_tokens: 4096 })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  if(data.choices && data.choices[0] && data.choices[0].message) return (data.choices[0].message.content || '').trim();
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+
+async function callOpenAI(apiKey, model, system, msgs){
+  const messages = [{role:'system', content: system}].concat(msgs.length ? msgs : [{role:'user', content:'Begin.'}]);
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+    body: JSON.stringify({ model: model, messages: messages, max_tokens: 4096 })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+
+function currentCase(){ return state.caseDef; }
+
+function renderStageProgress(){
+  const def = currentCase();
+  const el = document.getElementById('stageProgress');
+  el.innerHTML = '';
+  def.stages.forEach((s,i) => {
+    const d = document.createElement('span');
+    d.className = 'stage-dot' + (i < state.stageIndex ? ' done' : i === state.stageIndex ? ' current' : '');
+    d.textContent = (i+1) + '. ' + s.label;
+    el.appendChild(d);
+  });
+}
+
+function renderTerminal(){
+  const def = currentCase();
+  const screen = document.getElementById('termScreen');
+  screen.innerHTML = '';
+  for(let i=0;i<=state.stageIndex && i<def.stages.length;i++){
+    const s = def.stages[i];
+    const line = document.createElement('div');
+    line.className = 'term-line';
+    line.innerHTML = `<div class="prompt">$ reveal --stage="${s.label}"</div><div class="stage-label">${s.label}</div><div class="body-text">${s.text}</div>`;
+    screen.appendChild(line);
+    const logEntry = state.log.find(l => l.stageIndex === i);
+    if(logEntry && logEntry.text){
+      const userLine = document.createElement('div');
+      userLine.className = 'term-line user';
+      userLine.innerHTML = `<span class="arrow">→</span> ${logEntry.text}`;
+      screen.appendChild(userLine);
+    }
+  }
+  const cursorLine = document.createElement('div');
+  cursorLine.className = 'term-line';
+  cursorLine.innerHTML = `<span class="prompt">$</span> <span class="term-cursor"></span>`;
+  screen.appendChild(cursorLine);
+  screen.scrollTop = screen.scrollHeight;
+}
+
+function saveReasoningForCurrentStage(){
+  const text = document.getElementById('reasoningBox').value.trim();
+  const existing = state.log.find(l => l.stageIndex === state.stageIndex);
+  if(existing){ existing.text = text; existing.dxSnapshot = state.dxList.map(d => ({...d})); }
+  else { state.log.push({stageIndex: state.stageIndex, text, dxSnapshot: state.dxList.map(d => ({...d}))}); }
+}
+
+document.getElementById('revealBtn').addEventListener('click', () => {
+  if(!state) return;
+  saveReasoningForCurrentStage();
+  const def = currentCase();
+  if(state.stageIndex < def.stages.length - 1){
+    state.stageIndex++;
+    document.getElementById('reasoningBox').value = '';
+    renderStageProgress();
+    renderTerminal();
+    renderPearlList();
+  } else {
+    document.getElementById('revealBtn').disabled = true;
+  }
+});
+
+document.getElementById('lockBtn').addEventListener('click', () => {
+  if(!state) return;
+  saveReasoningForCurrentStage();
+  showDebrief();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if(!state) return;
+  beginCase(state.caseDef);
+});
+
+document.getElementById('newCaseBtn').addEventListener('click', () => {
+  document.getElementById('debrief').classList.remove('active');
+  document.getElementById('termGrid').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// differential tracker
+document.getElementById('dxAddBtn').addEventListener('click', addDx);
+document.getElementById('dxInput').addEventListener('keydown', e => { if(e.key === 'Enter') addDx(); });
+
+function addDx(){
+  if(!state) return;
+  const input = document.getElementById('dxInput');
+  const val = input.value.trim();
+  if(!val) return;
+  state.dxList.push({name:val, status:'considering'});
+  input.value = '';
+  renderDxList();
+}
+
+function cycleStatus(idx){
+  const order = ['considering','leading','ruled-out'];
+  const dx = state.dxList[idx];
+  dx.status = order[(order.indexOf(dx.status)+1) % order.length];
+  renderDxList();
+}
+
+function removeDx(idx){
+  state.dxList.splice(idx,1);
+  renderDxList();
+}
+
+function renderDxList(){
+  const list = document.getElementById('dxList');
+  const empty = document.getElementById('dxEmpty');
+  list.innerHTML = '';
+  empty.style.display = state.dxList.length ? 'none' : 'block';
+  state.dxList.forEach((dx, i) => {
+    const item = document.createElement('div');
+    item.className = 'dx-item';
+    item.innerHTML = `
+      <span class="dx-name">${dx.name}</span>
+      <span class="dx-status" data-s="${dx.status}">${dx.status.replace('-',' ')}</span>
+      <button class="dx-remove" title="Remove">✕</button>`;
+    item.querySelector('.dx-status').onclick = () => cycleStatus(i);
+    item.querySelector('.dx-remove').onclick = () => removeDx(i);
+    list.appendChild(item);
+  });
+}
+
+// clinical pearls — revealed alongside case progress, newest first
+function renderPearlList(){
+  const el = document.getElementById('pearlList');
+  el.innerHTML = '';
+  if(!state) return;
+  const def = currentCase();
+  const revealed = [];
+  for(let i=0; i<=state.stageIndex && i<def.stages.length; i++){
+    const s = def.stages[i];
+    if(s.pearl) revealed.push({label: s.label, pearl: s.pearl});
+  }
+  if(!revealed.length){
+    const empty = document.createElement('div');
+    empty.className = 'empty-note';
+    empty.textContent = 'No pearls for this case yet — they surface here as the case unfolds.';
+    el.appendChild(empty);
+    return;
+  }
+  revealed.reverse().forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'pearl-item';
+    row.innerHTML = `<span class="pearl-mark">◆</span><span><strong>${r.label}.</strong> ${r.pearl}</span>`;
+    el.appendChild(row);
+  });
+}
+
+document.getElementById('pearlToggle').addEventListener('click', () => {
+  const list = document.getElementById('pearlList');
+  const arrow = document.getElementById('pearlArrow');
+  const open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'flex';
+  arrow.classList.toggle('open', !open);
+});
+
+function showDebrief(){
+  const def = currentCase();
+  document.getElementById('finalDxBanner').innerHTML = `<span class="label">Actual diagnosis</span>${def.finalDx}`;
+
+  const trailEl = document.getElementById('debriefTrail');
+  trailEl.textContent = state.log
+    .sort((a,b)=>a.stageIndex-b.stageIndex)
+    .map(l => `[${def.stages[l.stageIndex].label}]\n${l.text || '(no notes logged)'}`)
+    .join('\n\n');
+
+  const dxEl = document.getElementById('debriefDx');
+  const finalLeading = state.dxList.filter(d => d.status === 'leading').map(d => d.name);
+  const finalRuledOut = state.dxList.filter(d => d.status === 'ruled-out').map(d => d.name);
+  const finalConsidering = state.dxList.filter(d => d.status === 'considering').map(d => d.name);
+  dxEl.innerHTML = `
+    <p><strong>Leading:</strong> ${finalLeading.length ? finalLeading.join(', ') : '—'}</p>
+    <p><strong>Still considering:</strong> ${finalConsidering.length ? finalConsidering.join(', ') : '—'}</p>
+    <p><strong>Ruled out:</strong> ${finalRuledOut.length ? finalRuledOut.join(', ') : '—'}</p>
+  `;
+
+  const tpEl = document.getElementById('teachingPoints');
+  tpEl.innerHTML = '<h3 style="font-size:13px;color:var(--bronze-bright);text-transform:uppercase;letter-spacing:.05em;margin-top:20px;">Teaching points</h3>';
+  def.teaching.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'teaching-point';
+    div.textContent = t;
+    tpEl.appendChild(div);
+  });
+
+  document.getElementById('debrief').classList.add('active');
+  document.getElementById('debrief').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const def = currentCase();
+  let out = `VIBE ROUNDS — CASE PRACTICE SESSION NOTES\nCase: ${def.name}\n\n`;
+  state.log.sort((a,b)=>a.stageIndex-b.stageIndex).forEach(l => {
+    out += `--- ${def.stages[l.stageIndex].label} ---\n${def.stages[l.stageIndex].text}\n\nMy reasoning: ${l.text || '(none logged)'}\n\n`;
+  });
+  out += `\nFINAL DIFFERENTIAL\nLeading: ${state.dxList.filter(d=>d.status==='leading').map(d=>d.name).join(', ') || '—'}\nConsidering: ${state.dxList.filter(d=>d.status==='considering').map(d=>d.name).join(', ') || '—'}\nRuled out: ${state.dxList.filter(d=>d.status==='ruled-out').map(d=>d.name).join(', ') || '—'}\n\nACTUAL DIAGNOSIS\n${def.finalDx}\n\nTEACHING POINTS\n${def.teaching.map(t=>'- '+t).join('\n')}\n`;
+  out += `\n----------------------------------------\nVibe Rounds\nhttps://avi33tbtt.github.io/\nhttps://avi33tbtt.github.io/home.html\n`;
+
+  const blob = new Blob([out], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `case-practice_${def.id}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+</script>
+</body>
+</html>
