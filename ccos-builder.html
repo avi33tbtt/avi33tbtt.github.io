@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - CCOS Builder — Module Order Builder</title>
+<meta name="description" content="CCOS Builder: tick clinical-reasoning prompt modules in the order you'd run them on a case, and get a plain-language read on the likely analytic yield of that pipeline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════ CCOS BUILDER (scoped) ══════════════ */
+#ccos-builder{
+  --bg:#ffffff;
+  --bg-soft:#f8fafc;
+  --ink:#0f172a;
+  --ink-soft:#64748b;
+  --border:#e2e8f0;
+  --accent:#0891b2;
+  --accent-dark:#0e7490;
+  --accent-soft:#ecfeff;
+  --tab1:#0891b2; /* clinical reasoning — cyan */
+  --tab2:#d97706; /* patient advocacy — amber */
+  --tab3:#7c3aed; /* analytics — violet */
+  --tab4:#dc2626; /* safety — red */
+  --tab5:#059669; /* education — emerald */
+  --tab6:#b45309; /* operations — bronze */
+  --tab7:#475569; /* meta — slate */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-head: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: 'DM Mono', "SFMono-Regular", Menlo, monospace;
+}#ccos-builder *{box-sizing:border-box;}#ccos-builder{
+  margin:0;
+  background:var(--bg-soft);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:16.5px;
+  line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}#ccos-builder .wrap{max-width:1180px;margin:0 auto;padding:40px 28px 90px;}#ccos-builder /* HEADER */
+#ccos-builder header{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding-bottom:20px; margin-bottom:8px; border-bottom:1px solid var(--border);
+}#ccos-builder header .title{
+  font-family:var(--font-head); font-size:32px; letter-spacing:-0.02em; font-weight:700; color:var(--ink);
+}#ccos-builder header .title small{
+  display:block; font-family:var(--font); font-size:14px; letter-spacing:0.01em;
+  color:var(--ink-soft); margin-top:7px; font-weight:500;
+}#ccos-builder header .top-right{
+  display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+}#ccos-builder .top-links{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start; font-family:var(--font); }
+#ccos-builder .top-links a{
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:12.5px; font-weight:700; color:var(--accent-dark);
+  background:var(--accent-soft); border:1px solid var(--border);
+  border-radius:999px; padding:6px 13px; text-decoration:none;
+}#ccos-builder .top-links a:hover{ background:var(--accent); color:#fff; border-color:var(--accent); }
+#ccos-builder .reqno{
+  font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); text-align:right; line-height:1.7;
+}#ccos-builder .stamp{
+  display:inline-block; border:1px solid var(--accent); color:var(--accent-dark);
+  background:var(--accent-soft); font-family:var(--mono);
+  padding:5px 12px; border-radius:20px; font-size:12px; letter-spacing:0.06em;
+  margin-top:6px; font-weight:600;
+}#ccos-builder .subline{
+  font-size:16px; color:var(--ink-soft); margin:18px 0 24px; max-width:760px; line-height:1.65;
+}#ccos-builder /* LAYOUT */
+#ccos-builder .picker{
+  border:1px solid var(--border); border-radius:16px; background:#fff;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  padding:24px 26px 8px; margin-bottom:20px;
+}#ccos-builder .picker h2{
+  font-family:var(--font-head); font-size:18.5px; letter-spacing:-0.01em; font-weight:700;
+  margin:0 0 4px; color:var(--ink);
+}#ccos-builder .picker .sub{font-size:14px; color:var(--ink-soft); margin:8px 0 18px; line-height:1.5;}
+
+/* CASE SELECTOR */
+#ccos-builder .case-selector{
+  border:1px solid var(--border); border-radius:16px; background:#fff;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  padding:24px 26px 26px; margin-bottom:20px;
+}#ccos-builder .case-selector h2{
+  font-family:var(--font-head); font-size:18.5px; letter-spacing:-0.01em; font-weight:700;
+  margin:0 0 4px; color:var(--ink);
+}#ccos-builder .case-selector .sub{font-size:14px; color:var(--ink-soft); margin:8px 0 14px; line-height:1.5;}#ccos-builder .case-field{display:block; margin-bottom:12px;}#ccos-builder .case-field label{display:block; font-size:13px; font-weight:600; color:var(--ink-soft); margin-bottom:6px; letter-spacing:0.02em; text-transform:uppercase;}#ccos-builder .case-field textarea{
+  width:100%; min-height:110px; font-family:var(--font); font-size:15px; line-height:1.6;
+  padding:13px 15px; border:1px solid var(--border); border-radius:10px; background:var(--bg-soft); color:var(--ink);
+  resize:vertical;
+}#ccos-builder .case-field textarea:focus, #ccos-builder .case-field input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}#ccos-builder .case-field input[type="url"]{
+  width:100%; font-family:var(--mono); font-size:14px; padding:12px 15px;
+  border:1px solid var(--border); border-radius:10px; background:var(--bg-soft); color:var(--ink);
+}#ccos-builder .case-tag{
+  display:inline-block; margin-top:11px; font-size:12px; font-weight:600;
+  color:var(--accent-dark); background:var(--accent-soft); border-radius:20px; padding:4px 10px; letter-spacing:0.3px;
+}#ccos-builder /* READYMADE PIPELINES */
+#ccos-builder .presets{
+  border:1px solid var(--border); border-radius:16px; background:#fff;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  padding:24px 26px 26px; margin-bottom:20px;
+}#ccos-builder .presets h2{font-family:var(--font-head); font-size:18.5px; letter-spacing:-0.01em; font-weight:700; margin:0 0 4px; color:var(--ink);}#ccos-builder .presets .sub{font-size:14px; color:var(--ink-soft); margin:8px 0 14px; line-height:1.5;}#ccos-builder .preset-tabbar{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px;}#ccos-builder .preset-tabbtn{
+  font-size:13.5px; font-weight:600; letter-spacing:0.01em;
+  padding:8px 13px; border-radius:8px; border:1px solid var(--border); background:#fff; cursor:pointer;
+  color:var(--ink-soft); transition:all 0.12s;
+}#ccos-builder .preset-tabbtn .n{font-size:11.5px; opacity:0.65; font-weight:500; margin-left:3px;}#ccos-builder .preset-tabbtn.active{background:var(--ink); color:#fff; border-color:var(--ink);}#ccos-builder .preset-tabbtn:hover:not(.active){background:var(--bg-soft); border-color:var(--ink-soft);}#ccos-builder .preset-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:12px;}#ccos-builder .preset-card{
+  position:relative; text-align:left; border:1px solid var(--border); border-left:4px solid var(--preset-c, var(--accent));
+  border-radius:12px; background:#fff;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  padding:13px 14px 13px 16px; cursor:pointer; transition:all 0.15s;
+}#ccos-builder .preset-card:hover{border-color:var(--preset-c, var(--accent)); border-left-color:var(--preset-c, var(--accent)); transform:translateY(-2px); box-shadow:0 10px 22px -14px rgba(15,23,42,0.35);}#ccos-builder .preset-card.active{border-color:var(--preset-c, var(--accent)); border-left-color:var(--preset-c, var(--accent)); background:var(--preset-c-soft, var(--accent-soft)); box-shadow:0 0 0 2px var(--preset-c, var(--accent)) inset;}#ccos-builder .preset-card .pcat{
+  display:inline-block; font-size:11px; font-weight:700; letter-spacing:0.03em; text-transform:uppercase;
+  color:var(--preset-c, var(--accent-dark)); background:var(--preset-c-soft, var(--accent-soft)); border-radius:20px; padding:2px 8px; margin-bottom:8px;
+}#ccos-builder .preset-card.active .pcat{background:#fff;}#ccos-builder .preset-card .pname{font-family:var(--font-head); font-size:15.5px; font-weight:700; color:var(--ink); margin-bottom:4px; padding-right:52px;}#ccos-builder .preset-card .pdesc{font-size:13px; color:var(--ink-soft); line-height:1.5; margin-bottom:9px;}#ccos-builder .preset-card .pcount{
+  display:inline-block; font-size:11px; font-weight:700; color:var(--ink-soft);
+  background:var(--bg-soft); border-radius:20px; padding:3px 9px; letter-spacing:0.02em;
+}#ccos-builder .preset-card.active .pcount{background:#fff; color:var(--preset-c, var(--accent-dark));}#ccos-builder .preset-card .pcheck{
+  position:absolute; top:13px; right:13px; font-size:10.5px; font-weight:800; letter-spacing:0.03em; text-transform:uppercase;
+  color:#fff; background:var(--preset-c, var(--accent)); border-radius:20px; padding:3px 9px;
+  box-shadow:0 2px 5px -1px rgba(15,23,42,0.3);
+}#ccos-builder /* TABS */
+#ccos-builder .ccb-tabbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;}#ccos-builder .tabbtn{
+  font-family:var(--font); font-size:14px; font-weight:600; letter-spacing:0.01em;
+  padding:9px 14px; border-radius:9px; border:1px solid var(--border); background:#fff; cursor:pointer;
+  color:var(--tab-color, var(--ink)); display:flex; align-items:center; gap:7px;
+  transition:all 0.12s;
+}#ccos-builder .tabbtn .n{font-size:12px; opacity:0.65; font-weight:500;}#ccos-builder .tabbtn.active{background:var(--tab-color, var(--ink)); color:#fff; border-color:var(--tab-color, var(--ink));}#ccos-builder .tabbtn:hover:not(.active){background:var(--bg-soft); border-color:var(--tab-color, var(--border));}#ccos-builder /* CATEGORY BLOCKS */
+#ccos-builder .category{
+  margin-bottom:22px; border:1px solid var(--border); border-radius:14px; background:#fff; overflow:hidden;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+}#ccos-builder .category-head{
+  display:flex; align-items:center; gap:10px;
+  padding:13px 18px; color:#fff;
+  font-family:var(--font-head); font-size:14.5px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase;
+}#ccos-builder .category-head .n{opacity:0.8; font-size:12px; font-weight:500; text-transform:none;}#ccos-builder .items{padding:4px 0;}#ccos-builder .item{
+  display:grid; grid-template-columns:34px 1fr auto; align-items:center;
+  gap:10px; padding:13px 18px; border-top:1px solid var(--border); cursor:pointer;
+  transition:background 0.12s;
+}#ccos-builder .item:hover{background:var(--bg-soft);}#ccos-builder .item.checked{background:var(--accent-soft);}#ccos-builder .item .idx{
+  font-family:var(--mono); font-size:12px; color:var(--ink-soft); text-align:right;
+}#ccos-builder .item .box{
+  width:22px; height:22px; border:2px solid var(--ink-soft); border-radius:7px; position:relative; flex:none;
+  background:#fff; transition:all 0.12s;
+}#ccos-builder .item:hover .box{border-color:var(--accent);}#ccos-builder .item.checked .box{
+  background:var(--accent); border-color:var(--accent);
+  box-shadow:0 2px 6px -1px rgba(8,145,178,0.55);
+}#ccos-builder .item.checked .box::after{
+  content:""; position:absolute; left:6px; top:2px; width:6px; height:11px;
+  border-right:2.5px solid #fff; border-bottom:2.5px solid #fff;
+  transform:rotate(40deg);
+}#ccos-builder .item .label{font-size:15px; line-height:1.4; font-family:var(--font);}#ccos-builder .item .label .modname{font-weight:600; color:var(--ink);}#ccos-builder .item .label .modname a{
+  color:var(--ink); text-decoration:none; border-bottom:1px solid transparent;
+}#ccos-builder .item .label .modname a:hover{border-bottom-color:var(--accent); color:var(--accent-dark);}#ccos-builder .item .label .moddesc{
+  display:block; font-size:13px; color:var(--ink-soft); margin-top:3px; letter-spacing:0.1px; line-height:1.5;
+}#ccos-builder .seq{
+  font-size:12.5px; font-weight:700; color:#fff;
+  background:var(--accent); border-radius:50%; width:21px; height:21px;
+  display:flex; align-items:center; justify-content:center;
+}#ccos-builder /* PIPELINE PANEL */
+#ccos-builder .pipeline{
+  border:1px solid var(--border); border-radius:16px;
+  background:#fff; overflow:hidden;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  margin:20px 0 20px;
+  position:relative;
+}#ccos-builder .pipeline .pipeline-top{
+  padding:24px 26px 8px; margin:0;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}#ccos-builder .pipeline h2{
+  font-family:var(--font-head); font-size:18.5px; letter-spacing:-0.01em; font-weight:700;
+  margin:0 0 4px; color:var(--ink); display:flex; align-items:center; gap:8px;
+}#ccos-builder .pipeline .sub{font-size:14px; color:var(--ink-soft); margin:8px 0 0; line-height:1.5;}
+#ccos-builder .pipeline-body{padding:16px 26px 26px;}
+#ccos-builder .pchain{
+  list-style:none; margin:0 0 4px; padding:0; min-height:44px;
+  display:flex; flex-wrap:wrap; gap:10px; align-items:stretch;
+}#ccos-builder .pchain li{
+  display:flex; gap:9px; align-items:center; padding:9px 14px 9px 10px;
+  border:1px solid var(--border); background:var(--bg-soft); border-radius:11px; font-size:14.5px;
+  transition:transform 0.12s, box-shadow 0.12s;
+}#ccos-builder .pchain li:hover{transform:translateY(-1px); box-shadow:0 4px 10px -4px rgba(15,23,42,0.15); border-color:var(--accent);}#ccos-builder .pchain .pnum{
+  font-weight:700; color:#fff; flex:none; width:22px; height:22px; border-radius:50%;
+  background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;
+}#ccos-builder .pchain .pname{font-weight:600; color:var(--ink); font-size:14.5px;}#ccos-builder .pchain .pcat{display:block; font-size:11.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em; margin-top:2px;}#ccos-builder .empty-note{font-size:14px; color:var(--ink-soft); font-style:italic;}#ccos-builder .analytics{
+  border-top:1px dashed var(--border); padding-top:18px; margin-top:18px;
+  display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:start;
+}@media (max-width:760px){#ccos-builder .analytics{grid-template-columns:1fr;}}
+#ccos-builder .analytics h3{
+  font-family:var(--font-head); font-size:13px; letter-spacing:0.05em; text-transform:uppercase; font-weight:700;
+  margin:0 0 10px; color:var(--accent-dark);
+}#ccos-builder .analytics p{font-size:15px; line-height:1.65; margin:0 0 12px; color:var(--ink);}#ccos-builder .lens-tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}#ccos-builder .lens-tag{
+  font-size:12px; font-weight:600; padding:4px 10px; border:1px solid var(--accent-soft);
+  border-radius:20px; background:var(--accent-soft); color:var(--accent-dark);
+}#ccos-builder .meter{margin-bottom:12px; background:var(--bg-soft); border-radius:10px; padding:10px 12px;}#ccos-builder .meter .mlabel{
+  display:flex; justify-content:space-between; font-size:12.5px; font-weight:500;
+  color:var(--ink-soft); margin-bottom:6px;
+}#ccos-builder .meter .mbar{height:7px; background:#fff; border-radius:4px; position:relative; overflow:hidden; box-shadow:inset 0 1px 2px rgba(15,23,42,0.08);}#ccos-builder .meter .mfill{height:100%; border-radius:4px; transition:width 0.35s ease;}#ccos-builder .actions{display:flex; gap:10px; margin-top:20px;}#ccos-builder .actions button{
+  font-family:var(--font); font-size:14.5px; font-weight:600; letter-spacing:0.01em; padding:12px 18px;
+  border:1px solid var(--border); border-radius:10px; background:#fff; cursor:pointer;
+  transition:all 0.12s;
+}#ccos-builder .actions button:hover{background:var(--bg-soft); border-color:var(--ink-soft); transform:translateY(-1px);}#ccos-builder .actions button.primary{background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 12px -3px rgba(8,145,178,0.5);}#ccos-builder .actions button.primary:hover{background:var(--accent-dark); border-color:var(--accent-dark);}#ccos-builder footer{
+  margin-top:34px; font-size:13px; color:var(--ink-soft);
+  border-top:1px solid var(--border); padding-top:16px; line-height:1.7;
+}#ccos-builder footer a{color:var(--accent-dark); text-decoration:none; border-bottom:1px solid transparent;}#ccos-builder footer a:hover{border-bottom-color:var(--accent-dark);}#ccos-builder /* CCOS BUILDER INTRO */
+#ccos-builder .ccos-intro{
+  border:1px solid var(--border); border-radius:16px; background:#fff;
+  box-shadow:0 1px 2px rgba(15,23,42,0.04);
+  padding:24px 26px 26px; margin-bottom:18px;
+}#ccos-builder .ccos-intro .ccb-eyebrow{
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--accent-dark); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+}#ccos-builder .ccos-intro .ccb-eyebrow::before{content:''; display:block; width:18px; height:1px; background:var(--accent-dark);}
+#ccos-builder .ccos-intro h2{font-family:var(--font-head); font-size:22px; letter-spacing:-0.01em; font-weight:700; margin:0 0 12px; color:var(--ink);}#ccos-builder .ccos-intro p{font-size:15px; line-height:1.7; color:var(--ink-soft); margin:0 0 10px;}#ccos-builder .ccos-intro p:last-child{margin-bottom:0;}#ccos-builder .ccos-stages{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0 18px;
+  font-family:var(--font); font-size:13.5px; font-weight:600; color:var(--ink);
+}#ccos-builder .ccos-stages .ccb-stage{
+  border:1px solid var(--border); border-radius:8px; padding:7px 11px; background:var(--bg-soft);
+}#ccos-builder .ccos-stages .ccb-stage.current{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-dark);}#ccos-builder .ccos-stages .arrow{color:var(--ink-soft); font-size:14.5px;}#ccos-builder /* DISCLAIMER BANNER */
+#ccos-builder .disclaimer-banner{
+  display:flex; gap:12px; align-items:flex-start;
+  border:1px solid #fecaca; background:#fef2f2; border-radius:12px;
+  padding:14px 16px; margin-bottom:24px;
+}#ccos-builder .disclaimer-banner .flag{
+  flex:none; font-size:12px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase;
+  color:#fff; background:var(--tab4); border-radius:6px; padding:5px 9px; line-height:1.4;
+}#ccos-builder .disclaimer-banner p{font-size:14px; line-height:1.6; color:#7f1d1d; margin:0;}#ccos-builder .disclaimer-banner strong{color:#7f1d1d;}#ccos-builder .site-back-nav{
+  background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:500;
+  box-shadow:0 1px 0 rgba(15,23,42,0.03), 0 4px 16px -8px rgba(15,23,42,0.08);
+}#ccos-builder .site-back-nav-inner{
+  max-width:1180px; margin:0 auto; padding:14px 28px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px; flex-wrap:wrap;
+}#ccos-builder .site-back-brand{ font-family:var(--mono); font-weight:700; font-size:18.5px; color:var(--ink); text-decoration:none; }#ccos-builder .site-back-brand span{ color:var(--accent); }#ccos-builder .site-back-links{ display:flex; gap:6px; flex-wrap:wrap; }#ccos-builder .site-back-links a{
+  display:inline-flex; align-items:center; gap:6px; background:var(--bg-soft); border:1.5px solid transparent;
+  border-radius:9px; padding:9px 15px; font-family:var(--font); font-size:14.5px; font-weight:600;
+  color:var(--ink-soft); text-decoration:none; transition:all .15s; white-space:nowrap;
+}#ccos-builder .site-back-links a:hover{ color:var(--accent-dark); border-color:var(--accent); transform:translateY(-1px); }#ccos-builder .site-back-links a.current{ background:var(--accent); color:#fff; }#ccos-builder .site-back-links a.course{ background:#fffbeb; color:#92400e; border-color:#fcd9a4; }
+</style>
+<style>
+  .vr-suitebar{
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFA 65%);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 16px;
+  }
+  .vr-suitebar .vr-brand{
+    font-family: 'DM Mono','IBM Plex Mono',monospace;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: #0F172A; text-decoration: none; display:flex; align-items:center; gap:0;
+  }
+  .vr-suitebar .vr-brand span{ color: #0891B2; }
+  .vr-suitebar .vr-nav{ display:flex; gap:6px; flex-wrap:wrap; }
+  .vr-suitebar .vr-nav a{
+    font-family:'DM Mono','IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#475569; text-decoration:none; padding:6px 10px; border-radius:999px;
+    border:1px solid #E2E8F0; background:#FFFFFF; transition:.15s ease;
+  }
+  .vr-suitebar .vr-nav a:hover{ color:#fff; background:#0891B2; border-color:#0891B2; }
+  .vr-suitebar .vr-nav a.active{ color:#fff; background:#0E7490; border-color:#0E7490; }
+  @media (max-width:640px){
+    .vr-suitebar{ padding:10px 14px; }
+    .vr-suitebar .vr-nav a{ padding:5px 8px; font-size:10px; }
+  }
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/home.html">Home</a>
+    <a href="https://avi33tbtt.github.io/bench.html">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/bench_lite.html">Bench Lite</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/clinical-polemos.html">Clinical Polemos</a>
+    <a href="https://avi33tbtt.github.io/case-lens.html">Case Lens</a>
+    <a href="https://avi33tbtt.github.io/sdm-lens.html">SDM Lens</a>
+    <a href="https://avi33tbtt.github.io/Prompts/ebm-case-query-generator.html">EBM Query Generator</a>
+    <a href="https://avi33tbtt.github.io/ccos-builder.html" class="active">CCOS Builder</a>
+  </nav>
+</header>
+<div id="ccos-builder">
+<div class="wrap">
+
+  <header>
+    <div class="title">Vibe Rounds<small>Clinical Cognition OS (CCOS) — Module Order Builder</small></div>
+    <div class="top-right">
+      <div class="top-links">
+        <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project website</a>
+        <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank" rel="noopener">Dr. Avinash — LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="disclaimer-banner">
+    <div class="flag">Not for Clinical Use</div>
+    <p>
+      <strong>VibeRounds and this builder are a learning stack, not a clinical decision tool.</strong> Everything
+      produced here — module chains, the analytic-yield commentary, and any pipeline you copy out — is a study aid for
+      practicing clinical reasoning on deidentified, consented, publicly published cases, such as case reports. It is
+      not validated for, and must not be used for, diagnosing
+      or managing real patients. See the Disclosure Statement on the source site for full terms.
+    </p>
+  </div>
+
+  <p class="subline">
+    Load a case below, then tick modules in the order you'd run them on it. Each tap stamps the next sequence number
+    into the Chosen Pipeline — untick and the chain renumbers itself, along with a plain-language read on what kind
+    of analytic yield that combination tends to produce.
+  </p>
+
+  <div class="case-selector">
+    <h2>① Case Under Review</h2>
+    <div class="sub">Provide the case the pipeline below will be run against — paste it in, add a link to where it lives, or both.</div>
+    <div class="case-field">
+      <label for="caseText">Case text</label>
+      <textarea id="caseText">62F, 3 days of worsening dyspnea and bilateral leg swelling. History of hypertension, no known cardiac disease. O2 sat 91% on room air, JVP raised, bibasal crackles, pitting oedema to the knees. [Replace with your own case, or leave blank if you're only linking out below.]</textarea>
+    </div>
+    <div class="case-field">
+      <label for="caseLink">Link to case (optional)</label>
+      <input type="url" id="caseLink" placeholder="https://... link to the case record, note, or write-up">
+    </div>
+    <span class="case-tag">DUMMY CASE — REPLACE BEFORE USE</span>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipeline-top">
+      <div>
+        <h2>② Chosen Pipeline</h2>
+        <div class="sub">Builds as you tick modules below — in selection order.</div>
+      </div>
+    </div>
+    <div class="pipeline-body">
+      <ol class="pchain" id="pchain"></ol>
+      <div class="analytics" id="analyticsBlock" style="display:none;">
+        <div>
+          <h3>Likely Analytic Yield</h3>
+          <div class="lens-tags" id="lensTags"></div>
+          <p id="analyticsText"></p>
+        </div>
+        <div id="meters"></div>
+      </div>
+      <div class="actions">
+        <button id="clearBtn">Clear chain</button>
+        <button id="copyBtn" class="primary">Copy pipeline</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="picker">
+    <h2>③ Pick Modules, In Order</h2>
+    <div class="sub">Tick modules in the order you'd run them on the case above. Each tap stamps the next sequence number in the pipeline — untick and the chain renumbers itself.</div>
+    <div class="ccb-tabbar" id="tabbar"></div>
+    <div id="categories"></div>
+  </div>
+
+  <div class="presets">
+    <h2>Readymade Pipelines</h2>
+    <div class="sub">Curated module chains for common situations — tap one to load it, then tweak in the builder above as needed.</div>
+    <div class="preset-tabbar" id="presetTabbar"></div>
+    <div class="preset-grid" id="presetGrid"></div>
+  </div>
+
+  <footer>
+    Part of the VibeRounds learning stack — see the <a href="https://avi33tbtt.github.io/#guided-discovery" target="_blank" rel="noopener">Guided Discovery</a> tab for the full module directory and pipelines.
+  </footer>
+</div>
+
+</div>
+<script>
+/* ════════════════ CCOS BUILDER (scoped) ════════════════ */
+(function(){
+
+const CATS = [
+  {key:"reasoning", label:"Clinical Reasoning & Cognitive Frameworks", color:"var(--tab1)"},
+  {key:"advocacy", label:"Patient Advocacy & Individual Care Management", color:"var(--tab2)"},
+  {key:"analytics", label:"Data Analytics & Analytical Methodologies", color:"var(--tab3)"},
+  {key:"safety", label:"Patient Safety, Risk & Systems Failure", color:"var(--tab4)"},
+  {key:"education", label:"Medical Education, Literature & Basic Science", color:"var(--tab5)"},
+  {key:"operations", label:"Health Operations, Systems & Economics", color:"var(--tab6)"},
+  {key:"meta", label:"Framework Architecture & Meta-Design", color:"var(--tab7)"},
+];
+
+const BASE = "https://avi33tbtt.github.io/Prompts/";
+const MODULES = [
+{id:0, cat:"meta", name:"Cold-Start Orientation", desc:"Routes a new user to the right module based on role and goal", url:BASE+"Module-00-Cold-Start-Orientation.html"},
+{id:1, cat:"reasoning", name:"Socratic Clinical Reasoning", desc:"Forces active reasoning through a case before revealing the answer", url:BASE+"Module-01-Socratic-Clinical-Reasoning.html"},
+{id:2, cat:"advocacy", name:"Patient-Advocate Case Documentation", desc:"4-step workflow for a family member to build a structured case record", url:BASE+"Module-02-Patient-Advocate-Case-Documentation.html"},
+{id:3, cat:"advocacy", name:"Extended Patient-Advocate Monitoring", desc:"Longitudinal tracking of lifestyle, mood, meds, red flags", url:BASE+"Module-03-Extended-Patient-Advocate-Monitoring.html"},
+{id:4, cat:"education", name:"Peer-Level Ward Round Preparation", desc:"Rehearses rounds, admissions, pre-op clearance, overnight triage", url:BASE+"Module-04-Peer-Level-Ward-Round-Preparation.html"},
+{id:5, cat:"analytics", name:"Real-Time Case Review & Data Audit", desc:"Queries and cleans a single patient's live case log", url:BASE+"Module-05-Real-Time-Case-Review-and-Data-Audit.html"},
+{id:6, cat:"analytics", name:"Registry-Level Analytics", desc:"Nine escalating levels of analytic depth across a full registry", url:BASE+"Module-06-Registry-Level-Analytics.html"},
+{id:7, cat:"analytics", name:"Longitudinal & Cross-Case Learning", desc:"Turns the registry into a cross-case, cross-time learning system", url:BASE+"Module-07-Longitudinal-and-Cross-Case-Learning.html"},
+{id:8, cat:"meta", name:"Socratic-Mode Design Specification", desc:"12-point QA spec for authoring or revising a Socratic prompt", url:BASE+"Module-08-Socratic-Mode-Design-Specification.html"},
+{id:9, cat:"advocacy", name:"N-of-1 Case Research Protocol", desc:"Seven-stage formal research protocol on a single complex case", url:BASE+"Module-09-Case-Research_Protocol.html"},
+{id:10, cat:"education", name:"Journal & Article Reading", desc:"Structured companion for reading primary literature", url:BASE+"Module-10-Medical-Journal-Article-Reading.html"},
+{id:11, cat:"advocacy", name:"Patient Education Query Intelligence", desc:"Shapes how patient questions get triaged and answered", url:BASE+"Module-11-Patient-Education-Query-Intelligence.html"},
+{id:12, cat:"reasoning", name:"Differential Diagnosis Deepdive", desc:"Systematic expansion and pruning of a differential", url:BASE+"Module-12-Differential-Diagnosis-Deepdive.html"},
+{id:13, cat:"advocacy", name:"Medication Reconciliation & Polypharmacy", desc:"Audits a med list for interactions and redundancy", url:BASE+"Module-13-Medication-Reconciliation-Polypharmacy-Audit.html"},
+{id:14, cat:"reasoning", name:"Resource-Constrained Clinical Reasoning", desc:"Reasoning adapted to low-resource / global-health settings", url:BASE+"Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html"},
+{id:15, cat:"reasoning", name:"Illness Script Acquisition", desc:"Builds and reinforces canonical illness scripts", url:BASE+"Module-15-Illness-Script-Acquisition.html"},
+{id:16, cat:"education", name:"Basic Science ↔ Clinical Integration", desc:"Bidirectional mapping between mechanism and bedside finding", url:BASE+"Module-16-Bidirectional-Basic-Science-Clinical-Integration.html"},
+{id:17, cat:"reasoning", name:"Semantic Qualifiers & Problem Representation", desc:"Trains precise, qualifier-rich problem representations", url:BASE+"Module-17-Semantic-Qualifiers-Problem-Representation.html"},
+{id:18, cat:"reasoning", name:"Causal vs. Probabilistic (Network) Reasoning", desc:"Contrasts causal-mechanistic and network/probabilistic models", url:BASE+"Module-18-Causal-vs-Probabilistic-Network-Reasoning.html"},
+{id:19, cat:"operations", name:"Community & Social Medicine Insights", desc:"Surfaces social-determinant and community-level factors", url:BASE+"Module-19-Community-and-Social-Medicine-Insights.html"},
+{id:20, cat:"reasoning", name:"Naturalistic Decision Making", desc:"Recognition-primed decision modeling under time pressure", url:BASE+"Module-20-Recognition-Primed-Decision-Model.html"},
+{id:21, cat:"education", name:"Evidence Frontier Search", desc:"Locates the current edge of evidence on a clinical question", url:BASE+"Module-21-Evidence-Frontier-Search.html"},
+{id:22, cat:"analytics", name:"Nested Analysis", desc:"Layers sub-analyses within a larger case or dataset", url:BASE+"Module-22-Nested-Analysis.html"},
+{id:23, cat:"analytics", name:"Counterfactual Analysis", desc:"Tests what-if branches against the actual case course", url:BASE+"Module-23-Counterfactual-Analysis.html"},
+{id:24, cat:"analytics", name:"Heuristic Analysis", desc:"Surfaces which mental shortcuts shaped a decision", url:BASE+"Module-24-Heuristic-Analysis.html"},
+{id:25, cat:"analytics", name:"Thematic Analysis", desc:"Extracts recurring themes across notes or cases", url:BASE+"Module-25-Thematic-Analysis.html"},
+{id:26, cat:"safety", name:"Bias Auditing", desc:"Screens reasoning for cognitive and systemic bias", url:BASE+"Module-26-Bias-Auditing.html"},
+{id:27, cat:"analytics", name:"Time-Series & Velocity Analyzer", desc:"Tracks rate-of-change in trends, not just single values", url:BASE+"Module-27-Time-Series-Velocity-Analyzer.html"},
+{id:28, cat:"reasoning", name:"Diagnostic Time-Out", desc:"Structured pause to re-check a working diagnosis", url:BASE+"Module-28-Diagnostic-Time-Out.html"},
+{id:29, cat:"safety", name:"The Iatrogenic Domino Effect", desc:"Traces cascades of harm triggered by an intervention", url:BASE+"Module-29-Iatrogenic-Domino-Effect.html"},
+{id:30, cat:"reasoning", name:"The \"Diagnostic Anchor\" Extractor", desc:"Identifies the first idea that anchored subsequent reasoning", url:BASE+"Module-30-Diagnostic-Anchor-Extractor.html"},
+{id:31, cat:"education", name:"First-Principles Pathophysiology Mapping", desc:"Rebuilds a presentation from mechanism upward", url:BASE+"Module-31-First-Principles-Pathophysiology-Mapping.html"},
+{id:32, cat:"reasoning", name:"Clinical Cognition Loop", desc:"Cycles hypothesis-generation and data-gathering iteratively", url:BASE+"Module-32-Clinical-Cognition-Loop.html"},
+{id:33, cat:"reasoning", name:"The \"Why Now?\" (Precipitant) Hunter", desc:"Hunts for the trigger that made a chronic issue acute today", url:BASE+"Module-33-Why-Now-Precipitant-Hunter.html"},
+{id:34, cat:"operations", name:"The High-Value Care (HVC) Auditor", desc:"Checks whether tests/treatments add proportional value", url:BASE+"Module-34-High-Value-Care-Auditor.html"},
+{id:35, cat:"reasoning", name:"Epistemic Certainty Mapping & Calibration", desc:"Maps confidence levels across the differential", url:BASE+"Module-35-Epistemic-Certainty-Mapping-Calibration.html"},
+{id:36, cat:"reasoning", name:"The Bayesian Probability / Likelihood Ratio Engine", desc:"Runs likelihood-ratio math on findings and tests", url:BASE+"Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html"},
+{id:37, cat:"reasoning", name:"Red Herring / Signal-to-Noise Drill", desc:"Separates distracting findings from load-bearing ones", url:BASE+"Module-37-Red-Herring-Signal-to-Noise-Drill.html"},
+{id:38, cat:"safety", name:"Poly-Crisis & Cascading Failure Simulator", desc:"Simulates multiple simultaneous system failures", url:BASE+"Module-38-Poly-Crisis-Cascading-Failure-Simulator.html"},
+{id:39, cat:"education", name:"The \"Global Knowledge Network\" Diagnostic Matrix", desc:"Cross-references global literature against the case", url:BASE+"Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html"},
+{id:40, cat:"operations", name:"The Operational & Throughput Strategist", desc:"Optimizes ward/unit flow and throughput", url:BASE+"Module-40-Operational-Throughput-Strategist.html"},
+{id:41, cat:"operations", name:"Clinical Workflow Implementation Science", desc:"Applies implementation-science lenses to a workflow change", url:BASE+"Module-41-Clinical-Workflow-Implementation-Science.html"},
+{id:42, cat:"safety", name:"Clinical Pre-Mortem", desc:"Imagines failure in advance to find its causes now", url:BASE+"Module-42-Clinical-Pre-Mortem.html"},
+{id:43, cat:"operations", name:"Health Economics & Value-Based Care Alignment", desc:"Weighs cost, value, and care-model alignment", url:BASE+"Module-43-Health-Economics-Value-Based-Care-Alignment.html"},
+{id:44, cat:"meta", name:"Clinical Genetics Reasoning", desc:"Structured reasoning through a genetics-influenced case", url:BASE+"Module-44-Clinical-Genetics-Reasoning.html"},
+{id:45, cat:"reasoning", name:"Shadow Module 44 — Clinical Genetics Adversarial Counterpart", desc:"Adversarially challenges the genetics reasoning above", url:BASE+"Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html"},
+{id:46, cat:"education", name:"Evidence-Based Medicine Insights", desc:"Applies EBM appraisal steps to a case question", url:BASE+"Module-45-Evidence-Based-Medicine-Insights.html"},
+{id:47, cat:"education", name:"Shadow Module 47 — Evidence-Based Medicine Adversarial Counterpart", desc:"Adversarially challenges the EBM appraisal above", url:BASE+"Shadow-Module-45-EBM-Adversarial-Counterpart.html"},
+{id:48, cat:"reasoning", name:"Treatment Comparative Analysis & Prognosis Trajectory", desc:"Compares treatment options against likely trajectories", url:BASE+"Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html"},
+{id:49, cat:"safety", name:"FMEA Analysis", desc:"Failure-Mode-and-Effects style audit of a process", url:BASE+"Module-49-FMEA-Analysis-and-Insights.html"},
+{id:50, cat:"reasoning", name:"Diagnostic Reasoning Map", desc:"Visual/structural map of the diagnostic pathway taken", url:BASE+"Module-50-DRM-Diagnostic-Reasoning-Map.html"},
+{id:51, cat:"operations", name:"Systems-Based Clinical Analysis", desc:"Analyzes a case through the surrounding system, not just the patient", url:BASE+"Module-51-Systems-Based-Clinical-Analysis-and-Insights.html"},
+{id:52, cat:"education", name:"Clinical Pearls Distillation", desc:"Distills a case down to transferable teaching pearls", url:BASE+"Module-52-CP-Clinical-Pearls.html"},
+{id:53, cat:"education", name:"Clinical Guideline Intelligence Navigator", desc:"Navigates and reconciles competing guideline recommendations", url:BASE+"Module-53-Clinical-Guideline-Intelligence-Navigator.html"},
+{id:54, cat:"reasoning", name:"System 1 & System 2 Thinking Question Generator", desc:"Generates prompts that separate fast and slow reasoning", url:BASE+"Module-54-System1-System2-Question-Generator.html"},
+{id:55, cat:"advocacy", name:"Patient Needs Assessment", desc:"Structured assessment of the patient's own stated needs", url:BASE+"Module-55-Patient-Needs-Assessment.html"},
+{id:56, cat:"reasoning", name:"Hypothetico-Deductive Reasoning", desc:"Classic generate-test-refine hypothesis cycle", url:BASE+"Module-HDM-Hypothetico-Deductive-Model.html"},
+{id:57, cat:"reasoning", name:"Clinical Cognition Deep Dive", desc:"Extended, slow-mode examination of a single reasoning trace", url:BASE+"Module-CC-Clinical-Cognition-Deep-Dive.html"},
+];
+
+const CAT_INFO = Object.fromEntries(CATS.map(c=>[c.key,c]));
+
+const PRESET_CATS = [
+  {key:"reasoning", label:"Diagnostic Reasoning", color:"#0891b2", soft:"#ecfeff"},
+  {key:"safety", label:"Safety & Risk", color:"#dc2626", soft:"#fef2f2"},
+  {key:"analytics", label:"Analytics & Data", color:"#7c3aed", soft:"#f5f3ff"},
+  {key:"advocacy", label:"Advocacy & Patient Care", color:"#d97706", soft:"#fffbeb"},
+  {key:"education", label:"Education & Evidence", color:"#059669", soft:"#ecfdf5"},
+  {key:"operations", label:"Operations & Systems", color:"#b45309", soft:"#fef7ed"},
+  {key:"arcs", label:"Comprehensive Arcs", color:"#4f46e5", soft:"#eef2ff"},
+  {key:"meta", label:"Meta & Framework Design", color:"#475569", soft:"#f1f5f9"},
+];
+const PRESET_CAT_INFO = Object.fromEntries(PRESET_CATS.map(c=>[c.key,c]));
+
+const PRESETS = [
+  // Diagnostic Reasoning
+  {name:"Diagnostic Deep Dive", cat:"reasoning", desc:"Reason through the case out loud, then tighten language and calibrate confidence.", ids:[1,12,17,35,36]},
+  {name:"Ward Round Prep", cat:"reasoning", desc:"Rehearse rounds and admissions with time-pressured, precipitant-aware reasoning.", ids:[4,20,28,33]},
+  {name:"Complex Multi-System Case", cat:"reasoning", desc:"Nested analysis, systems-based view, and cascading failure across a tangled case.", ids:[12,18,22,38,51]},
+  {name:"Genetics-Focused Workup", cat:"reasoning", desc:"Structured genetics reasoning with its adversarial counterpart and mechanism mapping.", ids:[44,45,31]},
+  {name:"Counterfactual & Precipitant Analysis", cat:"reasoning", desc:"Find what triggered the acute event and test what-if branches against it.", ids:[33,23,18]},
+  {name:"Rapid Bedside Triage", cat:"reasoning", desc:"Recognition-primed decisions with a precipitant hunt and a diagnostic time-out.", ids:[20,33,28]},
+  {name:"Semantic Precision Drill", cat:"reasoning", desc:"Sharpen problem representation, separate signal from noise, name the anchor.", ids:[17,37,30]},
+  {name:"Hypothesis Testing Loop", cat:"reasoning", desc:"Classic generate-test-refine cycle backed by likelihood-ratio math.", ids:[56,32,36]},
+
+  // Safety & Risk
+  {name:"Safety & Failure Audit", cat:"safety", desc:"Bias check, cascading-failure sim, pre-mortem, and a formal FMEA pass.", ids:[26,29,38,42,49]},
+  {name:"Bias & Anchor Check", cat:"safety", desc:"Find the diagnostic anchor, audit for bias, map certainty across the differential.", ids:[30,26,24,35]},
+  {name:"Cognitive Bias Deep Audit", cat:"safety", desc:"Heuristics, bias, anchoring, calibration, and System 1/2 separation in one chain.", ids:[24,26,30,35,54]},
+  {name:"Pre-Mortem Safety Planning", cat:"safety", desc:"Imagine failure before it happens, across process, cascade, and system levels.", ids:[42,29,49,38]},
+  {name:"Polypharmacy & Med Safety", cat:"safety", desc:"Reconcile medications, audit for bias, then run a formal failure-mode pass.", ids:[13,26,49]},
+  {name:"Iatrogenic Harm Tracing", cat:"safety", desc:"Trace cascades of harm from an intervention through to systemic failure.", ids:[29,38,42]},
+  {name:"Adversarial Stress-Test", cat:"safety", desc:"Run genetics and EBM adversarial counterparts, then a bias sweep.", ids:[45,47,26]},
+
+  // Analytics & Data
+  {name:"Registry Analytics Suite", cat:"analytics", desc:"Move from a single live case log up to registry-wide, longitudinal patterns.", ids:[5,6,7,27]},
+  {name:"Time-Series Trend Watch", cat:"analytics", desc:"Audit the live log, then track rate-of-change and cross-case learning over time.", ids:[5,27,7]},
+  {name:"Thematic Case Review", cat:"analytics", desc:"Pull recurring themes out of the notes, grounded in literature and pearls.", ids:[25,52,10]},
+  {name:"N-of-1 Research Protocol", cat:"analytics", desc:"Formal single-case research protocol paired with a live audit and theme extraction.", ids:[9,5,25]},
+  {name:"Cross-Case Learning Loop", cat:"analytics", desc:"Turn longitudinal and registry data into a cross-case learning system.", ids:[7,6,27]},
+
+  // Advocacy & Patient Care
+  {name:"Patient Advocate Starter", cat:"advocacy", desc:"For a family member building and tracking a structured case record.", ids:[2,3,11,55]},
+  {name:"Community & Social Context", cat:"advocacy", desc:"Surface social-determinant factors and the patient's own stated needs.", ids:[19,14,55]},
+  {name:"Patient Education Response", cat:"advocacy", desc:"Shape how a patient's questions get triaged, answered, and documented.", ids:[11,55,2]},
+  {name:"Longitudinal Monitoring", cat:"advocacy", desc:"Track lifestyle, mood, meds, and red flags over the course of care.", ids:[3,27,7]},
+
+  // Education & Evidence
+  {name:"Evidence & Literature Review", cat:"education", desc:"Read the primary literature, then locate the current edge of evidence.", ids:[10,21,46,47]},
+  {name:"Teaching Case Distillation", cat:"education", desc:"Turn a worked case into transferable teaching pearls and guideline context.", ids:[1,31,52,53]},
+  {name:"EBM Appraisal Pipeline", cat:"education", desc:"Appraise the evidence, stress-test it adversarially, then find the frontier.", ids:[46,47,21]},
+  {name:"Illness Script Builder", cat:"education", desc:"Build canonical illness scripts and bridge them to underlying mechanism.", ids:[15,31,16]},
+  {name:"Guideline Reconciliation", cat:"education", desc:"Reconcile competing guidelines against appraised evidence and its frontier.", ids:[53,46,21]},
+  {name:"Basic Science Bridge", cat:"education", desc:"Map mechanism to bedside finding, then ground it in primary literature.", ids:[16,31,10]},
+  {name:"Frontier-to-Bedside", cat:"education", desc:"Find the evidence frontier, cross-reference global literature, reconcile guidelines.", ids:[21,39,53]},
+
+  // Operations & Systems
+  {name:"Operations & Value Review", cat:"operations", desc:"Reframe the same case in terms of cost, workflow, and system feasibility.", ids:[19,34,40,43]},
+  {name:"Global Health Adapted Workup", cat:"operations", desc:"Resource-constrained reasoning with community factors and value-of-care checks.", ids:[14,19,34]},
+  {name:"Throughput & Flow Optimization", cat:"operations", desc:"Optimize ward flow and apply implementation science to the change.", ids:[40,41,34]},
+  {name:"Value-Based Care Alignment", cat:"operations", desc:"Weigh cost and value against the community and social context.", ids:[43,34,19]},
+  {name:"System-Level Failure Review", cat:"operations", desc:"Analyze the case through its surrounding system, then stress-test for cascade failure.", ids:[51,38,49]},
+
+  // Comprehensive Arcs
+  {name:"Full Case Workup", cat:"arcs", desc:"A comprehensive single-case run: reason, re-check, audit safety, distill pearls.", ids:[1,12,28,26,49,52]},
+  {name:"Socratic-to-Pearls Arc", cat:"arcs", desc:"The full learner arc: Socratic reasoning through to distilled teaching pearls.", ids:[1,12,28,35,52]},
+  {name:"Diagnostic Reasoning Map Arc", cat:"arcs", desc:"Reason through the case, then map the pathway and distill it to pearls.", ids:[1,50,52]},
+  {name:"New User Orientation Arc", cat:"arcs", desc:"Start at cold-start orientation, run Socratic reasoning, close with pearls.", ids:[0,1,52]},
+
+  // Diagnostic Reasoning (more)
+  {name:"Diagnostic Loop Reset", cat:"reasoning", desc:"Cycle the cognition loop, pause for a time-out, then re-anchor on the decision.", ids:[32,28,20]},
+  {name:"Likelihood Ratio Workout", cat:"reasoning", desc:"Run the Bayesian engine against precise, qualifier-rich problem representations.", ids:[36,17,35]},
+  {name:"Anchor-to-Precision Chain", cat:"reasoning", desc:"Extract the anchor, tighten the representation, then deepen the differential.", ids:[30,17,12]},
+
+  // Safety & Risk (more)
+  {name:"Bias-to-FMEA Pipeline", cat:"safety", desc:"Surface heuristics and anchors first, then close with a formal FMEA pass.", ids:[24,30,49]},
+  {name:"Cascading Risk Simulation", cat:"safety", desc:"Simulate poly-crisis failure and trace it through the surrounding system.", ids:[38,29,51]},
+  {name:"Diagnostic Time-Out Safety Loop", cat:"safety", desc:"Pause on the working diagnosis, audit bias, then pre-empt downstream harm.", ids:[28,26,42]},
+
+  // Analytics & Data (more)
+  {name:"Nested Case Analysis", cat:"analytics", desc:"Layer sub-analyses within the case and pull out its recurring themes.", ids:[22,25,5]},
+  {name:"Heuristic & Thematic Scan", cat:"analytics", desc:"Surface the shortcuts taken, then the themes that recur across the record.", ids:[24,25,22]},
+  {name:"Velocity & Longitudinal Watch", cat:"analytics", desc:"Track rate-of-change alongside registry-wide, longitudinal patterns.", ids:[27,7,6]},
+
+  // Advocacy & Patient Care (more)
+  {name:"Family Documentation Loop", cat:"advocacy", desc:"Build the structured record, then keep it current with longitudinal tracking.", ids:[2,3,55]},
+  {name:"Needs-First Advocacy", cat:"advocacy", desc:"Assess stated needs first, then shape education and social context around them.", ids:[55,11,19]},
+  {name:"Extended Monitoring Arc", cat:"advocacy", desc:"Longitudinal tracking of lifestyle, mood, and meds, tied back to stated needs.", ids:[3,27,55]},
+
+  // Education & Evidence (more)
+  {name:"Pathophys-to-Pearl", cat:"education", desc:"Rebuild the case from mechanism upward, then distill it into teaching pearls.", ids:[31,16,52]},
+  {name:"Journal Club Prep", cat:"education", desc:"Read the literature, find its frontier, then appraise it the EBM way.", ids:[10,21,46]},
+  {name:"Guideline vs Evidence Clash", cat:"education", desc:"Reconcile guidelines against an adversarially stress-tested evidence base.", ids:[53,47,21]},
+
+  // Operations & Systems (more)
+  {name:"HVC & Throughput Combo", cat:"operations", desc:"Check value-per-test, then optimize the flow it moves through.", ids:[34,40,41]},
+  {name:"Economics & Systems Lens", cat:"operations", desc:"Weigh cost and value, then view the same case through its surrounding system.", ids:[43,51,19]},
+  {name:"Implementation Science Pass", cat:"operations", desc:"Apply implementation science to a workflow change, then check its throughput and value.", ids:[41,40,34]},
+
+  // Comprehensive Arcs (more)
+  {name:"Cold-Start to Pearls", cat:"arcs", desc:"Orient to the right module, prep for rounds, close with teaching pearls.", ids:[0,4,52]},
+  {name:"Full Spectrum Case Arc", cat:"arcs", desc:"Reason through the case, audit for bias, weigh its value, distill the pearls.", ids:[1,26,34,52]},
+
+  // Diagnostic Reasoning (new)
+  {name:"Illness Script to Differential", cat:"reasoning", desc:"Build the canonical script, expand the differential, then tighten how it's worded.", ids:[15,12,17]},
+  {name:"Cognition Loop Under Pressure", cat:"reasoning", desc:"Cycle hypothesis and data-gathering, add time pressure, then force a time-out.", ids:[32,20,28]},
+  {name:"Deductive Confidence Build", cat:"reasoning", desc:"Run the classic generate-test-refine cycle, then calibrate confidence with likelihood ratios.", ids:[56,35,36]},
+  {name:"Anchor & Red Herring Sweep", cat:"reasoning", desc:"Name the anchoring idea, separate signal from noise, then audit for residual bias.", ids:[30,37,26]},
+  {name:"Deep Cognition Review", cat:"reasoning", desc:"Slow-mode reasoning trace, cycled and re-checked against calibrated confidence.", ids:[57,32,35]},
+  {name:"Causal Mechanism Walkthrough", cat:"reasoning", desc:"Contrast causal and network reasoning, then ground both in mechanism and bedside finding.", ids:[18,31,16]},
+  {name:"System 1/2 Calibration Drill", cat:"reasoning", desc:"Separate fast and slow reasoning, then calibrate confidence and pause to re-check.", ids:[54,35,28]},
+
+  // Safety & Risk (new)
+  {name:"Med Safety FMEA Chain", cat:"safety", desc:"Reconcile the medication list, then run it through a formal failure-mode audit.", ids:[13,49,29]},
+  {name:"Bias-Precipitant-Anchor Sweep", cat:"safety", desc:"Audit for bias, hunt the precipitant, then name the anchor that shaped the read.", ids:[26,33,30]},
+  {name:"Crisis Simulation to Pre-Mortem", cat:"safety", desc:"Simulate simultaneous system failures, then pre-mortem and formally audit the response.", ids:[38,42,49]},
+  {name:"Genetics Adversarial Safety Check", cat:"safety", desc:"Reason through a genetics-influenced case, stress-test it, then sweep for bias.", ids:[44,45,26]},
+  {name:"EBM Adversarial Safety Pass", cat:"safety", desc:"Appraise the evidence, challenge it adversarially, then pre-mortem the decision it supports.", ids:[46,47,42]},
+  {name:"Throughput Failure Risk Scan", cat:"safety", desc:"Optimize flow, then stress-test that workflow for cascading and formal failure modes.", ids:[40,38,49]},
+
+  // Analytics & Data (new)
+  {name:"Case Log to Registry Pipeline", cat:"analytics", desc:"Audit the live case log, layer nested sub-analyses, then zoom out to registry level.", ids:[5,22,6]},
+  {name:"Theme & Velocity Cross-Check", cat:"analytics", desc:"Pull recurring themes from the notes, then check them against rate-of-change trends.", ids:[25,27,7]},
+  {name:"Counterfactual Registry Review", cat:"analytics", desc:"Test what-if branches against the case, then place it in registry and longitudinal context.", ids:[23,6,7]},
+  {name:"Nested Heuristic Scan", cat:"analytics", desc:"Layer sub-analyses within the case, then screen the shortcuts and bias behind them.", ids:[22,24,26]},
+  {name:"Research Protocol Data Chain", cat:"analytics", desc:"Run the formal N-of-1 protocol, backed by a live audit and trend tracking.", ids:[9,5,27]},
+  {name:"Full Analytics Ladder", cat:"analytics", desc:"The complete escalation: live audit, nested analysis, registry, cross-case, and velocity.", ids:[5,22,6,7,27]},
+
+  // Advocacy & Patient Care (new)
+  {name:"Advocate Case-to-Needs Bridge", cat:"advocacy", desc:"Build the structured case record, then ground it in the patient's own stated needs.", ids:[2,55,11]},
+  {name:"Polypharmacy Advocate Review", cat:"advocacy", desc:"Audit the med list for interactions, then track it inside longitudinal monitoring.", ids:[13,3,55]},
+  {name:"Social Context Documentation", cat:"advocacy", desc:"Surface social-determinant factors, then fold them into the structured case record.", ids:[19,2,3]},
+  {name:"Query Intelligence to Needs", cat:"advocacy", desc:"Triage how the patient's questions get answered, then re-ground them in stated needs.", ids:[11,55,2]},
+  {name:"Research-Grade Family Case", cat:"advocacy", desc:"Run a formal single-case protocol on a family member's own documented record.", ids:[9,2,3]},
+  {name:"Advocate Safety Watch", cat:"advocacy", desc:"Track the case longitudinally, reconcile medications, then sweep for reasoning bias.", ids:[3,13,26]},
+
+  // Education & Evidence (new)
+  {name:"Literature to Guideline Chain", cat:"education", desc:"Read the primary literature, find its frontier, then reconcile it against guidelines.", ids:[10,21,53]},
+  {name:"Illness Script Foundation", cat:"education", desc:"Build canonical scripts, bridge mechanism to bedside, then rebuild from first principles.", ids:[15,16,31]},
+  {name:"EBM to Frontier Bridge", cat:"education", desc:"Appraise the evidence, then locate its frontier against the global literature.", ids:[46,21,39]},
+  {name:"Teaching Pearl Builder", cat:"education", desc:"Rehearse the round, reconcile it against guidelines, then distill it to pearls.", ids:[4,53,52]},
+  {name:"Global Literature Cross-Reference", cat:"education", desc:"Cross-reference global literature against the case, then read the primary sources and their frontier.", ids:[39,10,21]},
+  {name:"Basic Science Deep Bridge", cat:"education", desc:"Bridge mechanism to finding, rebuild from first principles, then re-anchor in illness scripts.", ids:[16,31,15]},
+  {name:"Adversarial Evidence Review", cat:"education", desc:"Appraise the evidence, stress-test it adversarially, then reconcile it with guidelines.", ids:[46,47,53]},
+
+  // Operations & Systems (new)
+  {name:"Value & Throughput Chain", cat:"operations", desc:"Check value-per-test, optimize the flow it moves through, then weigh cost against value.", ids:[34,40,43]},
+  {name:"Systems & Community Lens", cat:"operations", desc:"View the case through its surrounding system, then through its social and economic context.", ids:[51,19,43]},
+  {name:"Implementation to Value", cat:"operations", desc:"Apply implementation science to a workflow change, then check its cost-value alignment.", ids:[41,34,43]},
+  {name:"Global Health Ops Bridge", cat:"operations", desc:"Adapt reasoning for low-resource settings, then check community factors and flow.", ids:[14,19,40]},
+  {name:"Full Operations Ladder", cat:"operations", desc:"The complete systems sweep: community, value, throughput, implementation, economics, and systems.", ids:[19,34,40,41,43,51]},
+  {name:"Community-to-System Chain", cat:"operations", desc:"Surface social-determinant factors, then trace them through the surrounding care system.", ids:[19,51,41]},
+
+  // Meta & Framework Design (new)
+  {name:"Orientation to Design Spec", cat:"meta", desc:"Route a new user to the right module, then apply the QA spec that governs it.", ids:[0,8]},
+  {name:"New Module Author Chain", cat:"meta", desc:"Use the design spec to shape a Socratic module, then close with teaching pearls.", ids:[8,1,52]},
+  {name:"Genetics Meta Framework", cat:"meta", desc:"Reason through a genetics case, stress-test it, then check it against the design spec.", ids:[44,45,8]},
+  {name:"Cold-Start Full Tour", cat:"meta", desc:"Orient a new user, run Socratic reasoning, audit bias, and close with pearls.", ids:[0,1,26,52]},
+  {name:"Framework QA Loop", cat:"meta", desc:"Apply the module design spec, sweep for bias, then formally audit for failure modes.", ids:[8,26,49]},
+  {name:"Meta Design to Pearls", cat:"meta", desc:"Apply the design spec, rebuild from first principles, then distill teaching pearls.", ids:[8,31,52]},
+
+  // Comprehensive Arcs (new)
+  {name:"Research-to-Publication Arc", cat:"arcs", desc:"Run the formal N-of-1 protocol, extract its themes, distill pearls, ground it in literature.", ids:[9,25,52,10]},
+  {name:"Safety-First Full Workup", cat:"arcs", desc:"Reason through the case, audit bias, pre-mortem it, FMEA it, then distill pearls.", ids:[1,26,42,49,52]},
+  {name:"Advocate-to-Educator Arc", cat:"arcs", desc:"Document the case, ground it in stated needs, triage questions, then teach from it.", ids:[2,55,11,52]},
+  {name:"Analytics-Driven Case Arc", cat:"arcs", desc:"Audit the log, nest the analysis, pull its themes, then distill it to pearls.", ids:[5,22,25,52]},
+  {name:"Global Health Full Arc", cat:"arcs", desc:"Adapt reasoning for resource limits, weigh community and value, then teach the pearls.", ids:[14,19,34,52]},
+  {name:"Genetics Full Workup Arc", cat:"arcs", desc:"Reason through the genetics case, stress-test it, map mechanism, then distill pearls.", ids:[44,45,31,52]},
+
+  // Diagnostic Reasoning (batch 2)
+  {name:"Semantic Anchor Reset", cat:"reasoning", desc:"Tighten the problem representation, name the anchor, then separate signal from noise.", ids:[17,30,37]},
+  {name:"Naturalistic Time-Out Loop", cat:"reasoning", desc:"Make the recognition-primed call, pause to re-check it, then cycle the cognition loop.", ids:[20,28,32]},
+  {name:"Bayesian Illness Script Fusion", cat:"reasoning", desc:"Anchor on the canonical script, run the likelihood-ratio math, then calibrate confidence.", ids:[15,36,35]},
+  {name:"Global Health Differential", cat:"reasoning", desc:"Expand the differential and its wording under low-resource, global-health constraints.", ids:[14,12,17]},
+  {name:"Precipitant to Prognosis", cat:"reasoning", desc:"Hunt the trigger that made it acute, then project treatment options and trajectory.", ids:[33,48,35]},
+  {name:"Deductive Deep Dive", cat:"reasoning", desc:"Run the classic hypothesis cycle, then slow-mode re-examine and calibrate the trace.", ids:[56,57,35]},
+  {name:"Causal Anchor Mapping", cat:"reasoning", desc:"Contrast causal and network models, name the anchor, then ground it in mechanism.", ids:[18,30,16]},
+
+  // Safety & Risk (batch 2)
+  {name:"Polypharmacy Cascade Trace", cat:"safety", desc:"Reconcile the med list, trace iatrogenic cascades, then run a formal FMEA pass.", ids:[13,29,49]},
+  {name:"Community Risk & Bias Check", cat:"safety", desc:"Surface social-determinant factors, sweep for bias, then pre-mortem the plan.", ids:[19,26,42]},
+  {name:"Genetics Safety Net", cat:"safety", desc:"Reason through a genetics case, stress-test it, then formally audit for failure modes.", ids:[44,45,49]},
+  {name:"Guideline-Driven Safety Review", cat:"safety", desc:"Reconcile competing guidelines, sweep for bias, then pre-mortem the chosen path.", ids:[53,26,42]},
+  {name:"Throughput Cascade Watch", cat:"safety", desc:"Optimize ward flow, stress-test it for poly-crisis failure, then trace iatrogenic harm.", ids:[40,38,29]},
+  {name:"Calibration Bias Loop", cat:"safety", desc:"Calibrate confidence across the differential, sweep for bias, then name the anchor.", ids:[35,26,30]},
+  {name:"Value-Aware Risk Audit", cat:"safety", desc:"Check whether care adds proportional value, pre-mortem it, then formally audit failure modes.", ids:[34,42,49]},
+
+  // Analytics & Data (batch 2)
+  {name:"Thematic Registry Synthesis", cat:"analytics", desc:"Extract recurring themes, then place them in registry-wide, longitudinal context.", ids:[25,6,7]},
+  {name:"Precipitant Data Trace", cat:"analytics", desc:"Hunt the acute trigger, then track its rate-of-change against the live case log.", ids:[33,27,5]},
+  {name:"Counterfactual Nested Review", cat:"analytics", desc:"Test what-if branches, layer nested sub-analyses, then pull out recurring themes.", ids:[23,22,25]},
+  {name:"Guideline-Informed Registry Audit", cat:"analytics", desc:"Reconcile guidelines against the registry, then extract themes from the pattern.", ids:[53,6,25]},
+  {name:"Heuristic Velocity Check", cat:"analytics", desc:"Surface the shortcuts taken, then track how fast the trend they shaped is moving.", ids:[24,27,7]},
+  {name:"Research Protocol to Pearls", cat:"analytics", desc:"Run the formal N-of-1 protocol, extract its themes, then distill teaching pearls.", ids:[9,25,52]},
+  {name:"Cross-Case Bias Scan", cat:"analytics", desc:"Turn the registry into a cross-case learning system, then screen it for recurring bias.", ids:[7,26,24]},
+
+  // Advocacy & Patient Care (batch 2)
+  {name:"Needs-Based Medication Review", cat:"advocacy", desc:"Start from the patient's stated needs, then audit the med list against them.", ids:[55,13,3]},
+  {name:"Community-Grounded Advocacy", cat:"advocacy", desc:"Surface social-determinant factors, ground them in stated needs, then document the case.", ids:[19,55,2]},
+  {name:"Longitudinal Query Response", cat:"advocacy", desc:"Track the case over time, then shape how new questions get triaged against it.", ids:[3,11,55]},
+  {name:"Documentation to Guideline Bridge", cat:"advocacy", desc:"Build the structured case record, then check it against reconciled guidelines.", ids:[2,53,11]},
+  {name:"Global Health Advocacy", cat:"advocacy", desc:"Adapt reasoning for low-resource settings, then ground it in community and stated needs.", ids:[14,19,55]},
+  {name:"Advocate Research Chain", cat:"advocacy", desc:"Run the formal N-of-1 protocol on a family-documented case, tied to stated needs.", ids:[9,3,55]},
+
+  // Education & Evidence (batch 2)
+  {name:"Frontier to Guideline Loop", cat:"education", desc:"Find the evidence frontier, reconcile it with guidelines, then appraise it formally.", ids:[21,53,46]},
+  {name:"Ward Prep Pearl Chain", cat:"education", desc:"Rehearse the round, rebuild it from first principles, then distill teaching pearls.", ids:[4,31,52]},
+  {name:"Illness Script Evidence Bridge", cat:"education", desc:"Build the canonical script, then ground it in primary literature and its frontier.", ids:[15,10,21]},
+  {name:"Genetics Education Arc", cat:"education", desc:"Reason through the genetics case, then bridge mechanism to bedside finding.", ids:[44,16,31]},
+  {name:"Global Evidence Synthesis", cat:"education", desc:"Cross-reference global literature, appraise it formally, then find its frontier.", ids:[39,46,21]},
+  {name:"Mechanism to Guideline", cat:"education", desc:"Bridge mechanism to finding, rebuild from first principles, then reconcile guidelines.", ids:[16,31,53]},
+
+  // Operations & Systems (batch 2)
+  {name:"HVC Community Alignment", cat:"operations", desc:"Check test/treatment value, weigh community context, then align on cost and value.", ids:[34,19,43]},
+  {name:"Resource-Constrained Ops Chain", cat:"operations", desc:"Adapt reasoning for low-resource settings, optimize flow, then weigh cost and value.", ids:[14,40,43]},
+  {name:"Systems Implementation Loop", cat:"operations", desc:"View the case through its system, apply implementation science, then check its value.", ids:[51,41,34]},
+  {name:"Throughput to Economics", cat:"operations", desc:"Optimize ward flow, weigh cost and value, then view it through the surrounding system.", ids:[40,43,51]},
+  {name:"Community-Value-Systems Triad", cat:"operations", desc:"Surface social factors, check proportional value, then view the surrounding system.", ids:[19,34,51]},
+  {name:"Full Global-Health Ops Arc", cat:"operations", desc:"Adapt for low-resource settings, weigh community, throughput, and value in one pass.", ids:[14,19,40,43]},
+
+  // Meta & Framework Design (batch 2)
+  {name:"Design Spec to Genetics", cat:"meta", desc:"Apply the module QA spec, then use it to shape a genetics reasoning case and its rebuttal.", ids:[8,44,45]},
+  {name:"Orientation to Bayesian Reasoning", cat:"meta", desc:"Route the new user in, then run likelihood-ratio math and calibrate the result.", ids:[0,36,35]},
+  {name:"Full Meta QA Chain", cat:"meta", desc:"Apply the design spec, sweep for bias, then reconcile the output against guidelines.", ids:[8,26,53]},
+  {name:"Cold-Start Analytics Tour", cat:"meta", desc:"Orient a new user, run a live case audit, then close with teaching pearls.", ids:[0,5,52]},
+  {name:"Design Spec Safety Loop", cat:"meta", desc:"Apply the module QA spec, pre-mortem the result, then formally audit for failure modes.", ids:[8,42,49]},
+  {name:"Meta Genetics Adversarial", cat:"meta", desc:"Reason through genetics, stress-test it, apply the design spec, then sweep for bias.", ids:[44,45,8,26]},
+
+  // Comprehensive Arcs (batch 2)
+  {name:"Precipitant-to-Pearls Arc", cat:"arcs", desc:"Hunt the trigger, pause to re-check, sweep for bias, then distill teaching pearls.", ids:[33,28,26,52]},
+  {name:"Polypharmacy Full Arc", cat:"arcs", desc:"Reconcile medications, trace iatrogenic harm, FMEA it, then distill teaching pearls.", ids:[13,29,49,52]},
+  {name:"Global Health Full Learner Arc", cat:"arcs", desc:"Adapt for low-resource settings, weigh community, throughput, and value, then teach it.", ids:[14,19,34,40,52]},
+  {name:"Bayesian Mastery Arc", cat:"arcs", desc:"Tighten the representation, run likelihood-ratio math, calibrate it, then teach the pearls.", ids:[17,36,35,52]},
+  {name:"Research-to-Guideline Arc", cat:"arcs", desc:"Run the formal research protocol, extract themes, reconcile guidelines, teach the pearls.", ids:[9,25,53,52]},
+
+  // Diagnostic Reasoning (batch 3)
+  {name:"Treatment Choice Confidence Build", cat:"reasoning", desc:"Compare treatment options and trajectories, then back the choice with likelihood-ratio math and calibrated confidence.", ids:[48,36,35]},
+  {name:"Script-to-Bayesian Fusion", cat:"reasoning", desc:"Anchor on the canonical illness script, sharpen its wording, then test it with likelihood ratios.", ids:[17,15,36]},
+  {name:"Pressure-Cascade Diagnostic Drill", cat:"reasoning", desc:"Make the recognition-primed call under time pressure, hunt the precipitant, then force a time-out and a re-anchor check.", ids:[20,32,28,33]},
+  {name:"Mechanism-to-Differential Bridge", cat:"reasoning", desc:"Contrast causal and probabilistic models, then expand the differential from mechanism upward.", ids:[16,18,12]},
+  {name:"Precision Confidence Ladder", cat:"reasoning", desc:"Deepen the differential, tighten its wording, then run the Bayesian engine against a reasoning map.", ids:[12,35,36,17]},
+  {name:"Global Health Rapid Loop", cat:"reasoning", desc:"Reason under resource constraints, then cycle the cognition loop and pause with a time-out.", ids:[14,32,28]},
+  {name:"Repeated Time-Out Drill", cat:"reasoning", desc:"Cycle hypothesis and precipitant-hunting under pressure, then re-check the working diagnosis.", ids:[20,33,32]},
+  {name:"Red-Herring vs Hypothesis Check", cat:"reasoning", desc:"Separate distracting findings from load-bearing ones, then deepen the differential they point to.", ids:[37,17,12]},
+  {name:"Genetics-Mechanism Cross-Check", cat:"reasoning", desc:"Contrast causal and mechanistic models, then ground a genetics-influenced case in bedside findings.", ids:[18,16,44]},
+  {name:"Full Reasoning Map Calibration", cat:"reasoning", desc:"Tighten the differential's wording, run likelihood-ratio math, then chart it on a diagnostic reasoning map.", ids:[35,36,12,50]},
+  {name:"Classic Method Confidence Check", cat:"reasoning", desc:"Run the classic hypothesis cycle, then test it with likelihood-ratio reasoning and precise wording.", ids:[56,36,17]},
+
+  // Safety & Risk (batch 3)
+  {name:"Anchor-to-Signal Bias Sweep", cat:"safety", desc:"Screen the shortcuts taken, name the anchor, tighten problem representation, then sweep for residual bias.", ids:[24,30,26,17]},
+  {name:"Multi-Failure Safety Sweep", cat:"safety", desc:"Sweep for bias, pre-mortem the plan, formally audit failure modes, and simulate cascading system failure together.", ids:[26,42,49,29,38]},
+  {name:"Polypharmacy Cascade FMEA", cat:"safety", desc:"Reconcile the med list, formally audit for failure modes, then simulate a cascading crisis around it.", ids:[29,49,13,38]},
+  {name:"Precipitant Pre-Mortem", cat:"safety", desc:"Hunt what made the case acute today, then pre-mortem the plan and sweep it for bias.", ids:[42,26,33]},
+  {name:"System 1/2 Bias Screen", cat:"safety", desc:"Separate fast and slow reasoning, screen for shortcuts, then sweep for cognitive bias.", ids:[54,24,26]},
+  {name:"System Cascade FMEA Combo", cat:"safety", desc:"View the case through its surrounding system, simulate poly-crisis failure, trace harm, and formally audit it.", ids:[38,51,29,49]},
+  {name:"Full Med-Safety Net", cat:"safety", desc:"Audit medications, pre-mortem the plan, then run a formal failure-mode pass on the whole workflow.", ids:[49,42,26,13]},
+  {name:"Iatrogenic Pre-Mortem Loop", cat:"safety", desc:"Screen for bias, pre-mortem the plan, then trace how harm could cascade from the intervention.", ids:[24,42,29]},
+
+  // Analytics & Data (batch 3)
+  {name:"Full-Spectrum Case Analytics", cat:"analytics", desc:"Run the formal research protocol, pull recurring themes, then place them in registry and cross-case context.", ids:[9,5,6,7,25]},
+  {name:"Velocity-Theme Registry Sync", cat:"analytics", desc:"Track rate-of-change, extract themes, then check both against registry-wide patterns.", ids:[27,25,6,5]},
+  {name:"Counterfactual Theme Extraction", cat:"analytics", desc:"Test what-if branches against the case, then pull recurring themes from the record it leaves behind.", ids:[23,25,7]},
+  {name:"Research-Grade Thematic Registry", cat:"analytics", desc:"Run the formal single-case protocol, extract its themes, then place it against registry data and teaching pearls.", ids:[9,6,25,52]},
+  {name:"Nested Velocity Watch", cat:"analytics", desc:"Layer sub-analyses within the live case log, then track how fast the resulting trend is moving.", ids:[22,5,27,7]},
+  {name:"Registry Pearl Synthesis", cat:"analytics", desc:"Zoom from registry to cross-case patterns, extract themes, then distill it all into teaching pearls.", ids:[6,7,25,52]},
+
+  // Advocacy & Patient Care (batch 3)
+  {name:"Family Needs Documentation Bridge", cat:"advocacy", desc:"Assess the patient's stated needs, ground the case record in them, then shape how questions get answered.", ids:[55,2,19,11]},
+  {name:"Query-to-Needs Pearl Loop", cat:"advocacy", desc:"Triage patient questions, re-ground them in stated needs and social context, then close with teaching pearls.", ids:[11,19,55,52]},
+  {name:"Community Case Monitoring", cat:"advocacy", desc:"Surface social-determinant factors, build the structured record, then keep tracking it longitudinally.", ids:[2,19,3,55]},
+  {name:"Needs-Grounded Pearl Distillation", cat:"advocacy", desc:"Assess stated needs, track the case over time, triage questions, then teach from the whole arc.", ids:[55,3,11,52]},
+  {name:"Formal Family Research Chain", cat:"advocacy", desc:"Run the N-of-1 protocol on a family-documented case, grounded in stated needs and social context.", ids:[9,55,2,19]},
+
+  // Education & Evidence (batch 3)
+  {name:"Frontier Guideline Journal Club", cat:"education", desc:"Read the primary literature, appraise it formally, reconcile it with guidelines, then find its frontier.", ids:[10,46,53,21]},
+  {name:"Genetics Pearl Bridge", cat:"education", desc:"Bridge mechanism to bedside finding, reason through a genetics case, then distill it to teaching pearls.", ids:[16,31,52,44]},
+  {name:"Guideline Pearl Distillation", cat:"education", desc:"Read the primary literature, reconcile competing guidelines, then close with transferable teaching pearls.", ids:[10,53,52]},
+  {name:"Global Frontier Guideline Sweep", cat:"education", desc:"Cross-reference global literature, reconcile guidelines against the evidence frontier and formal appraisal.", ids:[39,53,46,21]},
+  {name:"Teach-the-Frontier Loop", cat:"education", desc:"Distill teaching pearls, appraise the evidence formally, then read the primary literature behind its frontier.", ids:[52,46,10,21]},
+  {name:"Mechanism-to-Pearl Bridge", cat:"education", desc:"Rebuild the case from mechanism upward, then distill it straight into a teaching pearl summary.", ids:[31,52,46]},
+
+  // Operations & Systems (batch 3)
+  {name:"Value-Throughput-Systems Chain", cat:"operations", desc:"Surface social factors, weigh proportional value, optimize throughput, then view the case through its system.", ids:[19,51,40,34]},
+  {name:"Ops Implementation Value Loop", cat:"operations", desc:"Optimize ward flow, apply implementation science, then weigh cost against value.", ids:[40,34,41,43]},
+  {name:"Resource-Constrained Systems Economics", cat:"operations", desc:"View the case through its system, surface social context, adapt for low-resource settings, then weigh economics.", ids:[51,19,14,43]},
+  {name:"Implementation Systems Community Chain", cat:"operations", desc:"Apply implementation science, view the surrounding system, then surface social-determinant factors.", ids:[41,51,34,19]},
+  {name:"Full Ops Resource Chain", cat:"operations", desc:"Surface community factors, optimize throughput, adapt for low-resource settings, then view the surrounding system.", ids:[19,40,14,51]},
+
+  // Meta & Framework Design (batch 3)
+  {name:"Guideline QA Pearl Chain", cat:"meta", desc:"Apply the module design spec, reconcile guidelines, sweep for bias, then distill teaching pearls.", ids:[8,53,26,52]},
+  {name:"Cold-Start Genetics Pearl Arc", cat:"meta", desc:"Orient a new user, apply the QA spec to a genetics case, then close with teaching pearls.", ids:[0,8,44,52]},
+  {name:"Full Meta Safety Chain", cat:"meta", desc:"Apply the design spec, formally audit for failure modes, pre-mortem it, then sweep for bias.", ids:[8,49,42,26]},
+  {name:"Cold-Start Cognition Pearl Arc", cat:"meta", desc:"Orient a new user, cycle the cognition loop under a recognition-primed call, then teach the pearls.", ids:[0,32,20,52]},
+
+  // Comprehensive Arcs (batch 3)
+  {name:"Grand Rounds Master Arc", cat:"arcs", desc:"The full teaching-hospital sweep: Socratic reasoning, deepen the differential, time-out, bias check, pre-mortem, FMEA, value check, then pearls.", ids:[1,12,26,42,49,52,34]},
+  {name:"Cold-Start Analytics Pearl Arc", cat:"arcs", desc:"Orient a new user, audit the live case log, extract themes, then close with teaching pearls.", ids:[0,5,25,52]},
+  {name:"Research Registry Pearl Arc", cat:"arcs", desc:"Run the formal research protocol, pull themes, place them in registry context, then distill teaching pearls.", ids:[9,52,25,7,6]},
+  {name:"Genetics Trajectory Pearl Arc", cat:"arcs", desc:"Reason through a genetics-influenced case, weigh treatment trajectory, then distill it to teaching pearls.", ids:[44,48,52]},
+  {name:"Global Health Value Pearl Arc", cat:"arcs", desc:"Adapt for low-resource settings, surface community factors, weigh proportional value, then teach the pearls.", ids:[14,34,52,55]},
+];
+
+let selection = []; // array of module ids in click order
+let activeCat = CATS[0].key;
+
+function renderTabs(){
+  const bar = document.getElementById("tabbar");
+  bar.innerHTML = "";
+  CATS.forEach(cat=>{
+    const count = MODULES.filter(m=>m.cat===cat.key).length;
+    if(!count) return;
+    const btn = document.createElement("button");
+    btn.className = "tabbtn"+(cat.key===activeCat?" active":"");
+    btn.style.setProperty("--tab-color", cat.color);
+    btn.innerHTML = `<span>${cat.label}</span><span class="n">(${count})</span>`;
+    btn.addEventListener("click", ()=>{ activeCat = cat.key; render(); });
+    bar.appendChild(btn);
+  });
+}
+
+function render(){
+  renderTabs();
+  const container = document.getElementById("categories");
+  container.innerHTML = "";
+  const cat = CAT_INFO[activeCat];
+  const mods = MODULES.filter(m=>m.cat===activeCat);
+  const block = document.createElement("div");
+  block.className="category";
+  const head = document.createElement("div");
+  head.className="category-head";
+  head.style.background = cat.color;
+  head.innerHTML = `<span>${cat.label}</span><span class="n">(${mods.length} modules)</span>`;
+  block.appendChild(head);
+  const items = document.createElement("div");
+  items.className="items";
+  mods.forEach(m=>{
+    const row = document.createElement("div");
+    const checked = selection.includes(m.id);
+    row.className = "item"+(checked?" checked":"");
+    row.dataset.id = m.id;
+    row.innerHTML = `
+      <span class="idx">#${String(m.id).padStart(2,'0')}</span>
+      <span class="label"><span class="modname"><a href="${m.url}" target="_blank" rel="noopener">${m.name}</a></span><span class="moddesc">${m.desc}</span></span>
+      ${checked ? `<span class="seq">${selection.indexOf(m.id)+1}</span>` : `<span class="box"></span>`}
+    `;
+    row.querySelector(".box, .seq").addEventListener("click", (e)=>{ e.stopPropagation(); toggle(m.id); });
+    row.querySelector(".idx").addEventListener("click", ()=>toggle(m.id));
+    row.querySelector(".moddesc").addEventListener("click", ()=>toggle(m.id));
+    items.appendChild(row);
+  });
+  block.appendChild(items);
+  container.appendChild(block);
+  renderPipeline();
+  renderPresets();
+}
+
+let activePresetCat = "all";
+
+function presetIsActive(p){
+  return p.ids.length===selection.length && p.ids.every((id,i)=>selection[i]===id);
+}
+
+function renderPresetTabs(){
+  const bar = document.getElementById("presetTabbar");
+  bar.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "preset-tabbtn"+(activePresetCat==="all"?" active":"");
+  allBtn.innerHTML = `All Pipelines<span class="n">(${PRESETS.length})</span>`;
+  allBtn.addEventListener("click", ()=>{ activePresetCat="all"; renderPresets(); });
+  bar.appendChild(allBtn);
+  PRESET_CATS.forEach(c=>{
+    const count = PRESETS.filter(p=>p.cat===c.key).length;
+    if(!count) return;
+    const btn = document.createElement("button");
+    btn.className = "preset-tabbtn"+(activePresetCat===c.key?" active":"");
+    btn.innerHTML = `${c.label}<span class="n">(${count})</span>`;
+    btn.addEventListener("click", ()=>{ activePresetCat=c.key; renderPresets(); });
+    bar.appendChild(btn);
+  });
+}
+
+function renderPresets(){
+  renderPresetTabs();
+  const grid = document.getElementById("presetGrid");
+  grid.innerHTML = "";
+  const list = activePresetCat==="all" ? PRESETS : PRESETS.filter(p=>p.cat===activePresetCat);
+  list.forEach(p=>{
+    const info = PRESET_CAT_INFO[p.cat];
+    const isActive = presetIsActive(p);
+    const card = document.createElement("button");
+    card.className = "preset-card"+(isActive?" active":"");
+    card.style.setProperty("--preset-c", info.color);
+    card.style.setProperty("--preset-c-soft", info.soft);
+    card.innerHTML = `${isActive ? `<span class="pcheck">✓ Loaded</span>` : ""}<div class="pcat">${info.label}</div><div class="pname">${p.name}</div><div class="pdesc">${p.desc}</div><div class="pcount">${p.ids.length} modules</div>`;
+    card.addEventListener("click", ()=>{
+      selection = p.ids.slice();
+      const firstMod = MODULES.find(m=>m.id===selection[0]);
+      if(firstMod) activeCat = firstMod.cat;
+      render();
+    });
+    grid.appendChild(card);
+  });
+}
+
+function toggle(id){
+  const i = selection.indexOf(id);
+  if(i>-1){ selection.splice(i,1); } else { selection.push(id); }
+  render();
+}
+
+function renderPipeline(){
+  const ol = document.getElementById("pchain");
+  ol.innerHTML = "";
+  if(selection.length===0){
+    ol.innerHTML = `<div class="empty-note">No modules selected yet. Tap any module on the left to begin the chain.</div>`;
+    document.getElementById("analyticsBlock").style.display="none";
+    return;
+  }
+  selection.forEach((id,i)=>{
+    const m = MODULES.find(x=>x.id===id);
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="pnum">${i+1}</span><span><span class="pname">${m.name}</span><span class="pcat">${CAT_INFO[m.cat].label}</span></span>`;
+    ol.appendChild(li);
+  });
+  renderAnalytics();
+}
+
+function renderAnalytics(){
+  const block = document.getElementById("analyticsBlock");
+  block.style.display = "block";
+  const mods = selection.map(id=>MODULES.find(m=>m.id===id));
+  const counts = {};
+  CATS.forEach(c=>counts[c.key]=0);
+  mods.forEach(m=>counts[m.cat]++);
+  const total = mods.length;
+
+  // lens tags: categories present, in order of first appearance
+  const seen = [];
+  mods.forEach(m=>{ if(!seen.includes(m.cat)) seen.push(m.cat); });
+  const tagsEl = document.getElementById("lensTags");
+  tagsEl.innerHTML = seen.map(k=>`<span class="lens-tag">${CAT_INFO[k].label.split(" &")[0].split(",")[0]}</span>`).join("");
+
+  // narrative
+  const dominant = seen[0];
+  const spanCats = seen.length;
+  let text = "";
+  if(total===1){
+    text = `A single-module run. Expect a narrow, deep pass focused on ${CAT_INFO[dominant].label.toLowerCase()} — good for isolating one lens cleanly, but you'll get no cross-check against other reasoning styles.`;
+  } else if(spanCats===1){
+    text = `Every module chosen sits inside ${CAT_INFO[dominant].label.toLowerCase()}. This stacks depth rather than breadth — the case gets worked over repeatedly from the same angle, which sharpens that one skill but won't catch blind spots outside it.`;
+  } else {
+    const catNames = seen.map(k=>CAT_INFO[k].label.split(" &")[0].split(",")[0]);
+    text = `This chain runs the case through ${spanCats} distinct lenses in this order: ${catNames.join(" → ")}. `;
+    if(counts.safety>0 && counts.reasoning>0){
+      text += `Pairing a safety/failure module with a reasoning module tends to surface where a plausible diagnostic story could also be the one that gets someone hurt. `;
+    }
+    if(counts.analytics>0 && counts.advocacy>0){
+      text += `Mixing registry-style analytics with advocacy modules pulls both the population-level pattern and the single-patient narrative into the same run. `;
+    }
+    if(counts.education>0){
+      text += `The education-layer module(s) will anchor whatever's found back to a citable mechanism or literature source rather than leaving it as pattern-matching. `;
+    }
+    if(counts.operations>0){
+      text += `Operations/economics modules reframe the same findings in terms of workflow, cost, or system feasibility, which is a genuinely different output than pure diagnosis. `;
+    }
+    if(counts.meta>0){
+      text += `Meta/framework modules in the mix will shape *how* the other steps are asked, rather than adding case content themselves.`;
+    }
+  }
+  document.getElementById("analyticsText").textContent = text.trim();
+
+  // meters: show category weight distribution
+  const metersEl = document.getElementById("meters");
+  metersEl.innerHTML = "";
+  CATS.forEach(c=>{
+    if(counts[c.key]===0) return;
+    const pct = Math.round((counts[c.key]/total)*100);
+    const div = document.createElement("div");
+    div.className="meter";
+    div.innerHTML = `
+      <div class="mlabel"><span>${c.label.split(" &")[0].split(",")[0]}</span><span>${counts[c.key]}/${total}</span></div>
+      <div class="mbar"><div class="mfill" style="width:${pct}%; background:${c.color};"></div></div>
+    `;
+    metersEl.appendChild(div);
+  });
+}
+
+document.getElementById("clearBtn").addEventListener("click", ()=>{ selection=[]; render(); });
+document.getElementById("copyBtn").addEventListener("click", ()=>{
+  const btn = document.getElementById("copyBtn");
+  if(selection.length===0){
+    const old = btn.textContent;
+    btn.textContent = "Tick modules first";
+    setTimeout(()=>btn.textContent=old, 1400);
+    return;
+  }
+  const caseText = document.getElementById("caseText").value.trim();
+  const caseLink = document.getElementById("caseLink").value.trim();
+  const caseParts = [];
+  if(caseText) caseParts.push(`CASE:\n${caseText}`);
+  if(caseLink) caseParts.push(`CASE LINK:\n${caseLink}`);
+  const caseBlock = caseParts.length ? caseParts.join("\n\n") : "CASE:\n[none provided]";
+  const pipelineBlock = selection.map((id,i)=>{
+    const m = MODULES.find(x=>x.id===id);
+    return `${i+1}. Module ${m.id} — ${m.name}\n${m.url}`;
+  }).join("\n\n");
+
+  // Build a detailed insights block from the same analytics the on-screen panel shows
+  const selMods = selection.map(id=>MODULES.find(m=>m.id===id));
+  const counts = {};
+  CATS.forEach(c=>counts[c.key]=0);
+  selMods.forEach(m=>counts[m.cat]++);
+  const total = selMods.length;
+  const seenCats = [];
+  selMods.forEach(m=>{ if(!seenCats.includes(m.cat)) seenCats.push(m.cat); });
+  const catShortLabel = k => CAT_INFO[k].label.split(" &")[0].split(",")[0];
+
+  const narrative = document.getElementById("analyticsText").textContent.trim();
+  const lensSequence = seenCats.map(catShortLabel).join(" → ");
+  const breakdown = CATS
+    .filter(c=>counts[c.key]>0)
+    .map(c=>`${catShortLabel(c.key)}: ${counts[c.key]}/${total}`)
+    .join(" · ");
+
+  const insightsBlock = [
+    "INSIGHTS:",
+    narrative,
+    "",
+    `Lens sequence: ${lensSequence}`,
+    `Lens distribution: ${breakdown}`
+  ].join("\n");
+
+  const text = `${caseBlock}\n\nRUN PIPELINE:\n${pipelineBlock}\n\n${insightsBlock}`;
+  const old = btn.textContent;
+
+  function flash(msg, ms){
+    btn.textContent = msg;
+    setTimeout(()=>btn.textContent=old, ms || 1400);
+  }
+
+  function fallbackCopy(){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    let ok = false;
+    try{ ok = document.execCommand("copy"); }catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    if(ok){ flash("Copied ✓"); }
+    else{ flash("Copy failed — select & copy manually", 2200); }
+  }
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>{
+      flash("Copied ✓");
+    }).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+});
+
+
+render();
+
+
+})();
+</script>
+</body>
+</html>
