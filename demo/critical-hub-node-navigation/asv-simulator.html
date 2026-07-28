@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longitudinal Avinash Principle Simulator</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --panel-border: #334155;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #0d9488;
+            --accent-blue: #0284c7;
+            --goldilocks: #22c55e;
+            --collapse: #ef4444;
+            --toxicity: #f97316;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 { color: var(--accent); margin-bottom: 0.5rem; }
+        .meta-text { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Clinical Data Panel */
+        .clinical-panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .cycle-badge {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .info-block {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-title {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        ul { list-style-type: none; }
+        li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        .pruned li::before {
+            content: "✕";
+            color: var(--collapse);
+        }
+        .actions li::before {
+            content: "→";
+            color: var(--goldilocks);
+        }
+
+        .feedback-box {
+            background: rgba(2, 132, 199, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #0f766e; }
+        .btn-primary:disabled {
+            background: var(--panel-border);
+            color: var(--text-dim);
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid var(--panel-border);
+            color: var(--text);
+        }
+        .btn-reset:hover { background: rgba(255, 255, 255, 0.05); }
+
+        /* Chart Panel */
+        .chart-panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+            min-height: 400px;
+            background: #090d16;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-card {
+            background: #090d16;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+        }
+        
+        .metric-val {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Longitudinal Trajectory Forecast: Snakebite Hub Navigation[cite: 1, 2]</h1>
+        <p class="meta-text">Tracking variance in hub nodes to map patient state against attractor basins over 48 hours[cite: 2].</p>
+        <p class="meta-text">A Pull Strategy reshapes the landscape at a single critical hub node so the patient naturally glides toward the Goldilocks zone[cite: 2].</p>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Clinical Action Panel -->
+        <div class="clinical-panel">
+            <div>
+                <span class="cycle-badge" id="cycleBadge">CYCLE 1</span>
+                <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: #fff;" id="cycleTitle">Loading...</h2>
+            </div>
+
+            <div class="info-block">
+                <div class="info-title">Perception State[cite: 1]</div>
+                <ul id="listPerception"></ul>
+            </div>
+
+            <div class="info-block pruned">
+                <div class="info-title">Pruned Branches (Algorithmic Collapse)[cite: 1, 2]</div>
+                <ul id="listPruned"></ul>
+            </div>
+
+            <div class="info-block actions">
+                <div class="info-title">Agent Actions (Pull Strategy)[cite: 1, 2]</div>
+                <ul id="listActions"></ul>
+            </div>
+
+            <div class="feedback-box" id="feedbackBox"></div>
+
+            <div class="controls">
+                <button class="btn btn-reset" onclick="resetSimulation()">Reset</button>
+                <button class="btn btn-primary" id="btnNext" onclick="nextCycle()">Advance Cycle</button>
+            </div>
+        </div>
+
+        <!-- Chart Panel -->
+        <div class="chart-panel">
+            <h2 style="font-size: 1.2rem;">Phase-Space Trajectory vs. Time[cite: 2]</h2>
+            <p class="meta-text" style="margin-top: 0.25rem;">Plots historical journey (solid white) and dynamically forecasts best (green), worst (red), and predicted (blue) tracks to T=48h[cite: 2].</p>
+            
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="info-title">Current Hub Target[cite: 1]</div>
+                    <div class="metric-val" id="metricHub">--</div>
+                </div>
+                <div class="metric-card">
+                    <div class="info-title">Current State Vector[cite: 2]</div>
+                    <div class="metric-val" id="metricStatus">--</div>
+                </div>
+                <div class="metric-card">
+                    <div class="info-title">P(Goldilocks @ Horizon)[cite: 2]</div>
+                    <div class="metric-val" id="metricProb">--</div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="longCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Clinical Case Data integrated with Trajectory Coordinates
+    const caseData = [
+        {
+            cycle: "CYCLE 1: T=0 to 15m",
+            title: "Initial Triage & Immediate Threat Reduction",
+            hub: "Hub Alpha: Airway",
+            status: "Critical Collapse",
+            statusColor: "var(--collapse)",
+            time: 0,       // hours
+            state: -70,    // Negative = Collapse Basin
+            eff: 65,       // Effectiveness of current plan (0-100)
+            uncert: 60,    // Uncertainty spread
+            perception: [
+                "34M, bitten on left ankle 2 hours prior. Vitals: BP 94/62[cite: 1].",
+                "Active oozing of non-clotting blood[cite: 1].",
+                "Neuro: Mild bilateral ptosis, throat tightness[cite: 1]."
+            ],
+            pruned: [
+                "Tourniquet release protocols[cite: 1].",
+                "Broad laboratory panel requisitions[cite: 1]."
+            ],
+            actions: [
+                "Immobilize limb at heart level; establish 2 large-bore IVs[cite: 1].",
+                "Position 30°, O2 @ 4L/min[cite: 1].",
+                "Initiate 20-Min Whole Blood Clotting Test (20WBCT)[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> Airway secured. System positioned inside diagnostic corridor[cite: 1]."
+        },
+        {
+            cycle: "CYCLE 2: T=15 to 45m",
+            title: "Diagnostic Pivot & Primary Antivenom Decision",
+            hub: "Hub Beta: Hemostasis",
+            status: "High Risk (Ascending)",
+            statusColor: "var(--warning)",
+            time: 0.5,
+            state: -35,    // Moving up toward Goldilocks
+            eff: 85,
+            uncert: 45,
+            perception: [
+                "20WBCT Result: BLOOD REMAINS LIQUID (Incomplete clot)[cite: 1].",
+                "Local swelling advanced 3 cm proximal[cite: 1]."
+            ],
+            pruned: [
+                "Wait and watch repeat testing[cite: 1].",
+                "Empiric blood component / FFP transfusion[cite: 1]."
+            ],
+            actions: [
+                "Reconstitute 10 vials Polyvalent ASV in 200 mL NS[cite: 1].",
+                "Initiate IV infusion slowly at 1–2 mL/min[cite: 1].",
+                "Pre-load Hypersensitivity Emergency Kit[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> ASV neutralization underway. High-alert phase entered for potential acute immunological reaction[cite: 1]."
+        },
+        {
+            cycle: "CYCLE 3: T=45 to 120m",
+            title: "ASV Infusion & Hypersensitivity Circuit-Breaker",
+            hub: "Hub Gamma: Anaphylaxis",
+            status: "Overtreatment / Shock",
+            statusColor: "var(--toxicity)",
+            time: 1.0,
+            state: 75,     // Positive = Toxicity/Overtreatment basin (Anaphylaxis shock)
+            eff: 50,       // Highly volatile moment requiring strong intervention
+            uncert: 85,
+            perception: [
+                "Sudden severe agitation, urticaria, bronchospasm[cite: 1].",
+                "Vitals: BP drops sharply to 74/42 mmHg, HR spikes to 138[cite: 1].",
+                "Impression: Acute Severe Anaphylactic Reaction to ASV[cite: 1]."
+            ],
+            pruned: [
+                "Simply slowing the ASV infusion rate[cite: 1].",
+                "Administering antihistamines alone[cite: 1]."
+            ],
+            actions: [
+                "HALT ASV INFUSION IMMEDIATELY[cite: 1].",
+                "Administer Injection Adrenaline (1:1000) 0.5 mg IM[cite: 1].",
+                "Initiate wide-open IV fluid bolus and High-Flow O2[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> Vitals recover (BP 106/68). ASV restarted slowly. System pulled back from brink[cite: 1]."
+        },
+        {
+            cycle: "CYCLE 4: T=2 to 12h",
+            title: "Re-Assessment & Recurrent Venom Dynamics",
+            hub: "Hub Beta (Recurrence)",
+            status: "Slipping to Collapse",
+            statusColor: "var(--warning)",
+            time: 6.0,
+            state: -45,    // Venom recurrence dipping back toward collapse
+            eff: 88,
+            uncert: 35,
+            perception: [
+                "Clinical improvement: Ptosis resolved[cite: 1].",
+                "Repeat 20WBCT at T+6 Hours: BLOOD STILL REMAINS LIQUID[cite: 1].",
+                "Impression: Recurrent coagulopathy from venom depot[cite: 1]."
+            ],
+            pruned: [
+                "Immediate surgical fasciotomy[cite: 1].",
+                "Administration of single-vial 'booster' doses[cite: 1]."
+            ],
+            actions: [
+                "Administer Second Dose of ASV: 10 vials over 1 hour[cite: 1].",
+                "Pre-medicate with SC Low-Dose Adrenaline[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> Repeat 20WBCT at T+12h shows SOLID CLOT. Systemic neutralization achieved[cite: 1]."
+        },
+        {
+            cycle: "CYCLE 5: T=12 to 24h",
+            title: "Complication Management & Organ Escalation",
+            hub: "Hub Delta: AKI",
+            status: "Near Goldilocks",
+            statusColor: "var(--goldilocks)",
+            time: 18.0,
+            state: -15,    // Minor complication, near Goldilocks
+            eff: 95,
+            uncert: 15,
+            perception: [
+                "20WBCT normal. Neuro exam completely normal[cite: 1].",
+                "Urine output drops to 15 mL/hr; dark tea-colored[cite: 1].",
+                "Left calf tense swelling, pain on passive extension[cite: 1]."
+            ],
+            pruned: [
+                "Giving additional ASV[cite: 1].",
+                "High-dose loop diuretics without volume expansion[cite: 1]."
+            ],
+            actions: [
+                "Fluid challenge with NS + Sodium Bicarbonate[cite: 1].",
+                "Measure serial leg circumferences[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> Urine output rebounds to 55 mL/hr and clears. Microvascular renal perfusion restored[cite: 1]."
+        },
+        {
+            cycle: "CYCLE 6: T=24 to 48h",
+            title: "Stabilization Corridor & Safe Exit Protocol",
+            hub: "Hub Echo: Exit Corridor",
+            status: "Stable (Goldilocks)",
+            statusColor: "var(--goldilocks)",
+            time: 48.0,
+            state: 0,      // Dead center Goldilocks
+            eff: 100,
+            uncert: 5,
+            perception: [
+                "Patient fully conscious, alert, ambulating[cite: 1].",
+                "20WBCT solid clot. Total 24h urine output = 2.1L[cite: 1].",
+                "Vital signs completely stable across all parameters[cite: 1]."
+            ],
+            pruned: [
+                "Unnecessary prolonged empirical IV antibiotics[cite: 1].",
+                "Extended hospital stay[cite: 1]."
+            ],
+            actions: [
+                "Discharge Clearance to home recovery corridor[cite: 1].",
+                "Educate on signs of delayed Serum Sickness[cite: 1]."
+            ],
+            feedback: "<strong>State Transition:</strong> Patient successfully discharged alive, neurologically intact. Total stay: 48 hours[cite: 1]."
+        }
+    ];
+
+    let currentStep = 0;
+    
+    // Canvas Setup
+    const canvas = document.getElementById('longCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+        width = canvas.parentElement.clientWidth;
+        height = canvas.parentElement.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        drawChart();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    // UI Updates
+    function renderList(listId, dataArray) {
+        const ul = document.getElementById(listId);
+        ul.innerHTML = '';
+        dataArray.forEach(text => {
+            const li = document.createElement('li');
+            li.innerHTML = text;
+            ul.appendChild(li);
+        });
+    }
+
+    function updateUI(stepIndex) {
+        const data = caseData[stepIndex];
+        
+        document.getElementById('cycleBadge').innerText = data.cycle;
+        document.getElementById('cycleTitle').innerHTML = data.title;
+        document.getElementById('metricHub').innerHTML = data.hub;
+        
+        const statusEl = document.getElementById('metricStatus');
+        statusEl.innerText = data.status;
+        statusEl.style.color = data.statusColor;
+
+        renderList('listPerception', data.perception);
+        renderList('listPruned', data.pruned);
+        renderList('listActions', data.actions);
+        document.getElementById('feedbackBox').innerHTML = data.feedback;
+
+        const btnNext = document.getElementById('btnNext');
+        if (stepIndex < caseData.length - 1) {
+            btnNext.innerText = `Advance to Cycle ${stepIndex + 2}`;
+            btnNext.disabled = false;
+        } else {
+            btnNext.innerText = "Simulation Complete";
+            btnNext.disabled = true;
+        }
+
+        drawChart();
+    }
+
+    function nextCycle() {
+        if (currentStep < caseData.length - 1) {
+            currentStep++;
+            updateUI(currentStep);
+        }
+    }
+
+    function resetSimulation() {
+        currentStep = 0;
+        updateUI(currentStep);
+    }
+
+    // Chart Drawing Logic (Adapted from Source 2)
+    function toX(timeVal) {
+        // Map 0-48 hours to canvas width with margins
+        return 60 + (timeVal / 48) * (width - 80);
+    }
+
+    function toY(stateVal) {
+        // Map -100 to 100 state to canvas height
+        return height - 30 - ((stateVal + 100) / 200) * (height - 60);
+    }
+
+    function drawChart() {
+        if (!width) return;
+        ctx.clearRect(0, 0, width, height);
+
+        const plotLeft = 60;
+        const plotRight = width - 20;
+
+        // 1. Draw Attractor Basins[cite: 2]
+        // Goldilocks band (-30 to 30)
+        ctx.fillStyle = 'rgba(34, 197, 94, 0.12)';
+        ctx.fillRect(plotLeft, toY(30), plotRight - plotLeft, toY(-30) - toY(30));
+
+        // Collapse band (-100 to -30)
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.08)';
+        ctx.fillRect(plotLeft, toY(-30), plotRight - plotLeft, toY(-100) - toY(-30));
+
+        // Overtreatment band (30 to 100)
+        ctx.fillStyle = 'rgba(249, 115, 22, 0.08)';
+        ctx.fillRect(plotLeft, toY(100), plotRight - plotLeft, toY(30) - toY(100));
+
+        // Y-axis Labels
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = '#22c55e'; ctx.fillText('GOLDILOCKS', plotLeft + 6, toY(15));
+        ctx.fillStyle = '#ef4444'; ctx.fillText('COLLAPSE', plotLeft + 6, toY(-60));
+        ctx.fillStyle = '#f97316'; ctx.fillText('TOXICITY', plotLeft + 6, toY(60));
+
+        // X-axis Time Ticks
+        ctx.lineWidth = 1;
+        const tickIntervals = [0, 6, 12, 24, 36, 48];
+        tickIntervals.forEach(t => {
+            const cx = toX(t);
+            ctx.beginPath();
+            ctx.moveTo(cx, 10);
+            ctx.lineTo(cx, height - 25);
+            ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
+            ctx.stroke();
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillText(`T+${t}h`, cx - 12, height - 8);
+        });
+
+        const currentData = caseData[currentStep];
+        const currentTime = currentData.time;
+        const currentState = currentData.state;
+        const eff = currentData.eff;
+        const uncert = currentData.uncert;
+
+        // 2. Compute Projections forward from current time[cite: 2]
+        const steps = 50;
+        const predicted = [], best = [], worst = [];
+        
+        for (let i = 0; i <= steps; i++) {
+            const t = currentTime + (i / steps) * (48 - currentTime);
+            // Normalized fraction of remaining time
+            const f = (t - currentTime) / Math.max(1, (48 - currentTime)); 
+            
+            // Prediction formula[cite: 2]
+            const tau = Math.max(0.05, 1 - eff / 100);
+            const pull = 1 - Math.exp(-f * 3 / tau); // scaled to curve nicely
+            const driftTarget = eff >= 50 ? 0 : (currentState < 0 ? -75 : 75);
+            const target = eff >= 50 ? 0 : driftTarget;
+            const predY = currentState + (target - currentState) * pull * (eff >= 50 ? 1 : 0.6);
+            
+            // Spread formula[cite: 2]
+            const baseSpread = 4 + (uncert / 100) * 15;
+            const spread = baseSpread * Math.sqrt(f * 10 + 0.2) * (1 + (100 - eff) / 200);
+            
+            predicted.push({ t, y: predY });
+            best.push({ t, y: Math.min(95, predY + spread) });
+            worst.push({ t, y: Math.max(-95, predY - spread) });
+        }
+
+        // Draw Uncertainty Envelope
+        if (currentStep < caseData.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(toX(best[0].t), toY(best[0].y));
+            for (let i = 1; i <= steps; i++) ctx.lineTo(toX(best[i].t), toY(best[i].y));
+            for (let i = steps; i >= 0; i--) ctx.lineTo(toX(worst[i].t), toY(worst[i].y));
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
+            ctx.fill();
+
+            // Best Case (Green Dashed)[cite: 2]
+            ctx.beginPath();
+            best.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#22c55e';
+            ctx.setLineDash([5, 4]);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Worst Case (Red Dashed)[cite: 2]
+            ctx.beginPath();
+            worst.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#ef4444';
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Predicted Plan (Blue Solid)[cite: 2]
+            ctx.beginPath();
+            predicted.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // 3. Draw Historical Journey (Solid White Line connecting actual past nodes)
+        ctx.beginPath();
+        for (let i = 0; i <= currentStep; i++) {
+            const ptX = toX(caseData[i].time);
+            const ptY = toY(caseData[i].state);
+            if (i === 0) ctx.moveTo(ptX, ptY);
+            else ctx.lineTo(ptX, ptY);
+        }
+        ctx.strokeStyle = '#f8fafc';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // 4. Draw Nodes for Historical Data
+        for (let i = 0; i <= currentStep; i++) {
+            const isCurrent = (i === currentStep);
+            const ptX = toX(caseData[i].time);
+            const ptY = toY(caseData[i].state);
+            
+            ctx.beginPath();
+            ctx.arc(ptX, ptY, isCurrent ? 7 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = isCurrent ? '#38bdf8' : '#f8fafc';
+            if (isCurrent) {
+                ctx.shadowColor = '#38bdf8';
+                ctx.shadowBlur = 12;
+            }
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            if (isCurrent) {
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('CURRENT', ptX - 25, ptY - 15);
+            }
+        }
+
+        // Legend
+        const legendY = 14;
+        const items = [
+            { color: '#f8fafc', label: 'Historical Path' },
+            { color: '#38bdf8', label: 'Predicted' },
+            { color: '#22c55e', label: 'Best Case' },
+            { color: '#ef4444', label: 'Worst Case' }
+        ];
+        let lx = plotLeft;
+        ctx.font = '11px sans-serif';
+        items.forEach(item => {
+            ctx.fillStyle = item.color;
+            ctx.fillRect(lx, legendY - 8, 10, 10);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(item.label, lx + 14, legendY + 1);
+            lx += ctx.measureText(item.label).width + 34;
+        });
+
+        // Update Probability Metric
+        if (currentStep < caseData.length - 1) {
+            const bestEnd = best[steps].y;
+            const worstEnd = worst[steps].y;
+            const lo = Math.max(worstEnd, -95), hi = Math.min(bestEnd, 95);
+            const overlapLo = Math.max(lo, -30), overlapHi = Math.min(hi, 30);
+            const overlap = Math.max(0, overlapHi - overlapLo);
+            const total = Math.max(1, hi - lo);
+            const prob = Math.round((overlap / total) * 100);
+            document.getElementById('metricProb').innerText = `${prob}%`;
+        } else {
+            document.getElementById('metricProb').innerText = "100% (Secured)";
+        }
+    }
+
+    // Initialize
+    setTimeout(() => {
+        resizeCanvas();
+        updateUI(currentStep);
+    }, 100);
+
+</script>
+</body>
+</html>
