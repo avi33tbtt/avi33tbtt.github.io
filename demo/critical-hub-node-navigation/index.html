@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Envenomation — Critical Hub-Node Navigation Transcript</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --line:#DCE7EA;
+    --line-soft:#E9F1F3;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-soft:#E3F4F8;
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --critical:#B3261E;
+    --critical-soft:#F8E7E6;
+    --muted:#5B7480;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+    --mono-font:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body-font);
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 90px;}
+
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:20px;margin-bottom:30px;border-bottom:1px solid var(--line);
+    flex-wrap:wrap;gap:12px;
+  }
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{
+    font-weight:800;font-size:23px;margin:0;letter-spacing:-0.02em;color:var(--ink);
+  }
+  header.top .rx{
+    font-weight:600;font-size:11.5px;color:#fff;
+    background:var(--accent);border-radius:20px;padding:4px 11px;
+    letter-spacing:.01em;white-space:nowrap;
+  }
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px;}
+  header.top .top-right{text-align:right;font-size:12px;color:var(--muted);font-family:var(--mono-font);}
+
+  .step{margin-bottom:30px;}
+  .step-label{
+    font-size:11.5px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);font-weight:700;
+    display:flex;align-items:center;gap:8px;margin-bottom:12px;
+  }
+  .step-label .num{
+    width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700;
+  }
+  .step-label.user .num{background:var(--muted);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+  }
+  .card.user-turn{
+    background:var(--accent-soft);
+    border-color:var(--line-soft);
+    font-family:var(--mono-font);
+    font-size:14px;
+    color:var(--accent-dark);
+    font-weight:600;
+    padding:14px 22px;
+  }
+
+  h2{font-size:19px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+  h3{font-size:15.5px;font-weight:700;margin:22px 0 8px;color:var(--ink);}
+  h4{font-size:13.5px;font-weight:700;margin:16px 0 6px;color:var(--accent-dark);}
+  p{margin:8px 0;}
+  hr{border:none;border-top:1px solid var(--line);margin:18px 0;}
+
+  .subtag{font-size:12.5px;color:var(--muted);margin:0 0 6px;font-weight:500;}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+  th{background:var(--accent-soft);color:var(--accent-dark);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.02em;}
+  tr:nth-child(even) td{background:var(--line-soft);}
+
+  .badge{
+    display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;
+    letter-spacing:.01em;
+  }
+  .badge.high{background:var(--alert-soft);color:var(--alert);}
+  .badge.critical{background:var(--critical-soft);color:var(--critical);}
+  .badge.locked{background:var(--accent-soft);color:var(--accent-dark);}
+
+  pre.diagram{
+    font-family:var(--mono-font);
+    font-size:12px;
+    background:var(--ink);
+    color:var(--accent-soft);
+    padding:18px;
+    border-radius:var(--radius);
+    overflow-x:auto;
+    line-height:1.4;
+  }
+  pre.protocol{
+    font-family:var(--mono-font);
+    font-size:12.5px;
+    background:#0B2530;
+    color:#FFCB6B;
+    padding:18px 20px;
+    border-radius:var(--radius);
+    overflow-x:auto;
+    line-height:1.6;
+    border:1px solid var(--accent-dark);
+  }
+
+  .nav-options{
+    background:var(--accent-soft);
+    border:1px dashed var(--accent);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-top:16px;
+  }
+  .nav-options .nav-title{font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-dark);margin-bottom:8px;}
+  .nav-options ul{margin:6px 0 0;padding-left:18px;}
+  .nav-options li{margin-bottom:6px;}
+  .nav-options code{
+    font-family:var(--mono-font);font-weight:600;font-size:12px;
+    background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--accent-dark);
+  }
+
+  .mode-banner{
+    background:var(--critical-soft);
+    border:1px solid var(--critical);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-bottom:16px;
+  }
+  .mode-banner .mode-title{color:var(--critical);font-weight:800;font-size:15px;margin-bottom:4px;}
+  .mode-banner .mode-meta{font-size:12.5px;color:var(--ink);font-weight:600;}
+
+  footer{
+    margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--muted);text-align:center;
+  }
+
+  @media(max-width:600px){
+    .wrap{padding:20px 14px 60px;}
+    header.top .top-right{text-align:left;}
+    table{font-size:12.5px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div>
+        <h1>Hub-Node Navigator</h1>
+        <div class="tagline">Preliminary scan first, then you choose the zoom.</div>
+      </div>
+      <span class="rx">TRANSCRIPT</span>
+    </div>
+    <div class="top-right">Exported: 7/28/2026, 10:10:34 PM</div>
+  </header>
+
+  <!-- TURN 1 -->
+  <div class="step">
+    <div class="step-label"><span class="num">1</span>Preliminary Scan</div>
+    <div class="card">
+      <h2>Preliminary Scan: Snake Envenomation</h2>
+
+      <h3>1. Phase Boundary Identification</h3>
+      <p><strong>Time Window:</strong> Golden Window (0–6 hours post-bite). Critical non-linear escalation threshold before irreversible Venom-Induced Consumption Coagulopathy (VICC), neuromuscular synaptic blockade, or ischemic/necrotic tissue damage locks in.</p>
+      <p><strong>Phase Criticality:</strong> <span class="badge critical">HIGH</span></p>
+
+      <hr>
+      <h3>2. Preliminary High-Leverage Hub Nodes</h3>
+      <table>
+        <tr><th>Node</th><th>Type</th><th>Clinical Gravity / Impact</th></tr>
+        <tr><td><strong>1. Venom Toxicity Profile</strong> (Neuro vs. Hemo vs. Cytotoxic)</td><td>Explainable</td><td>Dictates immediate threat vector: rapid neuroparalytic airway collapse vs. uncontrolled bleeding/shock/AKI vs. progressive soft-tissue loss.</td></tr>
+        <tr><td><strong>2. Antivenom Timing &amp; Hypersensitivity Response</strong></td><td>Bifurcation</td><td>The definitive antidote node; balancing life-saving neutralization against immediate severe anaphylaxis or late serum sickness.</td></tr>
+        <tr><td><strong>3. Microvascular &amp; Compartment Pressure Dynamics</strong></td><td>Explainable</td><td>Local swelling vs. true compartment syndrome; determines limb salvage vs. disastrous premature surgical decompression (fasciotomy in uncorrected VICC).</td></tr>
+        <tr><td><strong>4. Pre-Hospital Interventions &amp; Traditional Practices</strong></td><td>Experiencable</td><td>Use of tight tourniquets, incisions, or delays; removal of a tourniquet can trigger a sudden systemic venom surge or profound reperfusion shock.</td></tr>
+      </table>
+      <p class="subtag"><em>Comorbidity Weighting:</em> Pre-existing renal impairment, baseline bleeding diatheses, or cardiac pathology exponentially increases VICC and antivenom anaphylaxis gravity (multiplicative risk).</p>
+
+      <hr>
+      <h3>3. One-Line Trajectory Alignment</h3>
+      <p><strong>Status Quo Trajectory:</strong> Rapid collapse into neuromuscular respiratory failure, fatal systemic VICC hemorrhage, or avoidable limb loss exacerbated by delayed care or improper pre-hospital practices.</p>
+      <p><strong>Aligned Trajectory:</strong> Immediate syndrome recognition, safe antivenom neutralization under pre-empted anaphylaxis guardrails, systemic stabilization, and limb preservation without unindicated surgical injury.</p>
+
+      <div class="nav-options">
+        <div class="nav-title">Where should we navigate next?</div>
+        <ul>
+          <li><code>ZOOM OUT: SYSTEM GRAVITY</code> — Map the broader life/systemic/environmental domains driving this trajectory.</li>
+          <li><code>ZOOM IN: BIFURCATION TACTICS</code> — Drill into the failure modes, red flags, and circuit breakers of a specific hub node.</li>
+          <li><code>LOCK: CRITICAL NODES</code> — Refine node weighting and comorbidity multipliers at the current resolution.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER TURN -->
+  <div class="step">
+    <div class="step-label user"><span class="num">▸</span>You</div>
+    <div class="card user-turn">zoom out</div>
+  </div>
+
+  <!-- TURN 2 -->
+  <div class="step">
+    <div class="step-label"><span class="num">2</span>Zoom Out: System Gravity</div>
+    <div class="card">
+      <h2>Zoom Out: System Gravity</h2>
+      <p>Mapping the structural, environmental, and systemic forces that define the patient's attractor state. These macro-domains dictate whether the clinical trajectory stabilizes or degrades into catastrophic systemic failure before individual bedside interventions can take hold.</p>
+
+      <pre class="diagram">                       +----------------------------------------+
+                       |       MACRO SYSTEMIC ATTRACTOR         |
+                       +----------------------------------------+
+                                           |
+        +------------------+---------------+---------------+------------------+
+        |                  |                               |                  |
+        v                  v                               v                  v
++---------------+  +---------------+               +---------------+  +---------------+
+| ECO-SPECIES   |  | INFRASTRUCTURE|               | SOCIO-BEHAVIOR|  | HOST RESERVE  |
+| LANDSCAPE     |  | &amp; SUPPLY CHAIN|               | &amp; NARRATIVE   |  | &amp; PHYSIOLOGY  |
++---------------+  +---------------+               +---------------+  +---------------+</pre>
+
+      <h4>1. Eco-Species &amp; Vector Landscape</h4>
+      <p><strong>Endemic Venom Profile:</strong> Species ecology in the geographical zone dictates the default clinical gravity (e.g., Elapid neurotoxicity vs. Viperid hemotoxicity/cytotoxicity vs. Hydrophiid myotoxicity).</p>
+      <p><strong>Inoculation Dynamics:</strong> Bite characteristics — dry bite probability (~20–50%), depth of fang penetration, intramuscular vs. subcutaneous injection, and single vs. multiple strikes.</p>
+
+      <h4>2. Infrastructure &amp; Supply Chain Friction</h4>
+      <p><strong>Antivenom Logistics:</strong> Availability of appropriate monovalent or polyvalent antivenom (ASV), cold-chain integrity, and regional stockouts.</p>
+      <p><strong>Tiered Escort Capability:</strong> Time-to-tertiary-care vector. Presence or absence of transport with advanced airway support, invasive monitoring, ventilator availability, and renal replacement therapy (RRT) capacity.</p>
+
+      <h4>3. Socio-Behavioral &amp; Narrative Landscape</h4>
+      <p><strong>Pre-Hospital Delay Loop:</strong> Time lost to traditional healers, faith practices, or remote geographic isolation, directly pushing the patient past the golden phase window.</p>
+      <p><strong>Iatrogenic/Traditional Harm Vectors:</strong> High prevalence of damaging field practices (arterial tourniquets, local incisions, suction, herbal poultices) that create compounding ischemic, septic, or sudden surge risks upon presentation.</p>
+
+      <h4>4. Host Physiology &amp; Attractor Baseline</h4>
+      <p><strong>Systemic Biological Reserve:</strong> Extremes of age, volume depletion state (dehydration common in field workers), baseline renal function, and underlying baseline bleeding diatheses.</p>
+      <p><strong>Atopic/Equine Sensitization Vector:</strong> Baseline risk for severe type I hypersensitivity reactions to horse/sheep-derived antivenom proteins, creating an immediate dual-shock potential (distributive/anaphylactic shock superimposed on toxin shock).</p>
+
+      <hr>
+      <h3>Macro Attractor Trajectory Mapping</h3>
+      <p><strong>Decompensatory Attractor (Status Quo Gravity):</strong> A confluence of delayed transit + arterial tourniquet application + polyvalent ASV stockout converts a manageable bite into an irreversible cascade: sudden venom surge upon tourniquet removal → profound shock + rapid VICC → acute renal necrosis + microvascular ischemic limb loss.</p>
+      <p><strong>Stabilized Attractor (Aligned Gravity):</strong> A synchronized pathway of rapid transport + early syndrome recognition + pre-emptive anaphylaxis readiness + targeted neutralization arrests toxin propagation, preserves microvascular perfusion, and allows complete recovery without structural end-organ or limb damage.</p>
+
+      <div class="nav-options">
+        <div class="nav-title">Where should we navigate next?</div>
+        <ul>
+          <li><code>ZOOM IN: BIFURCATION TACTICS</code> — Drill down into specific failure modes, red flags, and circuit breakers for a critical node.</li>
+          <li><code>LOCK: CRITICAL NODES</code> — Refine the priority weighting and comorbidity multipliers of the hub nodes at this level.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER TURN -->
+  <div class="step">
+    <div class="step-label user"><span class="num">▸</span>You</div>
+    <div class="card user-turn">lock critical nodes</div>
+  </div>
+
+  <!-- TURN 3 -->
+  <div class="step">
+    <div class="step-label"><span class="num">3</span>Lock: Critical Nodes</div>
+    <div class="card">
+      <h2>Lock: Critical Nodes</h2>
+      <p>Holding current resolution layer. Refining top hub node weightings, comorbidity multipliers, and cross-node systemic cascades.</p>
+
+      <hr>
+      <h3>1. Refined Critical Hub Node Matrix</h3>
+      <table>
+        <tr><th>Hub Node</th><th>Type</th><th>Base Gravity</th><th>Cascade Risk / Failure Vector</th><th>Lock</th></tr>
+        <tr>
+          <td><strong>1. Antivenom Timing &amp; Anaphylaxis Control</strong></td>
+          <td>Bifurcation</td>
+          <td><span class="badge critical">CRITICAL</span></td>
+          <td><strong>Iatrogenic Collapse:</strong> Delayed ASV permits irreversible target-site binding; unmonitored ASV administration causes severe Type-I anaphylactic shock.</td>
+          <td><span class="badge locked">LOCKED</span></td>
+        </tr>
+        <tr>
+          <td><strong>2. Pre-Hospital Tourniquet / Surge Control</strong></td>
+          <td>Experiencable</td>
+          <td><span class="badge high">HIGH</span></td>
+          <td><strong>Reperfusion / Surge:</strong> Sudden removal of a tight pre-hospital tourniquet dumps toxic venom load, hyperkalemia, and acidemia directly into central circulation.</td>
+          <td><span class="badge locked">LOCKED</span></td>
+        </tr>
+        <tr>
+          <td><strong>3. Syndrome Recognition (VICC vs. Neuroparalysis)</strong></td>
+          <td>Explainable</td>
+          <td><span class="badge high">HIGH</span></td>
+          <td><strong>Diagnostic Misdirection:</strong> Treating VICC with premature surgical fasciotomy or misinterpreting neuromuscular weakness as sedation/hypotension.</td>
+          <td><span class="badge locked">LOCKED</span></td>
+        </tr>
+      </table>
+
+      <hr>
+      <h3>3. Inter-Node Cascade Vectors</h3>
+      <p><strong>The Tourniquet → Anaphylaxis Cascade (Node 2 → Node 1):</strong> Uncontrolled removal of a tight tourniquet without prior intravenous access, fluid resuscitation, and ready antivenom/epinephrine causes simultaneous venom surge shock + acute hyperkalemic arrest, rendering subsequent ASV administration hazardous.</p>
+      <p><strong>The VICC → Fasciotomy Death Cascade (Node 3 → Node 4):</strong> Intense localized cytotoxic swelling simulates compartment syndrome. Performing a surgical fasciotomy while VICC is active (uncorrected coagulopathy) causes intractable, un-clampable microvascular hemorrhage leading to exsanguination.</p>
+
+      <div class="nav-options">
+        <div class="nav-title">Where should we navigate next?</div>
+        <ul>
+          <li><code>ZOOM IN: BIFURCATION TACTICS</code> — Select one specific node to map its precise failure modes, red flags, and mandatory circuit breakers.</li>
+          <li><code>ZOOM OUT: SYSTEM GRAVITY</code> — Return to the macro landscape.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER TURN -->
+  <div class="step">
+    <div class="step-label user"><span class="num">▸</span>You</div>
+    <div class="card user-turn">zoom in node 1 antivenom and anaphylaxis</div>
+  </div>
+
+  <!-- TURN 4 -->
+  <div class="step">
+    <div class="step-label"><span class="num">4</span>Zoom In: Bifurcation Tactics</div>
+    <div class="card">
+      <h2>Zoom In: Bifurcation Tactics</h2>
+      <p class="subtag">Node 1: Antivenom Timing &amp; Anaphylaxis Control</p>
+      <p>This node represents the primary clinical bifurcation point in snakebite management: antivenom is the only definitive treatment for systemic envenomation, yet it carries an immediate threat of severe, life-threatening adverse reactions (up to 40–50% incidence with certain polyvalent formulations).</p>
+
+      <hr>
+      <h3>1. Bifurcation &amp; Risk Matrix</h3>
+      <table>
+        <tr><th>Dimension</th><th>Rating</th><th>Clinical Reality</th></tr>
+        <tr><td>Intended Effect</td><td><span class="badge high">HIGH</span></td><td>Halts systemic toxin propagation, reverses or arrests VICC, prevents neuroparalytic airway collapse, and mitigates acute kidney injury.</td></tr>
+        <tr><td>Uncertainty</td><td><span class="badge high">MEDIUM-HIGH</span></td><td>Unpredictable non-IgE-mediated (anaphylactoid) or IgE-mediated reactions; skin testing is non-predictive and explicitly contraindicated due to delay and high false-negative rates.</td></tr>
+        <tr><td>Red Flag</td><td><span class="badge critical">CATASTROPHIC</span></td><td>Sudden distributive shock, acute stridor/bronchospasm, nausea/vomiting, or generalized urticaria occurring within 10–60 minutes of starting ASV.</td></tr>
+        <tr><td>Circuit Breaker</td><td><span class="badge locked">MANDATORY</span></td><td><strong>Bedside Epinephrine Pre-Armament Protocol</strong> — ASV infusion does NOT start until intramuscular epinephrine is physically drawn up, labeled, and placed at the bedside with dedicated IV access secured.</td></tr>
+      </table>
+
+      <hr>
+      <h3>2. Tactical Failure Modes ("The Dark Side")</h3>
+      <h4>Failure Mode A: The Hesitation Trap (Undertreatment/Delay)</h4>
+      <p><em>Mechanism:</em> Clinicians withhold or delay antivenom due to fear of allergic reactions or reliance on invalid skin testing.</p>
+      <p><em>Consequence:</em> Toxins bind irreversibly to target tissue (neuromuscular junctions, renal tubules, vascular endothelium). Once bound, antivenom cannot reverse the damage; neuroparalysis and tissue necrosis lock in permanently.</p>
+
+      <h4>Failure Mode B: The Unguarded Infusion (Anaphylactic Collapse)</h4>
+      <p><em>Mechanism:</em> Administering ASV rapidly without pre-drawn epinephrine or dedicated monitoring.</p>
+      <p><em>Consequence:</em> Anaphylactic shock develops rapidly, superimposed on envenomation-induced vasodilation or cardiac toxicity, causing refractory cardiac arrest.</p>
+
+      <hr>
+      <h3>3. Minimal High-Yield Interventions (Tactical Protocol)</h3>
+      <pre class="protocol">ANTIVENOM SAFE-PASSAGE PROTOCOL
+-----------------------------------------------------------------------
+1. HARD STOP (Pre-Infusion Checklist)
+   - Confirm indications for ASV (systemic toxicity or rapid local swelling).
+   - Draw up Epinephrine 1:1,000 (0.5 mg IM adult; 0.01 mg/kg pediatric).
+   - Place Epinephrine physically at the bedside. DO NOT proceed without this.
+
+2. TITRATED DELIVERY
+   - Start ASV infusion slowly over the first 10–15 minutes under direct observation.
+   - Constant monitoring: BP, Pulse, SpO2, and skin/respiratory signs every 5 min.
+
+3. CIRCUIT BREAKER ACTION (If Reaction Occurs)
+   - STEP 1: STOP the ASV infusion IMMEDIATELY.
+   - STEP 2: Administer IM Epinephrine into the mid-anterolateral thigh.
+   - STEP 3: Bolus IV normal saline + high-flow O2 + IV antihistamine/steroids.
+   - STEP 4: Once hemodynamically stable, RESUME ASV slowly. Do NOT discard ASV.</pre>
+
+      <div class="nav-options">
+        <div class="nav-title">Where should we navigate next?</div>
+        <ul>
+          <li><code>ZOOM IN: BIFURCATION TACTICS</code> — Drill into another specific node.</li>
+          <li><code>LOCK: CRITICAL NODES</code> — Return to the core node map to adjust priorities.</li>
+          <li><code>TRAINING MODE: GRANDMASTER'S APPRENTICE</code> — Run a simulated case challenge to test your execution under pressure.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER TURN -->
+  <div class="step">
+    <div class="step-label user"><span class="num">▸</span>You</div>
+    <div class="card user-turn">training mode</div>
+  </div>
+
+  <!-- TURN 5 -->
+  <div class="step">
+    <div class="step-label"><span class="num">5</span>Grandmaster's Apprentice Mode</div>
+    <div class="card">
+      <div class="mode-banner">
+        <div class="mode-title">GRANDMASTER'S APPRENTICE MODE: CASE 01</div>
+        <div class="mode-meta">Status: Scenario Active. Analysis Suppressed. &nbsp;|&nbsp; Your Role: Chief Clinical Strategist.</div>
+      </div>
+
+      <h3>Clinical Scenario</h3>
+      <p>A 42-year-old agricultural worker is brought to your rural Emergency Department after being bitten on the right lower calf by an unidentified snake in a rice field <strong>3.5 hours ago</strong>.</p>
+      <p><strong>Pre-Hospital Context:</strong> A panic-stricken bystander applied a thick, tight rubber rope tourniquet above the patient's right knee 3 hours ago. Local incisions were made over the bite mark with a razor blade to "bleed out the poison."</p>
+      <p><strong>Presenting Status:</strong></p>
+      <ul>
+        <li><strong>Vitals:</strong> BP 98/62 mmHg | HR 118 bpm (sinus tachycardia) | RR 24/min | SpO2 95% on room air.</li>
+        <li><strong>Neurological:</strong> Alert, anxious, mild bilateral ptosis noted, speaking in full sentences but complaining of mild "heavy eyelids" and double vision.</li>
+        <li><strong>Local/Vascular:</strong> Right lower leg below the tourniquet is cold, severely swollen, extremely painful, and tense. Non-clotting blood is dark and continuously oozing from the incision sites.</li>
+        <li><strong>Resources:</strong> 10 vials of polyvalent Antivenom (ASV), basic resuscitation drugs (Epinephrine, Atropine, Antihistamines), standard IV fluids, and an emergency airway tray. No blood bank on site (nearest tertiary facility is 45 minutes away).</li>
+      </ul>
+
+      <hr>
+      <h3>Your Challenge (Apprentice Task)</h3>
+      <p>Do <strong>not</strong> attempt a full treatment plan yet. Demonstrate your node-spotting instinct under the Avinash Principle by answering these three critical questions:</p>
+      <ol>
+        <li><strong>The Phase Boundary Threat:</strong> What single routine physical maneuver, if executed hastily in the next 10 minutes, risks sending this patient into immediate, fatal cardiovascular or electrical collapse?</li>
+        <li><strong>The Top 2 Hub Nodes:</strong> Identify the two highest-leverage hub nodes dictating systemic gravity in this exact window.</li>
+        <li><strong>The Circuit Breaker:</strong> What specific safety preparation must be fully operational before you touch or release the pre-hospital tourniquet?</li>
+      </ol>
+      <p><em>Respond with your analysis. Evaluation is against the structural gravity matrix.</em></p>
+    </div>
+  </div>
+
+  <footer>Hub-Node Navigator · Clinical Reasoning Transcript · Exported 7/28/2026</footer>
+
+</div>
+</body>
+</html>
