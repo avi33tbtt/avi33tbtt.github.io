@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Snakebite-Stroke Trajectory Map</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#121b2e; --ink:#e8edf7; --muted:#93a1bb;
+    --hub:#4fa3ff; --textbook:#38d39f; --outlier:#ff6b6b; --edge:#3a4a6b;
+    --accent:#ffd166;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+  header{padding:14px 20px;border-bottom:1px solid #223151;background:#0d1526;}
+  header h1{margin:0 0 4px;font-size:18px;}
+  header .cite{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  header .cite a{color:#8ecbff;}
+  .caveat{margin-top:8px;background:#241a0d;border:1px solid #6b4a12;color:#ffd9a0;font-size:12px;
+    padding:8px 10px;border-radius:6px;max-width:1100px;}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 20px;background:#101a30;border-bottom:1px solid #223151;}
+  .toolbar button, .toolbar select{
+    background:#1a2540;color:var(--ink);border:1px solid #33456e;border-radius:6px;
+    padding:6px 10px;font-size:12.5px;cursor:pointer;
+  }
+  .toolbar button.active{background:var(--hub);color:#08131f;border-color:var(--hub);}
+  .toolbar button.outlierbtn.active{background:var(--outlier);border-color:var(--outlier);color:#2b0808;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;padding:8px 20px;font-size:12px;color:var(--muted);background:#0d1526;border-bottom:1px solid #223151;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  #wrap{position:relative;overflow:auto;}
+  svg{display:block;background:
+    radial-gradient(circle at 20% 20%, #0f1a30 0%, var(--bg) 60%);}
+  .stage-label{fill:#6d7fa6;font-size:11px;letter-spacing:.04em;text-transform:uppercase;}
+  .nodecirc{stroke-width:1.5;cursor:pointer;transition:opacity .15s;}
+  .nodecirc.dim{opacity:.15;}
+  .nodelabel{fill:var(--ink);font-size:11px;pointer-events:none;}
+  .nodelabel.dim{opacity:.2;}
+  .sub{fill:var(--muted);font-size:9.5px;pointer-events:none;}
+  .sub.dim{opacity:.2;}
+  .edge{fill:none;stroke:var(--edge);opacity:.55;transition:opacity .15s, stroke .15s;}
+  .edge.dim{opacity:.06;}
+  .edge.hi{stroke:var(--accent);opacity:.95;}
+  .patientpath{fill:none;stroke-width:3;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .patientpath.show{opacity:.95;}
+  #tooltip{
+    position:fixed;pointer-events:none;background:#17233d;border:1px solid #33456e;border-radius:8px;
+    padding:10px 12px;font-size:12.5px;color:var(--ink);max-width:300px;box-shadow:0 6px 20px rgba(0,0,0,.4);
+    display:none;z-index:10;
+  }
+  #tooltip .t-title{font-weight:600;margin-bottom:4px;color:var(--accent);}
+  #tooltip .t-row{color:var(--muted);margin-top:3px;}
+  footer{padding:14px 20px;color:var(--muted);font-size:12px;border-top:1px solid #223151;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Strokes Following Snakebite Envenomations — Case-Series Trajectory Map</h1>
+  <div class="cite">
+    Source: Almeida T, Priante SP, João GP, Nery Oliveira D, Mouta G, Sachett J, et al. (2025)
+    <em>Strokes following snakebite envenomations: A systematic review and individual patient data meta-analysis.</em>
+    PLoS Negl Trop Dis 19(12): e0013789.
+    <a href="https://doi.org/10.1371/journal.pntd.0013789" target="_blank">https://doi.org/10.1371/journal.pntd.0013789</a>
+    &nbsp;|&nbsp;
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12677522/pdf/pntd.0013789.pdf" target="_blank">Full text PDF (PMC12677522)</a>
+  </div>
+  <div class="caveat">
+    <strong>Data-fidelity note:</strong> the paper reports 130 pooled cases almost entirely as <em>aggregate</em> frequencies
+    (Tables 1–5). True individual, linked patient trajectories are only available for the <strong>6 fatal autopsy cases</strong>
+    in Table 6. Those 6 are rendered here as real threaded patient paths. The rest of the network (grey/blue "population" nodes)
+    represents sequential clinical checkpoints weighted by their reported marginal prevalence across the 130-case cohort —
+    it is <em>not</em> a verified joint trajectory for each of the other 124 patients, since the paper's individual-level
+    supplementary file (S2) was not part of the source document provided.
+  </div>
+</header>
+
+<div class="toolbar">
+  <span style="color:var(--muted);font-size:12px;">Highlight patient:</span>
+  <button data-patient="none" class="patientbtn active">None</button>
+  <button data-patient="p1" class="patientbtn">#11M — Notechis scutatus</button>
+  <button data-patient="p2" class="patientbtn">#23M — Viperid (endocarditis)</button>
+  <button data-patient="p3" class="patientbtn">#50M — C. o. helleri</button>
+  <button data-patient="p4" class="patientbtn">#59F — Bothrops atrox</button>
+  <button data-patient="p5" class="patientbtn">#53M — Daboia russelii</button>
+  <button data-patient="p6" class="patientbtn">#42M — Viperid (massive ICH)</button>
+  <button id="outlierToggle" class="outlierbtn">Show all 6 fatal outliers</button>
+  <button id="resetBtn">Reset view</button>
+</div>
+
+<div class="legend">
+  <span><span class="swatch" style="background:var(--hub);"></span> Node size = patient count / hub weight</span>
+  <span><span class="swatch" style="background:var(--textbook);border:2px solid #fff;"></span> Textbook path node (highest-density route)</span>
+  <span><span class="swatch" style="background:var(--outlier);"></span> Fork point used only by fatal/outlier autopsy cases</span>
+  <span>— Edge thickness = shared checkpoint frequency</span>
+  <span>Click any node for details · click a patient button to trace a real trajectory</span>
+</div>
+
+<div id="wrap">
+  <svg id="chart" viewBox="0 0 1520 760" width="1520" height="760"></svg>
+</div>
+<div id="tooltip"></div>
+
+<footer>
+  Built from Tables 1–6 and in-text results of Almeida et al., PLoS Negl Trop Dis 2025;19(12):e0013789 (CC-BY 4.0).
+  Population-layer node weights are marginal percentages of the reported denominator for each variable (denominators vary,
+  e.g. n=130, n=111, n=102, n=117 — see hover text for each node's exact n).
+</footer>
+
+<script>
+/* ---------------------------------------------------------------
+   DATA MODEL
+   Population layer: checkpoint nodes with reported n / % from the
+   paper's aggregate tables (marginal, not necessarily joint).
+   Patient layer: 6 real linked trajectories from Table 6 (autopsy).
+----------------------------------------------------------------*/
+
+const stages = [
+  {x:70,   label:"Presentation"},
+  {x:280,  label:"Time to care / Antivenom"},
+  {x:520,  label:"Hemostatic disturbance"},
+  {x:760,  label:"Stroke type"},
+  {x:980,  label:"Lesion pattern / rare complication"},
+  {x:1220, label:"Disposition"},
+  {x:1420, label:"Sequela (survivors)"}
+];
+
+// Population (aggregate) nodes
+const nodes = {
+  root:      {x:70,  y:380, r:34, stage:0, label:"Snakebite → Stroke", sub:"n=130 (101 studies)",
+              detail:"Total cohort: 130 individual cases of stroke secondary to snakebite envenomation, from 101 publications, 22 countries (India 36.9%, Brazil 13.9%, Sri Lanka 10.8%). Male 61.5%, age 40–59y most common (37.7%)."},
+  viperid:   {x:280, y:230, r:30, stage:1, label:"Viperidae bite", sub:"107/111 (96.4%)", textbook:true,
+              detail:"Family reported in n=111. Viperidae 96.4% (Daboia russelii, Bothrops spp. most frequent). Objective: dominant genera Daboia, Bothrops, Echis."},
+  elapid:    {x:280, y:330, r:14, stage:1, label:"Elapidae bite", sub:"4/111 (3.6%)", outlierOnly:true,
+              detail:"Rare: Notechis scutatus, Pseudonaja textilis. Narrative: disproportionately linked to fatal hemorrhagic outcomes in this series (autopsy case #11M)."},
+  care_early:{x:280, y:470, r:20, stage:1, label:"Care <6h", sub:"53/102 (52%)",
+              detail:"Time from bite to medical assistance <1h: 19.6%; 1–6h: 32.3% (n=102 reported)."},
+  care_late: {x:280, y:560, r:16, stage:1, label:"Care >24h", sub:"21/102 (20.6%)", outlierOnly:false,
+              detail:"Delay >24h significantly more common in hemorrhagic stroke (28% vs 11.1%, P=0.01) — a real fork point between stroke subtypes."},
+  antivenom: {x:430, y:380, r:32, stage:1, label:"Antivenom given", sub:"117/130 (90%)", textbook:true,
+              detail:"90% received antivenom; early adverse reactions in 5.4%. Not significantly associated with mortality (OR 1.76, P=0.74)."},
+  vicc:      {x:610, y:280, r:30, stage:2, label:"VICC", sub:"94/130 (72.3%)", textbook:true,
+              detail:"Venom-induced consumption coagulopathy: incoagulable blood, abnormal INR, hypofibrinogenemia. 77.5% of ischemic vs 64% of hemorrhagic cases (P=0.09, not significant)."},
+  thrombo:   {x:610, y:400, r:26, stage:2, label:"Thrombocytopenia", sub:"59/130 (45.4%)",
+              detail:"Platelets <150,000/mm³. Strongly associated with DEATH: 70% of fatal cases vs 36.7% of survivors (OR 3.97, P=0.001) — a key mortality-fork variable."},
+  sepsis:    {x:610, y:520, r:14, stage:2, label:"Sepsis", sub:"8/130 (6.2%)", outlierOnly:true,
+              detail:"Rare but the single strongest mortality predictor: 16.7% of deaths vs 3.1% of survivors (OR 6.21, P=0.03)."},
+  ischemic:  {x:790, y:230, r:34, stage:3, label:"Ischemic stroke", sub:"80/130 (61.5%)", textbook:true,
+              detail:"Most common subtype. GCS at admission higher (9.4) than hemorrhagic. Middle cerebral artery most affected territory (23.1%)."},
+  hemorrhagic:{x:790, y:430, r:28, stage:3, label:"Hemorrhagic stroke", sub:"50/130 (38.5%)",
+              detail:"38.5% of cases. Significantly increases death risk (OR 2.67, P=0.02). Mean GCS at admission lower (8.0)."},
+  multi_lesion:{x:1000,y:180, r:28, stage:4, label:"Multiple lesions, 1 hemisphere", sub:"76/125 (60.8%)", textbook:true,
+              detail:"Multifocal involvement predominant in both stroke types (58.2% ischemic, 65.2% hemorrhagic). Strong mortality link: OR 7.57, P<0.001."},
+  isolated:  {x:1000,y:290, r:20, stage:4, label:"Isolated lesion", sub:"49/125 (39.2%)",
+              detail:"Single focal lesion — lower mortality risk than multifocal pattern."},
+  sah:       {x:1000,y:400, r:14, stage:4, label:"Subarachnoid hemorrhage", sub:"11/98 (~ 4–11%)", outlierOnly:true,
+              detail:"Present in 4.1% of survivors vs 23.3% of deaths (OR 7.00, P=0.01) — rare but a major fatal-outlier fork."},
+  endocard:  {x:1000,y:490, r:10, stage:4, label:"Non-bacterial thrombotic endocarditis", sub:"1 autopsy case", outlierOnly:true,
+              detail:"Reported once, at autopsy (Table 6, ref [38]): vegetations on aortic valve driving embolic infarcts to brain, kidney, spleen."},
+  venombrain:{x:1000,y:570, r:10, stage:4, label:"Venom detected in brain tissue", sub:"1 autopsy case", outlierOnly:true,
+              detail:"Reported once (Table 6, ref [88], patient 59/F): direct pathogenic role of venom components in cerebrovascular injury, distinct from a purely coagulopathic route."},
+  survival:  {x:1220,y:230, r:34, stage:5, label:"Survival", sub:"98/128 (76.6%)", textbook:true,
+              detail:"Overall survival 76.6% (30/128 died, 23.4% case fatality)."},
+  death:     {x:1220,y:470, r:24, stage:5, label:"Death", sub:"30/128 (23.4%)",
+              detail:"Predictors: thrombocytopenia (OR 3.97), sepsis (OR 6.21), hemorrhagic stroke (OR 2.67), multifocal lesion (OR 7.57), SAH (OR 7.00)."},
+  motor_seq: {x:1420,y:200, r:24, stage:6, label:"Motor sequela", sub:"22/98 (22.4%)", textbook:true,
+              detail:"Most common long-term outcome. Significantly more frequent in ischemic survivors (28.8% vs 9.4%, P=0.05). Follow-up 1–18 months."},
+  other_seq: {x:1420,y:300, r:14, stage:6, label:"Speech/visual/sensory sequela", sub:"~9–11% each",
+              detail:"Speech 11.2%, visual 9.2%, sensory 2%, unspecified 5.1% — self-reported/clinically inferred, no standardized tools."},
+  no_seq:    {x:1420,y:400, r:16, stage:6, label:"No reported sequela", sub:"remainder of 98 survivors",
+              detail:"Follow-up incomplete/undocumented for many; likely underestimates true disability burden per Discussion."}
+};
+
+// weighted marginal edges (population layer) — thickness ~ n
+const edges = [
+  ["root","viperid",107],["root","elapid",4],
+  ["root","care_early",53],["root","care_late",21],
+  ["viperid","antivenom",100],["elapid","antivenom",4],["care_early","antivenom",70],["care_late","antivenom",18],
+  ["antivenom","vicc",94],["antivenom","thrombo",59],["antivenom","sepsis",8],
+  ["vicc","ischemic",62],["vicc","hemorrhagic",32],
+  ["thrombo","ischemic",36],["thrombo","hemorrhagic",23],
+  ["sepsis","hemorrhagic",4],["sepsis","ischemic",4],
+  ["ischemic","multi_lesion",46],["ischemic","isolated",33],
+  ["hemorrhagic","multi_lesion",30],["hemorrhagic","isolated",16],["hemorrhagic","sah",7],
+  ["hemorrhagic","endocard",1],["ischemic","endocard",0.6],
+  ["hemorrhagic","venombrain",1],
+  ["multi_lesion","death",25],["multi_lesion","survival",51],
+  ["isolated","survival",47],["isolated","death",3],
+  ["sah","death",7],["sah","survival",4],
+  ["ischemic","survival",66],["ischemic","death",13],
+  ["hemorrhagic","survival",32],["hemorrhagic","death",17],
+  ["survival","motor_seq",22],["survival","other_seq",20],["survival","no_seq",56]
+];
+
+// Real patient trajectories (Table 6 autopsy cases) — linked node paths
+const patients = {
+  p1:{color:"#ff6b6b", label:"#11M Notechis scutatus (hemorrhagic, brainstem death 26h)",
+      path:["root","elapid","antivenom","hemorrhagic","multi_lesion","death"],
+      narrative:"Nausea, vomiting, abdominal pain, drowsiness; BP 110/70, pulse 80. Progressed to irritability/loss of motor responses by 26h; brainstem reflexes absent. Autopsy: multiple ICH + SAH, no thrombi, no infarction. [ref 36]"},
+  p2:{color:"#ffb454", label:"#23M Viperid (ischemic → endocarditis → multi-organ emboli)",
+      path:["root","viperid","antivenom","vicc","ischemic","endocard","death"],
+      narrative:"Diarrhea/vomiting day 1; oliguria→anuria day 3. Autopsy: non-bacterial thrombotic endocarditis (aortic valve vegetations) seeding embolic infarcts to brain, kidney, spleen. [ref 38]"},
+  p3:{color:"#ffe14f", label:"#50M Crotalus oreganus helleri (multifocal shower embolism)",
+      path:["root","viperid","antivenom","vicc","ischemic","multi_lesion","death"],
+      narrative:"Pain/swelling of left lower limb, dyspnea, perioral paresthesia. Autopsy: multifocal CNS infarction; emboli in cardiac septum and lung consistent with a 'shower embolism' pattern. [ref 70]"},
+  p4:{color:"#9ee493", label:"#59F Bothrops atrox (venom detected directly in brain)",
+      path:["root","viperid","antivenom","hemorrhagic","venombrain","death"],
+      narrative:"Sweating, tachycardia, aphasia, BP 230/130; coma, fixed pupils, hypothermia, cardiopulmonary arrest. Autopsy: SAH + intraparenchymal hemorrhage with Bothrops venom localized in brain tissue. [ref 88]"},
+  p5:{color:"#8ecbff", label:"#53M Daboia russelii (hemorrhagic, parietal lesion, renal petechiae)",
+      path:["root","viperid","antivenom","vicc","hemorrhagic","multi_lesion","death"],
+      narrative:"Nausea, vomiting, hemoptysis, anuria 12h; gingival bleeding, bilateral ptosis, WBCT20 >20min. Autopsy: parietal-lobe hemorrhage; reduced corticomedullary differentiation and petechial renal hemorrhages. [ref 90]"},
+  p6:{color:"#c68cff", label:"#42M Viperid (fastest fork: 4h to massive bilateral ICH)",
+      path:["root","viperid","antivenom","hemorrhagic","sah","death"],
+      narrative:"Mild foot pain/swelling → 4h later altered mental status, nausea, chest pain. GCS 14 on admission. Autopsy: diffuse SAH + 200mL bilateral frontoparietal-temporal ICH + intraventricular hemorrhage, systemic petechiae, acute tubular necrosis. [ref 126]"}
+};
+
+/* ---------------------------------------------------------------
+   RENDER
+----------------------------------------------------------------*/
+const svg = document.getElementById("chart");
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// stage labels
+stages.forEach(s=>{
+  const t = el("text",{x:s.x, y:30, class:"stage-label", "text-anchor":"middle"});
+  t.textContent = s.label;
+  svg.appendChild(t);
+});
+
+function nodeColor(id){
+  const n = nodes[id];
+  if(n.outlierOnly) return "var(--outlier)";
+  if(n.textbook) return "var(--textbook)";
+  return "var(--hub)";
+}
+
+function curvePath(x1,y1,x2,y2){
+  const mx = (x1+x2)/2;
+  return `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+}
+
+// edges
+const edgeEls = [];
+edges.forEach(([a,b,w])=>{
+  const A = nodes[a], B = nodes[b];
+  const e = el("path",{
+    d: curvePath(A.x+A.r, A.y, B.x-B.r, B.y),
+    class:"edge",
+    "stroke-width": Math.max(1, Math.sqrt(w)*0.9)
+  });
+  e.dataset.a=a; e.dataset.b=b;
+  svg.appendChild(e);
+  edgeEls.push(e);
+});
+
+// patient trajectory overlay paths (drawn on top, hidden by default)
+const patientEls = {};
+Object.entries(patients).forEach(([pid,p])=>{
+  const group = el("g",{class:"patientgroup", id:"grp_"+pid});
+  for(let i=0;i<p.path.length-1;i++){
+    const A = nodes[p.path[i]], B = nodes[p.path[i+1]];
+    const yoff = (Object.keys(patients).indexOf(pid)-2.5)*4; // spread overlapping lines slightly
+    const pth = el("path",{
+      d: curvePath(A.x+A.r, A.y+yoff, B.x-B.r, B.y+yoff),
+      class:"patientpath",
+      stroke:p.color
+    });
+    group.appendChild(pth);
+  }
+  svg.appendChild(group);
+  patientEls[pid]=group;
+});
+
+// nodes
+const nodeEls = {};
+Object.entries(nodes).forEach(([id,n])=>{
+  const g = el("g",{class:"nodegroup", "data-id":id});
+  const c = el("circle",{cx:n.x, cy:n.y, r:n.r, class:"nodecirc",
+    fill: nodeColor(id)+"", "fill-opacity":0.85, stroke:"#fff"});
+  g.appendChild(c);
+  const label = el("text",{x:n.x, y:n.y+n.r+13, class:"nodelabel","text-anchor":"middle"});
+  label.textContent = n.label;
+  g.appendChild(label);
+  const sub = el("text",{x:n.x, y:n.y+n.r+25, class:"sub","text-anchor":"middle"});
+  sub.textContent = n.sub;
+  g.appendChild(sub);
+  svg.appendChild(g);
+  nodeEls[id]=g;
+
+  g.addEventListener("mouseenter",(ev)=>showTooltip(ev,n));
+  g.addEventListener("mousemove",(ev)=>moveTooltip(ev));
+  g.addEventListener("mouseleave",hideTooltip);
+  g.addEventListener("click",()=>focusNode(id));
+});
+
+/* ---------------------------------------------------------------
+   TOOLTIP
+----------------------------------------------------------------*/
+const tip = document.getElementById("tooltip");
+function showTooltip(ev,n){
+  tip.style.display="block";
+  tip.innerHTML = `<div class="t-title">${n.label}</div>
+    <div class="t-row"><strong>${n.sub}</strong></div>
+    <div class="t-row">${n.detail}</div>`;
+  moveTooltip(ev);
+}
+function moveTooltip(ev){
+  tip.style.left = (ev.clientX+16)+"px";
+  tip.style.top = (ev.clientY+12)+"px";
+}
+function hideTooltip(){ tip.style.display="none"; }
+
+/* ---------------------------------------------------------------
+   FOCUS / DIM logic when clicking a node
+----------------------------------------------------------------*/
+function focusNode(id){
+  const connected = new Set([id]);
+  edges.forEach(([a,b])=>{ if(a===id) connected.add(b); if(b===id) connected.add(a); });
+  Object.entries(nodeEls).forEach(([nid,g])=>{
+    const dim = !connected.has(nid);
+    g.querySelector("circle").classList.toggle("dim",dim);
+    g.querySelector(".nodelabel").classList.toggle("dim",dim);
+    g.querySelector(".sub").classList.toggle("dim",dim);
+  });
+  edgeEls.forEach(e=>{
+    const hit = e.dataset.a===id || e.dataset.b===id;
+    e.classList.toggle("dim", !hit);
+    e.classList.toggle("hi", hit);
+  });
+}
+
+function resetFocus(){
+  Object.values(nodeEls).forEach(g=>{
+    g.querySelector("circle").classList.remove("dim");
+    g.querySelector(".nodelabel").classList.remove("dim");
+    g.querySelector(".sub").classList.remove("dim");
+  });
+  edgeEls.forEach(e=>{ e.classList.remove("dim"); e.classList.remove("hi"); });
+}
+
+/* ---------------------------------------------------------------
+   PATIENT HIGHLIGHT BUTTONS
+----------------------------------------------------------------*/
+const patientBtns = document.querySelectorAll(".patientbtn");
+patientBtns.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    patientBtns.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("outlierToggle").classList.remove("active");
+    Object.keys(patientEls).forEach(pid=>{
+      patientEls[pid].querySelectorAll("path").forEach(p=>p.classList.remove("show"));
+    });
+    const pid = btn.dataset.patient;
+    resetFocus();
+    if(pid!=="none"){
+      patientEls[pid].querySelectorAll("path").forEach(p=>p.classList.add("show"));
+      // dim non-path nodes slightly
+      const inPath = new Set(patients[pid].path);
+      Object.entries(nodeEls).forEach(([nid,g])=>{
+        const dim = !inPath.has(nid);
+        g.querySelector("circle").classList.toggle("dim",dim);
+        g.querySelector(".nodelabel").classList.toggle("dim",dim);
+        g.querySelector(".sub").classList.toggle("dim",dim);
+      });
+      alert(patients[pid].label + "\n\n" + patients[pid].narrative);
+    }
+  });
+});
+
+document.getElementById("outlierToggle").addEventListener("click",function(){
+  const active = this.classList.toggle("active");
+  patientBtns.forEach(b=>b.classList.remove("active"));
+  document.querySelector('.patientbtn[data-patient="none"]').classList.add("active");
+  Object.keys(patientEls).forEach(pid=>{
+    patientEls[pid].querySelectorAll("path").forEach(p=>p.classList.toggle("show",active));
+  });
+  resetFocus();
+  if(active){
+    // highlight outlier-only nodes
+    Object.entries(nodeEls).forEach(([nid,g])=>{
+      const isOutlier = nodes[nid].outlierOnly;
+      g.querySelector("circle").classList.toggle("dim", false);
+      if(isOutlier){
+        g.querySelector("circle").setAttribute("stroke","var(--outlier)");
+        g.querySelector("circle").setAttribute("stroke-width","3");
+      }
+    });
+  } else {
+    Object.entries(nodeEls).forEach(([nid,g])=>{
+      g.querySelector("circle").setAttribute("stroke","#fff");
+      g.querySelector("circle").setAttribute("stroke-width","1.5");
+    });
+  }
+});
+
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  resetFocus();
+  patientBtns.forEach(b=>b.classList.remove("active"));
+  document.querySelector('.patientbtn[data-patient="none"]').classList.add("active");
+  document.getElementById("outlierToggle").classList.remove("active");
+  Object.keys(patientEls).forEach(pid=>{
+    patientEls[pid].querySelectorAll("path").forEach(p=>p.classList.remove("show"));
+  });
+  Object.values(nodeEls).forEach(g=>{
+    g.querySelector("circle").setAttribute("stroke","#fff");
+    g.querySelector("circle").setAttribute("stroke-width","1.5");
+  });
+});
+</script>
+</body>
+</html>
