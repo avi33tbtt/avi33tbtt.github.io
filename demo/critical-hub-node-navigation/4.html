@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RCT Trajectory Mapper — Athlete-Specific Dietary Guidance</title>
+<style>
+  body{font-family:Inter,Arial,sans-serif;background:#F7FAFB;color:#0F172A;margin:0;padding:24px;}
+  h1{font-size:20px;margin-bottom:4px;}
+  .badge{display:inline-block;background:#E3F4F8;color:#0A6E85;padding:3px 10px;border-radius:99px;font-size:12px;margin-bottom:16px;}
+  .card{background:#fff;border:1px solid #DCE7EA;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(11,37,48,.04);}
+  details summary{cursor:pointer;font-weight:700;padding:4px 0;}
+  svg{width:100%;height:auto;}
+  .box{fill:#fff;stroke:#0891B2;stroke-width:1.5;}
+  .boxCG{stroke:#94A3B8;}
+  .lbl{font-size:12px;fill:#0F172A;}
+  .sub{font-size:10.5px;fill:#475569;}
+  .arrow{stroke:#0891B2;stroke-width:2;marker-end:url(#arrIG);}
+  .arrowCG{stroke:#94A3B8;stroke-width:2;marker-end:url(#arrCG);}
+  .effect{fill:#C2410C;font-weight:700;font-size:11px;}
+  table{border-collapse:collapse;width:100%;font-size:13px;}
+  td,th{border:1px solid #DCE7EA;padding:6px 8px;text-align:left;}
+  th{background:#E3F4F8;}
+  .note{font-size:12px;color:#475569;}
+</style>
+</head>
+<body>
+<h1>RCT Trajectory Mapper</h1>
+<div class="badge">Design: Parallel-group RCT (CONSORT)</div>
+
+<div class="card">
+<b>Design classification.</b> Parallel-group randomized controlled trial, 16 weeks, 1:1 allocation via computer-generated sequence with opaque sealed envelopes; CONSORT 2010 guidelines followed and a CONSORT diagram (Fig. 1) reported — meets Module E (RCT / CONSORT trajectory) criteria. Intervention group (IG, n=15) received individual dietary consultations at weeks 0/4/8 plus weekly remote support; control group (CG, n=15) received usual diet with basic advice only at study end. Per-protocol analysis on the 28 completers (14/arm) is the primary evidence base (Jayawardena et al., <i>J Int Soc Sports Nutr</i> 2026;23(1):2683613).</div>
+
+<div class="card">
+<svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <marker id="arrIG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0891B2"/></marker>
+ <marker id="arrCG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#94A3B8"/></marker>
+</defs>
+<text x="10" y="20" class="lbl" font-weight="700">Enrolled n=30 → Randomized 1:1</text>
+
+<!-- IG row -->
+<rect class="box" x="10" y="40" width="140" height="50" rx="8"/>
+<text x="20" y="60" class="lbl">IG baseline n=15</text><text x="20" y="76" class="sub">week -2</text>
+<line x1="150" y1="65" x2="200" y2="65" class="arrow"/>
+<rect class="box" x="200" y="40" width="150" height="50" rx="8"/>
+<text x="210" y="60" class="lbl">3 consults wk 0,4,8</text><text x="210" y="76" class="sub">+ weekly WhatsApp</text>
+<line x1="350" y1="65" x2="400" y2="65" class="arrow"/>
+<rect class="box" x="400" y="40" width="150" height="50" rx="8"/>
+<text x="410" y="60" class="lbl">Lost to follow-up: 1</text><text x="410" y="76" class="sub">completers n=14</text>
+<line x1="550" y1="65" x2="600" y2="65" class="arrow"/>
+<rect class="box" x="600" y="30" width="270" height="90" rx="8"/>
+<text x="610" y="50" class="lbl" font-weight="700">Outcome wk16 (IG, n=14)</text>
+<text x="610" y="66" class="sub">TBF% (DEXA) 21.6→17.3, Δ-4.30±1.1, p=0.005</text>
+<text x="610" y="80" class="sub">FFM (DEXA) 42.3→46.6 kg, Δ+4.28, p&lt;0.001</text>
+<text x="610" y="94" class="sub">HGS dominant 35.4→45.3 kg, p&lt;0.001</text>
+<text x="610" y="108" class="effect">divergence point →</text>
+
+<!-- CG row -->
+<rect class="box boxCG" x="10" y="150" width="140" height="50" rx="8"/>
+<text x="20" y="170" class="lbl">CG baseline n=15</text><text x="20" y="186" class="sub">week -2</text>
+<line x1="150" y1="175" x2="200" y2="175" class="arrowCG"/>
+<rect class="box boxCG" x="200" y="150" width="150" height="50" rx="8"/>
+<text x="210" y="170" class="lbl">Usual diet, no advice</text><text x="210" y="186" class="sub">3 "follow-up" visits only</text>
+<line x1="350" y1="175" x2="400" y2="175" class="arrowCG"/>
+<rect class="box boxCG" x="400" y="150" width="150" height="50" rx="8"/>
+<text x="410" y="170" class="lbl">Lost to follow-up: 1</text><text x="410" y="186" class="sub">completers n=14</text>
+<line x1="550" y1="175" x2="600" y2="175" class="arrowCG"/>
+<rect class="box boxCG" x="600" y="140" width="270" height="90" rx="8"/>
+<text x="610" y="160" class="lbl" font-weight="700">Outcome wk16 (CG, n=14)</text>
+<text x="610" y="176" class="sub">TBF% 18.8→19.6, Δ+0.77±0.4, p=0.367 (ns)</text>
+<text x="610" y="190" class="sub">FFM 39.1→38.1 kg, Δ-1.08, p=0.051 (ns)</text>
+<text x="610" y="204" class="sub">HGS: no significant change</text>
+
+<text x="10" y="270" class="lbl" font-weight="700">Between-arm effect sizes at week 16 (IG vs CG)</text>
+<rect class="box" x="10" y="285" width="860" height="120" rx="8"/>
+<text x="25" y="305" class="sub">Fat mass % (BIA): between-group p&lt;0.001, Cohen's d=0.64 — largest early divergence</text>
+<text x="25" y="323" class="sub">Fat-free mass (DEXA): between-group p&lt;0.001, Cohen's d=0.68</text>
+<text x="25" y="341" class="sub">Mid-upper arm circumference: IG Δ-3.48±1.0cm p&lt;0.001 d=1.42 (largest single effect)</text>
+<text x="25" y="359" class="sub">Upper-arm fat area (UAFA): IG Δ-12.47cm² p&lt;0.001 d=2.04 (very large effect)</text>
+<text x="25" y="377" class="sub">HGS dominant hand: IG Δ+9.92kg p&lt;0.001 d=1.17</text>
+<text x="25" y="393" class="effect">Outlier: FFM(BIA) fell in CG (-1.08kg) while rising in IG(+4.28kg) — opposite-direction divergence</text>
+</svg>
+</div>
+
+<details class="card"><summary>Hub / textbook-path summary</summary>
+<p class="note">The modal IG trajectory: baseline → 3 in-person consults (wk 0,4,8) + weekly WhatsApp support (wk 10-16) → reduced fat mass and increased fat-free mass and handgrip strength at week 16, all with p&lt;0.05 and medium-large effect sizes (d=0.33-2.04). The modal CG trajectory: baseline → no structured advice → essentially flat or slightly worsening body composition (all CG changes non-significant, p&gt;0.05). These are the two "textbook paths" a two-arm RCT naturally produces (Table 2, Jayawardena et al. 2026).</p>
+</details>
+
+<details class="card"><summary>Outlier / divergence summary</summary>
+<table>
+<tr><th>Node</th><th>Why notable</th></tr>
+<tr><td>FFM (BIA) trajectory reversal</td><td>IG gained FFM (+4.28kg) while CG <i>lost</i> FFM (-1.08kg) over the same 16 weeks — an opposite-direction split, the strongest signal in the whole dataset (between-group p&lt;0.001), consistent with the paper's RED-S caution that unmonitored diets can erode lean mass (Discussion, refs [9,10,51]).</td></tr>
+<tr><td>UAFA (upper-arm fat area)</td><td>Largest effect size in the paper (d=2.04) — outlier-magnitude change relative to all other anthropometric nodes.</td></tr>
+<tr><td>MUAC decreasing while FFM(DEXA) increasing</td><td>Apparent paradox (arm circumference shrank while whole-body FFM grew) — reflects fat loss from the upper arm outpacing lean gain there, a node worth flagging rather than averaging away.</td></tr>
+</table>
+</details>
+
+<details class="card"><summary>References</summary>
+<p class="note">Jayawardena R, Weerasinghe K, Nanayakkara I, Madhujith T, Hills AP, Kalupahana NS. Changes of body composition through an athlete-specific dietary guidance professional track and field athletes: a randomized controlled study. <i>J Int Soc Sports Nutr</i>. 2026;23(1):2683613. Trial registry: SLCTR/2024/013, UTN U1111-1304-8890.</p>
+</details>
+
+</body>
+</html>

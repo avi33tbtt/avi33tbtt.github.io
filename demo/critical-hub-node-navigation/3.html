@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forest Mapper — Retina as a Biomarker in Schizophrenia Spectrum Disorders</title>
+<style>
+  body{font-family:Inter,Arial,sans-serif;background:#F7FAFB;color:#0F172A;margin:0;padding:24px;}
+  h1{font-size:20px;margin-bottom:4px;}
+  .badge{display:inline-block;background:#E3F4F8;color:#0A6E85;padding:3px 10px;border-radius:99px;font-size:12px;margin-bottom:16px;}
+  .card{background:#fff;border:1px solid #DCE7EA;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(11,37,48,.04);}
+  details summary{cursor:pointer;font-weight:700;padding:4px 0;}
+  .row{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:12.5px;}
+  .rowlbl{width:230px;flex-shrink:0;}
+  .axis{position:relative;flex:1;height:22px;background:linear-gradient(90deg,#DCE7EA 0 50%,#E2E8F0 50% 100%);border-radius:4px;}
+  .zero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#94A3B8;}
+  .ci{position:absolute;top:8px;height:6px;background:#0891B2;border-radius:3px;}
+  .pt{position:absolute;top:3px;width:16px;height:16px;border-radius:50%;background:#0A6E85;transform:translateX(-8px);}
+  .diamond{position:absolute;top:2px;width:0;height:0;transform:translateX(-9px);
+    border-left:9px solid transparent;border-right:9px solid transparent;border-top:9px solid #C2410C;}
+  .val{width:220px;font-size:11.5px;color:#475569;}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;}
+  td,th{border:1px solid #DCE7EA;padding:5px 7px;text-align:left;}
+  th{background:#E3F4F8;}
+  .note{font-size:12px;color:#475569;}
+</style>
+</head>
+<body>
+<h1>Forest Mapper — Retinal Biomarkers in Schizophrenia Spectrum Disorders</h1>
+<div class="badge">Design: Systematic review + meta-analysis (44 studies pooled)</div>
+
+<div class="card"><b>Design classification.</b> PRISMA2020 systematic review and meta-analysis (registered PROSPERO CRD4202235795) synthesizing 65 studies (44 in meta-analysis: 37 OCT, 4 OCTA, 7 fERG) — Module F applies. <b>Downgrade note:</b> the source figures (Fig. 2A etc.) list per-study SMDs, but the individual study rows extracted from the PDF's embedded forest-plot image were too garbled (misaligned columns from OCR) to reliably re-cite one study per node without risking fabricated numbers. Per the module's own constraint ("never fabricate... display only what's stated"), this mapper instead treats each <i>retinal/ERG parameter</i> as the unit, using the paper's own clearly-stated pooled SMD, CI, and k (number of studies/eyes) for each (Komatsu et al., <i>Mol Psychiatry</i> 2024;29:464-482).</div>
+
+<div class="card">
+<div class="row"><div class="rowlbl" title="pRNFL average thickness, k=26 studies, 1921 SSD eyes vs 1778 HC eyes">pRNFL average thickness</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:33%;width:12%"></div><div class="pt" style="left:37%"></div></div>
+<div class="val">SMD -0.30 [-0.46,-0.14], k=26 (thinner in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="Macular average thickness, k=11 studies">Macular average thickness</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:24%;width:16%"></div><div class="pt" style="left:30%"></div></div>
+<div class="val">SMD -0.52 [-0.74,-0.29], k=11 (thinner in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="Macular GCL-IPL thickness, k=9 studies">Macular GCL-IPL</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:29%;width:14%"></div><div class="pt" style="left:34%"></div></div>
+<div class="val">SMD -0.41 [-0.57,-0.25], k=9 (thinner in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="Optic cup volume, k=4 studies">Optic cup volume</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:53%;width:12%"></div><div class="pt" style="left:58%"></div></div>
+<div class="val">SMD +0.26 [0.05,0.46], k=4 (enlarged in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="fERG a-wave amplitude, photopic, k=6">fERG a-wave (photopic)</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:6%;width:26%"></div><div class="pt" style="left:14%"></div></div>
+<div class="val">SMD -1.03 [-1.49,-0.57], k=6 (reduced in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="fERG b-wave amplitude, photopic, k=7">fERG b-wave (photopic)</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:28%;width:16%"></div><div class="pt" style="left:36%"></div></div>
+<div class="val">SMD -0.28 [-0.44,-0.12], k=7 (reduced in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="fERG a-wave amplitude, scotopic, k=4">fERG a-wave (scotopic)</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:16%;width:26%"></div><div class="pt" style="left:23%"></div></div>
+<div class="val">SMD -0.80 [-1.34,-0.27], k=4 (reduced in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="fERG b-wave amplitude, scotopic, k=4">fERG b-wave (scotopic)</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:15%;width:23%"></div><div class="pt" style="left:20%"></div></div>
+<div class="val">SMD -0.73 [-1.07,-0.39], k=4 (reduced in SSD)</div></div>
+
+<div class="row"><div class="rowlbl" title="fERG a-wave latency, photopic, k=6 — significance lost after publication-bias adjustment">a-wave latency (photopic)</div>
+<div class="axis"><div class="zero"></div><div class="ci" style="left:26%;width:16%"></div><div class="pt" style="left:34%"></div></div>
+<div class="val">SMD -0.25 [-0.48,-0.03], k=6 (shorter in SSD — ns after adjustment)</div></div>
+
+</div>
+
+<details class="card"><summary>Hub / textbook-path summary</summary>
+<p class="note">The dominant cross-parameter signal: SSD participants show consistent structural thinning (pRNFL, macula, GCL-IPL) and consistent functional attenuation (all four fERG amplitude measures), forming a coherent "textbook path" of both trait- and state-level retinal change. This pattern survived sensitivity analyses excluding diabetes/hypertension for all parameters except pRNFL inferior/nasal thickness (Results, Komatsu et al. 2024).</p>
+</details>
+
+<details class="card"><summary>Outlier / divergence summary</summary>
+<table>
+<tr><th>Node</th><th>Why notable</th></tr>
+<tr><td>Optic cup volume (OCV)</td><td>The only parameter that goes the <i>opposite</i> direction (enlarged, not thinned) — an outlier relative to the otherwise uniform thinning pattern, and its significance disappeared after adjusting for publication bias (Table S5).</td></tr>
+<tr><td>photopic a-wave latency</td><td>Statistically significant pooled estimate that became non-significant after removing one influential study (Fridel et al. 2022) and after publication-bias correction — a fragile, low-certainty node (GRADE "low").</td></tr>
+<tr><td>pRNFL vs macular thickness and illness duration</td><td>Disease duration correlates <i>negatively</i> with pRNFL thickness but <i>positively</i> with macular thickness — a genuine directional divergence between two structurally adjacent retinal regions, discussed at length as evidence of two different underlying processes (neurodegeneration vs macular edema) rather than a single linear trajectory.</td></tr>
+</table>
+</details>
+
+<details class="card"><summary>References</summary>
+<p class="note">Komatsu H, Onoguchi G, Silverstein SM, Jerotic S, Sakuma A, Kanahara N, Kakuto Y, Ono T, Yabana T, Nakazawa T, Tomita H. Retina as a potential biomarker in schizophrenia spectrum disorders: a systematic review and meta-analysis of optical coherence tomography and electroretinography. <i>Mol Psychiatry</i>. 2024;29:464-482. https://doi.org/10.1038/s41380-023-02340-4 (PROSPERO CRD4202235795)</p>
+</details>
+
+</body>
+</html>
