@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vibe Rounds — Case Flow Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --ink:#0B2530;
+    --rail:#DCE7EA;
+    --teal:#0891B2;
+    --teal-deep:#0A6E85;
+    --clay:#C2410C;
+    --card:#FFFFFF;
+    --muted:#5B7480;
+    --line:#DCE7EA;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+    --mono-font:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);
+    font-family:var(--body-font);}
+  #app{display:flex;height:100vh;overflow:hidden;}
+
+  /* ---------- Sidebar ---------- */
+  #sidebar{width:300px;flex:none;background:var(--card);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;}
+  #sidebar-head{padding:18px 18px 10px;border-bottom:1px solid var(--line);}
+  #sidebar-head h1{font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 4px;color:var(--teal-deep);}
+  #sidebar-head p{margin:0;font-size:11px;color:var(--muted);font-family:var(--body-font);line-height:1.5;}
+  #search{margin:12px 18px 6px;padding:8px 10px;border:1px solid var(--line);background:var(--paper);
+    font-family:var(--body-font);font-size:12.5px;color:var(--ink);border-radius:8px;width:calc(100% - 36px);}
+  #module-list{flex:1;overflow-y:auto;padding:6px 12px 18px;}
+  .cat{margin-top:14px;}
+  .cat-label{font-family:var(--body-font);font-size:10px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--clay);padding:4px 6px;font-weight:600;}
+  .mod-item{padding:7px 9px;margin:2px 0;border:1px solid transparent;border-radius:8px;cursor:grab;
+    font-family:var(--body-font);font-size:12.5px;color:var(--ink);line-height:1.35;
+    transition:background .12s, border-color .12s;}
+  .mod-item:hover{background:var(--paper);border-color:var(--line);}
+  .mod-item .num{color:var(--teal);font-weight:700;margin-right:6px;font-family:var(--mono-font);}
+  .mod-item.dragging{opacity:.4;}
+
+  /* ---------- Canvas ---------- */
+  #canvas-wrap{flex:1;position:relative;overflow:hidden;background:
+      radial-gradient(circle,#00000009 1px, transparent 1px) 0 0/22px 22px, var(--paper);}
+  #canvas{position:absolute;top:0;left:0;width:4000px;height:3000px;}
+  svg#links{position:absolute;top:0;left:0;pointer-events:none;overflow:visible;}
+  .node{position:absolute;width:220px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);cursor:grab;user-select:none;}
+  .node.case-node{border:2px solid var(--teal-deep);background:#E3F4F8;}
+  .node.end-node{border:2px solid var(--clay);background:#FCE9DD;}
+  .node.end-html-node{border:2px solid var(--teal-deep);background:#E3F4F8;}
+  .node-head{padding:8px 10px 6px;border-bottom:1px solid var(--line);font-family:var(--body-font);
+    font-size:12px;font-weight:600;color:var(--teal-deep);display:flex;justify-content:space-between;align-items:flex-start;gap:6px;}
+  .node-head .idx{color:var(--clay);}
+  .node-body{padding:8px 10px;font-family:var(--body-font);font-size:11px;color:var(--muted);line-height:1.4;}
+  .node-remove{cursor:pointer;color:var(--muted);font-size:13px;line-height:1;background:none;border:none;padding:0 2px;}
+  .node-remove:hover{color:var(--clay);}
+  .port{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--teal);
+    border:2px solid var(--card);top:50%;transform:translateY(-50%);cursor:crosshair;}
+  .port.out{right:-6px;}
+  .port.in{left:-6px;background:var(--clay);}
+  .port:hover{transform:translateY(-50%) scale(1.25);}
+
+  /* ---------- Topbar ---------- */
+  #topbar{position:absolute;top:14px;right:22px;display:flex;gap:8px;z-index:5;}
+  button.tb{font-family:var(--body-font);font-size:11.5px;letter-spacing:.03em;
+    text-transform:uppercase;padding:8px 14px;border:1px solid var(--teal-deep);background:var(--teal-deep);
+    color:#fff;border-radius:8px;cursor:pointer;}
+  button.tb.ghost{background:transparent;color:var(--teal-deep);}
+  button.tb:hover{opacity:.85;}
+  #hint{position:absolute;bottom:14px;left:14px;font-family:var(--body-font);font-size:11px;
+    color:var(--muted);background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:8px;max-width:340px;line-height:1.4;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar">
+    <div id="sidebar-head">
+      <h1>Vibe Rounds · Case Flow</h1>
+      <p>Drag modules onto the canvas, then connect them into a sequential reasoning pipeline starting from your case.</p>
+    </div>
+    <input id="search" placeholder="Filter modules…">
+    <div id="special-list" style="padding:6px 18px 0;">
+      <div class="cat-label" style="padding-left:0;">Terminal Nodes</div>
+      <div class="mod-item end-item" draggable="true" style="border:1px dashed var(--clay);margin:4px 0 6px;">
+        <span class="num" style="color:var(--clay);">■</span>End — Create .md File
+      </div>
+      <div class="mod-item end-html-item" draggable="true" style="border:1px dashed var(--teal-deep);margin:0 0 10px;">
+        <span class="num" style="color:var(--teal-deep);">■</span>End — Create .html File
+      </div>
+    </div>
+    <div id="module-list"></div>
+  </div>
+  <div id="canvas-wrap">
+    <div id="topbar">
+      <button class="tb ghost" id="clearBtn">Clear</button>
+      <button class="tb ghost" id="exportBtn">Export flow</button>
+      <button class="tb" id="exportMdBtn">Export .txt</button>
+    </div>
+    <div id="canvas">
+      <svg id="links"></svg>
+    </div>
+    <div id="hint">Drag from a node's <b>right dot</b> to the next node's <b>left dot</b> to link them. Any node — Case or module — can connect to multiple next nodes to branch into several paths, and any node can receive multiple incoming links. End each path with an <b>End — Create .md File</b> or <b>End — Create .html File</b> node. Click a link to delete it.</div>
+  </div>
+</div>
+
+<script>
+// ---------------- Module catalogue ----------------
+const MODULES = [
+ {cat:"Clinical Reasoning & Cognitive Frameworks", items:[
+   [1,"Socratic Clinical Reasoning","Pushes active reasoning through a case rather than passive answers"],
+   [12,"Differential Diagnosis Deepdive","Structured DDx expansion drill"],
+   [14,"Resource-Constrained Clinical Reasoning","Reasoning under limited-resource settings"],
+   [15,"Illness Script Acquisition","Builds illness-script pattern recognition"],
+   [17,"Semantic Qualifiers & Problem Representation","Sharpens problem representation language"],
+   [18,"Causal vs. Probabilistic Reasoning","Contrasts causal and network reasoning modes"],
+   [20,"Naturalistic Decision Making","Recognition-primed decision modeling"],
+   [28,"Diagnostic Time-Out","Structured pause-and-check before committing to a diagnosis"],
+   [30,"Diagnostic Anchor Extractor","Surfaces anchoring bias in a working diagnosis"],
+   [32,"Clinical Cognition Loop","Iterative reasoning loop across a case"],
+   [33,"Why Now? Precipitant Hunter","Hunts for the precipitating trigger of presentation"],
+   [35,"Epistemic Certainty Mapping","Calibrates confidence across differentials"],
+   [36,"Bayesian Probability / LR Engine","Likelihood-ratio based updating"],
+   [37,"Red Herring / Signal-to-Noise Drill","Separates distractors from true signal"],
+   [50,"Diagnostic Reasoning Map","Visual map of the reasoning path"],
+   [54,"System 1 & System 2 Question Generator","Dual-process reasoning prompts"],
+   [56,"Hypothetico-Deductive Reasoning","Classic hypothesis-driven reasoning cycle"],
+   [57,"Clinical Cognition Deep Dive","Deep dive on the learner's own cognition"]
+ ]},
+ {cat:"Patient Advocacy & Individual Care Management", items:[
+   [2,"Patient-Advocate Case Documentation","4-step structured case record for a family member"],
+   [3,"Extended Patient-Advocate Monitoring","Longitudinal domain tracking (mood, meds, red flags)"],
+   [9,"N-of-1 Case Research Protocol","Seven-stage protocol on your own complex case"],
+   [11,"Patient Education Query Intelligence","Turns questions into patient-education material"],
+   [13,"Medication Reconciliation & Polypharmacy","Audits drug interactions and polypharmacy"],
+   [55,"Patient Needs Assessment","Structured needs-assessment interview"]
+ ]},
+ {cat:"Data Analytics & Analytical Methodologies", items:[
+   [5,"Real-Time Case Review & Data Audit","Queries/cleans a live case log"],
+   [6,"Registry-Level Analytics","Nine escalating levels of registry analysis"],
+   [7,"Longitudinal & Cross-Case Learning","Cross-case, cross-time learning system"],
+   [22,"Nested Analysis","Layered sub-analysis within a case"],
+   [23,"Counterfactual Analysis","What-if branch analysis"],
+   [24,"Heuristic Analysis","Surfaces heuristics in play"],
+   [25,"Thematic Analysis","Extracts recurring themes"],
+   [27,"Time-Series & Velocity Analyzer","Trend and rate-of-change analysis"]
+ ]},
+ {cat:"Patient Safety, Risk & Systems Failure", items:[
+   [26,"Bias Auditing","Audits cognitive/systemic bias in a case"],
+   [29,"Iatrogenic Domino Effect","Traces cascading iatrogenic harm"],
+   [38,"Poly-Crisis & Cascading Failure Simulator","Simulates compounding system failures"],
+   [42,"Clinical Pre-Mortem","Pre-mortem risk drill before acting"],
+   [49,"FMEA Analysis","Failure Mode & Effects Analysis"]
+ ]},
+ {cat:"Medical Education, Literature & Basic Science", items:[
+   [4,"Peer-Level Ward Round Preparation","Rehearses rounds, admissions, triage"],
+   [10,"Journal & Article Reading","Structured critical reading of a paper"],
+   [16,"Basic Science ↔ Clinical Integration","Bidirectional bench-to-bedside linking"],
+   [21,"Evidence Frontier Search","Finds the edge of current evidence"],
+   [31,"First-Principles Pathophysiology Mapping","Rebuilds mechanism from first principles"],
+   [39,"Global Knowledge Network Diagnostic Matrix","Cross-references global diagnostic knowledge"],
+   [52,"Clinical Pearls Distillation","Distills case into memorable pearls"],
+   [53,"Clinical Guideline Intelligence Navigator","Navigates relevant guidelines"]
+ ]},
+ {cat:"Health Operations, Systems & Economics", items:[
+   [19,"Community & Social Medicine Insights","Social-determinants lens on the case"],
+   [34,"High-Value Care Auditor","Audits for low-value/high-value care"],
+   [40,"Operational & Throughput Strategist","Ward/department throughput analysis"],
+   [41,"Clinical Workflow Implementation Science","Implementation-science lens on workflow"],
+   [43,"Health Economics & Value-Based Care","Cost/value alignment analysis"],
+   [51,"Systems-Based Clinical Analysis","Systems-level case analysis"]
+ ]},
+ {cat:"Framework Architecture & Meta-Design", items:[
+   [8,"Socratic-Mode Design Specification","QA spec for authoring new Socratic prompts"],
+   [44,"Clinical Genetics Reasoning","Genetics-specific reasoning module"],
+   [45,"Shadow Module — Genetics Adversarial","Adversarial counterpart to Module 44"],
+   [46,"Evidence-Based Medicine Insights","Core EBM reasoning module"],
+   [47,"Shadow Module — EBM Adversarial","Adversarial counterpart to EBM module"],
+   [48,"Treatment Comparative Analysis & Prognosis","Comparative treatment/prognosis trajectory"]
+ ]}
+];
+
+// ---------------- Module link map (avi33tbtt.github.io/Prompts) ----------------
+const PROMPTS_BASE = 'https://avi33tbtt.github.io/Prompts/';
+const MODULE_URLS = {
+  1:'Module-01-Socratic-Clinical-Reasoning.html',
+  2:'Module-02-Patient-Advocate-Case-Documentation.html',
+  3:'Module-03-Extended-Patient-Advocate-Monitoring.html',
+  4:'Module-04-Peer-Level-Ward-Round-Preparation.html',
+  5:'Module-05-Real-Time-Case-Review-and-Data-Audit.html',
+  6:'Module-06-Registry-Level-Analytics.html',
+  7:'Module-07-Longitudinal-and-Cross-Case-Learning.html',
+  8:'Module-08-Socratic-Mode-Design-Specification.html',
+  9:'Module-09-Case-Research_Protocol.html',
+  10:'Module-10-Medical-Journal-Article-Reading.html',
+  11:'Module-11-Patient-Education-Query-Intelligence.html',
+  12:'Module-12-Differential-Diagnosis-Deepdive.html',
+  13:'Module-13-Medication-Reconciliation-Polypharmacy-Audit.html',
+  14:'Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html',
+  15:'Module-15-Illness-Script-Acquisition.html',
+  16:'Module-16-Bidirectional-Basic-Science-Clinical-Integration.html',
+  17:'Module-17-Semantic-Qualifiers-Problem-Representation.html',
+  18:'Module-18-Causal-vs-Probabilistic-Network-Reasoning.html',
+  19:'Module-19-Community-and-Social-Medicine-Insights.html',
+  20:'Module-20-Recognition-Primed-Decision-Model.html',
+  21:'Module-21-Evidence-Frontier-Search.html',
+  22:'Module-22-Nested-Analysis.html',
+  23:'Module-23-Counterfactual-Analysis.html',
+  24:'Module-24-Heuristic-Analysis.html',
+  25:'Module-25-Thematic-Analysis.html',
+  26:'Module-26-Bias-Auditing.html',
+  27:'Module-27-Time-Series-Velocity-Analyzer.html',
+  28:'Module-28-Diagnostic-Time-Out.html',
+  29:'Module-29-Iatrogenic-Domino-Effect.html',
+  30:'Module-30-Diagnostic-Anchor-Extractor.html',
+  31:'Module-31-First-Principles-Pathophysiology-Mapping.html',
+  32:'Module-32-Clinical-Cognition-Loop.html',
+  33:'Module-33-Why-Now-Precipitant-Hunter.html',
+  34:'Module-34-High-Value-Care-Auditor.html',
+  35:'Module-35-Epistemic-Certainty-Mapping-Calibration.html',
+  36:'Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html',
+  37:'Module-37-Red-Herring-Signal-to-Noise-Drill.html',
+  38:'Module-38-Poly-Crisis-Cascading-Failure-Simulator.html',
+  39:'Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html',
+  40:'Module-40-Operational-Throughput-Strategist.html',
+  41:'Module-41-Clinical-Workflow-Implementation-Science.html',
+  42:'Module-42-Clinical-Pre-Mortem.html',
+  43:'Module-43-Health-Economics-Value-Based-Care-Alignment.html',
+  44:'Module-44-Clinical-Genetics-Reasoning.html',
+  45:'Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html',
+  46:'Module-45-Evidence-Based-Medicine-Insights.html',
+  47:'Shadow-Module-45-EBM-Adversarial-Counterpart.html',
+  48:'Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html',
+  49:'Module-49-FMEA-Analysis-and-Insights.html',
+  50:'Module-50-DRM-Diagnostic-Reasoning-Map.html',
+  51:'Module-51-Systems-Based-Clinical-Analysis-and-Insights.html',
+  52:'Module-52-CP-Clinical-Pearls.html',
+  53:'Module-53-Clinical-Guideline-Intelligence-Navigator.html',
+  54:'Module-54-System1-System2-Question-Generator.html',
+  55:'Module-55-Patient-Needs-Assessment.html',
+  56:'Module-HDM-Hypothetico-Deductive-Model.html',
+  57:'Module-CC-Clinical-Cognition-Deep-Dive.html'
+};
+function moduleUrl(num){ return MODULE_URLS[num] ? PROMPTS_BASE + MODULE_URLS[num] : PROMPTS_BASE + 'Prompts.html'; }
+
+// ---------------- State ----------------
+let nodes = [];      // {id, kind:'case'|'module', num, title, desc, x, y}
+let links = [];      // {from, to}
+let nodeSeq = 1;
+let dragCtx = null;
+let linkFrom = null;
+let pendingLine = null;
+
+const canvas = document.getElementById('canvas');
+const svg = document.getElementById('links');
+const wrap = document.getElementById('canvas-wrap');
+
+function uid(){ return 'n' + (nodeSeq++); }
+
+// ---------------- Sidebar build ----------------
+const listEl = document.getElementById('module-list');
+function renderList(filter){
+  filter = (filter||'').toLowerCase();
+  listEl.innerHTML = '';
+  MODULES.forEach(group=>{
+    const items = group.items.filter(([num,title])=>
+      !filter || title.toLowerCase().includes(filter) || String(num).includes(filter));
+    if(!items.length) return;
+    const catDiv = document.createElement('div');
+    catDiv.className='cat';
+    const label = document.createElement('div');
+    label.className='cat-label'; label.textContent = group.cat;
+    catDiv.appendChild(label);
+    items.forEach(([num,title,desc])=>{
+      const el = document.createElement('div');
+      el.className='mod-item';
+      el.draggable=true;
+      el.innerHTML = `<span class="num">${num}</span>${title}`;
+      el.addEventListener('dragstart', e=>{
+        el.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', JSON.stringify({num,title,desc}));
+      });
+      el.addEventListener('dragend', ()=>el.classList.remove('dragging'));
+      catDiv.appendChild(el);
+    });
+    listEl.appendChild(catDiv);
+  });
+}
+renderList();
+document.getElementById('search').addEventListener('input', e=>renderList(e.target.value));
+
+// End (terminal) node drag sources
+document.querySelector('.end-item').addEventListener('dragstart', e=>{
+  e.dataTransfer.setData('text/plain', JSON.stringify({kind:'end'}));
+});
+document.querySelector('.end-html-item').addEventListener('dragstart', e=>{
+  e.dataTransfer.setData('text/plain', JSON.stringify({kind:'end-html'}));
+});
+
+// ---------------- Canvas drop ----------------
+wrap.addEventListener('dragover', e=>e.preventDefault());
+wrap.addEventListener('drop', e=>{
+  e.preventDefault();
+  const data = e.dataTransfer.getData('text/plain');
+  if(!data) return;
+  const parsed = JSON.parse(data);
+  const rect = wrap.getBoundingClientRect();
+  const x = e.clientX - rect.left + wrap.scrollLeft - 110;
+  const y = e.clientY - rect.top + wrap.scrollTop - 30;
+  if(parsed.kind==='end'){
+    addNode({id:uid(), kind:'end', num:'', title:'End', desc:'Create .md file with the ranked path outputs.', x, y});
+    return;
+  }
+  if(parsed.kind==='end-html'){
+    addNode({id:uid(), kind:'end-html', num:'', title:'End', desc:'Create .html file with the ranked path outputs.', x, y});
+    return;
+  }
+  const {num,title,desc} = parsed;
+  addNode({id:uid(), kind:'module', num, title, desc, x, y});
+});
+
+// seed with a Case node
+addNode({id:uid(), kind:'case', num:'', title:'Case Intake', desc:'Starting point — the case as presented.', x:60, y:60});
+
+function addNode(n){
+  nodes.push(n);
+  renderNode(n);
+  renderLinks();
+}
+
+function renderNode(n){
+  const el = document.createElement('div');
+  const isTerminal = n.kind==='end' || n.kind==='end-html';
+  el.className = 'node' + (n.kind==='case' ? ' case-node' : n.kind==='end' ? ' end-node' : n.kind==='end-html' ? ' end-html-node' : '');
+  el.style.left = n.x+'px';
+  el.style.top = n.y+'px';
+  el.dataset.id = n.id;
+  const headLabel = n.kind==='case' ? 'Case' : n.kind==='end' ? 'End — Create .md File' : n.kind==='end-html' ? 'End — Create .html File' : `<span class="idx">${n.num}</span> ${n.title}`;
+  el.innerHTML = `
+    <div class="node-head">
+      <span>${headLabel}</span>
+      ${n.kind==='case' ? '' : '<button class="node-remove" title="Remove">✕</button>'}
+    </div>
+    <div class="node-body">${n.desc}</div>
+    ${isTerminal ? '' : '<div class="port out" title="Drag to next node"></div>'}
+    ${n.kind==='case' ? '' : '<div class="port in" title="Drop a link here"></div>'}
+  `;
+  canvas.appendChild(el);
+
+  // dragging the node
+  el.addEventListener('mousedown', e=>{
+    if(e.target.classList.contains('port') || e.target.classList.contains('node-remove')) return;
+    const rect = wrap.getBoundingClientRect();
+    dragCtx = {id:n.id, offX: e.clientX - (n.x), offY: e.clientY - (n.y)};
+    e.preventDefault();
+  });
+
+  const removeBtn = el.querySelector('.node-remove');
+  if(removeBtn) removeBtn.addEventListener('click', ()=>{
+    nodes = nodes.filter(x=>x.id!==n.id);
+    links = links.filter(l=>l.from!==n.id && l.to!==n.id);
+    el.remove();
+    renderLinks();
+  });
+
+  const outPort = el.querySelector('.port.out');
+  if(outPort){
+    outPort.addEventListener('mousedown', e=>{
+      e.stopPropagation(); e.preventDefault();
+      linkFrom = n.id;
+    });
+  }
+  const inPort = el.querySelector('.port.in');
+  if(inPort){
+    inPort.addEventListener('mouseup', e=>{
+      e.stopPropagation();
+      if(linkFrom && linkFrom!==n.id){
+        const alreadyLinked = links.some(l=>l.from===linkFrom && l.to===n.id);
+        if(!alreadyLinked){
+          // every node can fan out to multiple next nodes and receive multiple incoming links
+          links.push({from:linkFrom, to:n.id});
+        }
+        renderLinks();
+      }
+      linkFrom = null;
+    });
+  }
+}
+
+document.addEventListener('mousemove', e=>{
+  if(dragCtx){
+    const n = nodes.find(x=>x.id===dragCtx.id);
+    n.x = e.clientX - dragCtx.offX;
+    n.y = e.clientY - dragCtx.offY;
+    const el = canvas.querySelector(`.node[data-id="${n.id}"]`);
+    el.style.left = n.x+'px'; el.style.top = n.y+'px';
+    renderLinks();
+  }
+});
+document.addEventListener('mouseup', e=>{
+  dragCtx = null;
+  if(linkFrom && !e.target.classList.contains('port')) linkFrom=null;
+});
+
+function portPos(id, side){
+  const el = canvas.querySelector(`.node[data-id="${id}"]`);
+  if(!el) return {x:0,y:0};
+  const n = nodes.find(x=>x.id===id);
+  const w = el.offsetWidth, h = el.offsetHeight;
+  return side==='out' ? {x:n.x+w, y:n.y+h/2} : {x:n.x, y:n.y+h/2};
+}
+
+function renderLinks(){
+  svg.innerHTML = '';
+  svg.setAttribute('width', canvas.offsetWidth);
+  svg.setAttribute('height', canvas.offsetHeight);
+  links.forEach((l,i)=>{
+    const p1 = portPos(l.from,'out');
+    const p2 = portPos(l.to,'in');
+    const midx = (p1.x+p2.x)/2;
+    const d = `M ${p1.x} ${p1.y} C ${midx} ${p1.y}, ${midx} ${p2.y}, ${p2.x} ${p2.y}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('stroke', '#2f5d55');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('fill', 'none');
+    path.style.pointerEvents = 'stroke';
+    path.style.cursor = 'pointer';
+    path.addEventListener('click', ()=>{
+      links.splice(i,1);
+      renderLinks();
+    });
+    svg.appendChild(path);
+
+    // arrowhead
+    const arrow = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    arrow.setAttribute('cx', p2.x); arrow.setAttribute('cy', p2.y); arrow.setAttribute('r','3');
+    arrow.setAttribute('fill','#b5643f');
+    svg.appendChild(arrow);
+  });
+}
+
+// ---------------- Export / Import / Clear ----------------
+function buildSequenceOrder(){
+  // legacy single-chain walk (first case link only) — kept for JSON export summary
+  const caseNode = nodes.find(n=>n.kind==='case');
+  const order = [];
+  let current = caseNode ? caseNode.id : null;
+  const visited = new Set();
+  while(current && !visited.has(current)){
+    visited.add(current);
+    order.push(current);
+    const l = links.find(l=>l.from===current);
+    current = l ? l.to : null;
+  }
+  return order.map(id=>nodes.find(n=>n.id===id));
+}
+
+// Builds every path fanning out from the Case node, branching at ANY node
+// that has more than one outgoing link (not just the Case node). Rank =
+// the order paths are discovered in (depth-first, following each node's
+// links in the order they were created). Each path is followed until it
+// hits an End node, a dead end (no further outgoing link), or would repeat
+// a node already visited on that same path (cycle guard).
+function buildAllPaths(){
+  const caseNode = nodes.find(n=>n.kind==='case');
+  if(!caseNode) return [];
+
+  const paths = [];
+
+  function walk(nodeId, chain, visited){
+    const outgoing = links.filter(l=>l.from===nodeId);
+
+    if(!outgoing.length){
+      // dead end — record whatever chain we've built so far
+      paths.push({modules: chain.slice(), endKind:null});
+      return;
+    }
+
+    outgoing.forEach(l=>{
+      const nextNode = nodes.find(n=>n.id===l.to);
+      if(!nextNode || visited.has(nextNode.id)){
+        paths.push({modules: chain.slice(), endKind:null});
+        return;
+      }
+      if(nextNode.kind==='end' || nextNode.kind==='end-html'){
+        paths.push({modules: chain.slice(), endKind: nextNode.kind});
+        return;
+      }
+      walk(nextNode.id, [...chain, nextNode], new Set([...visited, nextNode.id]));
+    });
+  }
+
+  walk(caseNode.id, [], new Set([caseNode.id]));
+
+  return paths.map((p,idx)=>({rank: idx+1, modules: p.modules, endKind: p.endKind}));
+}
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const seq = buildSequenceOrder();
+  const flow = {
+    exportedAt: new Date().toISOString(),
+    sequence: seq.map((n,i)=>({step:i, kind:n.kind, module:n.num||null, title:n.title})),
+    nodes: nodes.map(n=>({id:n.id, kind:n.kind, num:n.num, title:n.title, x:n.x, y:n.y})),
+    links
+  };
+  const blob = new Blob([JSON.stringify(flow, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vibe-rounds-flow.json';
+  a.click();
+});
+
+function buildFlowExportText(){
+  const paths = buildAllPaths();
+  if(!paths.length) return null;
+
+  const pathSummaries = paths.map(p=>{
+    const seq = p.modules.map(m=>`[Module ${m.num} — ${m.title}](${moduleUrl(m.num)})`).join(' → ');
+    return `path ${p.rank} - ${seq || '(no modules)'}`;
+  }).join(', ');
+
+  let md = `[CASE DATA/LINK HERE]\n\n${pathSummaries}. run path as per rank and rank wise add output data in sequence to .md file\n\n---\n\n`;
+  md += `# Vibe Rounds — Case Flow Export\n\n`;
+  md += `**Case data / link:** [CASE DATA/LINK HERE]\n\n`;
+  md += `## Path Sequences (ranked)\n\n`;
+  paths.forEach(p=>{
+    const endLabel = p.endKind==='end' ? ' (ends at: Create .md File)' : p.endKind==='end-html' ? ' (ends at: Create .html File)' : '';
+    md += `### Path ${p.rank}${endLabel}\n\n`;
+    if(p.modules.length){
+      p.modules.forEach((m,i)=>{
+        md += `${i+1}. [Module ${m.num} — ${m.title}](${moduleUrl(m.num)})\n`;
+      });
+    } else {
+      md += `_(no modules linked on this path)_\n`;
+    }
+    md += `\n`;
+  });
+  md += `## Rank-Wise Output Log\n\n`;
+  md += `> Run each path in rank order (Path 1, Path 2, Path 3, …). After running a path, paste its output below in sequence.\n\n`;
+  paths.forEach(p=>{
+    md += `### Path ${p.rank} — Output\n\n_[paste Path ${p.rank} output here]_\n\n`;
+  });
+  return md;
+}
+
+document.getElementById('exportMdBtn').addEventListener('click', ()=>{
+  const md = buildFlowExportText();
+  if(md===null){
+    alert('Connect the Case node to at least one module to build a path before exporting.');
+    return;
+  }
+  const blob = new Blob([md], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vibe-rounds-case-flow.txt';
+  a.click();
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  canvas.querySelectorAll('.node').forEach(el=>el.remove());
+  nodes = []; links = []; nodeSeq = 1;
+  addNode({id:uid(), kind:'case', num:'', title:'Case Intake', desc:'Starting point — the case as presented.', x:60, y:60});
+});
+
+window.addEventListener('resize', renderLinks);
+</script>
+</body>
+</html>
