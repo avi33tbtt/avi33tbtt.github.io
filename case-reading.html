@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7FAFB">
+<title>Vibe Rounds — Guided Discovery · NotebookLM Case Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7FAFB;
+    --panel:#FFFFFF;
+    --panel-sunken:#F3F6F8;
+    --ink:#0B2530;
+    --ink-dim:#5B7480;
+    --ink-faint:#657277;
+    --line:#DCE7EA;
+    --line-soft:rgba(11,37,48,0.08);
+    --bronze:#5B7480;
+    --bronze-dim:#43606B;
+    --ember:#0891B2;
+    --ember-dim:#0A6E85;
+    --ember-bright:#0A6E85;
+    --ember-glow:rgba(8,145,178,0.13);
+    --good:#0F766E;
+    --good-soft:#DCFCE9;
+    --display:'Inter',sans-serif;
+    --mono:'IBM Plex Mono','JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+    --shadow-sm:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+    --shadow-md:0 4px 14px rgba(11,37,48,.08), 0 12px 28px -12px rgba(11,37,48,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--display);
+    font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--ember-bright);}
+  a:hover{color:var(--ink);}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 80px;}
+
+  /* ---------- Top banner ---------- */
+  .banner{
+    background:var(--panel);border-bottom:1px solid var(--line);
+    padding:26px 20px 22px;
+  }
+  .banner-inner{max-width:760px;margin:0 auto;}
+  .kicker{
+    font-family:var(--mono);color:var(--ember-bright);letter-spacing:.14em;text-transform:uppercase;
+    font-size:11px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px;
+  }
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--ember);flex:none;}
+  h1{font-size:23px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;}
+  .banner p.lede{margin:0 0 12px;color:var(--ink-dim);font-size:14px;max-width:60ch;}
+  .banner-link{
+    display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+    background:var(--ember-glow);color:var(--ember-bright);border:1px solid var(--line);
+    border-radius:999px;padding:6px 13px;text-decoration:none;
+  }
+  .banner-link:hover{border-color:var(--ember);}
+
+  /* ---------- Stepper nav ---------- */
+  .stepper{
+    position:sticky;top:0;z-index:20;background:var(--bg);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:4px;padding:10px 20px;overflow-x:auto;
+  }
+  .stepper-inner{max-width:760px;margin:0 auto;display:flex;gap:4px;width:100%;}
+  .step-link{
+    font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink-dim);
+    background:var(--panel-sunken);border:1px solid var(--line);border-radius:999px;
+    padding:6px 12px;text-decoration:none;white-space:nowrap;transition:background .12s,color .12s,border-color .12s;
+  }
+  .step-link:hover{color:var(--ink);border-color:var(--ember);}
+
+  section.tier{padding-top:38px;}
+  .tier-head{margin-bottom:14px;}
+  .tier-eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-bottom:4px;
+  }
+  h2{font-size:19px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em;}
+  .aim{color:var(--ink-dim);font-size:14px;margin:0 0 8px;}
+  .studio-pairing{
+    background:var(--panel-sunken);border:1px solid var(--line);border-radius:10px;
+    padding:10px 14px;font-size:13px;color:var(--ink-dim);margin-bottom:16px;
+  }
+  .studio-pairing b{color:var(--ink);}
+
+  .note-box{
+    background:var(--ember-glow);border:1px solid var(--line);border-radius:10px;
+    padding:12px 16px;font-size:13px;color:var(--ink-dim);margin:14px 0 6px;
+  }
+  .note-box b{color:var(--ember-bright);}
+
+  /* ---------- Prompt card ---------- */
+  .prompt-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow-sm);margin-bottom:16px;overflow:hidden;
+  }
+  .prompt-card-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 14px;border-bottom:1px solid var(--line);background:var(--panel-sunken);
+  }
+  .prompt-card-head .id{
+    font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-dim);
+  }
+  .prompt-card-head .title{font-size:13px;font-weight:600;color:var(--ink);}
+  .titlewrap{display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap;}
+  .cmd-tag{
+    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ember-bright);
+    background:var(--ember-glow);border:1px solid var(--line);border-radius:999px;
+    padding:2px 9px;letter-spacing:.02em;flex:none;
+  }
+
+  /* ---------- How-to card ---------- */
+  .howto{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow-sm);padding:18px 20px;margin:28px 0 8px;
+  }
+  .howto .tier-eyebrow{margin-bottom:6px;}
+  .howto h2{font-size:16px;margin-bottom:10px;}
+  .howto ol{margin:0 0 14px;padding-left:20px;font-size:13.5px;color:var(--ink-dim);}
+  .howto ol li{margin-bottom:6px;}
+  .howto ol li b{color:var(--ink);}
+  .cmd-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .cmd-table th{
+    text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line);
+  }
+  .cmd-table td{padding:7px 8px;border-bottom:1px solid var(--line-soft);color:var(--ink-dim);}
+  .cmd-table td:first-child{font-family:var(--mono);color:var(--ember-bright);font-weight:700;white-space:nowrap;}
+
+  .btn-copy{
+    font-family:var(--display);font-weight:700;font-size:12px;
+    background:var(--ember);color:#fff;border:none;border-radius:999px;
+    padding:6px 14px;cursor:pointer;transition:background .12s;flex:none;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-copy:hover{background:var(--ember-dim);}
+  .btn-copy.copied{background:var(--good);}
+  .btn-copy svg{width:13px;height:13px;}
+
+  .prompt-body{padding:14px 16px 16px;}
+  .prompt-full{
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--ink);
+    white-space:pre-wrap;margin:0 0 12px;
+  }
+  ol.points{margin:0;padding:0;list-style:none;}
+  ol.points li.point-row{
+    display:flex;align-items:flex-start;gap:8px;
+    padding:8px 0;border-top:1px dashed var(--line);
+  }
+  ol.points li.point-row:first-child{border-top:none;padding-top:0;}
+  .point-num{
+    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ink-faint);
+    flex:none;width:20px;padding-top:2px;
+  }
+  .point-text{flex:1;font-size:13px;color:var(--ink-dim);}
+  .btn-copy-mini{
+    flex:none;background:transparent;border:1px solid var(--line);border-radius:7px;
+    color:var(--ink-faint);cursor:pointer;padding:4px 6px;display:flex;align-items:center;
+    transition:border-color .12s,color .12s,background .12s;
+  }
+  .btn-copy-mini:hover{border-color:var(--ember);color:var(--ember-bright);}
+  .btn-copy-mini.copied{color:var(--good);border-color:var(--good);}
+  .btn-copy-mini svg{width:12px;height:12px;}
+
+  /* ---------- Self-check ---------- */
+  .selfcheck{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin:6px 0 4px;
+  }
+  .selfcheck .label{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:700;margin-bottom:8px;
+  }
+  .selfcheck label.chk{
+    display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink-dim);
+    padding:5px 0;cursor:pointer;
+  }
+  .selfcheck input[type=checkbox]{margin-top:3px;accent-color:var(--ember);flex:none;}
+  .selfcheck label.chk.done .txt{color:var(--ink-faint);text-decoration:line-through;}
+
+  hr.divider{border:none;border-top:1px solid var(--line);margin:36px 0 0;}
+
+  footer{
+    max-width:760px;margin:40px auto 0;padding:20px;color:var(--ink-faint);font-size:12px;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner-inner">
+    <div class="kicker"><span class="dot"></span>Vibe Rounds — Guided Discovery</div>
+    <h1>NotebookLM Case Analytics — Intern &amp; Resident Lens</h1>
+    <p class="lede">A single de-identified case report, queried through the Intern lens (recall, mechanism, glossary, illness-script) and the Resident lens (differential, judgment, deviation) — plus a running pearl bank so takeaways accumulate across cases instead of staying trapped in one notebook. Every box is copy-ready for NotebookLM's chat panel.</p>
+  </div>
+</div>
+
+<nav class="stepper">
+  <div class="stepper-inner">
+    <a class="step-link" href="#setup">0 · Setup</a>
+    <a class="step-link" href="#intern">1 · Intern</a>
+    <a class="step-link" href="#resident">2 · Resident</a>
+    <a class="step-link" href="#synthesis">3 · Synthesis</a>
+    <a class="step-link" href="#pearlbank">4 · Pearl Bank</a>
+    <a class="step-link" href="#soap">5 · SOAP</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ============ STEP 0 — SETUP ============ -->
+  <section class="tier" id="setup">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Do this once per case</div>
+      <h2>0 · NotebookLM Setup</h2>
+      <p class="aim">Upload the case report as the only source in a new notebook, then run this before anything else.</p>
+    </div>
+
+    <div class="prompt-card" data-id="0.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">0.1</span><span class="title">Source Grounding &amp; Data Completeness</span><span class="cmd-tag">#setup</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Using only the uploaded case as your source, confirm: (1) patient age/sex/presenting complaint, (2) the stage-by-stage sequence of events as documented (presentation → history/exam → workup → intervention → outcome), (3) which data types are present (history, exam, labs, imaging, medications, progression notes), (4) any obvious gaps in the documentation, and (5) information a clinician would normally want at presentation that is not recorded in the source. Flag anything you infer versus anything explicitly stated.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Using only the uploaded case as your source, confirm the patient's age, sex, and presenting complaint.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>Using only the uploaded case as your source, lay out the stage-by-stage sequence of events as documented: presentation, history/exam, workup, intervention, outcome.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>Using only the uploaded case as your source, list which data types are present: history, exam, labs, imaging, medications, progression notes.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">4</span><span class="point-text" data-point>Using only the uploaded case as your source, identify any obvious gaps in the documentation.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">5</span><span class="point-text" data-point>Using only the uploaded case as your source, list information a clinician would normally want at presentation that is not recorded in the source, and flag anything you infer versus anything explicitly stated.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="note-box"><b>Note on gaps:</b> if a prompt below asks for something your source doesn't contain, NotebookLM should say so rather than invent it. "Not documented in source" is a correct answer, not a failed prompt.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ TIER 1 — INTERN LENS ============ -->
+  <section class="tier" id="intern">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Tier 1 · Recall · Mechanism · Glossary · Illness Script</div>
+      <h2>1 · Intern Lens</h2>
+      <p class="aim">Build the scaffolding. Unpack every jargon term and decision into the mechanism behind it — don't just accept that a step was taken, understand why it was valid.</p>
+    </div>
+    <div class="studio-pairing"><b>Studio tool pairing:</b> after these prompts, use the Studio panel's <b>Flashcards</b> and <b>Quiz</b> generators on this notebook for spaced recall drilling of the glossary and problem list.</div>
+
+    <div class="prompt-card" data-id="1.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">1.1</span><span class="title">Chart Recall &amp; Illness Script</span><span class="cmd-tag">#intern</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>From the uploaded case only: (1) Summarize the history of presenting illness in 3 sentences. (2) List all active problems as a problem list. (3) List all current medications with dose/route/frequency as documented. (4) Pull out the 5 most abnormal lab or vital sign values and state the normal range for each. (5) State what a "textbook" illness script for the leading diagnosis looks like, and note where this case matches or deviates from it.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>From the uploaded case only, summarize the history of presenting illness in 3 sentences.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>From the uploaded case only, list all active problems as a problem list.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>From the uploaded case only, list all current medications with dose, route, and frequency as documented.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">4</span><span class="point-text" data-point>From the uploaded case only, pull out the 5 most abnormal lab or vital sign values and state the normal range for each.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">5</span><span class="point-text" data-point>From the uploaded case only, state what a textbook illness script for the leading diagnosis looks like, and note where this case matches or deviates from it.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="1.2">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">1.2</span><span class="title">Jargon &amp; Mechanism Glossary</span><span class="cmd-tag">#glossary</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Acting as if teaching a new intern: (1) List every clinical term, abbreviation, scoring system, or named threshold used in this case and define each in one or two sentences, including the specific numeric value or range relevant here. (2) For every test ordered or treatment given in the case, explain the underlying physiological or pharmacological mechanism that makes it the correct move at that point — not just what was done, but why it works.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Acting as if teaching a new intern, list every clinical term, abbreviation, scoring system, or named threshold used in this case and define each in one or two sentences, including the specific numeric value or range relevant here.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>Acting as if teaching a new intern, for every test ordered or treatment given in this case, explain the underlying physiological or pharmacological mechanism that makes it the correct move at that point — not just what was done, but why it works.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="1.3">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">1.3</span><span class="title">Blind Differential &amp; Can't-Miss Diagnoses</span><span class="cmd-tag">#cant-miss</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Using only the information present at the initial presentation stage of this case — not the final diagnosis — (1) list the differential a clinician should have considered at that point. (2) Separately, list the dangerous "can't-miss" diagnoses that present similarly to this chief complaint in general, even ones this case does not turn out to be, so the pattern generalizes beyond this one patient.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Using only the information present at the initial presentation stage of this case, not the final diagnosis, list the differential a clinician should have considered at that point.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>List the dangerous can't-miss diagnoses that present similarly to this chief complaint in general, even ones this case does not turn out to be, so the pattern generalizes beyond this one patient.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="1.4">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">1.4</span><span class="title">Self-Quiz</span><span class="cmd-tag">#quiz</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Quiz me: ask me one question at a time about this case's key facts and the glossary terms we just covered. Wait for my answer before giving the next question. Tell me if I got it right before moving on.</p>
+      </div>
+    </div>
+
+    <div class="selfcheck">
+      <div class="label">Self-check</div>
+      <label class="chk"><input type="checkbox"><span class="txt">Problem list and medication list match the source exactly — nothing added, nothing dropped</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Every mechanism explanation answers "why," not just "what"</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">The blind differential was built using only presentation-stage data, without peeking at the final diagnosis</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Can't-miss list includes at least one dangerous diagnosis this case does NOT turn out to be</span></label>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ TIER 2 — RESIDENT LENS ============ -->
+  <section class="tier" id="resident">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Tier 2 · Judgment · Decision Points · Deviation</div>
+      <h2>2 · Resident Lens</h2>
+      <p class="aim">The mechanism is assumed known. Focus on where reasonable clinicians could branch differently, why this path was chosen, and how this case links into the wider network of similar presentations.</p>
+    </div>
+    <div class="studio-pairing"><b>Studio tool pairing:</b> generate a <b>Mind Map</b> from the notebook to visualize how each differential branches from specific findings — useful for spotting where two diagnoses share a root finding but diverge downstream.</div>
+
+    <div class="prompt-card" data-id="2.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">2.1</span><span class="title">Ranked Differential &amp; Probability Shift</span><span class="cmd-tag">#resident</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Based only on the uploaded case: (1) Generate a ranked differential diagnosis (top 5) with one supporting and one refuting data point for each, drawn from the source. (2) Explain how the ranking of that differential shifted as each new finding came in — which single finding did the most work narrowing it down? (3) Identify the single most useful next investigation to discriminate between the top two, and explain why it beats the alternatives. (4) Flag any drug-drug or drug-disease interaction risk in the current medication list.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Based only on the uploaded case, generate a ranked differential diagnosis (top 5) with one supporting and one refuting data point for each, drawn from the source.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>Based only on the uploaded case, explain how the ranking of the differential shifted as each new finding came in — which single finding did the most work narrowing it down?</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>Based only on the uploaded case, identify the single most useful next investigation to discriminate between the top two diagnoses, and explain why it beats the alternatives.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">4</span><span class="point-text" data-point>Based only on the uploaded case, flag any drug-drug or drug-disease interaction risk in the current medication list, using only what's in the source.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="2.2">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">2.2</span><span class="title">Decision Points &amp; Deviation Analysis</span><span class="cmd-tag">#deviation</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Identify 2-4 moments in this case where a reasonable clinician could have gone a different direction. For each: (1) state the path actually taken, (2) state a reasonable alternative, (3) explain why this path was chosen over the alternative. Then: where did management follow standard guideline/textbook approach, and where did it diverge — and was that divergence justified by an atypical feature of this patient, or is it arguably a pitfall worth flagging?</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Identify 2-4 moments in this case where a reasonable clinician could have gone a different direction, stating the path actually taken and a reasonable alternative for each.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>For each decision point identified, explain why this path was chosen over the alternative.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>State where management in this case followed standard guideline/textbook approach, and where it diverged — and whether that divergence was justified by an atypical feature of this patient, or is arguably a pitfall worth flagging.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="2.3">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">2.3</span><span class="title">Devil's Advocate</span><span class="cmd-tag">#devils-advocate</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Play devil's advocate: challenge my leading diagnosis. Give me the strongest argument, drawn from this case's actual data, for why an alternative diagnosis on the list could be right instead. Make me defend my choice before agreeing or disagreeing.</p>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="2.4">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">2.4</span><span class="title">Cross-Case Integration</span><span class="cmd-tag">#cross-case</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>What other conditions or presentations does this case overlap with clinically? For each overlapping condition, state the single discriminating feature that would separate it from this case's actual diagnosis, so this case connects into a broader network rather than staying an isolated example.</p>
+      </div>
+    </div>
+
+    <div class="prompt-card" data-id="2.5">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">2.5</span><span class="title">Overnight Deterioration Drill</span><span class="cmd-tag">#overnight-challenge</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>If this patient deteriorated overnight based on the trajectory in the notes, walk me through: (1) what bedside check I'd do first, (2) what immediate step I'd take, (3) at what point I'd escalate — reasoning only from what's documented, not hypotheticals outside the source.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>If this patient deteriorated overnight based on the trajectory in the notes, tell me what bedside check I'd do first — reasoning only from what's documented.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>If this patient deteriorated overnight based on the trajectory in the notes, tell me what immediate step I'd take — reasoning only from what's documented.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>If this patient deteriorated overnight based on the trajectory in the notes, tell me at what point I'd escalate — reasoning only from what's documented.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="selfcheck">
+      <div class="label">Self-check</div>
+      <label class="chk"><input type="checkbox"><span class="txt">Differential is ranked with an explicit supporting and refuting data point for each entry, not just listed</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Each decision point names a genuine alternative a reasonable clinician could have taken, not a strawman</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Deviation analysis distinguishes justified deviation from an actual pitfall</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Cross-case integration names a specific discriminating feature, not a vague "similar presentation"</span></label>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ SYNTHESIS ============ -->
+  <section class="tier" id="synthesis">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Optional closing step · run after both tiers</div>
+      <h2>3 · Cross-Level Synthesis</h2>
+      <p class="aim">Consolidate the session — see how the reasoning actually changed as you moved from Intern to Resident lens.</p>
+    </div>
+
+    <div class="prompt-card" data-id="3.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">3.1</span><span class="title">Session Synthesis</span><span class="cmd-tag">#synthesis</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Compare how the answers changed across the Intern-lens and Resident-lens prompts I ran on this case. (1) What did the Resident lens add that the Intern lens didn't? (2) Where did Intern-level reasoning turn out to be incomplete or need revision at the Resident level? (3) What's the one thing worth remembering from each lens for this case?</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Compare how the answers changed across the Intern-lens and Resident-lens prompts I ran on this case: what did the Resident lens add that the Intern lens didn't?</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>Where did Intern-level reasoning on this case turn out to be incomplete or need revision at the Resident level?</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>What's the one thing worth remembering from each lens — Intern and Resident — for this case?</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ PEARL BANK ============ -->
+  <section class="tier" id="pearlbank">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Run last · builds a reusable, searchable output</div>
+      <h2>4 · Pearl Bank Extraction</h2>
+      <p class="aim">Pull the takeaways out of this single case into a tagged format, so pearls accumulate across every case you run through this workflow instead of staying trapped in one notebook.</p>
+    </div>
+
+    <div class="prompt-card" data-id="4.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">4.1</span><span class="title">Tagged Pearl Extraction</span><span class="cmd-tag">#pearl-bank</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>From everything discussed in this notebook, extract 2-3 Intern pearls and 2-3 Resident pearls. Intern pearls should be mechanism-anchored and generalizable, in the format "[Finding/pattern] leads to [action], because [mechanism]." Resident pearls should be judgment-anchored, in the format "[Situation] means deviating from the standard approach when [condition], because [reasoning]." Output each pearl as a single row in this format: Organ system | Topic | Pearl type (Intern/Resident) | Pearl text</p>
+      </div>
+    </div>
+
+    <div class="note-box"><b>Building the bank:</b> paste each session's output rows into one running document or spreadsheet, tagged by organ system and topic. Over enough cases this becomes a searchable, personal knowledge base rather than isolated notebook sessions.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============ SOAP NOTES ============ -->
+  <section class="tier" id="soap">
+    <div class="tier-head">
+      <div class="tier-eyebrow">Documentation practice · any tier</div>
+      <h2>5 · SOAP Note Practice</h2>
+      <p class="aim">Translate the case into standard clinical documentation format — a disciplined write-up exercise, distinct from the reasoning tiers above.</p>
+    </div>
+
+    <div class="prompt-card" data-id="5.1">
+      <div class="prompt-card-head">
+        <div class="titlewrap"><span class="id">5.1</span><span class="title">SOAP Note</span><span class="cmd-tag">#soap</span></div>
+        <button class="btn-copy" data-copy-full>Copy box</button>
+      </div>
+      <div class="prompt-body">
+        <p class="prompt-full" data-full>Using only the uploaded case, write a SOAP note: (1) Subjective — the presenting complaint and history as documented. (2) Objective — vitals, exam findings, and lab/imaging results as recorded. (3) Assessment — the working diagnosis or problem list as it stands in the source. (4) Plan — next steps, treatments, and follow-up as documented, distinguishing completed actions from pending ones.</p>
+        <ol class="points">
+          <li class="point-row"><span class="point-num">1</span><span class="point-text" data-point>Using only the uploaded case, write the Subjective section of a SOAP note — the presenting complaint and history as documented.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">2</span><span class="point-text" data-point>Using only the uploaded case, write the Objective section of a SOAP note — vitals, exam findings, and lab/imaging results as recorded.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">3</span><span class="point-text" data-point>Using only the uploaded case, write the Assessment section of a SOAP note — the working diagnosis or problem list as it stands in the source.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+          <li class="point-row"><span class="point-num">4</span><span class="point-text" data-point>Using only the uploaded case, write the Plan section of a SOAP note — next steps, treatments, and follow-up as documented, distinguishing completed actions from pending ones.</span><button class="btn-copy-mini" data-copy-point title="Copy this point"></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="selfcheck">
+      <div class="label">Self-check</div>
+      <label class="chk"><input type="checkbox"><span class="txt">Subjective reflects the patient's/reporter's stated complaint and history, not exam findings</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Objective contains only measured or observed data — no interpretation</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Assessment reflects the working diagnosis actually documented, not a leap to a new one</span></label>
+      <label class="chk"><input type="checkbox"><span class="txt">Plan clearly separates completed actions from pending ones</span></label>
+    </div>
+  </section>
+
+</div>
+
+<footer>Educational use only — de-identified case data. Outputs are learning observations, not clinical decisions.</footer>
+
+<script>
+const COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+const CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+document.querySelectorAll('.btn-copy-mini').forEach(btn => btn.innerHTML = COPY_ICON);
+
+function flash(btn, isMini){
+  const original = isMini ? COPY_ICON : 'Copy box';
+  btn.classList.add('copied');
+  btn.innerHTML = isMini ? CHECK_ICON : 'Copied!';
+  setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1400);
+}
+
+function copyText(text, btn, isMini){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(() => flash(btn, isMini));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    flash(btn, isMini);
+  }
+}
+
+document.querySelectorAll('[data-copy-full]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.prompt-card');
+    const text = card.querySelector('[data-full]').textContent.trim();
+    copyText(text, btn, false);
+  });
+});
+
+document.querySelectorAll('[data-copy-point]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const row = btn.closest('.point-row');
+    const text = row.querySelector('[data-point]').textContent.trim();
+    copyText(text, btn, true);
+  });
+});
+
+document.querySelectorAll('.selfcheck input[type=checkbox]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    cb.closest('label').classList.toggle('done', cb.checked);
+  });
+});
+</script>
+</body>
+</html>
