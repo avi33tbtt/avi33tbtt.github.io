@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longitudinal Avinash Principle Simulator</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --panel-border: #334155;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #0d9488;
+            --accent-blue: #0284c7;
+            --goldilocks: #22c55e;
+            --collapse: #ef4444;
+            --toxicity: #f97316;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 { color: var(--accent); margin-bottom: 0.5rem; }
+        .meta-text { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+        .reference-links a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .reference-links a:hover {
+            color: #38bdf8;
+            text-decoration: underline;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Clinical Data Panel */
+        .clinical-panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .cycle-badge {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .info-block {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-title {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        ul { list-style-type: none; }
+        li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+        .pruned li::before {
+            content: "✕";
+            color: var(--collapse);
+        }
+        .actions li::before {
+            content: "→";
+            color: var(--goldilocks);
+        }
+
+        .feedback-box {
+            background: rgba(2, 132, 199, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #0f766e; }
+        .btn-primary:disabled {
+            background: var(--panel-border);
+            color: var(--text-dim);
+            cursor: not-allowed;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid var(--panel-border);
+            color: var(--text);
+        }
+        .btn-reset:hover { background: rgba(255, 255, 255, 0.05); }
+
+        /* Chart Panel */
+        .chart-panel {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+            min-height: 450px;
+            background: #090d16;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-card {
+            background: #090d16;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+        }
+        
+        .metric-val {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Longitudinal Trajectory Forecast: 50F Focal Seizures Hub Navigation[cite: 1, 2]</h1>
+        <p class="meta-text">Tracking variance in hub nodes to map patient state against strictly non-negative attractor basins (Time strictly forward-moving T=0 to T=350 hours)[cite: 2].</p>
+        <p class="meta-text">Applying The Avinash Principle: identifying the handful of variables that actually dictate her trajectory, evaluating attractor basins, and prioritizing Pull Strategies over Push Strategies[cite: 1, 2].</p>
+        
+        <!-- Case References added here -->
+        <div class="reference-links" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--panel-border);">
+            <p class="meta-text" style="color: #fff; font-weight: bold; margin-bottom: 5px;">Source Case Files:</p>
+            <div><a href="https://classworkdecjan.blogspot.com/2026/07/the-avinash-principle-from-trajectory.html" target="_blank">🔗 The Avinash Principle: Trajectory Prediction and Control</a></div>
+            <div><a href="https://kattamanasa3.blogspot.com/2021/04/50f-with-focal-seizures-and-impared.html" target="_blank">🔗 Case Presentation: 50F with Focal Seizures and Impaired Awareness</a></div>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Clinical Action Panel -->
+        <div class="clinical-panel">
+            <div>
+                <span class="cycle-badge" id="cycleBadge">POINT 1</span>
+                <h2 style="font-size: 1.1rem; margin-bottom: 1rem; color: #fff;" id="cycleTitle">Loading...</h2>
+            </div>
+
+            <div class="info-block" id="perceptionBlock">
+                <div class="info-title">The Detail (Node Context)[cite: 1, 2]</div>
+                <ul id="listPerception"></ul>
+            </div>
+
+            <div class="info-block actions" id="actionsBlock">
+                <div class="info-title">Avinash Control Strategy (Pull/Push Vector)[cite: 1, 2]</div>
+                <ul id="listActions"></ul>
+            </div>
+
+            <div class="info-block pruned" id="prunedBlock">
+                <div class="info-title">Pruned Logic (Distraction / Noise)[cite: 1, 2]</div>
+                <ul id="listPruned"></ul>
+            </div>
+
+            <div class="feedback-box" id="feedbackBox"></div>
+
+            <div class="controls">
+                <button class="btn btn-reset" onclick="resetSimulation()">Reset</button>
+                <button class="btn btn-primary" id="btnNext" onclick="nextCycle()">Advance Point</button>
+            </div>
+        </div>
+
+        <!-- Chart Panel -->
+        <div class="chart-panel">
+            <h2 style="font-size: 1.2rem;">Phase-Space Trajectory vs. Time (Forward Absolute Matrix)[cite: 2]</h2>
+            <p class="meta-text" style="margin-top: 0.25rem;">Plots historical node interventions (solid white) and dynamically forecasts best (green), worst (red), and predicted (blue) tracks against strictly positive absolute timeline coordinates[cite: 2].</p>
+            
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="info-title">Current Hub Category[cite: 1]</div>
+                    <div class="metric-val" id="metricHub">--</div>
+                </div>
+                <div class="metric-card">
+                    <div class="info-title">System State (0-100 Scale)[cite: 2]</div>
+                    <div class="metric-val" id="metricStatus">--</div>
+                </div>
+                <div class="metric-card">
+                    <div class="info-title">P(Goldilocks @ Horizon)[cite: 2]</div>
+                    <div class="metric-val" id="metricProb">--</div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="longCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Pure Forward Time & Non-Negative State Matrix
+    // Time X-Axis: 0 to 350 Hours.
+    // State Y-Axis: 0 to 100 (0-35 = Collapse, 35-65 = Goldilocks, 65-100 = Overtreatment/Toxicity)
+    
+    const caseData = [
+        {
+            cycle: "Time: 0 Hours",
+            title: "1. Structural Hub Node: The Absent Left Internal Carotid Artery (ICA) & Cerebral Perfusion[cite: 1]",
+            hub: "CRITICAL VALUE[cite: 1]",
+            status: "Overtreatment Risk Basin[cite: 1]",
+            statusColor: "var(--toxicity)",
+            time: 0,
+            state: 80, 
+            eff: 45,
+            uncert: 60,
+            perception: ["The Detail: The patient has right-sided focal seizures, right facial deviation, and left parietal dominant signs (finger agnosia, right-left disorientation, ideational apraxia). The root cause is the absent left ICA causing left hemispheric ischemia[cite: 1]."],
+            actions: ["Avinash Control Strategy: A 'Push Strategy' would be aggressively dropping her BP because she is hypertensive, which risks pushing her into the Overtreatment Basin and destroying collateral perfusion. The 'Pull Strategy' is permissive hypertension within a safe corridor (the Goldilocks Zone) to maintain cerebral perfusion while initiating antiplatelet/statin therapy[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Identifying immediate overtreatment risks with BP suppression[cite: 1]."
+        },
+        {
+            cycle: "Time: 2 Hours",
+            title: "2. Vascular Topography & Collateral Fragility (The 'Moyamoya' Question)[cite: 1]",
+            hub: "CRITICAL VALUE[cite: 1]",
+            status: "Collapse Risk (Hemorrhage)[cite: 1]",
+            statusColor: "var(--collapse)",
+            time: 2,
+            state: 25, 
+            eff: 50,
+            uncert: 75,
+            perception: ["The Detail: An absent left ICA often forces the brain to build fragile collateral networks[cite: 1]."],
+            actions: ["Avinash Control Strategy: We must urgently define her vascular anatomy. If fragile collaterals exist, aggressive antiplatelet/anticoagulant therapy could trigger a catastrophic hemorrhage. The Pull Strategy is maintaining strict but permissive hemodynamic stability[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Holding off on aggressive anticoagulants prevents a catastrophic drop into structural collapse[cite: 1]."
+        },
+        {
+            cycle: "Time: 4 Hours",
+            title: "3. Neurological Hub Node: Cortical Irritability (Seizure Control)[cite: 1]",
+            hub: "CRITICAL VALUE[cite: 1]",
+            status: "Severe Collapse Risk[cite: 1]",
+            statusColor: "var(--collapse)",
+            time: 4,
+            state: 20,
+            eff: 55,
+            uncert: 65,
+            perception: ["The Detail: She had a witnessed focal seizure evolving to impaired awareness. The casualty team used IV Lorazepam (a Push Strategy)[cite: 1]."],
+            actions: ["Avinash Control Strategy: The necessary Pull Strategy is loading her on a long-acting Anti-Epileptic Drug (AED). This alters the structural threshold of her cortex, deepening the Goldilocks well so her brain naturally resists firing[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> AED loading deepens the Goldilocks well[cite: 1]."
+        },
+        {
+            cycle: "Time: 6 Hours",
+            title: "4. Subclinical Cortical Irritability (Non-Convulsive Status Risk)[cite: 1]",
+            hub: "CRITICAL VALUE[cite: 1]",
+            status: "Borderline Collapse[cite: 1]",
+            statusColor: "var(--collapse)",
+            time: 6,
+            state: 30,
+            eff: 65,
+            uncert: 55,
+            perception: ["The Detail: She had a one-hour post-ictal confusion phase and remained 'conscious but not answering questions.'[cite: 1]"],
+            actions: ["Avinash Control Strategy: We must rule out non-convulsive status epilepticus (NCSE) via EEG. Establishing a continuous neuro-electrical baseline is critical[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> EEG mapping begins stabilizing the diagnostic uncertainty array[cite: 1]."
+        },
+        {
+            cycle: "Time: 12 Hours",
+            title: "5. The Analgesic-Renal Feedback Loop[cite: 1]",
+            hub: "CRITICAL VALUE[cite: 1]",
+            status: "Silent Attractor Pull[cite: 1]",
+            statusColor: "var(--warning)",
+            time: 12,
+            state: 34,
+            eff: 70,
+            uncert: 50,
+            perception: ["The Detail: She frequently takes painkillers to mask bruises from severe physical abuse, combined with chronic, unmanaged hypertension[cite: 1]."],
+            actions: ["Avinash Control Strategy: This is a silent attractor pulling her toward Chronic Kidney Disease. We need immediate GFR and baseline renal mapping to avoid pushing her into acute renal failure with contrasts or certain AEDs[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Renal mapping protects against iatrogenic contrast injury[cite: 1]."
+        },
+        {
+            cycle: "Time: 24 Hours",
+            title: "6. The Biographical Hub Node: Domestic Abuse and Severe Psychosocial Stress[cite: 1]",
+            hub: "HIGH VALUE[cite: 1]",
+            status: "Deep Systemic Collapse Risk[cite: 1]",
+            statusColor: "var(--collapse)",
+            time: 24,
+            state: 15,
+            eff: 65,
+            uncert: 80,
+            perception: ["The Detail: The true hub node is biographical. She is a victim of severe, chronic domestic violence and exhibits severe stress behaviors[cite: 1]."],
+            actions: ["Avinash Control Strategy: Discharging her back to this environment guarantees a return to the 'Collapse' basin. A high-leverage Pull Strategy involves social work intervention, psychiatric support, and altering her baseline stress topology by removing her from the abusive environment[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Identifying the absolute primary psychosocial anchor point weighing down her trajectory[cite: 1]."
+        },
+        {
+            cycle: "Time: 36 Hours",
+            title: "7. Behavioral Dynamics and Trauma-Induced State Collapse[cite: 1]",
+            hub: "HIGH VALUE[cite: 1]",
+            status: "Behavioral Instability[cite: 1]",
+            statusColor: "var(--collapse)",
+            time: 36,
+            state: 25,
+            eff: 70,
+            uncert: 75,
+            perception: ["The Detail: She exhibits severe maladaptive behaviors (hair-biting, aggression)[cite: 1]."],
+            actions: ["Avinash Control Strategy: A biomedical approach (SSRIs) is a weak Push Strategy. The Pull Strategy requires altering the environmental topology[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Environmental topology alteration begins stabilizing behavioral vectors[cite: 1]."
+        },
+        {
+            cycle: "Time: 48 Hours",
+            title: "8. Endocrine & Vascular Baseline: Hypothyroidism and Non-compliant HTN[cite: 1]",
+            hub: "HIGH VALUE[cite: 1]",
+            status: "Approaching Homeostasis[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 48,
+            state: 40,
+            eff: 85,
+            uncert: 40,
+            perception: ["The Detail: Diagnosed with HTN and hypothyroidism but stopped medications[cite: 1]."],
+            actions: ["Avinash Control Strategy: Re-establishing a baseline with thyroid hormone replacement and gentle, long-acting antihypertensives will slowly pull her systemic state back into a sustainable homeostatic corridor[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Long-acting systemic interventions successfully draw patient into Goldilocks corridor[cite: 1]."
+        },
+        {
+            cycle: "Time: 72 Hours",
+            title: "9. The 'Critical Slowing Down' of her Cardiovascular System[cite: 1]",
+            hub: "HIGH VALUE[cite: 1]",
+            status: "Variant Stability[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 72,
+            state: 45,
+            eff: 88,
+            uncert: 35,
+            perception: ["The Detail: A syncopal episode 6 months ago[cite: 1]."],
+            actions: ["Avinash Control Strategy: This was an early warning signal of system variance. Needs an Echocardiogram and Holter monitor to ensure no cardioembolic source[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Echo and Holter validation close off secondary embolic trajectories[cite: 1]."
+        },
+        {
+            cycle: "Time: 96 Hours",
+            title: "10. The Surgical-Endocrine Shadow (Premature Menopause Vector)[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "Trajectory Monitoring[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 96,
+            state: 48,
+            eff: 90,
+            uncert: 30,
+            perception: ["The Detail: Hysterectomy 25 years ago. If oophorectomy was performed, she underwent premature surgical menopause[cite: 1]."],
+            actions: ["Avinash Control Strategy: Estrogen loss accelerates vascular stiffening. Monitor bone density and lipid profile longitudinally (5-year trajectory forecast)[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Long-term trajectory mapping locked in[cite: 1]."
+        },
+        {
+            cycle: "Time: 120 Hours",
+            title: "11. Neuro-cognitive Rehabilitation & Monitoring[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "Stable Rehabilitation[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 120,
+            state: 52,
+            eff: 92,
+            uncert: 25,
+            perception: ["The Detail: She has slurred speech, complex calculation loss, and apraxia[cite: 1]."],
+            actions: ["Avinash Control Strategy: Map cognitive recovery over weeks/months to visually plot whether cerebral perfusion is converging on a stable target[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Establishing a quantifiable cognitive mapping grid[cite: 1]."
+        },
+        {
+            cycle: "Time: 144 Hours",
+            title: "12. The Pharmacological 'Dark Matter' (Analgesic Load)[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "Supervised Corridor[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 144,
+            state: 50,
+            eff: 95,
+            uncert: 20,
+            perception: ["The Detail: Frequent, unnamed painkillers[cite: 1]."],
+            actions: ["Avinash Control Strategy: Establish a safe, medically supervised analgesic corridor while addressing the core social intervention[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Detoxification from dark matter pharmacology achieved[cite: 1]."
+        },
+        {
+            cycle: "Time: 168 Hours (Day 7)",
+            title: "13. Nutritional, Electrolyte Homeostasis, and Metabolic Telemetry[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "Homeostasis[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 168,
+            state: 50,
+            eff: 95,
+            uncert: 15,
+            perception: ["The Detail: History of working in fields, received IV fluids at local hospital[cite: 1]."],
+            actions: ["Avinash Control Strategy: Rapid fluid shifts or unmanaged dehydration can lower seizure thresholds. Monitor basic metabolic panel[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Homeostasis locked inside optimal phase-space[cite: 1]."
+        },
+        {
+            cycle: "Time: 192 Hours",
+            title: "14. Psychiatric Evaluation for Pseudoseizures vs. Epileptic Seizures[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "Overtreatment Check[cite: 1]",
+            statusColor: "var(--toxicity)",
+            time: 192,
+            state: 75,
+            eff: 90,
+            uncert: 35,
+            perception: ["The Detail: High risk for Psychogenic Non-Epileptic Seizures (PNES) due to severe trauma[cite: 1]."],
+            actions: ["Avinash Control Strategy: Differentiating the two is crucial to avoid toxic doses of AEDs (Overtreatment Basin)[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Deflected from toxicity basin by differentiating PNES from epilepsy[cite: 1]."
+        },
+        {
+            cycle: "Time: 216 Hours",
+            title: "15. Speech and Frustration-Feedback Loop[cite: 1]",
+            hub: "MEDIUM VALUE[cite: 1]",
+            status: "System Defusion[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 216,
+            state: 60,
+            eff: 94,
+            uncert: 20,
+            perception: ["The Detail: Slurred speech causing communication barriers[cite: 1]."],
+            actions: ["Avinash Control Strategy: Speech therapy as a Pull Strategy to lower systemic stress and emotional dysregulation[cite: 1]."],
+            pruned: [],
+            feedback: "<strong>State Vector Transition:</strong> Lowered systemic stress via improved communication[cite: 1]."
+        },
+        {
+            cycle: "Time: 240 Hours",
+            title: "16. Acute IV Fluids & Multivitamins (Previous Hospital's Approach)[cite: 1]",
+            hub: "LOW VALUE[cite: 1]",
+            status: "Pruned Noise[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 240,
+            state: 50,
+            eff: 98,
+            uncert: 5,
+            perception: ["The Detail: Treated with IV fluids and Multivitamins prior to admission[cite: 1]."],
+            actions: [],
+            pruned: ["Avinash Control Strategy: Low-leverage noise. Wasting time reversing this minor intervention is a distraction. Let it fade out[cite: 1]."],
+            feedback: "<strong>State Vector Transition:</strong> Decision node completely pruned to preserve cognitive bandwidth[cite: 1]."
+        },
+        {
+            cycle: "Time: 264 Hours",
+            title: "17. Fixating on Isolated Absent Reflexes and Cerebellar Minutiae[cite: 1]",
+            hub: "LOW VALUE[cite: 1]",
+            status: "Pruned Noise[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 264,
+            state: 50,
+            eff: 98,
+            uncert: 5,
+            perception: ["The Detail: Absent supinator/knee/ankle jerks, left dysdiadochokinesia[cite: 1]."],
+            actions: [],
+            pruned: ["Avinash Control Strategy: Minor downstream effects of a massive cortical lesion. Pruned and collapsed into the single 'Left hemispheric structural lesion' node[cite: 1]."],
+            feedback: "<strong>State Vector Transition:</strong> Node eliminated to prevent branching path complexity[cite: 1]."
+        },
+        {
+            cycle: "Time: 288 Hours",
+            title: "18. The Papaya Incident[cite: 1]",
+            hub: "LOW VALUE[cite: 1]",
+            status: "Pruned Noise[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 288,
+            state: 50,
+            eff: 99,
+            uncert: 5,
+            perception: ["The Detail: 'Eating a papaya' when the first major syncope occurred[cite: 1]."],
+            actions: [],
+            pruned: ["Avinash Control Strategy: Pure environmental noise. Irrelevant to the state vector[cite: 1]."],
+            feedback: "<strong>State Vector Transition:</strong> Irrelevant temporal marker discarded[cite: 1]."
+        },
+        {
+            cycle: "Time: 312 Hours",
+            title: "19. Focusing on Patient Health Literacy (4th Grade Education)[cite: 1]",
+            hub: "LOW VALUE[cite: 1]",
+            status: "Pruned Noise[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 312,
+            state: 50,
+            eff: 99,
+            uncert: 2,
+            perception: ["The Detail: 4th-grade education[cite: 1]."],
+            actions: [],
+            pruned: ["Avinash Control Strategy: A false attractor for medical non-compliance. Non-compliance is driven by chaotic trauma. Prune until she is safe[cite: 1]."],
+            feedback: "<strong>State Vector Transition:</strong> Focus shifted back to true hub nodes (psychosocial abuse)[cite: 1]."
+        },
+        {
+            cycle: "Time: 336 Hours (Day 14)",
+            title: "20. 'Uvula Centrally Placed' and Normal Cranial Nerves[cite: 1]",
+            hub: "LOW VALUE[cite: 1]",
+            status: "Pruned Noise[cite: 1]",
+            statusColor: "var(--goldilocks)",
+            time: 336,
+            state: 50,
+            eff: 100,
+            uncert: 1,
+            perception: ["The Detail: Normal findings in unrelated cranial nerves[cite: 1]."],
+            actions: [],
+            pruned: ["Avinash Control Strategy: Provide zero leverage for trajectory control. Cognitively discard[cite: 1]."],
+            feedback: "<strong>State Vector Transition:</strong> Final timeline analysis locked onto optimal trajectory with complete removal of noise elements[cite: 1]."
+        }
+    ];
+
+    let currentStep = 0;
+    const canvas = document.getElementById('longCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+        width = canvas.parentElement.clientWidth;
+        height = canvas.parentElement.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        drawChart();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function renderList(listId, dataArray, blockId) {
+        const ul = document.getElementById(listId);
+        const block = document.getElementById(blockId);
+        ul.innerHTML = '';
+        if (dataArray && dataArray.length > 0) {
+            block.style.display = 'block';
+            dataArray.forEach(text => {
+                const li = document.createElement('li');
+                li.innerHTML = text;
+                ul.appendChild(li);
+            });
+        } else {
+            block.style.display = 'none';
+        }
+    }
+
+    function updateUI(stepIndex) {
+        const data = caseData[stepIndex];
+        
+        document.getElementById('cycleBadge').innerText = data.cycle;
+        document.getElementById('cycleTitle').innerHTML = data.title;
+        document.getElementById('metricHub').innerHTML = data.hub;
+        
+        const statusEl = document.getElementById('metricStatus');
+        statusEl.innerText = data.status + ` (Score: ${data.state})`;
+        statusEl.style.color = data.statusColor;
+
+        renderList('listPerception', data.perception, 'perceptionBlock');
+        renderList('listActions', data.actions, 'actionsBlock');
+        renderList('listPruned', data.pruned, 'prunedBlock');
+        document.getElementById('feedbackBox').innerHTML = data.feedback;
+
+        const btnNext = document.getElementById('btnNext');
+        if (stepIndex < caseData.length - 1) {
+            btnNext.innerText = `Advance to Point ${stepIndex + 2}`;
+            btnNext.disabled = false;
+        } else {
+            btnNext.innerText = "Simulation Complete";
+            btnNext.disabled = true;
+        }
+
+        drawChart();
+    }
+
+    function nextCycle() {
+        if (currentStep < caseData.length - 1) {
+            currentStep++;
+            updateUI(currentStep);
+        }
+    }
+
+    function resetSimulation() {
+        currentStep = 0;
+        updateUI(currentStep);
+    }
+
+    // Absolutely Positive Coordinate Matrix Mappings
+    const MAX_TIME = 350; // Total timeline span in hours
+
+    function toX(timeVal) {
+        return 60 + (timeVal / MAX_TIME) * (width - 80);
+    }
+
+    function toY(stateVal) {
+        return height - 30 - (stateVal / 100) * (height - 60);
+    }
+
+    function drawChart() {
+        if (!width) return;
+        ctx.clearRect(0, 0, width, height);
+
+        const plotLeft = 60;
+        const plotRight = width - 20;
+
+        // 1. Draw Positive Attractor Basins (Strict bounds)[cite: 2]
+        
+        // Toxicity / Overtreatment Band (State 65 to 100)
+        ctx.fillStyle = 'rgba(249, 115, 22, 0.08)';
+        ctx.fillRect(plotLeft, toY(100), plotRight - plotLeft, toY(65) - toY(100));
+
+        // Goldilocks Target Corridor (State 35 to 65)
+        ctx.fillStyle = 'rgba(34, 197, 94, 0.12)';
+        ctx.fillRect(plotLeft, toY(65), plotRight - plotLeft, toY(35) - toY(65));
+
+        // Collapse Basin (State 0 to 35)
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.08)';
+        ctx.fillRect(plotLeft, toY(35), plotRight - plotLeft, toY(0) - toY(35));
+
+        // Y-axis Labels
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = '#f97316'; ctx.fillText('TOXICITY', plotLeft + 6, toY(82));
+        ctx.fillStyle = '#22c55e'; ctx.fillText('GOLDILOCKS', plotLeft + 6, toY(50));
+        ctx.fillStyle = '#ef4444'; ctx.fillText('COLLAPSE', plotLeft + 6, toY(18));
+
+        // X-axis Time Ticks (Forward moving only)
+        ctx.lineWidth = 1;
+        const tickIntervals = [0, 48, 96, 144, 192, 240, 288, 336]; // Spaced by 48 hrs / 2 Days
+        tickIntervals.forEach(t => {
+            const cx = toX(t);
+            ctx.beginPath();
+            ctx.moveTo(cx, 10);
+            ctx.lineTo(cx, height - 25);
+            ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
+            ctx.stroke();
+            ctx.fillStyle = '#94a3b8';
+            ctx.fillText(`T+${t}h`, cx - 14, height - 8);
+        });
+
+        const currentData = caseData[currentStep];
+        const currentTime = currentData.time;
+        const currentState = currentData.state;
+        const eff = currentData.eff;
+        const uncert = currentData.uncert;
+
+        // 2. Compute Projections Forward (No Negative Trajectories)[cite: 2]
+        const steps = 50;
+        const predicted = [], best = [], worst = [];
+        
+        for (let i = 0; i <= steps; i++) {
+            const t = currentTime + (i / steps) * (MAX_TIME - currentTime);
+            const f = (t - currentTime) / Math.max(1, (MAX_TIME - currentTime)); 
+            
+            const tau = Math.max(0.05, 1 - eff / 100);
+            const pull = 1 - Math.exp(-f * 3 / tau);
+            
+            const driftTarget = eff >= 50 ? 50 : (currentState < 35 ? 15 : 85);
+            const target = eff >= 50 ? 50 : driftTarget;
+            const predY = currentState + (target - currentState) * pull * (eff >= 50 ? 1 : 0.6);
+            
+            const baseSpread = 4 + (uncert / 100) * 15;
+            const spread = baseSpread * Math.sqrt(f * 10 + 0.2) * (1 + (100 - eff) / 200);
+            
+            predicted.push({ t, y: Math.min(100, Math.max(0, predY)) });
+            best.push({ t, y: Math.min(100, Math.max(0, predY + spread)) });
+            worst.push({ t, y: Math.min(100, Math.max(0, predY - spread)) });
+        }
+
+        // Draw Uncertainty Envelope
+        if (currentStep < caseData.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(toX(best[0].t), toY(best[0].y));
+            for (let i = 1; i <= steps; i++) ctx.lineTo(toX(best[i].t), toY(best[i].y));
+            for (let i = steps; i >= 0; i--) ctx.lineTo(toX(worst[i].t), toY(worst[i].y));
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
+            ctx.fill();
+
+            // Best Case Track[cite: 2]
+            ctx.beginPath();
+            best.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#22c55e';
+            ctx.setLineDash([5, 4]);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Worst Case Track[cite: 2]
+            ctx.beginPath();
+            worst.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#ef4444';
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Primary Predicted Plan[cite: 2]
+            ctx.beginPath();
+            predicted.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.t), toY(pt.y)) : ctx.lineTo(toX(pt.t), toY(pt.y)));
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // 3. Draw Single Historical Point Line Track
+        ctx.beginPath();
+        for (let i = 0; i <= currentStep; i++) {
+            const ptX = toX(caseData[i].time);
+            const ptY = toY(caseData[i].state);
+            if (i === 0) ctx.moveTo(ptX, ptY);
+            else ctx.lineTo(ptX, ptY);
+        }
+        ctx.strokeStyle = '#f8fafc';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // 4. Draw Individual Nodes
+        for (let i = 0; i <= currentStep; i++) {
+            const isCurrent = (i === currentStep);
+            const ptX = toX(caseData[i].time);
+            const ptY = toY(caseData[i].state);
+            
+            ctx.beginPath();
+            ctx.arc(ptX, ptY, isCurrent ? 7 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = isCurrent ? '#38bdf8' : '#f8fafc';
+            if (isCurrent) {
+                ctx.shadowColor = '#38bdf8';
+                ctx.shadowBlur = 12;
+            }
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            if (isCurrent) {
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('CURRENT', ptX - 25, ptY - 15);
+            }
+        }
+
+        // Legend Rendering
+        const legendY = 14;
+        const items = [
+            { color: '#f8fafc', label: 'Historical Path' },
+            { color: '#38bdf8', label: 'Predicted' },
+            { color: '#22c55e', label: 'Best Case' },
+            { color: '#ef4444', label: 'Worst Case' }
+        ];
+        let lx = plotLeft;
+        ctx.font = '11px sans-serif';
+        items.forEach(item => {
+            ctx.fillStyle = item.color;
+            ctx.fillRect(lx, legendY - 8, 10, 10);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(item.label, lx + 14, legendY + 1);
+            lx += ctx.measureText(item.label).width + 34;
+        });
+
+        // Probability Target Metric Update
+        if (currentStep < caseData.length - 1) {
+            const bestEnd = best[steps].y;
+            const worstEnd = worst[steps].y;
+            const lo = Math.max(worstEnd, 0), hi = Math.min(bestEnd, 100);
+            const overlapLo = Math.max(lo, 35), overlapHi = Math.min(hi, 65);
+            const overlap = Math.max(0, overlapHi - overlapLo);
+            const total = Math.max(1, hi - lo);
+            const prob = Math.round((overlap / total) * 100);
+            document.getElementById('metricProb').innerText = `${prob}%`;
+        } else {
+            document.getElementById('metricProb').innerText = "100% (Secured)";
+        }
+    }
+
+    // Initialize System Matrix
+    setTimeout(() => {
+        resizeCanvas();
+        updateUI(currentStep);
+    }, 100);
+
+</script>
+</body>
+</html>
