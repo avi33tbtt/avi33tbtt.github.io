@@ -4,7 +4,7 @@
 
 # Module AP — The Avinash Principle: Critical Hub-Node Navigation
 
-# [Check details on blog](https://classworkdecjan.blogspot.com/2026/07/the-avinash-principle-critical-hub-node.html) The Avinash Principle: Critical Hub-Node Navigation
+# [Check details on blog](https://classworkdecjan.blogspot.com/2026/07/the-avinash-principle-critical-hub-node.html) 
 
 
 
