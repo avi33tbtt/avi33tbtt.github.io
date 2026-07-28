@@ -186,7 +186,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module SDM — Shared Decision-Making Query Generator](Module-SDM-Shared-Decision-Making-Query-Generator.md) | Module SDM — Shared Decision-Making Query Generator |
 | -- | [Module EBM — Case → Critical Appraisal Query Generator](ebm-case-query-generator.md) | Module EBM — Case → Critical Appraisal Query Generator |
 | -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
-| -- | [The Avinash Case-Series Trajectory Mapper](avinash-case-series-trajectory-mapper.md) | The Avinash Case-Series Trajectory Mapper |
+| -- | [The Evidence-Pyramid Trajectory Mapper](evidence-pyramid-trajectory-mapper.md) | The Evidence-Pyramid Trajectory Mapper |
 
 
 
