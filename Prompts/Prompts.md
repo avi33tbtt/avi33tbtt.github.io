@@ -185,6 +185,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module — Case Lens: Critical Thinking Audit](Module-Case-Lens-Critical-Thinking.md) | Module — Case Lens: Critical Thinking Audit |
 | -- | [Module SDM — Shared Decision-Making Query Generator](Module-SDM-Shared-Decision-Making-Query-Generator.md) | Module SDM — Shared Decision-Making Query Generator |
 | -- | [Module EBM — Case → Critical Appraisal Query Generator](ebm-case-query-generator.md) | Module EBM — Case → Critical Appraisal Query Generator |
+| -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
 
 
 
