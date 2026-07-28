@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avinash Case-Series Trajectory Mapper</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        h1 { font-size: 1.5rem; }
+        h2 { font-size: 1.25rem; margin-bottom: 0; }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        button:hover {
+            background: #e9ecef;
+        }
+        button.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .textbook-btn {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .textbook-btn:hover { background: #218838; }
+        
+        svg {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            width: 100%;
+            height: 500px;
+        }
+        .node {
+            cursor: pointer;
+            stroke: #fff;
+            stroke-width: 2px;
+            transition: fill 0.3s;
+        }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            transition: stroke 0.3s, stroke-width 0.3s;
+        }
+        .node-label {
+            font-size: 12px;
+            font-weight: 500;
+            pointer-events: none;
+            text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 250px;
+            z-index: 10;
+        }
+        .tooltip-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            border-bottom: 1px solid #555;
+            padding-bottom: 3px;
+        }
+        .references {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .legend {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-circle { width: 12px; height: 12px; border-radius: 50%; background: #6c757d; }
+        .legend-line { width: 20px; height: 3px; background: #ccc; }
+
+        /* Prompt Section Styles */
+        .prompt-container {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f1f3f5;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .prompt-header button {
+            background: #495057;
+            color: white;
+            border-color: #495057;
+        }
+        .prompt-header button:hover {
+            background: #343a40;
+        }
+        pre.prompt-text {
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 0;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Clinical Trajectory Network (Avinash Mapper)</h1>
+    
+    <div class="controls" id="patient-controls">
+        <button data-patient="all" class="active">Show All Network</button>
+        <button data-patient="textbook" class="textbook-btn">Highlight Textbook Path</button>
+        <button data-patient="1">Patient 1 (General)</button>
+        <button data-patient="2">Patient 2 (Pancytopenia - Outlier)</button>
+        <button data-patient="3">Patient 3 (AKI on CKD)</button>
+        <button data-patient="4">Patient 4 (CKD on MHD)</button>
+    </div>
+
+    <div id="tooltip">
+        <div class="tooltip-title" id="tt-title">Node Name</div>
+        <div id="tt-body">Data...</div>
+    </div>
+
+    <svg id="network"></svg>
+
+    <div class="legend">
+        <strong>Legend:</strong>
+        <div class="legend-item"><div class="legend-circle" style="transform: scale(1.5);"></div> Node Size = Hub Weight</div>
+        <div class="legend-item"><div class="legend-line" style="height: 5px;"></div> Edge Thickness = Path Frequency</div>
+        <div class="legend-item"><div class="legend-circle" style="background: #28a745;"></div> Green = Textbook Path</div>
+        <div class="legend-item"><div class="legend-circle" style="background: #dc3545;"></div> Red = Outlier Divergence</div>
+    </div>
+
+    <div class="references">
+        <strong>References (Included Cases):</strong>
+        <ol>
+            <li><a href="https://sreejaboga.blogspot.com/2020/10/this-is-online-e-log-book-to-discuss.html?m=1" target="_blank">Online e-log book case discussion (Patient 1)</a></li>
+            <li><a href="https://gutalaramya.blogspot.com/2021/05/pancytopenia-under-evaluation.html" target="_blank">Pancytopenia under evaluation (Patient 2)</a></li>
+            <li><a href="https://hemachowdary.blogspot.com/2021/05/60-years-old-female-with-aki-on-ckd.html" target="_blank">60-years-old female with AKI on CKD (Patient 3)</a></li>
+            <li><a href="https://durgakrishna09.blogspot.com/2021/05/a-22yr-female-with-ckd-on-mhd.html" target="_blank">22-yr female with CKD on MHD (Patient 4)</a></li>
+        </ol>
+    </div>
+
+    <!-- Original System Prompt Section -->
+    <div class="prompt-container">
+        <div class="prompt-header">
+            <h2>Original System Prompt</h2>
+            <button id="copy-prompt-btn">Copy Prompt</button>
+        </div>
+        <pre class="prompt-text" id="prompt-content">System Prompt: The Avinash Case-Series Trajectory Mapper
+
+Role: You are analyzing an uploaded case series research paper through the "Avinash Principle" — the idea that a disease's true structure is visible not in average outcomes, but in the overlapping event-node trajectories of individual cases, where common paths reveal real hub nodes and outlier paths mark the disease's actual phase-space edges.
+
+STEP 1 — EXTRACT NODES PER PATIENT
+Read the paper (methods, results, tables, case descriptions, supplementary data) and reconstruct each patient's trajectory as a short chain of 3-6 key clinical events — not every data point, only the events that would change the trajectory's direction if they'd gone differently. Typical node types:
+  - Presentation node (how/when they arrived, key baseline findings)
+  - Decision/intervention node (what was done, and when)
+  - Reaction/complication node (how the body/treatment responded)
+  - Disposition node (outcome: recovered, referred, complicated, died)
+Adapt node count/type to what the paper actually reports — do not invent data the paper doesn't contain. If a value isn't reported for a patient, mark it explicitly as missing rather than estimating it.
+
+For each node, capture (where available):
+  - Time variation: timestamp or interval from a common zero point
+  - Objective data variation: the actual measured value(s) at that node
+  - Subjective/narrative variation: any biographical/behavioral detail the paper reports (comorbidity, delay reason, access barrier, etc.)
+
+STEP 2 — MERGE INTO A NETWORK
+Cluster structurally equivalent nodes across patients into shared network nodes (e.g., "ASV given per protocol" as one node spanning all patients who fit that pattern). Weight edges by how many patients' trajectories pass through them. Identify:
+  - Hub nodes: high-connectivity nodes most trajectories pass through
+  - The textbook path: the single highest-density path through the network, with each node's central tendency (median/mode) across all patients
+  - Outlier paths: trajectories that diverge from the textbook path, and the EXACT node + variation layer (time/objective/narrative) where each one forks off
+
+STEP 3 — BUILD THE INTERACTIVE HTML PLOT
+Produce a single self-contained HTML file (inline CSS/JS, no external dependencies beyond a CDN if needed) that visualizes the network as an interactive node-link diagram:
+  - Nodes sized/colored by patient-count (hub weight); a distinct color or border style should mark the textbook path
+  - Edges with thickness proportional to patient count passing through them
+  - Hovering/clicking a node shows: patient count, and the time/objective/narrative variation spread at that checkpoint (as a small distribution or range, not just a single number)
+  - Clicking a patient ID (or a toggle) highlights that single trajectory threaded through the network, so it can be visually compared against the textbook path
+  - A filter or highlight mode for "outliers" — trajectories whose path distance from the textbook path exceeds a visible threshold
+  - A simple legend explaining node size = hub weight, edge thickness = shared path frequency, highlighted node = fork point
+
+CONSTRAINTS
+  - Use only data actually present in the paper; do not fabricate patient counts, values, or outcomes. If the paper is missing patient-level granularity (e.g., only reports aggregate stats), state this limitation plainly and build the best network the paper's data actually supports — do not silently invent individual trajectories.
+  - Prioritize readability over density — this is meant to make the paper's hidden structure visible at a glance, not to reproduce every table.
+  - Before generating the HTML, briefly report: how many patients had extractable trajectories, how many key events you used per patient, and which nodes turned out to be hubs vs. outlier-only.
+  - End with a short paragraph naming the textbook path and the 1-3 most informative outliers — what node they diverged at, and why that divergence looks clinically meaningful rather than noise.
+
+OUTPUT ORDER
+  1. Extraction summary (counts, node schema used)
+  2. Hub/textbook-path summary (plain text)
+  3. Outlier summary (plain text)
+  4. The interactive HTML file</pre>
+    </div>
+</div>
+
+<script>
+    // Network Data
+    const nodes = [
+        { id: "Presentation", stage: 0, yOffset: 0, patients: [1,2,3,4], desc: "N=4. Onset of symptoms. Variations: Fatigue/Fever (Pt 1), Pallor (Pt 2), Edema/Anuria (Pt 3), Fluid Overload (Pt 4)." },
+        { id: "Admission & Eval", stage: 1, yOffset: 0, patients: [1,2,3,4], desc: "N=4. Baseline hospital evaluation. Blood work and vitals recorded." },
+        { id: "Conservative Mgmt", stage: 2, yOffset: -100, patients: [1], desc: "N=1. IV fluids, antipyretics. No invasive interventions required." },
+        { id: "Hemodialysis", stage: 2, yOffset: 0, patients: [3,4], desc: "N=2. Textbook intervention. Renal replacement therapy initiated." },
+        { id: "Transfusion & Biopsy", stage: 2, yOffset: 120, patients: [2], desc: "N=1. Outlier fork. Bone marrow aspirate and blood products given." },
+        { id: "Stabilized", stage: 3, yOffset: -50, patients: [1,3,4], desc: "N=3. Vitals normalized, primary complaint resolved or managed." },
+        { id: "Complication (Infection)", stage: 3, yOffset: 120, patients: [2], desc: "N=1. Neutropenic fever developed post-biopsy." },
+        { id: "Discharged", stage: 4, yOffset: -50, patients: [1,3,4], desc: "N=3. Sent home with outpatient follow-up." },
+        { id: "Ongoing Care", stage: 4, yOffset: 120, patients: [2], desc: "N=1. Transferred to hematology/oncology ward for prolonged care." }
+    ];
+
+    const links = [
+        { source: "Presentation", target: "Admission & Eval", patients: [1,2,3,4] },
+        { source: "Admission & Eval", target: "Conservative Mgmt", patients: [1] },
+        { source: "Admission & Eval", target: "Hemodialysis", patients: [3,4] },
+        { source: "Admission & Eval", target: "Transfusion & Biopsy", patients: [2] },
+        { source: "Conservative Mgmt", target: "Stabilized", patients: [1] },
+        { source: "Hemodialysis", target: "Stabilized", patients: [3,4] },
+        { source: "Transfusion & Biopsy", target: "Complication (Infection)", patients: [2] },
+        { source: "Stabilized", target: "Discharged", patients: [1,3,4] },
+        { source: "Complication (Infection)", target: "Ongoing Care", patients: [2] }
+    ];
+
+    // Setup SVG
+    const svg = d3.select("#network");
+    const width = document.getElementById("network").clientWidth;
+    const height = 500;
+    
+    // Layout positioning manually based on stage for logical clinical flow
+    const stageWidth = width / 5;
+    nodes.forEach(d => {
+        d.x = 50 + (d.stage * stageWidth);
+        d.y = height / 2 + d.yOffset;
+    });
+
+    // Draw Links
+    const linkGroup = svg.append("g").attr("class", "links");
+    const linkPaths = linkGroup.selectAll("path")
+        .data(links)
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("d", d => {
+            const source = nodes.find(n => n.id === d.source);
+            const target = nodes.find(n => n.id === d.target);
+            // Curvy lines
+            return `M ${source.x} ${source.y} C ${source.x + 50} ${source.y}, ${target.x - 50} ${target.y}, ${target.x} ${target.y}`;
+        })
+        .style("stroke-width", d => d.patients.length * 3);
+
+    // Draw Nodes
+    const nodeGroup = svg.append("g").attr("class", "nodes");
+    const nodeCircles = nodeGroup.selectAll("circle")
+        .data(nodes)
+        .enter().append("circle")
+        .attr("class", "node")
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .attr("r", d => 10 + (d.patients.length * 4))
+        .style("fill", "#6c757d");
+
+    // Node Labels
+    svg.append("g").attr("class", "labels")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .attr("class", "node-label")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y - 25 - (d.patients.length * 2))
+        .attr("text-anchor", "middle")
+        .text(d => d.id);
+
+    // Tooltip Logic
+    const tooltip = d3.select("#tooltip");
+    nodeCircles.on("mouseover", function(event, d) {
+        tooltip.style("opacity", 1);
+        d3.select("#tt-title").text(d.id);
+        d3.select("#tt-body").html(
+            `<strong>Patients:</strong> ${d.patients.join(", ")}<br/><br/>${d.desc}`
+        );
+        d3.select(this).style("stroke", "#333").style("stroke-width", "3px");
+    }).on("mousemove", function(event) {
+        tooltip.style("left", (event.pageX + 15) + "px")
+               .style("top", (event.pageY - 25) + "px");
+    }).on("mouseout", function() {
+        tooltip.style("opacity", 0);
+        d3.select(this).style("stroke", "#fff").style("stroke-width", "2px");
+    });
+
+    // Filtering Logic
+    const buttons = document.querySelectorAll("#patient-controls button");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            // Update button styles
+            buttons.forEach(b => b.classList.remove("active"));
+            e.target.classList.add("active");
+
+            const filter = e.target.getAttribute("data-patient");
+
+            // Update Links
+            linkPaths.style("stroke", d => {
+                if (filter === "all") return "#ccc";
+                if (filter === "textbook") {
+                    // Textbook path: Pts 3 and 4
+                    return (d.patients.includes(3) && d.patients.includes(4)) ? "#28a745" : "#eee";
+                }
+                const ptId = parseInt(filter);
+                return d.patients.includes(ptId) ? (ptId === 2 ? "#dc3545" : "#007bff") : "#eee";
+            })
+            .style("stroke-width", d => {
+                if (filter === "all") return d.patients.length * 3;
+                if (filter === "textbook") return (d.patients.includes(3) && d.patients.includes(4)) ? 6 : 1;
+                const ptId = parseInt(filter);
+                return d.patients.includes(ptId) ? 4 : 1;
+            });
+
+            // Update Nodes
+            nodeCircles.style("fill", d => {
+                if (filter === "all") return "#6c757d";
+                if (filter === "textbook") {
+                    return (d.patients.includes(3) && d.patients.includes(4)) ? "#28a745" : "#e9ecef";
+                }
+                const ptId = parseInt(filter);
+                if (d.patients.includes(ptId)) {
+                    // Outlier colors
+                    if (ptId === 2) return "#dc3545";
+                    return "#007bff";
+                }
+                return "#e9ecef";
+            });
+        });
+    });
+
+    // Copy Prompt Logic
+    document.getElementById("copy-prompt-btn").addEventListener("click", function() {
+        const promptText = document.getElementById("prompt-content").innerText;
+        navigator.clipboard.writeText(promptText).then(() => {
+            const btn = document.getElementById("copy-prompt-btn");
+            const originalText = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.style.backgroundColor = "#28a745";
+            btn.style.borderColor = "#28a745";
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = "";
+                btn.style.borderColor = "";
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    });
+</script>
+
+</body>
+</html>
