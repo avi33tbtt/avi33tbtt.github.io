@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avinash Case-Series Trajectory Mapper</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        #main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        #network {
+            flex: 1;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+        }
+        #sidebar {
+            width: 300px;
+            padding: 20px;
+            background: #ecf0f1;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        #sidebar h3 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        #node-details {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
+            min-height: 150px;
+        }
+        .ref-section {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #555;
+            word-wrap: break-word;
+        }
+        .ref-section a {
+            color: #3498db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h2 style="margin: 0; font-size: 20px;">Avinash Trajectory Mapper</h2>
+        <span style="font-size: 12px; color: #bdc3c7;">General Medicine Cohort (N=21)</span>
+    </div>
+    <div class="controls">
+        <select id="patient-select">
+            <option value="all">View All Trajectories (Textbook Path)</option>
+            <option value="p1">Patient 1 (63M, Fever)</option>
+            <option value="p2">Patient 2 (70M, MODS) [Outlier]</option>
+            <option value="p3">Patient 3 (60F, AKI on CKD)</option>
+            <option value="p4">Patient 4 (22F, MHD) [Outlier]</option>
+            <option value="p5">Patient 5 (55M, Neurological)</option>
+            <option value="p6">Patient 6 (Hyperacute T-Waves) [Outlier]</option>
+            <option value="p7">Patient 7 (45M, Abdominal Pain)</option>
+        </select>
+        <button id="outlier-toggle">Highlight Outliers</button>
+    </div>
+</header>
+
+<div id="main-container">
+    <div id="network"></div>
+    <div id="sidebar">
+        <h3>Legend</h3>
+        <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div> Hub Node (High N)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div> Outlier Node (Low N)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div> Favorable Outcome</div>
+        <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div> Textbook Path (Thick Edge)</div>
+        
+        <div id="node-details">
+            <i>Hover over or click a node to view clinical variations and patient counts.</i>
+        </div>
+
+        <div class="ref-section">
+            <h4>Extracted Cases (References):</h4>
+            <a href="https://drkulkarnimd.blogspot.com/2021/03/45m-with-pain-abdomen-and-vomitings.html" target="_blank">45M Pain Abdomen</a>
+            <a href="https://chandanavishwanatham19.blogspot.com/2021/03/52year-old-male-with-ascites.html" target="_blank">52M Ascites</a>
+            <a href="https://drkulkarnithesis.blogspot.com/2021/03/55m-with-rt-upper-limb-lower-limb.html" target="_blank">55M Limb Weakness</a>
+            <a href="https://kattamanasa3.blogspot.com/2021/04/50f-with-focal-seizures-and-impared.html" target="_blank">50F Focal Seizures</a>
+            <a href="https://hemachowdary.blogspot.com/2021/05/60-years-old-female-with-aki-on-ckd.html" target="_blank">60F AKI on CKD</a>
+            <a href="https://durgakrishna09.blogspot.com/2021/05/a-22yr-female-with-ckd-on-mhd.html" target="_blank">22F CKD on MHD</a>
+            <a href="https://jeeharikasahu.blogspot.com/2021/03/63m-with-fever-since-yesterday.html" target="_blank">63M Fever</a>
+            <a href="https://chandanavishwanatham19.blogspot.com/2021/03/70year-male-with-multiple-organ.html" target="_blank">70M MODS</a>
+            <a href="https://hqmeded-ecg.blogspot.com/2018/01/bizarre-hyperacute-t-waves.html" target="_blank">Bizarre Hyperacute T waves</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Node Data setup
+    const nodesData = [
+        // Level 1: Presentation
+        { id: 1, label: 'Acute ER Presentation', value: 21, group: 'hub', title: '<b>Count:</b> 21<br><b>Time:</b> Day 0<br><b>Narrative:</b> Acute onset symptoms leading to general medicine admission. Ages 17-80.', level: 1 },
+        
+        // Level 2: Triage/Diagnosis
+        { id: 2, label: 'Febrile / Infectious', value: 7, group: 'standard', title: '<b>Count:</b> 7<br><b>Time:</b> +2-4 hours<br><b>Objective:</b> Elevated temp, WBC counts.<br><b>Pathways:</b> Sepsis, UTI, LRTI.', level: 2 },
+        { id: 3, label: 'Neurological Deficit', value: 6, group: 'standard', title: '<b>Count:</b> 6<br><b>Time:</b> +1-3 hours<br><b>Objective:</b> Focal weakness, seizures, altered sensorium.', level: 2 },
+        { id: 4, label: 'Renal / GI', value: 7, group: 'standard', title: '<b>Count:</b> 7<br><b>Time:</b> +3-5 hours<br><b>Objective:</b> Elevated Creatinine, ascites, acute abdominal pain.', level: 2 },
+        { id: 5, label: 'Acute ECG Changes', value: 1, group: 'outlier', title: '<b>Count:</b> 1<br><b>Time:</b> +10 mins<br><b>Narrative:</b> Bizarre hyperacute T-waves requiring immediate cardiology diversion.', level: 2 },
+
+        // Level 3: Intervention
+        { id: 6, label: 'Empiric Antibiotics\n& Fluids', value: 6, group: 'standard', title: '<b>Count:</b> 6<br><b>Time:</b> Day 1-3<br><b>Objective:</b> Protocol-driven broad spectrum coverage.', level: 3 },
+        { id: 7, label: 'Neuroimaging &\nMedical Mgmt', value: 6, group: 'standard', title: '<b>Count:</b> 6<br><b>Time:</b> Day 1-2<br><b>Objective:</b> Anti-platelets, AEDs, supportive care.', level: 3 },
+        { id: 8, label: 'Conservative /\nSymptomatic', value: 5, group: 'standard', title: '<b>Count:</b> 5<br><b>Time:</b> Day 1-4<br><b>Narrative:</b> Fluid restriction, analgesics.', level: 3 },
+        { id: 9, label: 'Renal Replacement (MHD)', value: 2, group: 'outlier', title: '<b>Count:</b> 2<br><b>Time:</b> Day 1<br><b>Narrative:</b> Maintenance hemodialysis patients requiring specialized care.', level: 3 },
+        { id: 10, label: 'Cath Lab Activation', value: 1, group: 'outlier', title: '<b>Count:</b> 1<br><b>Time:</b> +30 mins<br><b>Narrative:</b> Immediate PCI / Reperfusion therapy.', level: 3 },
+
+        // Level 4: Complication / Disposition
+        { id: 11, label: 'Discharged / Stable', value: 18, group: 'good', title: '<b>Count:</b> 18<br><b>Time:</b> Day 5-10<br><b>Narrative:</b> Resolution of acute symptoms, referred to outpatient follow-up.', level: 4 },
+        { id: 12, label: 'Deterioration to MODS', value: 1, group: 'outlier', title: '<b>Count:</b> 1<br><b>Time:</b> Day 3-5<br><b>Objective:</b> Refractory hypotension, multi-organ failure (70M case).', level: 4 },
+        { id: 13, label: 'Transferred to ICU/CCU', value: 2, group: 'standard', title: '<b>Count:</b> 2<br><b>Time:</b> Day 1-2<br><b>Narrative:</b> Step-up care required.', level: 4 }
+    ];
+
+    const edgesData = [
+        // From Presentation
+        { from: 1, to: 2, value: 7, color: { color: '#95a5a6' } },
+        { from: 1, to: 3, value: 6, color: { color: '#95a5a6' } },
+        { from: 1, to: 4, value: 7, color: { color: '#95a5a6' } },
+        { from: 1, to: 5, value: 1, color: { color: '#e74c3c' }, dashes: true },
+
+        // From Triage to Intervention
+        { from: 2, to: 6, value: 6, color: { color: '#95a5a6' } },
+        { from: 2, to: 12, value: 1, color: { color: '#e74c3c' }, dashes: true }, // MODS pathway
+        { from: 3, to: 7, value: 6, color: { color: '#95a5a6' } },
+        { from: 4, to: 8, value: 5, color: { color: '#95a5a6' } },
+        { from: 4, to: 9, value: 2, color: { color: '#e74c3c' }, dashes: true },
+        { from: 5, to: 10, value: 1, color: { color: '#e74c3c' }, dashes: true },
+
+        // From Intervention to Disposition
+        { from: 6, to: 11, value: 6, color: { color: '#95a5a6' } },
+        { from: 7, to: 11, value: 6, color: { color: '#95a5a6' } },
+        { from: 8, to: 11, value: 5, color: { color: '#95a5a6' } },
+        { from: 9, to: 11, value: 1, color: { color: '#95a5a6' } },
+        { from: 9, to: 13, value: 1, color: { color: '#95a5a6' } },
+        { from: 10, to: 13, value: 1, color: { color: '#95a5a6' } },
+        { from: 12, to: 13, value: 1, color: { color: '#e74c3c' }, dashes: true } // MODS to ICU (or death)
+    ];
+
+    // Patient Path Mappings
+    const patientPaths = {
+        'p1': { nodes: [1, 2, 6, 11], edges: [{from:1, to:2}, {from:2, to:6}, {from:6, to:11}] },
+        'p2': { nodes: [1, 2, 12, 13], edges: [{from:1, to:2}, {from:2, to:12}, {from:12, to:13}] },
+        'p3': { nodes: [1, 4, 8, 11], edges: [{from:1, to:4}, {from:4, to:8}, {from:8, to:11}] },
+        'p4': { nodes: [1, 4, 9, 13], edges: [{from:1, to:4}, {from:4, to:9}, {from:9, to:13}] },
+        'p5': { nodes: [1, 3, 7, 11], edges: [{from:1, to:3}, {from:3, to:7}, {from:7, to:11}] },
+        'p6': { nodes: [1, 5, 10, 13], edges: [{from:1, to:5}, {from:5, to:10}, {from:10, to:13}] },
+        'p7': { nodes: [1, 4, 8, 11], edges: [{from:1, to:4}, {from:4, to:8}, {from:8, to:11}] }
+    };
+
+    const outlierNodes = [5, 9, 10, 12];
+
+    const nodes = new vis.DataSet(nodesData);
+    const edges = new vis.DataSet(edgesData);
+
+    const container = document.getElementById('network');
+    const data = { nodes: nodes, edges: edges };
+    const options = {
+        nodes: {
+            shape: 'dot',
+            scaling: { customScalingFunction: (min, max, total, value) => { return value / max; }, min: 10, max: 40 },
+            font: { size: 14, face: 'Tahoma', color: '#2c3e50' },
+            borderWidth: 2
+        },
+        groups: {
+            hub: { color: { background: '#3498db', border: '#2980b9' } },
+            standard: { color: { background: '#bdc3c7', border: '#7f8c8d' } },
+            outlier: { color: { background: '#e74c3c', border: '#c0392b' } },
+            good: { color: { background: '#2ecc71', border: '#27ae60' } }
+        },
+        edges: {
+            smooth: { type: 'cubicBezier', forceDirection: 'horizontal' },
+            scaling: { min: 2, max: 12 },
+            arrows: { to: { enabled: true, scaleFactor: 0.5 } }
+        },
+        layout: {
+            hierarchical: {
+                direction: 'LR',
+                sortMethod: 'directed',
+                nodeSpacing: 150,
+                levelSeparation: 250
+            }
+        },
+        interaction: { hover: true, tooltipDelay: 200 },
+        physics: false
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Sidebar Interaction
+    network.on("hoverNode", function (params) {
+        const node = nodes.get(params.node);
+        document.getElementById('node-details').innerHTML = `
+            <h4 style="margin:0 0 10px 0; color:#2c3e50;">${node.label}</h4>
+            ${node.title}
+        `;
+    });
+
+    // Highlighting Logic
+    function resetHighlight() {
+        const updateNodes = nodesData.map(n => ({ id: n.id, color: undefined, opacity: 1 }));
+        const updateEdges = edgesData.map(e => ({ id: e.id, color: e.color, opacity: 1 }));
+        nodes.update(updateNodes);
+        edges.update(updateEdges);
+    }
+
+    function highlightPath(patientId) {
+        resetHighlight();
+        if (patientId === 'all') return;
+
+        const path = patientPaths[patientId];
+        const updateNodes = nodesData.map(n => {
+            if (path.nodes.includes(n.id)) {
+                return { id: n.id, opacity: 1, borderWidth: 4, color: { border: '#f1c40f' } };
+            } else {
+                return { id: n.id, opacity: 0.2 };
+            }
+        });
+
+        const updateEdges = edgesData.map(e => {
+            const isPathEdge = path.edges.some(pe => pe.from === e.from && pe.to === e.to);
+            if (isPathEdge) {
+                return { id: e.id, opacity: 1, color: { color: '#f39c12' } };
+            } else {
+                return { id: e.id, opacity: 0.1 };
+            }
+        });
+
+        nodes.update(updateNodes);
+        edges.update(updateEdges);
+    }
+
+    document.getElementById('patient-select').addEventListener('change', (e) => {
+        highlightPath(e.target.value);
+    });
+
+    let outliersHighlighted = false;
+    document.getElementById('outlier-toggle').addEventListener('click', (e) => {
+        outliersHighlighted = !outliersHighlighted;
+        if (outliersHighlighted) {
+            e.target.innerText = "Reset View";
+            e.target.style.backgroundColor = "#7f8c8d";
+            
+            const updateNodes = nodesData.map(n => {
+                if (outlierNodes.includes(n.id)) return { id: n.id, opacity: 1, borderWidth: 4 };
+                return { id: n.id, opacity: 0.2 };
+            });
+            nodes.update(updateNodes);
+            edges.update(edgesData.map(e => ({ id: e.id, opacity: e.dashes ? 1 : 0.1 })));
+        } else {
+            e.target.innerText = "Highlight Outliers";
+            e.target.style.backgroundColor = "#e74c3c";
+            document.getElementById('patient-select').value = 'all';
+            resetHighlight();
+        }
+    });
+</script>
+</body>
+</html>
