@@ -4,7 +4,8 @@
 
 # Module AP — The Avinash Principle: Critical Hub-Node Navigation
 
-# [Check details on blog](https://classworkdecjan.blogspot.com/2026/07/the-avinash-principle-critical-hub-node.html)
+# [Check details on blog](https://classworkdecjan.blogspot.com/2026/07/the-avinash-principle-critical-hub-node.html) The Avinash Principle: Critical Hub-Node Navigation
+
 
 
 *Vibe Rounds Prompt Modules — Module AP.* *Coined and developed by Dr. Avinash Kumar Gupta · Vibe Rounds, June 2026* *#VibeRounds — A Socratic AI Paradigm for Clinical Medicine*
