@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Rounds · PaJR Analytics — 5yo Female, Type 1 Diabetes, West Bengal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --primary:#0891B2;
+  --primary-dark:#0B4A57;
+  --accent-warm:#C2410C;
+  --accent-good:#0D9488;
+  --watch:#B45309;
+  --paper:#F0F7F8;
+  --panel:#FFFFFF;
+  --border:#D6E4E7;
+  --muted:#4B6168;
+  --ink:#0B2226;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.5;
+}
+h1,h2,h3,h4{font-family:'Fraunces',serif; margin:0 0 .4em 0; color:var(--ink);}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:var(--primary-dark);}
+
+header.top{
+  background:linear-gradient(135deg,var(--primary-dark),#0891B2 120%);
+  color:#EAF7F9;
+  padding:2.2rem 1.5rem 2.6rem;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1rem;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.85;
+  margin-bottom:.6rem;
+}
+header.top h1{color:#fff; font-size:1.9rem; max-width:820px;}
+header.top p{max-width:760px; color:#D8F0F3; font-size:.98rem;}
+.chips{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem;}
+.chip{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.25);
+  padding:.35rem .7rem;
+  border-radius:999px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.75rem;
+}
+
+main{max-width:1180px;margin:0 auto; padding:2rem 1rem 3rem;}
+section{margin-bottom:3rem;}
+.section-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  border-bottom:2px solid var(--border);
+  padding-bottom:.5rem; margin-bottom:1.2rem; gap:1rem; flex-wrap:wrap;
+}
+.section-head .idx{
+  font-family:'IBM Plex Mono',monospace; color:var(--primary); font-weight:600; margin-right:.6rem;
+}
+.section-head h2{font-size:1.3rem; display:inline;}
+.section-head .desc{font-family:'IBM Plex Mono',monospace; font-size:.78rem; color:var(--muted);}
+
+/* KPI grid */
+.kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem;}
+.kpi{
+  background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--border);
+  border-radius:8px; padding:1rem 1.1rem;
+}
+.kpi.flag{border-left-color:var(--accent-warm);}
+.kpi.good{border-left-color:var(--accent-good);}
+.kpi.watch{border-left-color:var(--watch);}
+.kpi .label{font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
+.kpi .value{font-family:'Fraunces',serif; font-size:1.7rem; font-weight:600; margin:.25rem 0;}
+.kpi .value small{font-size:.9rem; font-weight:400; color:var(--muted); font-family:'Inter',sans-serif;}
+.kpi .foot{font-size:.8rem; color:var(--muted);}
+
+/* panels */
+.panel{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1.3rem;}
+.two-col{display:grid; grid-template-columns:2fr 1fr; gap:1.2rem;}
+.tabs{display:flex; gap:.4rem; margin-bottom:.8rem; flex-wrap:wrap;}
+.tab{
+  font-family:'IBM Plex Mono',monospace; font-size:.75rem; padding:.35rem .7rem;
+  border:1px solid var(--border); background:#fff; border-radius:6px; cursor:pointer; color:var(--muted);
+}
+.tab.active{background:var(--primary); color:#fff; border-color:var(--primary);}
+.legend{display:flex; gap:1rem; flex-wrap:wrap; margin-top:.6rem; font-size:.8rem; color:var(--muted);}
+.legend span.dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:.35rem; vertical-align:middle;}
+table.mini{width:100%; border-collapse:collapse; font-size:.82rem; margin-top:.6rem;}
+table.mini th, table.mini td{padding:.4rem .5rem; border-bottom:1px solid var(--border); text-align:left;}
+table.mini th{font-family:'IBM Plex Mono',monospace; font-size:.7rem; color:var(--muted); text-transform:uppercase;}
+
+/* timeline */
+.timeline{position:relative; padding-left:1.6rem; border-left:2px solid var(--border);}
+.tl-entry{position:relative; margin-bottom:1.4rem;}
+.tl-entry::before{
+  content:''; position:absolute; left:-2.05rem; top:.3rem; width:11px; height:11px; border-radius:50%;
+  background:var(--primary); border:2px solid #fff; box-shadow:0 0 0 2px var(--primary);
+}
+.tl-entry.milestone::before{background:var(--accent-warm); box-shadow:0 0 0 2px var(--accent-warm);}
+.tl-entry.data::before{background:#1D4ED8; box-shadow:0 0 0 2px #1D4ED8;}
+.tl-date{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--muted);}
+.tl-title{font-weight:600; margin:.15rem 0 .25rem;}
+.tl-desc{font-size:.9rem; color:var(--ink);}
+
+/* insight cards */
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;}
+.insight{background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--border); border-radius:8px; padding:1rem;}
+.insight.strength{border-left-color:var(--accent-good);}
+.insight.risk{border-left-color:var(--accent-warm);}
+.insight h4{font-size:.95rem; margin-bottom:.35rem;}
+.insight p{font-size:.85rem; margin:.3rem 0;}
+.insight .src{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--muted);}
+.tag{font-family:'IBM Plex Mono',monospace; font-size:.65rem; text-transform:uppercase; padding:.1rem .4rem; border-radius:4px; margin-right:.4rem;}
+.tag.strength{background:#E5F5F1; color:var(--accent-good);}
+.tag.risk{background:#FCEDE6; color:var(--accent-warm);}
+.tag.neutral{background:#EEF3F4; color:var(--muted);}
+
+/* stakeholders */
+.stake-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1rem;}
+.stake{background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:1rem;}
+.stake .role{font-family:'IBM Plex Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; color:var(--primary);}
+.stake .name{font-weight:600; margin:.15rem 0 .35rem;}
+.stake .desc{font-size:.82rem; color:var(--muted); margin-bottom:.5rem;}
+.bar-bg{background:#EDF3F4; border-radius:4px; height:8px; overflow:hidden;}
+.bar-fill{background:var(--primary); height:100%;}
+
+/* soap */
+.soap-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;}
+.soap-block h3{font-size:1rem; color:var(--primary-dark);}
+.soap-block ul{padding-left:1.1rem; font-size:.88rem;}
+.soap-block p{font-size:.88rem;}
+
+/* audience notes */
+.audience{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1.2rem 1.4rem; margin-bottom:1rem;}
+.audience h3{font-size:1.05rem;}
+.audience ul{font-size:.9rem; padding-left:1.2rem;}
+.audience p{font-size:.9rem;}
+
+/* copy prompt */
+.prompt-box{position:relative; background:#0B2226; color:#D8F0F3; border-radius:8px; padding:1rem 1.2rem; overflow-x:auto;}
+.prompt-box pre{margin:0; font-family:'IBM Plex Mono',monospace; font-size:.8rem; white-space:pre-wrap;}
+.copy-btn{
+  position:absolute; top:.7rem; right:.7rem; background:var(--primary); color:#fff; border:none;
+  padding:.4rem .8rem; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:.75rem; cursor:pointer;
+}
+
+footer{
+  background:var(--primary-dark); color:#D8F0F3; padding:1.6rem 1.5rem; font-size:.82rem;
+}
+footer .wrap p{margin:.4rem 0;}
+footer a{color:#BEF0F7;}
+
+@media (max-width:900px){
+  .two-col, .grid3, .soap-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Vibe Rounds · PaJR Analytics — Patient Journey Record</div>
+    <h1>5-year-old Female — Type 1 Diabetes Mellitus, Insulin Dosing Volatility &amp; Recurrent Hypo/Hyperglycemia, West Bengal</h1>
+    <p>A multi-stakeholder PaJR (Patient Journey Record) group tracking a young child with Type 1 Diabetes from age 3 (diagnosis) through age 5, combining daily self-reported glucose/insulin/food logs from a patient advocate (father) with input from remote physicians, community volunteers, and several AI language-model assistants used for pattern analysis. The dominant data stream is dense capillary glucose + basal/bolus insulin telemetry, layered with recurring debate over carbohydrate-counting technique, basal (Tresiba) dosing philosophy, and access to continuous glucose monitoring.</p>
+    <div class="chips">
+      <span class="chip">Diagnosed: age 3, 10 Mar 2024</span>
+      <span class="chip">Group created: 30 Apr 2025</span>
+      <span class="chip">Log analyzed: Dec 2025 – Jul 2026 (~8 months dense)</span>
+      <span class="chip">~3,500+ messages</span>
+      <span class="chip">45+ participants (family, physicians, students, 4 AI systems)</span>
+      <span class="chip">Regimen: Tresiba (basal) + Lispro (bolus), MDI</span>
+      <span class="chip">No CGM in use — capillary strips only</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 KPI -->
+<section id="s1">
+  <div class="section-head">
+    <div><span class="idx">01</span><h2 style="display:inline">Case snapshot</h2></div>
+    <div class="desc">key figures computed from the daily glucose/insulin log</div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi flag">
+      <div class="label">Documented hypo episodes</div>
+      <div class="value">40+ <small>≤70 mg/dL</small></div>
+      <div class="foot">Dec 2025–Jul 2026; several &lt;50 mg/dL, majority asymptomatic</div>
+    </div>
+    <div class="kpi flag">
+      <div class="label">Documented hyper spikes</div>
+      <div class="value">30+ <small>&gt;300 mg/dL</small></div>
+      <div class="foot">Peaks recorded at 572, 595, 493, 479, 469 mg/dL</div>
+    </div>
+    <div class="kpi watch">
+      <div class="label">Tresiba (basal) range</div>
+      <div class="value">3–5 <small>units/day</small></div>
+      <div class="foot">Adjusted reactively ~15+ times across the log period</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Lispro (bolus) range</div>
+      <div class="value">0.5–7 <small>units/dose</small></div>
+      <div class="foot">Meal + correction combined; frequently given at/after meal start</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">HbA1c trajectory</div>
+      <div class="value">8.3 → 6.6 <small>%</small></div>
+      <div class="foot">Diagnosis (Mar 2024) → 3-month follow-up (Jun 2024, honeymoon phase); no confirmed lab HbA1c found for 2025</div>
+    </div>
+    <div class="kpi watch">
+      <div class="label">Est. GMI, Jan 2026</div>
+      <div class="value">~7.8 <small>%</small></div>
+      <div class="foot">Derived from average glucose, not a lab draw — flagged as a data gap</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Growth (last recorded)</div>
+      <div class="value">18 <small>kg / 42 in</small></div>
+      <div class="foot">Age ~5y2m; earlier chart at ~3y: 94 cm / 12 kg (50th / 15–25th percentile)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 telemetry -->
+<section id="s2">
+  <div class="section-head">
+    <div><span class="idx">02</span><h2 style="display:inline">Primary telemetry — glucose &amp; insulin across representative days</h2></div>
+    <div class="desc">hand-drawn inline SVG · capillary readings, mg/dL</div>
+  </div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="tabs" id="dayTabs"></div>
+      <svg id="chart" viewBox="0 0 640 300" width="100%" height="300"></svg>
+      <div class="legend">
+        <span><span class="dot" style="background:#0891B2"></span>Blood glucose (mg/dL)</span>
+        <span><span class="dot" style="background:#C2410C"></span>Lispro dose (bolus, units ×20 scale)</span>
+        <span><span class="dot" style="background:#B45309"></span>70 / 180 mg/dL target band (dashed)</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:1rem">Recurring time-of-day pattern</h3>
+      <table class="mini">
+        <tr><th>Window</th><th>Typical event</th><th>Effect</th></tr>
+        <tr><td class="mono">7:45–9:45am</td><td>Uncovered nuts/milk/biscuit</td><td>+150–220 mg/dL by late morning</td></tr>
+        <tr><td class="mono">~1:30pm</td><td>Pre-lunch check + correction</td><td>Most variable reading of the day (60–595 range seen)</td></tr>
+        <tr><td class="mono">5:30–6:30pm</td><td>Uncovered fruit/curd/sweet snack</td><td>8:30pm reading frequently 200–470 mg/dL</td></tr>
+        <tr><td class="mono">8:30pm correction</td><td>Reactive Lispro for evening spike</td><td>Stacks with Tresiba → fasting swings next am</td></tr>
+      </table>
+      <p class="mono" style="font-size:.75rem;color:var(--muted);margin-top:.6rem;">Distribution (self-reported, log-wide estimate): ~30% readings in 70–180 mg/dL target band, ~15% below 70, remainder above 180 — consistent with the group's own "time in range" discussions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 timeline -->
+<section id="s3">
+  <div class="section-head">
+    <div><span class="idx">03</span><h2 style="display:inline">Care journey timeline</h2></div>
+    <div class="desc">selected turning points, Mar 2024 – Jul 2026</div>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- 04 insights -->
+<section id="s4">
+  <div class="section-head">
+    <div><span class="idx">04</span><h2 style="display:inline">Synthesized insights</h2></div>
+    <div class="desc">patterns surfaced across the log, not present in any single message</div>
+  </div>
+  <div class="grid3" id="insightGrid"></div>
+</section>
+
+<!-- 05 stakeholders -->
+<section id="s5">
+  <div class="section-head">
+    <div><span class="idx">05</span><h2 style="display:inline">Stakeholder engagement</h2></div>
+    <div class="desc">who is in the room, and what they contribute</div>
+  </div>
+  <div class="stake-grid" id="stakeGrid"></div>
+  <div class="audience" style="margin-top:1rem;">
+    <h3>What the mix teaches (educator note)</h3>
+    <p>This case is an unusually clear demonstration of a hybrid human–AI care team: a lay caregiver generating dense, high-quality primary data; a rotating panel of remote physicians providing periodic clinical steer; and multiple large language models providing on-demand pattern analysis of uneven reliability — including at least one instance of a fabricated literature citation, later caught and corrected by a participant. The stakeholder mix illustrates both the promise (24/7 responsive analysis, translation, citation-seeking) and the necessary guardrails (human verification, correction of AI over-claiming) of AI-augmented remote chronic disease management.</p>
+  </div>
+</section>
+
+<!-- 06 SOAP -->
+<section id="s6">
+  <div class="section-head">
+    <div><span class="idx">06</span><h2 style="display:inline">SOAP note</h2></div>
+    <div class="desc">compressed clinical summary as of latest log entry (late Jul 2026)</div>
+  </div>
+  <div class="panel soap-grid">
+    <div class="soap-block">
+      <h3>S — Subjective</h3>
+      <p>Patient advocate (father) reports the child is otherwise well between glycemic events — attending school, dancing, and playing normally. Two notable acute events: a fever/vomiting episode with markedly elevated glucose (raising concern for evolving DKA, resolved without hospitalization) and an episode of leg weakness during dance practice coinciding with a glucose of 44 mg/dL. Family describes recurring frustration with "yo-yoing" sugars despite meticulous logging, and financial constraint around continuous glucose monitoring.</p>
+    </div>
+    <div class="soap-block">
+      <h3>O — Objective</h3>
+      <ul>
+        <li>Capillary glucose readings across the log range from 39–595 mg/dL.</li>
+        <li>Current regimen: Tresiba 3–5U daily (variable), Lispro variable meal/correction dosing (0.5–7U).</li>
+        <li>Growth: 18 kg, 42 in at last measurement (~age 5).</li>
+        <li>HbA1c 8.3% at diagnosis, 6.6% at 3-month follow-up; no confirmed 2025 lab value in the log.</li>
+        <li>No CGM; monitoring is capillary strips, ~6–8×/day during intensive periods.</li>
+      </ul>
+    </div>
+    <div class="soap-block">
+      <h3>A — Assessment</h3>
+      <p>Type 1 diabetes mellitus with persistent glycemic variability driven primarily by (1) uncovered/underdosed carbohydrate snacks (milk, biscuits, fruit, evening sweets), (2) reactive rather than proactive bolus dosing with insulin "stacking," and (3) basal (Tresiba) dose changes made in response to bolus-driven highs/lows rather than true basal need — producing repeated Somogyi-pattern rebounds. Underlying insulin sensitivity appears high (observed correction factor often closer to 1 unit : 50–60 mg/dL than the family's working 1:70), consistent with young age and possible residual beta-cell activity. No confirmed severe DKA in the log period; the fever/vomiting episode is a documented near-miss for unaddressed sick-day ketosis.</p>
+    </div>
+    <div class="soap-block">
+      <h3>P — Plan</h3>
+      <ul>
+        <li>Structured carbohydrate-counting education for the family (DAFNE-equivalent), rather than further basal-dose changes, repeatedly identified as the highest-yield intervention.</li>
+        <li>Formalize a sick-day protocol (ketone checks, fluids, insulin-never-omitted rule) given the near-miss.</li>
+        <li>Pursue CGM access (cost-sharing, intermittent/diagnostic use, or scheme-based support) to replace retrospective pattern-guessing with real overnight data.</li>
+        <li>Re-anchor correction-dose math to an empirically re-derived insulin sensitivity factor rather than the family's current 1:70 assumption.</li>
+        <li>Continue face-to-face follow-up with the local treating physician in parallel with remote group review; avoid duplicating/contradicting in-person titration decisions.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 patient -->
+<section id="s7">
+  <div class="section-head"><div><span class="idx">07</span><h2 style="display:inline">Insight for the patient &amp; family</h2></div><div class="desc">plain language</div></div>
+  <div class="audience">
+    <p>You are doing something genuinely hard extremely well: logging almost every meal, dose, and reading for over two years is rare and valuable. The big swings you're seeing between very low and very high sugars aren't a sign you're failing — they're mostly coming from two fixable habits: (1) snacks like milk, biscuits, and fruit going in without any insulin, which lets sugar climb quietly before the next meal's dose, and (2) giving a big "correction" shot when sugar is very high, which can push it too low a few hours later and start the cycle again. The single change most likely to help is learning to count carbs for every snack, not just meals — even a small dose for the morning milk or the evening banana. It's also worth asking your care team about a continuous sugar sensor (CGM), even for a short trial period, since it would show you the overnight picture you can't currently see with finger-pricks. And please keep the sick-day rule in mind: even if she's not eating, she still needs her long-acting insulin — never skip it during a fever or vomiting.</p>
+  </div>
+</section>
+
+<!-- 08 local doctor -->
+<section id="s8">
+  <div class="section-head"><div><span class="idx">08</span><h2 style="display:inline">Insight for the local treating doctor</h2></div><div class="desc">clinically dense</div></div>
+  <div class="audience">
+    <p>Two-year longitudinal capillary log (finger-prick only, no CGM) shows extreme glycemic variability (range 39–595 mg/dL) that the remote group's pattern analysis attributes chiefly to unaddressed prandial dosing technique rather than basal insufficiency: repeated basal (Tresiba) dose increases made in response to post-hypoglycemic rebound highs have each been followed within 24–72h by a new hypoglycemic trough, consistent with over-basalization rather than a genuine rising basal requirement. Working insulin sensitivity factor used by the family (1 U : 70 mg/dL) appears to systematically overestimate correction needs; several isolated correction events in the log suggest an empiric ISF closer to 1:50–60. No CGM data exists to confirm nocturnal patterns (Somogyi vs. dawn phenomenon) — recommend CGM trial (even 1 sensor / 2–3 months, diagnostic use) if cost-prohibitive for continuous wear. One fever/vomiting episode with glucose 512–595 mg/dL was managed at home without ketone testing (no meter available) — worth confirming this did not represent unrecognized mild DKA and ensuring the family has ketone strips and a written sick-day protocol. No confirmed HbA1c value is documented in the log for calendar year 2025; recommend confirming interval labs are being drawn, not just estimated GMI from self-monitoring.</p>
+  </div>
+</section>
+
+<!-- 09 care manager -->
+<section id="s9">
+  <div class="section-head"><div><span class="idx">09</span><h2 style="display:inline">Insight for the care-manager / coordination team</h2></div><div class="desc">logistics &amp; coordination</div></div>
+  <div class="audience">
+    <p>Adherence to logging is excellent and should be preserved as-is — do not add reporting burden. The main coordination gap is between the frequent remote group discussion and comparatively infrequent in-person visits with the local doctor; ensure any dose-strategy changes discussed remotely (e.g. carb-counting approach, basal timing) are explicitly relayed to and confirmed by the treating physician before being acted on, to avoid the family receiving conflicting instructions from multiple sources. CGM affordability is a recurring, unresolved logistics item — worth actively researching state-level (West Bengal T1DM integrated care model) or NGO/UNICEF-linked support schemes rather than leaving this as an open question across months. Multiple different AI assistants have been used inconsistently for analysis within the same thread, with at least one fabricated citation identified — recommend standardizing on a single, clearly-labeled analytic tool with a "verify before acting" norm attached to every AI-generated recommendation.</p>
+  </div>
+</section>
+
+<!-- 10 learners -->
+<section id="s10">
+  <div class="section-head"><div><span class="idx">10</span><h2 style="display:inline">Insight for case-based learners</h2></div><div class="desc">teaching points &amp; Socratic prompts</div></div>
+  <div class="audience">
+    <ul>
+      <li><strong>Pattern-recognition skill exercised:</strong> distinguishing a true basal insulin deficiency from a bolus-driven Somogyi rebound — the case shows this being mistaken repeatedly, with basal dose changed in the wrong direction because the "input" (a bolus/snack timing error) and "output" (fasting glucose) were separated by many hours.</li>
+      <li><strong>Easy to miss on first read:</strong> the log's own retrospective realization that "uncovered nuts and milk" had likely always caused post-breakfast glucose in the 300–400 range, but this was never checked with a timed reading until very late in the case — a reminder that absence of a measurement is not absence of an effect.</li>
+    </ul>
+    <p><strong>Socratic questions for discussion:</strong></p>
+    <ul>
+      <li>If a patient's fasting glucose is high the morning after a very high pre-bed reading, how would you distinguish "the basal dose is too low" from "the basal dose is too high and rebounding"? What single additional data point would settle it fastest?</li>
+      <li>Given the same insulin regimen produced wildly different outcomes depending only on snack coverage, what does that suggest about where scarce educational resources (a single course, a single clinic visit) should be spent first in a resource-limited setting?</li>
+      <li>Several AI-generated analyses in this case were clinically sound, but at least one fabricated a supporting citation when asked to justify a claim. What workflow would let a care team benefit from AI pattern-spotting while reliably catching that kind of error?</li>
+    </ul>
+  </div>
+</section>
+
+<!-- make your own -->
+<section id="make-your-own">
+  <div class="section-head"><div><h2 style="display:inline">Make your own</h2></div><div class="desc">generate a dashboard for another PaJR case</div></div>
+  <p>Paste the prompt below into an LLM (Claude, ChatGPT, etc.), then replace the bracketed placeholder with your own case — a link, pasted WhatsApp export text, or an attached <span class="mono">.txt</span>/<span class="mono">.csv</span> file.</p>
+  <div class="prompt-box">
+    <button class="copy-btn" id="copyBtn">Copy prompt</button>
+    <pre id="promptText">Using the Vibe Rounds – PaJR Analytics spec at
+https://avi33tbtt.github.io/Prompts/Vibe_Rounds_PaJR_Analytics.html, build a
+self-contained HTML dashboard for this case:
+
+[paste a link, OR pasted WhatsApp export text, OR attach a .txt/.csv file here]</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Vibe Rounds · PaJR Analytics — generated from a pasted WhatsApp group export (PaJR case thread, Dec 2025–Jul 2026) · identifiers redacted to role labels · for learning and care-team review, not a diagnostic instrument. Vibe Rounds is a Socratic, AI-augmented clinical-reasoning learning tool — outputs require independent clinical verification and are not a substitute for clinical judgment. Part of the <a href="https://avi33tbtt.github.io/">Vibe Rounds project</a>.</p>
+    <p>⚠️ <strong>This entire dashboard was generated by a large language model</strong>, which read and synthesized de-identified chat text from the source WhatsApp export. It was not produced or verified by a clinician. The LLM may have misread, mis-dated, mistranslated, or misinterpreted entries, and its pattern claims (correlations, trends, "insights") reflect statistical association in a small, self-reported dataset — not confirmed causation. All values, dates, and interpretations should be independently checked against the original log before any clinical, educational, or personal decision is based on them.</p>
+  </div>
+</footer>
+
+<script>
+// ---- Data: representative days (time, glucose mg/dL, lispro units at that point) ----
+const days = {
+  "8 Jan": [
+    {t:"7:45",bg:53,ins:0},{t:"9:55",bg:null,ins:5.5},{t:"1:45",bg:243,ins:4},
+    {t:"3:45",bg:157,ins:0},{t:"6:00",bg:null,ins:0},{t:"9:30",bg:111,ins:0.5}
+  ],
+  "24 Feb": [
+    {t:"7:30",bg:39,ins:0},{t:"1:30",bg:58,ins:0},{t:"8:30",bg:null,ins:0}
+  ],
+  "23 Apr": [
+    {t:"7:45",bg:207,ins:5.5},{t:"12:35",bg:44,ins:0},{t:"1:35",bg:212,ins:4}
+  ],
+  "3 May": [
+    {t:"7:45",bg:116,ins:0},{t:"1:30",bg:40,ins:0},{t:"2:15",bg:267,ins:2.5},{t:"8:30",bg:150,ins:1.5}
+  ],
+  "27 Jun": [
+    {t:"7:45",bg:198,ins:0},{t:"9:55",bg:389,ins:6},{t:"12:00",bg:194,ins:0},{t:"1:30",bg:106,ins:3},{t:"8:30",bg:142,ins:1}
+  ],
+  "10 Jul": [
+    {t:"7:45",bg:222,ins:0},{t:"10:55",bg:451,ins:6.5},{t:"1:30",bg:230,ins:4.5},{t:"8:30",bg:143,ins:1}
+  ]
+};
+
+const tabWrap = document.getElementById('dayTabs');
+Object.keys(days).forEach((k,i)=>{
+  const b=document.createElement('div');
+  b.className='tab'+(i===0?' active':'');
+  b.textContent=k;
+  b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');drawChart(k);};
+  tabWrap.appendChild(b);
+});
+
+function drawChart(key){
+  const data = days[key];
+  const svg = document.getElementById('chart');
+  const W=640,H=300,padL=45,padR=15,padT=15,padB=35;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const maxBG=600;
+  let s = `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#D6E4E7"/>`;
+  s += `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#D6E4E7"/>`;
+  // gridlines + y labels
+  for(let v=0; v<=maxBG; v+=100){
+    const y = H-padB - (v/maxBG)*plotH;
+    s += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#EDF3F4"/>`;
+    s += `<text x="${padL-8}" y="${y+4}" font-size="9" text-anchor="end" fill="#4B6168" font-family="IBM Plex Mono, monospace">${v}</text>`;
+  }
+  // threshold lines 70 and 180
+  [70,180].forEach(v=>{
+    const y = H-padB - (v/maxBG)*plotH;
+    s += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#B45309" stroke-dasharray="4,3"/>`;
+  });
+  const n = data.length;
+  const stepX = plotW/(n-1||1);
+  let pathPts=[];
+  data.forEach((d,i)=>{
+    const x = padL + i*stepX;
+    s += `<text x="${x}" y="${H-padB+16}" font-size="9" text-anchor="middle" fill="#4B6168" font-family="IBM Plex Mono, monospace">${d.t}</text>`;
+    if(d.bg!==null){
+      const y = H-padB - (Math.min(d.bg,maxBG)/maxBG)*plotH;
+      pathPts.push([x,y]);
+      s += `<circle cx="${x}" cy="${y}" r="4" fill="#0891B2"/>`;
+      s += `<text x="${x}" y="${y-8}" font-size="9" text-anchor="middle" fill="#0B2226" font-family="IBM Plex Mono, monospace">${d.bg}</text>`;
+    }
+    if(d.ins>0){
+      const y = H-padB - Math.min(d.ins*20,plotH);
+      s += `<rect x="${x-6}" y="${y}" width="12" height="${(H-padB)-y}" fill="#C2410C" opacity="0.55"/>`;
+      s += `<text x="${x}" y="${y-4}" font-size="8" text-anchor="middle" fill="#C2410C" font-family="IBM Plex Mono, monospace">${d.ins}u</text>`;
+    }
+  });
+  if(pathPts.length>1){
+    s = `<polyline points="${pathPts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#0891B2" stroke-width="2"/>` + s;
+  }
+  svg.innerHTML = s;
+}
+drawChart(Object.keys(days)[0]);
+
+// ---- Timeline ----
+const timelineData = [
+  {date:"10 Mar 2024", type:"milestone", title:"Diagnosis of Type 1 Diabetes, age 3", desc:"HbA1c 8.3% at presentation. Initiated on basal-bolus therapy (initially Glargine/Lantus-family basal, later switched to Tresiba)."},
+  {date:"25 Jun 2024", type:"data", title:"3-month follow-up HbA1c", desc:"HbA1c improved to 6.6%, consistent with a honeymoon-phase partial remission."},
+  {date:"30 Apr 2025", type:"milestone", title:"PaJR support group created", desc:"Multi-stakeholder WhatsApp group formed to provide remote physician and AI-assisted review of the family's daily logs."},
+  {date:"Dec 2025–Jan 2026", type:"data", title:"Intensive daily logging begins", desc:"Near-daily capillary glucose, insulin dose and meal logging; recurring debate over Tresiba dose direction and correction-dose formula (target 90 vs 120 mg/dL)."},
+  {date:"Feb 2026", type:"milestone", title:"Severe hypoglycemia cluster (39–48 mg/dL)", desc:"Repeated fasting lows prompt basal dose reduction from 5U to 3U; identified as breaking a repeating Somogyi cycle."},
+  {date:"Apr 2026", type:"milestone", title:"Near-miss sick day / possible early DKA", desc:"Fever and vomiting with glucose readings 512–595 mg/dL managed at home without ketone testing; group flags risk of unrecognized mild DKA and reinforces sick-day insulin rules."},
+  {date:"30 Apr 2026", type:"milestone", title:"5th birthday", desc:"Group renames case from '4 year old' to '5 year old'; basal requirement begins drifting upward, consistent with growth."},
+  {date:"Jun–Jul 2026", type:"data", title:"Carb-counting root cause identified", desc:"Repeated analyses conclude the dominant driver of variability is uncovered snacks and reactive (not proactive) bolus timing, not the insulin choice itself; structured carb-counting education (DAFNE-equivalent) recommended as the highest-yield next step."}
+];
+const tlWrap = document.getElementById('timeline');
+timelineData.forEach(e=>{
+  const div=document.createElement('div');
+  div.className='tl-entry '+e.type;
+  div.innerHTML = `<div class="tl-date">${e.date}</div><div class="tl-title">${e.title}</div><div class="tl-desc">${e.desc}</div>`;
+  tlWrap.appendChild(div);
+});
+
+// ---- Insight cards ----
+const insights = [
+  {tag:"strength", h:"Exceptional caregiver data discipline", p:"Near-daily, timestamped logging of glucose, insulin, and meals sustained for over two years is rare and gave the remote team enough signal to detect patterns a single clinic visit never could.", src:"source: log-wide, Dec 2025–Jul 2026"},
+  {tag:"risk", h:"Uncovered snacks drive most spikes", p:"Morning milk/nuts/biscuits and evening fruit/curd/sweets are repeatedly given without any bolus insulin, each time producing a 150–250+ mg/dL rise within 2 hours.", src:"source: e.g. 26–29 Jun 2026 exchange re: nuts+milk"},
+  {tag:"neutral", h:"HbA1c data gap for 2025", p:"No confirmed laboratory HbA1c value could be located in the log for the full calendar year 2025, despite extensive self-monitoring data; only an estimated GMI is available for early 2026.", src:"source: 21 Jan 2026 database search exchange"},
+  {tag:"risk", h:"Reactive basal titration amplifies swings", p:"On at least three occasions, Tresiba was increased in direct response to a high evening/fasting reading that was itself a rebound from an earlier hypoglycemic event, each time producing a new, more severe hypo 24–72 hours later.", src:"source: mid-May 2026 3U→4U trial, discussed 18–20 May"},
+  {tag:"strength", h:"Family and team self-correct in real time", p:"Both the human team and the AI assistant caught and corrected their own errors within the thread — e.g., a mistaken Tresiba dose figure, and a fabricated literature citation that was challenged and withdrawn.", src:"source: 24 Jun 2026 citation-authorship correction"},
+  {tag:"risk", h:"Working correction factor likely too conservative", p:"The family's insulin sensitivity assumption (1 unit lowers glucose ~70 mg/dL) is contradicted by several isolated correction events suggesting a true factor closer to 1:48–60, meaning corrections are often undersized for large highs and oversized for small ones.", src:"source: 5–6 Jan 2026 and 20 May 2026 ISF discussions"},
+  {tag:"neutral", h:"No CGM data — nocturnal patterns unconfirmed", p:"All Somogyi-effect vs. dawn-phenomenon reasoning in the log is inferential, based on 2-point (bedtime/fasting) capillary checks; cost (~₹9,000–11,000/month) is cited as the barrier to continuous monitoring.", src:"source: 2–3 Mar 2026 CGM cost-comparison exchange"},
+  {tag:"strength", h:"Diet remains culturally appropriate and varied", p:"Meals retain a consistent, high-fiber, vegetable-forward regional pattern (rice, pulses, seasonal gourds) throughout, with the AI-assisted review explicitly avoiding recommending replacement of culturally significant foods.", src:"source: 27 Dec 2025 fish/diet discussion"},
+  {tag:"risk", h:"One documented near-miss for unrecognized ketosis", p:"A fever/vomiting episode with glucose 512–595 mg/dL was treated at home with correction insulin alone; no ketone meter was available, and the group's advice to seek urgent local review was reportedly not acted on before symptoms resolved spontaneously.", src:"source: 14 Jan 2026 fever/vomiting episode"}
+];
+const grid = document.getElementById('insightGrid');
+insights.forEach(i=>{
+  const d=document.createElement('div');
+  d.className='insight '+i.tag;
+  d.innerHTML = `<span class="tag ${i.tag}">${i.tag}</span><h4>${i.h}</h4><p>${i.p}</p><div class="src">${i.src}</div>`;
+  grid.appendChild(d);
+});
+
+// ---- Stakeholders ----
+const stakeholders = [
+  {role:"Patient Advocate (Participant 1)", name:"Father / primary caregiver", desc:"Sole daily logger of glucose, insulin doses, meals, and symptoms; primary decision-maker on day-to-day dosing.", share:38},
+  {role:"Care Coordinator (Participant 2)", name:"Remote physician-academic", desc:"Drives most pattern-recognition questions to the AI assistant and coordinates the group's clinical review cadence.", share:22},
+  {role:"Remote Physician (Participant 7)", name:"Global consultant", desc:"Provides periodic dose-direction opinions (e.g. Tresiba timing) and sourcing of structured-education programs.", share:9},
+  {role:"Treating Physician", name:"Local pediatrician (in-person)", desc:"Sees the child face-to-face; sets fixed-dose prescriptions periodically reconciled with the remote group's variable-dose approach.", share:2},
+  {role:"AI Analyst (Participant 13)", name:"Primary LLM assistant", desc:"On-demand retrospective glucose/insulin pattern analysis, literature citation, and translation (English/Bengali).", share:16},
+  {role:"AI Analyst (Participant 6)", name:"Secondary LLM (web-search enabled)", desc:"Provides parallel clinical explanations and CGM/cost research; occasionally duplicative of Participant 13.", share:7},
+  {role:"AI Chat Companion (Participant 5)", name:"Lightweight conversational bot", desc:"Shorter, more casual responses; noted by the group as less rigorous than the other two AI tools.", share:3},
+  {role:"Community volunteers / students", name:"Participants 3, 9–12, 17, and others", desc:"Contribute literature checks, translation, deidentification review, and case-report archiving.", share:3}
+];
+const sg = document.getElementById('stakeGrid');
+stakeholders.forEach(s=>{
+  const d=document.createElement('div');
+  d.className='stake';
+  d.innerHTML = `<div class="role">${s.role}</div><div class="name">${s.name}</div><div class="desc">${s.desc}</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${s.share*2.2}%"></div></div>`;
+  sg.appendChild(d);
+});
+
+// ---- Copy prompt ----
+document.getElementById('copyBtn').addEventListener('click', function(){
+  const text = document.getElementById('promptText').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    this.textContent='Copied ✓';
+    setTimeout(()=>{this.textContent='Copy prompt';},1800);
+  });
+});
+</script>
+</body>
+</html>
