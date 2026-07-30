@@ -186,6 +186,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module SDM — Shared Decision-Making Query Generator](Module-SDM-Shared-Decision-Making-Query-Generator.md) | Module SDM — Shared Decision-Making Query Generator |
 | -- | [Module EBM — Case → Critical Appraisal Query Generator](ebm-case-query-generator.md) | Module EBM — Case → Critical Appraisal Query Generator |
 | -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
+| -- | [Module RPG — Research ↔ Clinical Practice Gap Finder](Module-RPG-Research-Clinical-Practice-Gap-Finder.md) | Module RPG — Research ↔ Clinical Practice Gap Finder |
+| -- | [Module VIZ — Unstructured Health-Log Parsing & Visualization](Module-VIZ-Unstructured-Data-Parsing-and-Visualization.md) | Module VIZ — Unstructured Health-Log Parsing & Visualization |
 
 
 
