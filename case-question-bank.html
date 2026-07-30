@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Case Question Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --line:#DCE7EA;
+    --line-soft:#E9F1F3;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-soft:#E3F4F8;
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --muted:#5B7480;
+    --tab-inactive:#EEF4F6;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+
+  /* Theme: Minimalist */
+  html[data-theme="minimalist"]{
+    --paper:#FFFFFF; --card:#FFFFFF; --ink:#161616; --line:#E4E4E4; --line-soft:#F0F0F0;
+    --accent:#161616; --accent-dark:#000000; --accent-soft:#F2F2F2;
+    --alert:#B3261E; --alert-soft:#F8E7E6; --muted:#757575; --tab-inactive:#F2F2F2;
+    --radius:3px; --body-font:'Inter',sans-serif;
+  }
+
+  /* Theme: Terminal */
+  html[data-theme="terminal"]{
+    --paper:#000000; --card:#0A0A0A; --ink:#FFB238; --line:#3A2A00; --line-soft:#231A00;
+    --accent:#FFB238; --accent-dark:#FFCB6B; --accent-soft:#1C1400;
+    --alert:#FF4D3D; --alert-soft:#2B0C08; --muted:#9C7A32; --tab-inactive:#141414;
+    --radius:2px; --body-font:'IBM Plex Mono',monospace;
+  }
+  html[data-theme="terminal"] .mod-pill{border-color:var(--line);}
+  html[data-theme="terminal"] .gen-btn{color:#000;}
+
+  html{transition:background .15s ease;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink); font-family:var(--body-font);
+    font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+    transition:background .15s ease,color .15s ease,font-family .1s ease;
+  }
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* header */
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:18px;margin-bottom:28px;flex-wrap:wrap;gap:10px;
+    border-bottom:1px solid var(--line);
+  }
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{font-family:var(--body-font);font-weight:800;font-size:22px;margin:0;letter-spacing:-0.02em;color:var(--ink);}
+  header.top .rx{
+    font-family:var(--body-font);font-weight:600;font-size:11.5px;color:#fff;
+    background:var(--accent);border-radius:20px;padding:4px 11px;letter-spacing:.01em;
+  }
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-family:var(--body-font);font-weight:500;margin-top:2px;}
+  header.top .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .theme-select{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--tab-inactive);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--body-font);font-weight:600;font-size:12px;
+    border-radius:999px;padding:6px 30px 6px 12px;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%235B7480' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:10px;
+  }
+  .theme-select:hover{border-color:var(--accent);}
+  .top-links{display:flex;gap:8px;font-family:var(--body-font);}
+  .top-links a{
+    display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--accent-dark);
+    background:var(--accent-soft);border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none;
+  }
+  .top-links a:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  html[data-theme="terminal"] .top-links a:hover{color:#000;}
+
+  .banner{
+    font-size:12.5px; color:var(--alert); background:var(--alert-soft);
+    border:1px solid var(--line); border-radius:var(--radius); padding:10px 14px;
+    margin-bottom:24px; line-height:1.5;
+  }
+  .banner strong{color:var(--ink);}
+
+  /* steps */
+  .step{margin-bottom:26px;}
+  .step-label{
+    font-family:var(--body-font);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px;
+  }
+  .step-label .num{
+    width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700;
+  }
+  html[data-theme="terminal"] .step-label .num{color:#000;}
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 22px; box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+  }
+
+  textarea{
+    width:100%; font-family:var(--body-font); font-size:14px; background:var(--card);
+    border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px; color:var(--ink);
+    resize:vertical; min-height:100px; line-height:1.5;
+  }
+  textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:6px;font-weight:500;}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  .gen-btn{
+    margin-top:16px;background:var(--accent);color:#fff;border:none;
+    padding:12px 20px;font-family:var(--body-font);font-weight:700;font-size:13px;
+    cursor:pointer;border-radius:999px;letter-spacing:.01em;
+  }
+  .gen-btn:hover{background:var(--accent-dark);}
+  .gen-btn:disabled{background:var(--tab-inactive);color:var(--muted);cursor:not-allowed;}
+
+  #results{display:none;}
+  .role-tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;text-transform:uppercase;
+    letter-spacing:.06em;padding:4px 11px;border-radius:999px;margin-bottom:16px;
+    background:var(--accent-soft);color:var(--accent-dark);border:1px solid var(--line);
+  }
+  .case-echo{font-size:13px;color:var(--muted);margin:-6px 0 18px;}
+  .case-echo em{color:var(--ink);}
+
+  .question-card{
+    border:1px solid var(--line-soft); border-left:3px solid var(--accent);
+    border-radius:var(--radius); padding:16px 18px; margin-bottom:16px; background:var(--card);
+  }
+  .question-card h3{font-size:16px;margin:0 0 6px;font-weight:700;}
+  .question-card .why{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.5;}
+
+  .modeltabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+  .modeltab{
+    font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    padding:4px 10px;background:var(--tab-inactive);color:var(--muted);border-radius:999px;
+  }
+
+  .chain-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:8px 0;}
+  .mod-pill{
+    font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;
+    background:var(--accent-soft);white-space:nowrap;
+  }
+  .mod-pill a{color:var(--accent-dark);text-decoration:none;font-weight:600;}
+  .mod-pill a:hover{text-decoration:underline;}
+  .arrow{color:var(--muted);font-size:13px;}
+
+  .tree{font-family:var(--mono);font-size:12.5px;line-height:1.95;margin-top:10px;white-space:pre-wrap;background:var(--paper);border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;}
+  .tree .root{font-weight:700;color:var(--ink);}
+  .tree a{color:var(--accent-dark);text-decoration:none;}
+  .tree a:hover{text-decoration:underline;}
+
+  .yield{
+    font-size:12.5px;background:var(--tab-inactive);border-radius:var(--radius);
+    padding:9px 12px;margin-top:10px;color:var(--ink);
+  }
+  .yield strong{color:var(--accent-dark);}
+
+  .ratings{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0;}
+  .rating-pill{
+    font-family:var(--mono);font-size:10.5px;display:inline-flex;align-items:center;gap:4px;
+    background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:var(--muted);
+  }
+  .rating-pill b{color:var(--ink);font-weight:700;}
+  .rating-dots{letter-spacing:1px;color:var(--accent-dark);}
+
+  .question-card summary{cursor:pointer;list-style:none;}
+  .question-card summary::-webkit-details-marker{display:none;}
+  .question-card summary h3{display:inline;}
+  .q-summary-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .q-caret{color:var(--muted);font-size:12px;flex-shrink:0;margin-top:3px;transition:transform .15s;}
+  .question-card[open] .q-caret{transform:rotate(90deg);}
+  .q-body{margin-top:12px;}
+
+  .copy-btn{
+    font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.03em;
+    background:var(--card);border:1px solid var(--line);color:var(--muted);padding:5px 12px;
+    cursor:pointer;margin-top:10px;border-radius:999px;
+  }
+  .copy-btn:hover{border-color:var(--accent);color:var(--accent-dark);}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--muted);line-height:1.6;}
+  footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div>
+        <h1>Case Question Bank</h1>
+        <div class="tagline">VibeRounds · Clinical Cognition OS · exhaustive module-mapping companion</div>
+      </div>
+      <span class="rx">CCOS</span>
+    </div>
+    <div class="top-right">
+      <div class="top-links">
+        <a href="https://avi33tbtt.github.io/" target="_blank">🏠 Project website</a>
+        <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank">🔗 LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner">
+    <strong>Learning aid only, not a clinical tool.</strong> Every module referenced is a prompt-based
+    reasoning exercise from the VibeRounds Clinical Cognition OS — outputs are learning observations,
+    not clinical decisions, and require independent clinician verification. Use only de-identified,
+    consented case material.
+  </div>
+
+  <div class="step">
+    <div class="step-label"><span class="num">1</span> Case under review</div>
+    <div class="card">
+      <label for="caseText">Paste the case (or a summary of it)</label>
+      <textarea id="caseText" placeholder="e.g. 62F, 3 days of worsening dyspnea and bilateral leg swelling...">62F, 3 days of worsening dyspnea and bilateral leg swelling. History of hypertension, no known cardiac disease. O2 sat 91% on room air, JVP raised, bibasal crackles, pitting oedema to the knees.</textarea>
+      <div class="hint">Dummy case shown — replace with your own de-identified case before use.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="card">
+      <button class="gen-btn" id="genBtn">⚡ Generate full question &amp; module map</button>
+    </div>
+  </div>
+
+  <div class="step" id="resultsStep">
+    <div class="step-label"><span class="num">2</span> Questions &amp; module map</div>
+    <div id="results"></div>
+  </div>
+
+  <footer>
+    Module library, framework, and pipeline concept: <a href="https://avi33tbtt.github.io/" target="_blank">VibeRounds — Dr. Avinash Kumar Gupta, June 2026</a>,
+    CC BY 4.0. Full module directory: <a href="https://avi33tbtt.github.io/Prompts/Prompts.html" target="_blank">Prompts.html</a>.
+    This question bank is a fixed, offline mapping layer built on top of that public module list — it does not call any external AI, and does not
+    modify or endorse the source material.
+  </footer>
+
+</div>
+
+<script>
+/* ---------- Module library (from VibeRounds Prompts.html directory) ---------- */
+const BASE = "https://avi33tbtt.github.io/Prompts/";
+const M = {
+  M00:{n:"Cold-Start Orientation", u:"Module-00-Cold-Start-Orientation.html"},
+  M01:{n:"Socratic Clinical Reasoning", u:"Module-01-Socratic-Clinical-Reasoning.html"},
+  M02:{n:"Patient-Advocate Case Documentation", u:"Module-02-Patient-Advocate-Case-Documentation.html"},
+  M03:{n:"Extended Patient-Advocate Monitoring", u:"Module-03-Extended-Patient-Advocate-Monitoring.html"},
+  M04:{n:"Peer-Level Ward Round Preparation", u:"Module-04-Peer-Level-Ward-Round-Preparation.html"},
+  M05:{n:"Real-Time Case Review & Data Audit", u:"Module-05-Real-Time-Case-Review-and-Data-Audit.html"},
+  M06:{n:"Registry-Level Analytics", u:"Module-06-Registry-Level-Analytics.html"},
+  M07:{n:"Longitudinal & Cross-Case Learning", u:"Module-07-Longitudinal-and-Cross-Case-Learning.html"},
+  M08:{n:"Socratic-Mode Design Specification", u:"Module-08-Socratic-Mode-Design-Specification.html"},
+  M09:{n:"N-of-1 Case Research Protocol", u:"Module-09-Case-Research_Protocol.html"},
+  M10:{n:"Journal & Article Reading", u:"Module-10-Medical-Journal-Article-Reading.html"},
+  M11:{n:"Patient Education Query Intelligence", u:"Module-11-Patient-Education-Query-Intelligence.html"},
+  M12:{n:"Differential Diagnosis Deepdive", u:"Module-12-Differential-Diagnosis-Deepdive.html"},
+  M13:{n:"Medication Reconciliation & Polypharmacy", u:"Module-13-Medication-Reconciliation-Polypharmacy-Audit.html"},
+  M14:{n:"Resource-Constrained Clinical Reasoning", u:"Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html"},
+  M15:{n:"Illness Script Acquisition", u:"Module-15-Illness-Script-Acquisition.html"},
+  M16:{n:"Basic Science ↔ Clinical Integration", u:"Module-16-Bidirectional-Basic-Science-Clinical-Integration.html"},
+  M17:{n:"Semantic Qualifiers & Problem Representation", u:"Module-17-Semantic-Qualifiers-Problem-Representation.html"},
+  M18:{n:"Causal vs. Probabilistic Reasoning", u:"Module-18-Causal-vs-Probabilistic-Network-Reasoning.html"},
+  M19:{n:"Community & Social Medicine Insights", u:"Module-19-Community-and-Social-Medicine-Insights.html"},
+  M20:{n:"Naturalistic (Recognition-Primed) Decision Making", u:"Module-20-Recognition-Primed-Decision-Model.html"},
+  M21:{n:"Evidence Frontier Search", u:"Module-21-Evidence-Frontier-Search.html"},
+  M22:{n:"Nested Analysis", u:"Module-22-Nested-Analysis.html"},
+  M23:{n:"Counterfactual Analysis", u:"Module-23-Counterfactual-Analysis.html"},
+  M24:{n:"Heuristic Analysis", u:"Module-24-Heuristic-Analysis.html"},
+  M25:{n:"Thematic Analysis", u:"Module-25-Thematic-Analysis.html"},
+  M26:{n:"Bias Auditing", u:"Module-26-Bias-Auditing.html"},
+  M27:{n:"Time-Series & Velocity Analyzer", u:"Module-27-Time-Series-Velocity-Analyzer.html"},
+  M28:{n:"Diagnostic Time-Out", u:"Module-28-Diagnostic-Time-Out.html"},
+  M29:{n:"The Iatrogenic Domino Effect", u:"Module-29-Iatrogenic-Domino-Effect.html"},
+  M30:{n:"The Diagnostic Anchor Extractor", u:"Module-30-Diagnostic-Anchor-Extractor.html"},
+  M31:{n:"First-Principles Pathophysiology Mapping", u:"Module-31-First-Principles-Pathophysiology-Mapping.html"},
+  M32:{n:"Clinical Cognition Loop", u:"Module-32-Clinical-Cognition-Loop.html"},
+  M33:{n:"The 'Why Now?' (Precipitant) Hunter", u:"Module-33-Why-Now-Precipitant-Hunter.html"},
+  M34:{n:"High-Value Care Auditor", u:"Module-34-High-Value-Care-Auditor.html"},
+  M35:{n:"Epistemic Certainty Mapping & Calibration", u:"Module-35-Epistemic-Certainty-Mapping-Calibration.html"},
+  M36:{n:"Bayesian Probability / Likelihood Ratio Engine", u:"Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html"},
+  M37:{n:"Red Herring / Signal-to-Noise Drill", u:"Module-37-Red-Herring-Signal-to-Noise-Drill.html"},
+  M38:{n:"Poly-Crisis & Cascading Failure Simulator", u:"Module-38-Poly-Crisis-Cascading-Failure-Simulator.html"},
+  M39:{n:"Global Knowledge Network Diagnostic Matrix", u:"Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html"},
+  M40:{n:"Operational & Throughput Strategist", u:"Module-40-Operational-Throughput-Strategist.html"},
+  M41:{n:"Clinical Workflow Implementation Science", u:"Module-41-Clinical-Workflow-Implementation-Science.html"},
+  M42:{n:"Clinical Pre-Mortem", u:"Module-42-Clinical-Pre-Mortem.html"},
+  M43:{n:"Health Economics & Value-Based Care Alignment", u:"Module-43-Health-Economics-Value-Based-Care-Alignment.html"},
+  M44:{n:"Clinical Genetics Reasoning", u:"Module-44-Clinical-Genetics-Reasoning.html"},
+  M46:{n:"Evidence-Based Medicine Insights", u:"Module-45-Evidence-Based-Medicine-Insights.html"},
+  M47:{n:"Shadow — EBM Adversarial Counterpart", u:"Shadow-Module-45-EBM-Adversarial-Counterpart.html"},
+  M48:{n:"Treatment Comparative Analysis & Prognosis Trajectory", u:"Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html"},
+  M49:{n:"FMEA Analysis", u:"Module-49-FMEA-Analysis-and-Insights.html"},
+  M50:{n:"Diagnostic Reasoning Map", u:"Module-50-DRM-Diagnostic-Reasoning-Map.html"},
+  M51:{n:"Systems-Based Clinical Analysis", u:"Module-51-Systems-Based-Clinical-Analysis-and-Insights.html"},
+  M52:{n:"Clinical Pearls Distillation", u:"Module-52-CP-Clinical-Pearls.html"},
+  M53:{n:"Clinical Guideline Intelligence Navigator", u:"Module-53-Clinical-Guideline-Intelligence-Navigator.html"},
+  M54:{n:"System 1 & System 2 Question Generator", u:"Module-54-System1-System2-Question-Generator.html"},
+  M55:{n:"Patient Needs Assessment", u:"Module-55-Patient-Needs-Assessment.html"},
+  M56:{n:"Hypothetico-Deductive Reasoning", u:"Module-HDM-Hypothetico-Deductive-Model.html"},
+  M57:{n:"Clinical Cognition Deep Dive", u:"Module-CC-Clinical-Cognition-Deep-Dive.html"},
+  SDM:{n:"Shared Decision-Making Query Generator", u:"Module-SDM-Shared-Decision-Making-Query-Generator.html"},
+  EBMQ:{n:"EBM Case → Critical Appraisal Query Generator", u:"ebm-case-query-generator.html"},
+  AP:{n:"The Avinash Principle: Critical Hub-Node Navigation", u:"Module-AP-Avinash-Principle.html"},
+  CL:{n:"Case Lens: Critical Thinking Audit", u:"Module-Case-Lens-Critical-Thinking.html"},
+  GDA:{n:"Guided Discovery Agent (full orchestrated run)", u:"VibeRounds_Guided_Discovery_Agent.html"},
+};
+function link(id){ const m=M[id]; return `<a href="${BASE}${m.u}" target="_blank">${id.replace(/^M0*/,'M')} — ${m.n}</a>`; }
+function pill(id){ const m=M[id]; return `<span class="mod-pill">${link(id)}</span>`; }
+
+/* ---------- Question bank (single exhaustive list) ---------- */
+const QUESTIONS = [
+    { q:"What is actually going on with them, in plain language?",
+      why:"Turns raw findings into a structured, jargon-free case record a family member can hold onto and update.",
+      unit:{type:"chain", ids:["M02","M11"]},
+      rating:{patient:5,clinical:2,research:1},
+      yield:"A documented case summary translated into plain language — a starting record, not a diagnosis." },
+    { q:"What should we be watching for at home, and when is it an emergency?",
+      why:"Builds an ongoing tracking sheet across the domains most likely to shift day to day (symptoms, meds, mood, red flags).",
+      unit:{type:"chain", ids:["M03","M55"]},
+      rating:{patient:5,clinical:2,research:1},
+      yield:"A monitoring checklist plus a needs assessment — what to track, and what unmet need is driving the worry." },
+    { q:"What do these test results / this diagnosis actually mean?",
+      why:"Runs the case through a query-intelligence pass built specifically for patient-facing explanation.",
+      unit:{type:"single", ids:["M11"]},
+      rating:{patient:5,clinical:2,research:1},
+      yield:"A plain-language explainer keyed to the specific results or terms in this case." },
+    { q:"What decisions are actually ours to make here, and what are the real trade-offs?",
+      why:"Surfaces the decision points explicitly, framed as options with trade-offs rather than a single recommendation.",
+      unit:{type:"chain", ids:["M55","SDM"]},
+      rating:{patient:5,clinical:3,research:1},
+      yield:"A structured set of decision points with trade-offs laid out — material for a conversation with the clinician, not a decision on its own." },
+    { q:"Could any of their medications be causing or worsening this?",
+      why:"A polypharmacy-focused reconciliation pass, useful whenever a patient/advocate suspects a drug-related cause.",
+      unit:{type:"single", ids:["M13"]},
+      rating:{patient:4,clinical:5,research:2},
+      yield:"A medication-by-medication reconciliation flagging plausible interactions or contributors — for the clinician to confirm." },
+    { q:"How do I build a fuller record if we want a second opinion or a specialist referral?",
+      why:"The full N-of-1 protocol turns a lived case into a structured, shareable case write-up.",
+      unit:{type:"tree", root:"M09", branches:[
+          {label:"documentation base", ids:["M02","M03"]},
+          {label:"plain-language layer", ids:["M11"]},
+          {label:"decision framing", ids:["M55","SDM"]}
+        ]},
+      rating:{patient:4,clinical:2,research:2},
+      yield:"A branching pass: the N-of-1 protocol as the spine, feeding from the documentation and decision-framing modules already run." },
+    { q:"What's my differential, and am I anchoring on the first thing I thought of?",
+      why:"Pairs active differential-building with an explicit anchor check before committing to a workup.",
+      unit:{type:"chain", ids:["M01","M12","M30"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A stress-tested differential plus a named anchor, if one is present — the classic 'commit, then check yourself' pass." },
+    { q:"What am I missing, and what would kill the patient if I'm wrong?",
+      why:"A structured pre-mortem forces the worst-case branch before it happens, not after.",
+      unit:{type:"chain", ids:["M28","M42"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A diagnostic time-out plus a pre-mortem — the two-step 'stop and imagine failure' pass clinicians skip under time pressure." },
+    { q:"Is this workup actually high-value, or am I ordering out of habit / fear?",
+      why:"Runs the ordered (or planned) tests and treatments against a high-value-care and cost-alignment lens.",
+      unit:{type:"chain", ids:["M34","M43"]},
+      rating:{patient:2,clinical:5,research:3},
+      yield:"A line-by-line high-value-care audit of the current plan, with cost/value trade-offs made explicit." },
+    { q:"What's the precipitant — why is this happening now, today, and not last month?",
+      why:"Targets the 'why now' question directly, which a pure differential often skips past.",
+      unit:{type:"single", ids:["M33"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A precipitant hunt isolating what changed recently — often the fastest route to the real driver." },
+    { q:"Could something I did (or a prior team did) be iatrogenically driving this?",
+      why:"Traces cascading effects of prior interventions before assuming a purely primary disease process.",
+      unit:{type:"chain", ids:["M29","M13"]},
+      rating:{patient:3,clinical:5,research:2},
+      yield:"A domino-effect trace plus a medication reconciliation — checks whether the current picture is iatrogenic in origin." },
+    { q:"How sure am I, really — and where exactly is my uncertainty concentrated?",
+      why:"Separates confidence in diagnosis, evidence, recommendation, and prognosis instead of one blended gut feeling.",
+      unit:{type:"chain", ids:["M35","M36"]},
+      rating:{patient:1,clinical:4,research:4},
+      yield:"A calibrated, multi-domain confidence profile plus likelihood-ratio reasoning on the key findings." },
+    { q:"What's a full pre-round / ward-round-ready reasoning pass on this case, start to finish?",
+      why:"The deepest single clinician run: reasoning, safety, and bias layers in sequence, mirroring how a real round should move.",
+      unit:{type:"tree", root:"M01", branches:[
+          {label:"structure the differential", ids:["M17","M12"]},
+          {label:"pressure-test it", ids:["M28","M30","M37"]},
+          {label:"calibrate & close", ids:["M35","M52"]}
+        ]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A three-branch tree: build the differential, pressure-test it for bias/anchoring/noise, then calibrate confidence and distill the pearls — a full reasoning pass in one run." },
+    { q:"How do I turn this case into an answerable, appraisable question?",
+      why:"Converts a clinical observation into a structured PICO-style question, ready for a search strategy.",
+      unit:{type:"single", ids:["EBMQ"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"A structured question (population / intervention / comparison / outcome) generated directly from the case detail." },
+    { q:"What does the literature actually say, and how strong is that evidence for this specific patient?",
+      why:"Pairs a literature-frontier search with the EBM appraisal module, then stress-tests both with the adversarial shadow module.",
+      unit:{type:"chain", ids:["M21","M46","M47"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"An evidence search, an appraisal pass, and an adversarial counter-pass — evidence claims that have been argued against, not just asserted." },
+    { q:"Is this case unusual enough, and well-documented enough, to write up as an N-of-1 report?",
+      why:"Runs the full seven-stage case-research protocol used for case-report-grade write-ups.",
+      unit:{type:"single", ids:["M09"]},
+      rating:{patient:2,clinical:3,research:5},
+      yield:"A staged case-research pass structured the way an n-of-1 case-report protocol expects — usable as a discussion-section draft, pending citation checks." },
+    { q:"How does this patient's likely trajectory compare against published outcomes for similar cases?",
+      why:"Compares treatment options and prognosis against literature-derived trajectories rather than a single point estimate.",
+      unit:{type:"chain", ids:["M48","M36"]},
+      rating:{patient:2,clinical:4,research:4},
+      yield:"A comparative prognosis trajectory anchored with likelihood-ratio-style reasoning on the case's specific findings." },
+    { q:"What biases might I, or the case source, be bringing into this write-up?",
+      why:"A closing audit against the framework's own named biases — automation bias, anchoring, rare-diagnosis overweighting.",
+      unit:{type:"single", ids:["M26"]},
+      rating:{patient:1,clinical:4,research:3},
+      yield:"A bias audit you can attach as a limitations paragraph or a reflexivity note in a manuscript." },
+    { q:"What's the full research-grade pass — question, evidence, reasoning, and synthesis — on this case?",
+      why:"The deepest researcher run: frames the question, gathers and appraises evidence, then reasons and synthesizes into draft prose.",
+      unit:{type:"tree", root:"EBMQ", branches:[
+          {label:"evidence layer", ids:["M21","M46","M47"]},
+          {label:"case-report layer", ids:["M09","M48"]},
+          {label:"self-audit layer", ids:["M26","M35"]}
+        ]},
+      rating:{patient:1,clinical:4,research:4},
+      yield:"A three-branch tree: frame the question, build and stress-test the evidence base, draft the case-report reasoning, then audit your own biases and calibration before writing anything up." },
+    { q:"I'm new to this framework — how do I orient myself before running anything else on this case?",
+      why:"The cold-start module that sets up how every other module should be read and used.",
+      unit:{type:"single", ids:["M00"]},
+      rating:{patient:2,clinical:4,research:3},
+      yield:"An orientation pass explaining how to approach the rest of the module directory for this case." },
+    { q:"How would a peer present this case at the next ward round?",
+      why:"Structures the case the way a colleague would frame it for a live peer-level presentation.",
+      unit:{type:"single", ids:["M04"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A peer-ready ward-round presentation structure for this case." },
+    { q:"Is anything in this case's data trail incomplete, inconsistent, or worth auditing right now?",
+      why:"A real-time audit pass over the data itself, before it's used for any downstream reasoning.",
+      unit:{type:"single", ids:["M05"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A real-time data-audit flagging gaps or inconsistencies in the case record." },
+    { q:"How does this case compare against registry-level patterns for similar presentations?",
+      why:"Places the single case against population- or registry-level analytics.",
+      unit:{type:"single", ids:["M06"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"A registry-level comparison situating this case against broader patterns." },
+    { q:"What should I carry forward from this case into how I handle future ones?",
+      why:"Extracts longitudinal, cross-case learning rather than treating the case as a one-off.",
+      unit:{type:"single", ids:["M07"]},
+      rating:{patient:2,clinical:4,research:3},
+      yield:"A longitudinal learning note — what this case should change about future practice." },
+    { q:"How is the Socratic questioning itself structured here — what's the design behind the method?",
+      why:"Surfaces the design specification behind the framework's Socratic-mode questioning.",
+      unit:{type:"single", ids:["M08"]},
+      rating:{patient:1,clinical:3,research:3},
+      yield:"A design-level view of how the Socratic questioning approach is built and why." },
+    { q:"What's the best way to read the key journal article behind this case's evidence?",
+      why:"A structured approach to reading and extracting value from the source literature.",
+      unit:{type:"single", ids:["M10"]},
+      rating:{patient:1,clinical:2,research:5},
+      yield:"A structured reading pass on the relevant journal article(s) for this case." },
+    { q:"How would my reasoning change in a resource-constrained setting?",
+      why:"Re-runs the clinical reasoning under global-health, resource-constrained assumptions.",
+      unit:{type:"single", ids:["M14"]},
+      rating:{patient:3,clinical:4,research:2},
+      yield:"A resource-constrained version of the reasoning, showing what would change and why." },
+    { q:"What illness script am I actually building here, and is it complete?",
+      why:"Checks whether the case is generating a coherent illness script or a patchy one.",
+      unit:{type:"single", ids:["M15"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"An illness-script completeness check against this case's findings." },
+    { q:"How does the underlying basic science explain what's happening clinically?",
+      why:"Bridges basic-science mechanisms to the clinical picture in both directions.",
+      unit:{type:"single", ids:["M16"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"A basic-science-to-bedside (and back) explanation of the case's mechanism." },
+    { q:"Which reasoning model actually fits how I'm thinking through this — causal, recognition-primed, or hypothetico-deductive?",
+      why:"Runs the case through three distinct reasoning models to see which one best matches the thinking actually happening.",
+      unit:{type:"chain", ids:["M18","M20","M56"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A three-model comparison — causal/probabilistic, recognition-primed, and hypothetico-deductive — of the same reasoning process." },
+    { q:"What social or community-level factors are shaping this case?",
+      why:"Surfaces community and social-medicine context that a purely biomedical read would miss.",
+      unit:{type:"single", ids:["M19"]},
+      rating:{patient:3,clinical:3,research:2},
+      yield:"A social/community-medicine layer added to the case's biomedical picture." },
+    { q:"What do nested, counterfactual, heuristic, and thematic analysis each reveal about this case?",
+      why:"Runs four distinct analytic lenses over the same case for a multi-angle read.",
+      unit:{type:"chain", ids:["M22","M23","M24","M25"]},
+      rating:{patient:1,clinical:3,research:4},
+      yield:"Four short analyses — nested, counterfactual, heuristic, thematic — each surfacing something the others don't." },
+    { q:"How fast is this actually progressing, and does the trajectory itself tell me something?",
+      why:"Analyzes rate of change over time rather than just the current snapshot.",
+      unit:{type:"single", ids:["M27"]},
+      rating:{patient:1,clinical:4,research:3},
+      yield:"A time-series/velocity read on how quickly the case is evolving." },
+    { q:"Can I map this back to first-principles pathophysiology and close the cognition loop?",
+      why:"Pairs a from-scratch pathophysiology map with the framework's core cognition loop.",
+      unit:{type:"chain", ids:["M31","M32"]},
+      rating:{patient:1,clinical:4,research:2},
+      yield:"A first-principles mechanism map feeding into a closed clinical-cognition loop." },
+    { q:"If this cascades into a poly-crisis, or connects to a wider knowledge network, what does that look like?",
+      why:"Stress-tests the case against cascading multi-system failure and cross-domain knowledge links.",
+      unit:{type:"chain", ids:["M38","M39"]},
+      rating:{patient:1,clinical:4,research:3},
+      yield:"A cascading-failure simulation plus a cross-domain knowledge-network view of the same case." },
+    { q:"Where does this case bump into throughput, operational, or workflow constraints?",
+      why:"Looks at the case from a systems/operations angle rather than a purely clinical one.",
+      unit:{type:"chain", ids:["M40","M41"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"An operational-throughput read plus a workflow-implementation-science pass on how this case moves through the system." },
+    { q:"Is there a genetic reasoning angle to this case I should be exploring?",
+      why:"Applies clinical-genetics-specific reasoning where a heritable or genetic contributor is plausible.",
+      unit:{type:"single", ids:["M44"]},
+      rating:{patient:1,clinical:4,research:4},
+      yield:"A clinical-genetics reasoning pass on this case." },
+    { q:"Where could this care process fail, and how severe would each failure mode be?",
+      why:"A formal failure-mode-and-effects analysis of the care process itself, not just the diagnosis.",
+      unit:{type:"single", ids:["M49"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"An FMEA-style breakdown of failure modes in this case's care process, ranked by severity." },
+    { q:"Can I map out my diagnostic reasoning visually, start to finish?",
+      why:"Produces a structured diagnostic reasoning map rather than a linear narrative.",
+      unit:{type:"single", ids:["M50"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A visual/structured diagnostic reasoning map for this case." },
+    { q:"What does a systems-based view of this case add beyond the individual encounter?",
+      why:"Widens the lens from the single patient encounter to the surrounding system.",
+      unit:{type:"single", ids:["M51"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A systems-based analysis layered on top of the individual-case reasoning." },
+    { q:"Which guidelines actually apply here, and where do they conflict or fall short?",
+      why:"Navigates applicable clinical guidelines and flags where they're ambiguous or in tension.",
+      unit:{type:"single", ids:["M53"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A guideline-navigation pass identifying which recommendations apply and where they conflict." },
+    { q:"What questions would push me from fast, intuitive thinking into slower, deliberate thinking on this case?",
+      why:"Generates the specific questions that force a System 1 → System 2 shift.",
+      unit:{type:"single", ids:["M54"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A set of System-1-to-System-2 questions targeted at this case's fast intuitions." },
+    { q:"What's the single deepest cognition-focused dive available on this case?",
+      why:"The framework's dedicated deep-dive module into clinical cognition itself.",
+      unit:{type:"single", ids:["M57"]},
+      rating:{patient:1,clinical:5,research:2},
+      yield:"A deep-dive clinical-cognition analysis of this case." },
+    { q:"What's the one critical hub-node in this case that everything else hinges on?",
+      why:"Applies the framework's named hub-node navigation principle to find the single highest-leverage point.",
+      unit:{type:"single", ids:["AP"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A hub-node identification — the one factor that, if resolved, moves everything else." },
+    { q:"If I audit my own critical thinking on this case, what shows up?",
+      why:"A dedicated critical-thinking audit distinct from the bias-auditing module.",
+      unit:{type:"single", ids:["CL"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A critical-thinking audit surfacing gaps in the reasoning process itself, not just biases." },
+    { q:"What does a full, orchestrated end-to-end run through the entire framework look like for this case?",
+      why:"The single most exhaustive option — an orchestrated run across the whole module directory in one pass.",
+      unit:{type:"single", ids:["GDA"]},
+      rating:{patient:3,clinical:5,research:4},
+      yield:"A fully orchestrated, end-to-end pass through the framework, coordinating modules automatically rather than one at a time." },
+    { q:"If I had to pick just the bias-and-safety net for this case, what would it be?",
+      why:"Combines anchor-checking, red-herring detection, and bias auditing into a single safety pass, independent of the differential itself.",
+      unit:{type:"chain", ids:["M30","M37","M26"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A three-part cognitive-safety net — anchor, noise, and bias — run without re-deriving the differential." },
+    { q:"How does this case's illness script hold up against causal reasoning and the underlying pathophysiology?",
+      why:"Cross-checks a pattern-recognition illness script against a causal/probabilistic model and a first-principles mechanism map.",
+      unit:{type:"chain", ids:["M15","M18","M31"]},
+      rating:{patient:1,clinical:5,research:4},
+      yield:"A three-layer check: the illness script, the causal model behind it, and the mechanism underneath both." },
+    { q:"What would a resource-constrained version of the guideline-recommended workup actually look like?",
+      why:"Runs the guideline navigator and resource-constrained reasoning together to find where recommended care and feasible care diverge.",
+      unit:{type:"chain", ids:["M53","M14"]},
+      rating:{patient:3,clinical:5,research:2},
+      yield:"A guideline-vs-feasibility comparison showing where the ideal and the achievable workup part ways." },
+    { q:"Between registry data and this case's own time-series, is the trajectory typical or unusual?",
+      why:"Pairs population-level registry analytics with this specific case's velocity of change.",
+      unit:{type:"chain", ids:["M06","M27"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"A population-vs-individual trajectory comparison flagging whether this case is tracking typically or diverging." },
+    { q:"What's the shortest possible path from raw case to a shareable, plain-language, decision-ready summary?",
+      why:"Chains documentation, plain-language translation, and shared decision-making into the fastest patient-facing pipeline in the directory.",
+      unit:{type:"chain", ids:["M02","M11","SDM"]},
+      rating:{patient:5,clinical:2,research:1},
+      yield:"A minimal three-step pipeline: document, translate, frame decisions — the fastest patient-ready output." },
+    { q:"If I only trust one hub-node and one calibration check, what does the case reduce to?",
+      why:"Combines the Avinash Principle hub-node navigation with epistemic calibration for a maximally compressed, high-leverage read.",
+      unit:{type:"chain", ids:["AP","M35"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A compressed two-step read: the single highest-leverage factor, checked against how confident that read really is." },
+    { q:"What does the evidence base look like once I've also priced it and stress-tested it adversarially?",
+      why:"Runs evidence search, health-economics alignment, and the adversarial EBM counterpart together for a fully pressure-tested evidence picture.",
+      unit:{type:"chain", ids:["M21","M43","M47"]},
+      rating:{patient:2,clinical:4,research:5},
+      yield:"An evidence base that has been sourced, cost-checked, and argued against, not just gathered." },
+    { q:"How would this case look through a global-health lens, a systems lens, and a community-medicine lens together?",
+      why:"Stacks three 'zoom out' lenses — resource-constrained, systems-based, and social/community — that are each easy to skip individually.",
+      unit:{type:"chain", ids:["M14","M51","M19"]},
+      rating:{patient:2,clinical:4,research:3},
+      yield:"A triple-zoom-out pass situating the case in its resource, systems, and social context all at once." },
+    { q:"What's the full 'red team' run — anchors, red herrings, adversarial evidence, and a pre-mortem — on this case?",
+      why:"The most adversarial possible pass: every module in the directory whose job is to argue against the current plan, chained together.",
+      unit:{type:"tree", root:"M30", branches:[
+          {label:"cognitive red-team", ids:["M37","M26"]},
+          {label:"evidentiary red-team", ids:["M47"]},
+          {label:"outcome red-team", ids:["M42"]}
+        ]},
+      rating:{patient:1,clinical:5,research:4},
+      yield:"A three-branch adversarial tree — attacking the cognition, the evidence, and the imagined outcome — the most 'argue against yourself' run available." },
+    { q:"What's the full patient-to-published pipeline — documentation, evidence, write-up, and dissemination-readiness — for this case?",
+      why:"The longest possible chain spanning patient-facing origin through to a research-grade output, showing the whole life-cycle of a single case.",
+      unit:{type:"tree", root:"M02", branches:[
+          {label:"clinical grounding", ids:["M01","M12"]},
+          {label:"evidence layer", ids:["M21","M46"]},
+          {label:"write-up layer", ids:["M09","M48"]}
+        ]},
+      rating:{patient:3,clinical:4,research:5},
+      yield:"A full life-cycle tree: from patient documentation through clinical reasoning, evidence gathering, to a case-report-ready write-up." },
+    { q:"How did I actually arrive at this diagnosis, cognitively — was it fast pattern-matching or slow deliberate reasoning, and does the mechanism-loop support it?",
+      why:"Combines recognition-primed decision-making, the System 1/2 question generator, and the core cognition loop to expose the actual thinking process, not just its output.",
+      unit:{type:"chain", ids:["M20","M54","M32"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A metacognitive trace of how the diagnosis was actually reached, plus questions designed to test whether it should have been reached that way." },
+    { q:"Could this be a drug-gene interaction cascading iatrogenically, not a new disease process?",
+      why:"Chains medication reconciliation, the iatrogenic domino effect, and clinical genetics — a combination worth running whenever a 'new' problem appears after a medication change.",
+      unit:{type:"chain", ids:["M13","M29","M44"]},
+      rating:{patient:3,clinical:5,research:3},
+      yield:"A pharmacogenomic-aware iatrogenic trace — checking whether a drug, a drug interaction, or a genetic variant is driving what looks like a new diagnosis." },
+    { q:"What does this patient actually need, once social context and cost are factored in — not just what's clinically indicated?",
+      why:"Pairs a needs assessment with community/social-medicine context and health-economics alignment, surfacing the gap between the 'ideal' plan and what actually serves the patient.",
+      unit:{type:"chain", ids:["M55","M19","M43"]},
+      rating:{patient:5,clinical:4,research:2},
+      yield:"A needs-vs-feasibility read that folds in social determinants and cost — often diverging sharply from the guideline-only plan." },
+    { q:"If I pause right now, map the reasoning visually, and calibrate my confidence — does the diagnosis still hold?",
+      why:"The three modules built specifically to interrupt momentum: a diagnostic time-out, a visual reasoning map, and calibrated confidence — run together as a single 'stop and check' ritual.",
+      unit:{type:"chain", ids:["M28","M50","M35"]},
+      rating:{patient:1,clinical:5,research:3},
+      yield:"A structured pause-and-verify pass — often the single highest-yield combination for catching an error before it's acted on." },
+    { q:"What are the genetic and pathophysiologic roots underneath this differential, not just the surface pattern?",
+      why:"Pushes past pattern-recognition into mechanism — pairing the differential itself with first-principles pathophysiology and a genetics-specific reasoning pass.",
+      unit:{type:"chain", ids:["M12","M31","M44"]},
+      rating:{patient:1,clinical:4,research:5},
+      yield:"A mechanism-first differential — each candidate diagnosis traced down to its physiological and, where relevant, genetic basis." },
+    { q:"Zoomed all the way out — across similar cases, registry patterns, and the wider knowledge network — what pattern is this case actually part of?",
+      why:"The three widest-lens modules in the directory, chained: cross-case learning, registry analytics, and the global knowledge-network matrix.",
+      unit:{type:"chain", ids:["M07","M06","M39"]},
+      rating:{patient:1,clinical:3,research:5},
+      yield:"A population-and-network-level read situating this single case inside the broader pattern it belongs to." },
+    { q:"What's the highest-yield teaching version of this case — themed, distilled, and pearl-ready?",
+      why:"Converts a working case into a teaching artifact by chaining the case-research protocol, thematic analysis, and clinical-pearls distillation.",
+      unit:{type:"chain", ids:["M09","M25","M52"]},
+      rating:{patient:2,clinical:4,research:4},
+      yield:"A themed, teachable version of the case — structured for a morning report or journal-club style presentation, not just personal review." },
+    { q:"If evidence, guideline recommendations, and this patient's actual values pull in different directions, what's the actual best call?",
+      why:"The classic three-way tension in real decisions — appraised evidence, guideline navigation, and shared decision-making — resolved explicitly rather than left implicit.",
+      unit:{type:"tree", root:"M53", branches:[
+          {label:"evidence check", ids:["M46","M47"]},
+          {label:"values check", ids:["SDM","M55"]}
+        ]},
+      rating:{patient:4,clinical:5,research:4},
+      yield:"An explicit three-way reconciliation — what the evidence says, what the guideline says, and what the patient actually wants — surfaced as one decision rather than three separate outputs." },
+];
+
+/* ---------- Rendering ---------- */
+function renderUnit(unit){
+  if(unit.type === "single"){
+    return `<div class="chain-row">${pill(unit.ids[0])}</div>`;
+  }
+  if(unit.type === "chain"){
+    return `<div class="chain-row">` +
+      unit.ids.map((id,i)=> (i? `<span class="arrow">&rarr;</span>`:"") + pill(id)).join("") +
+      `</div>`;
+  }
+  if(unit.type === "tree"){
+    let out = `<div class="tree"><span class="root">${link(unit.root)}</span>\n`;
+    unit.branches.forEach((b,i)=>{
+      const last = i === unit.branches.length-1;
+      out += `${last?"└─":"├─"} <em>${b.label}:</em> `;
+      out += b.ids.map((id,j)=> (j?" → ":"") + link(id)).join("");
+      out += `\n`;
+    });
+    out += `</div>`;
+    return out;
+  }
+}
+
+function renderRatings(r){
+  const dots = n => "●".repeat(n) + "○".repeat(5-n);
+  return `<div class="ratings">
+    <span class="rating-pill">🧑‍🤝‍🧑 Patient <span class="rating-dots">${dots(r.patient)}</span> <b>${r.patient}/5</b></span>
+    <span class="rating-pill">🩺 Clinical <span class="rating-dots">${dots(r.clinical)}</span> <b>${r.clinical}/5</b></span>
+    <span class="rating-pill">🔬 Research <span class="rating-dots">${dots(r.research)}</span> <b>${r.research}/5</b></span>
+  </div>`;
+}
+
+function chainQuery(caseText, unit){
+  const ids = unit.type==="tree" ? [unit.root, ...unit.branches.flatMap(b=>b.ids)] : unit.ids;
+  const parts = ids.map(id => `${id.replace(/^M0*/,'M')} ${BASE}${M[id].u}`);
+  if(ids.length===1){
+    return `for case - [paste case link or text] run module ${parts[0]}`;
+  }
+  return `for case - [paste case link or text] run modules ${parts.join(" → ")}`;
+}
+
+document.getElementById("genBtn").addEventListener("click", ()=>{
+  const caseText = document.getElementById("caseText").value.trim() || "[no case text provided]";
+  const results = document.getElementById("results");
+  results.style.display = "block";
+
+  let html = `<span class="role-tag">${QUESTIONS.length} questions · full module map</span>
+    <p class="case-echo">Generated for: <em>${caseText.length>140? caseText.slice(0,140)+"…" : caseText}</em></p>`;
+
+  QUESTIONS.forEach((item, idx)=>{
+    const typeLabel = item.unit.type==="single" ? "single module" : item.unit.type==="chain" ? "module chain" : "module tree";
+    html += `
+    <details class="question-card">
+      <summary>
+        <div class="q-summary-row">
+          <div>
+            <div class="modeltabs"><span class="modeltab">Q${idx+1} · ${typeLabel}</span></div>
+            <h3>${item.q}</h3>
+            ${renderRatings(item.rating)}
+          </div>
+          <span class="q-caret">▶</span>
+        </div>
+      </summary>
+      <div class="q-body">
+        <p class="why">${item.why}</p>
+        ${renderUnit(item.unit)}
+        <div class="yield"><strong>Likely analytic yield:</strong> ${item.yield}</div>
+        <button class="copy-btn" data-copy="${encodeURIComponent(chainQuery(caseText, item.unit))}">📋 copy run prompt</button>
+      </div>
+    </details>`;
+  });
+
+  html += `
+    <div class="question-card">
+      <details>
+        <summary style="cursor:pointer;font-weight:700;font-size:14px;">📚 Full module directory (click to expand)</summary>
+        <p class="why" style="margin-top:10px;">All modules referenced above (and every other module in the VibeRounds directory), each linking directly to its page.</p>
+        <div class="chain-row">${Object.keys(M).map(id=>pill(id)).join("")}</div>
+      </details>
+    </div>`;
+
+  results.innerHTML = html;
+
+  results.querySelectorAll(".copy-btn").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const text = decodeURIComponent(b.dataset.copy);
+      navigator.clipboard.writeText(text).then(()=>{
+        const orig = b.textContent;
+        b.textContent = "✓ copied";
+        setTimeout(()=> b.textContent = orig, 1400);
+      });
+    });
+  });
+
+  document.getElementById("resultsStep").scrollIntoView({behavior:"smooth", block:"start"});
+});
+</script>
+</body>
+</html>
