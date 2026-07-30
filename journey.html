@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 5 · The Build Itself as Case Study — Vibe Rounds Cognitive Analytics Series</title>
+<style>
+  :root{
+    --bg:#f7fafc;
+    --panel:#ffffff;
+    --ink:#0f2027;
+    --muted:#4b6570;
+    --teal:#0e7c86;
+    --teal-dark:#0a5a62;
+    --cyan:#12a4b0;
+    --line:#dbe7ea;
+    --accent-bg:#eef8f9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    line-height:1.65;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:56px 24px 120px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:600;
+    font-size:2.15rem;
+    line-height:1.25;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .dek{
+    color:var(--muted);
+    font-size:1.05rem;
+    margin:0 0 28px;
+    max-width:60ch;
+  }
+  .frame-note{
+    background:var(--accent-bg);
+    border-left:3px solid var(--cyan);
+    padding:14px 18px;
+    font-size:.95rem;
+    color:var(--teal-dark);
+    border-radius:4px;
+    margin-bottom:40px;
+  }
+  h2{
+    font-family:Fraunces,Georgia,serif;
+    font-weight:600;
+    font-size:1.35rem;
+    margin:44px 0 12px;
+    color:var(--ink);
+    border-top:1px solid var(--line);
+    padding-top:32px;
+  }
+  h2:first-of-type{border-top:none;padding-top:0;}
+  p{margin:0 0 16px;}
+  .meta-link{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.85rem;
+    color:var(--teal);
+    word-break:break-all;
+  }
+  .callout{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:.95rem;
+  }
+  .callout b{color:var(--teal-dark);}
+  .arc{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.85rem;
+    color:var(--muted);
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    line-height:1.9;
+  }
+  .series-nav{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.82rem;
+    color:var(--muted);
+  }
+  .series-nav a{color:var(--teal);text-decoration:none;}
+  footer{
+    margin-top:48px;
+    font-size:.8rem;
+    color:var(--muted);
+    font-family:'IBM Plex Mono',monospace;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Vibe Rounds · Cognitive Analytics Series · Part 5</div>
+  <h1>The Build Itself as Case Study</h1>
+  <p class="dek">A different kind of part. Parts 1–4 argued a framework. This one is the process that produced it — including the detour that didn't work.</p>
+
+  <div class="frame-note">
+    A note on genre: Parts 1–4 are conceptual argument, building toward a framework and then deliberately shrinking it back to something usable. This part is not another layer of that framework. It's a reflective account of how the system underneath Parts 1–4 — and the wider Vibe Rounds tool set — actually got built, told in the order it happened, including the parts that were cut.
+  </div>
+
+  <h2>1. The seed</h2>
+  <p>It started as a single Socratic prompt written for clinical clerkship students — an attempt to make an AI ask questions rather than hand over answers, so a learner's own reasoning wasn't short-circuited before it started.</p>
+
+  <h2>2. Making the prompt efficient</h2>
+  <p>A single prompt isn't a system. What followed was less about ideas and more about plumbing: tracking how the prompt changed across iterations, and adjusting difficulty based on how a learner actually performed, instead of shipping one fixed script and hoping it fit everyone.</p>
+
+  <h2>3. A pedagogical layer, not a module</h2>
+  <p>The next change was conceptual rather than technical. Rather than add another standalone tool, the existing modules were woven together under one shared instructional layer, built from four meta-skills:</p>
+  <div class="callout">
+    <b>Humanistic persona</b> — specific affirmation of the reasoning move made, before any challenge, because challenge without affirmation triggers defensive thinking rather than open ones.<br><br>
+    <b>Fink's taxonomy</b> — six non-hierarchical learning dimensions applied at closure, so a session produces durable insight, not just a correct answer.<br><br>
+    <b>Bloom's revised taxonomy</b> — six cognitive levels mapped onto clinical reasoning tasks, used to calibrate difficulty between sessions.<br><br>
+    <b>Critical awareness</b> — a standing closing prompt naming the biases the framework itself is prone to: automation bias, anchoring, hallucination risk, rare-diagnosis overweighting. The protocol auditing itself, by design.
+  </div>
+
+  <h2>4. Proving it in one module</h2>
+  <p>With the layer defined, it needed a working instance. Module 01 — Socratic Clinical Reasoning — was built with explicit initiation, execution, and closure steps, and became the template every later module would follow.</p>
+
+  <h2>5. Scaling the pattern</h2>
+  <p>Once the pattern held, it repeated: patient advocate documentation, ward-round preparation, and a widening set of distinct clinical cognition skills, each following the same shape rather than reinventing structure each time.</p>
+
+  <h2>6. From modules to a system</h2>
+  <p>At some point the modules stopped being a loose collection of prompts and became components of an actual builder — what would later be called the Clinical Cognition Operating System (CCOS).</p>
+
+  <h2>7. The detour that didn't land</h2>
+  <p>The next experiment applied a knowledge-graph concept: a structured knowledgebase of clinical concepts with explicit interrelations. It produced a working tutor tool and a few related demos. They were functional — but not especially useful or accurate in practice. That result is worth stating plainly rather than quietly dropping: it was a real attempt, it did not clearly outperform the simpler approach already working, and that was itself the signal to redirect effort rather than keep layering complexity onto a structure that wasn't earning its cost. The same judgment call underlies Part 3's argument that added structure has to justify its own verification burden — this is where that lesson was first learned in practice, not in the abstract.</p>
+
+  <h2>8. Consolidating what worked</h2>
+  <p>Redirected effort converged the modules and the CCOS architecture into one consolidated tool set — the "OS" home most of the current tools now launch from.</p>
+
+  <h2>9. Writing about it — and rewriting</h2>
+  <p>The system was eventually written up as a design-rationale paper describing the CCOS architecture: step-numbered micro-modules, structural protocol lifecycles, and the cross-cutting pedagogical layers described above. Getting there wasn't a straight line. Several earlier AI-generated write-ups of the same work were produced first, then deleted — for being inaccurate, or overloaded with jargon that obscured more than it explained — before the writing was tightened into something worth keeping. That editing process is not a footnote; it's the same critical-appraisal habit this whole series argues for, applied to the AI's own account of itself rather than to a patient case.</p>
+
+  <h2>10. Closing the loop</h2>
+  <p>The last piece kept from this stretch of work is deliberately minimal: a tool built specifically to collect data, meant to turn the system from something built into something that can be studied. That is where this series and the underlying system currently stand — Part 3 named the proposed empirical study; this is the infrastructure waiting to run it.</p>
+
+  <h2>The arc, in one line</h2>
+  <div class="arc">
+    one Socratic prompt<br>
+    → a page to make it efficient<br>
+    → a pedagogical layer (not a module)<br>
+    → a working template<br>
+    → a widening skill library<br>
+    → a builder (CCOS)<br>
+    → a detour that didn't land<br>
+    → a consolidated tool set<br>
+    → a written account, rewritten until it was honest<br>
+    → a minimal tool to validate it
+  </div>
+
+  <h2>Why this belongs here</h2>
+  <p>Part 4 argued for restraint — the smallest usable version of the stack. This part is the evidence for why that restraint was earned rather than assumed: it came from watching a more elaborate approach (the knowledge-graph layer) fail to justify itself, and from discarding write-ups of the work that didn't survive their own scrutiny. The framework in Parts 1–4 is easier to trust once it's clear it was built by cutting things, not just adding them.</p>
+
+  <div class="series-nav">
+    Series: <a href="modern_clinical_reasoning.html">Part 1</a> ·
+    <a href="ground_truth_layers.html">Part 2</a> ·
+    <a href="Case_Complexity.html">Part 3</a> ·
+    <a href="using_the_stack.html">Part 4</a> ·
+    Part 5 (this page)
+  </div>
+
+  <footer>Vibe Rounds CCOS Framework · Cognitive Analytics Series · For Educational and Clinical Reasoning Practice Only — not a clinical decision tool.</footer>
+
+</div>
+</body>
+</html>
