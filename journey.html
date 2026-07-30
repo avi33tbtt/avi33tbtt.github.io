@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The VibeRounds Journey</title>
+<style>
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    line-height: 1.6; 
+    color: #222; 
+    max-width: 850px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
+  }
+  h1 { font-size: 2.2em; color: #111; border-bottom: 2px solid #eaeaea; padding-bottom: 12px; margin-bottom: 30px; }
+  h2 { font-size: 1.6em; color: #2c3e50; margin-top: 40px; border-bottom: 1px solid #eaeaea; padding-bottom: 6px; }
+  h3 { font-size: 1.25em; color: #34495e; margin-top: 30px; }
+  p { margin: 1em 0; text-align: justify; }
+  ul { padding-left: 24px; margin: 1em 0; }
+  ol { padding-left: 24px; margin: 1em 0; }
+  li { margin-bottom: 12px; }
+  a { color: #0066cc; text-decoration: none; word-break: break-all; }
+  a:hover { text-decoration: underline; }
+  blockquote { margin: 20px 0; padding-left: 20px; border-left: 4px solid #cbd5e1; color: #475569; font-style: italic; background-color: #f8fafc; padding-top: 10px; padding-bottom: 10px; padding-right: 10px; }
+  hr { border: 0; border-top: 1px solid #ccc; margin: 40px 0; }
+  .highlight { font-weight: bold; }
+  
+  @media print {
+    body { margin: 20px; max-width: 100%; font-size: 12pt; color: #000; }
+    h1, h2, h3 { page-break-after: avoid; }
+    li { page-break-inside: avoid; }
+    a { color: #000; text-decoration: underline; }
+  }
+</style>
+</head>
+<body>
+
+<h1>The VibeRounds Journey: From a Single Prompt to a Clinical Cognition Operating System</h1>
+
+<h2>1. The Seed: A Socratic Prompt for Clerkship Students</h2>
+<p>It started small: a single Socratic learning prompt written for clinical clerkship students — an attempt to make an AI ask questions rather than hand over answers, nudging students through their own clinical reasoning instead of short-circuiting it.</p>
+
+<h2>2. Building the Page Around the Prompt</h2>
+<p>That one prompt needed a home, and the home needed scaffolding. This became the <strong>Clinical Learning</strong> page:<br>
+🔗 <a href="https://avi33tbtt.github.io/#clinical-learning">https://avi33tbtt.github.io/#clinical-learning</a></p>
+<p>Here the focus shifted from "a prompt" to "a system that gets better." The page documents <strong>System Prompt Evolution</strong> and <strong>Difficulty Analytics</strong> — the machinery needed to keep the Socratic approach efficient and responsive: tracking how prompts evolve over iterations, and adjusting difficulty based on how the learner performs, rather than shipping a static script.</p>
+
+<h2>3. Adding the Pedagogical Layer: Guided Discovery</h2>
+<p>The next leap was conceptual, not just technical: <strong>Guided Discovery</strong> — a pedagogical layer, not a standalone module, woven into specific steps across the entire module set so that every module draws on the same underlying educational theory instead of reinventing it.<br>
+🔗 <a href="https://avi33tbtt.github.io/#guided-discovery">https://avi33tbtt.github.io/#guided-discovery</a></p>
+<p>This layer took shape as four meta-skills, laid out on the Meta Skills tab:</p>
+
+<ul>
+  <li><span class="highlight">A — Humanistic Persona & Confidence-Building</span><br>Six traits designed to build clinical confidence alongside clinical competence. The core design rule: <em>specific affirmation before challenge</em> — naming the exact reasoning move made, not generic praise — because challenge without affirmation triggers defensive cognition.</li>
+  <li><span class="highlight">B — Fink's Taxonomy of Significant Learning (FLINK)</span><br>Six non-hierarchical learning dimensions (foundational knowledge, application, integration, human dimension, caring, learning-how-to-learn) applied to ensure every closure step produces durable, transferable insight — not just a correct answer.</li>
+  <li><span class="highlight">C — Bloom's Revised Taxonomy</span><br>Six cognitive levels (Remember &rarr; Understand &rarr; Apply &rarr; Analyse &rarr; Evaluate &rarr; Create) mapped explicitly onto clinical reasoning tasks, used to scaffold caregiver understanding and calibrate the difficulty ratchet between sessions.</li>
+  <li><span class="highlight">D — Critical Awareness Framework</span><br>A standing closing prompt that names the biases the framework itself is prone to — automation bias, anchoring, hallucination risk, rare-diagnosis overweighting — with structured debrief prompts to counteract them. The protocol auditing itself, by design.</li>
+</ul>
+
+<h2>4. From Concept to Working Module</h2>
+<p>With the pedagogical layer defined, it was time to prove it out in a real module: <strong>Module 01 — Socratic Clinical Reasoning</strong>, built with explicit <strong>initiation, execution, and closure</strong> steps.<br>
+🔗 <a href="https://avi33tbtt.github.io/Prompts/Module-01-Socratic-Clinical-Reasoning.html">https://avi33tbtt.github.io/Prompts/Module-01-Socratic-Clinical-Reasoning.html</a></p>
+<p>This module became the template — the pattern that every subsequent module would follow.</p>
+
+<h2>5. Expanding the Skill Set</h2>
+<p>Once the pattern worked, it scaled. More modules followed, each targeting a distinct clinical cognition skill:</p>
+<ul>
+  <li>Patient Advocate Case Documentation</li>
+  <li>Peer-Level Ward Round Preparation</li>
+  <li>…and progressively more, covering an increasingly broad range of clinical cognition skills.</li>
+</ul>
+<p>All of these modules are collected as a growing <strong>prompt library / prompt architecture</strong>:<br>
+🔗 <a href="https://avi33tbtt.github.io/Prompts/Prompts.html">https://avi33tbtt.github.io/Prompts/Prompts.html</a></p>
+
+<h2>6. The CCOS Builder</h2>
+<p>The modules stopped being just prompts and became the foundation for an actual system — the Clinical Cognition Operating System (CCOS) builder:<br>
+🔗 <a href="https://avi33tbtt.github.io/">https://avi33tbtt.github.io/</a></p>
+
+<h2>7. A Detour Into Knowledge Graphs</h2>
+<p>With CCOS in place, the next experiment applied a <strong>knowledge graph concept</strong> — building a knowledgebase of concepts with explicit interrelations, on the Tutor Panel:<br>
+🔗 <a href="https://avi33tbtt.github.io/#tutor-panel">https://avi33tbtt.github.io/#tutor-panel</a></p>
+<p>This produced a working tutor tool and a handful of related tools:</p>
+<ul>
+  <li>🔗 <a href="https://avi33tbtt.github.io/tools/concepts/tutor.html">https://avi33tbtt.github.io/tools/concepts/tutor.html</a></li>
+  <li>🔗 <a href="https://avi33tbtt.github.io/tools/concepts/">https://avi33tbtt.github.io/tools/concepts/</a></li>
+  <li>🔗 <a href="https://avi33tbtt.github.io/tools/concepts/concept-atlas.html">https://avi33tbtt.github.io/tools/concepts/concept-atlas.html</a></li>
+  <li>🔗 <a href="https://avi33tbtt.github.io/tools/concepts/reasoning-atlas.html">https://avi33tbtt.github.io/tools/concepts/reasoning-atlas.html</a></li>
+</ul>
+<p>These were functional, but not very useful or accurate in practice — a genuine experiment that didn't fully land, and a signal to redirect effort toward what was already working well.</p>
+
+<h2>8. From Modules to Tools: The "OS" Home</h2>
+<p>Redirecting toward what worked, the modules and CCOS architecture converged into a consolidated set of tools, completed at:<br>
+🔗 <a href="https://avi33tbtt.github.io/home.html">https://avi33tbtt.github.io/home.html</a></p>
+
+<h2>9. Telling the Story</h2>
+<p>Alongside the tools, the work was formalized as a research paper: <strong>"VibeRounds: A Composable Architecture for Socratic Clinical Reasoning with Large Language Models — Design Rationale, System Description, and Composition Semantics for the Clinical Cognition Operating System"</strong>, published on ResearchGate:<br>
+🔗 <a href="https://www.researchgate.net/publication/410547948_VibeRounds_A_Composable_Architecture_for_Socratic_Clinical_Reasoning_with_Large_Language_Models_Design_Rationale_System_Description_and_Composition_Semantics_for_the_Clinical_Cognition_Operating_Syste">Link to Publication</a></p>
+
+<blockquote>
+  <strong>Core Paper Summary:</strong> The paper outlines the conceptual architecture of the Clinical Cognition Operating System (CCOS), shifting the paradigm of Large Language Models (LLMs) from passive, retrieval-oriented "answer engines" into stateful, process-driven Socratic interlocutors. It details a composable framework featuring step-numbered micro-modules, structural protocol lifecycles, and cross-cutting pedagogical layers (such as Bloom's and Fink's taxonomies). This operational grammar forces active trainee engagement and integrates real-time cognitive debiasing techniques directly into case analysis workflows rather than relying on un-auditable monolithic outputs.
+</blockquote>
+
+<p>This paper arrived in the final phase of the work. Getting there wasn't a straight line: along the way, several AI-generated PDFs and articles were produced as an experiment in using AI to write about the work itself — but many were deleted for being inaccurate or overloaded with jargon, until the writing was tightened into something worth keeping.</p>
+<p>To make the idea legible to others — not just usable — an article was also written laying out the underlying concept and the usable outcome actually built:<br>
+🔗 <a href="http://avi33tbtt.github.io/article.html">http://avi33tbtt.github.io/article.html</a></p>
+
+<h2>10. Closing the Loop: Research Validation</h2>
+<p>Finally, the journey folded back into research: a minimalistic tool was kept specifically to collect data, intended for research validation of the whole approach — turning the system from a built artifact into something that can be studied and evidenced.</p>
+
+<hr>
+
+<h3>The Arc, in One Line</h3>
+<p>One Socratic prompt &rarr; a page to make it efficient &rarr; a pedagogical theory layer (Guided Discovery) &rarr; a working module template &rarr; a full prompt library of clinical cognition skills &rarr; the CCOS builder &rarr; a knowledge-graph detour that didn't quite land &rarr; a consolidated tools home (the "OS") &rarr; an article explaining it all &rarr; a minimal data-collection tool to validate it with research.</p>
+
+<hr>
+
+<h2>Outcome</h2>
+<p>What the journey converged into is the <strong>Vibe Rounds</strong> tools home, a working set of AI-assisted learning tools for case-based Socratic learning, multi-angle critical thinking, shared decision-making practice, and debate-style reasoning — each built to sharpen judgment through questions rather than handing over answers. It runs entirely "bring your own key" — API keys stay in the browser's local storage and go straight to the chosen provider, never through a VibeRounds server.</p>
+<p>🔗 <a href="https://avi33tbtt.github.io/home.html">https://avi33tbtt.github.io/home.html</a></p>
+
+<p><strong>Tools</strong></p>
+<ol>
+  <li><strong>Tool Hub (Flagship)</strong> — all common tools combined into a single workspace: <a href="https://avi33tbtt.github.io/hub.html">https://avi33tbtt.github.io/hub.html</a></li>
+  <li><strong>Case Bench</strong> — case-based Socratic learning, MCQs, and clinical reasoning analytics: <a href="https://avi33tbtt.github.io/bench.html">https://avi33tbtt.github.io/bench.html</a></li>
+  <li><strong>Case Simulator</strong> — interactive simulated patient cases: <a href="https://avi33tbtt.github.io/case-simulator.html">https://avi33tbtt.github.io/case-simulator.html</a></li>
+  <li><strong>Clinical Practice</strong> — a focused drill tool for practicing clinical cases: <a href="https://avi33tbtt.github.io/case-practice.html">https://avi33tbtt.github.io/case-practice.html</a></li>
+  <li><strong>Clinical Polemos</strong> — debate-style exercise for discussion and reasoning: <a href="https://avi33tbtt.github.io/clinical-polemos.html">https://avi33tbtt.github.io/clinical-polemos.html</a></li>
+  <li><strong>Case Lens</strong> — critical thinking around clinical cases from multiple analytical angles: <a href="https://avi33tbtt.github.io/case-lens.html">https://avi33tbtt.github.io/case-lens.html</a></li>
+  <li><strong>SDM Lens</strong> — shared decision-making scenarios: <a href="https://avi33tbtt.github.io/sdm-lens.html">https://avi33tbtt.github.io/sdm-lens.html</a></li>
+  <li><strong>EBM Query Generator</strong> — structured critical-appraisal queries: <a href="https://avi33tbtt.github.io/ebm.html">https://avi33tbtt.github.io/ebm.html</a></li>
+  <li><strong>Clinical Cognition OS (CCOS)</strong> — Module Order Builder: <a href="https://avi33tbtt.github.io/ccos-builder.html">https://avi33tbtt.github.io/ccos-builder.html</a></li>
+  <li><strong>Case Analytics</strong> — reviewing clinical reasoning performance: <a href="https://avi33tbtt.github.io/case-analytics.html">https://avi33tbtt.github.io/case-analytics.html</a></li>
+  <li><strong>Case Reading</strong> — guided reading and analysis of clinical cases: <a href="https://avi33tbtt.github.io/case-reading.html">https://avi33tbtt.github.io/case-reading.html</a></li>
+  <li><strong>Critical Hub-Node Navigation (the Avinash Principle)</strong> — finding the handful of nodes that decide the outcome: <a href="https://avi33tbtt.github.io/critical-hub-node-navigation.html">https://avi33tbtt.github.io/critical-hub-node-navigation.html</a></li>
+  <li><strong>Complex Flow Builder</strong> — mapping and building complex clinical decision flows: <a href="https://avi33tbtt.github.io/complex-flow-builder.html">https://avi33tbtt.github.io/complex-flow-builder.html</a></li>
+  <li><strong>CQM Router</strong> — clinical query/module router directing cases to the right tool or pathway: <a href="https://avi33tbtt.github.io/cqm-router.html">https://avi33tbtt.github.io/cqm-router.html</a></li>
+  <li><strong>Case Question Bank</strong> — a bank of clinical case questions for practice and review: <a href="http://avi33tbtt.github.io/case-question-bank.html">http://avi33tbtt.github.io/case-question-bank.html</a></li>
+</ol>
+
+<hr>
+
+<h2>Demos</h2>
+<p>Alongside the main line of development, a wide range of case-based experiments and demos were built along the way — these were demos based on real case logs prepared during the development and testing of VibeRounds. Laid out here roughly as a progression of clinical cognition, from foundational recall through to systems-level reasoning:</p>
+
+<h3>Foundational knowledge & recall</h3>
+<ul>
+  <li><strong>Case Reader:</strong> <a href="https://avi33tbtt.github.io/demo/casereader/case1.html">https://avi33tbtt.github.io/demo/casereader/case1.html</a><br>Module 51B — an annotated Socratic walkthrough of a real case: a 60-year-old farmer with leptospirosis (Weil's disease) complicated by AKI, cholestatic liver injury, HHS, and hyponatraemia. Structured as segments of history/exam/investigations, each paired with a stop-and-think Socratic question, a topic hint, an LLM copy-prompt for deeper reading, a "pearl," and an evolving illness-script table. Closes with decision points, a PICO-based evidence table, a pearl compendium, open research questions, a "what would make you wrong" diagnostic audit, and a deliberately atypical/harder variant of the same case.</li>
+  <li><strong>EBM demo:</strong> <a href="https://avi33tbtt.github.io/demo/ebm/index.html">https://avi33tbtt.github.io/demo/ebm/index.html</a><br>A single-case EBM dashboard for a 53-year-old diabetic with foot osteomyelitis and suspected PE. Lays the case out in SOAP format, then layers on an evidence-based-medicine critique: history/exam/investigation gaps scored by importance, a differential diagnosis section, a GRADE certainty table across five clinical questions, and an action-plan generator (immediate actions, pre-anticoagulation checklist, referrals, a "Shadow Module" adversarial-challenge inventory). Function: teaches how to interrogate a real management plan against evidence quality, not just accept it.</li>
+  <li><strong>EBM Queries:</strong> <a href="https://avi33tbtt.github.io/demo/ebm/queries.html">https://avi33tbtt.github.io/demo/ebm/queries.html</a><br>A structured EBM question-generator output for a heart-failure/T2DM case. Produces full PICO(T) breakdowns and ready-to-use PubMed search strings across therapy, diagnosis, prognosis, and harm question types, each with best study design and appraisal checklist (CASP, QUADAS-2, QUIPS). Adds "stress-test" adversarial prompts that challenge each finding, and closes by restating the patient's own priority in her words — grounding the technical EBM exercise back in what she actually cares about.</li>
+  <li><strong>Question Bank demo:</strong> <a href="https://avi33tbtt.github.io/demo/question_bank/index.html">https://avi33tbtt.github.io/demo/question_bank/index.html</a><br>Module 25 — a full Bloom's Taxonomy-stratified question bank (57 questions) built from the same diabetic foot osteomyelitis + PE case, spanning L1 Remember through L6 Create, plus a "Patient Perspective" question set and faculty teaching notes (recommended session flow, the case's pivotal question, its diagnostic trap, and a publishable research extension). Shows how one case can generate a full vertical curriculum from preclinical recall to consultant-level synthesis and original research design.</li>
+  <li><strong>Critically Appraised Topics (CATBank):</strong> <a href="https://avi33tbtt.github.io/CATBank/anemia.html">https://avi33tbtt.github.io/CATBank/anemia.html</a><br>Not a single-patient case but a topic-level CAT bank: 30 critically appraised questions on anaemia organized into Diagnosis, Therapy, Prognosis, Harm/Etiology, and Screening, each with a one-line evidence-based bottom line (e.g., ferritin thresholds in inflammation, restrictive transfusion triggers, hydroxyurea in sickle cell). Includes usage guidance on re-appraisal intervals and version control — designed as a reusable reference bank rather than a case walkthrough.</li>
+</ul>
+
+<h3>Comprehension & application</h3>
+<ul>
+  <li><strong>Case-Based MCQ:</strong> <a href="https://avi33tbtt.github.io/apply/mcq/case1mcq.html">https://avi33tbtt.github.io/apply/mcq/case1mcq.html</a><br>A JavaScript-driven self-paced quiz shell (untimed, learning-use-only) that loads case-based multiple-choice questions one at a time with live scoring and a retake option. Question content loads dynamically via script rather than being static HTML. Function: recall/comprehension drill tied to a specific case.</li>
+  <li><strong>Patient Education demo:</strong> <a href="https://avi33tbtt.github.io/demo/patient_ed/index.html">https://avi33tbtt.github.io/demo/patient_ed/index.html</a><br>Module 11, built around the diabetic-foot-osteomyelitis-plus-suspected-PE case. Surfaces the patient's likely unspoken questions across five domains (disease understanding, prognosis, self-management, safety worries, functional impact), generates a Grade-8-reading-level plain-language explainer with analogies (blood vessels as irrigation pipes, PE as a kinked garden hose), models the family member's perspective and unvoiced fears, builds a medication-literacy table, a red-flag/monitoring guide, lifestyle guidance, "unasked question" insight mining (e.g. why silent neuropathic feet are more dangerous than painful ones), a patient take-home summary card, and closes with a critical-awareness debrief flagging the AI's own assumptions (health literacy, cultural/financial context, diagnostic uncertainty). Function: teaches how to translate a complex case into safe, honest, patient-facing communication.</li>
+  <li><strong>Clinical Pathways:</strong> <a href="https://avi33tbtt.github.io/pathways/acute-pancreatitis.html">https://avi33tbtt.github.io/pathways/acute-pancreatitis.html</a><br>A structured, guideline-style bedside reference (not case-based) covering recognition, diagnosis (Atlanta criteria), staged management (immediate/first-line/escalation/supportive/special populations), monitoring, complications, red flags, patient counseling, and references. Function: a condensed clinical-pathway crib sheet for a common surgical-admission diagnosis — application-oriented rather than Socratic.</li>
+</ul>
+
+<h3>Analysis</h3>
+<ul>
+  <li><strong>Case Lens — 8-Lens Critical Thinking Audit:</strong> <a href="https://avi33tbtt.github.io/case-lens/index.html">https://avi33tbtt.github.io/case-lens/index.html</a><br>Applied to a 62F case of dyspnea/leg swelling with a diuretic non-response mismatch. Runs the case through eight analytical lenses (problem framing, reasoning under uncertainty, cognitive biases, evidence evaluation, testing strategy, treatment-response reasoning, individualizing care, systems/communication), each generating probing questions, then a "high-impact roll-up" prioritizing the single most consequential question, and a reflection debrief naming the specific bias pattern at play (diagnostic anchoring via "unbundled symptoms" — failing to decouple diverging symptom trajectories). Function: teaches structured, multi-angle critical appraisal of a single case in progress.</li>
+  <li><strong>6-Case Nested Analysis (TMNG):</strong> <a href="https://avi33tbtt.github.io/demo/cases/tmng-nested-analysis.html">https://avi33tbtt.github.io/demo/cases/tmng-nested-analysis.html</a><br>Module 22, analyzing six published toxic multinodular goiter cases across three "zoom" layers: Layer 1 profiles each case individually; Layer 2 finds the group's central tendency (typical demographic, presentation, treatment pattern); Layer 3 explains <em>why</em> each case diverges from that average (e.g., a paradoxical low radioiodine uptake, an immunotherapy accidentally curing a goiter, disease onset at age 16, a case where the "problem" is epistemic rather than anatomical). Ends with a trajectory visualization comparing each case's timeline against the canonical arc. Function: teaches variance-based reasoning — how deviation from a "typical" case pattern is itself diagnostic signal, not noise.</li>
+</ul>
+
+<h3>Evaluation & decision-making</h3>
+<ul>
+  <li><strong>Decision Lab:</strong> <a href="https://avi33tbtt.github.io/Decision-Lab/anemia.html">https://avi33tbtt.github.io/Decision-Lab/anemia.html</a><br>A commitment-gated branching walkthrough across four chapters (Diagnosis, Therapy, Prognosis, Screening/Harm), each with beginner-to-advanced decision nodes: pick an option, get immediate attending-style feedback with rationale. Covers decision points like reading ferritin with concurrent inflammation, B12-vs-folate empiric treatment, transfusion thresholds, IV iron in HFrEF without anemia, and unexplained IDA in postmenopausal women. Closes with a printable morphology-first clinical algorithm. Function: forces active commitment to a choice before revealing the reasoning, rather than passive reading.</li>
+  <li><strong>SDM Lens — 7-Domain Shared Decision-Making Query Generator:</strong> <a href="https://avi33tbtt.github.io/SDM/index.html">https://avi33tbtt.github.io/SDM/index.html</a><br>Applied to a 58M with newly diagnosed intermediate-risk prostate cancer facing surgery vs. radiation vs. under-explored active surveillance. Generates patient-voiced questions across seven domains (the decision itself, options including doing nothing, benefits/harms in absolute numbers, evidence quality, personal values fit, logistics, reversibility), then distills an "Ask 3" priority list, flags gaps in the case data (e.g., active surveillance barely discussed, no documented patient values), and closes with a reflection debrief naming how the scenario was subtly framed toward urgency and a narrow choice set. Function: teaches how to build genuinely patient-centered decision support rather than a binary treatment menu.</li>
+  <li><strong>PaJR Analytics — Patient Journey Record:</strong> <a href="https://avi33tbtt.github.io/PaJR/case1.html">https://avi33tbtt.github.io/PaJR/case1.html</a><br>A longitudinal dashboard built from a real ~8-month WhatsApp caregiving log for a 5-year-old with Type 1 diabetes in West Bengal — dense glucose/insulin telemetry, hypo/hyper episode counts, time-of-day patterns, a care-journey timeline, and a SOAP note. Generates differentiated insight layers for the family (plain language), the local doctor (clinically dense), the care-coordination team (logistics), and learners (Socratic questions) — including flagging a fabricated AI citation caught mid-log. Function: teaches longitudinal pattern-finding across a messy real-world multi-stakeholder data stream, and models tailoring the same findings to different audiences.</li>
+</ul>
+
+<h3>Synthesis & simulation</h3>
+<ul>
+  <li><strong>Case Simulator:</strong> <a href="https://avi33tbtt.github.io/case-simulator/index.html">https://avi33tbtt.github.io/case-simulator/index.html</a><br>An interactive simulated-patient chat export: a psychiatry case (32M, mania vs. bipolar) where the "learner" asks questions, a peer voice offers coaching prompts, and the case reveals findings turn by turn, closing with an auto-generated SOAP note, ranked differential, and clinical pearls (e.g., SSRI-unmasked mania). Function: live diagnostic-interview practice with real-time peer scaffolding and automatic case closure documentation.</li>
+  <li><strong>Phronesis — Clinical Decision Science · Interactive Decision Lab:</strong> <a href="https://avi33tbtt.github.io/phronesis/case1.html">https://avi33tbtt.github.io/phronesis/case1.html</a><br>Built on a real four-decade multi-gene case (G6PD variant + AMPD1 deficiency + suspected glycogen storage disease + Behçet's + a transient stroke-like episode) sourced from an open patient e-log. Maps discrete decision forks (acute neuro-symptom triage, reinterpreting an infancy misdiagnosis of abuse, taking patient self-research seriously, drug safety in a G6PD-deficient patient, diet as diagnostic trial) each with importance/urgency ratings, rationale, and pitfalls, then strings them into one full case "decision spine." Function: teaches synthesis across a genuinely multi-diagnosis patient and models trust-rebuilding with a previously disbelieved patient.</li>
+  <li><strong>Pipelines demo:</strong> <a href="https://avi33tbtt.github.io/demo/pipelines/case1.html">https://avi33tbtt.github.io/demo/pipelines/case1.html</a><br>A dense multi-module integration on the diabetic-foot-osteomyelitis-plus-PE case set in a rural Indian district hospital: automated case fingerprinting/red flags, an eight-domain patient-needs sweep (physical through systems/advocacy), top-3 unmet-needs ranking, a full guided-discovery module pipeline with case-specific Socratic questions, three EBM PICO analyses with GRADE ratings, and a "Global Health Optimization" layer that re-grounds the entire plan against actual rural-hospital resource constraints (substituting NPH for glargine, clinical assessment for absent CTPA, etc.), ending in a 60-second handover brief. Function: synthesizes clinical reasoning, patient-centered needs assessment, evidence appraisal, and resource-reality checking into one integrated low-resource care plan.</li>
+  <li><strong>Multiple Modules — Module CC (Post-COVID Hydropneumothorax):</strong> <a href="https://avi33tbtt.github.io/demo/lightweightgcka/Module_CC_PostCOVID_Hydropneumothorax.html">https://avi33tbtt.github.io/demo/lightweightgcka/Module_CC_PostCOVID_Hydropneumothorax.html</a><br>The most elaborate demo in the set: a 22-stage cognitive pipeline (naturalistic pattern recognition &rarr; epistemic certainty mapping &rarr; Bayesian updating &rarr; causal network &rarr; nested sub-problem analysis &rarr; counterfactuals &rarr; bias audit &rarr; poly-crisis cascade simulation &rarr; pre-mortem &rarr; EBM appraisal &rarr; prognosis modeling &rarr; final synthesis) applied to a real 23-year-old post-COVID case with bilateral pneumothorax, haemoptysis, and multiple unresolved differentials (PE, TB). Notably includes a self-auditing "Shadow Module" that catches and logs its own earlier fabricated numeric estimates and one factual laterality error, with a full transparent change log. Function: the deepest single-case synthesis tool in the library, explicitly modeling AI self-correction and epistemic humility alongside clinical reasoning.</li>
+  <li><strong>VibeRounds case demo:</strong> <a href="https://avi33tbtt.github.io/demo/Vibe_Rounds/case1.html">https://avi33tbtt.github.io/demo/Vibe_Rounds/case1.html</a><br>Module 1's flagship interactive export — a 60F case (coma, MDR E. coli sepsis, upper motor neuron signs, albumino-cytological CSF dissociation) presented as a tabbed session (conversation log, reasoning scores, Bloom's/Fink dimension tracking, diagnosis review, session summary), tracking metrics like questions asked, highest Bloom's level reached, and missed diagnoses. Function: the original Socratic-module template applied live, with built-in session analytics.</li>
+</ul>
+
+<h3>Systems-level & meta-cognitive reasoning</h3>
+<ul>
+  <li><strong>System 3 — Ultima Thule:</strong> <a href="https://avi33tbtt.github.io/system3/">https://avi33tbtt.github.io/system3/</a><br>An advanced meta-cognitive environment exploring the limits of clinical AI alignment. It introduces a "System 3" layer—an overarching evaluator that steps back from direct clinical workflows to monitor both fast clinical intuition (System 1) and analytical reasoning (System 2). It actively audits systemic cognitive biases, measures epistemic uncertainty, and tracks macro-level problem framing across multi-module setups. Function: teaches high-level meta-cognitive oversight and architectural self-auditing.</li>
+  <li><strong>Terminal:</strong> <a href="https://avi33tbtt.github.io/terminal/index.html">https://avi33tbtt.github.io/terminal/index.html</a><br>A minimalist, command-line style console interface designed for direct low-level interaction with the Clinical Cognition Operating System (CCOS). It bypasses standard visual UI noise, allowing developers and advanced learners to invoke prompt primitives, orchestrate multi-agent micro-debates, and inspect live operational telemetry in a raw text environment. Function: provides a clean sandbox for debugging, running, and analyzing core clinical prompt mechanics.</li>
+  <li><strong>Illness Velocity:</strong> <a href="https://avi33tbtt.github.io/demo/Velocity/index.html">https://avi33tbtt.github.io/demo/Velocity/index.html</a><br>A dynamic, graph-backed temporal dashboard that shifts focus from static disease snapshots to the <em>rate of change</em> and kinetic trajectory of a patient's condition. It charts physiological indicators and symptom evolution over time to help clinicians identify rapid progression vectors and anticipate acute decompensation events before they manifest globally. Function: teaches velocity-based clinical reasoning and time-critical patient triage.</li>
+  <li><strong>Agent demo:</strong> <a href="https://avi33tbtt.github.io/demo/agent/index.html">https://avi33tbtt.github.io/demo/agent/index.html</a><br>An autonomous multi-agent orchestration demo where specialized AI personas—such as a Socratic clinical coach, a devil's advocate medical auditor, and a patient simulation proxy—interact and cross-examine one another in real time. Function: models distributed, collaborative multi-agent cognition to uncover hidden diagnostic blind spots and optimize complex case management.</li>
+  <li><strong>ASV — Critical Hub-Node Navigation:</strong> <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/index.html">https://avi33tbtt.github.io/demo/critical-hub-node-navigation/index.html</a><br>A graph-based clinical decision layout applying the "Avinash Principle" to map complex case variables as an interconnected web of causal nodes. It guides the user away from peripheral clinical noise and toward the handful of high-leverage "hub nodes" (critical symptoms, pivotal labs, or core management decisions) that fundamentally decide the diagnostic outcome. Function: teaches network-based clinical navigation and structural feature filtering.</li>
+  <li><strong>ASV Full:</strong> <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html">https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html</a><br>The uncompressed, complete architectural deployment of the Critical Hub-Node Navigation map, detailing an expansive web of interconnected medical concepts, multi-system comorbidities, and extensive patient-trajectory branches. Function: serves as a master dataset blueprint showing how complex, multi-layered systemic logic scales across broad clinical case networks.</li>
+  <li><strong>ASV Simulator:</strong> <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-simulator.html">https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-simulator.html</a><br>An interactive sandbox built on top of the hub-node navigation system, allowing users to actively manipulate clinical variables (e.g., changing laboratory trends, toggling symptom sets, or adding history details) to visualize in real time how localized changes cascade through the entire reasoning network and alter the final diagnostic pathway. Function: teaches cause-and-effect systems thinking through hands-on variables simulation.</li>
+</ul>
+
+</body>
+</html>
