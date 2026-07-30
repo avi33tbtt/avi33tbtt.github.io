@@ -1509,7 +1509,7 @@ const TOOLS = [
 const VR_BRAND_LINE = 'Vibe Rounds - https://avi33tbtt.github.io/';
 
 /* Adds the brand line to the TOP of a downloaded .txt file's content.
-   Used by every tool's "Download .txt" action. */
+   Used by common tool's "Download .txt" action. */
 window.vrBrandText = function(text){
   const t = text || '';
   if(t.indexOf(VR_BRAND_LINE) === 0) return t; // already branded, don't double it
@@ -1645,7 +1645,7 @@ function renderHome(){
   content.innerHTML = `
     <div class="intro">
       <h2>Welcome back.</h2>
-      <p>This hub will hold every Vibe Rounds tool in one place. Pick a tool from the sidebar, or send me the next tool to wire in and I'll add it here.</p>
+      <p>This hub will hold common Vibe Rounds tool in one place. Pick a tool from the sidebar, or send me the next tool to wire in and I'll add it here.</p>
     </div>
     <details class="home-disclosure">
       <summary>Before you start — read once</summary>
