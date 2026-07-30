@@ -1,9 +1,3 @@
----
-canonical: https://avi33tbtt.github.io/Prompts/Module-VIZ-Unstructured-Data-Parsing-and-Visualization.html
-title: Dr. Avinash kumar gupta | Avinash Kumar Gupta
----
-
-# [Dr. Avinash kumar gupta](https://avi33tbtt.github.io/)
 
 [← Back to README](https://avi33tbtt.github.io/Prompts/)
 
