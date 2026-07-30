@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Rounds Cognitive Analytics Series — Article Index</title>
+    <style>
+        :root {
+            --primary: #0e7490;
+            --secondary: #0891B2;
+            --accent-promo: #27ae60;
+            --accent-provo: #e74c3c;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 15px 10px;
+        }
+
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 24px 16px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+
+        h1 { color: var(--primary); font-size: 1.8em; line-height: 1.2; margin: 0 0 12px 0; }
+
+        .subtitle { font-size: 1.05em; color: var(--secondary); font-weight: 600; margin: 0 0 20px 0; }
+
+        .cta-header-btn {
+            display: inline-block; background-color: var(--secondary); color: white; font-weight: bold;
+            padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.95em;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .cta-header-btn:hover { background-color: var(--primary); color: white; }
+        .cta-header-btn:active { transform: scale(0.98); }
+
+        /* Series navigation */
+        .series-nav { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:18px; border-top:1px dashed var(--border-color); }
+        .series-nav a {
+            font-size:0.78em; font-weight:600; padding:6px 13px; border-radius:20px;
+            background:#e2e8f0; color:var(--text-main); text-decoration:none; white-space:nowrap;
+            transition: background-color .2s, color .2s;
+        }
+        .series-nav a.active { background:var(--primary); color:#fff; }
+        .series-nav a:hover { background:var(--secondary); color:#fff; }
+
+        h2 { color: var(--primary); font-size: 1.4em; margin-top: 35px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        h3 { color: var(--secondary); font-size: 1.15em; margin-top: 25px; margin-bottom: 10px; }
+        p { margin-bottom: 20px; font-size: 1em; }
+
+        .disclaimer { background: #fffbe6; color: #8a6d3b; padding: 15px 16px; border-radius: 8px; font-size: 0.9em; margin-bottom: 30px; border-left: 5px solid #ffe79a; }
+
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 8px; margin: 25px 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 25px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9em; min-width: 550px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        .concept-card { border-left: 5px solid; padding: 16px 18px; margin: 20px 0; background: #f8fafc; border-radius: 0 8px 8px 0; }
+        .promo-card { border-color: var(--accent-promo); }
+        .promo-card h3, .promo-card h4 { color: var(--accent-promo); }
+        .provo-card { border-color: var(--accent-provo); }
+        .provo-card h3, .provo-card h4 { color: var(--accent-provo); }
+        .case-card { border-color: var(--primary); }
+        .info-card { border-color: var(--secondary); }
+        .info-card h3, .info-card h4 { color: var(--secondary); }
+        .risk-card { border-color: var(--accent-provo); background:#fdf1ef; }
+        .risk-card h3, .risk-card h4 { color: #b0392b; }
+
+        .module-tag { display: inline-block; background: #e2e8f0; color: #4a5568; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 4px; margin-bottom: 6px; font-weight: 600; }
+
+        .case-walker { background: #f1f5f9; padding: 18px 14px; border-radius: 10px; border: 1px solid var(--border-color); margin: 30px 0; }
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+
+        .btn { display: block; width: 100%; box-sizing: border-box; text-align: center; padding: 12px 20px; margin-top: 20px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; font-size: 0.95em; transition: opacity 0.2s, transform 0.1s; }
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: scale(0.98); }
+        .btn-start { background-color: var(--primary); }
+        .btn-promo { background-color: var(--accent-promo); }
+        .btn-provo { background-color: var(--accent-provo); }
+
+        ul, ol { padding-left: 18px; }
+        li { margin-bottom: 8px; }
+
+        .case-link a { color: var(--secondary); font-weight: bold; text-decoration: none; word-break: break-all; }
+        .case-link a:hover { text-decoration: underline; }
+
+        blockquote { font-style: italic; border-left: 3px solid var(--text-main); margin: 20px 0; padding: 6px 20px; color: var(--text-muted); }
+
+        code { font-family: "SFMono-Regular", Consolas, monospace; background: var(--border-color); padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+
+        .badge-row { display:flex; flex-wrap:wrap; gap:10px; margin: 18px 0 24px; }
+        .badge { background: var(--card-bg); border:1px solid var(--border-color); border-radius:6px; padding:8px 12px; min-width:110px; }
+        .badge .k { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); display:block; }
+        .badge .v { font-weight:700; font-size:0.92rem; color:var(--text-main); }
+        .badge.urgent .v { color: var(--accent-provo); }
+
+        .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 6px; }
+        .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 6px; }
+        @media (max-width:680px){ .grid3{grid-template-columns:1fr;} .grid2{grid-template-columns:1fr;} }
+        .grid-card { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px; }
+        .grid-card .tag { font-size:0.68rem; color:var(--secondary); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; font-weight:700; }
+        .grid-card h4 { margin:0 0 6px; font-size:0.95rem; color:var(--text-main); }
+        .grid-card p { font-size:0.85rem; color:var(--text-muted); margin:0; }
+        .grid-card.pro { border-top:3px solid var(--accent-promo); }
+        .grid-card.con { border-top:3px solid var(--accent-provo); }
+
+        .thesis { font-size: 1.15em; line-height: 1.5; color: var(--primary); border-top: 2px solid var(--secondary); border-bottom: 2px solid var(--secondary); padding: 18px 0; margin: 24px 0; text-align:center; font-style:italic; }
+
+        .chain { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0 20px; font-size:0.85rem; }
+        .chain .cstep { background:#eef4f3; border:1px solid #cfe3e1; color:var(--primary); padding:6px 10px; border-radius:5px; white-space:nowrap; font-weight:600; }
+        .chain .arrow { color:var(--text-muted); }
+
+        .compare2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0; }
+        @media (max-width:600px){ .compare2{grid-template-columns:1fr;} }
+        .compare2 .col { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px 18px; }
+        .compare2 .col.was { border-top:3px solid var(--accent-provo); }
+        .compare2 .col.now { border-top:3px solid var(--accent-promo); }
+        .compare2 .col h5 { margin:0 0 8px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); }
+
+        .checklist { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; margin:16px 0; }
+        .checklist h4 { margin:0 0 10px; font-size:0.95rem; color:var(--secondary); }
+        .checklist ul { margin-bottom:0; }
+        .checklist li { list-style:none; position:relative; padding-left:26px; }
+        .checklist li::before { content:"\2610"; position:absolute; left:0; color:var(--secondary); font-size:1.05em; }
+
+        .arc-box { font-size:0.85rem; color:var(--text-muted); background:#f8fafc; border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; line-height:1.9; }
+
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--text-muted); display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+        footer a { color: var(--secondary); font-weight: 600; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        footer .footer-links { display:flex; flex-wrap:wrap; gap:6px 14px; }
+
+        @media (min-width: 768px) {
+            body { padding: 30px 15px; }
+            .article-container { padding: 50px; }
+            .case-walker { padding: 30px; }
+            h1 { font-size: 2.4em; }
+            h2 { font-size: 1.75em; }
+            .btn { display: inline-block; width: auto; }
+            footer { flex-direction: row; justify-content: space-between; align-items: center; }
+        }
+
+        .index-entry { margin-bottom: 26px; }
+        .index-entry h2 { border-bottom:none; padding-bottom:0; margin-top:0; }
+        .index-kicker { font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--secondary); font-weight:700; margin-bottom:6px; }
+        .index-entry.mellow .index-kicker { color: var(--accent-provo); }
+        .pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+        .pill { font-size:0.72rem; background:#eef4f3; color:var(--primary); padding:3px 10px; border-radius:12px; font-weight:600; }
+        .entry.mellow .pill { background:#fdeee9; color:var(--accent-provo); }
+        .gauge { margin:12px 0 4px; display:grid; gap:6px; }
+        .gauge-row { display:flex; align-items:center; gap:10px; }
+        .gauge-label { font-size:0.72rem; color:var(--text-muted); width:96px; flex-shrink:0; }
+        .gauge-bar { flex:1; height:6px; background:#e9edf0; border-radius:3px; overflow:hidden; }
+        .gauge-fill { height:100%; background:var(--secondary); border-radius:3px; }
+        .entry.mellow .gauge-fill { background:var(--accent-provo); }
+        .read-link { font-size:0.88rem; font-weight:700; color:var(--secondary); text-decoration:none; }
+        .entry.mellow .read-link { color:var(--accent-provo); }
+        .read-link:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+
+<div class="article-container">
+    <header>
+        <h1>Article Index: From First Principles to a Framework You'll Actually Use</h1>
+        <p class="subtitle">Vibe Rounds Cognitive Analytics Series</p>
+        <p>Author - Dr. Avinash Kumar Gupta</p>
+        <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer" class="cta-header-btn">Get started &rarr;</a>
+        <nav class="series-nav">
+            <a href="article.html" class="active">Index</a>
+            <a href="modern_clinical_reasoning.html">Part 1 &middot; Modern Clinical Reasoning</a>
+            <a href="ground_truth_layers.html">Part 2 &middot; Ground-Truth Layers</a>
+            <a href="Case_Complexity.html">Part 3 &middot; Case Complexity</a>
+            <a href="using_the_stack.html">Part 4 &middot; Using the Stack</a>
+            <a href="journey.html">Part 5 &middot; The Build Itself</a>
+        </nav>
+    </header>
+
+    <div class="disclaimer">
+        <strong>About this series:</strong> Five pieces, read in order, tracing the same idea — Promption and Provocation as cognitive modes for studying clinical cases — from a first working demonstration, through progressively heavier ground-truth tooling, to a deliberate step back toward something small enough to use every week, and finally a reflective account of how the underlying system was actually built.
+    </div>
+
+    <p class="thesis">Tooling, complexity, and claimed accuracy rise through Parts 1–3, then the series deliberately turns back toward usability in Part 4 — because a framework only teaches you something if you actually open it. Part 5 steps outside the argument entirely to show how it was built.</p>
+
+    <section class="index-entry">
+        <div class="index-kicker">Part 1 &middot; Foundation</div>
+        <div class="pill-row">
+            <span class="pill">2 cognitive modes</span>
+            <span class="pill">1 worked case</span>
+            <span class="pill">no ground-truth layer yet</span>
+        </div>
+        <h2><a href="modern_clinical_reasoning.html" style="color:inherit;text-decoration:none;">Modern Clinical Reasoning &amp; Socratic AI</a></h2>
+        <p>Introduces the dual-mode architecture — <strong>Promption</strong> (scaffolding messy narrative into structure) and <strong>Provocation</strong> (stress-testing the resulting hypothesis) — and walks a single DKA/pneumonia case through both modes end to end, surfacing an HbA1c discrepancy a single-pass answer would likely have missed.</p>
+        <div class="gauge">
+          <div class="gauge-row"><span class="gauge-label">Tooling</span><div class="gauge-bar"><div class="gauge-fill" style="width:22%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Complexity</span><div class="gauge-bar"><div class="gauge-fill" style="width:20%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Ground truth</span><div class="gauge-bar"><div class="gauge-fill" style="width:5%"></div></div></div>
+        </div>
+        <a class="read-link" href="modern_clinical_reasoning.html">Read Part 1 &rarr;</a>
+    </section>
+
+    <section class="index-entry">
+        <div class="index-kicker">Part 2 &middot; Anchoring to ground truth</div>
+        <div class="pill-row">
+            <span class="pill">knowledge graph</span>
+            <span class="pill">institutional pathway</span>
+            <span class="pill">appraised evidence</span>
+        </div>
+        <h2><a href="ground_truth_layers.html" style="color:inherit;text-decoration:none;">Fact Graphs, Pathways &amp; Appraised Evidence</a></h2>
+        <p>Adds three structured layers on top of Part 1's cognitive modes — a chronic kidney disease knowledge graph, an acute pancreatitis institutional pathway, and appraised evidence — and examines what each one fixes, what new risk each one introduces, and why disagreement between layers is a signal worth surfacing rather than smoothing over.</p>
+        <div class="gauge">
+          <div class="gauge-row"><span class="gauge-label">Tooling</span><div class="gauge-bar"><div class="gauge-fill" style="width:55%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Complexity</span><div class="gauge-bar"><div class="gauge-fill" style="width:58%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Ground truth</span><div class="gauge-bar"><div class="gauge-fill" style="width:65%"></div></div></div>
+        </div>
+        <a class="read-link" href="ground_truth_layers.html">Read Part 2 &rarr;</a>
+    </section>
+
+    <section class="index-entry">
+        <div class="index-kicker">Part 3 &middot; Weighting and validation</div>
+        <div class="pill-row">
+            <span class="pill">rarity-tiered weighting</span>
+            <span class="pill">EBM task axis</span>
+            <span class="pill">proposed empirical study</span>
+        </div>
+        <h2><a href="Case_Complexity.html" style="color:inherit;text-decoration:none;">Weighting Ground-Truth Layers by Case Complexity</a></h2>
+        <p>Asks which layer deserves the most weight, for which case: a three-tier rarity framework crossed against an EBM task-complexity axis, a verification burden that rises with both, and an honest accounting of what remains a proof of concept versus what would need a matched case series to validate — plus a category of uncertainty, input curation, that no layer can ever reach.</p>
+        <div class="gauge">
+          <div class="gauge-row"><span class="gauge-label">Tooling</span><div class="gauge-bar"><div class="gauge-fill" style="width:88%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Complexity</span><div class="gauge-bar"><div class="gauge-fill" style="width:92%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Ground truth</span><div class="gauge-bar"><div class="gauge-fill" style="width:85%"></div></div></div>
+        </div>
+        <a class="read-link" href="Case_Complexity.html">Read Part 3 &rarr;</a>
+    </section>
+
+    <section class="index-entry mellow">
+        <div class="index-kicker">Part 4 &middot; Turning back toward usability</div>
+        <div class="pill-row">
+            <span class="pill">10-minute self-audit loop</span>
+            <span class="pill">habits over tooling</span>
+            <span class="pill">deliberately smaller</span>
+        </div>
+        <h2><a href="using_the_stack.html" style="color:inherit;text-decoration:none;">Using the Stack: A Practical Guide to Auditing Your Own Reasoning</a></h2>
+        <p>Rather than adding a fourth ground-truth layer, this piece asks what the smallest usable version of the whole stack looks like — a ten-minute weekly loop, a one-line ledger instead of a formal study, and a simple gut-check for when it's actually worth reaching for the graph, the pathway, or the evidence layer described in Parts 2 and 3.</p>
+        <div class="gauge">
+          <div class="gauge-row"><span class="gauge-label">Tooling</span><div class="gauge-bar"><div class="gauge-fill" style="width:15%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Complexity</span><div class="gauge-bar"><div class="gauge-fill" style="width:12%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Usability focus</span><div class="gauge-bar"><div class="gauge-fill" style="width:95%"></div></div></div>
+        </div>
+        <a class="read-link" href="using_the_stack.html">Read Part 4 &rarr;</a>
+    </section>
+
+    <section class="index-entry mellow">
+        <div class="index-kicker">Part 5 &middot; The build itself, as case study</div>
+        <div class="pill-row">
+            <span class="pill">reflective account</span>
+            <span class="pill">the detour that didn't land</span>
+            <span class="pill">not another layer</span>
+        </div>
+        <h2><a href="journey.html" style="color:inherit;text-decoration:none;">The Build Itself as Case Study</a></h2>
+        <p>A different kind of part. Parts 1–4 argued a framework; this one is the process that produced it — one Socratic prompt, a pedagogical layer built from four meta-skills, a widening module library, a knowledge-graph detour that didn't clearly outperform the simpler approach, and the editing discipline that turned the write-up itself into something worth keeping.</p>
+        <div class="gauge">
+          <div class="gauge-row"><span class="gauge-label">Tooling</span><div class="gauge-bar"><div class="gauge-fill" style="width:10%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Complexity</span><div class="gauge-bar"><div class="gauge-fill" style="width:8%"></div></div></div>
+          <div class="gauge-row"><span class="gauge-label">Reflective focus</span><div class="gauge-bar"><div class="gauge-fill" style="width:98%"></div></div></div>
+        </div>
+        <a class="read-link" href="journey.html">Read Part 5 &rarr;</a>
+    </section>
+
+    <footer>
+        <span>Vibe Rounds CCOS Framework &middot; For Educational and Clinical Reasoning Practice Only — not a clinical decision tool.</span>
+        <div class="footer-links">
+            <a href="modern_clinical_reasoning.html">Part 1</a>
+            <a href="ground_truth_layers.html">Part 2</a>
+            <a href="Case_Complexity.html">Part 3</a>
+            <a href="using_the_stack.html">Part 4</a>
+            <a href="journey.html">Part 5</a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

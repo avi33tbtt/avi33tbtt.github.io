@@ -17,291 +17,150 @@
             --border-color: #e2e8f0;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.7;
             color: var(--text-main);
             background-color: var(--bg-light);
             margin: 0;
-            padding: 15px 10px; /* Reduced padding for mobile viewports */
+            padding: 15px 10px;
         }
 
         .article-container {
             max-width: 900px;
             margin: 0 auto;
             background: var(--card-bg);
-            padding: 24px 16px; /* Scaled down padding for smaller devices */
+            padding: 24px 16px;
             border-radius: 12px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
         }
 
-        header {
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
+        header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
 
-        h1 {
-            color: var(--primary);
-            font-size: 1.8em; /* Adjusted base for mobile responsiveness */
-            line-height: 1.2;
-            margin: 0 0 12px 0;
-        }
+        h1 { color: var(--primary); font-size: 1.8em; line-height: 1.2; margin: 0 0 12px 0; }
 
-        .subtitle {
-            font-size: 1.05em;
-            color: var(--secondary);
-            font-weight: 600;
-            margin: 0 0 20px 0;
-        }
+        .subtitle { font-size: 1.05em; color: var(--secondary); font-weight: 600; margin: 0 0 20px 0; }
 
         .cta-header-btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.95em;
+            display: inline-block; background-color: var(--secondary); color: white; font-weight: bold;
+            padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.95em;
             transition: background-color 0.2s, transform 0.1s;
         }
+        .cta-header-btn:hover { background-color: var(--primary); color: white; }
+        .cta-header-btn:active { transform: scale(0.98); }
 
-        .cta-header-btn:hover {
-            background-color: var(--primary);
-            color: white;
+        /* Series navigation */
+        .series-nav { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:18px; border-top:1px dashed var(--border-color); }
+        .series-nav a {
+            font-size:0.78em; font-weight:600; padding:6px 13px; border-radius:20px;
+            background:#e2e8f0; color:var(--text-main); text-decoration:none; white-space:nowrap;
+            transition: background-color .2s, color .2s;
         }
+        .series-nav a.active { background:var(--primary); color:#fff; }
+        .series-nav a:hover { background:var(--secondary); color:#fff; }
 
-        .cta-header-btn:active {
-            transform: scale(0.98);
-        }
+        h2 { color: var(--primary); font-size: 1.4em; margin-top: 35px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        h3 { color: var(--secondary); font-size: 1.15em; margin-top: 25px; margin-bottom: 10px; }
+        p { margin-bottom: 20px; font-size: 1em; }
 
-        h2 {
-            color: var(--primary);
-            font-size: 1.4em; /* Scaled for smaller screens */
-            margin-top: 35px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
+        .disclaimer { background: #fffbe6; color: #8a6d3b; padding: 15px 16px; border-radius: 8px; font-size: 0.9em; margin-bottom: 30px; border-left: 5px solid #ffe79a; }
 
-        h3 {
-            color: var(--secondary);
-            font-size: 1.15em;
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 8px; margin: 25px 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        p {
-            margin-bottom: 20px;
-            font-size: 1em;
-        }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 25px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9em; min-width: 550px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
 
-        /* Disclaimer Box */
-        .disclaimer {
-            background: #fffbe6;
-            color: #8a6d3b;
-            padding: 15px 16px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            margin-bottom: 30px;
-            border-left: 5px solid #ffe79a;
-        }
-
-        /* Media Container */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            background: #000;
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        /* Table Design with horizontal scroll wrapper for mobile */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 25px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-            min-width: 550px; /* Prevents text from crushing on small screens */
-        }
-
-        th, td {
-            padding: 12px 14px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        /* Concept Cards */
-        .concept-card {
-            border-left: 5px solid;
-            padding: 16px 18px;
-            margin: 20px 0;
-            background: #f8fafc;
-            border-radius: 0 8px 8px 0;
-        }
-
+        .concept-card { border-left: 5px solid; padding: 16px 18px; margin: 20px 0; background: #f8fafc; border-radius: 0 8px 8px 0; }
         .promo-card { border-color: var(--accent-promo); }
-        .promo-card h3 { color: var(--accent-promo); }
-
+        .promo-card h3, .promo-card h4 { color: var(--accent-promo); }
         .provo-card { border-color: var(--accent-provo); }
-        .provo-card h3 { color: var(--accent-provo); }
-
+        .provo-card h3, .provo-card h4 { color: var(--accent-provo); }
         .case-card { border-color: var(--primary); }
+        .info-card { border-color: var(--secondary); }
+        .info-card h3, .info-card h4 { color: var(--secondary); }
+        .risk-card { border-color: var(--accent-provo); background:#fdf1ef; }
+        .risk-card h3, .risk-card h4 { color: #b0392b; }
 
-        .module-tag {
-            display: inline-block;
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-right: 4px;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
+        .module-tag { display: inline-block; background: #e2e8f0; color: #4a5568; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 4px; margin-bottom: 6px; font-weight: 600; }
 
-        /* Interactive Case Walker */
-        .case-walker {
-            background: #f1f5f9;
-            padding: 18px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            margin: 30px 0;
-        }
+        .case-walker { background: #f1f5f9; padding: 18px 14px; border-radius: 10px; border: 1px solid var(--border-color); margin: 30px 0; }
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
-        .step {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-            padding: 12px 20px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-            font-size: 0.95em;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-
+        .btn { display: block; width: 100%; box-sizing: border-box; text-align: center; padding: 12px 20px; margin-top: 20px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; font-size: 0.95em; transition: opacity 0.2s, transform 0.1s; }
         .btn:hover { opacity: 0.9; }
         .btn:active { transform: scale(0.98); }
-
         .btn-start { background-color: var(--primary); }
         .btn-promo { background-color: var(--accent-promo); }
         .btn-provo { background-color: var(--accent-provo); }
 
-        ul, ol {
-            padding-left: 18px;
-        }
+        ul, ol { padding-left: 18px; }
+        li { margin-bottom: 8px; }
 
-        li {
-            margin-bottom: 8px;
-        }
+        .case-link a { color: var(--secondary); font-weight: bold; text-decoration: none; word-break: break-all; }
+        .case-link a:hover { text-decoration: underline; }
 
-        .case-link a {
-            color: var(--secondary);
-            font-weight: bold;
-            text-decoration: none;
-            word-break: break-all;
-        }
+        blockquote { font-style: italic; border-left: 3px solid var(--text-main); margin: 20px 0; padding: 6px 20px; color: var(--text-muted); }
 
-        .case-link a:hover {
-            text-decoration: underline;
-        }
+        code { font-family: "SFMono-Regular", Consolas, monospace; background: var(--border-color); padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
 
-        footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.85em;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column; /* Stack footer elements on mobile */
-            gap: 12px;
-            align-items: flex-start;
-        }
+        .badge-row { display:flex; flex-wrap:wrap; gap:10px; margin: 18px 0 24px; }
+        .badge { background: var(--card-bg); border:1px solid var(--border-color); border-radius:6px; padding:8px 12px; min-width:110px; }
+        .badge .k { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); display:block; }
+        .badge .v { font-weight:700; font-size:0.92rem; color:var(--text-main); }
+        .badge.urgent .v { color: var(--accent-provo); }
 
-        footer a {
-            color: var(--secondary);
-            font-weight: 600;
-            text-decoration: none;
-        }
+        .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 6px; }
+        .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 6px; }
+        @media (max-width:680px){ .grid3{grid-template-columns:1fr;} .grid2{grid-template-columns:1fr;} }
+        .grid-card { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px; }
+        .grid-card .tag { font-size:0.68rem; color:var(--secondary); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; font-weight:700; }
+        .grid-card h4 { margin:0 0 6px; font-size:0.95rem; color:var(--text-main); }
+        .grid-card p { font-size:0.85rem; color:var(--text-muted); margin:0; }
+        .grid-card.pro { border-top:3px solid var(--accent-promo); }
+        .grid-card.con { border-top:3px solid var(--accent-provo); }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
+        .thesis { font-size: 1.15em; line-height: 1.5; color: var(--primary); border-top: 2px solid var(--secondary); border-bottom: 2px solid var(--secondary); padding: 18px 0; margin: 24px 0; text-align:center; font-style:italic; }
 
-        /* Desktop Media Query Adjustments */
+        .chain { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0 20px; font-size:0.85rem; }
+        .chain .cstep { background:#eef4f3; border:1px solid #cfe3e1; color:var(--primary); padding:6px 10px; border-radius:5px; white-space:nowrap; font-weight:600; }
+        .chain .arrow { color:var(--text-muted); }
+
+        .compare2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0; }
+        @media (max-width:600px){ .compare2{grid-template-columns:1fr;} }
+        .compare2 .col { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px 18px; }
+        .compare2 .col.was { border-top:3px solid var(--accent-provo); }
+        .compare2 .col.now { border-top:3px solid var(--accent-promo); }
+        .compare2 .col h5 { margin:0 0 8px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); }
+
+        .checklist { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; margin:16px 0; }
+        .checklist h4 { margin:0 0 10px; font-size:0.95rem; color:var(--secondary); }
+        .checklist ul { margin-bottom:0; }
+        .checklist li { list-style:none; position:relative; padding-left:26px; }
+        .checklist li::before { content:"\2610"; position:absolute; left:0; color:var(--secondary); font-size:1.05em; }
+
+        .arc-box { font-size:0.85rem; color:var(--text-muted); background:#f8fafc; border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; line-height:1.9; }
+
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--text-muted); display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+        footer a { color: var(--secondary); font-weight: 600; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        footer .footer-links { display:flex; flex-wrap:wrap; gap:6px 14px; }
+
         @media (min-width: 768px) {
-            body {
-                padding: 30px 15px;
-            }
-            .article-container {
-                padding: 50px;
-            }
-            .case-walker {
-                padding: 30px;
-            }
-            h1 {
-                font-size: 2.4em;
-            }
-            h2 {
-                font-size: 1.75em;
-            }
-            .btn {
-                display: inline-block;
-                width: auto;
-            }
-            footer {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
+            body { padding: 30px 15px; }
+            .article-container { padding: 50px; }
+            .case-walker { padding: 30px; }
+            h1 { font-size: 2.4em; }
+            h2 { font-size: 1.75em; }
+            .btn { display: inline-block; width: auto; }
+            footer { flex-direction: row; justify-content: space-between; align-items: center; }
         }
     </style>
 </head>
@@ -309,32 +168,38 @@
 
 <div class="article-container">
     <header>
-        <h1>Modern Clinical Reasoning & Socratic AI</h1>
+        <h1>Modern Clinical Reasoning &amp; Socratic AI</h1>
         <p class="subtitle">Integrating Promption and Provocation Cognitive Modes into Healthcare Analytics</p>
         <p>Author - Dr. Avinash Kumar Gupta</p>
         <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer" class="cta-header-btn">Get started &rarr;</a>
+        <nav class="series-nav">
+            <a href="article.html">Index</a>
+            <a href="modern_clinical_reasoning.html" class="active">Part 1 &middot; Modern Clinical Reasoning</a>
+            <a href="ground_truth_layers.html">Part 2 &middot; Ground-Truth Layers</a>
+            <a href="Case_Complexity.html">Part 3 &middot; Case Complexity</a>
+            <a href="using_the_stack.html">Part 4 &middot; Using the Stack</a>
+            <a href="journey.html">Part 5 &middot; The Build Itself</a>
+        </nav>
     </header>
 
     <div class="disclaimer">
-        <strong>Architectural Note:</strong> VibeRounds and this builder operate purely as a patient-centered learning stack and study framework, not a clinical decision tool[cite: 1]. These cognitive modes are designed to practice clinical reasoning on deidentified, consented case reports, not for diagnosing real-time patients[cite: 1].
+        <strong>Architectural Note:</strong> VibeRounds and this builder operate purely as a patient-centered learning stack and study framework, not a clinical decision tool. These cognitive modes are designed to practice clinical reasoning on deidentified, consented case reports, not for diagnosing real-time patients.
     </div>
 
-    <!-- Section 1: Introduction -->
     <section>
         <h2>1. Introduction: AI as a Tool for Thinking</h2>
-        <p>The translation of raw clinical data into an accurate diagnosis requires immense cognitive bandwidth. In modern healthcare environments, clinicians are frequently bombarded with high-velocity data—labs, imaging, and fragmented patient histories. To mitigate cognitive overload and prevent diagnostic error, the medical community is increasingly turning to Large Language Models (LLMs) not as diagnostic oracles, but as "Tools for Thinking"[cite: 1].</p>
-        
-        <p>Rather than functioning as an automated calculator that produces instant answers, educational platforms like Vibe Rounds operate as Socratic reasoning partners. By structuring interaction models around cognitive scaffolding and stress-testing, AI systems can enhance human critical thinking rather than replacing it[cite: 1].</p>
+        <p>The translation of raw clinical data into an accurate diagnosis requires immense cognitive bandwidth. In modern healthcare environments, clinicians are frequently bombarded with high-velocity data—labs, imaging, and fragmented patient histories. To mitigate cognitive overload and prevent diagnostic error, the medical community is increasingly turning to Large Language Models (LLMs) not as diagnostic oracles, but as "Tools for Thinking".</p>
+
+        <p>Rather than functioning as an automated calculator that produces instant answers, educational platforms like Vibe Rounds operate as Socratic reasoning partners. By structuring interaction models around cognitive scaffolding and stress-testing, AI systems can enhance human critical thinking rather than replacing it.</p>
 
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/3lPnN8omdPA" title="How to Stop AI from Killing Your Critical Thinking | Advait Sarkar | TED" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </section>
 
-    <!-- Section 2: Cognitive Modes -->
     <section>
         <h2>2. The Dual-Mode Architecture of Cognitive Intervention</h2>
-        <p>To safely navigate complex patient presentations, reasoning frameworks must adapt to the clinician's current mental state. In Human-Computer Interaction (HCI) and LLM design, cognitive tools operate across two primary modes: <strong>Promption</strong> and <strong>Provocation</strong>[cite: 1].</p>
+        <p>To safely navigate complex patient presentations, reasoning frameworks must adapt to the clinician's current mental state. In Human-Computer Interaction (HCI) and LLM design, cognitive tools operate across two primary modes: <strong>Promption</strong> and <strong>Provocation</strong>.</p>
 
         <div class="table-responsive">
             <table>
@@ -358,13 +223,13 @@
                     </tr>
                     <tr>
                         <td><strong>Key Modules</strong></td>
-                        <td>#17 (Semantic Qualifiers), #12 (Diff Dx Deepdive), #50 (Reasoning Map)[cite: 1].</td>
-                        <td>#28 (Diagnostic Time-Out), #30 (Anchor Extractor), #45 (Adversarial Shadow)[cite: 1].</td>
+                        <td>#17 (Semantic Qualifiers), #12 (Diff Dx Deepdive), #50 (Reasoning Map).</td>
+                        <td>#28 (Diagnostic Time-Out), #30 (Anchor Extractor), #45 (Adversarial Shadow).</td>
                     </tr>
                     <tr>
                         <td><strong>Target State</strong></td>
                         <td>Enhances rapid, unstructured observations into clear frameworks.</td>
-                        <td>Forces slow, deliberate System 2 thinking by introducing constructive friction[cite: 1].</td>
+                        <td>Forces slow, deliberate System 2 thinking by introducing constructive friction.</td>
                     </tr>
                 </tbody>
             </table>
@@ -372,42 +237,40 @@
 
         <div class="concept-card promo-card">
             <h3>Promption Mode: Cognitive Scaffolding</h3>
-            <p>Promption mode is enabled when the processing pipeline assists the learner in structuring unstructured narrative data[cite: 1]. It builds out the clinical picture, connects pathophysiology to bedside findings, and organizes messy information into clear, actionable frameworks[cite: 1].</p>
-            <p><strong>Common Modules:</strong> 
+            <p>Promption mode is enabled when the processing pipeline assists the learner in structuring unstructured narrative data. It builds out the clinical picture, connects pathophysiology to bedside findings, and organizes messy information into clear, actionable frameworks.</p>
+            <p><strong>Common Modules:</strong>
                 <span class="module-tag">#12 Differential Diagnosis Deepdive</span>
                 <span class="module-tag">#15 Illness Script Acquisition</span>
-                <span class="module-tag">#17 Semantic Qualifiers & Problem Rep</span>
+                <span class="module-tag">#17 Semantic Qualifiers &amp; Problem Rep</span>
                 <span class="module-tag">#50 Diagnostic Reasoning Map</span>
-                <span class="module-tag">#36 Bayesian Probability Engine</span>[cite: 1]
+                <span class="module-tag">#36 Bayesian Probability Engine</span>
             </p>
         </div>
 
         <div class="concept-card provo-card">
             <h3>Provocation Mode: Cognitive Stress-Testing</h3>
-            <p>Provocation mode is enabled when the pipeline is configured to actively challenge biases, introduce friction, and prevent premature closure[cite: 1]. Instead of helping the user build their case, the system acts as an adversarial agent or "speed bump," forcing deeper reflection[cite: 1].</p>
-            <p><strong>Common Modules:</strong> 
+            <p>Provocation mode is enabled when the pipeline is configured to actively challenge biases, introduce friction, and prevent premature closure. Instead of helping the user build their case, the system acts as an adversarial agent or "speed bump," forcing deeper reflection.</p>
+            <p><strong>Common Modules:</strong>
                 <span class="module-tag">#28 Diagnostic Time-Out</span>
                 <span class="module-tag">#30 The "Diagnostic Anchor" Extractor</span>
                 <span class="module-tag">#37 Red Herring / Signal-to-Noise Drill</span>
                 <span class="module-tag">#45 Shadow Module - Adversarial Counterpart</span>
-                <span class="module-tag">#54 System 1 & 2 Question Generator</span>[cite: 1]
+                <span class="module-tag">#54 System 1 &amp; 2 Question Generator</span>
             </p>
         </div>
     </section>
 
-    <!-- Section 3: Architecture & Workflow -->
     <section>
         <h2>3. Implementation Workflow for Case Records</h2>
-        <p>To enable these cognitive modes on a narrative medical text, the system follows a sequential multi-stage workflow[cite: 1]:</p>
+        <p>To enable these cognitive modes on a narrative medical text, the system follows a sequential multi-stage workflow:</p>
         <ol>
-            <li><strong>Input Intake:</strong> Deidentified narrative case text or electronic health record extracts are fed into the case review environment[cite: 1].</li>
-            <li><strong>Intent Selection:</strong> The learner determines whether they require <em>scaffolding</em> (Promption) to synthesize complex data, or <em>stress-testing</em> (Provocation) to audit an initial diagnostic hypothesis[cite: 1].</li>
-            <li><strong>Pipeline Construction:</strong> Specific prompt modules are chained chronologically. For example, chaining <em>Semantic Qualifiers &rarr; Differential Deepdive</em> creates a promption environment, while chaining <em>Anchor Extractor &rarr; Adversarial Shadow &rarr; Diagnostic Time-Out</em> constructs a Provocation environment[cite: 1].</li>
-            <li><strong>Execution & Synthesis:</strong> The underlying language model processes the clinical text through the pipeline, generating either an augmented structural map or a targeted cognitive challenge[cite: 1].</li>
+            <li><strong>Input Intake:</strong> Deidentified narrative case text or electronic health record extracts are fed into the case review environment.</li>
+            <li><strong>Intent Selection:</strong> The learner determines whether they require <em>scaffolding</em> (Promption) to synthesize complex data, or <em>stress-testing</em> (Provocation) to audit an initial diagnostic hypothesis.</li>
+            <li><strong>Pipeline Construction:</strong> Specific prompt modules are chained chronologically. For example, chaining <em>Semantic Qualifiers &rarr; Differential Deepdive</em> creates a promption environment, while chaining <em>Anchor Extractor &rarr; Adversarial Shadow &rarr; Diagnostic Time-Out</em> constructs a Provocation environment.</li>
+            <li><strong>Execution &amp; Synthesis:</strong> The underlying language model processes the clinical text through the pipeline, generating either an augmented structural map or a targeted cognitive challenge.</li>
         </ol>
     </section>
 
-    <!-- Section 4: Progressive Case Study -->
     <section>
         <h2>4. Applied Walkthrough: A Clinical Case Study</h2>
         <p>To examine this framework in action, consider a complex emergency department presentation. Below is an interactive progressive walkthrough demonstrating how raw intake data moves through sequential promption and Provocation stages.</p>
@@ -415,33 +278,31 @@
         <p class="case-link"><strong>Case Reference Link:</strong> <a href="https://suryapradeep01.blogspot.com/2021/02/sjndb.html" target="_blank" rel="noopener noreferrer">Clinical Case Report Source</a></p>
 
         <div class="case-walker">
-            <!-- Step 1: Case Intake -->
             <div id="step1" class="step active">
-                <h3 style="color: var(--primary); margin-top:0;">Stage 1: Raw Case Intake & Narrative</h3>
-                
+                <h3 style="color: var(--primary); margin-top:0;">Stage 1: Raw Case Intake &amp; Narrative</h3>
+
                 <div class="concept-card case-card">
-                    <h3>Patient Profile & Clinical Narrative</h3>
+                    <h3>Patient Profile &amp; Clinical Narrative</h3>
                     <ul>
                         <li><strong>Demographics:</strong> 48-year-old female.</li>
                         <li><strong>Chief Complaints:</strong> Acute shortness of breath (Grade 4) and uneasiness; 1-week history of suprapubic pain; low-grade fever with chills since morning.</li>
                         <li><strong>Vitals:</strong> Tachypneic (RR 32), PR 123, BP 110/70, Afebrile.</li>
                         <li><strong>Key Diagnostics:</strong> Initial ABG reveals severe metabolic acidosis (pH 6.77, HCO3 3.8), which corrected to pH 7.42 following 200mEq bicarbonate administration.</li>
-                        <li><strong>Imaging & Labs:</strong> HRCT chest shows ground-glass opacities, CORADS III, severity score 24/25. HbA1c is 6.8%. Urine ketones positive. Total Leukocyte Count (TLC) elevated at 27,400.</li>
+                        <li><strong>Imaging &amp; Labs:</strong> HRCT chest shows ground-glass opacities, CORADS III, severity score 24/25. HbA1c is 6.8%. Urine ketones positive. Total Leukocyte Count (TLC) elevated at 27,400.</li>
                         <li><strong>Working Diagnosis:</strong> Type 2 Diabetes with Diabetic Ketoacidosis (DKA) secondary to acute sepsis.</li>
                     </ul>
                 </div>
-                
+
                 <p>The raw narrative is ingested. Next, we execute the promption Pipeline to construct a formal problem representation.</p>
                 <button class="btn btn-promo" onclick="goToStep(2)">Execute promption Pipeline &rarr;</button>
             </div>
 
-            <!-- Step 2: promption -->
             <div id="step2" class="step">
                 <h3 style="color: var(--accent-promo); margin-top:0;">Stage 2: promption Mode (Cognitive Scaffolding)</h3>
                 <p>This phase extracts narrative data, maps features, and establishes a clear problem framework.</p>
-                
+
                 <div class="concept-card promo-card">
-                    <h3><span class="module-tag">#17 Semantic Qualifiers & Problem Rep</span></h3>
+                    <h3><span class="module-tag">#17 Semantic Qualifiers &amp; Problem Rep</span></h3>
                     <p><strong>Problem Representation:</strong> A 48-year-old female with a history of type 2 diabetes presents with acute severe dyspnea and subacute suprapubic pain, found to have profound high-anion-gap metabolic acidosis and diffuse ground-glass pulmonary opacities.</p>
                 </div>
 
@@ -453,12 +314,11 @@
                         <li><strong>Urosepsis triggering DKA:</strong> Supported by subacute suprapubic pain, marked leukocytosis (TLC 27,400), and glucosuria/ketonuria.</li>
                     </ul>
                 </div>
-                
+
                 <p>With the structure established, we now shift from building the case to adversarial stress-testing.</p>
                 <button class="btn btn-provo" onclick="goToStep(3)">Execute Provocation Pipeline &rarr;</button>
             </div>
 
-            <!-- Step 3: Provocation -->
             <div id="step3" class="step">
                 <h3 style="color: var(--accent-provo); margin-top:0;">Stage 3: Provocation Mode (Cognitive Stress-Testing)</h3>
                 <p>This phase actively probes for logical inconsistencies, premature closure, and diagnostic anchors.</p>
@@ -478,24 +338,22 @@
                     <p><strong>Safety Pause:</strong> Evaluate alternative drivers of the high anion gap. The patient takes Metformin 500mg. Could this presentation represent Metformin-Associated Lactic Acidosis (MALA) compounding the metabolic gap? Serum lactate levels must be urgently prioritized alongside LDH (506 IU/L).</p>
                 </div>
 
-                <button class="btn btn-start" onclick="goToStep(4)">View Synthesis & Debrief &rarr;</button>
+                <button class="btn btn-start" onclick="goToStep(4)">View Synthesis &amp; Debrief &rarr;</button>
             </div>
 
-            <!-- Step 4: Conclusion -->
             <div id="step4" class="step">
-                <h3 style="color: var(--primary); margin-top:0;">Stage 4: Synthesis & Debrief</h3>
+                <h3 style="color: var(--primary); margin-top:0;">Stage 4: Synthesis &amp; Debrief</h3>
                 <p>By sequentially applying promption and Provocation pipelines, the static case text was transformed into an active reasoning exercise:</p>
                 <ul>
                     <li><strong>promption Mode</strong> rapidly organized a chaotic presentation into structured illness scripts and clear semantic summaries.</li>
                     <li><strong>Provocation Mode</strong> successfully interrupted cognitive momentum, highlighting the HbA1c discrepancy (6.8%) and compelling the clinician to rule out MALA and secondary ARDS.</li>
                 </ul>
-                
+
                 <button class="btn btn-start" onclick="goToStep(1)">&#8634; Restart Case Walkthrough</button>
             </div>
         </div>
     </section>
 
-    <!-- Section 5: Summary & Strategic Impact -->
     <section>
         <h2>5. Strategic Impact on Medical Education</h2>
         <p>The true value of frameworks like Vibe Rounds lies in their strict adherence to a Socratic paradigm. By declining to generate direct clinical mandates and instead providing structured promption and Provocation, these tools train clinicians to think with heightened analytical rigor.</p>
@@ -503,23 +361,26 @@
         <p>As computational power in healthcare analytics continues to scale, embedding dual-mode cognitive interventions into learning workflows ensures that human clinical judgment scales in parallel—fostering clinicians who are better equipped to navigate ambiguity and avoid diagnostic errors.</p>
     </section>
 
+    <p>Continue to <a href="ground_truth_layers.html">Part 2 &middot; Fact Graphs, Pathways &amp; Appraised Evidence &rarr;</a></p>
+
     <footer>
-        <span>Vibe Rounds CCOS Framework • For Educational and Clinical Reasoning Practice Only</span>
-        <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer">Get started &rarr;</a>
+        <span>Vibe Rounds CCOS Framework &middot; For Educational and Clinical Reasoning Practice Only — not a clinical decision tool.</span>
+        <div class="footer-links">
+            <a href="article.html">Index</a>
+            <a href="ground_truth_layers.html">Part 2</a>
+            <a href="Case_Complexity.html">Part 3</a>
+            <a href="using_the_stack.html">Part 4</a>
+            <a href="journey.html">Part 5</a>
+        </div>
     </footer>
 </div>
 
 <script>
     function goToStep(stepNumber) {
         const steps = document.querySelectorAll('.step');
-        steps.forEach(step => {
-            step.classList.remove('active');
-        });
-        
+        steps.forEach(step => { step.classList.remove('active'); });
         const targetStep = document.getElementById('step' + stepNumber);
-        if(targetStep) {
-            targetStep.classList.add('active');
-        }
+        if(targetStep) { targetStep.classList.add('active'); }
     }
 </script>
 

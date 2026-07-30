@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weighting Ground-Truth Layers by Case Complexity: A Companion Analysis to Vibe Rounds</title>
+    <style>
+        :root {
+            --primary: #0e7490;
+            --secondary: #0891B2;
+            --accent-promo: #27ae60;
+            --accent-provo: #e74c3c;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 15px 10px;
+        }
+
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 24px 16px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        header { border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px; }
+
+        h1 { color: var(--primary); font-size: 1.8em; line-height: 1.2; margin: 0 0 12px 0; }
+
+        .subtitle { font-size: 1.05em; color: var(--secondary); font-weight: 600; margin: 0 0 20px 0; }
+
+        .cta-header-btn {
+            display: inline-block; background-color: var(--secondary); color: white; font-weight: bold;
+            padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 0.95em;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .cta-header-btn:hover { background-color: var(--primary); color: white; }
+        .cta-header-btn:active { transform: scale(0.98); }
+
+        /* Series navigation */
+        .series-nav { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:18px; border-top:1px dashed var(--border-color); }
+        .series-nav a {
+            font-size:0.78em; font-weight:600; padding:6px 13px; border-radius:20px;
+            background:#e2e8f0; color:var(--text-main); text-decoration:none; white-space:nowrap;
+            transition: background-color .2s, color .2s;
+        }
+        .series-nav a.active { background:var(--primary); color:#fff; }
+        .series-nav a:hover { background:var(--secondary); color:#fff; }
+
+        h2 { color: var(--primary); font-size: 1.4em; margin-top: 35px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        h3 { color: var(--secondary); font-size: 1.15em; margin-top: 25px; margin-bottom: 10px; }
+        p { margin-bottom: 20px; font-size: 1em; }
+
+        .disclaimer { background: #fffbe6; color: #8a6d3b; padding: 15px 16px; border-radius: 8px; font-size: 0.9em; margin-bottom: 30px; border-left: 5px solid #ffe79a; }
+
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 8px; margin: 25px 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 25px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9em; min-width: 550px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        .concept-card { border-left: 5px solid; padding: 16px 18px; margin: 20px 0; background: #f8fafc; border-radius: 0 8px 8px 0; }
+        .promo-card { border-color: var(--accent-promo); }
+        .promo-card h3, .promo-card h4 { color: var(--accent-promo); }
+        .provo-card { border-color: var(--accent-provo); }
+        .provo-card h3, .provo-card h4 { color: var(--accent-provo); }
+        .case-card { border-color: var(--primary); }
+        .info-card { border-color: var(--secondary); }
+        .info-card h3, .info-card h4 { color: var(--secondary); }
+        .risk-card { border-color: var(--accent-provo); background:#fdf1ef; }
+        .risk-card h3, .risk-card h4 { color: #b0392b; }
+
+        .module-tag { display: inline-block; background: #e2e8f0; color: #4a5568; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; margin-right: 4px; margin-bottom: 6px; font-weight: 600; }
+
+        .case-walker { background: #f1f5f9; padding: 18px 14px; border-radius: 10px; border: 1px solid var(--border-color); margin: 30px 0; }
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+
+        .btn { display: block; width: 100%; box-sizing: border-box; text-align: center; padding: 12px 20px; margin-top: 20px; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; font-size: 0.95em; transition: opacity 0.2s, transform 0.1s; }
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: scale(0.98); }
+        .btn-start { background-color: var(--primary); }
+        .btn-promo { background-color: var(--accent-promo); }
+        .btn-provo { background-color: var(--accent-provo); }
+
+        ul, ol { padding-left: 18px; }
+        li { margin-bottom: 8px; }
+
+        .case-link a { color: var(--secondary); font-weight: bold; text-decoration: none; word-break: break-all; }
+        .case-link a:hover { text-decoration: underline; }
+
+        blockquote { font-style: italic; border-left: 3px solid var(--text-main); margin: 20px 0; padding: 6px 20px; color: var(--text-muted); }
+
+        code { font-family: "SFMono-Regular", Consolas, monospace; background: var(--border-color); padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.88em; }
+
+        .badge-row { display:flex; flex-wrap:wrap; gap:10px; margin: 18px 0 24px; }
+        .badge { background: var(--card-bg); border:1px solid var(--border-color); border-radius:6px; padding:8px 12px; min-width:110px; }
+        .badge .k { font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); display:block; }
+        .badge .v { font-weight:700; font-size:0.92rem; color:var(--text-main); }
+        .badge.urgent .v { color: var(--accent-provo); }
+
+        .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 6px; }
+        .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 6px; }
+        @media (max-width:680px){ .grid3{grid-template-columns:1fr;} .grid2{grid-template-columns:1fr;} }
+        .grid-card { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px; }
+        .grid-card .tag { font-size:0.68rem; color:var(--secondary); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; font-weight:700; }
+        .grid-card h4 { margin:0 0 6px; font-size:0.95rem; color:var(--text-main); }
+        .grid-card p { font-size:0.85rem; color:var(--text-muted); margin:0; }
+        .grid-card.pro { border-top:3px solid var(--accent-promo); }
+        .grid-card.con { border-top:3px solid var(--accent-provo); }
+
+        .thesis { font-size: 1.15em; line-height: 1.5; color: var(--primary); border-top: 2px solid var(--secondary); border-bottom: 2px solid var(--secondary); padding: 18px 0; margin: 24px 0; text-align:center; font-style:italic; }
+
+        .chain { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0 20px; font-size:0.85rem; }
+        .chain .cstep { background:#eef4f3; border:1px solid #cfe3e1; color:var(--primary); padding:6px 10px; border-radius:5px; white-space:nowrap; font-weight:600; }
+        .chain .arrow { color:var(--text-muted); }
+
+        .compare2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0; }
+        @media (max-width:600px){ .compare2{grid-template-columns:1fr;} }
+        .compare2 .col { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:16px 18px; }
+        .compare2 .col.was { border-top:3px solid var(--accent-provo); }
+        .compare2 .col.now { border-top:3px solid var(--accent-promo); }
+        .compare2 .col h5 { margin:0 0 8px; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); }
+
+        .checklist { background: var(--card-bg); border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; margin:16px 0; }
+        .checklist h4 { margin:0 0 10px; font-size:0.95rem; color:var(--secondary); }
+        .checklist ul { margin-bottom:0; }
+        .checklist li { list-style:none; position:relative; padding-left:26px; }
+        .checklist li::before { content:"\2610"; position:absolute; left:0; color:var(--secondary); font-size:1.05em; }
+
+        .arc-box { font-size:0.85rem; color:var(--text-muted); background:#f8fafc; border:1px solid var(--border-color); border-radius:8px; padding:18px 20px; line-height:1.9; }
+
+        footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 0.85em; color: var(--text-muted); display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+        footer a { color: var(--secondary); font-weight: 600; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        footer .footer-links { display:flex; flex-wrap:wrap; gap:6px 14px; }
+
+        @media (min-width: 768px) {
+            body { padding: 30px 15px; }
+            .article-container { padding: 50px; }
+            .case-walker { padding: 30px; }
+            h1 { font-size: 2.4em; }
+            h2 { font-size: 1.75em; }
+            .btn { display: inline-block; width: auto; }
+            footer { flex-direction: row; justify-content: space-between; align-items: center; }
+        }
+
+        .tier { border:1px solid var(--border-color); border-radius:8px; padding:16px 20px; margin:18px 0; background:var(--card-bg); border-left:5px solid var(--secondary); }
+        .tier h4 { margin:0 0 8px; font-size:1.02rem; }
+        .tier.common { border-left-color: var(--accent-promo); }
+        .tier.common h4 { color: var(--accent-promo); }
+        .tier.rare { border-left-color: var(--secondary); }
+        .tier.rare h4 { color: var(--secondary); }
+        .tier.ultra { border-left-color: var(--accent-provo); }
+        .tier.ultra h4 { color: var(--accent-provo); }
+        .tier .weight { display:inline-block; font-size:0.78rem; background:#e2e8f0; padding:3px 10px; border-radius:12px; margin-top:8px; font-weight:600; }
+    </style>
+</head>
+<body>
+
+<div class="article-container">
+    <header>
+        <h1>Weighting Ground-Truth Layers by Case Complexity</h1>
+        <p class="subtitle">And the Limits of System-Level Grounding</p>
+        <p>Author - Dr. Avinash Kumar Gupta</p>
+        <a href="https://avi33tbtt.github.io/#quick-tutorial" target="_blank" rel="noopener noreferrer" class="cta-header-btn">Get started &rarr;</a>
+        <nav class="series-nav">
+            <a href="article.html">Index</a>
+            <a href="modern_clinical_reasoning.html">Part 1 &middot; Modern Clinical Reasoning</a>
+            <a href="ground_truth_layers.html">Part 2 &middot; Ground-Truth Layers</a>
+            <a href="Case_Complexity.html" class="active">Part 3 &middot; Case Complexity</a>
+            <a href="using_the_stack.html">Part 4 &middot; Using the Stack</a>
+            <a href="journey.html">Part 5 &middot; The Build Itself</a>
+        </nav>
+    </header>
+
+    <div class="disclaimer">
+        <strong>Architectural Note:</strong> this is a learning-stack companion analysis for studying clinical reasoning frameworks — not a clinical decision tool, and not a substitute for primary literature, institutional protocol, or bedside judgment.
+    </div>
+
+    <p style="font-size:1.08em;color:var(--text-muted);">The base Vibe Rounds framework runs two cognitive modes — <strong>Promption</strong> (scaffolding) and <strong>Provocation</strong> (stress-testing) — over case narratives. A companion piece then anchors those modes to structured ground truth: a knowledge graph, an institutional pathway, and appraised evidence. This analysis asks the next question neither piece fully answers: <em>given finite effort, which of these layers deserves the most weight, for which case, and what remains entirely outside all of their reach?</em></p>
+
+    <section>
+        <h2>1. The Final-Stage Problem: Balancing Methods, Not Ranking Them</h2>
+        <p>Each method in the stack targets a distinct failure mode rather than competing for the same job. The correct "final stage" is not a vote between methods but a map from output to the specific error each output is built to catch.</p>
+
+        <div class="table-responsive">
+        <table>
+            <tr><th>Method</th><th>What it's good for</th><th>What it misses or risks</th></tr>
+            <tr><td>Promption</td><td>Organizing messy narrative into structure, fast</td><td>Fluent but not fact-checked; can scaffold a wrong idea as smoothly as a right one</td></tr>
+            <tr><td>Provocation</td><td>Catching anchoring and premature closure</td><td>Can manufacture doubt even where the original hypothesis was sound</td></tr>
+            <tr><td>Knowledge graph</td><td>Makes facts checkable and falsifiable</td><td>A correct fact can still be misapplied to an atypical or comorbid case</td></tr>
+            <tr><td>Institutional pathway</td><td>Gets timing and sequencing right</td><td>Carries borrowed "per protocol" authority even when wrong</td></tr>
+            <tr><td>Appraised evidence</td><td>Grades the strength of the justification itself</td><td>The most convincing hallucination surface if not backed by real retrieval</td></tr>
+        </table>
+        </div>
+
+        <div class="concept-card risk-card">
+            <h4>Governing principle</h4>
+            <p style="margin:0;">Disagreement between layers is a usable audit signal, not noise to be smoothed over. A well-designed synthesis stage fails <em>loudly</em> — an explicit "no strong match" flag — rather than silently inheriting the base model's overconfidence.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. Weighting by Disease Rarity: Three Tiers</h2>
+        <p>The value of stacking ground-truth layers is not uniform. It rises with case rarity up to a point, then falls again once ground truth itself runs out.</p>
+
+        <div class="tier common">
+            <h4>Tier 1 &middot; Common presentation, standard workup</h4>
+            <p>The base model is already close to ground truth here. Adding a graph, pathway, and evidence layer mostly adds seams where independently-sourced components can quietly contradict each other, for a small accuracy gain. A random case series of common diseases adds little — other systems are already powerful for this tier.</p>
+            <span class="weight">Weight: Promption alone; light EBM search/screening if needed</span>
+        </div>
+
+        <div class="tier rare">
+            <h4>Tier 2 &middot; Rare-but-known presentation</h4>
+            <p>This is the highest-leverage zone. The base model tends to over-fit an unusual case to the nearest common script — exactly the failure Provocation's anchor-extraction and the graph's differential field are built to catch. Ground truth <em>exists</em> here; it just has to be actively invoked. A small, well-chosen case series can meaningfully strengthen calibration, because it stress-tests whether the pipeline catches known-but-uncommon patterns reliably, not whether new pathophysiology can be discovered.</p>
+            <div class="grid2">
+                <div class="grid-card pro"><h4>Pros</h4>
+                    <ul>
+                        <li>Directly tests Provocation + graph-based differential against real premature-closure cases</li>
+                        <li>Builds a calibration ledger: confidence tracked against documented criteria across cases</li>
+                        <li>High payoff relative to cost — grounding is possible, unlike Tier 3</li>
+                    </ul>
+                </div>
+                <div class="grid-card con"><h4>Cons</h4>
+                    <ul>
+                        <li>Small samples risk overfitting the <em>evaluation</em> to the specific presentations chosen</li>
+                        <li>Graph/pathway coverage is uneven even within "rare but known"</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="weight">Weight: all three ground-truth layers highest here</span>
+        </div>
+
+        <div class="tier ultra">
+            <h4>Tier 3 &middot; Ultra-rare or novel presentation</h4>
+            <p>Gains shrink again, but for the opposite reason from Tier 1 — not because the base model is already good, but because there is no ground truth to anchor to. A structure-first approach can force a sparse or absent graph entry into the nearest available match, producing confident wrongness that is harder to detect because it wears the appearance of verified rigor.</p>
+            <div class="concept-card risk-card"><h4>Sharpest risk</h4><p style="margin:0;">Evidence-appraisal-shaped language is the most convincing hallucination surface in the entire stack — it is only safe when backed by real, traceable retrieval, and retrieval is thinnest exactly where it matters most.</p></div>
+            <span class="weight">Weight: downweight graph/pathway confidence; upweight the coverage/confidence flag itself as the primary deliverable</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>3. Complexity Axis, Restated as Scenario &times; Task</h2>
+        <p>The EBM Prompt Library adds a second axis: task type within evidence appraisal, each with its own verification burden. Crossed against the rarity tiers above, weighting becomes sharper.</p>
+
+        <div class="table-responsive">
+        <table>
+            <tr><th>Scenario</th><th>Dominant cognitive tools</th><th>Dominant EBM tasks</th><th>Verification burden</th></tr>
+            <tr><td>A &middot; Common</td><td>Promption only</td><td>PICO framing, search string, abstract screening</td><td>Low — mechanical, easy to spot-check</td></tr>
+            <tr><td>B &middot; Complex / rare-but-known</td><td>Provocation + graph + pathway</td><td>Methodology extraction, ARR/RRR/NNT arithmetic, stress-test of conclusion</td><td>High — appraising primary literature against an atypical case, not a guideline default</td></tr>
+            <tr><td>C &middot; Complex + ultra-rare/novel</td><td>Coverage-flag over confident synthesis</td><td>Methodology extraction and adversarial stress-test at maximum intensity</td><td>Maximal — every number and citation substitutes for missing structured ground truth</td></tr>
+        </table>
+        </div>
+
+        <div class="concept-card risk-card">
+            <h4>The One Hard Rule, generalized</h4>
+            <p style="margin:0;">The LLM drafts, the human verifies every number and citation against the source — every time, not just when something looks off. As complexity rises from A to C, the proportion of the workflow that must be human-verified rises with it, because the tools' fluency stays constant while the ground truth backing that fluency shrinks.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>4. The Uncertainty That None of the Layers Cover</h2>
+        <p>Every layer examined — Promption, Provocation, the knowledge graph, the institutional pathway, appraised evidence, even the EBM prompt tasks — operates on a <em>documented representation</em> of the case. Each trades individual specificity for checkability: a graph can only be a graph because it generalizes across patients; a pathway is a pathway because it is population-level; a PICO population is a category, never this one patient.</p>
+        <p>This is not a coverage gap a fourth layer could close by being more thorough. It is a category mismatch. The richest source of uncertainty — how sick the patient looks walking through the door versus what the numbers say, family and functional context, the trajectory of the last hour, what was already tried at bedside and failed — is exactly the information that never survives compression into a structured artifact.</p>
+
+        <div class="grid2">
+            <div class="grid-card pro"><h4>What the layers can reduce</h4>
+                <ul>
+                    <li>Uncertainty about whether documented facts are real and correctly applied</li>
+                    <li>Uncertainty about timing and sequencing against a known protocol</li>
+                    <li>Uncertainty about how strong the cited justification actually is</li>
+                </ul>
+            </div>
+            <div class="grid-card con"><h4>What only the human orchestrator can reduce</h4>
+                <ul>
+                    <li>Whether the documented case is a faithful compression of the real patient</li>
+                    <li>Fidelity of the narrative capture itself — deidentification, completeness, absence of leading framing</li>
+                    <li>The gap between the note and the bedside, which no layer ever inspects</li>
+                </ul>
+            </div>
+        </div>
+
+        <blockquote>A perfect graph match on a poorly-captured case is confidently wrong for a reason no downstream layer will ever surface — the layer only ever sees the text, never the gap between the text and the bedside.</blockquote>
+
+        <p>This adds a fourth axis to the diagnostic / sequencing / contextual correctness split proposed for the ground-truth layers: <strong>input curation correctness</strong> — owned entirely by the human orchestrator, and structurally unfixable by any layer downstream of the documentation step.</p>
+    </section>
+
+    <section>
+        <h2>5. Conclusion: What the Current Project Actually Is, and What Remains Ahead</h2>
+
+        <h3>5.1 What the present toolset genuinely achieves</h3>
+        <p>Taken together, the <a href="article.html">main article's</a> Promption/Provocation architecture and the ground-truth layers analysis constitute a real, working demonstration at the <em>reasoning-hygiene</em> level: they show, on one worked case, that scaffolding messy narrative and then adversarially stress-testing it surfaces a genuine diagnostic discrepancy (the HbA1c/DKA-severity mismatch) that a single-pass answer would likely have missed. That is a legitimate and non-trivial contribution — it operationalizes System 2 friction in a way that is teachable and repeatable.</p>
+
+        <h3>5.2 What it has not yet done</h3>
+        <p>The current status is a single-case proof of concept, not a validated pipeline. It has not yet: run a matched case series across rarity tiers to test the accuracy/detectability/calibration metrics proposed in the ground-truth layers piece; integrated the knowledge graph, pathway, and evidence layers into one live pipeline rather than describing them as three separate reference resources; or connected the EBM prompt library's verification discipline into the same case-walkthrough interface used for Promption/Provocation. Each piece currently exists as a strong standalone artifact, not yet as one orchestrated system.</p>
+
+        <h3>5.3 Against the full possible plan ahead</h3>
+        <p>Relative to the complete plan implied across all three source documents — three ground-truth layers, three rarity tiers with differential weighting, an EBM verification discipline layered on top, and an explicit coverage/confidence output at every stage — the present project sits closer to the <em>architecture and demonstration</em> stage than the <em>validation</em> stage. The proposed empirical study (matched common/rare cases, measured for diagnostic accuracy, failure detectability, and learner calibration) has not been run. The input-curation problem identified in Section 4 has not been addressed by any tooling at all — it remains, correctly, an unassigned human responsibility. In proportion terms: the cognitive-mode architecture is largely built; the ground-truth grounding is designed but not yet wired in as a live system; the tiered weighting logic and cross-task verification discipline are, at this point, analytical recommendations rather than implemented features.</p>
+    </section>
+
+    <section>
+        <h2>6. Would a NotebookLM-Style Import Prototype This Plan?</h2>
+        <p>Importing a knowledge graph export, the acute pancreatitis pathway, relevant guidelines, meta-analyses, and an EBM-prompt-derived appraised-evidence summary into a NotebookLM-style tool, then analyzing a case against that source set, would replicate a meaningful <em>slice</em> of this plan — but not the whole of it, and the gap is informative.</p>
+
+        <div class="grid2">
+            <div class="grid-card pro"><h4>What it would replicate well</h4>
+                <ul>
+                    <li>Grounding answers in checkable source material rather than free-floating model assertion — the core purpose of all three ground-truth layers</li>
+                    <li>Citation-anchored responses, which directly satisfies the EBM library's demand for quotable, locatable claims</li>
+                    <li>A crude version of cross-layer disagreement, since a notebook-style tool can be asked to compare what the graph, the pathway, and the evidence summary each imply and flag where they diverge</li>
+                </ul>
+            </div>
+            <div class="grid-card con"><h4>Where it would fall short</h4>
+                <ul>
+                    <li>No native Promption/Provocation pipeline sequencing — a notebook tool answers questions against sources, it does not natively enact a scaffold-then-stress-test cognitive workflow</li>
+                    <li>No built-in tiering logic — it will not automatically know that a rare-but-known case should weight the graph and pathway higher, or that an ultra-rare case should downweight its own confidence; a human still has to impose that judgment turn by turn</li>
+                    <li>No coverage/confidence flag as a first-class output — it can be prompted to produce one, but nothing forces it to fail loudly rather than fluently answering from thin source material</li>
+                    <li>Cannot address input curation correctness — it grounds against the sources it is given, with no way to assess whether the case narrative fed into it was itself a faithful capture of the real patient</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="concept-card risk-card">
+            <h4>Net assessment</h4>
+            <p style="margin:0;">Such a setup would function as a capable <em>manual prototype</em> of the grounding layer specifically — closer to Section 1 and 2 of the ground-truth layers analysis than to the full plan. It would still depend entirely on the human orchestrator to sequence Promption before Provocation, to decide how much weight the sources deserve given the case's rarity tier, to apply the EBM verification discipline number-by-number, and to judge whether the imported case narrative itself was trustworthy. It is a strong grounding substrate, not a replacement for the orchestration layer this whole analysis keeps returning to.</p>
+        </div>
+    </section>
+
+    <p>Continue to <a href="using_the_stack.html">Part 4 &middot; Using the Stack: A Practical Guide to Auditing Your Own Reasoning &rarr;</a></p>
+
+    <footer>
+        <span>Vibe Rounds CCOS Framework &middot; Companion Analysis &middot; For Educational and Clinical Reasoning Practice Only</span>
+        <div class="footer-links">
+            <a href="article.html">Index</a>
+            <a href="modern_clinical_reasoning.html">Part 1</a>
+            <a href="ground_truth_layers.html">Part 2</a>
+            <a href="using_the_stack.html">Part 4</a>
+            <a href="journey.html">Part 5</a>
+            <a href="https://avi33tbtt.github.io/ebm/prompts.html" target="_blank" rel="noopener">EBM Prompt Library</a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
