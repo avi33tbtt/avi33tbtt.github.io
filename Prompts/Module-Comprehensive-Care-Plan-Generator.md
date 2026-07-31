@@ -1,4 +1,4 @@
-# Module 58 — Comprehensive Care Plan Generator
+# Module — Comprehensive Care Plan Generator
 
 **VibeRounds Prompt Modules** · *Coined and developed by Dr. Avinash Kumar Gupta · Vibe Rounds, 2026* `#VibeRounds — A Socratic AI Paradigm for Clinical Medicine`
 
