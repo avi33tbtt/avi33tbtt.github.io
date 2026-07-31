@@ -187,7 +187,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module EBM — Case → Critical Appraisal Query Generator](ebm-case-query-generator.md) | Module EBM — Case → Critical Appraisal Query Generator |
 | -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
 | -- | [Module RPG — Research ↔ Clinical Practice Gap Finder](Module-RPG-Research-Clinical-Practice-Gap-Finder.md) | Module RPG — Research ↔ Clinical Practice Gap Finder |
-| -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
+| -- | [System Prompt: The Evidence-Pyramid Trajectory Mapper](evidence-pyramid-trajectory-mapper.md) | System Prompt: The Evidence-Pyramid Trajectory Mapper |
 
 
 
