@@ -188,6 +188,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module AP — The Avinash Principle: Critical Hub-Node Navigation](Module-AP-Avinash-Principle.md) | Module AP — The Avinash Principle: Critical Hub-Node Navigation |
 | -- | [Module RPG — Research ↔ Clinical Practice Gap Finder](Module-RPG-Research-Clinical-Practice-Gap-Finder.md) | Module RPG — Research ↔ Clinical Practice Gap Finder |
 | -- | [System Prompt: The Evidence-Pyramid Trajectory Mapper](evidence-pyramid-trajectory-mapper.md) | System Prompt: The Evidence-Pyramid Trajectory Mapper |
+| -- | [Module — Case Report → Patient Story Converter](Module-Case-Report-to-Patient-Story-Converter.md) | Module — Case Report → Patient Story Converter |
+| -- | [Module — Comprehensive Care Plan Generator](Module-Comprehensive-Care-Plan-Generator.md) | Module — Comprehensive Care Plan Generator |
 
 
 
