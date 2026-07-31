@@ -1,4 +1,4 @@
-# Module 58 — Case Report → Patient Story Converter
+# Module — Case Report → Patient Story Converter
 
 **Objective:** Convert any medical case report — journal-style, ward-style, or a raw tagged case history — into a humanised, narrative "patient story" that preserves every clinically material fact while making the case legible, memorable, and emotionally intelligible to a learner, a patient advocate, or a lay reader.
 
