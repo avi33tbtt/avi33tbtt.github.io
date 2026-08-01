@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - Lesson Bench — Topic &amp; Case Lessons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F7FAFB; --card:#FFFFFF; --ink:#0B2530; --line:#DCE7EA; --line-soft:#E9F1F3;
+    --accent:#0891B2; --accent-dark:#0A6E85; --accent-soft:#E3F4F8;
+    --alert:#C2410C; --alert-soft:#FCE9DD; --muted:#5B7480;
+    --tab-inactive:#EEF4F6; --radius:10px; --body-font:'Inter',sans-serif;
+    --mark-bg:#FFF3C4; --mark-ink:#6B4E00;
+  }
+  html[data-theme="minimalist"]{
+    --paper:#FFFFFF; --card:#FFFFFF; --ink:#161616; --line:#E4E4E4; --line-soft:#F0F0F0;
+    --accent:#161616; --accent-dark:#000000; --accent-soft:#F2F2F2;
+    --alert:#B3261E; --alert-soft:#F8E7E6; --muted:#757575; --tab-inactive:#F2F2F2; --radius:3px;
+    --mark-bg:#E8E8E8; --mark-ink:#161616;
+  }
+  html[data-theme="terminal"]{
+    --paper:#000000; --card:#0A0A0A; --ink:#FFB238; --line:#3A2A00; --line-soft:#231A00;
+    --accent:#FFB238; --accent-dark:#FFCB6B; --accent-soft:#1C1400;
+    --alert:#FF4D3D; --alert-soft:#2B0C08; --muted:#9C7A32; --tab-inactive:#141414; --radius:2px;
+    --body-font:'IBM Plex Mono',monospace; --mark-bg:#2B2000; --mark-ink:#FFCB6B;
+  }
+  html[data-theme="terminal"] .tabrow .tab.active,
+  html[data-theme="terminal"] .pill.active{color:#000;}
+  html[data-theme="terminal"] .card,html[data-theme="terminal"] .lesson,html[data-theme="terminal"] .transcript{border-color:var(--line);}
+
+  html{transition:background .15s ease;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body-font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-dark);}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
+  header.top h1{font-weight:800;font-size:24px;margin:0;letter-spacing:-0.02em;}
+  header.top .rx{font-weight:600;font-size:11.5px;color:#fff;background:var(--accent);border-radius:20px;padding:4px 11px;}
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-weight:500;}
+  header.top .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .theme-select{
+    display:inline-flex;align-items:center;gap:6px;background:var(--tab-inactive);border:1px solid var(--line);color:var(--ink);
+    font-weight:600;font-size:12px;border-radius:999px;padding:6px 30px 6px 12px;cursor:pointer;-webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%235B7480' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:10px;
+  }
+
+  .curriculum-link{
+    display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:12.5px;color:var(--accent-dark);
+    background:var(--accent-soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;text-decoration:none;
+  }
+  .curriculum-link:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  html[data-theme="terminal"] .curriculum-link:hover{color:#000;}
+
+  .step{margin-bottom:26px;}
+  .step-label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;user-select:none;}
+  .step-label .num{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700;}
+  .collapse-arrow{font-size:10px;margin-left:2px;transition:transform .15s ease;color:var(--muted);}
+  .step-label.collapsed .collapse-arrow{transform:rotate(-90deg);}
+  .card.collapsed{display:none;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:0 1px 2px rgba(11,37,48,.04),0 8px 24px -16px rgba(11,37,48,.08);}
+
+  textarea,input[type=text],input[type=password],select{
+    width:100%;font-family:var(--body-font);font-size:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:9px 11px;color:var(--ink);
+  }
+  textarea:focus,input:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  textarea{resize:vertical;min-height:80px;line-height:1.5;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media(max-width:600px){.row{grid-template-columns:1fr;}}
+
+  .tabrow{display:flex;gap:4px;background:var(--tab-inactive);padding:4px;border-radius:999px;margin-bottom:16px;width:fit-content;flex-wrap:wrap;}
+  .tabrow .tab{font-weight:600;font-size:12.5px;padding:7px 16px;background:transparent;border:none;border-radius:999px;cursor:pointer;color:var(--muted);}
+  .tabrow .tab.active{background:var(--accent);color:#fff;}
+
+  .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .pill{font-weight:600;font-size:12.5px;padding:8px 15px;background:var(--tab-inactive);border:1.5px solid var(--line);border-radius:999px;cursor:pointer;color:var(--ink);}
+  .pill.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  .key-status{font-size:12px;font-weight:500;margin-top:8px;}
+  .key-status.ok{color:var(--accent-dark);}
+  .key-status.empty{color:var(--muted);}
+  details.settings summary{cursor:pointer;font-size:12.5px;color:var(--accent-dark);font-weight:600;list-style:none;display:flex;align-items:center;gap:6px;}
+  details.settings summary::-webkit-details-marker{display:none;}
+  details.settings summary::before{content:"▸";font-size:10px;}
+  details.settings[open] summary::before{content:"▾";}
+  details.settings{margin-top:10px;}
+
+  .pick-box{border:1px dashed var(--line);border-radius:var(--radius);padding:14px 16px;margin-top:10px;background:var(--paper);}
+  .pick-box .tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:999px;padding:3px 10px;margin-right:6px;margin-bottom:6px;}
+  .pick-box .picked-text{font-size:14px;line-height:1.55;margin-top:6px;}
+  .pick-box .empty-msg{font-size:13px;color:var(--muted);}
+
+  button{font-weight:700;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 18px;cursor:pointer;transition:background .12s;}
+  button:hover{background:var(--accent-dark);}
+  button.secondary{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  button.secondary:hover{background:var(--tab-inactive);color:var(--ink);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  button.chip{background:var(--tab-inactive);color:var(--ink);border:1px solid var(--line);font-weight:600;font-size:12px;padding:6px 12px;}
+  button.chip:hover{background:var(--accent-soft);}
+
+  .banner{font-size:12.5px;color:var(--ink);border:1px solid var(--line-soft);background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:24px;}
+  .banner strong{color:var(--accent-dark);}
+  .error-note{font-size:12.5px;color:var(--alert);background:var(--alert-soft);border:1px solid #f0c8ac;border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;display:none;}
+  .error-note.show{display:block;}
+
+  #workspace{margin-top:30px;display:none;}
+  #workspace.visible{display:block;}
+  .ws-header{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .ws-header .wtitle{font-size:18px;font-weight:800;}
+  .ws-header .wsub{font-size:12px;color:var(--muted);}
+  .ws-actions button{margin-left:8px;}
+  @media(max-width:600px){.ws-actions{display:flex;flex-wrap:wrap;gap:8px;}.ws-actions button{margin-left:0;}}
+
+  .transcript{display:flex;flex-direction:column;gap:16px;}
+
+  .turn{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:0 1px 2px rgba(11,37,48,.04),0 8px 24px -16px rgba(11,37,48,.08);padding:20px 22px;}
+  .turn.user-turn{background:var(--accent-soft);border:1px dashed var(--line);box-shadow:none;padding:12px 16px;font-size:13.5px;color:var(--ink);}
+  .turn.user-turn .who{font-size:10.5px;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+
+  .lesson h2{font-size:19px;margin:0 0 6px;}
+  .lesson h3{font-size:15px;color:var(--accent-dark);margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line-soft);}
+  .lesson h3:first-of-type{border-top:none;padding-top:0;margin-top:4px;}
+  .lesson p{margin:0 0 10px;font-size:14.5px;line-height:1.65;}
+  .lesson ul,.lesson ol{margin:0 0 10px;padding-left:22px;font-size:14.5px;line-height:1.6;}
+  .lesson strong{color:var(--ink);}
+  .lesson mark{background:var(--mark-bg);color:var(--mark-ink);padding:1px 4px;border-radius:4px;font-weight:600;}
+  .summary-block{background:var(--tab-inactive);border-radius:var(--radius);padding:12px 14px;font-size:13.5px;margin-top:8px;}
+  .pearl{background:var(--accent-soft);border:1px dashed var(--accent);border-radius:var(--radius);padding:12px 14px;font-size:13.5px;margin-top:8px;}
+  .pearl::before{content:"💡 ";}
+  .lesson-img-block{margin:14px 0;text-align:center;}
+  .lesson-img-block img{max-width:100%;max-height:340px;border-radius:8px;border:1px solid var(--line);}
+  .lesson-img-block .cap{font-size:11.5px;color:var(--muted);margin-top:6px;}
+  .lesson-img-block .cap a{color:var(--muted);}
+  .img-loading{font-size:12px;color:var(--muted);font-style:italic;padding:10px;}
+
+  .composer{display:flex;gap:8px;align-items:flex-end;margin-top:16px;}
+  .composer textarea{min-height:56px;flex:1;}
+  .quickchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+
+  .typing{font-size:12.5px;color:var(--muted);font-weight:500;padding:20px 0;text-align:center;}
+  .typing::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+
+  footer{margin-top:50px;font-size:11.5px;color:var(--muted);text-align:center;font-weight:500;}
+</style>
+
+<!-- ===== VibeRounds Suite Bar ===== -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .vr-suitebar{background:linear-gradient(160deg,#EFF6FF 0%,#F0FDFA 65%);border-bottom:1px solid #E2E8F0;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;}
+  .vr-suitebar .vr-brand{font-family:'DM Mono','IBM Plex Mono',monospace;font-weight:700;font-size:14px;color:#0F172A;text-decoration:none;}
+  .vr-suitebar .vr-brand span{color:#0891B2;}
+  .vr-suitebar .vr-nav{display:flex;gap:6px;flex-wrap:wrap;}
+  .vr-suitebar .vr-nav a{font-family:'DM Mono','IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#475569;text-decoration:none;padding:6px 10px;border-radius:999px;border:1px solid #E2E8F0;background:#FFFFFF;transition:.15s ease;}
+  .vr-suitebar .vr-nav a:hover{color:#fff;background:#0891B2;border-color:#0891B2;}
+  .vr-suitebar .vr-nav a.active{color:#fff;background:#0E7490;border-color:#0E7490;}
+  @media(max-width:640px){.vr-suitebar{padding:10px 14px;}.vr-suitebar .vr-nav a{padding:5px 8px;font-size:10px;}}
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/home.html">Home</a>
+    <a href="https://avi33tbtt.github.io/bench.html">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/bench_lite.html">Bench Lite</a>
+    <a href="#" class="active">Lesson Bench</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/case-practice.html">Clinical Practice</a>
+    <a href="https://avi33tbtt.github.io/curriculum.html">Curriculum</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Vibe Rounds - Lesson Bench</h1>
+      <span class="rx">topic → lesson → discuss</span>
+    </div>
+    <div class="top-right">
+      <select id="themeSelect" class="theme-select" aria-label="Theme">
+        <option value="simple">Simple</option>
+        <option value="minimalist">Minimalist</option>
+        <option value="terminal">Terminal</option>
+      </select>
+      <a class="curriculum-link" href="https://avi33tbtt.github.io/curriculum.html" target="_blank" rel="noopener">📚 Browse the full curriculum ↗</a>
+    </div>
+  </header>
+
+  <div class="banner"><strong>Educational use only.</strong> Roll — or pick — a topic, case, or management theme from the <a href="https://avi33tbtt.github.io/curriculum.html" target="_blank" rel="noopener">Curriculum Forge</a> map, get a structured lesson, then keep the conversation going: ask follow-up questions, or ask for a lesson on something else entirely — all in the same chat below. Your API key stays in this browser's local storage.</div>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-label" id="label-model"><span class="num">1</span>Model<span class="collapse-arrow" id="arrow-model">&#9662;</span></div>
+    <div class="card" id="card-model">
+      <div class="tabrow" id="providerTabs">
+        <div class="tab active" data-provider="claude">Claude</div>
+        <div class="tab" data-provider="gemini">Gemini</div>
+        <div class="tab" data-provider="openai">ChatGPT</div>
+        <div class="tab" data-provider="other">Other</div>
+      </div>
+      <div class="row" id="endpointRow" style="display:none;">
+        <div style="grid-column:1/-1;">
+          <label for="apiEndpoint">API endpoint (OpenAI-compatible chat/completions URL)</label>
+          <input type="text" id="apiEndpoint" placeholder="https://api.groq.com/openai/v1/chat/completions">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label id="apiKeyLabel" for="apiKey">Claude API key</label>
+          <input type="password" id="apiKey" placeholder="sk-ant-...">
+        </div>
+        <div>
+          <label for="modelName">Model name</label>
+          <input type="text" id="modelName" placeholder="claude-sonnet-4-6">
+        </div>
+      </div>
+      <div class="key-status empty" id="keyStatus">No key saved for this provider yet.</div>
+      <details class="settings">
+        <summary>Where do I get a key?</summary>
+        <div class="hint" style="margin-top:8px;" id="keyHelp"></div>
+      </details>
+    </div>
+  </div>
+
+  <!-- STEP 2: TOPIC -->
+  <div class="step">
+    <div class="step-label" id="label-topic"><span class="num">2</span>Topic<span class="collapse-arrow" id="arrow-topic">&#9662;</span></div>
+    <div class="card" id="card-topic">
+      <div class="pillrow" id="modeTabs">
+        <div class="pill active" data-mode="random">🎲 Random from curriculum</div>
+        <div class="pill" data-mode="typed">Type a topic</div>
+        <div class="pill" data-mode="pasted">Paste a full case</div>
+      </div>
+
+      <div id="pane-random">
+        <button type="button" id="rollBtn">🎲 Roll a topic</button>
+        <span class="hint">Prefer to browse instead? <a href="https://avi33tbtt.github.io/curriculum.html" target="_blank" rel="noopener">Open the full curriculum ↗</a></span>
+        <div class="pick-box" id="pickBox"><div class="empty-msg">Nothing rolled yet — click "Roll a topic".</div></div>
+      </div>
+
+      <div id="pane-typed" style="display:none;">
+        <label for="typedTopic">Topic, diagnosis, or theme</label>
+        <input type="text" id="typedTopic" placeholder="e.g. Diabetic ketoacidosis, approach to jaundice, WHO analgesic ladder">
+      </div>
+
+      <div id="pane-pasted" style="display:none;">
+        <label for="pastedCase">Full case text</label>
+        <textarea id="pastedCase" placeholder="Paste a clerking note, discharge summary, or vignette..."></textarea>
+      </div>
+
+      <div class="row" style="margin-top:14px;">
+        <div>
+          <label for="learnerLevel">Learner level</label>
+          <select id="learnerLevel">
+            <option value="an intern — assume solid pre-clinical knowledge; focus on recognition, first-line workup, and immediate management steps" selected>Intern</option>
+            <option value="a junior resident in residency training — assume working clinical fluency; include differentials, escalation triggers, and common pitfalls">Junior residency</option>
+          </select>
+        </div>
+        <div>
+          <label for="depthLevel">Lesson length</label>
+          <select id="depthLevel">
+            <option value="concise (roughly 300-400 words)">Concise</option>
+            <option value="standard (roughly 500-650 words)" selected>Standard</option>
+            <option value="detailed (roughly 700-900 words)">Detailed</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" id="generateBtn" style="margin-top:6px;">Generate lesson</button>
+      <div class="hint">Each exchange is kept compact (structured lesson, single focused reply) so the conversation has plenty of headroom — including for images — well inside a 30k-token budget. Images are fetched only when you ask for one in chat.</div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="ws-header">
+      <div>
+        <div class="wtitle" id="wsTitle"></div>
+        <div class="wsub" id="wsSub"></div>
+      </div>
+      <div class="ws-actions">
+        <button class="secondary" id="downloadTxtBtn">Download as text</button>
+        <button class="secondary" id="downloadBtn">Download as HTML</button>
+        <button class="secondary" id="resetBtn">New lesson</button>
+      </div>
+    </div>
+    <div class="error-note" id="errorNote"></div>
+    <div class="transcript" id="transcript"></div>
+    <div class="quickchips" id="quickchips">
+      <button type="button" class="chip" data-q="Summarize this in 3 bullet points.">Summarize in 3 bullets</button>
+      <button type="button" class="chip" data-q="What are the key differentials I should rule out?">Key differentials?</button>
+      <button type="button" class="chip" data-q="Quiz me with one question on this topic.">Quiz me</button>
+    </div>
+    <div class="composer">
+      <textarea id="composerInput" placeholder="Ask a follow-up, request an image, or ask for a lesson on another topic..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <footer>Vibe Rounds - Lesson Bench · runs entirely in your browser · bring your own key · images via Wikimedia Commons</footer>
+</div>
+
+<script>
+/* ================= config: providers ================= */
+const PROVIDERS = {
+  claude: { label:'Claude', keyPlaceholder:'sk-ant-...', modelPlaceholder:'claude-sonnet-4-6',
+    help:'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there.' },
+  gemini: { label:'Gemini', keyPlaceholder:'AIza...', modelPlaceholder:'gemini-2.5-flash',
+    help:'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>.' },
+  openai: { label:'ChatGPT', keyPlaceholder:'sk-...', modelPlaceholder:'gpt-4o-mini',
+    help:'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>.' },
+  other: { label:'Other', keyPlaceholder:'API key (leave blank if none)', modelPlaceholder:'model-name-as-required-by-provider', needsEndpoint:true,
+    help:'Works with any OpenAI-compatible <code>/chat/completions</code> endpoint — Groq, Together, Mistral, DeepSeek, OpenRouter, Ollama, LM Studio, etc.' }
+};
+
+/* ================= live curriculum fetch ================= */
+const CURRICULUM_URL = 'https://avi33tbtt.github.io/curriculum.html';
+let liveBank = null;       // populated from the live curriculum page when available
+let liveBankTried = false;
+
+function extractTopicsFromDoc(doc){
+  const out = [];
+  let currentSection = 'Curriculum';
+  const headingSel = 'h1,h2,h3,h4';
+  const itemSel = 'li,td,p,[data-topic],.topic,.case,.card,.item';
+  const body = doc.body;
+  if(!body) return out;
+
+  // Walk the body in document order so list items get tagged with the nearest preceding heading.
+  const all = body.querySelectorAll(headingSel + ',' + itemSel);
+  all.forEach(el=>{
+    const tag = el.tagName.toLowerCase();
+    const text = (el.textContent || '').replace(/\s+/g,' ').trim();
+    if(!text) return;
+    if(/^h[1-4]$/.test(tag)){
+      if(text.length < 80) currentSection = text;
+      return;
+    }
+    // skip nav/footer/link-only chrome and overly short or overly long fragments
+    if(el.closest('nav,header,footer')) return;
+    if(text.length < 15 || text.length > 400) return;
+    // avoid picking up a parent that just duplicates a child li/td/p already captured
+    if(el.querySelector('li,td,p')) return;
+    out.push({ s: currentSection, k: 'topic', t: text, dx: text.slice(0,60) });
+  });
+  return out;
+}
+
+async function loadLiveBank(){
+  if(liveBankTried) return liveBank;
+  liveBankTried = true;
+  try{
+    const res = await fetch(CURRICULUM_URL, { mode:'cors' });
+    if(!res.ok) throw new Error('bad status ' + res.status);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const items = extractTopicsFromDoc(doc);
+    if(items.length >= 5){
+      liveBank = items;
+    } else {
+      liveBank = null;
+    }
+  } catch(err){
+    console.warn('Could not load live curriculum from', CURRICULUM_URL, '— falling back to the built-in sample bank.', err);
+    liveBank = null;
+  }
+  return liveBank;
+}
+// kick off in the background as soon as the page loads, so the first roll is instant if it succeeds
+loadLiveBank();
+
+/* ================= curated curriculum bank (sample of Curriculum Forge, used as fallback) ================= */
+const BANK = [
+{s:'General Medicine',k:'case',t:"A 60-year-old diabetic man presents with crushing central chest pain radiating to the left arm, sweating, and ECG shows ST elevation in leads II, III, aVF.",dx:'Acute inferior wall myocardial infarction'},
+{s:'General Medicine',k:'case',t:"A 68-year-old woman presents with progressive breathlessness, bilateral pedal edema, raised JVP and bibasal crepitations.",dx:'Congestive cardiac failure'},
+{s:'General Medicine',k:'case',t:"A 45-year-old hypertensive on irregular medication presents with sudden severe tearing chest pain radiating to the back, with unequal blood pressure in both arms.",dx:'Aortic dissection'},
+{s:'General Medicine',k:'case',t:"A 30-year-old man presents with fever, cough with rusty sputum, and right-sided pleuritic chest pain; chest X-ray shows right lower lobe consolidation.",dx:'Community-acquired pneumonia'},
+{s:'General Medicine',k:'case',t:"A 40-year-old man with chronic cough, evening rise of temperature, and weight loss has a chest X-ray showing an upper lobe cavitary lesion.",dx:'Pulmonary tuberculosis'},
+{s:'General Medicine',k:'case',t:"A 50-year-old chronic alcoholic presents with hematemesis, abdominal distension, and spider naevi on the chest wall.",dx:'Variceal bleed due to liver cirrhosis with portal hypertension'},
+{s:'General Medicine',k:'case',t:"A 6-year-old child presents with periorbital puffiness, frothy urine, and generalized edema; urine shows heavy proteinuria.",dx:'Nephrotic syndrome'},
+{s:'General Medicine',k:'case',t:"A 22-year-old known type 1 diabetic presents with vomiting, abdominal pain, deep sighing breathing, and fruity breath odor.",dx:'Diabetic ketoacidosis'},
+{s:'General Medicine',k:'case',t:"A 35-year-old woman presents with weight loss, heat intolerance, palpitations, and a diffusely enlarged thyroid with fine tremor.",dx:"Graves' disease (hyperthyroidism)"},
+{s:'General Medicine',k:'case',t:"A 20-year-old vegetarian woman presents with fatigue and pallor; peripheral smear shows microcytic hypochromic red cells.",dx:'Iron deficiency anemia'},
+{s:'General Medicine',k:'case',t:"A 6-year-old boy presents with fever, easy bruising, and gum bleeding; peripheral smear shows numerous blast cells.",dx:'Acute leukemia'},
+{s:'General Medicine',k:'case',t:"A 35-year-old woman presents with symmetrical pain and morning stiffness in the small joints of both hands lasting over an hour.",dx:'Rheumatoid arthritis'},
+{s:'General Medicine',k:'case',t:"A 25-year-old woman presents with malar rash, photosensitivity, joint pain, and oral ulcers.",dx:'Systemic lupus erythematosus'},
+{s:'General Medicine',k:'case',t:"A 65-year-old hypertensive man develops sudden weakness of the left arm and leg with facial droop while gardening.",dx:'Acute ischemic stroke'},
+{s:'General Medicine',k:'case',t:"A 19-year-old man has recurrent episodes of sudden loss of consciousness with tonic-clonic movements and tongue bite.",dx:'Generalized tonic-clonic seizure / epilepsy'},
+{s:'General Medicine',k:'case',t:"A 25-year-old presents with high-grade fever, retro-orbital pain, myalgia, a positive tourniquet test, and falling platelet count.",dx:'Dengue fever'},
+{s:'General Medicine',k:'case',t:"A 30-year-old returning from a rural area presents with cyclical fever with chills and rigors every 48 hours; peripheral smear shows ring forms.",dx:'Malaria (P. vivax)'},
+{s:'General Medicine',k:'case',t:"A 50-year-old chronic alcoholic presents with confusion, ataxia, and ophthalmoplegia.",dx:"Wernicke's encephalopathy (thiamine deficiency)"},
+{s:'General Medicine',k:'case',t:"A 60-year-old vegan presents with numbness in both feet, glossitis, and macrocytic anemia.",dx:'Vitamin B12 deficiency'},
+{s:'General Medicine',k:'case',t:"A young woman with severe asthma presents unable to speak in full sentences, using accessory muscles, with a silent chest.",dx:'Life-threatening acute severe asthma'},
+{s:'General Medicine',k:'case',t:"A 25-year-old develops sudden facial swelling, wheeze, and hypotension minutes after a bee sting.",dx:'Anaphylaxis'},
+{s:'General Medicine',k:'topic',t:'The approach to a patient presenting with jaundice — classifying pre-hepatic, hepatic, and post-hepatic causes.',dx:'Approach to jaundice'},
+{s:'General Medicine',k:'topic',t:'The WHO analgesic ladder and stepwise escalation of cancer pain management.',dx:'WHO analgesic ladder'},
+{s:'General Medicine',k:'topic',t:'Interpreting arterial blood gases: a stepwise approach to acid-base disorders.',dx:'Acid-base disorder interpretation'},
+{s:'General Surgery',k:'case',t:"A 20-year-old presents with periumbilical pain migrating to the right iliac fossa, with fever and rebound tenderness.",dx:'Acute appendicitis'},
+{s:'General Surgery',k:'case',t:"A middle-aged man presents with a painless groin swelling that enlarges on coughing and reduces on lying down.",dx:'Inguinal hernia'},
+{s:'General Surgery',k:'case',t:"A 45-year-old obese woman presents with colicky right upper quadrant pain after fatty meals, radiating to the back.",dx:'Acute cholecystitis due to gallstones'},
+{s:'General Surgery',k:'case',t:"A 60-year-old presents with painless progressive jaundice and a palpable gallbladder.",dx:"Carcinoma head of pancreas (Courvoisier's law)"},
+{s:'General Surgery',k:'case',t:"A trauma patient has absent breath sounds on one side with hyper-resonance and tracheal deviation away from the affected side.",dx:'Tension pneumothorax'},
+{s:'General Surgery',k:'case',t:"A stab injury patient presents with muffled heart sounds, distended neck veins, and hypotension.",dx:"Cardiac tamponade (Beck's triad)"},
+{s:'General Surgery',k:'case',t:"A patient after a head injury has a lucid interval followed by deteriorating consciousness and a dilated pupil on one side.",dx:'Extradural hematoma'},
+{s:'General Surgery',k:'case',t:"An elderly patient on anticoagulants presents with gradual headache and confusion weeks after a minor fall.",dx:'Chronic subdural hematoma'},
+{s:'General Surgery',k:'case',t:"A 3-week-old male infant presents with non-bilious projectile vomiting after feeds and a palpable olive-shaped epigastric mass.",dx:'Hypertrophic pyloric stenosis'},
+{s:'General Surgery',k:'case',t:"A 60-year-old smoker presents with cramping calf pain on walking that resolves with rest.",dx:'Intermittent claudication due to peripheral arterial disease'},
+{s:'General Surgery',k:'case',t:"A diabetic patient presents with a foul-smelling, rapidly spreading, crepitant swelling of the leg with pain out of proportion to exam findings.",dx:'Necrotizing fasciitis'},
+{s:'General Surgery',k:'topic',t:'Primary and secondary survey in trauma assessment — the ABCDE approach.',dx:'ABCDE trauma assessment'},
+{s:'General Surgery',k:'topic',t:'Parkland formula and fluid resuscitation in major burns.',dx:'Burns fluid resuscitation'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A woman at 34 weeks presents with painless vaginal bleeding.",dx:'Placenta previa'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A primigravida at 32 weeks presents with BP 160/110, proteinuria, and headache.",dx:'Severe preeclampsia'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A woman with preeclampsia develops a generalized tonic-clonic seizure.",dx:'Eclampsia'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A woman soon after delivery has a boggy, poorly contracted uterus with continued heavy bleeding.",dx:'Postpartum hemorrhage due to uterine atony'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A young woman presents with irregular periods, hirsutism, and acne; ultrasound shows multiple small ovarian follicles.",dx:'Polycystic ovary syndrome'},
+{s:'Obstetrics & Gynaecology',k:'case',t:"A postmenopausal woman presents with postmenopausal bleeding; endometrial biopsy shows malignancy.",dx:'Endometrial carcinoma'},
+{s:'Obstetrics & Gynaecology',k:'topic',t:'Active management of the third stage of labour to prevent postpartum hemorrhage.',dx:'Active management of third stage of labour'},
+{s:'Paediatrics',k:'case',t:"A 2-year-old presents with bilateral pitting pedal edema, thin sparse hair, and a distended abdomen.",dx:'Kwashiorkor'},
+{s:'Paediatrics',k:'case',t:"A newborn is noted to be cyanotic with a harsh systolic murmur; echo confirms a cardiac defect.",dx:'Tetralogy of Fallot'},
+{s:'Paediatrics',k:'case',t:"An 18-month-old presents with barking cough, stridor, and hoarse voice, worse at night.",dx:'Croup (laryngotracheobronchitis)'},
+{s:'Paediatrics',k:'case',t:"A 3-year-old presents with high fever, drooling, and preferring to sit leaning forward.",dx:'Acute epiglottitis'},
+{s:'Paediatrics',k:'case',t:"A 6-month-old has recurrent colicky abdominal pain, drawing up of legs, and red currant jelly stools.",dx:'Intussusception'},
+{s:'Paediatrics',k:'case',t:"A 5-year-old develops facial puffiness, cola-colored urine, and hypertension a week after a sore throat.",dx:'Post-streptococcal acute glomerulonephritis'},
+{s:'Paediatrics',k:'case',t:"A newborn has upward slanting eyes, a single palmar crease, and hypotonia.",dx:'Down syndrome (Trisomy 21)'},
+{s:'Paediatrics',k:'topic',t:'The IMNCI approach to a sick young infant in community settings.',dx:'IMNCI framework'},
+{s:'Orthopaedics',k:'case',t:"A child falls on an outstretched hand and presents with a swollen, deformed elbow and an absent radial pulse.",dx:'Supracondylar fracture of the humerus with vascular compromise'},
+{s:'Orthopaedics',k:'case',t:"An elderly woman after a fall presents with a shortened, externally rotated, and adducted lower limb.",dx:'Fracture neck of femur'},
+{s:'Orthopaedics',k:'case',t:"A patient with a tibial fracture develops severe pain out of proportion, pain on passive stretch, and tense swelling of the leg.",dx:'Compartment syndrome'},
+{s:'Orthopaedics',k:'case',t:"A teenager presents with progressive knee pain and swelling, with X-ray showing a 'sunburst' periosteal reaction.",dx:'Osteosarcoma'},
+{s:'Orthopaedics',k:'case',t:"A newborn is noted to have asymmetric thigh folds and a positive Ortolani/Barlow test.",dx:'Developmental dysplasia of the hip'},
+{s:'Orthopaedics',k:'case',t:"A young footballer twists his knee, hears a pop, and develops swelling and instability.",dx:'Anterior cruciate ligament tear'},
+{s:'Pathology',k:'topic',t:"Virchow's triad and the pathogenesis of thrombosis.",dx:'Pathogenesis of thrombosis'},
+{s:'Pathology',k:'topic',t:'Morphological patterns of acute versus chronic inflammation.',dx:'Acute vs chronic inflammation'},
+{s:'Pharmacology',k:'topic',t:'Mechanism and management of organophosphorus poisoning.',dx:'Organophosphorus poisoning'},
+{s:'Pharmacology',k:'topic',t:'Pharmacokinetic basis of bioavailability and first-pass metabolism.',dx:'Bioavailability and first-pass metabolism'},
+{s:'Community Medicine (PSM)',k:'topic',t:'Sensitivity, specificity, and predictive value in disease screening.',dx:'Screening test performance'},
+{s:'Community Medicine (PSM)',k:'topic',t:'The epidemic curve and its interpretation in outbreak investigation.',dx:'Epidemic curve interpretation'},
+{s:'Management',k:'topic',t:'Breaking bad news to a patient and family using a structured communication framework.',dx:'Breaking bad news'},
+{s:'Management',k:'topic',t:'Principles of informed consent in clinical and surgical practice.',dx:'Informed consent'}
+];
+
+const $ = (id) => document.getElementById(id);
+
+/* ================= theme ================= */
+function loadTheme(){ return localStorage.getItem('lessonbench_theme') || 'simple'; }
+$('themeSelect').value = loadTheme();
+document.documentElement.setAttribute('data-theme', loadTheme() === 'simple' ? '' : loadTheme());
+$('themeSelect').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  localStorage.setItem('lessonbench_theme', v);
+  document.documentElement.setAttribute('data-theme', v === 'simple' ? '' : v);
+});
+
+/* ================= collapsible steps ================= */
+function wireCollapse(labelId, arrowId, cardId){
+  $(labelId).addEventListener('click', ()=>{
+    $(labelId).classList.toggle('collapsed');
+    $(arrowId).style.transform = $(labelId).classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+    $(cardId).classList.toggle('collapsed');
+  });
+}
+wireCollapse('label-model','arrow-model','card-model');
+wireCollapse('label-topic','arrow-topic','card-topic');
+
+/* ================= provider tabs / key storage ================= */
+let state = { provider:'claude', mode:'random', picked:null, messages:[], level:'', running:false };
+
+function loadKeys(){ try{ return JSON.parse(localStorage.getItem('lessonbench_keys')||'{}'); }catch(e){ return {}; } }
+function saveKeys(k){ localStorage.setItem('lessonbench_keys', JSON.stringify(k)); }
+function loadModels(){ try{ return JSON.parse(localStorage.getItem('lessonbench_models')||'{}'); }catch(e){ return {}; } }
+function saveModels(m){ localStorage.setItem('lessonbench_models', JSON.stringify(m)); }
+function loadEndpoints(){ try{ return JSON.parse(localStorage.getItem('lessonbench_endpoints')||'{}'); }catch(e){ return {}; } }
+function saveEndpoints(e){ localStorage.setItem('lessonbench_endpoints', JSON.stringify(e)); }
+
+function renderProviderPane(){
+  const p = PROVIDERS[state.provider];
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('keyHelp').innerHTML = p.help;
+  $('endpointRow').style.display = p.needsEndpoint ? '' : 'none';
+  const keys = loadKeys(), models = loadModels(), endpoints = loadEndpoints();
+  $('apiKey').value = keys[state.provider] || '';
+  $('modelName').value = models[state.provider] || '';
+  if(p.needsEndpoint) $('apiEndpoint').value = endpoints[state.provider] || '';
+  updateKeyStatus();
+}
+function updateKeyStatus(){
+  const el = $('keyStatus');
+  if($('apiKey').value.trim()){ el.textContent = 'Key saved locally for ' + PROVIDERS[state.provider].label + '.'; el.className='key-status ok'; }
+  else { el.textContent = 'No key saved for this provider yet.'; el.className='key-status empty'; }
+}
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.provider = tab.dataset.provider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', ()=>{ const k=loadKeys(); k[state.provider]=$('apiKey').value; saveKeys(k); updateKeyStatus(); });
+$('modelName').addEventListener('input', ()=>{ const m=loadModels(); m[state.provider]=$('modelName').value; saveModels(m); });
+$('apiEndpoint').addEventListener('input', ()=>{ const e=loadEndpoints(); e[state.provider]=$('apiEndpoint').value; saveEndpoints(e); });
+renderProviderPane();
+
+/* ================= topic mode tabs ================= */
+document.querySelectorAll('#modeTabs .pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('#modeTabs .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    state.mode = p.dataset.mode;
+    $('pane-random').style.display = state.mode==='random' ? '' : 'none';
+    $('pane-typed').style.display = state.mode==='typed' ? '' : 'none';
+    $('pane-pasted').style.display = state.mode==='pasted' ? '' : 'none';
+  });
+});
+
+/* ================= random roll ================= */
+$('rollBtn').addEventListener('click', async ()=>{
+  $('rollBtn').disabled = true;
+  const originalLabel = $('rollBtn').textContent;
+  $('rollBtn').textContent = '🎲 Rolling…';
+  const live = await loadLiveBank();
+  const pool = (live && live.length) ? live : BANK;
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  state.picked = pick;
+  const sourceTag = (live && live.length)
+    ? `<span class="tag" style="background:var(--muted);">from Curriculum Forge ↗</span>`
+    : `<span class="tag" style="background:var(--muted);">${pick.k==='case'?'Case vignette':'Management topic'}</span>`;
+  $('pickBox').innerHTML = `<span class="tag">${pick.s}</span>${sourceTag}<div class="picked-text">${pick.t}</div>`;
+  $('rollBtn').disabled = false;
+  $('rollBtn').textContent = originalLabel;
+});
+
+/* ================= image search: Wikimedia Commons (no key, CORS-open) ================= */
+async function fetchCommonsImage(query){
+  try{
+    const url = 'https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=' +
+      encodeURIComponent(query + ' medical') + '&gsrlimit=5&gsrnamespace=6&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=700&format=json&origin=*';
+    const res = await fetch(url);
+    if(!res.ok) return null;
+    const data = await res.json();
+    const pages = data.query && data.query.pages;
+    if(!pages) return null;
+    for(const pid in pages){
+      const info = pages[pid].imageinfo && pages[pid].imageinfo[0];
+      if(info && (info.thumburl || info.url) && /\.(jpg|jpeg|png|gif)$/i.test(info.url||info.thumburl||'')){
+        return { url: info.thumburl || info.url, page: info.descriptionurl || ('https://commons.wikimedia.org/wiki/' + pages[pid].title), title: pages[pid].title };
+      }
+    }
+    return null;
+  }catch(e){ return null; }
+}
+
+/* ================= system prompt ================= */
+function buildSystemPrompt(){
+  const level = $('learnerLevel').value;
+  const depth = $('depthLevel').value;
+  state.level = level;
+  return `#VibeRounds Lesson Bench. You are a warm, precise clinical educator holding an ongoing teaching conversation with ${level}.
+
+When asked to teach a topic or case, write a structured lesson, ${depth}, using this exact markdown-style structure with ## headers:
+
+## Hook
+One or two vivid sentences that make the topic memorable.
+
+## Core mechanism
+The key pathophysiology or underlying principle, high-yield only.
+
+## Clinical features
+Bullet list of the classic presentation. Use ==double equals== around the single most clinically discriminating term or finding in each bullet to highlight it (e.g. "- ==Tourniquet test positive== with falling platelet count").
+
+## Diagnosis / workup
+Bullet list of the key discriminating investigations, in the order you'd actually order them.
+
+## Management
+Numbered list of management steps in priority order (immediate/emergency steps first if relevant).
+
+## Summary
+3-4 tight recap bullets a learner could glance at the night before an exam. Keep this separate from Clinical Pearls below.
+
+## Clinical pearls
+1-2 sentences of high-yield, easily-forgotten insight, each starting with "Pearl:".
+
+Formatting rules:
+- Use **bold** for key terms and drug/eponym names, ==highlight== for the single most important discriminator per section, plain text otherwise.
+- Keep each lesson focused — roughly matching the requested length — so replies stay compact and leave headroom in the conversation.
+- Do not include an [IMG: ...] placeholder unless the learner has explicitly asked for a picture, diagram, or image in their message. When they do ask, add one line in the exact format [IMG: short concrete search phrase, 2-5 words] at the point in your reply where the image belongs — do not describe the image yourself, the phrase drives an actual image lookup.
+- For anything that is not a request for a new lesson (a follow-up question, a request to summarize, a quiz question, a request for an image, general discussion), just answer directly and conversationally — you do not need to repeat the full lesson structure for every message, only for a fresh topic/case.
+- If the learner asks for a lesson on a new topic mid-conversation, treat it as a fresh lesson and use the full structure again.
+- Be textbook-accurate and clinically precise. No filler, no disclaimers, no repeating the question back.`;
+}
+
+function buildFirstUserMessage(){
+  let subject = '';
+  let label = '';
+  if(state.mode === 'random'){
+    if(!state.picked){ throw new Error('Roll a topic first.'); }
+    subject = state.picked.t + (state.picked.dx ? `\n\n(Reference point / working diagnosis: ${state.picked.dx})` : '');
+    label = state.picked.dx || state.picked.t.slice(0,60);
+  } else if(state.mode === 'typed'){
+    subject = $('typedTopic').value.trim();
+    if(!subject){ throw new Error('Type a topic first.'); }
+    label = subject;
+  } else {
+    subject = $('pastedCase').value.trim();
+    if(!subject){ throw new Error('Paste a case first.'); }
+    label = subject.slice(0,60) + '...';
+  }
+  return { userMsg: `Please teach me this topic / case:\n\n${subject}`, label };
+}
+
+/* ================= model calls ================= */
+async function callModel(system, msgs){
+  const keys = loadKeys(), models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+  if(state.provider === 'claude') return await callClaude(apiKey, model, system, msgs);
+  if(state.provider === 'gemini') return await callGemini(apiKey, model, system, msgs);
+  if(state.provider === 'other') return await callCustom(loadEndpoints()['other'], apiKey, model, system, msgs);
+  return await callOpenAI(apiKey, model, system, msgs);
+}
+async function callClaude(apiKey, model, system, msgs){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({ model, max_tokens: 1600, system, messages: msgs.map(m=>({role:m.role, content:m.content})) })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+async function callGemini(apiKey, model, system, msgs){
+  const contents = msgs.map(m=>({ role: m.role === 'assistant' ? 'model' : 'user', parts:[{text:m.content}] }));
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ systemInstruction:{parts:[{text:system}]}, contents })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  const cand = data.candidates && data.candidates[0];
+  const parts = cand && cand.content && cand.content.parts || [];
+  return parts.map(p=>p.text||'').join('\n').trim();
+}
+async function callCustom(endpoint, apiKey, model, system, msgs){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const headers = {'Content-Type':'application/json'};
+  if(apiKey) headers['Authorization'] = 'Bearer ' + apiKey;
+  const messages = [{role:'system',content:system}].concat(msgs);
+  const res = await fetch(endpoint, { method:'POST', headers, body: JSON.stringify({ model, messages, max_tokens:1600 }) });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  if(data.choices && data.choices[0] && data.choices[0].message) return (data.choices[0].message.content||'').trim();
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+async function callOpenAI(apiKey, model, system, msgs){
+  const messages = [{role:'system',content:system}].concat(msgs);
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+    body: JSON.stringify({ model, messages, max_tokens: 1600 })
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  const data = await res.json();
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+
+/* ================= render assistant text -> HTML, resolve [IMG: ...] ================= */
+let imgSlotCounter = 0;
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function inlineMd(s){
+  let out = escapeHtml(s);
+  out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/==(.+?)==/g, '<mark>$1</mark>');
+  return out;
+}
+
+function renderAssistantHtml(raw){
+  const lines = raw.split('\n');
+  let html = '';
+  let listType = null; // 'ul' | 'ol'
+  let inSummary = false;
+  const imgSlots = [];
+
+  function closeList(){ if(listType){ html += '</' + listType + '>'; listType = null; } }
+
+  for(let rawLine of lines){
+    let line = rawLine.trim();
+    if(!line){ closeList(); continue; }
+
+    const imgMatch = line.match(/^\[IMG:\s*(.+?)\]$/i);
+    if(imgMatch){
+      closeList();
+      const id = 'imgslot-' + (imgSlotCounter++);
+      imgSlots.push({ id, query: imgMatch[1] });
+      html += `<div class="lesson-img-block" id="${id}"><div class="img-loading">Loading image…</div></div>`;
+      continue;
+    }
+    if(line.startsWith('## ')){
+      closeList();
+      const heading = line.slice(3).trim();
+      inSummary = /^summary$/i.test(heading);
+      html += `<h3>${inlineMd(heading)}</h3>`;
+      continue;
+    }
+    if(line.startsWith('# ')){
+      closeList();
+      html += `<h2>${inlineMd(line.slice(2))}</h2>`;
+      continue;
+    }
+    if(/^pearl:/i.test(line)){
+      closeList();
+      html += `<div class="pearl">${inlineMd(line.replace(/^pearl:\s*/i,''))}</div>`;
+      continue;
+    }
+    if(/^\d+\.\s+/.test(line)){
+      if(listType !== 'ol'){ closeList(); html += '<ol>'; listType = 'ol'; }
+      html += `<li>${inlineMd(line.replace(/^\d+\.\s+/,''))}</li>`;
+      continue;
+    }
+    if(/^[-*]\s+/.test(line)){
+      if(listType !== 'ul'){ closeList(); html += '<ul>'; listType = 'ul'; }
+      html += `<li>${inlineMd(line.replace(/^[-*]\s+/,''))}</li>`;
+      continue;
+    }
+    closeList();
+    if(inSummary) html += `<div class="summary-block">${inlineMd(line)}</div>`;
+    else html += `<p>${inlineMd(line)}</p>`;
+  }
+  closeList();
+  return { html, imgSlots };
+}
+
+async function resolveImages(imgSlots){
+  for(const slot of imgSlots){
+    const img = await fetchCommonsImage(slot.query);
+    const el = document.getElementById(slot.id);
+    if(!el) continue;
+    if(img){
+      el.innerHTML = `<img src="${img.url}" alt="${escapeHtml(slot.query)}" loading="lazy">
+        <div class="cap">${escapeHtml(slot.query)} · <a href="${img.page}" target="_blank" rel="noopener">source: Wikimedia Commons</a></div>`;
+    } else {
+      el.innerHTML = `<div class="cap">No open-licensed image found for "${escapeHtml(slot.query)}".</div>`;
+    }
+  }
+}
+
+/* ================= transcript rendering ================= */
+function appendUserTurn(text){
+  const div = document.createElement('div');
+  div.className = 'turn user-turn';
+  div.innerHTML = `<div class="who">You</div><div>${escapeHtml(text)}</div>`;
+  $('transcript').appendChild(div);
+  return div;
+}
+function appendAssistantPlaceholder(){
+  const div = document.createElement('div');
+  div.className = 'turn';
+  div.innerHTML = '<div class="typing">Thinking</div>';
+  $('transcript').appendChild(div);
+  return div;
+}
+
+/* ================= generation flow ================= */
+async function sendToModel(userText, isFreshLessonPrompt){
+  if(state.running) return;
+  state.running = true;
+  $('sendBtn').disabled = true;
+  $('generateBtn').disabled = true;
+  $('errorNote').classList.remove('show');
+
+  if(!isFreshLessonPrompt) appendUserTurn(userText);
+  state.messages.push({ role:'user', content:userText });
+  const placeholder = appendAssistantPlaceholder();
+  window.scrollTo({ top: document.body.scrollHeight, behavior:'smooth' });
+
+  try{
+    const system = buildSystemPrompt();
+    const raw = await callModel(system, state.messages);
+    state.messages.push({ role:'assistant', content: raw });
+    const { html, imgSlots } = renderAssistantHtml(raw);
+    placeholder.innerHTML = `<div class="lesson">${html}</div>`;
+    if(imgSlots.length) resolveImages(imgSlots);
+  } catch(err){
+    placeholder.remove();
+    $('errorNote').textContent = 'Request failed: ' + err.message + ' — check your API key, model name, and that the provider allows browser requests.';
+    $('errorNote').classList.add('show');
+    state.messages.pop();
+  } finally {
+    state.running = false;
+    $('sendBtn').disabled = false;
+    $('generateBtn').disabled = false;
+  }
+}
+
+async function generateLesson(){
+  $('errorNote').classList.remove('show');
+  let first;
+  try{ first = buildFirstUserMessage(); }
+  catch(e){ $('errorNote').textContent = e.message; $('errorNote').classList.add('show'); return; }
+
+  state.messages = [];
+  $('transcript').innerHTML = '';
+  $('workspace').classList.add('visible');
+  $('wsTitle').textContent = first.label;
+  $('wsSub').textContent = 'via ' + PROVIDERS[state.provider].label;
+  appendUserTurn('Teach me: ' + first.label);
+  await sendToModel(first.userMsg, true);
+}
+
+$('generateBtn').addEventListener('click', generateLesson);
+$('resetBtn').addEventListener('click', ()=>{
+  $('workspace').classList.remove('visible');
+  $('transcript').innerHTML = '';
+  $('errorNote').classList.remove('show');
+  state.messages = [];
+});
+
+$('sendBtn').addEventListener('click', ()=>{
+  const val = $('composerInput').value.trim();
+  if(!val || state.running) return;
+  $('composerInput').value = '';
+  sendToModel(val, false);
+});
+$('composerInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); $('sendBtn').click(); }
+});
+document.querySelectorAll('#quickchips .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    if(state.running) return;
+    sendToModel(chip.dataset.q, false);
+  });
+});
+
+/* ================= download as plain text ================= */
+$('downloadTxtBtn').addEventListener('click', ()=>{
+  const turns = document.querySelectorAll('#transcript .turn');
+  if(!turns.length) return;
+  const title = $('wsTitle').textContent || 'Lesson';
+  let body = title + '\n' + '='.repeat(title.length) + '\n\n';
+  turns.forEach(t=>{
+    const role = t.classList.contains('user') ? 'You' : 'Lesson Bench';
+    body += `[${role}]\n${t.textContent.trim()}\n\n`;
+  });
+  const blob = new Blob([body], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (title.replace(/[^a-z0-9]+/gi,'_').slice(0,60) || 'lesson') + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+/* ================= download as standalone html ================= */
+$('downloadBtn').addEventListener('click', ()=>{
+  const turns = document.querySelectorAll('#transcript .turn');
+  if(!turns.length) return;
+  const title = $('wsTitle').textContent || 'Lesson';
+  const styleBlock = document.querySelector('style').outerHTML;
+  let body = '';
+  turns.forEach(t=>{ body += t.outerHTML; });
+  const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${title} — Vibe Rounds Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+${styleBlock}
+</head><body><div class="wrap"><header class="top"><h1>${title}</h1></header>
+<div class="transcript">${body}</div>
+<footer>Generated with Vibe Rounds - Lesson Bench · educational use only</footer>
+</div></body></html>`;
+  const blob = new Blob([doc], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (title.replace(/[^a-z0-9]+/gi,'_').slice(0,60) || 'lesson') + '.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+</script>
+</body>
+</html>
