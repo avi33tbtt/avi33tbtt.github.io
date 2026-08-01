@@ -190,6 +190,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [System Prompt: The Evidence-Pyramid Trajectory Mapper](evidence-pyramid-trajectory-mapper.md) | System Prompt: The Evidence-Pyramid Trajectory Mapper |
 | -- | [Module — Case Report → Patient Story Converter](Module-Case-Report-to-Patient-Story-Converter.md) | Module — Case Report → Patient Story Converter |
 | -- | [Module — Comprehensive Care Plan Generator](Module-Comprehensive-Care-Plan-Generator.md) | Module — Comprehensive Care Plan Generator |
+| -- | [Clinical Document Gap Analysis Finder](Clinical_Document_Gap_Analysis_Finder.md) | Clinical Document Gap Analysis Finder |
 
 
 
