@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - Clinical Education Analytics — Multi-Agent Case Orchestrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+  :root{
+    --paper:#F7FAFB; --card:#FFFFFF; --ink:#0B2530; --line:#DCE7EA; --line-soft:#E9F1F3;
+    --accent:#0891B2; --accent-dark:#0A6E85; --accent-soft:#E3F4F8;
+    --alert:#C2410C; --alert-soft:#FCE9DD; --muted:#5B7480;
+    --tab-inactive:#EEF4F6; --radius:10px; --body-font:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body-font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-dark);}
+  .wrap{max-width:980px;margin:0 auto;padding:28px 20px 80px;}
+  header.top{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;margin-bottom:24px;flex-wrap:wrap;gap:10px;}
+  header.top h1{font-weight:800;font-size:22px;margin:0;letter-spacing:-0.02em;}
+  header.top .rx{font-weight:600;font-size:11.5px;color:#fff;background:var(--accent);border-radius:20px;padding:4px 11px;}
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-weight:500;}
+  .banner{font-size:12.5px;border:1px solid var(--line-soft);background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:22px;}
+  .banner strong{color:var(--accent-dark);}
+  .step{margin-bottom:22px;}
+  .step-label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer;user-select:none;}
+  .step-label .num{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .collapse-arrow{font-size:10px;margin-left:2px;transition:transform .15s ease;color:var(--muted);}
+  .step-label.collapsed .collapse-arrow{transform:rotate(-90deg);}
+  .card.collapsed{display:none;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:0 1px 2px rgba(11,37,48,.04),0 8px 24px -16px rgba(11,37,48,.08);}
+  textarea,input[type=text],input[type=password],select{width:100%;font-family:var(--body-font);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;color:var(--ink);}
+  textarea:focus,input:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  textarea{resize:vertical;min-height:90px;line-height:1.5;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media(max-width:600px){.row{grid-template-columns:1fr;}}
+  .upload-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+  .upload-row input[type=file]{width:100%;font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius);padding:8px 10px;background:var(--paper);}
+  .upload-row input[type=file]::file-selector-button{font-weight:600;font-size:12px;color:#fff;background:var(--accent);border:none;border-radius:999px;padding:6px 13px;margin-right:10px;cursor:pointer;}
+  #uploadStatus.ok{color:var(--accent-dark);} #uploadStatus.err{color:var(--alert);}
+  .tabrow{display:flex;gap:4px;background:var(--tab-inactive);padding:4px;border-radius:999px;margin-bottom:16px;width:fit-content;}
+  .tabrow .tab{font-weight:600;font-size:12.5px;padding:7px 16px;background:transparent;border:none;border-radius:999px;cursor:pointer;color:var(--muted);}
+  .tabrow .tab.active{background:var(--accent);color:#fff;}
+  .key-status{font-size:12px;font-weight:500;margin-top:8px;}
+  .key-status.ok{color:var(--accent-dark);} .key-status.empty{color:var(--muted);}
+  .runbar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:6px;}
+  .runbar .field{flex:1;min-width:160px;}
+  button{font-weight:700;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 18px;cursor:pointer;}
+  button:hover{background:var(--accent-dark);}
+  button.secondary{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  button.secondary:hover{background:var(--tab-inactive);color:var(--ink);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  #workspace{margin-top:28px;display:none;} #workspace.visible{display:block;}
+  .ws-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .ws-header .wtitle{font-size:18px;font-weight:800;} .ws-header .wsub{font-size:12px;color:var(--muted);}
+  .ws-actions button{margin-left:8px;}
+  .transcript{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);min-height:160px;max-height:560px;overflow-y:auto;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(11,37,48,.04),0 8px 24px -16px rgba(11,37,48,.08);}
+  .msg{margin-bottom:16px;max-width:88%;}
+  .msg.user{margin-left:auto;}
+  .msg.orchestrator{max-width:100%;}
+  .msg .who{font-size:10.5px;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+  .msg.user .who{text-align:right;}
+  .msg .bubble{padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.55;white-space:pre-wrap;}
+  .msg.agent .bubble{background:var(--accent-soft);border:1px solid #cdeaf0;border-top-left-radius:4px;}
+  .msg.user .bubble{background:var(--accent);color:#fff;border-top-right-radius:4px;}
+  .msg.system .bubble{background:transparent;border:1px dashed var(--line);color:var(--muted);font-style:italic;font-size:12.5px;border-radius:8px;}
+  .msg.orchestrator .bubble{background:transparent;border:1px dotted var(--line);color:var(--muted);font-size:12px;border-radius:8px;}
+  .composer{display:flex;gap:8px;align-items:flex-end;}
+  .composer textarea{min-height:56px;flex:1;}
+  .error-note{font-size:12.5px;color:var(--alert);background:var(--alert-soft);border:1px solid #f0c8ac;border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;display:none;}
+  .error-note.show{display:block;}
+  .typing{font-size:12px;color:var(--muted);font-weight:500;}
+  .typing::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+  .agentlist{max-height:280px;overflow-y:auto;border:1px solid var(--line-soft);border-radius:var(--radius);padding:6px;margin-top:8px;}
+  .agentlist label{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--ink);padding:5px 6px;border-radius:6px;cursor:pointer;}
+  .agentlist label:hover{background:var(--tab-inactive);}
+  .agentlist input{width:auto;margin-top:2px;}
+  .agentlist .an{font-weight:600;} .agentlist .ac{color:var(--muted);font-weight:500;}
+  .pill{display:inline-block;font-size:11px;font-weight:700;background:var(--accent-soft);color:var(--accent-dark);border-radius:999px;padding:2px 9px;margin-left:6px;}
+  .confirm-bar{border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:16px;background:var(--paper);}
+  .confirm-bar .ctext{font-size:13px;color:var(--ink);margin-bottom:10px;}
+  .confirm-bar .cbtns button{padding:7px 16px;font-size:12.5px;}
+  .confirm-bar .cbtns button.stop{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  .confirm-bar .cbtns button.stop:hover{background:var(--tab-inactive);color:var(--ink);}
+  footer{margin-top:44px;font-size:11.5px;color:var(--muted);text-align:center;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand" style="display:flex;align-items:center;gap:10px;">
+      <h1>Vibe Rounds — Clinical Education Analytics</h1>
+      <span class="rx">multi-agent</span>
+    </div>
+    <div class="tagline">Orchestrated sub-agents from your 57-module library · runs entirely in your browser · bring your own key</div>
+  </header>
+
+  <div class="banner">
+    <strong>How this works.</strong> Give it a case. A lead Orchestrator agent reads it and calls up the most relevant sub-agents from your module library one at a time, each doing its own turn in the transcript. You can jump into the conversation at any point — your messages are visible to whichever agent runs next.
+  </div>
+
+  <!-- STEP 1: PROVIDER -->
+  <div class="step">
+    <div class="step-label" id="label-model"><span class="num">1</span>Model &amp; API key<span class="collapse-arrow">▾</span></div>
+    <div class="card" id="card-model">
+      <div class="tabrow" id="providerTabs">
+        <button class="tab active" data-provider="claude">Claude</button>
+        <button class="tab" data-provider="gemini">Gemini</button>
+        <button class="tab" data-provider="openai">ChatGPT</button>
+        <button class="tab" data-provider="other">Other</button>
+      </div>
+      <div class="providerpane">
+        <div class="row">
+          <div>
+            <label id="apiKeyLabel" for="apiKey">API key</label>
+            <input type="password" id="apiKey" autocomplete="off">
+          </div>
+          <div>
+            <label for="modelName">Model name</label>
+            <input type="text" id="modelName" autocomplete="off">
+          </div>
+        </div>
+        <div class="row" id="endpointRow" style="display:none;grid-template-columns:1fr;">
+          <div>
+            <label for="apiEndpoint">API endpoint URL</label>
+            <input type="text" id="apiEndpoint" placeholder="https://.../v1/chat/completions" autocomplete="off">
+          </div>
+        </div>
+        <div class="hint" id="keyHelp"></div>
+        <div class="key-status" id="keyStatus"></div>
+        <div class="hint">Keys are stored only in this browser's localStorage — never sent anywhere but the provider you pick.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: CASE -->
+  <div class="step">
+    <div class="step-label" id="label-case"><span class="num">2</span>Case data<span class="collapse-arrow">▾</span></div>
+    <div class="card" id="card-case">
+      <label for="caseText">Paste the case (de-identified)</label>
+      <textarea id="caseText" placeholder="Age/sex, presenting complaint, history, exam, labs, imaging, the question you want reasoned through..."></textarea>
+      <div class="upload-row">
+        <label for="caseFile">Or upload a case file — PDF, Word (.docx), or plain text (.txt), max 10MB</label>
+        <input type="file" id="caseFile" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+        <div class="hint" id="uploadStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: AGENTS + RUN -->
+  <div class="step">
+    <div class="step-label" id="label-agents"><span class="num">3</span>Sub-agents &amp; run settings<span class="collapse-arrow">▾</span></div>
+    <div class="card" id="card-agents">
+      <div class="hint" style="margin-bottom:10px;">Leave everything checked and let the Orchestrator choose. Uncheck any module you don't want it to call, or use "Force next agent" mid-run to hand-pick one yourself.</div>
+      <div class="runbar">
+        <div class="field">
+          <button class="secondary" id="toggleAllAgents" type="button">Uncheck all</button>
+        </div>
+        <div class="field">
+          <button class="secondary" id="toggleAgentList" type="button">Show agent list</button>
+        </div>
+      </div>
+      <div class="agentlist" id="agentList" style="display:none;"></div>
+      <div style="margin-top:16px;"><button id="startBtn">Start Clinical Education Analytics</button></div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="ws-header">
+      <div>
+        <div class="wtitle">Clinical Education Analytics</div>
+        <div class="wsub" id="wsSub">Orchestrator running…</div>
+      </div>
+      <div class="ws-actions">
+        <div class="field" style="display:inline-block;margin-right:8px;">
+          <select id="forceAgentSelect" style="width:auto;display:inline-block;">
+            <option value="">Force next agent…</option>
+          </select>
+        </div>
+        <button class="secondary" id="downloadTranscriptBtn">Download .txt</button>
+        <button class="secondary" id="resetBtn">Reset run</button>
+      </div>
+    </div>
+    <div class="error-note" id="errorNote"></div>
+    <div class="transcript" id="transcript"></div>
+    <div class="composer">
+      <textarea id="composerInput" placeholder="Jump in — say something to the table..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <footer>Vibe Rounds — Clinical Education Analytics · runs entirely in your browser · bring your own key · educational reasoning aid, not clinical decision support</footer>
+</div>
+
+<script>
+/* ================= providers (same pattern as Case Bench) ================= */
+const PROVIDERS = {
+  claude: { label:'Claude', keyPlaceholder:'sk-ant-...', modelPlaceholder:'claude-sonnet-4-6',
+    help:'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there.' },
+  gemini: { label:'Gemini', keyPlaceholder:'AIza...', modelPlaceholder:'gemini-2.5-flash',
+    help:'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>.' },
+  openai: { label:'ChatGPT', keyPlaceholder:'sk-...', modelPlaceholder:'gpt-4o-mini',
+    help:'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>.' },
+  other: { label:'Other', keyPlaceholder:'API key (leave blank if none)', modelPlaceholder:'model-name-as-required-by-provider', needsEndpoint:true,
+    help:'Works with any OpenAI-compatible <code>/chat/completions</code> endpoint (Groq, Together, Mistral, DeepSeek, OpenRouter, Ollama, etc).' }
+};
+
+/* ================= agent registry: the 57 VibeRounds modules ================= */
+const BASE = 'https://avi33tbtt.github.io/Prompts/';
+const AGENTS = [
+ {id:'m00',n:0,title:'Cold-Start Orientation',cat:'Meta',desc:'Identifies a new user\'s role and goal and routes them to the right module.',url:BASE+'Module-00-Cold-Start-Orientation.html'},
+ {id:'m01',n:1,title:'Socratic Clinical Reasoning',cat:'Reasoning',desc:'Pushes a learner to reason through a case actively rather than passively receive the answer.',url:BASE+'Module-01-Socratic-Clinical-Reasoning.html'},
+ {id:'m02',n:2,title:'Patient-Advocate Case Documentation',cat:'Advocacy',desc:'A 4-step workflow for a family member to build a structured case record.',url:BASE+'Module-02-Patient-Advocate-Case-Documentation.html'},
+ {id:'m03',n:3,title:'Extended Patient-Advocate Monitoring',cat:'Advocacy',desc:'Longitudinal domain tracking (lifestyle, mood, medication, red flags).',url:BASE+'Module-03-Extended-Patient-Advocate-Monitoring.html'},
+ {id:'m04',n:4,title:'Peer-Level Ward Round Preparation',cat:'Education',desc:'Rehearses rounds, admissions, pre-op clearance, polypharmacy screening, overnight triage.',url:BASE+'Module-04-Peer-Level-Ward-Round-Preparation.html'},
+ {id:'m05',n:5,title:'Real-Time Case Review & Data Audit',cat:'Analytics',desc:'Queries and cleans a single patient\'s live case log during active management.',url:BASE+'Module-05-Real-Time-Case-Review-and-Data-Audit.html'},
+ {id:'m06',n:6,title:'Registry-Level Analytics',cat:'Analytics',desc:'Queries an entire case registry across nine escalating levels of analytic depth.',url:BASE+'Module-06-Registry-Level-Analytics.html'},
+ {id:'m07',n:7,title:'Longitudinal & Cross-Case Learning',cat:'Analytics',desc:'Turns the registry into a cross-case, cross-time learning system.',url:BASE+'Module-07-Longitudinal-and-Cross-Case-Learning.html'},
+ {id:'m08',n:8,title:'Socratic-Mode Design Specification',cat:'Meta',desc:'A 12-point QA spec for authoring or revising a new Socratic-mode prompt.',url:BASE+'Module-08-Socratic-Mode-Design-Specification.html'},
+ {id:'m09',n:9,title:'N-of-1 Case Research Protocol',cat:'Advocacy',desc:'Running the seven-stage research protocol on a complex case.',url:BASE+'Module-09-Case-Research_Protocol.html'},
+ {id:'m10',n:10,title:'Journal & Article Reading',cat:'Education',desc:'Guided reading of a medical journal article against a case.',url:BASE+'Module-10-Medical-Journal-Article-Reading.html'},
+ {id:'m11',n:11,title:'Patient Education Query Intelligence',cat:'Advocacy',desc:'Turns patient questions into structured, educational answers.',url:BASE+'Module-11-Patient-Education-Query-Intelligence.html'},
+ {id:'m12',n:12,title:'Differential Diagnosis Deepdive',cat:'Reasoning',desc:'Deep, structured expansion of a differential diagnosis.',url:BASE+'Module-12-Differential-Diagnosis-Deepdive.html'},
+ {id:'m13',n:13,title:'Medication Reconciliation & Polypharmacy Audit',cat:'Advocacy',desc:'Audits a medication list for interactions and polypharmacy risk.',url:BASE+'Module-13-Medication-Reconciliation-Polypharmacy-Audit.html'},
+ {id:'m14',n:14,title:'Resource-Constrained Clinical Reasoning',cat:'Reasoning',desc:'Reasoning through a case under low-resource / global-health constraints.',url:BASE+'Module-14-Global-Health-Resource-Constrained-Clinical-Reasoning.html'},
+ {id:'m15',n:15,title:'Illness Script Acquisition',cat:'Reasoning',desc:'Builds the learner\'s illness-script for the diagnosis in question.',url:BASE+'Module-15-Illness-Script-Acquisition.html'},
+ {id:'m16',n:16,title:'Basic Science ↔ Clinical Integration',cat:'Education',desc:'Ties bedside findings back to underlying basic science.',url:BASE+'Module-16-Bidirectional-Basic-Science-Clinical-Integration.html'},
+ {id:'m17',n:17,title:'Semantic Qualifiers & Problem Representation',cat:'Reasoning',desc:'Builds a precise one-line problem representation using semantic qualifiers.',url:BASE+'Module-17-Semantic-Qualifiers-Problem-Representation.html'},
+ {id:'m18',n:18,title:'Causal vs. Probabilistic (Network) Reasoning',cat:'Reasoning',desc:'Contrasts causal-mechanistic vs. probabilistic/network reasoning on the case.',url:BASE+'Module-18-Causal-vs-Probabilistic-Network-Reasoning.html'},
+ {id:'m19',n:19,title:'Community & Social Medicine Insights',cat:'Systems',desc:'Surfaces social-determinant and community-medicine angles on the case.',url:BASE+'Module-19-Community-and-Social-Medicine-Insights.html'},
+ {id:'m20',n:20,title:'Naturalistic (Recognition-Primed) Decision Making',cat:'Reasoning',desc:'Applies recognition-primed decision-making to the case.',url:BASE+'Module-20-Recognition-Primed-Decision-Model.html'},
+ {id:'m21',n:21,title:'Evidence Frontier Search',cat:'Education',desc:'Searches the current evidence frontier relevant to the case.',url:BASE+'Module-21-Evidence-Frontier-Search.html'},
+ {id:'m22',n:22,title:'Nested Analysis',cat:'Analytics',desc:'Nested, layered analysis of case data.',url:BASE+'Module-22-Nested-Analysis.html'},
+ {id:'m23',n:23,title:'Counterfactual Analysis',cat:'Analytics',desc:'Explores "what if" counterfactual branches of the case.',url:BASE+'Module-23-Counterfactual-Analysis.html'},
+ {id:'m24',n:24,title:'Heuristic Analysis',cat:'Analytics',desc:'Identifies heuristics used (or missed) in the case reasoning.',url:BASE+'Module-24-Heuristic-Analysis.html'},
+ {id:'m25',n:25,title:'Thematic Analysis',cat:'Analytics',desc:'Extracts recurring themes across the case narrative.',url:BASE+'Module-25-Thematic-Analysis.html'},
+ {id:'m26',n:26,title:'Bias Auditing',cat:'Safety',desc:'Audits the case reasoning for cognitive bias.',url:BASE+'Module-26-Bias-Auditing.html'},
+ {id:'m27',n:27,title:'Time-Series & Velocity Analyzer',cat:'Analytics',desc:'Analyzes rate-of-change / trajectory across serial data points.',url:BASE+'Module-27-Time-Series-Velocity-Analyzer.html'},
+ {id:'m28',n:28,title:'Diagnostic Time-Out',cat:'Reasoning',desc:'A structured pause-and-check before committing to a diagnosis.',url:BASE+'Module-28-Diagnostic-Time-Out.html'},
+ {id:'m29',n:29,title:'The Iatrogenic Domino Effect',cat:'Safety',desc:'Traces cascading iatrogenic harm chains in the case.',url:BASE+'Module-29-Iatrogenic-Domino-Effect.html'},
+ {id:'m30',n:30,title:'The "Diagnostic Anchor" Extractor',cat:'Reasoning',desc:'Extracts and challenges the anchoring diagnosis.',url:BASE+'Module-30-Diagnostic-Anchor-Extractor.html'},
+ {id:'m31',n:31,title:'First-Principles Pathophysiology Mapping',cat:'Education',desc:'Maps the case back to first-principles pathophysiology.',url:BASE+'Module-31-First-Principles-Pathophysiology-Mapping.html'},
+ {id:'m32',n:32,title:'Clinical Cognition Loop',cat:'Reasoning',desc:'Runs the full clinical-cognition loop on the case.',url:BASE+'Module-32-Clinical-Cognition-Loop.html'},
+ {id:'m33',n:33,title:'The "Why Now?" (Precipitant) Hunter',cat:'Reasoning',desc:'Hunts for the precipitant that explains why the case presented now.',url:BASE+'Module-33-Why-Now-Precipitant-Hunter.html'},
+ {id:'m34',n:34,title:'The High-Value Care (HVC) Auditor',cat:'Systems',desc:'Audits the case plan for high-value vs. low-value care.',url:BASE+'Module-34-High-Value-Care-Auditor.html'},
+ {id:'m35',n:35,title:'Epistemic Certainty Mapping & Calibration',cat:'Reasoning',desc:'Maps and calibrates certainty levels across the differential.',url:BASE+'Module-35-Epistemic-Certainty-Mapping-Calibration.html'},
+ {id:'m36',n:36,title:'The Bayesian Probability / Likelihood Ratio Engine',cat:'Reasoning',desc:'Runs explicit Bayesian/likelihood-ratio updating on the case.',url:BASE+'Module-36-Bayesian-Probability-Likelihood-Ratio-Engine.html'},
+ {id:'m37',n:37,title:'Red Herring / Signal-to-Noise Drill',cat:'Reasoning',desc:'Drills the learner on separating signal from red-herring noise.',url:BASE+'Module-37-Red-Herring-Signal-to-Noise-Drill.html'},
+ {id:'m38',n:38,title:'Poly-Crisis & Cascading Failure Simulator',cat:'Safety',desc:'Simulates cascading, multi-system crisis failure from the case.',url:BASE+'Module-38-Poly-Crisis-Cascading-Failure-Simulator.html'},
+ {id:'m39',n:39,title:'The "Global Knowledge Network" Diagnostic Matrix',cat:'Education',desc:'Places the case in a global diagnostic-knowledge matrix.',url:BASE+'Module-39-Global-Knowledge-Network-Diagnostic-Matrix.html'},
+ {id:'m40',n:40,title:'The Operational & Throughput Strategist',cat:'Systems',desc:'Analyzes case-related operational/throughput system issues.',url:BASE+'Module-40-Operational-Throughput-Strategist.html'},
+ {id:'m41',n:41,title:'Clinical Workflow Implementation Science',cat:'Systems',desc:'Applies implementation-science lenses to the clinical workflow.',url:BASE+'Module-41-Clinical-Workflow-Implementation-Science.html'},
+ {id:'m42',n:42,title:'Clinical Pre-Mortem',cat:'Safety',desc:'Runs a pre-mortem: imagines the case going wrong and works backward.',url:BASE+'Module-42-Clinical-Pre-Mortem.html'},
+ {id:'m43',n:43,title:'Health Economics & Value-Based Care Alignment',cat:'Systems',desc:'Analyzes the case through health-economics / value-based-care lenses.',url:BASE+'Module-43-Health-Economics-Value-Based-Care-Alignment.html'},
+ {id:'m44',n:44,title:'Clinical Genetics Reasoning',cat:'Meta',desc:'Genetics-focused reasoning applied to the case.',url:BASE+'Module-44-Clinical-Genetics-Reasoning.html'},
+ {id:'m45s',n:45,title:'Shadow Module 44 — Clinical Genetics Adversarial Counterpart',cat:'Meta',desc:'Adversarially challenges the genetics reasoning above.',url:BASE+'Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart.html'},
+ {id:'m46',n:46,title:'Evidence-Based Medicine Insights',cat:'Meta',desc:'EBM-focused critique and insight generation on the case.',url:BASE+'Module-45-Evidence-Based-Medicine-Insights.html'},
+ {id:'m47s',n:47,title:'Shadow Module 47 — EBM Adversarial Counterpart',cat:'Meta',desc:'Adversarially challenges the EBM reasoning above.',url:BASE+'Shadow-Module-45-EBM-Adversarial-Counterpart.html'},
+ {id:'m48',n:48,title:'Treatment Comparative Analysis & Prognosis Trajectory',cat:'Meta',desc:'Compares treatment options and maps an evidence-informed prognosis trajectory.',url:BASE+'Module-48-Treatment-Comparative-Analysis-and-Prognosis-Trajectory.html'},
+ {id:'m49',n:49,title:'FMEA Analysis',cat:'Safety',desc:'Failure Mode and Effects Analysis applied to the case/process.',url:BASE+'Module-49-FMEA-Analysis-and-Insights.html'},
+ {id:'m50',n:50,title:'Diagnostic Reasoning Map',cat:'Reasoning',desc:'Builds a visual/structured diagnostic reasoning map.',url:BASE+'Module-50-DRM-Diagnostic-Reasoning-Map.html'},
+ {id:'m51',n:51,title:'Systems-Based Clinical Analysis',cat:'Systems',desc:'Analyzes the case through a systems-based-practice lens.',url:BASE+'Module-51-Systems-Based-Clinical-Analysis-and-Insights.html'},
+ {id:'m52',n:52,title:'Clinical Pearls Distillation',cat:'Education',desc:'Distills the case into portable, memorable clinical pearls.',url:BASE+'Module-52-CP-Clinical-Pearls.html'},
+ {id:'m53',n:53,title:'Clinical Guideline Intelligence Navigator',cat:'Education',desc:'Navigates relevant clinical guidelines against the case.',url:BASE+'Module-53-Clinical-Guideline-Intelligence-Navigator.html'},
+ {id:'m54',n:54,title:'System 1 & System 2 Thinking Question Generator',cat:'Reasoning',desc:'Generates dual-process (fast/slow thinking) questions on the case.',url:BASE+'Module-54-System1-System2-Question-Generator.html'},
+ {id:'m55',n:55,title:'Patient Needs Assessment',cat:'Advocacy',desc:'Structured assessment of the patient\'s needs beyond the diagnosis.',url:BASE+'Module-55-Patient-Needs-Assessment.html'},
+ {id:'m56',n:56,title:'Hypothetico-Deductive Reasoning',cat:'Reasoning',desc:'Runs the classic hypothetico-deductive reasoning model on the case.',url:BASE+'Module-HDM-Hypothetico-Deductive-Model.html'},
+ {id:'m57',n:57,title:'Clinical Cognition Deep Dive',cat:'Reasoning',desc:'A deep-dive synthesis pass across the whole clinical-cognition process.',url:BASE+'Module-CC-Clinical-Cognition-Deep-Dive.html'}
+];
+
+/* ================= state ================= */
+let state = {
+  provider:'claude', running:false, paused:false,
+  messages: [],        // full shared transcript: {role, name, content}
+  batchCount: 0,
+  cap: 6,
+  usedAgents: [],
+  fetchedPrompts: {},  // url -> extracted text
+};
+const $ = (id)=>document.getElementById(id);
+
+/* ================= localStorage helpers ================= */
+function loadKeys(){ try{ return JSON.parse(localStorage.getItem('rt_keys')||'{}'); }catch(e){ return {}; } }
+function saveKeys(k){ localStorage.setItem('rt_keys', JSON.stringify(k)); }
+function loadModels(){ try{ return JSON.parse(localStorage.getItem('rt_models')||'{}'); }catch(e){ return {}; } }
+function saveModels(m){ localStorage.setItem('rt_models', JSON.stringify(m)); }
+function loadEndpoints(){ try{ return JSON.parse(localStorage.getItem('rt_endpoints')||'{}'); }catch(e){ return {}; } }
+function saveEndpoints(e){ localStorage.setItem('rt_endpoints', JSON.stringify(e)); }
+function loadCaseText(){ try{ return localStorage.getItem('rt_case')||''; }catch(e){ return ''; } }
+function saveCaseText(t){ try{ localStorage.setItem('rt_case', t); }catch(e){} }
+function loadPromptCache(){ try{ return JSON.parse(localStorage.getItem('rt_promptcache')||'{}'); }catch(e){ return {}; } }
+function savePromptCache(c){ try{ localStorage.setItem('rt_promptcache', JSON.stringify(c)); }catch(e){} }
+
+/* ================= provider pane ================= */
+function renderProviderPane(){
+  const p = PROVIDERS[state.provider];
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('keyHelp').innerHTML = p.help;
+  const keys = loadKeys(), models = loadModels();
+  $('apiKey').value = keys[state.provider] || '';
+  $('modelName').value = models[state.provider] || '';
+  $('endpointRow').style.display = p.needsEndpoint ? '' : 'none';
+  if(p.needsEndpoint){ $('apiEndpoint').value = loadEndpoints()[state.provider] || ''; }
+  updateKeyStatus();
+}
+function updateKeyStatus(){
+  const keys = loadKeys(); const el = $('keyStatus');
+  if(keys[state.provider]){ el.textContent = 'Key saved locally for ' + PROVIDERS[state.provider].label + '.'; el.className='key-status ok'; }
+  else { el.textContent = 'No key saved for this provider yet.'; el.className='key-status empty'; }
+}
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.provider = tab.dataset.provider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', ()=>{ const k=loadKeys(); k[state.provider]=$('apiKey').value.trim(); saveKeys(k); updateKeyStatus(); });
+$('modelName').addEventListener('input', ()=>{ const m=loadModels(); m[state.provider]=$('modelName').value.trim(); saveModels(m); });
+$('apiEndpoint').addEventListener('input', ()=>{ const e=loadEndpoints(); e[state.provider]=$('apiEndpoint').value.trim(); saveEndpoints(e); });
+renderProviderPane();
+
+/* ================= collapsible sections ================= */
+function setupCollapsible(id){
+  const label=$('label-'+id), card=$('card-'+id);
+  label.addEventListener('click', ()=>{ label.classList.toggle('collapsed'); card.classList.toggle('collapsed'); });
+}
+['model','case','agents'].forEach(setupCollapsible);
+
+/* ================= case text + upload ================= */
+$('caseText').value = loadCaseText();
+$('caseText').addEventListener('input', ()=> saveCaseText($('caseText').value));
+if(typeof pdfjsLib !== 'undefined'){ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }
+function setUploadStatus(msg,kind){ const el=$('uploadStatus'); el.textContent=msg; el.className='hint'+(kind?' '+kind:''); }
+async function extractPdfText(file){ const buf=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:buf}).promise; let out=[]; for(let i=1;i<=pdf.numPages;i++){ const page=await pdf.getPage(i); const content=await page.getTextContent(); out.push(content.items.map(it=>it.str).join(' ')); } return out.join('\n\n').trim(); }
+async function extractDocxText(file){ const buf=await file.arrayBuffer(); const result=await mammoth.extractRawText({arrayBuffer:buf}); return (result.value||'').trim(); }
+function extractTxtText(file){ return file.text(); }
+$('caseFile').addEventListener('change', async (e)=>{
+  const file = e.target.files && e.target.files[0]; if(!file) return;
+  if(file.size > 10*1024*1024){ setUploadStatus(`"${file.name}" is too large — max 10MB.`,'err'); e.target.value=''; return; }
+  const name=file.name.toLowerCase();
+  const isPdf = name.endsWith('.pdf'); const isDocx = name.endsWith('.docx'); const isTxt = name.endsWith('.txt');
+  if(!isPdf && !isDocx && !isTxt){ setUploadStatus('Unsupported file type.','err'); e.target.value=''; return; }
+  setUploadStatus(`Reading "${file.name}"…`);
+  try{
+    let text='';
+    if(isPdf) text = await extractPdfText(file);
+    else if(isDocx) text = await extractDocxText(file);
+    else text = await extractTxtText(file);
+    if(!text){ setUploadStatus('No readable text found.','err'); e.target.value=''; return; }
+    const existing = $('caseText').value.trim();
+    $('caseText').value = existing ? existing + '\n\n' + text : text;
+    saveCaseText($('caseText').value);
+    setUploadStatus(`Loaded case text from "${file.name}".`,'ok');
+  }catch(err){ setUploadStatus('Could not read that file: '+err.message,'err'); }
+  finally{ e.target.value=''; }
+});
+
+/* ================= agent picklist ================= */
+function renderAgentList(){
+  const wrap = $('agentList'); wrap.innerHTML='';
+  AGENTS.forEach(a=>{
+    const lab = document.createElement('label');
+    lab.innerHTML = `<input type="checkbox" checked data-agent="${a.id}"><span><span class="an">${a.n}. ${a.title}</span> <span class="pill">${a.cat}</span><br><span class="ac">${a.desc}</span></span>`;
+    wrap.appendChild(lab);
+  });
+  const sel = $('forceAgentSelect');
+  AGENTS.forEach(a=>{
+    const opt = document.createElement('option');
+    opt.value = a.id; opt.textContent = a.n + '. ' + a.title;
+    sel.appendChild(opt);
+  });
+}
+renderAgentList();
+$('toggleAgentList').addEventListener('click', ()=>{
+  const wrap = $('agentList');
+  const hidden = wrap.style.display === 'none';
+  wrap.style.display = hidden ? '' : 'none';
+  $('toggleAgentList').textContent = hidden ? 'Hide agent list' : 'Show agent list';
+});
+let allChecked = true;
+$('toggleAllAgents').addEventListener('click', ()=>{
+  allChecked = !allChecked;
+  document.querySelectorAll('#agentList input[type=checkbox]').forEach(cb=> cb.checked = allChecked);
+  $('toggleAllAgents').textContent = allChecked ? 'Uncheck all' : 'Check all';
+});
+function enabledAgentIds(){
+  return Array.from(document.querySelectorAll('#agentList input[type=checkbox]:checked')).map(cb=>cb.dataset.agent);
+}
+
+/* ================= preflight ================= */
+function preflightOk(){
+  const caseText = $('caseText').value.trim();
+  if(!caseText){ $('card-case').classList.remove('collapsed'); $('label-case').classList.remove('collapsed'); alert('Paste a case first — Step 2.'); return false; }
+  const keys = loadKeys();
+  if(!keys[state.provider] && !PROVIDERS[state.provider].needsEndpoint){
+    $('card-model').classList.remove('collapsed'); $('label-model').classList.remove('collapsed');
+    alert('Add an API key for '+PROVIDERS[state.provider].label+' in Step 1 first.'); return false;
+  }
+  if(PROVIDERS[state.provider].needsEndpoint && !loadEndpoints()[state.provider]){
+    $('card-model').classList.remove('collapsed'); $('label-model').classList.remove('collapsed');
+    alert('Add an API endpoint URL in Step 1 first.'); return false;
+  }
+  if(enabledAgentIds().length === 0){ alert('Check at least one sub-agent in Step 3.'); return false; }
+  return true;
+}
+
+/* ================= transcript rendering ================= */
+function appendMsg(role, name, text){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const who = role==='user' ? 'You' : role==='orchestrator' ? 'Orchestrator (internal)' : (name || 'Agent');
+  div.innerHTML = `<div class="who">${who}</div><div class="bubble"></div>`;
+  div.querySelector('.bubble').textContent = text;
+  t.appendChild(div); t.scrollTop = t.scrollHeight;
+  return div;
+}
+function appendTyping(label){
+  const t = $('transcript');
+  const div = document.createElement('div'); div.className='msg agent'; div.id='typingIndicator';
+  div.innerHTML = `<div class="who">${label||'Agent'}</div><div class="bubble typing">thinking</div>`;
+  t.appendChild(div); t.scrollTop = t.scrollHeight;
+}
+function removeTyping(){ const el=$('typingIndicator'); if(el) el.remove(); }
+
+/* ================= module prompt fetch (with cache + manual fallback) ================= */
+async function getModulePromptText(agent){
+  if(state.fetchedPrompts[agent.url]) return state.fetchedPrompts[agent.url];
+  const cache = loadPromptCache();
+  if(cache[agent.url]){ state.fetchedPrompts[agent.url] = cache[agent.url]; return cache[agent.url]; }
+  try{
+    const res = await fetch(agent.url);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script,style,nav,header,footer').forEach(n=>n.remove());
+    let text = (doc.body ? doc.body.innerText : html).replace(/\n{3,}/g,'\n\n').trim();
+    if(text.length > 9000) text = text.slice(0, 9000) + '\n\n[...module text truncated for length...]';
+    state.fetchedPrompts[agent.url] = text;
+    cache[agent.url] = text; savePromptCache(cache);
+    return text;
+  }catch(err){
+    const pasted = prompt(
+      `Couldn't auto-fetch "${agent.title}" from:\n${agent.url}\n\n` +
+      `(likely a CORS block from the browser). Open that link, copy the module's prompt text, and paste it here. ` +
+      `It'll be cached so this only happens once per module.`
+    );
+    const text = (pasted || `[Module: ${agent.title} — full text unavailable, use your own knowledge of standard clinical-reasoning practice for this module's stated purpose: ${agent.desc}]`).trim();
+    state.fetchedPrompts[agent.url] = text;
+    cache[agent.url] = text; savePromptCache(cache);
+    return text;
+  }
+}
+
+/* ================= orchestrator ================= */
+function buildOrchestratorSystemPrompt(caseText, enabledIds){
+  const roster = AGENTS.filter(a=>enabledIds.includes(a.id))
+    .map(a=>`- ${a.id}: "${a.title}" [${a.cat}] — ${a.desc}`).join('\n');
+  return [
+    'You are the Orchestrator of a multi-agent clinical-reasoning round table called Vibe Rounds — Clinical Education Analytics.',
+    'This is an EDUCATIONAL exercise for a medical learner working through a case — no output here informs real patient care.',
+    'You do not answer the case yourself. Your only job each turn is to pick which ONE sub-agent should speak next, based on the case, the roster below, and the transcript so far (including anything the human learner just said).',
+    'Prefer agents that have not spoken yet, but you may re-call an agent if the conversation genuinely calls for it (e.g. a follow-up). Vary categories — don\'t run five reasoning agents in a row if safety/systems/advocacy agents are relevant too.',
+    'Roster (id: "title" [category] — what it does):',
+    roster,
+    '',
+    'Respond with STRICT JSON only, no prose, no markdown fences, in exactly one of these two shapes:',
+    '{"next_agent_id":"m12","reason":"one short sentence"}',
+    'or, only once you judge the round table has covered the case well (typically after several distinct agents have contributed):',
+    '{"done":true,"reason":"one short sentence"}'
+  ].join('\n');
+}
+function parseOrchestratorJSON(raw){
+  const match = raw.match(/\{[\s\S]*\}/);
+  if(!match) throw new Error('Orchestrator did not return JSON: ' + raw.slice(0,200));
+  return JSON.parse(match[0]);
+}
+function buildAgentSystemPrompt(agent, modulePromptText, caseText){
+  return [
+    `You are the "${agent.title}" sub-agent in a multi-agent clinical-reasoning round table (Vibe Rounds — Clinical Education Analytics), speaking directly into a shared transcript that the learner and other agents can see.`,
+    `Your role and method are defined by the module text below — follow its intent, tone, and technique. This is an educational exercise; you are a reasoning/teaching agent, not a clinical decision-maker, and nothing you say is a clinical order.`,
+    `Keep your turn focused and reasonably concise (a few short paragraphs or a tight list) — you are one voice in a round table, not writing a monograph. Speak in first person as this agent. Do not repeat the whole case back verbatim.`,
+    '',
+    '--- MODULE DEFINITION ---',
+    modulePromptText,
+    '--- END MODULE DEFINITION ---',
+    '',
+    '--- CASE ---',
+    caseText,
+    '--- END CASE ---'
+  ].join('\n');
+}
+
+/* transcript formatted for prompts: role-tagged plain text */
+function transcriptAsText(){
+  return state.messages.map(m=>{
+    const who = m.role==='user' ? 'Learner' : m.name;
+    return `${who}: ${m.content}`;
+  }).join('\n\n');
+}
+
+/* ================= provider calls (same as Case Bench) ================= */
+async function callClaude(apiKey, model, system, userText){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({ model, max_tokens:4096, system, messages:[{role:'user', content:userText}] })
+  });
+  if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+async function callGemini(apiKey, model, system, userText){
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ systemInstruction:{parts:[{text:system}]}, contents:[{role:'user', parts:[{text:userText}]}] })
+  });
+  if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  const cand = data.candidates && data.candidates[0];
+  const parts = cand && cand.content && cand.content.parts || [];
+  return parts.map(p=>p.text||'').join('\n').trim();
+}
+async function callCustom(endpoint, apiKey, model, system, userText){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const headers={'Content-Type':'application/json'}; if(apiKey) headers['Authorization']='Bearer '+apiKey;
+  const res = await fetch(endpoint, { method:'POST', headers, body: JSON.stringify({ model, messages:[{role:'system',content:system},{role:'user',content:userText}], max_tokens:4096 }) });
+  if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  if(data.choices && data.choices[0] && data.choices[0].message) return (data.choices[0].message.content||'').trim();
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+async function callOpenAI(apiKey, model, system, userText){
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+    body: JSON.stringify({ model, messages:[{role:'system',content:system},{role:'user',content:userText}], max_tokens:4096 })
+  });
+  if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+async function callModelRaw(system, userText){
+  const keys = loadKeys(); const models = loadModels();
+  const apiKey = keys[state.provider]; const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+  if(state.provider==='claude') return callClaude(apiKey, model, system, userText);
+  if(state.provider==='gemini') return callGemini(apiKey, model, system, userText);
+  if(state.provider==='other') return callCustom(loadEndpoints()['other'], apiKey, model, system, userText);
+  return callOpenAI(apiKey, model, system, userText);
+}
+
+/* ================= run loop (permission-gated: ask before every step) ================= */
+function openWorkspace(){
+  $('transcript').innerHTML = '';
+  $('errorNote').classList.remove('show');
+  $('workspace').classList.add('visible');
+  $('workspace').scrollIntoView({behavior:'smooth', block:'start'});
+}
+$('startBtn').addEventListener('click', async ()=>{
+  if(!preflightOk()) return;
+  state.messages = []; state.usedAgents = []; state.batchCount = 0;
+  openWorkspace();
+  appendMsg('system', 'System', 'Clinical Education Analytics started. Orchestrator is selecting the first agent…');
+  runOrchestratorStep();
+});
+$('resetBtn').addEventListener('click', ()=>{
+  state.messages=[]; state.usedAgents=[]; state.running=false; state.batchCount=0;
+  $('workspace').classList.remove('visible');
+});
+$('forceAgentSelect').addEventListener('change', async (e)=>{
+  const id = e.target.value; if(!id) return;
+  e.target.value = '';
+  if(state.running) { alert('Wait for the current turn to finish.'); return; }
+  const agent = AGENTS.find(a=>a.id===id);
+  await runOneAgentTurn(agent, 'forced by learner');
+  askToContinue();
+});
+
+/* Renders an inline Continue/Stop bar in the transcript and waits for the learner's click. */
+function askToContinue(){
+  showConfirmBar('Continue the round table — call the next agent?', ()=>{
+    runOrchestratorStep();
+  });
+}
+function showConfirmBar(message, onYes){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'confirm-bar';
+  div.innerHTML = `<div class="ctext">${message}</div><div class="cbtns"><button class="go">Continue</button> <button class="stop">Stop here</button></div>`;
+  div.querySelector('.go').addEventListener('click', ()=>{ div.remove(); onYes(); });
+  div.querySelector('.stop').addEventListener('click', ()=>{ div.remove(); appendMsg('system','System','Stopped — jump in below any time, or use "Force next agent" to continue manually.'); });
+  t.appendChild(div); t.scrollTop = t.scrollHeight;
+}
+
+async function runOrchestratorStep(){
+  const caseText = $('caseText').value.trim();
+  const enabledIds = enabledAgentIds();
+  const sys = buildOrchestratorSystemPrompt(caseText, enabledIds);
+  const userText = 'TRANSCRIPT SO FAR:\n' + (transcriptAsText() || '(empty — this is the first turn)') +
+    '\n\nWhich agent should speak next? Respond with JSON only.';
+  state.running = true;
+  try{
+    const raw = await callModelRaw(sys, userText);
+    const decision = parseOrchestratorJSON(raw);
+    if(decision.done){
+      appendMsg('orchestrator','Orchestrator','Round table concluded: ' + (decision.reason||''));
+      state.running = false;
+      return;
+    }
+    const agent = AGENTS.find(a=>a.id === decision.next_agent_id) || AGENTS.find(a=>enabledIds.includes(a.id) && !state.usedAgents.includes(a.id));
+    if(!agent){ appendMsg('system','System','Orchestrator could not resolve a valid next agent — stopping.'); state.running=false; return; }
+    appendMsg('orchestrator','Orchestrator', `→ calling ${agent.n}. ${agent.title} (${decision.reason||'no reason given'})`);
+    state.running = false;
+    await runOneAgentTurn(agent);
+    state.batchCount++;
+    askToContinue();
+  }catch(err){
+    state.running = false;
+    $('errorNote').textContent = 'Orchestrator error: ' + err.message;
+    $('errorNote').classList.add('show');
+  }
+}
+
+async function runOneAgentTurn(agent, forcedReason){
+  state.running = true;
+  $('sendBtn').disabled = true;
+  appendTyping(agent.n + '. ' + agent.title);
+  try{
+    const caseText = $('caseText').value.trim();
+    if(forcedReason) appendMsg('orchestrator','Orchestrator', `→ forced: ${agent.n}. ${agent.title}`);
+    const modText = await getModulePromptText(agent);
+    const sys = buildAgentSystemPrompt(agent, modText, caseText);
+    const userText = 'TRANSCRIPT SO FAR (for context — the learner may be present):\n' +
+      (transcriptAsText() || '(empty — you are opening the discussion)') +
+      '\n\nTake your turn now, in character as this module\'s agent.';
+    const reply = await callModelRaw(sys, userText);
+    removeTyping();
+    appendMsg('agent', agent.n + '. ' + agent.title, reply);
+    state.messages.push({role:'agent', name: agent.n + '. ' + agent.title, content: reply});
+    if(!state.usedAgents.includes(agent.id)) state.usedAgents.push(agent.id);
+  }catch(err){
+    removeTyping();
+    $('errorNote').textContent = 'Agent error ('+agent.title+'): ' + err.message;
+    $('errorNote').classList.add('show');
+  }finally{
+    state.running = false;
+    $('sendBtn').disabled = false;
+  }
+}
+
+/* ================= composer (learner can jump in any time) ================= */
+$('sendBtn').addEventListener('click', sendComposer);
+$('composerInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendComposer(); }
+});
+function sendComposer(){
+  const val = $('composerInput').value.trim();
+  if(!val) return;
+  $('composerInput').value = '';
+  appendMsg('user','You', val);
+  state.messages.push({role:'user', name:'Learner', content: val});
+  // If the round table isn't actively running a batch, wake it up for one more orchestrator-led turn.
+  if(!state.running){
+    runOrchestratorStep();
+  }
+}
+
+/* ================= transcript export ================= */
+function buildTranscriptText(){
+  const lines = ['Vibe Rounds — Clinical Education Analytics transcript', 'Exported: ' + new Date().toLocaleString(), '----------------------------------------', ''];
+  state.messages.forEach(m=>{
+    const who = m.role==='user' ? 'Learner' : m.name;
+    lines.push(who + ':'); lines.push(m.content); lines.push('');
+  });
+  return lines.join('\n');
+}
+$('downloadTranscriptBtn').addEventListener('click', ()=>{
+  const text = buildTranscriptText();
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url; a.download = 'clinical-education-analytics-transcript-' + stamp + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>
