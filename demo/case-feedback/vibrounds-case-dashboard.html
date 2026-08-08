@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Gap Audit — 70/M Fever & Encephalopathy | VibeRounds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,560;9..144,680&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f8f7; --panel:#ffffff; --ink:#0c2523; --muted:#5a7673;
+  --teal:#0f8a80; --teal-dk:#0a4f4a; --cyan:#12b8ac; --line:#dceeeb;
+  --amber:#c9820f; --amber-bg:#fff4e0; --red:#c23b3b; --red-bg:#fdeaea;
+  --ok:#1e8f5e; --ok-bg:#e7f7ef;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+a{color:var(--teal)}
+h1,h2,h3{font-family:Fraunces,serif;color:var(--teal-dk);margin:0}
+.eyebrow{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;color:var(--teal);font-weight:600}
+
+/* HERO */
+header.hero{background:radial-gradient(120% 160% at 10% 0%, #124a45 0%, #0a2f2c 55%, #071f1d 100%);color:#eafffb;padding:64px 0 56px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-120px;top:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(18,184,172,.35), transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:40px;align-items:end}
+@media(max-width:820px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{color:#fff;font-size:2.4rem;font-weight:560;line-height:1.15;margin:10px 0 14px;max-width:640px}
+.hero p.lede{color:#bfe6e0;max-width:560px;font-size:1.02rem}
+.hero .src{margin-top:22px;font-size:.85rem;color:#9fd6cd}
+.hero .src a{color:#eafffb;text-decoration-color:#3d8f85}
+.stat-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:22px 24px;backdrop-filter:blur(6px)}
+.stat-num{font-family:Fraunces,serif;font-size:3.4rem;font-weight:680;line-height:1;color:#fff}
+.stat-label{font-size:.85rem;color:#a9ddd5;margin-top:6px}
+.stat-sub{font-size:.78rem;color:#7fbdb4;margin-top:10px;border-top:1px solid rgba(255,255,255,.14);padding-top:10px}
+
+/* MAIN */
+main{padding:52px 0 90px}
+section{margin-bottom:64px}
+.section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.section-head h2{font-size:1.5rem}
+.section-head .count{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:3px 10px;border-radius:999px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:28px;border-left:2px solid var(--line)}
+.tl-item{position:relative;padding:0 0 26px 22px}
+.tl-item::before{content:"";position:absolute;left:-32px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--teal);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--teal)}
+.tl-item.flag::before{background:var(--red);box-shadow:0 0 0 2px var(--red)}
+.tl-day{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--teal-dk);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.tl-text{margin-top:3px;font-size:.95rem}
+.tl-text b{color:var(--teal-dk)}
+.tl-item.flag .tl-text b{color:var(--red)}
+
+/* GAP METERS */
+.gap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:820px){.gap-grid{grid-template-columns:1fr}}
+.gap-card{background:var(--panel);border-radius:16px;padding:22px 24px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(10,60,55,.04)}
+.gap-card h3{font-size:1.05rem;margin-bottom:8px}
+.gap-meter{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:14px 0 10px}
+.gap-fill{height:100%;border-radius:6px}
+.gap-note{font-size:.85rem;color:var(--muted)}
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.68rem;padding:2px 8px;border-radius:999px;font-weight:600;letter-spacing:.02em;margin-top:10px}
+.tag.blocked{background:var(--red-bg);color:var(--red)}
+.tag.partial{background:var(--amber-bg);color:var(--amber)}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+
+/* MODULE TABS */
+.tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.tab-btn{font-family:'IBM Plex Mono',monospace;font-size:.78rem;font-weight:600;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:all .15s}
+.tab-btn:hover{border-color:var(--teal)}
+.tab-btn.active{background:var(--teal-dk);color:#fff;border-color:var(--teal-dk)}
+.tab-panel{display:none;background:var(--panel);border-radius:18px;padding:32px;border:1px solid var(--line)}
+.tab-panel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.tab-panel h3{font-size:1.15rem;margin-bottom:6px}
+.tab-panel .verdict{display:inline-block;margin:6px 0 18px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;padding:4px 12px;border-radius:999px}
+.tab-panel ul{padding-left:20px;margin:12px 0}
+.tab-panel li{margin-bottom:8px}
+.quote-card{background:#eafaf7;border-left:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:16px 20px;margin:16px 0;font-size:.92rem}
+.finding-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:700px){.finding-grid{grid-template-columns:1fr}}
+.finding{background:var(--bg);border-radius:12px;padding:14px 16px;border:1px solid var(--line)}
+.finding .k{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+
+/* SYSTEM MAP */
+.sysmap{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:820px){.sysmap{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.sysmap{grid-template-columns:1fr}}
+.sys-card{border-radius:14px;padding:16px 18px;border:1px solid var(--line);background:var(--panel)}
+.sys-card h4{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--teal-dk);margin:0 0 8px}
+.sys-card p{font-size:.85rem;margin:0;color:var(--ink)}
+.sys-card.hot{border-color:var(--red);background:linear-gradient(180deg,var(--red-bg),#fff 60%)}
+.sys-card.hot h4{color:var(--red)}
+.sys-flag{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--red);margin-top:8px;display:block}
+
+/* GUIDELINE FORK */
+.fork{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;margin:20px 0}
+@media(max-width:700px){.fork{grid-template-columns:1fr}}
+.fork-path{background:var(--bg);border-radius:14px;padding:20px;border:1px solid var(--line)}
+.fork-path h4{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;color:var(--teal-dk);margin-bottom:8px}
+.fork-vs{display:flex;align-items:center;justify-content:center;padding:0 18px;font-family:'IBM Plex Mono',monospace;color:var(--muted);font-size:.75rem}
+@media(max-width:700px){.fork-vs{padding:10px 0}}
+.fork-path ul{margin:0;padding-left:18px;font-size:.85rem}
+.fork-path li{margin-bottom:6px}
+
+/* SYNTHESIS */
+.synthesis{background:linear-gradient(135deg,var(--teal-dk),#0a3934);color:#eafffb;border-radius:20px;padding:36px 40px}
+.synthesis h2{color:#fff}
+.synthesis .lead{color:#bfe6e0;max-width:680px;margin:8px 0 22px}
+.syn-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:820px){.syn-steps{grid-template-columns:1fr}}
+.syn-step{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 18px}
+.syn-step .num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#7fbdb4}
+.syn-step p{font-size:.88rem;margin:6px 0 0;color:#eafffb}
+.action-box{background:rgba(255,255,255,.1);border-left:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:18px 22px}
+.action-box .eyebrow{color:#7fbdb4}
+.action-box p{margin:8px 0 0;font-size:1rem}
+
+footer{padding:30px 0 60px;text-align:center;color:var(--muted);font-size:.8rem}
+footer a{color:var(--teal-dk)}
+
+.disclaimer{background:var(--amber-bg);border:1px solid #f0c777;border-radius:12px;padding:14px 18px;font-size:.82rem;color:#7a5306;margin-top:28px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">VibeRounds · Case Gap Audit</span>
+      <h1>Three modules, one blind spot: the case that treats a movement disorder as a footnote</h1>
+      <p class="lede">70-year-old man — fever, dry cough, and a rigidity + hyperreflexia + altered-sensorium picture that arrived before the fever did. Modules 13, 49/53, and 58 were each run independently against the same case. All three hit the same wall.</p>
+      <p class="src">Case: <a href="https://jeeharikasahu.blogspot.com/2021/03/70m-with-fever-since-4days-and-dry.html" target="_blank" rel="noopener">Jeeharika e-log, Mar 2021</a> · Modules: <a href="https://avi33tbtt.github.io/Prompts/Module-13-Medication-Reconciliation-Polypharmacy-Audit.html" target="_blank" rel="noopener">13</a>, <a href="https://avi33tbtt.github.io/Prompts/Module-53-Clinical-Guideline-Intelligence-Navigator.html" target="_blank" rel="noopener">49/53</a>, <a href="https://avi33tbtt.github.io/Prompts/Complication-Trajectory-Map.html" target="_blank" rel="noopener">58</a></p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">0</div>
+      <div class="stat-label">medications documented anywhere in the source case</div>
+      <div class="stat-sub">Age 70 · T 102°F · HR 110 · SpO₂ 94% RA · GRBS 103 — full vitals recorded, zero drug history recorded</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="timeline">
+    <div class="section-head"><h2>How the picture unfolded</h2><span class="count">8-day arc, per source note</span></div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-day">Day −8</div><div class="tl-text">Son sustains multiple fractures in an accident. Patient reported to be <b>in grief</b>.</div></div>
+      <div class="tl-item"><div class="tl-day">Day −3</div><div class="tl-text">Visits son; has a <b>syncopal episode</b>, 2–3 min, spontaneous recovery — resumes cooking afterward.</div></div>
+      <div class="tl-item flag"><div class="tl-day">Day −2</div><div class="tl-text"><b>Altered mental status</b> begins: irrelevant talk, involuntary micturition, reported "pricking movements" — <b>before any fever is documented</b>.</div></div>
+      <div class="tl-item"><div class="tl-day">Day −1</div><div class="tl-text">Still ambulant unaided. No seizures, no head trauma, no focal weakness noted by family.</div></div>
+      <div class="tl-item flag"><div class="tl-day">Day 0 — AM</div><div class="tl-text">Loses ability to walk unaided. <b>Bilateral increased tone</b>, UL + LL. Disoriented ×3. Slurred speech.</div></div>
+      <div class="tl-item flag"><div class="tl-day">Day 0 — PM</div><div class="tl-text"><b>Fever onset</b> — high-grade, intermittent, no chills. Admitted. Working diagnosis: LLL pneumonia with thrombocytopenia.</div></div>
+    </div>
+  </section>
+
+  <section id="gaps">
+    <div class="section-head"><h2>What each module could actually audit</h2><span class="count">3 modules run against 1 case</span></div>
+    <div class="gap-grid">
+      <div class="gap-card">
+        <h3>Module 13 — Medication Reconciliation</h3>
+        <div class="gap-meter"><div class="gap-fill" style="width:2%;background:var(--red)"></div></div>
+        <div class="gap-note">0 of an unknown total medications documented. Interaction, cascade, and adherence steps (13.2–13.6) cannot run.</div>
+        <span class="tag blocked">Audit blocked at Phase 1</span>
+      </div>
+      <div class="gap-card">
+        <h3>Module 49/53 — Guideline Navigator</h3>
+        <div class="gap-meter"><div class="gap-fill" style="width:55%;background:var(--amber)"></div></div>
+        <div class="gap-note">Guideline landscape mapped across CAP, encephalitis, and regional (scrub typhus/dengue) pathways — but no source text independently verified in this run.</div>
+        <span class="tag partial">Oriented, not verified</span>
+      </div>
+      <div class="gap-card">
+        <h3>Module 58 — Trajectory Map</h3>
+        <div class="gap-meter"><div class="gap-fill" style="width:40%;background:var(--amber)"></div></div>
+        <div class="gap-note">Timing- and system-based branches built from the case; treatment-related (iatrogenic) branch is empty — no intervention data to map against.</div>
+        <span class="tag partial">Partial — one branch empty</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules">
+    <div class="section-head"><h2>Module outputs, in full</h2><span class="count">click through</span></div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="m13">Module 13 · Med Reconciliation</button>
+      <button class="tab-btn" data-tab="m49">Module 49/53 · Guideline Navigator</button>
+      <button class="tab-btn" data-tab="m58">Module 58 · Trajectory Map</button>
+    </div>
+
+    <div class="tab-panel active" id="m13">
+      <h3>Medication Reconciliation & Polypharmacy Audit</h3>
+      <span class="verdict tag blocked">Cannot proceed past Phase 1</span>
+      <p>Running Step 13.1 ("build the medication table together") against the source case returns an empty table — no home medications, no admission orders, no PRN antipyretic, no empirical antibiotic. The patient is explicitly <em>not</em> a known case of DM, HTN, asthma, CAD, or TB, which rules out the most likely chronic-disease polypharmacy source — but says nothing about what was actually given for the fever, the pneumonia, or the neurological picture.</p>
+      <div class="quote-card">By the module's own threshold question, this patient can't even be classified as on polypharmacy (≥5 drugs) or hyper-polypharmacy (≥10 drugs) from the source data. <b>Steps 13.2–13.6 (interactions, drug–disease conflict, high-risk classes, adherence, cascades) are all blocked</b> — attempting them would mean inventing a drug list, which the module's own anti-hallucination rules prohibit.</div>
+      <div class="finding-grid">
+        <div class="finding"><div class="k">Escalate first (13.7.1)</div>Rigidity + hyperreflexia + fever + altered sensorium, with no documented medication history — a drug-induced hyperthermic/rigidity syndrome cannot be excluded.</div>
+        <div class="finding"><div class="k">30-day harm if unaddressed (13.7.3)</div>A causative or contributing drug is never identified — either the true cause is missed, or an incorrect empirical treatment continues unchallenged.</div>
+        <div class="finding"><div class="k">Bedside habit going forward (13.8)</div>Ask specifically about any tablet, injection, or traditional/OTC remedy in the preceding 2 weeks — as its own question, not folded into PMH.</div>
+        <div class="finding"><div class="k">One-line summary for the team (13.8.4)</div>"No medication history is documented despite a rigidity/altered-sensorium presentation where drug causation is a relevant differential."</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="m49">
+      <h3>Clinical Guideline Intelligence Navigator</h3>
+      <span class="verdict tag partial">Landscape mapped · excerpts unverified</span>
+      <p><b>PICO:</b> 70-year-old male, community setting, fever + cough + acute encephalopathy + thrombocytopenia → does the working diagnosis (pneumonia) account for the full picture, or does a competing/parallel diagnosis better explain it?</p>
+      <div class="fork">
+        <div class="fork-path">
+          <h4>Path A — pulmonary anchor</h4>
+          <ul>
+            <li>ATS/IDSA CAP guidelines</li>
+            <li>Confirms via imaging + severity score (CURB-65 — this patient is already confused and ≥65)</li>
+            <li>Matches the source blog's stated diagnosis</li>
+          </ul>
+        </div>
+        <div class="fork-vs">vs.</div>
+        <div class="fork-path">
+          <h4>Path B — neuro / regional-infectious anchor</h4>
+          <ul>
+            <li>Encephalitis/CNS-infection workup guidance</li>
+            <li>ICMR scrub typhus &amp; national dengue guidelines (India-endemic)</li>
+            <li>Confirms via CSF/imaging or empirical treatment pending serology</li>
+          </ul>
+        </div>
+      </div>
+      <div class="quote-card">Neither path was rejected by the guidelines reviewed — both favor <b>not waiting</b> for full confirmation in a sick patient. The grey zone: the source diagnosis collapses Path B into a footnote of Path A without documenting why CNS infection, scrub typhus, or dengue were excluded.</div>
+      <div class="finding-grid">
+        <div class="finding"><div class="k">Guideline reached for first (49.3.1)</div>Fever-with-altered-sensorium pathway, not CAP alone — the neuro findings are more specific and more dangerous if missed.</div>
+        <div class="finding"><div class="k">Recency / verification status</div>All five guideline entries flagged <b>[PARAPHRASED — VERIFY AT SOURCE]</b>; no live text retrieval performed in this run.</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="m58">
+      <h3>Complication & Trajectory Map Generator</h3>
+      <span class="verdict tag partial">Case-grounded branches built · iatrogenic branch empty</span>
+      <p>Mapped by timing and by system, using only what's mechanistically justifiable from the case. Every item below is tagged <code>[from case]</code> or <code>[general literature]</code> per the module's own rules — nothing is stated as fact without that tag.</p>
+      <div class="sysmap">
+        <div class="sys-card hot"><h4>Neurological</h4><p>Risk of progression to seizures/coma if the underlying process advances untreated.</p><span class="sys-flag">[from case, mechanism unverified]</span></div>
+        <div class="sys-card"><h4>Respiratory</h4><p>Progression from consolidation to type I respiratory failure; SpO₂ already borderline at 94% RA.</p><span class="sys-flag">[from case]</span></div>
+        <div class="sys-card"><h4>Cardiovascular</h4><p>Persistent tachycardia (110) with fever — compensated state that can decompensate abruptly.</p><span class="sys-flag">[from case]</span></div>
+        <div class="sys-card"><h4>Renal / metabolic</h4><p>AKI risk from sepsis physiology or reduced oral intake given altered sensorium.</p><span class="sys-flag">[general literature]</span></div>
+        <div class="sys-card hot"><h4>Infectious / secondary</h4><p>An undiagnosed unifying process (e.g. rickettsial disease) missed if attention anchors solely on the lung.</p><span class="sys-flag">[from case, cross-ref Module 49]</span></div>
+        <div class="sys-card"><h4>Psychiatric / long-term</h4><p>Unresolved grief reaction compounding recovery; post-delirium cognitive decline risk in an elderly patient.</p><span class="sys-flag">[from case]</span></div>
+      </div>
+      <div class="quote-card"><b>Treatment-related (iatrogenic) branch:</b> cannot be generated. No intervention data is documented in the source case — this gap mirrors the Module 13 finding exactly, and the module's own rule 4 ("do not include anything you cannot mechanistically justify") blocks inventing one.</div>
+      <div class="finding-grid">
+        <div class="finding"><div class="k">Most dangerous if missed (58.2.3)</div>An untreated CNS infection or rickettsial illness — early empirical treatment is time-critical and low-downside; delay compounds mortality risk at age 70.</div>
+        <div class="finding"><div class="k">Not covered by this map (58.2.4)</div>Toxicological/drug-induced causes of the rigidity picture (blocked by the missing med history) and the actual lab/imaging values referenced but not machine-readable from the source page.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="synthesis" id="synthesis">
+    <span class="eyebrow" style="color:#7fbdb4">Cross-module synthesis</span>
+    <h2>Same wall, three angles</h2>
+    <p class="lead">Each module found the same structural gap from a different direction — and each gap widens the next one.</p>
+    <div class="syn-steps">
+      <div class="syn-step"><div class="num">01 · Module 13</div><p>No medication history exists, so drug-causation for the rigidity/altered-sensorium picture can't be assessed.</p></div>
+      <div class="syn-step"><div class="num">02 · Module 49/53</div><p>The single "pneumonia" diagnosis may be premature closure against a live regional differential that better explains the full neurological picture.</p></div>
+      <div class="syn-step"><div class="num">03 · Module 58</div><p>The trajectory map's iatrogenic branch stays empty and its neurological branch stays undifferentiated — for the same two reasons above.</p></div>
+    </div>
+    <div class="action-box">
+      <span class="eyebrow">Highest-value next action</span>
+      <p>Obtain a complete medication/exposure history from the wife or son, and explicitly document why CNS infection, scrub typhus, and dengue were or were not pursued alongside pneumonia — before treating the current diagnosis as closed.</p>
+    </div>
+    <div class="disclaimer">Learning scaffold only — generated by running published VibeRounds Socratic prompt modules against a de-identified, publicly posted teaching case. Not a clinical decision, diagnosis, or care plan. All guideline and literature items require independent verification with a licensed supervising clinician before any action is taken.</div>
+  </section>
+
+</main>
+
+<footer>
+  Generated from VibeRounds Modules 13, 49/53 &amp; 58 (Dr. Avinash Kumar Gupta, 2026) · Case: <a href="https://jeeharikasahu.blogspot.com/2021/03/70m-with-fever-since-4days-and-dry.html" target="_blank" rel="noopener">Jeeharika e-log</a>
+</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
