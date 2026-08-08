@@ -191,6 +191,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module — Case Report → Patient Story Converter](Module-Case-Report-to-Patient-Story-Converter.md) | Module — Case Report → Patient Story Converter |
 | -- | [Module — Comprehensive Care Plan Generator](Module-Comprehensive-Care-Plan-Generator.md) | Module — Comprehensive Care Plan Generator |
 | -- | [Clinical Document Gap Analysis Finder](Clinical_Document_Gap_Analysis_Finder.md) | Clinical Document Gap Analysis Finder |
+| -- | [Complication & Trajectory Map Generator](Complication-Trajectory-Map.md) | Complication & Trajectory Map Generator |
 
 
 
