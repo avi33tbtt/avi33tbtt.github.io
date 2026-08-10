@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence-Pyramid Trajectory Mapper — Demo</title>
+<style>
+  :root{
+    --bg:#0b1614;
+    --bg-soft:#0f1e1b;
+    --paper:#f4faf9;
+    --ink:#0d211d;
+    --navy:#0a2e2a;
+    --teal:#0d9488;
+    --teal-bright:#2dd4bf;
+    --teal-dim:#134e4a;
+    --amber:#f0b429;
+    --alert:#e2544a;
+    --line:#d5e4e1;
+    --line-dark:#1c3733;
+    --card:#ffffff;
+    --card-dark:#0f2521;
+    --muted:#5b7570;
+    --muted-dark:#7fa89e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,.serif{font-family:'Fraunces','Iowan Old Style',Georgia,serif;}
+  .mono{font-family:'IBM Plex Mono','Courier New',ui-monospace,monospace;}
+
+  header{
+    padding:40px 6vw 26px;
+    background:radial-gradient(1200px 400px at 15% -10%, rgba(45,212,191,0.18), transparent 60%), var(--navy);
+    color:#eafaf6;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono','Courier New',monospace;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--teal-bright); display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber); box-shadow:0 0 0 4px rgba(240,180,41,0.18);}
+  h1{font-size:clamp(28px,3.8vw,42px); line-height:1.06; margin:0 0 10px; font-weight:600; max-width:780px; letter-spacing:-0.015em; color:#fff;}
+  header p{max-width:680px; color:#b7d6cf; font-size:14.5px; line-height:1.6; margin:0 0 22px;}
+  header p a{color:var(--teal-bright); text-decoration:none; border-bottom:1px solid rgba(45,212,191,0.4);}
+  header p a:hover{border-color:var(--teal-bright);}
+
+  .case-bar{
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#eafaf6; border-radius:10px;
+    padding:16px 22px; display:flex; gap:26px; flex-wrap:wrap; align-items:baseline;
+    font-family:'IBM Plex Mono','Courier New',monospace; font-size:12px; backdrop-filter:blur(6px);
+  }
+  .case-bar b{font-family:'Fraunces',Georgia,serif; font-size:14.5px; color:#fff; font-weight:600; margin-right:5px;}
+  .case-bar span{color:#a9cec6;}
+  .case-bar .flagtag{background:var(--amber); color:#1c1204; padding:3px 9px; border-radius:20px; font-weight:700;}
+
+  .tabbar{
+    display:flex; gap:4px; margin-top:24px; border-bottom:1px solid rgba(255,255,255,0.14); flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono','Courier New',monospace;
+    font-size:12.5px; letter-spacing:.04em; text-transform:uppercase;
+    padding:12px 20px; background:none; border:none; cursor:pointer;
+    color:#8bb3ab; position:relative; top:1px; border-radius:8px 8px 0 0; transition:background .15s ease, color .15s ease;
+  }
+  .tab-btn:hover{ color:#eafaf6; background:rgba(255,255,255,0.05); }
+  .tab-btn.active{ color:#fff; font-weight:700; background:rgba(45,212,191,0.1); }
+  .tab-btn.active::after{
+    content:''; position:absolute; left:10px; right:10px; bottom:-1px; height:2px; background:var(--teal-bright); border-radius:2px;
+  }
+  .tab-btn .n{
+    display:inline-block; background:var(--teal-bright); color:#06211d; font-size:9.5px;
+    padding:1px 6px; border-radius:8px; margin-left:6px; font-weight:700;
+  }
+
+  main{padding:0 6vw 70px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .section{padding:38px 0; border-bottom:1px solid var(--line);}
+  .section:last-child{border-bottom:none;}
+  .section-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+  .section-num{font-family:'IBM Plex Mono','Courier New',monospace; font-size:12px; color:var(--teal); letter-spacing:.05em; flex-shrink:0; font-weight:700;}
+  .section-title{font-size:22px; font-weight:600; margin:0;}
+  .section-sub{font-size:13.5px; color:var(--muted); margin:2px 0 22px; max-width:660px; line-height:1.55;}
+
+  .narrative{font-size:15px; line-height:1.75; max-width:700px; color:var(--ink);}
+  .narrative p{margin:0 0 14px;}
+  .narrative b{color:var(--teal-dim); font-weight:700;}
+  .narrative .beat{display:block; font-family:'IBM Plex Mono','Courier New',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); margin:20px 0 6px;}
+  .narrative .beat:first-child{margin-top:0;}
+  .narrative .beat.decision{color:#fff; background:var(--alert); display:inline-block; padding:3px 9px; border-radius:20px;}
+
+  .dx-layout{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:820px){ .dx-layout{grid-template-columns:1fr;} }
+  .dx-card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; box-shadow:0 1px 2px rgba(13,33,29,0.04);}
+  .dx-card.leading{border-color:var(--teal); box-shadow:0 0 0 1px var(--teal), 0 4px 14px rgba(13,148,136,0.12);}
+  .dx-card .dx-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .dx-card .dx-name{font-size:15px; font-weight:600;}
+  .dx-pill{font-family:'IBM Plex Mono','Courier New',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:20px;}
+  .dx-pill.lead{background:var(--teal); color:#fff;}
+  .dx-pill.ruled{background:transparent; color:var(--muted); border:1px solid var(--line);}
+  .dx-pill.watch{background:var(--amber); color:#1c1204;}
+  .dx-card p{font-size:13px; color:var(--muted); line-height:1.55; margin:0;}
+  .dx-bar-row{display:flex; align-items:center; gap:8px; margin-top:10px;}
+  .dx-bar-track{flex:1; height:6px; background:var(--line); border-radius:3px; overflow:hidden;}
+  .dx-bar-fill{height:100%; background:var(--teal); border-radius:3px;}
+  .dx-bar-label{font-family:'IBM Plex Mono','Courier New',monospace; font-size:10.5px; color:var(--muted); width:36px; text-align:right;}
+  .discriminator{margin-top:16px; background:#f0fdfa; border:1px dashed var(--teal); border-radius:10px; padding:14px 16px; font-size:13.5px; line-height:1.55;}
+  .discriminator b{color:var(--teal-dim);}
+
+  .decision-list{display:flex; flex-direction:column; gap:14px;}
+  .decision-item{
+    display:grid; grid-template-columns:110px 1fr; gap:18px;
+    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--line);
+    border-radius:8px; padding:16px 18px; box-shadow:0 1px 2px rgba(13,33,29,0.04);
+  }
+  .decision-item.critical{ border-left-color:var(--alert); background:#fdf3f2; }
+  .decision-item.pivot{ border-left-color:var(--teal); background:#effaf8; }
+  .decision-time{font-family:'IBM Plex Mono','Courier New',monospace; font-size:11.5px; color:var(--muted); padding-top:2px;}
+  .decision-time b{display:block; color:var(--ink); font-size:14px; font-family:'Fraunces',Georgia,serif;}
+  .decision-body .q{font-size:14.5px; font-weight:600; margin-bottom:5px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .decision-body .a{font-size:13px; color:var(--muted); line-height:1.55;}
+  .decision-tag{
+    font-family:'IBM Plex Mono','Courier New',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.05em;
+    padding:2px 8px; border-radius:20px; background:var(--alert); color:#fff;
+  }
+  .decision-tag.switch{background:var(--teal-dim);}
+  .decision-mark{font-size:13px;}
+
+  .hint{font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; color:var(--muted); margin-bottom:14px;}
+  .filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;}
+  .filter-btn{font-family:'IBM Plex Mono','Courier New',monospace; font-size:12px; padding:9px 14px; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:20px; cursor:pointer; transition:all .15s ease;}
+  .filter-btn:hover{border-color:var(--teal);}
+  .filter-btn.active{background:var(--teal-dim); border-color:var(--teal-dim); color:#fff;}
+  .rail-wrap{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:26px 20px 20px; margin-bottom:20px; overflow-x:auto;}
+  .rail-label{font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:18px;}
+  .rail{display:flex; align-items:stretch; min-width:760px; position:relative;}
+  .node{flex:1; min-width:150px; position:relative; padding:0 8px;}
+  .node-connector{position:absolute; top:34px; right:-8px; width:16px; height:2px; background:var(--line); z-index:1;}
+  .node:last-child .node-connector{display:none;}
+  .node-box{background:#fff; border:1.5px solid var(--line); border-radius:8px; padding:14px 12px 12px; cursor:pointer; transition:all .15s ease; height:100%; position:relative;}
+  .node-box:hover{border-color:var(--teal); transform:translateY(-2px); box-shadow:0 6px 16px rgba(13,148,136,0.14);}
+  .node-box.hub{border-color:var(--amber); box-shadow:0 0 0 1px var(--amber);}
+  .node-box.active-hub{background:#fffaf0; border-color:var(--amber); box-shadow:0 0 0 2px var(--amber);}
+  .node-box.selected{background:var(--navy); border-color:var(--navy);}
+  .node-box.selected .node-title, .node-box.selected .node-sub{color:#fff;}
+  .decision-star{
+    position:absolute; top:-9px; right:-9px; width:20px; height:20px; border-radius:50%;
+    background:var(--alert); color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; box-shadow:0 0 0 2px var(--paper);
+  }
+  .node-kicker{font-family:'IBM Plex Mono','Courier New',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--teal); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;}
+  .node-box.selected .node-kicker{color:var(--teal-bright);}
+  .hub-mark{font-size:9px; background:var(--amber); color:#1c1204; padding:1px 6px; border-radius:20px; font-weight:700;}
+  .node-title{font-size:14px; font-weight:600; line-height:1.25; margin-bottom:4px;}
+  .node-sub{font-size:11.5px; color:var(--muted); line-height:1.35;}
+  .node-box.selected .node-sub{color:#c6cfc9;}
+  .node-status{margin-top:10px; font-family:'IBM Plex Mono','Courier New',monospace; font-size:10px;}
+  .status-flagged{color:var(--alert);}
+  .status-monitor{color:#b8860f;}
+  .status-ok{color:var(--teal);}
+  .node-box.selected .status-flagged{color:#ff9d8a;}
+  .node-box.selected .status-monitor{color:#f0c37e;}
+  .node-box.selected .status-ok{color:var(--teal-bright);}
+  .detail-grid{display:grid; grid-template-columns:1.15fr 1fr; gap:18px;}
+  @media (max-width:880px){ .detail-grid{grid-template-columns:1fr;} }
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 20px 16px; box-shadow:0 1px 2px rgba(13,33,29,0.04);}
+  .panel h2{font-size:17px; margin:0 0 4px; font-weight:600;}
+  .panel .panel-meta{font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; color:var(--muted); margin-bottom:14px;}
+  .panel p{font-size:13.5px; line-height:1.6; color:var(--ink);}
+  .citation-strip{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line); font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; color:var(--muted);}
+  .citation-strip b{color:var(--ink);}
+  .evidence-item{border-left:2px solid var(--amber); padding:10px 0 10px 14px; margin-bottom:12px;}
+  .evidence-item .rank{font-family:'IBM Plex Mono','Courier New',monospace; font-size:10.5px; color:var(--amber); margin-bottom:4px; display:block;}
+  .evidence-item .ev-title{font-size:13.5px; font-weight:600; margin-bottom:3px; line-height:1.35;}
+  .evidence-item .ev-body{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .evidence-item .ev-source{font-family:'IBM Plex Mono','Courier New',monospace; font-size:10.5px; margin-top:5px;}
+  .evidence-item .ev-source a{color:var(--teal); text-decoration:none;}
+  .evidence-item .ev-source a:hover{text-decoration:underline;}
+  .evidence-item.tier-guideline{border-left-color:var(--teal-dim);}
+  .evidence-item.tier-guideline .rank{color:var(--teal-dim);}
+  .evidence-item.tier-rct{border-left-color:var(--teal);}
+  .evidence-item.tier-rct .rank{color:var(--teal);}
+  .tier-tag{font-family:'IBM Plex Mono','Courier New',monospace; font-size:9.5px; text-transform:uppercase; padding:1px 7px; border-radius:20px; margin-left:8px;}
+  .tier-tag.guideline{background:var(--teal-dim); color:#fff;}
+  .tier-tag.rct{background:var(--teal); color:#fff;}
+  .tier-tag.case{background:var(--amber); color:#1c1204;}
+
+  .pyramid{margin-top:6px;}
+  .pyr-row{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line);}
+  .pyr-row:last-child{border-bottom:none;}
+  .pyr-bar{height:10px; border-radius:5px;}
+  .pyr-row.g .pyr-bar{background:var(--teal-dim); width:20%;}
+  .pyr-row.r .pyr-bar{background:var(--teal); width:16%;}
+  .pyr-row.c .pyr-bar{background:var(--amber); width:100%;}
+  .pyr-label{font-size:12px; width:230px; flex-shrink:0; color:var(--ink);}
+  .pyr-role{font-size:11px; color:var(--muted); font-style:italic;}
+  .graph-note{margin-top:18px; font-size:13.5px; color:var(--muted); line-height:1.6; max-width:660px;}
+
+  .insight-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:4px;}
+  @media (max-width:900px){ .insight-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:620px){ .insight-grid{grid-template-columns:1fr;} }
+  .insight-card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px;}
+  .insight-card .stat{font-family:'Fraunces',Georgia,serif; font-size:26px; font-weight:600; color:var(--teal-dim);}
+  .insight-card .stat-label{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .insight-card p{font-size:12.5px; color:var(--muted); line-height:1.5; margin:10px 0 0;}
+
+  .emr-toolbar{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    margin-bottom:18px;
+  }
+  .emr-legend{display:flex; gap:8px; flex-wrap:wrap;}
+  .emr-legend span{font-family:'IBM Plex Mono','Courier New',monospace; font-size:9.5px; padding:2px 8px; border-radius:20px;}
+  .emr-legend .snomed{background:var(--teal); color:#fff;}
+  .emr-legend .loinc{background:var(--amber); color:#1c1204;}
+  .emr-legend .fhirtag{background:var(--teal-dim); color:#fff;}
+  .emr-legend .decisionleg{background:var(--alert); color:#fff;}
+
+  .emr-track{display:flex; flex-direction:column;}
+  .emr-row{ display:grid; grid-template-columns:96px 24px 1fr; gap:0 16px; }
+  .emr-time{ font-family:'IBM Plex Mono','Courier New',monospace; font-size:11.5px; color:var(--muted); padding-top:14px; text-align:right; }
+  .emr-rail{position:relative; display:flex; justify-content:center;}
+  .emr-rail::before{ content:''; position:absolute; top:0; bottom:0; width:2px; background:var(--line); left:50%; transform:translateX(-50%); }
+  .emr-row:first-child .emr-rail::before{top:22px;}
+  .emr-row:last-child .emr-rail::before{bottom:calc(100% - 22px);}
+  .emr-dot{ width:14px; height:14px; border-radius:50%; background:var(--paper); border:2px solid var(--teal); margin-top:16px; z-index:2; position:relative; flex-shrink:0; }
+  .emr-dot.decision{ background:var(--alert); border-color:var(--alert); width:18px; height:18px; margin-top:14px; box-shadow:0 0 0 4px #fdf3f2; }
+  .emr-card{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:8px 0 16px; }
+  .emr-card.decision-card{ border-color:var(--alert); border-left-width:4px; background:#fdf3f2; }
+  .emr-rline1{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+  .emr-rtype{font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; font-weight:700; color:var(--teal-dim); text-transform:uppercase; letter-spacing:.03em;}
+  .emr-decision-flag{
+    font-family:'IBM Plex Mono','Courier New',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.05em;
+    background:var(--alert); color:#fff; padding:2px 8px; border-radius:20px;
+  }
+  .emr-rdisplay{font-size:15px; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  .emr-rnote{font-size:12.5px; color:var(--muted); line-height:1.5; margin-bottom:8px;}
+  .emr-codes{display:flex; gap:8px; flex-wrap:wrap;}
+  .code-chip{font-family:'IBM Plex Mono','Courier New',monospace; font-size:10px; padding:2px 8px; border-radius:20px; border:1px solid;}
+  .code-chip.snomed{border-color:var(--teal); color:var(--teal-dim); background:#effaf8;}
+  .code-chip.loinc{border-color:var(--amber); color:#8a5620; background:#fdf3e6;}
+  .code-chip.value{border-color:var(--line); color:var(--muted); background:#fff;}
+
+  footer{padding:26px 6vw 40px; border-top:1px solid var(--line); font-family:'IBM Plex Mono','Courier New',monospace; font-size:11px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer a{color:var(--teal-dim); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow"><span class="dot"></span>DEMO · Illustrative, non-clinical reconstruction</div>
+  <h1>Evidence-Pyramid Trajectory Mapper</h1>
+  <p>A working sketch of the trajectory-based GraphRAG idea described in
+    <a href="https://classworkdecjan.blogspot.com/2026/08/from-averages-to-trajectories.html" target="_blank">"From Averages to Trajectories."</a>
+    Same illustrative case, two views: the clinical journey a doctor reasons through, and the coded EMR flow underneath it. Every evidence card below is anchored to the real 17-paper snakebite/ASV corpus in the
+    <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html" target="_blank">Evidence-Pyramid Trajectory Mapper corpus</a> — decision points, where this illustrative case actually diverges, are highlighted in both tabs.</p>
+
+  <div class="case-bar">
+    <div><b>Case</b><span>42M, Russell's viper envenomation, ASV 10 vials given 2h ago</span></div>
+    <div><b>Clock</b><span>t = 6h re-evaluation</span></div>
+    <div><span class="flagtag">2 CRITICAL DECISION POINTS</span></div>
+  </div>
+
+  <div class="tabbar">
+    <button class="tab-btn active" data-tab="journey">Patient Journey</button>
+    <button class="tab-btn" data-tab="emr">EMR Flow <span class="n">FHIR</span></button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ======================= TAB 1: PATIENT JOURNEY ======================= -->
+  <div class="tab-panel active" id="tab-journey">
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">01</span><h2 class="section-title">Case story</h2></div>
+      <p class="section-sub">The admission told the way it unfolded at the bedside. The two moments marked in red are the decision points everything downstream hinges on.</p>
+
+      <div class="narrative">
+        <span class="beat">Hour 0 — arrival</span>
+        <p>He'd been clearing brush behind the house when the viper struck his right forearm. By the time his brother got him to the district hospital, six hours had passed and the arm had begun to swell — not dramatically, but enough that the on-call resident didn't like the look of it. He was talking normally, no drooping eyelids, no trouble breathing. <b>Nothing about him screamed emergency.</b></p>
+
+        <span class="beat decision">⬤ Decision point 1 — hour 0</span>
+        <p>Rather than starting a broad workup, the resident ran a single 20-minute whole blood clotting test at the bedside instead of a neurotoxicity screen. It came back non-clotting. <b>That one call — test for coagulopathy, not neurotoxicity — decided everything that followed.</b> It turned "possible snakebite" into "confirmed venom-induced coagulopathy" in one step.</p>
+
+        <span class="beat">Hour 0 — treatment begins</span>
+        <p>Ten vials of polyvalent antivenom went in — the same opening dose seen across the case-report corpus regardless of syndrome type. This is the well-trodden part of the story, with a protocol, a dose, and a timer already set for six hours out. For most patients on this corridor, that's the whole story.</p>
+
+        <span class="beat decision">⬤ Decision point 2 — hour 6</span>
+        <p>It didn't stay that way for him. At the re-check, the clotting test was still deranged — but two other numbers had moved in a way the standard corridor doesn't expect: falling urine output, climbing creatinine. <b>The team chose to stop and ask "is this still the same story," rather than simply repeating the dose.</b> That single choice — pausing to re-diagnose instead of escalating — is what caught the divergence.</p>
+
+        <span class="beat">Hour 6+ — confirmation</span>
+        <p>A peripheral smear came back with schistocytes — fragmented red cells, the signature of a microangiopathy rather than straightforward venom-driven clotting failure. The diagnosis shifted underneath the treatment plan: thrombotic microangiopathy, a different mechanism, one where more ASV would do nothing and might cost time he didn't have.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">02</span><h2 class="section-title">Diagnosis &amp; differentials</h2></div>
+      <p class="section-sub">Open-world hypothesis search, run by the diagnostic engine using illness scripts — weighing competing explanations, not committing to one.</p>
+
+      <div class="dx-layout">
+        <div class="dx-card leading">
+          <div class="dx-top"><span class="dx-name">Viperine envenomation with VICC</span><span class="dx-pill lead">LEADING</span></div>
+          <p>Venom-induced consumption coagulopathy from Russell's viper bite. Matches presentation, timeline, and clotting test result.</p>
+          <div class="dx-bar-row"><div class="dx-bar-track"><div class="dx-bar-fill" style="width:74%"></div></div><div class="dx-bar-label">74%</div></div>
+        </div>
+        <div class="dx-card">
+          <div class="dx-top"><span class="dx-name">Thrombotic microangiopathy (TMA)</span><span class="dx-pill watch">WATCH</span></div>
+          <p>Competing mechanism once renal function drops alongside thrombocytopenia — doesn't respond to more ASV.</p>
+          <div class="dx-bar-row"><div class="dx-bar-track"><div class="dx-bar-fill" style="width:41%;background:var(--amber)"></div></div><div class="dx-bar-label">41%</div></div>
+        </div>
+        <div class="dx-card">
+          <div class="dx-top"><span class="dx-name">Elapid (neurotoxic) envenomation</span><span class="dx-pill ruled">RULED OUT</span></div>
+          <p>No ptosis, no bulbar weakness, no descending paralysis at any point in the timeline.</p>
+          <div class="dx-bar-row"><div class="dx-bar-track"><div class="dx-bar-fill" style="width:4%"></div></div><div class="dx-bar-label">4%</div></div>
+        </div>
+        <div class="dx-card">
+          <div class="dx-top"><span class="dx-name">Cellulitis with sepsis</span><span class="dx-pill ruled">RULED OUT</span></div>
+          <p>Considered at first presentation given local swelling, but no fever or leukocytosis pattern, and clotting test is positive.</p>
+          <div class="dx-bar-row"><div class="dx-bar-track"><div class="dx-bar-fill" style="width:6%"></div></div><div class="dx-bar-label">6%</div></div>
+        </div>
+      </div>
+
+      <div class="discriminator">
+        <b>Highest-discriminating signal:</b> the 6-hour clotting test result decides between "dry bite / cellulitis" and "confirmed VICC" — the single check worth running before anything else.
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">03</span><h2 class="section-title">Key decision points</h2></div>
+      <p class="section-sub">The two moments that changed what the system — and the clinician — did next, called out on their own. Everything else is quiet, guideline-conforming corridor.</p>
+
+      <div class="decision-list">
+        <div class="decision-item critical">
+          <div class="decision-time mono">t = 0h<b>Admission</b></div>
+          <div class="decision-body">
+            <div class="q"><span class="decision-mark">🔴</span>Test for coagulopathy, not neurotoxicity <span class="decision-tag switch">DIAGNOSTIC → CORRIDOR</span></div>
+            <div class="a">Swelling trajectory alone is enough to prioritize a clotting test over a neurotoxic differential. This single choice determines the entire corridor that follows.</div>
+          </div>
+        </div>
+        <div class="decision-item pivot">
+          <div class="decision-time mono">t = 0h<b>Clotting +</b></div>
+          <div class="decision-body">
+            <div class="q">Commit to the standard 10-vial ASV corridor</div>
+            <div class="a">Diagnosis provisionally pinned as VICC. Engine stops generating hypotheses, starts executing the guideline path with a 6-hour re-check timer attached.</div>
+          </div>
+        </div>
+        <div class="decision-item critical">
+          <div class="decision-time mono">t = 6h<b>Re-eval</b></div>
+          <div class="decision-body">
+            <div class="q"><span class="decision-mark">🔴</span>Stop and re-diagnose, don't just re-dose <span class="decision-tag">FORCED ZOOM-OUT</span></div>
+            <div class="a">Falling urine output and rising creatinine don't fit the expected recovery corridor. The question changes from "how much more ASV" to "has the mechanism shifted to TMA." This is the pivot that catches the divergence.</div>
+          </div>
+        </div>
+        <div class="decision-item pivot">
+          <div class="decision-time mono">t = 6h+<b>Smear</b></div>
+          <div class="decision-body">
+            <div class="q">Schistocytes confirm TMA over refractory VICC <span class="decision-tag switch">ZOOM-IN, NEW NODE</span></div>
+            <div class="a">System re-anchors to a different hub-node — further ASV escalation is contraindicated; early plasmapheresis or dialysis is the supported next step.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">04</span><h2 class="section-title">Full case journey</h2></div>
+      <p class="section-sub">The same decision points, laid out as a trajectory graph. Nodes marked with a red star are the critical decision points — click any node to inspect it.</p>
+
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All trajectories</button>
+        <button class="filter-btn" data-filter="escalation">Escalation trajectories only</button>
+        <button class="filter-btn" data-filter="fatal">Fatal / unresolved only</button>
+        <button class="filter-btn" data-filter="hub">Decision points only</button>
+      </div>
+
+      <div class="rail-wrap">
+        <div class="rail-label">Presentation → intervention → divergence → disposition</div>
+        <div class="rail" id="rail"></div>
+      </div>
+
+      <div class="hint">↓ ranked evidence for the selected node, pulled from the graph below</div>
+
+      <div class="detail-grid">
+        <div class="panel" id="detailPanel"></div>
+        <div class="panel" id="evidencePanel"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">05</span><h2 class="section-title">Evidence GraphRAG</h2></div>
+      <p class="section-sub">The tiered corpus every node above routes into — sourced from the real 78-paper PubMed "anti snake venom" funnel behind the reference implementation (Case Reports + Free Full Text → 78 results; 17 processed so far). The LLM's job is routing a patient to the right sub-graph — not generating the evidence itself.</p>
+
+      <div class="panel">
+        <div class="pyramid">
+          <div class="pyr-row g">
+            <div class="pyr-label">Guidelines, systematic reviews &amp; meta-analyses</div>
+            <div class="pyr-bar"></div>
+            <div class="pyr-role">hard boundaries — 3 papers processed (2 meta-analyses, 1 systematic review)</div>
+          </div>
+          <div class="pyr-row r">
+            <div class="pyr-label">RCTs</div>
+            <div class="pyr-bar"></div>
+            <div class="pyr-role">probabilistic guidance — 2 papers processed, unrelated interventions/populations</div>
+          </div>
+          <div class="pyr-row c">
+            <div class="pyr-label">Case reports &amp; series (12 of 78 processed)</div>
+            <div class="pyr-bar"></div>
+            <div class="pyr-role">structural maps of rare, non-linear divergence</div>
+          </div>
+        </div>
+        <div class="graph-note">Two different case reports that pass through the same clinical event — both patients receiving ASV, both developing the same complication — converge on a shared node. That convergence is what lets a clinician trace a multi-hop pathway across dozens of papers at once, instead of reading each report linearly. The illustrative case above mirrors the corpus's own recurring fork: an initial fixed-dose ASV bolus is the textbook path in 8 of 9 case-report papers with a named hub, but escalation without re-diagnosis is exactly where the fatal/refractory trajectories in the corpus (Cases 4, 5, 11, 12) diverge.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">06</span><h2 class="section-title">Corpus insights — what actually recurs</h2></div>
+      <p class="section-sub">Pulled from the "Recurring checkpoint types" and "Unified case insights" analysis in the reference corpus — 12 case-report papers, 23 individual trajectories, not statistically pooled.</p>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <div class="stat">8 / 9</div>
+          <div class="stat-label mono">papers w/ named ASV hub</div>
+          <p>An initial fixed-dose ASV bolus (commonly 10 vials, regardless of bite severity grading) is the dominant intervention node across the corpus — escalation for a persisting finding recurs in 6 of those papers.</p>
+        </div>
+        <div class="insight-card">
+          <div class="stat">3×</div>
+          <div class="stat-label mono">delay → admission length</div>
+          <p>Case 8's matched pair (18h vs. 58h to first ASV, same species, same country) shows a roughly 3× longer admission for a 3× longer pre-ASV delay — both still converged on full recovery.</p>
+        </div>
+        <div class="insight-card">
+          <div class="stat">1 / 12</div>
+          <div class="stat-label mono">fatal single-patient report</div>
+          <p>Case 12 (Echis carinatus sochureki, 65-vial escalation) is the corpus's only fatal single-patient case report — reclassified at autopsy from DIC to VICC coexisting with TMA.</p>
+        </div>
+        <div class="insight-card">
+          <div class="stat">3</div>
+          <div class="stat-label mono">independent delayed-2nd-event papers</div>
+          <p>Cases 2, 4/5, and 5 (JFMPC) each independently flag a delayed secondary event — after an apparently clean discharge — as their most clinically informative fork.</p>
+        </div>
+        <div class="insight-card">
+          <div class="stat">OR 7.71</div>
+          <div class="stat-label mono">FFP for VICC resolution, shrinks on subgroup</div>
+          <p>The corpus's meta-analysis tier (Case 17, 4 studies, n=370) shows a large pooled benefit for adjunctive FFP that shrinks and loses significance once restricted to non-Australian snakes — certainty graded very low.</p>
+        </div>
+        <div class="insight-card">
+          <div class="stat">0</div>
+          <div class="stat-label mono">tiers that close the gap</div>
+          <p>Net corpus takeaway: no tier — case report, RCT, or meta-analysis — reliably predicts which patients will diverge into the rare-but-severe outcomes the case-report tier keeps surfacing.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======================= TAB 2: EMR FLOW ======================= -->
+  <div class="tab-panel" id="tab-emr">
+
+    <section class="section">
+      <div class="section-head"><span class="section-num mono">EMR</span><h2 class="section-title">Coded record — FHIR · SNOMED CT · LOINC</h2></div>
+      <p class="section-sub">The same admission as an EMR would actually carry it: a FHIR resource stream, each entry coded with SNOMED CT (clinical concepts) or LOINC (labs/observations). The two red-ringed entries are the same decision points highlighted in the Patient Journey tab.</p>
+
+      <div class="emr-toolbar">
+        <div class="emr-legend">
+          <span class="fhirtag">FHIR resource type</span>
+          <span class="snomed">SNOMED CT</span>
+          <span class="loinc">LOINC</span>
+          <span class="decisionleg">● decision point</span>
+        </div>
+      </div>
+
+      <div class="emr-track" id="emrTrack"></div>
+
+      <div class="panel" style="margin-top:8px;">
+        <h2 style="font-size:15px;">Bi-directional close-out</h2>
+        <p style="font-size:13px;">Because FHIR is bi-directional, the <code class="mono">ServiceRequest</code> for plasmapheresis above isn't just a suggestion — it can be written back into the record automatically, closing the loop between the reasoning layer and the chart itself, rather than leaving it for the clinician to re-enter by hand.</p>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer>
+  <div>Illustrative demo built from the concepts in <a href="https://classworkdecjan.blogspot.com/2026/08/from-averages-to-trajectories.html" target="_blank">the source article</a> — not affiliated with, and not a reproduction of, the referenced live prototype.</div>
+  <div>Evidence-Pyramid Trajectory Mapper corpus: <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html" target="_blank">avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html</a></div>
+</footer>
+
+<script>
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------- TRAJECTORY RAIL (Patient Journey tab) ---------- */
+const nodes = [
+  {
+    id:'presentation', kicker:'Node 01 · Presentation', title:'Bite + early coagulopathy signs',
+    sub:'Local swelling, falling platelets, no active bleeding',
+    status:'ok', statusLabel:'RESOLVED — ON CORRIDOR', hub:false, decision:false, tags:['escalation'],
+    detailTitle:'Presentation: viperid envenomation, unconfirmed',
+    detailMeta:'Diagnostic engine · illness-script matching',
+    detailBody:"No active bleeding, no neurotoxic signs. The illness-script engine weighs Viperidae vs. Elapidae envenomation against non-venom differentials like cellulitis with sepsis. The swelling trajectory alone is enough to trigger a bedside clotting test rather than a neurotoxicity workup.",
+    evidenceTitle:'Guideline corridor',
+    evidence:[{tier:'guideline', rank:'STANDARD PATH', title:'20-minute whole blood clotting test on any suspected viperid bite', body:'Confirms coagulopathy before committing to ASV; avoids treating a dry bite. WHO SEARO snakebite guideline.', source:'WHO — Guidelines for the management of snakebites', url:'https://www.who.int/publications/i/item/9789290228847'}]
+  },
+  {
+    id:'decision1', kicker:'Node 02 · Decision point', title:'Clotting test ordered, not neuro workup',
+    sub:'Test comes back non-clotting → provisional VICC',
+    status:'flagged', statusLabel:'CRITICAL DECISION', hub:true, decision:true, tags:['escalation'],
+    detailTitle:'Decision point 1: coagulopathy screen over neurotoxicity workup',
+    detailMeta:'Diagnostic engine → intervention engine handoff',
+    detailBody:"The clotting test comes back non-clotting. Diagnosis is provisionally pinned as viperine envenomation with coagulopathy. This single test-ordering choice determines the entire corridor that follows: the system switches from hypothesis generation to rendering the standard 10-vial ASV corridor, with a 6-hour re-evaluation timer attached — the same opening dose reported identically across all five patients in the corpus's Fanged to Peril series.",
+    evidenceTitle:'Standard corridor evidence',
+    evidence:[
+      {tier:'guideline', rank:'HARD BOUNDARY', title:'Initial ASV dose: 10 vials polyvalent, an identical opening dose across the case-report corpus regardless of syndrome type', body:'Named hub checkpoint in the 5-patient Fanged to Peril series — every patient opened on 10 vials before any escalation.', source:"Mahadevaiah et al., Cureus 2024, 16(1):e53319 — via corpus", url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'},
+      {tier:'rct', rank:'PROBABILISTIC', title:'High- vs. low-dose antivenom: only shorter hospital stay reaches significance across pooled RCTs', body:'PRISMA-registered systematic review of 5 RCTs (n=473) — dosing intensity itself isn\u2019t the lever that changes outcome.', source:'Das, Sankar & Dev, Indian J Crit Care Med 2015 — via corpus', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'}
+    ]
+  },
+  {
+    id:'reeval', kicker:'Node 03 · Decision point', title:'Stop &amp; re-diagnose at 6h',
+    sub:'Clotting still abnormal · falling urine output · rising creatinine',
+    status:'flagged', statusLabel:'CRITICAL DECISION', hub:true, decision:true, tags:['escalation','fatal'],
+    detailTitle:'Decision point 2: refractory VICC vs. renal/microvascular fork',
+    detailMeta:'Forced zoom-out · diagnostic engine re-engaged',
+    detailBody:"This isn't just 'more of the same intervention needed.' Falling urine output and rising creatinine, alongside persistent coagulopathy, force the system back into diagnostic mode — the question shifts from how much more ASV to whether this is still simple refractory coagulopathy, or whether the mechanism has shifted to thrombotic microangiopathy (TMA). Choosing to pause and re-diagnose, rather than simply repeat the dose, is what catches the divergence — the corpus's own fatal/unresolved trajectories (Cases 4 and 5) diverge at exactly this kind of advanced-intervention node, never at initial presentation.",
+    evidenceTitle:'Ranked evidence for this divergence',
+    evidence:[
+      {tier:'case', rank:'TOP MATCH', title:'Persistent VICC despite 25 vials already given, day-7 delayed transfer', body:'Echis carinatus 5-patient series — adequate-dose ASV that still fails to resolve coagulopathy, the same pattern Case 8 showed for Russell\u2019s viper.', source:'Saw-scaled viper series, Toxicol Rep 2024 — via corpus', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'},
+      {tier:'rct', rank:'2ND MATCH', title:'Adjunctive FFP shows large pooled benefit for VICC resolution (OR 7.71) that shrinks off non-Australian/observational data', body:'Meta-analysis of 4 studies, n=370 — evidence for plasma as an alternative to further antivenom escalation, but graded very-low certainty.', source:'Ganessane et al., BMJ Open 2025 — via corpus', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'},
+      {tier:'case', rank:'3RD MATCH', title:'Falling urine output + rising creatinine alongside coagulopathy distinguishing TMA from ongoing venom effect', body:'Fatal TMA+VICC case: escalating ASV to 65 vials did nothing and multiorgan failure followed — the corpus\u2019s only fatal single-patient report.', source:'Echis c. sochureki fatal case, Med J Armed Forces India 2025 — via corpus', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'}
+    ]
+  },
+  {
+    id:'tma', kicker:'Node 04 · Disposition', title:'TMA confirmed via peripheral smear',
+    sub:'Schistocytes present → zoom back into a different node',
+    status:'monitor', statusLabel:'ACTIVE — NEW NODE', hub:false, decision:false, tags:['fatal'],
+    detailTitle:'Targeted zoom-in: TMA-specific corridor',
+    detailMeta:'Intervention engine · re-anchored to new hub-node',
+    detailBody:"A peripheral smear confirms schistocytes; the TMA script is confirmed over plain refractory VICC. The system zooms back into the evidence graph, but at a different node — carrying case-report and review evidence that further ASV escalation past standard limits doesn't help TMA, and that early plasmapheresis or dialysis is what documented trajectories actually show working.",
+    evidenceTitle:'Ranked evidence for this divergence',
+    evidence:[
+      {tier:'case', rank:'TOP MATCH', title:'Renal-first fork into suspected atypical HUS, treated with plasmapheresis + SLED', body:'The corpus\u2019s clearest case of an advanced-intervention divergence: schistocytes on smear prompted 4 cycles plasmapheresis plus 5 cycles SLED before the patient died of pulmonary edema — even earlier plasmapheresis is the documented trajectory that correlates with renal recovery elsewhere in the corpus.', source:'Fanged to Peril Case 1, Cureus 2024 — via corpus', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'},
+      {tier:'guideline', rank:'HARD BOUNDARY', title:'ASV escalation past standard dosing not supported once the mechanism has shifted to a microangiopathy', body:'Consistent with the corpus-wide reading (Cases 1, 8, 10) that venom-pool/regional mismatch and mechanism shift — not ASV dose alone — govern the rare severe divergences.', source:'Corpus-wide discussion synthesis, avi33tbtt.github.io', url:'https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html'}
+    ]
+  }
+];
+
+let currentFilter = 'all';
+let selectedId = 'reeval';
+
+const railEl = document.getElementById('rail');
+const detailEl = document.getElementById('detailPanel');
+const evidenceEl = document.getElementById('evidencePanel');
+
+function statusClass(s){
+  if(s==='flagged') return 'status-flagged';
+  if(s==='monitor') return 'status-monitor';
+  return 'status-ok';
+}
+
+function renderRail(){
+  railEl.innerHTML = '';
+  nodes.forEach(n => {
+    const visible = currentFilter === 'all'
+      || (currentFilter === 'hub' && n.decision)
+      || n.tags.includes(currentFilter);
+
+    const box = document.createElement('div');
+    box.className = 'node';
+    box.style.opacity = visible ? '1' : '0.28';
+    box.style.pointerEvents = visible ? 'auto' : 'none';
+
+    let hubClass = n.hub ? (n.status==='flagged' || n.status==='monitor' ? 'active-hub' : 'hub') : '';
+    let selClass = n.id === selectedId ? 'selected' : '';
+
+    box.innerHTML = `
+      <div class="node-box ${hubClass} ${selClass}" data-id="${n.id}">
+        ${n.decision ? '<div class="decision-star">★</div>' : ''}
+        <div class="node-kicker"><span>${n.kicker}</span>${n.hub ? '<span class="hub-mark">HUB</span>' : ''}</div>
+        <div class="node-title">${n.title}</div>
+        <div class="node-sub">${n.sub}</div>
+        <div class="node-status ${statusClass(n.status)}">● ${n.statusLabel}</div>
+      </div>
+      <div class="node-connector"></div>
+    `;
+    railEl.appendChild(box);
+  });
+
+  document.querySelectorAll('.node-box').forEach(el => {
+    el.addEventListener('click', () => {
+      selectedId = el.getAttribute('data-id');
+      renderRail();
+      renderDetail();
+    });
+  });
+}
+
+function renderDetail(){
+  const n = nodes.find(x => x.id === selectedId);
+  detailEl.innerHTML = `
+    <h2>${n.detailTitle}</h2>
+    <div class="panel-meta">${n.detailMeta}</div>
+    <p>${n.detailBody}</p>
+    <div class="citation-strip"><b>Trajectory:</b> Presentation → Intervention → Secondary Event → Disposition. This node sits at position ${nodes.indexOf(n)+1} of ${nodes.length}.</div>
+  `;
+
+  evidenceEl.innerHTML = `
+    <h2>${n.evidenceTitle}</h2>
+    <div class="panel-meta">Ranked by fit to this specific divergence, not topical similarity</div>
+    ${n.evidence.map(e => `
+      <div class="evidence-item tier-${e.tier}">
+        <span class="rank">${e.rank}<span class="tier-tag ${e.tier}">${e.tier === 'case' ? 'case report' : e.tier}</span></span>
+        <div class="ev-title">${e.title}</div>
+        <div class="ev-body">${e.body}</div>
+        <div class="ev-source">↳ <a href="${e.url}" target="_blank" rel="noopener">${e.source}</a></div>
+      </div>
+    `).join('')}
+  `;
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.getAttribute('data-filter');
+    renderRail();
+  });
+});
+
+renderRail();
+renderDetail();
+
+/* ---------- EMR FLOW (EMR tab) ---------- */
+const emrEntries = [
+  {
+    time:'t = 0h', type:'Condition', decision:false,
+    display:'Bite of venomous snake',
+    note:'Presenting condition on arrival, 6h post-bite.',
+    codes:[{kind:'snomed', label:'SNOMED CT 262533008'}]
+  },
+  {
+    time:'t = 0h', type:'Observation', decision:true,
+    display:'Whole blood clotting time — ordered over neuro screen',
+    note:'Decision point 1: the choice to run a coagulopathy screen instead of a neurotoxicity workup. Result: non-clotting.',
+    codes:[{kind:'loinc', label:'LOINC 34714-6'}, {kind:'value', label:'value: non-clotting (>20 min)'}]
+  },
+  {
+    time:'t = 0h', type:'Condition', decision:false,
+    display:'Venom-induced consumption coagulopathy (provisional)',
+    note:'Diagnosis provisionally pinned following the clotting result above.',
+    codes:[{kind:'snomed', label:'SNOMED CT 234466008'}]
+  },
+  {
+    time:'t = 0h', type:'MedicationAdministration', decision:false,
+    display:'Polyvalent antivenom (ASV), 10 vials',
+    note:'Standard guideline corridor dose. 6-hour re-evaluation timer attached.',
+    codes:[{kind:'snomed', label:'SNOMED CT 61410009'}]
+  },
+  {
+    time:'t = 6h', type:'Observation', decision:false,
+    display:'Whole blood clotting time — repeat',
+    note:'Still non-clotting at the scheduled re-check.',
+    codes:[{kind:'loinc', label:'LOINC 34714-6'}, {kind:'value', label:'value: still non-clotting'}]
+  },
+  {
+    time:'t = 6h', type:'Observation', decision:false,
+    display:'Urine output',
+    note:'Falling — outside the expected recovery corridor.',
+    codes:[{kind:'loinc', label:'LOINC 9192-6'}, {kind:'value', label:'value: falling / oliguric'}]
+  },
+  {
+    time:'t = 6h', type:'Observation', decision:false,
+    display:'Creatinine, serum',
+    note:'Rising — outside the expected recovery corridor.',
+    codes:[{kind:'loinc', label:'LOINC 2160-0'}, {kind:'value', label:'value: rising'}]
+  },
+  {
+    time:'t = 6h', type:'Observation', decision:true,
+    display:'Re-diagnose, don\u2019t just re-dose',
+    note:'Decision point 2: the team pauses ASV escalation and reopens the diagnostic question, rather than repeating the dose on the same corridor logic.',
+    codes:[{kind:'value', label:'trigger: 3 concurrent abnormal trends'}]
+  },
+  {
+    time:'t = 6h+', type:'Observation', decision:false,
+    display:'Peripheral blood smear — schistocytes',
+    note:'Confirms a microangiopathic mechanism rather than plain venom-driven coagulopathy.',
+    codes:[{kind:'loinc', label:'LOINC 30392-2'}, {kind:'value', label:'value: present'}]
+  },
+  {
+    time:'t = 6h+', type:'Condition', decision:false,
+    display:'Thrombotic microangiopathy (confirmed)',
+    note:'Diagnosis updated; ASV escalation no longer indicated for this mechanism.',
+    codes:[{kind:'snomed', label:'SNOMED CT 84717004'}]
+  },
+  {
+    time:'t = 6h+', type:'ServiceRequest', decision:false,
+    display:'Plasmapheresis, therapeutic',
+    note:'Written back to the chart directly from the graph recommendation — closes the loop rather than leaving it as a suggestion to re-enter by hand.',
+    codes:[{kind:'snomed', label:'SNOMED CT 71192002'}]
+  }
+];
+
+const emrTrack = document.getElementById('emrTrack');
+emrTrack.innerHTML = emrEntries.map(e => `
+  <div class="emr-row">
+    <div class="emr-time">${e.time}</div>
+    <div class="emr-rail"><div class="emr-dot ${e.decision ? 'decision' : ''}"></div></div>
+    <div class="emr-card ${e.decision ? 'decision-card' : ''}">
+      <div class="emr-rline1">
+        <span class="emr-rtype">${e.type}</span>
+        ${e.decision ? '<span class="emr-decision-flag">● decision point</span>' : ''}
+      </div>
+      <div class="emr-rdisplay">${e.display}</div>
+      <div class="emr-rnote">${e.note}</div>
+      <div class="emr-codes">${e.codes.map(c => `<span class="code-chip ${c.kind}">${c.label}</span>`).join('')}</div>
+    </div>
+  </div>
+`).join('');
+</script>
+
+</body>
+</html>
