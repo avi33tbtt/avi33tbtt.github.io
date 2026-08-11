@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Case Flow Export</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f3ec;
+    --ink:#1c1d1f;
+    --ink-soft:#4a4c50;
+    --rule:#d8d2c2;
+    --card:#ffffff;
+    --p1:#2f6f6a;   /* teal — Illness Script */
+    --p1-soft:#e3efed;
+    --p2:#b3502e;   /* rust — Devil's Advocate */
+    --p2-soft:#f6e7de;
+    --p3:#5b5590;   /* plum — Semantic Qualifiers */
+    --p3-soft:#eae8f4;
+    --p4:#946f1f;   /* ochre — DRM + Bias Audit */
+    --p4-soft:#f4ecd8;
+    --danger:#a3312a;
+    --shadow: 0 1px 2px rgba(28,29,31,0.06), 0 8px 24px rgba(28,29,31,0.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 120px;}
+  h1,h2,h3,h4{font-family:"Source Serif 4", Georgia, serif; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  code, .mono{font-family:"IBM Plex Mono", monospace;}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{
+    padding:56px 0 28px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:8px;
+  }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  header.masthead h1{font-size:clamp(32px,5vw,46px); margin:0 0 10px; line-height:1.05;}
+  .case-link{font-size:15px;}
+  .case-link a{color:var(--ink); text-decoration-color:var(--rule); text-underline-offset:3px;}
+  .case-summary{
+    margin-top:18px;
+    padding:18px 20px;
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    box-shadow:var(--shadow);
+  }
+  .case-summary strong{color:var(--ink);}
+  .disclaimer{
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+
+  /* ---------- Sticky path nav ---------- */
+  nav.pathnav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(246,243,236,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    padding:10px 0;
+    margin-bottom:36px;
+  }
+  nav.pathnav ul{list-style:none; display:flex; gap:6px; padding:0; margin:0; flex-wrap:wrap;}
+  nav.pathnav a{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:7px 12px;
+    font-size:12.5px; font-weight:600;
+    text-decoration:none;
+    border-radius:999px;
+    border:1px solid var(--rule);
+    color:var(--ink-soft);
+    background:var(--card);
+  }
+  nav.pathnav a .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  nav.pathnav a:hover{border-color:var(--ink);}
+
+  /* ---------- Section: Path Sequences (ranked) ---------- */
+  section.sequences{margin-bottom:52px;}
+  section.sequences > h2{font-size:22px; margin:0 0 4px;}
+  .section-sub{color:var(--ink-soft); font-size:14px; margin:0 0 22px;}
+
+  .seq-grid{display:grid; grid-template-columns:1fr; gap:14px;}
+  .seq-card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-left:6px solid var(--accent, var(--ink));
+    border-radius:3px;
+    padding:16px 18px;
+    box-shadow:var(--shadow);
+  }
+  .seq-card .rank-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .seq-card .rank-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:700;
+    color:var(--accent, var(--ink));
+  }
+  .seq-card h3{font-size:17px; margin:4px 0 6px;}
+  .seq-card h3 a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--rule);}
+  .seq-card .modlist{font-size:13px; color:var(--ink-soft); margin:0 0 8px;}
+  .seq-card .modlist a{color:var(--ink-soft);}
+  .seq-card .end-tag{
+    font-size:11px; font-weight:600; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--rule); border-radius:999px;
+    padding:3px 9px; white-space:nowrap;
+  }
+  .seq-card p.summary{font-size:14.5px; margin:8px 0 0; color:var(--ink);}
+
+  /* ---------- Path detail sections ---------- */
+  section.path{
+    margin:0 0 64px;
+    padding-top:14px;
+    scroll-margin-top:64px;
+  }
+  .path-head{
+    display:flex; align-items:center; gap:14px;
+    padding-bottom:14px; margin-bottom:22px;
+    border-bottom:3px solid var(--accent);
+  }
+  .path-head .num{
+    font-family:"Source Serif 4", serif; font-weight:700; font-size:30px;
+    color:var(--accent);
+    min-width:46px;
+  }
+  .path-head h2{font-size:24px; margin:0;}
+  .path-head .module-tag{
+    display:block; font-size:12.5px; font-weight:500; color:var(--ink-soft); margin-top:3px; font-family:"IBM Plex Sans";
+  }
+
+  .callout{
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    border-radius:3px;
+    padding:14px 16px;
+    font-size:14px;
+    margin-bottom:24px;
+  }
+  .callout .k{font-weight:700; color:var(--accent); text-transform:uppercase; font-size:11px; letter-spacing:0.08em; display:block; margin-bottom:4px;}
+
+  .block{margin-bottom:26px;}
+  .block h4{font-size:15px; margin:0 0 8px; color:var(--accent);}
+  .block p{margin:0 0 8px; font-size:14.5px;}
+  .block ul, .block ol{margin:6px 0 8px 20px; padding:0; font-size:14.5px;}
+  .block li{margin-bottom:4px;}
+  .arrow{color:var(--accent); font-weight:700;}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin:10px 0 18px; background:var(--card);}
+  th, td{border:1px solid var(--rule); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:var(--accent-soft); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.03em;}
+
+  pre.drm{
+    background:#fbfaf6;
+    border:1px solid var(--rule);
+    border-left:4px solid var(--accent);
+    padding:16px 18px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.3px;
+    line-height:1.6;
+    overflow-x:auto;
+    white-space:pre-wrap;
+  }
+
+  /* ---------- Visualization panels ---------- */
+  .viz{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:18px 20px 8px;
+    margin:14px 0 24px;
+    box-shadow:var(--shadow);
+  }
+  .viz .viz-title{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em; font-weight:700;
+    color:var(--accent); margin-bottom:12px;
+  }
+  .viz svg{display:block; max-width:100%; height:auto;}
+  .viz .cap{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+
+  .legend{display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--ink-soft); margin-top:8px;}
+  .legend span{display:inline-flex; align-items:center; gap:5px;}
+  .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+  footer{
+    margin-top:40px; padding-top:20px; border-top:1px solid var(--rule);
+    font-size:12.5px; color:var(--ink-soft); text-align:center;
+  }
+
+  @media (max-width:600px){
+    .path-head .num{font-size:24px; min-width:34px;}
+    header.masthead{padding:36px 0 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Vibe Rounds · Ranked Prompt-Path Export</div>
+    <h1>Case Flow Export</h1>
+    <div class="case-link">Case data / link:
+      <a href="https://classworkdecjan.blogspot.com/2017/01/severe-obesity-and-hypoglycemia-even.html" target="_blank" rel="noopener">
+        severe Obesity, SOB and talking in sleep — classworkdecjan.blogspot.com
+      </a>
+    </div>
+    <div class="case-summary">
+      <strong>Case summary (de-identified, as given):</strong> 59F, T2DM ×5y, BMI 40+, progressive non-episodic weight gain over years with an acute 8–9&nbsp;kg gain in 20 days on starting diabetic medication, bilateral cataract surgery 5y ago (coincident with diabetes diagnosis), reduced sugar intake but hypoglycemia persisting despite food + insulin, new-onset dyspnoea (10–15 days), long-standing snoring now much louder with high-volume sleep-talking, new mouth ulcers and right facial swelling, HbA1c normal, ENT: Mallampati grade 2 (soft palate not visible), Grade 2 fatty liver. Later course: altered sensorium/psychosis with normal SpO₂, started on aripiprazole; possible undisclosed chronic Ayurvedic/steroid use raised as a differential for iatrogenic hypercortisolism; 24-hr urinary cortisol was ordered then abandoned; psychosis improved.
+    </div>
+    <div class="disclaimer">Educational simulation only. Not a diagnostic service — all outputs require independent clinical verification (per each module's own disclaimer).</div>
+  </header>
+
+  <nav class="pathnav">
+    <ul>
+      <li><a href="#path1"><span class="dot" style="background:var(--p1)"></span>Path 1 — Illness Script</a></li>
+      <li><a href="#path2"><span class="dot" style="background:var(--p2)"></span>Path 2 — Devil's Advocate</a></li>
+      <li><a href="#path3"><span class="dot" style="background:var(--p3)"></span>Path 3 — Semantic Qualifiers</a></li>
+      <li><a href="#path4"><span class="dot" style="background:var(--p4)"></span>Path 4 — DRM → Bias Audit</a></li>
+    </ul>
+  </nav>
+
+  <!-- ================= PATH SEQUENCES (RANKED) ================= -->
+  <section class="sequences">
+    <h2>Path Sequences (ranked)</h2>
+    <p class="section-sub">Each path's module chain, execution order, and a one-line takeaway from the run below.</p>
+
+    <div class="seq-grid">
+
+      <div class="seq-card" style="--accent:var(--p1); --accent-soft:var(--p1-soft);">
+        <div class="rank-row">
+          <span class="rank-label">Path 1</span>
+          <span class="end-tag">ends at: Create .html File</span>
+        </div>
+        <h3><a href="https://avi33tbtt.github.io/Prompts/Module-15-Illness-Script-Acquisition.html" target="_blank" rel="noopener">Module 15 — Illness Script Acquisition</a></h3>
+        <p class="summary"><strong>Summary:</strong> Activates candidate illness scripts from enabling conditions alone (obesity, rapid weight gain, snoring), builds and stress-tests the OSA script against its predicted findings, and flags the paradoxical hypoglycemia as a script mismatch that should trigger stepwise fallback rather than forced closure.</p>
+      </div>
+
+      <div class="seq-card" style="--accent:var(--p2); --accent-soft:var(--p2-soft);">
+        <div class="rank-row">
+          <span class="rank-label">Path 2</span>
+          <span class="end-tag">ends at: Create .html File</span>
+        </div>
+        <h3><a href="https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html" target="_blank" rel="noopener">Module 12 — Differential Diagnosis Deepdive</a></h3>
+        <p class="summary"><strong>Summary:</strong> Adversarially attacks "OSA" as the sole working diagnosis, ranks a danger-first differential (led by iatrogenic/endogenous hypercortisolism), runs a six-bias audit, and closes with a 5/10 confidence score and three unresolved vulnerabilities.</p>
+      </div>
+
+      <div class="seq-card" style="--accent:var(--p3); --accent-soft:var(--p3-soft);">
+        <div class="rank-row">
+          <span class="rank-label">Path 3</span>
+          <span class="end-tag">ends at: Create .html File</span>
+        </div>
+        <h3><a href="https://avi33tbtt.github.io/Prompts/Module-17-Semantic-Qualifiers-Problem-Representation.html" target="_blank" rel="noopener">Module 17 — Semantic Qualifiers & Problem Representation</a></h3>
+        <p class="summary"><strong>Summary:</strong> Compresses the raw case into abstract qualifier pairs (chronic vs. acute, disproportionate, paradoxical), compares two competing representations of the same findings, and shows that the endocrine/steroid-exposure framing better fits the temporally clustered findings than the OSA framing.</p>
+      </div>
+
+      <div class="seq-card" style="--accent:var(--p4); --accent-soft:var(--p4-soft);">
+        <div class="rank-row">
+          <span class="rank-label">Path 4</span>
+          <span class="end-tag">ends at: Create .html File</span>
+        </div>
+        <h3>
+          <a href="https://avi33tbtt.github.io/Prompts/Module-50-DRM-Diagnostic-Reasoning-Map.html" target="_blank" rel="noopener">Module 50 — Diagnostic Reasoning Map</a>
+          <span style="color:var(--ink-soft); font-weight:400;">→</span>
+          <a href="https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html" target="_blank" rel="noopener">Module 26 — Bias Auditing</a>
+        </h3>
+        <p class="summary"><strong>Summary:</strong> Maps the full case node-by-node (complaint → history → exam → investigations → synthesis), identifies the abandoned 24-hr urinary cortisol test as the single highest-yield decision point, then chains into a bias inventory (anchoring, availability, premature closure, omission) with a corrective-move table and a revised-reasoning simulation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= RANK-WISE OUTPUT LOG HEADER ================= -->
+  <section class="sequences" style="margin-bottom:8px;">
+    <h2>Rank-Wise Output Log</h2>
+    <p class="section-sub">Run each path in rank order (Path 1, Path 2, Path 3, Path 4). Full outputs below, in sequence.</p>
+  </section>
+
+  <!-- ================= PATH 1 ================= -->
+  <section class="path" id="path1" style="--accent:var(--p1); --accent-soft:var(--p1-soft);">
+    <div class="path-head">
+      <div class="num">01</div>
+      <div>
+        <h2>Illness Script Acquisition</h2>
+        <span class="module-tag">Module 15 · Script Theory (enabling conditions → fault → consequences)</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Enabling conditions only <span style="color:var(--ink-soft); font-weight:500;">— Step 15.1</span></h4>
+      <p>59F, BMI 40+, T2DM ×5y, rapid 8–9&nbsp;kg weight gain in 20 days after starting diabetic medication, new loud snoring/sleep-talking over 10–15 days.</p>
+      <p><span class="arrow">→</span> Scripts activated on enabling conditions alone: <strong>(a)</strong> medication-induced fluid retention/weight gain (e.g., insulin or a secretagogue), <strong>(b)</strong> worsening obstructive sleep apnoea (OSA), <strong>(c)</strong> an endocrine driver of rapid fat/fluid gain such as hypercortisolism.</p>
+    </div>
+
+    <div class="viz">
+      <div class="viz-title">Illness script anatomy — OSA script (Step 15.2)</div>
+      <svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of enabling conditions, fault, and consequences for the OSA illness script">
+        <defs>
+          <marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--p1)"></path>
+          </marker>
+        </defs>
+        <!-- box 1 -->
+        <rect x="10" y="30" width="220" height="120" rx="4" fill="var(--p1-soft)" stroke="var(--p1)" stroke-width="1.5"></rect>
+        <text x="120" y="52" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" font-weight="700" fill="var(--p1)" letter-spacing="0.06em">ENABLING CONDITIONS</text>
+        <text x="120" y="76" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">Severe obesity</text>
+        <text x="120" y="96" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">Mallampati grade 2</text>
+        <text x="120" y="116" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">Long-standing snoring,</text>
+        <text x="120" y="132" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">acutely worse</text>
+
+        <line x1="230" y1="90" x2="270" y2="90" stroke="var(--p1)" stroke-width="2" marker-end="url(#arrow1)"></line>
+
+        <!-- box 2 -->
+        <rect x="270" y="30" width="220" height="120" rx="4" fill="var(--p1-soft)" stroke="var(--p1)" stroke-width="1.5"></rect>
+        <text x="380" y="52" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" font-weight="700" fill="var(--p1)" letter-spacing="0.06em">FAULT</text>
+        <text x="380" y="80" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">Upper-airway collapse</text>
+        <text x="380" y="100" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">during sleep — redundant</text>
+        <text x="380" y="120" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">pharyngeal tissue, reduced</text>
+        <text x="380" y="140" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">airway calibre</text>
+
+        <line x1="490" y1="90" x2="530" y2="90" stroke="var(--p1)" stroke-width="2" marker-end="url(#arrow1)"></line>
+
+        <!-- box 3 -->
+        <rect x="530" y="30" width="220" height="120" rx="4" fill="#fdf1ee" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="4 3"></rect>
+        <text x="640" y="52" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" font-weight="700" fill="var(--danger)" letter-spacing="0.06em">CONSEQUENCES (weak fit)</text>
+        <text x="640" y="76" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">Predicted: apnoeas,</text>
+        <text x="640" y="94" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="#1c1d1f">somnolence, HTN</text>
+        <text x="640" y="116" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="var(--danger)" font-weight="600">Found: SOB, loud snoring —</text>
+        <text x="640" y="134" text-anchor="middle" font-family="IBM Plex Sans" font-size="11.5" fill="var(--danger)" font-weight="600">apnoeas unconfirmed</text>
+
+        <text x="380" y="178" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" fill="#4a4c50">Weakest script component: <tspan font-weight="700" fill="var(--danger)">consequences</tspan> — polysomnography still pending</text>
+      </svg>
+      <div class="cap">Reconstructed from Step 15.2 (Full-Script Articulation). Dashed red box marks the component the case data least supports.</div>
+    </div>
+
+    <div class="block">
+      <h4>Script discrimination — near-miss pair <span style="color:var(--ink-soft); font-weight:500;">— Step 15.3</span></h4>
+      <p><strong>OSA</strong> vs. <strong>Cushing's syndrome (exogenous/iatrogenic)</strong>. Overlapping enabling conditions (obesity, weight gain, fatigue) and overlapping consequences (weight gain, possible sleep disturbance) but different fault (mechanical airway obstruction vs. cortisol excess). Discriminating feature: facial/skin changes (ulcers, facial swelling), medication history (undisclosed Ayurvedic use), and glycemic pattern (hypoglycemia despite insulin — atypical for steroid excess, which usually worsens hyperglycemia) — this mismatch is itself informative.</p>
+    </div>
+
+    <div class="block">
+      <h4>Atypical presentation / script mismatch <span style="color:var(--ink-soft); font-weight:500;">— Step 15.4</span></h4>
+      <p>The hypoglycemia-despite-treatment-and-food feature does not fit either the OSA script or a simple hypercortisolism script cleanly — hypercortisolism classically causes hyperglycemia, not hypoglycemia. This is the single most important "does not fit" signal in the case and should trigger fallback to stepwise reasoning rather than forcing closure on either script (e.g., consider reduced counter-regulation, autonomic neuropathy, adrenal insufficiency, or medication/dose mismatch as the fault instead).</p>
+    </div>
+
+    <div class="block">
+      <h4>Critical awareness <span style="color:var(--ink-soft); font-weight:500;">— Step 15.8</span></h4>
+      <p>Fast script-matching here risks anchoring on "obesity + T2DM + snoring = OSA" and missing the metabolically atypical hypoglycemia and the psychiatric turn. Best safeguard: treat any consequence that doesn't fit the activated script (as flagged in 15.4) as a mandatory trigger for slower, stepwise re-analysis rather than smoothing it into the existing script.</p>
+    </div>
+  </section>
+
+  <!-- ================= PATH 2 ================= -->
+  <section class="path" id="path2" style="--accent:var(--p2); --accent-soft:var(--p2-soft);">
+    <div class="path-head">
+      <div class="num">02</div>
+      <div>
+        <h2>Differential Diagnosis Deepdive</h2>
+        <span class="module-tag">Module 12 · Devil's Advocate Mode</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="k">Working diagnosis under test</span>
+      Obstructive sleep apnoea secondary to severe obesity, with T2DM and possible medication-related weight gain.
+    </div>
+
+    <div class="block">
+      <h4>Three strongest attacks <span style="color:var(--ink-soft); font-weight:500;">— Step 12.1</span></h4>
+      <ol>
+        <li>No documented witnessed apnoeas, oxygen desaturation, or daytime hypersomnolence are recorded — only snoring and loud sleep-talking, which are consistent with but not diagnostic of OSA. <em>Bias implicated: representativeness</em> (matching "obese + snoring" to the OSA prototype).</li>
+        <li>OSA does not explain the hypoglycemia occurring despite food and insulin, the new mouth ulcers, the facial swelling, or the eventual psychosis with normal SpO₂. <em>Bias implicated: anchoring</em> on the first plausible unifying diagnosis and discounting features that don't fit it.</li>
+        <li>The acute 8–9&nbsp;kg gain in 20 days is far too rapid for simple lifestyle-driven obesity progression and points toward a fluid-retentive or endocrine process rather than airway disease per se. <em>Bias implicated: availability</em> (obesity + diabetes is a very common combination, making it easy to stop looking further).</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h4>Adversarial differential — danger-first <span style="color:var(--ink-soft); font-weight:500;">— Step 12.2</span></h4>
+      <table>
+        <thead><tr><th style="width:6%;">Rank</th><th style="width:24%;">Diagnosis</th><th style="width:23%;">Supports</th><th style="width:23%;">Against</th><th style="width:24%;">Best discriminating test</th></tr></thead>
+        <tbody>
+          <tr><td>1 (most dangerous)</td><td>Adrenal/pituitary Cushing's syndrome or exogenous steroid use (undisclosed Ayurvedic medication)</td><td>rapid weight gain, facial swelling, fatty liver, mouth ulcers (impaired healing), psychosis</td><td>classically causes hyperglycemia not hypoglycemia; HbA1c normal</td><td>24-hr urinary free cortisol / late-night salivary cortisol; direct medication history/toxicology</td></tr>
+          <tr><td>2</td><td>Autonomic/hypoglycemia-unawareness from longstanding diabetic autonomic neuropathy or insulin dosing error</td><td>T2DM ×5y, hypoglycemia despite food</td><td>doesn't explain snoring, facial swelling, mouth ulcers</td><td>insulin/dose review, C-peptide, autonomic testing</td></tr>
+          <tr><td>3</td><td>Severe OSA</td><td>obesity, snoring, Mallampati 2</td><td>doesn't explain hypoglycemia, ulcers, psychosis</td><td>polysomnography (already ordered)</td></tr>
+          <tr><td>4 (most likely / base rate)</td><td>Uncomplicated progressive obesity + T2DM with medication-related weight gain</td><td>fits overall demographic and history</td><td>doesn't explain the acute 20-day gain, ulcers, or psychosis</td><td>none needed if isolated, but doesn't cover the full picture</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Flag:</strong> iatrogenic/factitious steroid exposure was absent from the initial working differential and only surfaced later in the discussion — a genuine missed branch.</p>
+    </div>
+
+    <div class="viz">
+      <div class="viz-title">Cognitive bias audit — estimated influence (Step 12.3)</div>
+      <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Horizontal bar chart of five cognitive biases rated Low, Moderate, or High">
+        <!-- scale: Low=1 Moderate=2 High=3, bar max width 420 -->
+        <!-- rows -->
+        <!-- Anchoring: Moderate-High -> treat as 2.5 -->
+        <g font-family="IBM Plex Sans" font-size="12" fill="#1c1d1f">
+          <text x="0" y="18">Anchoring</text>
+          <rect x="230" y="6" width="350" height="16" rx="2" fill="#f0e6df"></rect>
+          <rect x="230" y="6" width="291" height="16" rx="2" fill="var(--p2)"></rect>
+          <text x="590" y="18" font-size="11" fill="#4a4c50">Moderate–High</text>
+
+          <text x="0" y="52">Availability</text>
+          <rect x="230" y="40" width="350" height="16" rx="2" fill="#f0e6df"></rect>
+          <rect x="230" y="40" width="233" height="16" rx="2" fill="var(--p2)"></rect>
+          <text x="590" y="52" font-size="11" fill="#4a4c50">Moderate</text>
+
+          <text x="0" y="86">Premature closure</text>
+          <rect x="230" y="74" width="350" height="16" rx="2" fill="#f0e6df"></rect>
+          <rect x="230" y="74" width="233" height="16" rx="2" fill="var(--p2)"></rect>
+          <text x="590" y="86" font-size="11" fill="#4a4c50">Moderate</text>
+
+          <text x="0" y="120">Confirmation bias</text>
+          <rect x="230" y="108" width="350" height="16" rx="2" fill="#f0e6df"></rect>
+          <rect x="230" y="108" width="175" height="16" rx="2" fill="var(--p2)"></rect>
+          <text x="590" y="120" font-size="11" fill="#4a4c50">Low–Moderate</text>
+
+          <text x="0" y="154">Representativeness</text>
+          <rect x="230" y="142" width="350" height="16" rx="2" fill="#f0e6df"></rect>
+          <rect x="230" y="142" width="233" height="16" rx="2" fill="var(--p2)"></rect>
+          <text x="590" y="154" font-size="11" fill="#4a4c50">Moderate</text>
+        </g>
+        <line x1="230" y1="182" x2="580" y2="182" stroke="var(--rule)"></line>
+        <text x="230" y="198" font-size="10" fill="#4a4c50">Low</text>
+        <text x="405" y="198" font-size="10" fill="#4a4c50" text-anchor="middle">Moderate</text>
+        <text x="580" y="198" font-size="10" fill="#4a4c50" text-anchor="end">High</text>
+      </svg>
+      <div class="cap">Anchoring rates highest — the OSA-shaped opening frame most strongly shaped subsequent reasoning.</div>
+    </div>
+
+    <div class="block">
+      <h4>Zebra test — 24-hour window <span style="color:var(--ink-soft); font-weight:500;">— Step 12.4</span></h4>
+      <ol>
+        <li>Iatrogenic Cushing's from covert herbal/steroid use — confirm/exclude via serum cortisol + direct questioning/toxicology of the "Ayurveda" preparation.</li>
+        <li>Insulin autoimmune syndrome or factitious insulin/sulfonylurea use — confirm/exclude via insulin, C-peptide, and sulfonylurea screen drawn during a hypoglycemic episode.</li>
+        <li>Adrenal insufficiency (paradoxically, if steroid use was recently stopped) — confirm/exclude via random cortisol/ACTH stim test; missing this for even one more day risks an adrenal crisis.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h4>Closure report <span style="color:var(--ink-soft); font-weight:500;">— Step 12.8</span></h4>
+      <ul>
+        <li><strong>Diagnostic Confidence Score:</strong> 5/10 for OSA as the sole working diagnosis — plausible but does not account for the hypoglycemia, dermatologic/facial findings, or psychosis.</li>
+        <li><strong>Unresolved vulnerabilities:</strong> (1) no confirmed cause for recurrent hypoglycemia, (2) undisclosed medication use never chemically verified, (3) psychosis not yet mechanistically linked to the metabolic picture.</li>
+        <li><strong>Top 3 alternatives to keep live:</strong> hypercortisolism (endogenous or exogenous), autonomic/insulin-related hypoglycemia, and OSA as a comorbid but non-unifying diagnosis.</li>
+        <li><strong>Minimum investigation checklist:</strong> completed polysomnography, cortisol axis testing (before it was abandoned), C-peptide/insulin during hypoglycemia, and identification/analysis of the unknown medication.</li>
+        <li><strong>Dominant bias:</strong> anchoring on the obesity–OSA–diabetes cluster at the expense of integrating the hypoglycemia and dermatologic findings.</li>
+      </ul>
+    </div>
+
+    <div class="viz">
+      <div class="viz-title">Diagnostic Confidence Score (Step 12.8)</div>
+      <svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gauge showing a diagnostic confidence score of 5 out of 10">
+        <circle cx="150" cy="150" r="120" fill="none" stroke="#f0e6df" stroke-width="20" stroke-dasharray="377" stroke-dashoffset="0" transform="rotate(180 150 150)" stroke-linecap="round" clip-path="inset(0 0 50% 0)"></circle>
+        <path d="M 30 150 A 120 120 0 0 1 270 150" fill="none" stroke="#f0e6df" stroke-width="20" stroke-linecap="round"></path>
+        <path d="M 30 150 A 120 120 0 0 1 150 30" fill="none" stroke="var(--p2)" stroke-width="20" stroke-linecap="round"></path>
+        <text x="150" y="130" text-anchor="middle" font-family="Source Serif 4" font-size="46" font-weight="700" fill="var(--p2)">5</text>
+        <text x="150" y="155" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" fill="#4a4c50">out of 10 · OSA as sole diagnosis</text>
+      </svg>
+      <div class="cap">Half-confidence reflects a plausible but non-unifying working diagnosis with three unresolved vulnerabilities.</div>
+    </div>
+  </section>
+
+  <!-- ================= PATH 3 ================= -->
+  <section class="path" id="path3" style="--accent:var(--p3); --accent-soft:var(--p3-soft);">
+    <div class="path-head">
+      <div class="num">03</div>
+      <div>
+        <h2>Semantic Qualifiers & Problem Representation</h2>
+        <span class="module-tag">Module 17 · Compression before diagnosis</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>Qualifier-summary compression <span style="color:var(--ink-soft); font-weight:500;">— Step 17.1</span></h4>
+      <p>Raw narrative <span class="arrow">→</span> <em>"Chronic, progressive, disproportionate weight gain in a diabetic patient, with a superimposed acute, atypical (paradoxical) metabolic disturbance and subacute, diffuse mucocutaneous and neuropsychiatric features."</em></p>
+      <ul>
+        <li>Qualifiers chosen well: <strong>chronic vs. acute</strong> (correctly separates the years-long obesity trajectory from the 20-day gain), <strong>disproportionate</strong> (the recent gain is out of proportion to stated intake reduction), <strong>paradoxical</strong> (hypoglycemia despite treatment/food, the case's central puzzle).</li>
+        <li>Detail correctly abstracted as noise: the exact kilogram figures and the precise sequence of family visits/reactions.</li>
+        <li>Detail nearly lost that should have stayed its own qualifier: <strong>"disproportionate to reported caloric intake"</strong> — folding this into a generic "weight gain" qualifier would obscure that the pattern is not simple dietary non-adherence, a key discriminator pointing toward fluid retention or an endocrine process.</li>
+      </ul>
+    </div>
+
+    <div class="viz">
+      <div class="viz-title">Competing representations of the same findings (Step 17.3)</div>
+      <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparison of two competing problem representations and the diagnoses each points toward">
+        <!-- Rep A column -->
+        <rect x="10" y="10" width="360" height="240" rx="4" fill="var(--p3-soft)" stroke="var(--p3)" stroke-width="1.5"></rect>
+        <text x="190" y="34" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="var(--p3)" letter-spacing="0.04em">REPRESENTATION A</text>
+        <text x="190" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#1c1d1f">"acute, focal, progressive"</text>
+        <line x1="30" y1="64" x2="350" y2="64" stroke="var(--p3)" stroke-opacity="0.4"></line>
+        <text x="30" y="86" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• facial swelling</text>
+        <text x="30" y="104" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• mouth ulcers</text>
+        <text x="30" y="122" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• rapid weight gain (20d)</text>
+        <text x="190" y="150" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" fill="var(--p3)">↓ points toward</text>
+        <rect x="40" y="164" width="300" height="46" rx="20" fill="#ffffff" stroke="var(--p3)" stroke-width="1.5"></rect>
+        <text x="190" y="192" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="600" fill="var(--p3)">Localized / dermatologic-</text>
+        <text x="190" y="206" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="600" fill="var(--p3)" dy="0">endocrine process</text>
+        <text x="190" y="234" text-anchor="middle" font-family="IBM Plex Sans" font-size="10.5" fill="#4a4c50" font-weight="700">✓ better fits temporal clustering</text>
+
+        <!-- Rep B column -->
+        <rect x="390" y="10" width="360" height="240" rx="4" fill="#f4f3ef" stroke="var(--rule)" stroke-width="1.5"></rect>
+        <text x="570" y="34" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#6b6d70" letter-spacing="0.04em">REPRESENTATION B</text>
+        <text x="570" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#1c1d1f">"subacute, diffuse, fluctuating"</text>
+        <line x1="410" y1="64" x2="730" y2="64" stroke="#c9c6bd"></line>
+        <text x="410" y="86" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• snoring severity</text>
+        <text x="410" y="104" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• hypoglycemia episodes</text>
+        <text x="410" y="122" font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">• sensorium changes</text>
+        <text x="570" y="150" text-anchor="middle" font-family="IBM Plex Sans" font-size="11" fill="#6b6d70">↓ points toward</text>
+        <rect x="420" y="164" width="300" height="46" rx="20" fill="#ffffff" stroke="#c9c6bd" stroke-width="1.5"></rect>
+        <text x="570" y="192" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="600" fill="#5c5e61">Systemic / neuro-metabolic</text>
+        <text x="570" y="206" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="600" fill="#5c5e61">process</text>
+        <text x="570" y="234" text-anchor="middle" font-family="IBM Plex Sans" font-size="10.5" fill="#8a8c8f">secondary / downstream weighting</text>
+      </svg>
+      <div class="cap">Re-checking the timeline: findings in Representation A cluster together within the same 10–15 day window, making it the more faithful summary and giving the endocrine/steroid-exposure hypothesis primary weight.</div>
+    </div>
+
+    <div class="block">
+      <h4>Critical awareness on abstraction <span style="color:var(--ink-soft); font-weight:500;">— Step 17.8</span></h4>
+      <ol>
+        <li>Risk of over-abstracting: qualifiers like "chronic obesity" could silently absorb and hide the <em>specific, case-defining</em> fact of a possible undisclosed steroid-containing herbal remedy — the single most abstraction-vulnerable detail in this case.</li>
+        <li>Difference from premature closure: here the danger is losing a detail <em>before</em> a script is even activated, versus premature closure which happens <em>after</em> a script is chosen — an earlier and more silent failure point.</li>
+        <li>Best safeguard: explicitly qualify any "chronic/progressive" label with a <em>rate-of-change flag</em> whenever the pace of a chronic process suddenly accelerates (as with the 20-day gain), so the acceleration itself is never abstracted away.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= PATH 4 ================= -->
+  <section class="path" id="path4" style="--accent:var(--p4); --accent-soft:var(--p4-soft);">
+    <div class="path-head">
+      <div class="num">04</div>
+      <div>
+        <h2>Diagnostic Reasoning Map → Bias Auditing</h2>
+        <span class="module-tag">Module 50 (DRM) chained into Module 26 (Bias Auditing)</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px; margin:0 0 12px;">Part A — Diagnostic Reasoning Map <span style="color:var(--ink-soft); font-weight:400; font-size:13px;">(Module 50)</span></h3>
+
+    <pre class="drm">DIAGNOSTIC REASONING MAP — 59F, severe obesity, hypoglycemia, OSA-pattern, psychosis
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint (breathlessness + loud snoring/sleep-talking, 10-15 days)
+  Decision Point: Yes — Type: Bifurcating
+  Insight: Splits reasoning between a respiratory/OSA branch and a systemic/endocrine branch from the outset.
+
+NODE 2 — History
+  2a. T2DM x5y with hypoglycemia despite insulin+food: Decision Point: Pivotal
+      Insight: Paradoxical hypoglycemia on treatment is the single most discriminating historical feature; it does not fit a pure OSA or simple obesity script.
+  2b. Rapid 8-9kg gain in 20 days after starting diabetic medication: Decision Point: Bifurcating
+      Insight: Could reflect a drug effect (e.g., insulin-related fluid/fat gain) or an independent endocrine process (steroid exposure) coinciding in time.
+  2c. Cataract surgery x2, 5y ago, coincident with diabetes diagnosis: Decision Point: Missed
+      Insight: Early bilateral cataracts in a non-elderly patient can be a clue to longstanding steroid exposure or poorly controlled diabetes; not explored further in the record.
+  Missing history: exact identity/dose/duration of the "Ayurveda medication," any prior steroid prescriptions, family history of endocrine disease.
+
+NODE 3 — Physical Examination
+  3a. Mallampatti grade 2 (soft palate not visible): Decision Point: Closing (for very severe anatomical obstruction) but not fully closing OSA
+      Insight: Supports but does not confirm significant OSA; anatomically consistent, not diagnostic.
+  3b. Right facial swelling + mouth ulcers: Decision Point: Pivotal
+      Insight: Suggests a mucocutaneous/endocrine process (e.g., Cushingoid change, impaired mucosal healing) rather than a purely respiratory one.
+  System 1 nodes: 3a (pattern-matched quickly to OSA)
+  System 2 nodes: 3b (required deliberate consideration of endocrine causes)
+
+NODE 4 — Investigations
+  4a. HbA1c normal: Decision Point: Closing
+      Insight: Argues against poorly controlled hyperglycemia as the driver of symptoms, redirecting attention toward hypoglycemia and its causes.
+  4b. Grade 2 fatty liver: Decision Point: Bifurcating
+      Insight: Consistent with metabolic syndrome/obesity broadly, but also seen with steroid excess — does not discriminate cleanly.
+  4c. Polysomnography ordered: Decision Point: Missed follow-through in the record
+      Insight: Result not documented in the available narrative; the OSA branch remains formally unresolved.
+  4d. 24-hr urinary cortisol ordered then abandoned: Decision Point: Missed
+      Insight: The single test most able to resolve the endocrine branch was not completed, leaving the most dangerous alternative unconfirmed and unexcluded.
+  Unused results: polysomnography outcome not recorded in the log.
+  Missing investigations: cortisol axis testing, insulin/C-peptide during a hypoglycemic episode, toxicology of the unidentified medication.
+
+NODE 5 — Diagnostic Synthesis
+  Closure type: Forced/partial — team moved to symptomatic psychiatric management (aripiprazole) without resolving the metabolic-endocrine branch.
+  Open branches at closure: hypercortisolism (endogenous or exogenous), unexplained hypoglycemia mechanism, OSA severity.
+  Synthesis insight: Psychosis with normal SpO2 argues against a purely hypoxic (OSA-driven) explanation for the sensorium change, strengthening the case for a metabolic/toxic (steroid- or medication-related) contributor that was never confirmed.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 1 — obesity + snoring anchored early attention on OSA.
+  Availability: Node 3a — Mallampati finding reinforced the already-anchored OSA hypothesis.
+  Premature closure: Node 5 — psychiatric treatment initiated before the cortisol/endocrine question was resolved.
+  Framing: Node 1 — patient's own framing ("difficulty breathing," "snoring") set an initial respiratory frame for the whole case.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 4d (abandoned 24-hr urinary cortisol)
+  Why: This was the one test capable of confirming or excluding the most dangerous alternative (hypercortisolism/steroid exposure); abandoning it left the highest-stakes branch of the differential permanently open, and the subsequent psychiatric presentation was managed without that information.</pre>
+
+    <div class="viz">
+      <div class="viz-title">Reasoning pathway — Nodes 1 → 5 (Step DRM.8 consolidated map)</div>
+      <svg viewBox="0 0 980 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart of the Diagnostic Reasoning Map from presenting complaint through history, examination, investigations, to diagnostic synthesis, with decision points classified and the highest-yield node highlighted">
+        <defs>
+          <marker id="arrowD" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8a8c8f"></path>
+          </marker>
+          <marker id="arrowDdown" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto">
+            <path d="M0,0 L10,0 L5,10 z" fill="#8a8c8f"></path>
+          </marker>
+        </defs>
+
+        <!-- legend -->
+        <g font-family="IBM Plex Sans" font-size="11" fill="#1c1d1f">
+          <rect x="0" y="0" width="12" height="12" rx="2" fill="var(--p4)"></rect>
+          <text x="17" y="10">Pivotal</text>
+          <rect x="80" y="0" width="12" height="12" rx="2" fill="#c99a3c"></rect>
+          <text x="97" y="10">Bifurcating</text>
+          <rect x="185" y="0" width="12" height="12" rx="2" fill="#e0c07d"></rect>
+          <text x="202" y="10">Closing</text>
+          <rect x="270" y="0" width="12" height="12" rx="2" fill="var(--danger)"></rect>
+          <text x="287" y="10">Missed</text>
+          <text x="360" y="10" fill="#4a4c50">★ = highest-yield decision point (Node 4d)</text>
+        </g>
+
+        <!-- NODE 1 -->
+        <rect x="330" y="30" width="320" height="56" rx="5" fill="var(--p4-soft)" stroke="#c99a3c" stroke-width="2"></rect>
+        <text x="490" y="52" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#1c1d1f">NODE 1 — Presenting Complaint</text>
+        <text x="490" y="70" text-anchor="middle" font-family="IBM Plex Sans" font-size="10.5" fill="#4a4c50">Breathlessness + loud snoring/sleep-talking · Bifurcating</text>
+        <line x1="490" y1="86" x2="490" y2="112" stroke="#8a8c8f" stroke-width="1.5" marker-end="url(#arrowDdown)"></line>
+
+        <!-- NODE 2 -->
+        <rect x="240" y="114" width="500" height="130" rx="5" fill="#ffffff" stroke="var(--rule)" stroke-width="1.5"></rect>
+        <text x="490" y="132" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#1c1d1f">NODE 2 — History</text>
+
+        <rect x="256" y="142" width="10" height="10" rx="2" fill="var(--p4)"></rect>
+        <text x="272" y="151" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">2a. T2DM ×5y, hypoglycemia despite insulin+food — Pivotal</text>
+
+        <rect x="256" y="164" width="10" height="10" rx="2" fill="#c99a3c"></rect>
+        <text x="272" y="173" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">2b. Rapid 8–9kg gain in 20 days on new medication — Bifurcating</text>
+
+        <rect x="256" y="186" width="10" height="10" rx="2" fill="var(--danger)"></rect>
+        <text x="272" y="195" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">2c. Bilateral cataracts ×5y, coincident with Dx — Missed</text>
+
+        <line x1="256" y1="210" x2="724" y2="210" stroke="var(--rule)"></line>
+        <text x="256" y="228" font-family="IBM Plex Sans" font-size="10" fill="#4a4c50">Missing history: identity/dose of "Ayurveda" medication, prior steroid Rx, family endocrine Hx</text>
+
+        <line x1="490" y1="244" x2="490" y2="270" stroke="#8a8c8f" stroke-width="1.5" marker-end="url(#arrowDdown)"></line>
+
+        <!-- NODE 3 -->
+        <rect x="240" y="272" width="500" height="108" rx="5" fill="#ffffff" stroke="var(--rule)" stroke-width="1.5"></rect>
+        <text x="490" y="290" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#1c1d1f">NODE 3 — Physical Examination</text>
+
+        <rect x="256" y="300" width="10" height="10" rx="2" fill="#e0c07d"></rect>
+        <text x="272" y="309" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">3a. Mallampati grade 2, soft palate not visible — Closing (partial)</text>
+
+        <rect x="256" y="322" width="10" height="10" rx="2" fill="var(--p4)"></rect>
+        <text x="272" y="331" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">3b. Right facial swelling + mouth ulcers — Pivotal</text>
+
+        <line x1="256" y1="346" x2="724" y2="346" stroke="var(--rule)"></line>
+        <text x="256" y="364" font-family="IBM Plex Sans" font-size="10" fill="#4a4c50">System 1 node: 3a (fast pattern-match) · System 2 node: 3b (deliberate endocrine consideration)</text>
+
+        <line x1="490" y1="380" x2="490" y2="406" stroke="#8a8c8f" stroke-width="1.5" marker-end="url(#arrowDdown)"></line>
+
+        <!-- NODE 4 -->
+        <rect x="200" y="408" width="580" height="150" rx="5" fill="#fdf1ee" stroke="var(--danger)" stroke-width="1.5"></rect>
+        <text x="490" y="426" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#1c1d1f">NODE 4 — Investigations</text>
+
+        <rect x="216" y="436" width="10" height="10" rx="2" fill="#e0c07d"></rect>
+        <text x="232" y="445" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">4a. HbA1c normal — Closing (against hyperglycemic driver)</text>
+
+        <rect x="216" y="458" width="10" height="10" rx="2" fill="#c99a3c"></rect>
+        <text x="232" y="467" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">4b. Grade 2 fatty liver — Bifurcating (non-discriminating)</text>
+
+        <rect x="216" y="480" width="10" height="10" rx="2" fill="var(--danger)"></rect>
+        <text x="232" y="489" font-family="IBM Plex Sans" font-size="10.5" fill="#1c1d1f">4c. Polysomnography ordered, result not documented — Missed</text>
+
+        <rect x="216" y="502" width="10" height="10" rx="2" fill="var(--danger)"></rect>
+        <text x="232" y="511" font-family="IBM Plex Sans" font-size="10.5" font-weight="700" fill="var(--danger)">4d. ★ 24-hr urinary cortisol ordered then abandoned — Missed</text>
+
+        <line x1="216" y1="524" x2="764" y2="524" stroke="#e6c3ba"></line>
+        <text x="216" y="542" font-family="IBM Plex Sans" font-size="10" fill="#4a4c50">Missing investigations: cortisol axis, insulin/C-peptide at hypoglycemia, toxicology of unidentified medication</text>
+
+        <line x1="490" y1="558" x2="490" y2="584" stroke="#8a8c8f" stroke-width="1.5" marker-end="url(#arrowDdown)"></line>
+
+        <!-- NODE 5 -->
+        <rect x="280" y="586" width="420" height="48" rx="5" fill="var(--p4-soft)" stroke="#c99a3c" stroke-width="2"></rect>
+        <text x="490" y="606" text-anchor="middle" font-family="IBM Plex Sans" font-size="12" font-weight="700" fill="#1c1d1f">NODE 5 — Diagnostic Synthesis</text>
+        <text x="490" y="622" text-anchor="middle" font-family="IBM Plex Sans" font-size="10.5" fill="#4a4c50">Forced/partial closure — psychiatric Rx started, endocrine branch unresolved</text>
+
+        <!-- side annotation pointing to 4d as highest yield -->
+        <path d="M 790 508 C 850 508, 850 606, 710 610" fill="none" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#arrowD)"></path>
+        <text x="800" y="500" font-family="IBM Plex Sans" font-size="10.5" font-weight="700" fill="var(--danger)">Highest-yield</text>
+        <text x="800" y="514" font-family="IBM Plex Sans" font-size="10.5" font-weight="700" fill="var(--danger)">decision point</text>
+      </svg>
+      <div class="cap">Each node's sub-findings are tagged by decision-point type (see legend). Node 4d — the abandoned 24-hr urinary cortisol — is the map's single highest-yield point: the one test able to resolve the most dangerous open branch before synthesis.</div>
+    </div>
+
+    <div class="viz">
+      <div class="viz-title">Decision-point types across the map (Nodes 1–5)</div>
+      <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Donut chart of decision point types: Pivotal, Bifurcating, Closing, Missed">
+        <!-- counts: Pivotal 2 (2a,3b), Bifurcating 3 (1,2b,4b), Closing 2 (3a,4a), Missed 3 (2c,4c,4d) => total 10 -->
+        <!-- circle r=80 cx=130 cy=120, circumference = 2*pi*80 = 502.65 -->
+        <g transform="translate(130,120)">
+          <circle r="80" fill="none" stroke="#f0e6df" stroke-width="34"></circle>
+          <!-- Pivotal 2/10 = 20% = 100.53 -->
+          <circle r="80" fill="none" stroke="var(--p4)" stroke-width="34"
+            stroke-dasharray="100.53 502.65" stroke-dashoffset="0" transform="rotate(-90)"></circle>
+          <!-- Bifurcating 3/10 = 30% = 150.8, offset -100.53 -->
+          <circle r="80" fill="none" stroke="#c99a3c" stroke-width="34"
+            stroke-dasharray="150.8 502.65" stroke-dashoffset="-100.53" transform="rotate(-90)"></circle>
+          <!-- Closing 2/10 = 20% = 100.53, offset -251.33 -->
+          <circle r="80" fill="none" stroke="#e0c07d" stroke-width="34"
+            stroke-dasharray="100.53 502.65" stroke-dashoffset="-251.33" transform="rotate(-90)"></circle>
+          <!-- Missed 3/10 = 30% = 150.8, offset -351.86 -->
+          <circle r="80" fill="none" stroke="var(--danger)" stroke-width="34"
+            stroke-dasharray="150.8 502.65" stroke-dashoffset="-351.86" transform="rotate(-90)"></circle>
+          <text x="0" y="6" text-anchor="middle" font-family="Source Serif 4" font-size="26" font-weight="700" fill="#1c1d1f">10</text>
+          <text x="0" y="24" text-anchor="middle" font-family="IBM Plex Sans" font-size="10" fill="#4a4c50">sub-nodes</text>
+        </g>
+        <g font-family="IBM Plex Sans" font-size="12.5" fill="#1c1d1f">
+          <rect x="280" y="40" width="12" height="12" fill="var(--p4)"></rect>
+          <text x="298" y="50">Pivotal — 2 (2a, 3b)</text>
+          <rect x="280" y="70" width="12" height="12" fill="#c99a3c"></rect>
+          <text x="298" y="80">Bifurcating — 3 (1, 2b, 4b)</text>
+          <rect x="280" y="100" width="12" height="12" fill="#e0c07d"></rect>
+          <text x="298" y="110">Closing — 2 (3a, 4a)</text>
+          <rect x="280" y="130" width="12" height="12" fill="var(--danger)"></rect>
+          <text x="298" y="140">Missed — 3 (2c, 4c, 4d)</text>
+          <text x="280" y="172" fill="#4a4c50" font-size="11">Highest-yield node (4d) falls in the</text>
+          <text x="280" y="188" fill="#4a4c50" font-size="11">"Missed" category — the endocrine</text>
+          <text x="280" y="204" fill="#4a4c50" font-size="11">branch closed by omission, not by evidence.</text>
+        </g>
+      </svg>
+      <div class="cap">Tally of all classified sub-nodes in the map above. "Missed" ties for the largest share — a signal that reasoning gaps in this case were as much about unpursued follow-through as about active misjudgement.</div>
+    </div>
+
+    <h3 style="font-size:17px; margin:34px 0 12px;">Part B — Bias Inventory <span style="color:var(--ink-soft); font-weight:400; font-size:13px;">(Module 26)</span></h3>
+
+    <table>
+      <thead><tr><th style="width:14%;">Bias</th><th style="width:26%;">Mechanism</th><th style="width:18%;">Where it operated</th><th style="width:22%;">Effect on reasoning</th><th style="width:20%;">Corrective move</th></tr></thead>
+      <tbody>
+        <tr><td>Anchoring</td><td>First plausible cluster (obesity+snoring+diabetes) fixes the frame</td><td>Node 1, on presenting complaint</td><td>Respiratory/OSA branch received disproportionate early attention</td><td>Explicitly re-rank the differential each time a new, poorly-fitting finding appears (e.g., after the hypoglycemia and facial swelling were noted)</td></tr>
+        <tr><td>Availability</td><td>Obesity+T2DM+OSA is a very common combination and easy to pattern-match</td><td>Node 3a (Mallampati finding)</td><td>Reinforced OSA hypothesis rather than prompting a search for what didn't fit</td><td>Ask explicitly "what does not fit this common pattern?" after any confirmatory finding</td></tr>
+        <tr><td>Premature closure</td><td>Moved to symptomatic psychiatric treatment before the endocrine work-up was complete</td><td>Node 5, and the abandonment of the 24-hr urinary cortisol (Node 4d)</td><td>The highest-danger alternative (hypercortisolism/steroid exposure) was left unresolved</td><td>Do not close or de-prioritise the most dangerous alternative on the differential without an explicit, documented reason for stopping the work-up</td></tr>
+        <tr><td>Omission</td><td>Undisclosed medication history not pursued to chemical verification</td><td>Node 2 (history)</td><td>A potentially causative exposure (Ayurvedic steroid-containing preparation) was never confirmed or excluded</td><td>Escalate to toxicological/chemical analysis of any unidentified medication whenever exogenous steroid exposure is on the differential</td></tr>
+      </tbody>
+    </table>
+
+    <div class="block">
+      <h4>Revised reasoning simulation <span style="color:var(--ink-soft); font-weight:500;">— Step 22.9</span></h4>
+      <p>Re-running the case with corrections applied — holding the hypercortisolism branch open at Node 4d and pursuing cortisol testing to completion — would not necessarily change the immediate psychiatric management, but would change the <em>endocrine/metabolic</em> management plan materially: it could identify a reversible cause (steroid withdrawal/tapering, or treatment of endogenous Cushing's) for the weight gain, mucosal findings, and hypoglycemia, which the OSA-focused pathway alone does not address.</p>
+    </div>
+
+    <div class="block">
+      <h4>Forward commitment <span style="color:var(--ink-soft); font-weight:500;">— Step 22.10</span></h4>
+      <p>The bias most likely to recur is <strong>anchoring</strong> on a common, pattern-matching cluster (obesity/diabetes/snoring) in future complex multi-system cases. What held up well: the team did keep investigating (ENT referral, imaging, psychiatry involvement) rather than closing the case entirely — the differential stayed nominally open even if the highest-yield test was not completed.</p>
+    </div>
+  </section>
+
+  <footer>
+    End of ranked path export · Vibe Rounds educational simulation — outputs require independent clinical verification.
+  </footer>
+
+</div>
+</body>
+</html>
