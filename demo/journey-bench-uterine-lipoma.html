@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Bench — Uterine Lipoma Case</title>
+<style>
+  :root{
+    --teal-950:#062b2c;
+    --teal-900:#0a3d3e;
+    --teal-800:#0f5457;
+    --teal-700:#146a6d;
+    --cyan-600:#0891a8;
+    --cyan-500:#12aebf;
+    --cyan-400:#3fc4d1;
+    --cyan-100:#e2f7f9;
+    --cyan-50:#f2fcfd;
+    --amber-400:#f2b84b;
+    --amber-100:#fdf1dc;
+    --ink-900:#0d1f20;
+    --ink-700:#33484a;
+    --ink-500:#5c7274;
+    --paper:#fbfdfd;
+    --card:#ffffff;
+    --line:#d7e9ea;
+    --mono:'IBM Plex Mono', 'Courier New', monospace;
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink-900);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--cyan-100), transparent 60%),
+      var(--paper);
+    line-height:1.55;
+  }
+  a{color:var(--teal-800);}
+
+  /* ---- Top bar ---- */
+  header.top{
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(120deg, var(--teal-950), var(--teal-800) 70%, var(--cyan-600));
+    color:#fff;
+    padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap;
+    box-shadow:0 6px 24px rgba(6,43,44,0.18);
+  }
+  .brand{display:flex; align-items:baseline; gap:10px;}
+  .brand .mark{
+    font-family:var(--serif); font-weight:600; font-size:1.5rem; letter-spacing:0.01em;
+  }
+  .brand .tag{
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; opacity:0.75;
+    font-family:var(--mono);
+  }
+  .case-meta{
+    font-family:var(--mono); font-size:0.78rem; opacity:0.9; text-align:right;
+  }
+  .tabs{
+    display:flex; gap:8px; padding:14px 28px; background:var(--cyan-50);
+    border-bottom:1px solid var(--line); position:sticky; top:66px; z-index:40;
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:var(--sans); font-weight:600; font-size:0.88rem;
+    padding:9px 18px; border-radius:999px; border:1px solid var(--line);
+    background:#fff; color:var(--teal-800); cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab-btn.active{
+    background:var(--teal-800); color:#fff; border-color:var(--teal-800);
+    box-shadow:0 4px 14px rgba(15,84,87,0.25);
+  }
+  .tab-btn:hover:not(.active){background:var(--cyan-100);}
+
+  main{max-width:920px; margin:0 auto; padding:28px 20px 90px;}
+  section.pane{display:none;}
+  section.pane.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  h1.page-title{
+    font-family:var(--serif); font-weight:600; font-size:1.7rem; color:var(--teal-950);
+    margin:6px 0 4px;
+  }
+  .subtitle{color:var(--ink-500); font-size:0.92rem; margin-bottom:26px;}
+
+  .hp-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px; margin-bottom:16px;
+    box-shadow:0 2px 10px rgba(6,43,44,0.04);
+  }
+  .hp-card h2{
+    font-family:var(--serif); font-size:1.08rem; color:var(--teal-800);
+    margin:0 0 10px; padding-bottom:8px; border-bottom:1px dashed var(--line);
+    display:flex; align-items:center; gap:8px;
+  }
+  .hp-card h2 .num{
+    font-family:var(--mono); font-size:0.72rem; color:#fff; background:var(--cyan-500);
+    border-radius:6px; padding:2px 7px;
+  }
+  .hp-card p, .hp-card li{font-size:0.93rem; color:var(--ink-700);}
+  .hp-card ul{margin:6px 0; padding-left:20px;}
+  .not-doc{color:var(--ink-500); font-style:italic; font-size:0.88rem;}
+
+  mark{
+    background:var(--amber-100); color:var(--ink-900);
+    border-bottom:2px solid var(--amber-400);
+    padding:0 3px; border-radius:3px; font-weight:600;
+    font-family:var(--mono); font-size:0.92em;
+  }
+  .vitals-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:8px; margin-top:6px;
+  }
+  .vital-chip{
+    background:var(--cyan-50); border:1px solid var(--line); border-radius:10px;
+    padding:8px 10px; font-family:var(--mono); font-size:0.82rem;
+  }
+  .vital-chip .label{display:block; color:var(--ink-500); font-size:0.7rem; text-transform:uppercase;}
+
+  /* ---- Journey timeline ---- */
+  .journey-intro{
+    background:var(--teal-950); color:#eafdfd; border-radius:14px; padding:18px 22px;
+    margin-bottom:24px; font-size:0.92rem;
+  }
+  .journey-intro strong{color:var(--cyan-400);}
+
+  .timeline{position:relative; margin-left:14px; padding-left:26px; border-left:3px solid var(--cyan-100);}
+  .step{position:relative; margin-bottom:18px;}
+  .step::before{
+    content:''; position:absolute; left:-35px; top:6px; width:16px; height:16px;
+    border-radius:50%; background:var(--cyan-500); border:3px solid #fff;
+    box-shadow:0 0 0 3px var(--cyan-100);
+  }
+  .step-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden; box-shadow:0 2px 10px rgba(6,43,44,0.04);
+  }
+  .step-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 18px; cursor:pointer; background:linear-gradient(90deg, var(--cyan-50), #fff);
+  }
+  .step-head:hover{background:var(--cyan-100);}
+  .step-time{
+    font-family:var(--mono); font-weight:700; font-size:0.85rem; color:var(--teal-800);
+    background:#fff; border:1px solid var(--cyan-500); border-radius:8px; padding:3px 10px;
+    white-space:nowrap;
+  }
+  .step-title{font-weight:700; font-size:0.98rem; color:var(--ink-900); flex:1; margin:0 12px;}
+  .chevron{transition:transform .2s ease; color:var(--teal-700); font-size:0.9rem;}
+  .step.open .chevron{transform:rotate(90deg);}
+  .step-body{
+    max-height:0; overflow:hidden; transition:max-height .3s ease;
+    padding:0 18px; background:#fff;
+  }
+  .step.open .step-body{max-height:600px; padding:2px 18px 18px;}
+  .step-block{margin-top:12px;}
+  .step-block .k{
+    font-family:var(--mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--cyan-600); display:block; margin-bottom:3px;
+  }
+  .step-block p{margin:0; font-size:0.92rem; color:var(--ink-700);}
+  .inferred-tag{
+    display:inline-block; font-family:var(--mono); font-size:0.68rem; color:var(--teal-800);
+    background:var(--cyan-100); border-radius:5px; padding:1px 6px; margin-left:6px;
+    vertical-align:middle;
+  }
+
+  /* ---- Pearls ---- */
+  .pearls-panel{
+    background:linear-gradient(135deg, var(--teal-900), var(--teal-700) 60%, var(--cyan-600));
+    border-radius:16px; padding:24px 26px; color:#fff; margin-top:30px;
+    box-shadow:0 8px 26px rgba(6,43,44,0.2);
+  }
+  .pearls-panel h2{
+    font-family:var(--serif); font-size:1.25rem; margin:0 0 4px; color:#fff;
+  }
+  .pearls-panel .sub{font-size:0.82rem; opacity:0.8; margin-bottom:16px; font-family:var(--mono);}
+  .pearl-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px;}
+  .pearl{
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+    border-radius:12px; padding:14px 16px; font-size:0.88rem; backdrop-filter:blur(2px);
+  }
+  .pearl .pnum{
+    display:inline-block; font-family:var(--mono); font-weight:700; color:var(--amber-400);
+    margin-right:6px;
+  }
+
+  footer.print-note{
+    text-align:center; font-size:0.75rem; color:var(--ink-500); margin-top:40px;
+    font-family:var(--mono);
+  }
+
+  @media print{
+    header.top, .tabs{position:static;}
+    .step-body{max-height:none !important; padding:2px 18px 18px !important;}
+    .chevron{display:none;}
+  }
+  @media (max-width:600px){
+    header.top{padding:14px 16px;}
+    .tabs{padding:12px 16px; top:60px;}
+    main{padding:20px 12px 70px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="mark">Journey Bench</span>
+    <span class="tag">VibeRounds · Bench Lite</span>
+  </div>
+  <div class="case-meta">
+    Source: Case Reports in Women's Health 28 (2020) e00247<br>
+    Chan &amp; Vythianathan · Uterine Lipoma
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="hp">H&amp;P</button>
+  <button class="tab-btn" data-tab="journey">Clinical Progress Journey</button>
+</div>
+
+<main>
+
+  <!-- ================= H&P TAB ================= -->
+  <section class="pane active" id="hp">
+    <h1 class="page-title">Comprehensive History &amp; Physical</h1>
+    <p class="subtitle">Reconstructed from the published case report. Every field is populated only from source text; unreported fields are marked <span class="not-doc">Not documented in source</span>.</p>
+
+    <div class="hp-card">
+      <h2><span class="num">1</span>Chief Complaint</h2>
+      <p>Recurrent <mark>urinary tract infections</mark>, with a <mark>large painless abdominal mass</mark> found incidentally on examination by her general practitioner.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">2</span>History of Present Illness</h2>
+      <p>A <mark>70-year-old woman</mark> presented to her general practitioner with recurrent urinary tract infections. During evaluation she was incidentally found to have a large, painless abdominal mass on examination. She reported <mark>no systemic symptoms</mark>.</p>
+      <p>Cross-sectional imaging was pursued because of this incidental mass — <mark>CT</mark> showed a <mark>160 × 123 × 144 mm fatty mass</mark>, favouring a differential diagnosis of uterine lipoleiomyoma. Because the mass was difficult to distinguish from the right ovary on CT, a follow-up <mark>pelvic ultrasound</mark> was performed, which showed a <mark>124 × 123 × 111 mm mass</mark> favouring a dermoid arising from the right ovary. The two studies gave conflicting differentials, which drove the decision for surgical evaluation.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">3</span>Past Medical / Surgical History</h2>
+      <ul>
+        <li><mark>Hypertension</mark></li>
+        <li><mark>Hypercholesterolemia</mark></li>
+        <li>Obstetric/gynaecological history: <mark>2 uncomplicated vaginal births</mark> and <mark>prolapse</mark></li>
+        <li>No history of hormone replacement therapy</li>
+      </ul>
+      <p class="not-doc">Prior surgical history: Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">4</span>Medications &amp; Allergies</h2>
+      <p class="not-doc">Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">5</span>Family History</h2>
+      <p class="not-doc">Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">6</span>Social History</h2>
+      <p class="not-doc">Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">7</span>Review of Systems</h2>
+      <p>No systemic symptoms reported. Presenting genitourinary symptom was <mark>recurrent urinary tract infections</mark>.</p>
+      <p class="not-doc">Other systems: Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">8</span>Physical Examination</h2>
+      <p><mark>Large painless abdominal mass</mark> noted on examination by the general practitioner.</p>
+      <p class="not-doc">Vitals and other system-wise exam findings: Not documented in source.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">9</span>Investigations / Labs / Imaging</h2>
+      <div class="vitals-grid">
+        <div class="vital-chip"><span class="label">CT abdomen/pelvis</span>160 × 123 × 144 mm fatty mass</div>
+        <div class="vital-chip"><span class="label">CT differential</span>Uterine lipoleiomyoma (favoured)</div>
+        <div class="vital-chip"><span class="label">Pelvic ultrasound</span>124 × 123 × 111 mm mass</div>
+        <div class="vital-chip"><span class="label">US differential</span>Dermoid, right ovary (favoured)</div>
+        <div class="vital-chip"><span class="label">Gross uterine weight</span>1666 g</div>
+        <div class="vital-chip"><span class="label">Gross mass size</span>150 × 140 × 125 mm, posterior wall</div>
+        <div class="vital-chip"><span class="label">Ki-67</span>Very low proliferation index</div>
+        <div class="vital-chip"><span class="label">MDM2 / HMB-45 / Melan-A</span>Negative</div>
+        <div class="vital-chip"><span class="label">Desmin / SMA</span>Focal positivity around vessels</div>
+      </div>
+      <p style="margin-top:12px;">Gross pathology: cut surface showed a round yellow mass of likely adipose tissue in the posterior wall; <mark>no hemorrhage or necrosis</mark> identified macroscopically. Small paratubal cyst noted; fallopian tubes and ovaries otherwise unremarkable.</p>
+      <p>Microscopy: lesion composed of <mark>benign mature adipocytes</mark> with septa containing thick-walled blood vessels and occasional perivascular smooth muscle; <mark>no evidence of malignancy or atypia</mark> in the adipocytes. Endometrium showed atrophic changes. Cervix showed benign Nabothian cysts. Ovarian cortical inclusion cysts and paratubal cysts were noted.</p>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">10</span>Assessment / Problem List</h2>
+      <ul>
+        <li>Large pelvic fat-containing mass, radiologically indeterminate (uterine vs. ovarian origin)</li>
+        <li>Recurrent urinary tract infections, presumed related to mass effect <span class="inferred-tag">inferred</span></li>
+        <li>Hypertension, hypercholesterolemia (comorbidities)</li>
+      </ul>
+    </div>
+
+    <div class="hp-card">
+      <h2><span class="num">11</span>Initial Diagnosis / Differential</h2>
+      <ul>
+        <li>Uterine lipoleiomyoma (favoured by CT)</li>
+        <li>Ovarian dermoid, right ovary (favoured by pelvic ultrasound)</li>
+        <li>Final histopathological diagnosis: <mark>benign intramural uterine lipoma with focal smooth muscle around vessels</mark></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= JOURNEY TAB ================= -->
+  <section class="pane" id="journey">
+    <h1 class="page-title">Clinical Progress Journey</h1>
+    <p class="subtitle">The diagnostic and management course rewritten as a connected, reasoning-based sequence rather than a flat list of findings and orders.</p>
+
+    <div class="journey-intro">
+      This case's "journey" is primarily a <strong>diagnostic-to-surgical arc</strong> rather than a multi-day inpatient course: an incidental mass finding leads through conflicting imaging to definitive surgery, and the true diagnosis only emerges on histopathology. Tap each step to expand.
+    </div>
+
+    <div class="timeline">
+
+      <div class="step open">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Presentation</span>
+            <span class="step-title">Incidental pelvic mass found during UTI work-up</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>70-year-old woman evaluated by her GP for <mark>recurrent urinary tract infections</mark>; no systemic symptoms.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Physical examination performed as part of the UTI evaluation, revealing a <mark>large painless abdominal mass</mark>.</p></div>
+            <div class="step-block"><span class="k">Why <span class="inferred-tag">inferred</span></span><p>A painless abdominal mass in a postmenopausal woman warrants further imaging to characterise its origin and rule out malignancy before it can be attributed to a benign cause.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Prompted referral for cross-sectional imaging.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Imaging — Step 1</span>
+            <span class="step-title">CT favours a uterine lipoleiomyoma</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Abdominal mass identified on exam, cause still undetermined.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p><mark>Computed tomography</mark> performed, showing a <mark>160 × 123 × 144 mm fatty mass</mark>.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>CT characterised the mass as fat-containing, leading radiologists to favour uterine lipoleiomyoma as the diagnosis.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Diagnosis remained provisional — the mass was difficult to differentiate from the right ovary on CT, prompting a second imaging modality.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Imaging — Step 2</span>
+            <span class="step-title">Pelvic ultrasound instead favours an ovarian dermoid</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Origin of the mass (uterine vs. ovarian) still unresolved after CT.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p><mark>Pelvic ultrasound</mark> obtained specifically to differentiate the mass from the right ovary; it showed a <mark>124 × 123 × 111 mm mass</mark> favouring a dermoid arising from the right ovary.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>The two imaging modalities now disagreed on the organ of origin (uterus vs. ovary), which is itself clinically important since it changes the differential and surgical approach.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Because of these conflicting radiological findings, definitive surgical management was pursued rather than further imaging.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Decision Point</span>
+            <span class="step-title">Elective hysterectomy with bilateral salpingo-oophorectomy chosen</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Radiologically indeterminate pelvic mass with two discordant differentials (lipoleiomyoma vs. dermoid).</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Patient underwent <mark>elective hysterectomy and bilateral salpingo-oophorectomy</mark>, with the specimen sent for histopathological examination.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>Due to the conflicting radiological findings, definitive surgical excision with histopathology was chosen to resolve the diagnosis — consistent with the case discussion's point that radiological findings are often non-specific and diagnosis is frequently confirmed only at histopathology.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Specimen obtained for gross and microscopic examination.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Post-op — Gross Pathology</span>
+            <span class="step-title">Uterus weighed 1666 g with a discrete yellow fatty mass</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Surgical specimen available for gross examination.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Gross cut surface examined: <mark>round yellow mass of likely adipose tissue in the posterior wall, 150 × 140 × 125 mm</mark>; <mark>no hemorrhage or necrosis</mark> seen macroscopically. Small paratubal cyst noted; tubes/ovaries otherwise unremarkable.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>Macroscopic appearance (yellow, fatty, well-circumscribed, no necrosis/hemorrhage) is consistent with a benign fat-containing lesion rather than a necrotic or hemorrhagic malignant mass, guiding the pathologist toward a lipomatous rather than sarcomatous process <span class="inferred-tag">inferred</span>.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Specimen sent for microscopic sectioning and immunohistochemistry.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Post-op — Microscopy &amp; IHC</span>
+            <span class="step-title">Benign mature adipocytes confirmed; malignancy panel negative</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Gross findings suggestive of a benign lipomatous lesion; definitive diagnosis still pending microscopy.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Microscopy showed <mark>benign mature adipocytes</mark> with septa containing thick-walled vessels and occasional perivascular smooth muscle, and <mark>no evidence of malignancy or atypia</mark>. Immunohistochemistry: focal <mark>desmin and SMA positivity around vessels</mark>; <mark>MDM2, HMB-45, and Melan-A negative</mark>; <mark>very low Ki-67</mark> proliferation index.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>Desmin/SMA positivity localised to vessel walls (not extending into the adipocyte population) argues against lipoleiomyoma; negative HMB-45/Melan-A excludes angiomyolipoma; negative MDM2 with low Ki-67 excludes liposarcoma — together these narrow the diagnosis to a pure lipoma.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Findings supported a final diagnosis of benign intramural uterine lipoma with focal smooth muscle around vessels.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Diagnosis</span>
+            <span class="step-title">Final diagnosis: benign intramural uterine lipoma</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>All gross, microscopic, and immunohistochemical findings reviewed together.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Diagnosis rendered postoperatively as <mark>benign intramural uterine lipoma with focal smooth muscle around vessels</mark>.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>The combination of mature adipocyte morphology, absence of atypia, vessel-restricted smooth muscle, and a negative malignancy immunopanel fulfils the histological picture the literature describes for pure uterine lipoma.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>No further oncologic work-up required based on these benign findings.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-card">
+          <div class="step-head">
+            <span class="step-time">Follow-up</span>
+            <span class="step-title">Uncomplicated recovery, well at 3 years</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="step-body">
+            <div class="step-block"><span class="k">Clinical state</span><p>Post-surgical recovery period.</p></div>
+            <div class="step-block"><span class="k">Decision / Action</span><p>Patient monitored clinically following surgery.</p></div>
+            <div class="step-block"><span class="k">Why</span><p>Benign diagnosis meant surveillance needs were limited to routine post-surgical recovery rather than oncologic follow-up <span class="inferred-tag">inferred</span>.</p></div>
+            <div class="step-block"><span class="k">Response / Outcome</span><p>Patient <mark>recovered well from her operations with no complications</mark> and <mark>remained well in the 3 years since her surgery</mark>.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pearls-panel">
+      <h2>Clinical Pearls</h2>
+      <div class="sub">Case-specific takeaways, not generic textbook facts</div>
+      <div class="pearl-grid">
+        <div class="pearl"><span class="pnum">1</span>When CT and ultrasound disagree on whether a fat-containing pelvic mass is uterine or ovarian in origin, that discordance itself was the trigger for surgery in this case rather than further imaging.</div>
+        <div class="pearl"><span class="pnum">2</span>A fat-containing mass on CT does not equal a benign diagnosis by imaging alone — here it was still called a "lipoleiomyoma," not a pure lipoma, until histopathology proved otherwise.</div>
+        <div class="pearl"><span class="pnum">3</span>Desmin/SMA positivity confined to vessel walls (not extending into the adipocyte population) is the key discriminator that separates a pure lipoma from a lipoleiomyoma.</div>
+        <div class="pearl"><span class="pnum">4</span>A negative HMB-45/Melan-A panel excludes angiomyolipoma, and negative MDM2 with a low Ki-67 excludes liposarcoma — this three-marker logic is what converts "fatty pelvic mass" into "pure lipoma."</div>
+        <div class="pearl"><span class="pnum">5</span>Absence of macroscopic hemorrhage or necrosis on gross cut surface was an early clue toward a benign process, well before immunohistochemistry confirmed it.</div>
+        <div class="pearl"><span class="pnum">6</span>Pure uterine lipoma is a diagnosis of exclusion made only after thorough sampling — the case discussion notes this is needed to rule out atypical adipocytes or significant smooth muscle/connective tissue seen in other lipomatous tumours.</div>
+        <div class="pearl"><span class="pnum">7</span>Presenting symptoms here (recurrent UTIs, incidental mass) were nonspecific — uterine lipomas are often asymptomatic and, when symptomatic, mimic leiomyoma or malignancy clinically.</div>
+      </div>
+    </div>
+
+    <footer class="print-note">Journey Bench · VibeRounds — single-file export, print-friendly</footer>
+  </section>
+
+</main>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+  document.querySelectorAll('.step-head').forEach(headEl=>{
+    headEl.addEventListener('click',()=>{
+      headEl.closest('.step').classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
