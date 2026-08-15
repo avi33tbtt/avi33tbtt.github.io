@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Literacy for Health Professionals, Part 2: The Common-Case Blind Spot</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    color: #2C2C2A;
+    line-height: 1.7;
+    font-size: 18px;
+    background: #FFFFFF;
+  }
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #D3D1C7;
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-top: 32px;
+  }
+  p {
+    margin: 18px 0;
+  }
+  strong {
+    font-weight: 700;
+  }
+  em {
+    font-style: italic;
+  }
+  ul, ol {
+    padding-left: 24px;
+  }
+  li {
+    margin: 12px 0;
+  }
+  figure {
+    margin: 32px 0;
+    text-align: center;
+  }
+  figcaption {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .intro-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-bottom: 40px;
+  }
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .hl {
+    background: #FCDE5A;
+    padding: 0 2px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+  }
+  th {
+    text-align: left;
+    background: #F1EFE8;
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 2px solid #B4B2A9;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #D3D1C7;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td.pro {
+    color: #085041;
+  }
+  td.con {
+    color: #712B13;
+  }
+  .caveat {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAEEDA;
+    border-left: 3px solid #854F0B;
+    padding: 10px 14px;
+    margin: 4px 0 28px;
+  }
+  .key-points {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0 40px;
+  }
+  .key-points h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 12px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .key-points ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .key-points li {
+    font-size: 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .plain-summary {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #E6F1FB;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 32px;
+  }
+  .plain-summary h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 12px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .plain-summary p {
+    font-size: 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .case-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    line-height: 1.6;
+  }
+  .part-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAECE7;
+    border-left: 3px solid #993C1D;
+    padding: 10px 14px;
+    margin: 4px 0 32px;
+  }
+</style>
+
+<style>
+.series-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#5F5E5A;padding:10px 0;margin-bottom:8px;border-bottom:1px solid #D3D1C7}
+.series-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-nav a:hover{text-decoration:underline}
+.series-footer-nav{font-family:Arial,Helvetica,sans-serif;font-size:15px;margin-top:48px;padding-top:20px;border-top:1px solid #D3D1C7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.series-footer-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-footer-nav a:hover{text-decoration:underline}
+.series-footer-nav .center{width:100%;text-align:center;order:3;font-size:13px;color:#5F5E5A}
+</style>
+</head>
+<body>
+<div class="series-nav">AI Literacy for Health Professionals series — <a href="index.html">Index</a> · Part 2 of 4</div>
+
+<h1>AI Literacy for Health Professionals, Part 2: The Common-Case Blind Spot</h1>
+<p class="intro-note">Where LLM clinical reasoning tends to break on "simple" cases, and how output differs depending on how a model is prompted — a follow-on to "AI Literacy for Health Professionals, Part 1: Mapping Where LLMs Tend to Be Reliable." As with the rest of this series, this is about learning to use LLMs for self-audit and study, not about using them for clinical practice or decision-making.</p>
+
+<div class="part-note">This piece builds on an earlier framework — why LLMs tend to be reliable at recall, shakier at synthesis, and prone toward premature closure. It applies that gradient to the case it predicts should be easiest to misjudge by feel: the common, low-acuity, "nothing much going on" patient. It works through why that case specifically tends to go wrong, walks through one illustrative example across different prompt framings, and isolates a deeper input-framing problem underneath the bias pattern. As with Part 1, this is a descriptive discussion of model behavior, not guidance on how AI tools should or shouldn't be incorporated into clinical care.</div>
+
+<div class="plain-summary">
+<h2>In plain terms</h2>
+<p>You'd think the boring, common case — a bit of diarrhea, a mild fever — would be the <em>easy</em> one for an AI to get right. It's often the opposite. Textbooks, case reports, and exam questions are mostly written about the interesting or dangerous version of a symptom, not the version that's actually most common: the one that needs nothing done. So when an AI is asked about a mundane case, its output — shaped by that lopsided library — tends to lean toward suggesting more testing and more caution than the case usually needs, delivered in the same confident tone it would use for something genuinely serious.</p>
+<p>The example below illustrates how the same underlying case can produce very different-looking output depending on how it's framed to the model — asked to generate a plan outright, versus asked to evaluate a plan that's already been stated, versus asked only questions with no plan offered at all. These are observations about how model behavior changes with framing, not a recommendation for any particular workflow.</p>
+</div>
+
+<div class="key-points">
+<h2>Key points in this piece</h2>
+<ul>
+<li>Common, low-acuity presentations are, counterintuitively, one of the categories where LLM output appears more prone to error — not because the model is "bad at medicine," but because of how clinical text tends to get written in the first place.</li>
+<li>At least seven distinct, nameable patterns appear to feed this gap — publication bias, exam-adversarial bias, guideline-density bias, severity-skewed case reports, recency/social-media amplification, specialist-authorship bias, and a symmetric-confidence pattern that compounds all of them.</li>
+<li>A separate, arguably harder problem sits underneath all seven: model output is entirely a function of the exact words typed into it, and choosing the clinically load-bearing word already requires the competency the tool might otherwise be used to support.</li>
+<li>The same case, put to a model three different ways, illustrates how sharply the shape of the output can shift: stated outright as a request for a plan; presented alongside an already-stated plan for evaluation; or presented with no plan at all and only questions asked in return.</li>
+<li>What differs across these framings isn't the model itself, but the role it's been given — generating a conclusion from scratch versus responding to a position that's already been stated. That distinction appears to affect how easy the output is to evaluate, independent of whether it happens to be correct.</li>
+</ul>
+</div>
+
+<h2>Why the "Easy" Case Is Often the Hardest One to Get Right</h2>
+<p>The earlier piece established the reliability gradient: strong at recall, good at clean logic, shakier at evidence synthesis, weakest at real-world multi-comorbidity reasoning. It's tempting to assume a mundane, single-symptom, low-acuity case — a bit of diarrhea, a mild fever, a stable patient with nothing unusual going on — sits safely on the reliable end of that gradient, since it's "simple." It often doesn't, and the reason is architectural rather than a matter of the model needing more parameters or a longer context window.</p>
+<p>An LLM has no decision procedure that says "assess severity, then choose an action." It generates the statistically most probable continuation of a prompt, and that probability is shaped by what got written down, not by real-world incidence. Nobody publishes a case report titled "patient had a stomach bug, drank fluids, got better in 48 hours." The result is a systematic mismatch between how common a scenario is in the world and how common its <em>correct, unremarkable resolution</em> is in the text the model was trained on.</p>
+
+<h2>Seven Distinct Failure Points Behind the Gap</h2>
+<p>This isn't one bias wearing different clothes — each of the following is a separate mechanism, though they compound each other in practice.</p>
+<ol>
+<li><strong>Publication/case-report bias.</strong> Documented text skews toward what's worth writing about. <em>Example:</em> a viral URI in a healthy adult pulls the model toward differential-building and red-flag screening rather than "reassure, no workup" — because reassurance-only encounters barely exist as a written genre.</li>
+<li><strong>Exam-adversarial bias.</strong> Question banks are deliberately built to hide a zebra inside a common-sounding vignette, training the model to expect a twist. <em>Example:</em> "young woman, fatigue, mild joint pain" pulls toward lupus workup when the base-rate answer is overwhelmingly mundane.</li>
+<li><strong>Guideline-density bias.</strong> Guidelines exist for genuinely contested decision points — there's no guideline titled "watchful waiting." <em>Example:</em> mild pediatric otitis media pulls toward antibiotic-stewardship nuance rather than plainly stating most cases resolve without intervention.</li>
+<li><strong>Severity-skewed case corpus.</strong> Case reports are written about patients who got sicker or had an interesting course, not the ones who got better uneventfully. <em>Example:</em> "chest pain in a 30-year-old" pulls toward PE or dissection far more than the actual base-rate answer — musculoskeletal or anxiety-related.</li>
+<li><strong>Recency/social-media amplification.</strong> Rare or trending conditions get outsized current-events coverage that gets scraped into training data. <em>Example:</em> fatigue and brain fog pulling toward a trending diagnosis over more mundane, base-rate-dominant explanations.</li>
+<li><strong>Specialist-authorship bias.</strong> Most clinical text about a symptom is written by the specialist who manages its worst-case form, not the generalist who sees the mundane version most of the time. <em>Example:</em> headache text skews toward red-flag neurology content over primary-care reality.</li>
+<li><strong>Symmetric-confidence bias.</strong> The compounding failure: whatever pattern wins the completion is stated in the same fluent, assertive register regardless of whether it reflects a well-grounded or a thin, distribution-skewed inference. <em>Example:</em> a differential for isolated low-grade fever, no other symptoms, reads with the same assertive tone a well-supported diagnosis would carry — with nothing flagging that it's mostly precautionary.</li>
+</ol>
+<p>The common thread across all seven: none of this is the model being "bad at medicine." Each is a predictable consequence of training-text distribution not matching population base rates, with no built-in mechanism to notice or signal the mismatch. That's exactly why it bites hardest on the cases that feel simplest — the gap between what got written and what's actually common is largest right where the stakes feel lowest.</p>
+
+<h2>The One-Word Problem: Why Input Framing May Be the Hardest Failure Point of All</h2>
+<p>Everything above is about bias baked into training data. There's a separate, arguably deeper problem that has nothing to do with training data at all: <strong>the model's entire output is a function of the exact words a clinician chooses to type</strong>, and choosing the right word already requires the competency the tool is supposedly there to support. This is worth isolating from the seven failure points above because it isn't fixable by better data curation, more RAG, or better calibration — it's a structural ceiling on what text-based input can ever carry.</p>
+
+<h3>The same case, one word apart</h3>
+<div class="case-box">
+<p><strong>Prompt 1:</strong> <em>"A 34-year-old otherwise healthy woman with 2 days of loose stools, 2 times vomiting, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic supplement."</em></p>
+</div>
+<p>Response: leads with <strong>viral gastroenteritis</strong> as the likely diagnosis, reasons through the classic triad (loose stools + vomiting + cramping), and produces a standard red-flag list and a straightforward supportive-care plan. Reasonable, unremarkable, low-drama output.</p>
+<div class="case-box">
+<p><strong>Prompt 2:</strong> <em>Same case, one word changed — "vomiting" becomes "projectile vomiting."</em></p>
+</div>
+<p>Response: opens by explicitly flagging the word change ("one change worth flagging: projectile vomiting rather than regular vomiting"), then walks through what projectile vomiting is classically associated with — increased intracranial pressure, gastric outlet obstruction — before reasoning back to norovirus as still most likely, and adding new clarifying questions (headache, neck stiffness, visual changes, abdominal distension) that weren't asked in the first pass.</p>
+
+<h3>What actually happened here</h3>
+<p><span class="hl">Nothing about the patient changed between the two prompts. The only thing that changed was a clinician's word choice describing the same physical event.</span> And the model's entire reasoning chain — the differentials it considered, the questions it asked, the level of concern it projected — shifted with that single word, because that's the only information the model has access to. It cannot see the patient vomit and judge for itself whether "projectile" is the accurate clinical descriptor or a dramatic turn of phrase from someone describing what they watched. It has no independent channel to the event at all — only the label a human chose to put on it.</p>
+<p>This is the sharpest version of a problem the earlier piece named as "patient context is the ceiling": <em>a clinician updates on things that never make it into a text prompt.</em> The one-word case shows the flip side of that same ceiling — it's not just that some information never gets typed in at all, it's that the information that <em>does</em> get typed in is already a clinical judgment, not a raw fact. "Projectile vomiting" isn't a measurement; it's a diagnostic-flavored description that someone had to decide was the right word to use, over "forceful," "a lot," or just "vomiting." Choosing that word already requires knowing it's the word that matters.</p>
+
+<h3>Why this is arguably the hardest problem on this list to ever solve</h3>
+<p>Every other failure point in this piece can, in principle, be narrowed — better-curated training data, retrieval grounded in current literature, explicit calibration language, chained modules that cross-check each other. Those are real, addressable engineering problems. This one is different in kind, for a specific structural reason:</p>
+<p><strong>The person best positioned to describe a finding precisely enough for the model to reason well is the person who already has the competency to interpret it themselves.</strong> A clinician who knows that "projectile" carries specific diagnostic weight (versus "forceful," versus just "a lot") is a clinician who already knows to consider the differentials that word implies — which makes the model's contribution partially redundant for that user. A learner or a less experienced clinician who doesn't yet know which descriptive details are load-bearing will, by definition, tend to under-describe or mis-describe exactly the finding that mattered most — and the model has no way to notice the gap, because from its side, the words on the screen are the entirety of the case.</p>
+<p>This creates a genuine circularity: the tool is often reached for <em>because</em> the user wants help reasoning through something they're less sure about — but the quality of the help is gated by a competency the user may not yet have, namely knowing which words to use when describing what they observed. Unlike the corpus-bias problems above, this isn't a matter of the model needing to see more or better examples. No volume of training data teaches the model to ask "wait, was it actually projectile, or did you mean forceful?" unless the user's phrasing already gives it a reason to wonder — and a precise enough phrasing to trigger that wonder is, again, exactly what a less experienced describer is least likely to produce.</p>
+<p>This is why input framing deserves to be named as its own, separate risk from everything above it in this piece — not a bias to correct for, but a hard limit on what a text interface can ever carry, no matter how the model behind it improves.</p>
+
+
+<p>To make the mechanism concrete rather than abstract, here's one case run through all three modes — same patient, same underlying model, three different roles given to it. Transcripts below are lightly cleaned for length; nothing substantive is altered.</p>
+<div class="case-box"><strong>The case:</strong> A 34-year-old otherwise healthy woman with 2 days of loose stools, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic supplement. Genuinely low-acuity, genuinely common.</div>
+
+<h3>Transcript A — direct request, no plan stated first</h3>
+<div class="case-box">
+<p><strong>Prompt:</strong> <em>"The case (just a test): A 34-year-old otherwise healthy woman comes in with 2 days of loose stools, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic supplement. Genuinely low-acuity, genuinely common."</em></p>
+</div>
+<div class="case-box">
+<p><strong>Response:</strong></p>
+<p><em>Sounds like a mild, likely self-limited case — probably viral or possibly related to the new probiotic (some people get transient GI upset when starting one).</em></p>
+<p><em>Reasonable approach: reassurance and supportive care (hydration, bland diet, rest); consider stopping the probiotic for a few days as an easy variable to eliminate; watch for red flags — blood, fever, dehydration signs, worsening pain, symptoms beyond 5–7 days; no antibiotics indicated, no signs of bacterial etiology; antidiarrheals could be considered for symptom control though not essential.</em></p>
+<p><em>Given it's 2 days in and she's tolerating fluids with no alarm features, watchful waiting with the above guidance is reasonable. If it persists beyond 5–7 days, or fever/blood/severe dehydration develop, that's when further workup would make sense.</em></p>
+</div>
+<p><strong>What to notice:</strong> the output opens with a conclusion ("probably viral or the probiotic") before any caveat, then delivers a complete plan — stop probiotic, red flags, no antibiotics, antidiarrheal optional — in one flat, assertive register throughout. There is little in this framing that invites the reader to interrogate the reasoning behind it; the output arrives already packaged as a finished plan.</p>
+
+<h3>Transcript B — same case, prompted differently: "I'm planning reassurance and no workup — what would make you disagree?"</h3>
+<div class="case-box">
+<p><strong>Prompt:</strong> <em>"I'm planning to manage this as self-limiting diarrhea with reassurance and no workup. What would make you disagree with that plan, and what am I likely not thinking of?"</em></p>
+</div>
+<div class="case-box">
+<p><strong>Response:</strong></p>
+<p><em>Your plan is sound for this presentation. Here's what would push me toward disagreeing, and a few things worth a second thought even if you stick with watchful waiting.</em></p>
+<p><em>Would change my mind: immunocompromise or pregnancy not yet confirmed; recent antibiotic use in the past 4–8 weeks (C. diff moves up the list even without fever/blood — also worth asking why she started the probiotic in the first place); travel history; food source/exposure — early Salmonella or Campylobacter can look mild at 48 hours; occupation (food handler, healthcare, daycare — some jurisdictions want stool studies to clear return-to-work); actual stool frequency, since "loose stools" spans a wide range.</em></p>
+<p><em>Easy to overlook even in a clean visit: medication review beyond the probiotic (magnesium, metformin changes, herbal products); an actual hydration check on exam rather than just history; written return precautions; an explicit follow-up timeframe rather than open-ended reassurance.</em></p>
+<p><em>None of these necessarily change your management today — they're mostly about ruling out the exceptions that would upgrade acuity, and building a note that shows you considered them rather than missed them.</em></p>
+</div>
+<p><strong>What to notice:</strong> here a stated plan is evaluated rather than generated. Every flagged item happens to be checkable against a chart in seconds in this example. The output separates "would change my mind" from "worth a second thought," and closes without asserting a final decision.</p>
+
+<h3>Transcript C — same case, no plan stated, framed as open questions only</h3>
+<div class="case-box">
+<p><strong>Prompt:</strong> <em>"The case (just a test): A 34-year-old otherwise healthy woman comes in with 2 days of loose stools, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic supplement. Genuinely low-acuity, genuinely common. Act as a socratic peer."</em></p>
+</div>
+<div class="case-box">
+<p><strong>Response:</strong></p>
+<p><em>Good starting point. Let's dig into your reasoning rather than me just handing you an answer. First question: what's your working differential right now, and what are you using to narrow it?</em></p>
+<p><em>The probiotic timing — is that a red herring or a real lead? What's your prior on probiotics causing loose stools versus just being incidental?</em></p>
+<p><em>What makes this "low-acuity" to you specifically? List the features you're using to justify that label — then ask which red flags you've actually ruled out versus just not yet asked about. Fever's negative, no blood... what about recent travel, recent antibiotic use, sick contacts, immunocompromise, orthostatic symptoms — how are you assessing hydration beyond "tolerating fluids"?</em></p>
+<p><em>What's your threshold for testing versus watchful waiting here, and what would have to be true for you to escalate it? Two days is short — what's your mental cutoff for "self-limited" versus "needs workup," and why that number?</em></p>
+</div>
+<p><strong>What to notice:</strong> no conclusion, no plan, no differential offered by the model at all — every question forces the clinician to externalize and defend their own reasoning, including the sharpest single move in the whole exchange: separating "ruled out" from "not yet asked about."</p>
+
+<h2>An Important Observation: Transcript A Wasn't Wrong — That's Not the Point</h2>
+<p>Worth being explicit about something a careful reader will notice: Transcript A didn't actually contain a dangerous error. It didn't chase a rare zebra, it didn't suggest an unnecessary antibiotic, and its bottom-line plan — watchful waiting with return precautions — was clinically reasonable. On this particular run, the model didn't visibly exhibit the escalation pattern described earlier in this piece.</p>
+<p><span class="hl">That's exactly why this observation matters: a correct answer on one run doesn't tell you much about how the output should be interpreted more generally.</span> The pattern isn't "the model will always get common cases wrong" — it's that a direct-answer framing has no built-in mechanism to signal, on any given run, whether what it produced is dense, well-grounded recall or a plausible-sounding pattern-match that happened to land correctly. Nothing in Transcript A's tone or structure would have looked any different had the diagnosis been wrong or the escalation bias present — the fluent, assertive register is identical either way. A reader has no way to tell, from the output alone, which case they're looking at.</p>
+<p>This is the calibration issue from the earlier piece in its sharpest form: <strong>output that's right by chance can sound identical to output that's right by grounding.</strong> There's no signal in the text itself that distinguishes one from the other.</p>
+
+<h2>Three Ways of Framing the Same Request</h2>
+<p>The example above illustrates a broader pattern: how a model is asked to engage with a case — as an answer generator, as an evaluator of an already-stated position, or as a source of open questions with no conclusion offered — appears to change the shape and checkability of its output, independent of the underlying case.</p>
+<table>
+<tr><th style="width: 22%;">Framing</th><th style="width: 30%;">Role given to the model</th><th style="width: 48%;">Observed pattern</th></tr>
+<tr>
+<td><strong>Direct request</strong></td>
+<td>Answer generator — states a conclusion, then elaborates</td>
+<td>Output arrives as a packaged plan; nothing in its tone distinguishes well-grounded recall from a fluent guess.</td>
+</tr>
+<tr>
+<td><strong>Evaluation of a stated plan</strong></td>
+<td>Reviewer of a position already committed to by the person prompting it</td>
+<td>Output responds to specific, checkable points rather than asserting a new conclusion.</td>
+</tr>
+<tr>
+<td><strong>Open questioning, no plan given</strong></td>
+<td>Source of questions, withholding any conclusion</td>
+<td>Output surfaces considerations without committing to a diagnosis or plan.</td>
+</tr>
+</table>
+<p>This is a description of how output tends to differ by framing, observed in this example — not a claim about which framing is correct to use in any particular real-world context, which depends on considerations well beyond what a text prompt can capture.</p>
+
+<h2>What This Example Illustrates About Ownership of Reasoning</h2>
+<p><span class="hl">One pattern worth naming directly: in Transcripts B and C, the person prompting the model had already formed (or was actively forming) their own view, and the model's output was responding to or probing that view rather than supplying one from a blank slate.</span> In Transcript A, by contrast, the model supplied a complete conclusion with nothing already committed to on the human side.</p>
+<p>That distinction appears to change what kind of output results — a response to an already-stated position looks different from a freshly generated one, and may be easier to independently evaluate. Whether this distinction is actually meaningful for real clinical use, and how it should be weighed against other considerations, is a judgment for clinicians, educators, and institutions — not something this piece is positioned to settle.</p>
+
+<p>The broader pattern this piece has tried to isolate is this: the common, low-acuity case is not an exception to the reliability gradient discussed in Part 1 — output that sounds plausible and output that's well-grounded can be difficult to tell apart from tone alone, and that difficulty doesn't go away just because a case seems simple.</p>
+
+<div class="series-footer-nav"><a href="1.html">← Part 1: Mapping Where LLMs Tend to Be Reliable</a><a href="3.html">Next: Part 3 — How Prompt Structure Shapes Model Behavior →</a><div class="center"><a href="index.html">AI Literacy for Health Professionals — Full Series Index</a></div></div>
+</body>
+</html>

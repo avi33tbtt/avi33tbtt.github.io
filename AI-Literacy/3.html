@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Literacy for Health Professionals, Part 3: How Prompt Structure Shapes Model Behavior</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    color: #2C2C2A;
+    line-height: 1.7;
+    font-size: 18px;
+    background: #FFFFFF;
+  }
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #D3D1C7;
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-top: 32px;
+  }
+  p {
+    margin: 18px 0;
+  }
+  strong {
+    font-weight: 700;
+  }
+  em {
+    font-style: italic;
+  }
+  ul, ol {
+    padding-left: 24px;
+  }
+  li {
+    margin: 12px 0;
+  }
+  figure {
+    margin: 32px 0;
+    text-align: center;
+  }
+  figcaption {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .intro-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-bottom: 40px;
+  }
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .hl {
+    background: #FCDE5A;
+    padding: 0 2px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+  }
+  th {
+    text-align: left;
+    background: #F1EFE8;
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 2px solid #B4B2A9;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #D3D1C7;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td.pro {
+    color: #085041;
+  }
+  td.con {
+    color: #712B13;
+  }
+  .caveat {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAEEDA;
+    border-left: 3px solid #854F0B;
+    padding: 10px 14px;
+    margin: 4px 0 28px;
+  }
+  .key-points {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0 40px;
+  }
+  .key-points h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 12px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .key-points ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .key-points li {
+    font-size: 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .plain-summary {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #E6F1FB;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 32px;
+  }
+  .plain-summary h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 12px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .plain-summary p {
+    font-size: 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .case-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    line-height: 1.6;
+  }
+  .part-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAECE7;
+    border-left: 3px solid #993C1D;
+    padding: 10px 14px;
+    margin: 4px 0 32px;
+  }
+</style>
+
+<style>
+.series-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#5F5E5A;padding:10px 0;margin-bottom:8px;border-bottom:1px solid #D3D1C7}
+.series-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-nav a:hover{text-decoration:underline}
+.series-footer-nav{font-family:Arial,Helvetica,sans-serif;font-size:15px;margin-top:48px;padding-top:20px;border-top:1px solid #D3D1C7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.series-footer-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-footer-nav a:hover{text-decoration:underline}
+.series-footer-nav .center{width:100%;text-align:center;order:3;font-size:13px;color:#5F5E5A}
+</style>
+</head>
+<body>
+<div class="series-nav">AI Literacy for Health Professionals series — <a href="index.html">Index</a> · Part 3 of 4</div>
+
+<h1>How Prompt Structure Shapes Model Behavior</h1>
+<p class="intro-note">An illustration of how a prompt's structure and a case's framing change LLM output — a follow-on to "AI Literacy for Health Professionals, Part 2: The Common-Case Blind Spot." These examples are meant to sharpen how you audit your own reasoning and prompt for learning purposes — not to inform clinical practice or patient-care decisions.</p>
+
+<div class="part-note">The first two pieces described a pattern: where LLM output tends to sit on a reliability gradient, and why the common, low-acuity case is a blind spot rather than a safe zone. Part 2 also observed that output framed as a response to an already-stated position looks different from output generated from a blank slate. This piece illustrates that observation further: what tends to separate a prompt that draws out genuine pushback from a model from one that mostly returns agreement, how case framing changes what a model's response looks like, and worked before/after examples. These are observations about model behavior under different prompt structures, offered for AI literacy — not instructions for how to use these tools in clinical practice.</div>
+
+<div class="plain-summary">
+<h2>In plain terms</h2>
+<p>Part 2 illustrated that model output framed as an evaluation of an already-stated position looks different from output generated as a fresh answer. This piece looks more closely at what that difference actually depends on — because not every prompt that sounds like "checking a stated position" functions that way in practice.</p>
+<p>Two things stand out. First, the structure of the prompt — not its politeness or tone — appears to affect whether a model pushes back or mostly agrees. Second, how a case is presented to the model — what's included and what's left out — appears to affect whether the exchange probes the model's reasoning or mostly reflects the framing already built into the prompt.</p>
+</div>
+
+<div class="key-points">
+<h2>Key points in this piece</h2>
+<ul>
+<li>A prompt's structure appears to affect whether the resulting output reads as a genuine counter-position or as agreement — phrasing like "does this sound right" tends to draw agreement, while "what would change your mind" tends to draw more specific pushback.</li>
+<li>How a case is presented to the model — including or omitting a stated conclusion and evaluative language — appears to change whether a response tests independent reasoning or mostly reflects the framing already present in the prompt.</li>
+<li>The same underlying case, framed two different ways, produces two different kinds of output — one structured around evaluating an already-stated plan, the other structured around open questioning with no plan stated.</li>
+<li>Prompt structure only affects a single exchange. A handful of separate patterns — output drifting with earlier turns in a conversation, fluency being mistaken for rigor, which cases happen to get this kind of scrutiny at all, and later turns settling toward agreement — aren't addressed by prompt structure alone.</li>
+</ul>
+</div>
+
+<h2>Background</h2>
+<p>Part 2 observed a specific pattern: output framed as a response to an already-stated position looked different from output generated fresh, in the example discussed there. That observation raises a further question — what, specifically, makes a prompt actually draw out that kind of response, versus one that superficially resembles it but mostly returns agreement? This piece looks at that question in more detail.</p>
+
+<h2>How Prompt Structure Appears to Affect Output</h2>
+<p>Not every prompt that resembles "evaluating a stated position" actually produces that kind of output. The difference appears to be structural, not a matter of tone or politeness.</p>
+
+<h3>An example that tends to draw agreement</h3>
+<div class="case-box">
+<p><em>"I'm planning reassurance and no workup for this — does that sound right?"</em></p>
+</div>
+<p>This resembles a request for evaluation, but "does that sound right" tends to draw agreement — a model generating a plausible completion will often simply agree, since agreement is a low-effort continuation of a question phrased this way. Nothing in the framing requires the model to generate a specific counter-consideration.</p>
+
+<h3>An example that tends to draw more specific pushback</h3>
+<div class="case-box">
+<p><em>"I'm planning reassurance and no workup for this. What would make you disagree with that plan, and what am I likely not thinking of?"</em></p>
+</div>
+<p>This is the same clinical content, restructured in a way that appears to demand a more falsifiable answer. "What would change your mind" doesn't have an obvious low-effort agreeable completion — the model has to generate specific, checkable counter-considerations or explicitly state it has none. That structural difference appears to be what matters here.</p>
+
+<h3>Three properties that seem to distinguish this kind of prompt</h3>
+<ol>
+<li><strong>The plan appears before the question is asked.</strong> In this example, the plan is present in the prompt, fully formed, rather than something the model is asked to help build.</li>
+<li><strong>The question asks for disagreement, not confirmation.</strong> "What would change your mind" and "what am I not considering" seem to structurally invite specific pushback; "does this look right" seems to structurally invite agreement.</li>
+<li><strong>The question asks what's checkable, not what's true.</strong> In this example, a specific, falsifiable question tends to produce checkable items rather than a broad, harder-to-evaluate differential.</li>
+</ol>
+<div class="caveat"><strong>An observation worth noting:</strong> when the most likely low-effort response to a prompt is agreement, that may be a sign the prompt functions more as a request for validation than as a probe for disagreement.</div>
+
+<h3>How Case Presentation Appears to Affect Output</h3>
+<p>A prompt's wording is one factor; what's included in the case description itself is another. How much of a case is included, and how much of a stated conclusion is embedded in the framing, appears to change what the resulting exchange looks like.</p>
+<p>One pattern worth noting: including a working diagnosis or evaluative language in a case description appears to shape a model's response toward reflecting that framing back, rather than generating an independent read. <span class="hl">If a model's response is generated after being shown a stated conclusion, its "challenge" is, at least in part, a reflection of the words already used to describe the case.</span> The one-word framing example from Part 2 illustrates a version of this same pattern: the words chosen to describe a finding are themselves already a kind of conclusion.</p>
+
+<h4>Observed in the case description</h4>
+<ul>
+<li>Raw clinical findings — history, exam, vitals, relevant negatives — described in comparatively neutral language.</li>
+<li>Time-sensitive details relevant to a case (recent medication changes, exposures, symptoms).</li>
+<li>In the "evaluate a stated plan" framing, a stated plan presented after the raw case description, rather than woven into it.</li>
+</ul>
+<h4>Observed to shift the output when present</h4>
+<ul>
+<li><strong>A diagnostic label in the prompt.</strong> Language like "probably viral" or "likely benign" appears to shift the model's completion toward agreement with that label.</li>
+<li><strong>Evaluative descriptive words.</strong> Words like "mild," "reassuring," or "stable" carry a conclusion inside what reads as a description.</li>
+<li><strong>A stated plan, in the open-questioning framing.</strong> When no plan is present at all, the model's output has nothing to mirror back and tends toward open-ended questions instead.</li>
+</ul>
+<div class="caveat"><strong>An observation worth noting:</strong> if a prompt's wording alone makes a working conclusion easy to infer, the resulting model output tends to trend toward reflecting that conclusion rather than independently testing it.</div>
+
+<h3>Illustrative Example: Evaluating a Stated Plan</h3>
+<div class="case-box">
+<p><strong>Version 1 (conclusion-first framing):</strong></p>
+<p><em>"34F with 2 days of mild, self-limited-looking loose stools, probably from her new probiotic. I'm planning reassurance only — sound reasonable?"</em></p>
+</div>
+<p><strong>What stands out:</strong> "mild," "self-limited-looking," and "probably from her probiotic" all read as conclusions rather than findings, and "sound reasonable" tends to invite agreement.</p>
+<div class="case-box">
+<p><strong>Version 2 (neutral case description, stated plan, disagreement invited):</strong></p>
+<p><em>"34F, 2 days loose stools, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic. My plan: reassurance and supportive care, no workup. What would make you disagree with that plan, and what am I likely not thinking of?"</em></p>
+</div>
+<p><strong>What differs:</strong> the case is described in more neutral, checkable terms; the plan is present but separated from the case description; and the question is framed to invite specific pushback rather than agreement.</p>
+
+<h3>Illustrative Example: Open Questioning With No Plan Stated</h3>
+<div class="case-box">
+<p><strong>Version 1 (conclusion embedded in the setup):</strong></p>
+<p><em>"This is a straightforward, low-acuity case — 34F with 2 days of mild loose stools, probably viral. Walk me through your reasoning as a Socratic peer."</em></p>
+</div>
+<p><strong>What stands out:</strong> "straightforward," "low-acuity," and "probably viral" are conclusions stated before the model has responded to anything, which tends to shape the framing of what follows.</p>
+<div class="case-box">
+<p><strong>Version 2 (raw case, no conclusion, explicit request for questions only):</strong></p>
+<p><em>"The case (just a test): 34F, 2 days loose stools, mild cramping, no blood, no fever, tolerating fluids, recently started a new probiotic. Ask me questions that make me explain my own reasoning — no conclusions from you."</em></p>
+</div>
+<p><strong>What differs:</strong> no label, no plan, and an explicit request that the model not supply a conclusion — the resulting output in this example consisted only of questions rather than an assessment.</p>
+
+<p>A pattern across both examples: describing the case in more neutral, checkable terms, and keeping an evaluative conclusion out of the framing until the intended use calls for it, both appear to change the resulting output. Whether or how this observation should inform any actual prompting practice is a separate question from what this piece is trying to describe.</p>
+
+<h2>Patterns That Prompt Structure Alone Doesn't Address</h2>
+<p>Everything above concerns a single exchange — one case, one prompt, one response. A handful of separate patterns appear to live one level up, in how this kind of exchange plays out over a longer conversation, and prompt structure alone doesn't obviously address them.</p>
+
+<h3>Recency contamination across a conversation</h3>
+<p>A prompt evaluating a stated plan is only as independent as the conversation it's answered in. If several cases have already been discussed in the same thread — especially cases landing on a similar plan — a model's response to the next case may be shaped by the pattern already established in that conversation, rather than reading the new case independently. <span class="hl">A run of similar verdicts earlier in a thread appears able to shift how a model responds to a later, different case.</span></p>
+
+<h3>Fluency and apparent rigor</h3>
+<p>A well-structured prompt tends to produce a fluent, organized-looking response. That fluency is a separate property from whether the content is actually rigorous or correct — a well-formatted list can look thorough independent of whether any item on it is actually relevant to the specific case.</p>
+
+<h3>Which cases get this kind of scrutiny at all</h3>
+<p>Whether this kind of exchange happens at all is itself uneven in practice — people tend to reach for this kind of check when already uncertain, and skip it when confident. That pattern has a specific consequence: a case where someone is confident and mistaken receives no check, while a case where someone is uncertain but correct receives one anyway.</p>
+
+<h3>Drift across follow-up turns</h3>
+<p>A well-structured first exchange in a conversation doesn't guarantee later turns behave the same way. If a later turn pushes back on the model's initial pushback, subsequent turns in that same thread can drift toward agreement with whatever position was most recently stated, independent of which position was better supported.</p>
+
+<div class="caveat"><strong>A pattern across all four:</strong> none of them are addressed by a single well-structured prompt, because none of them live inside a single prompt — they concern the conversation's history, how consistently this kind of exchange gets applied, and what happens in the turns that follow the first one.</div>
+
+<h2>Closing</h2>
+<p>Three pieces, one observation running through all of them: LLM output appears most reliable at recall and least reliable at open-ended synthesis, and its tone doesn't reliably signal which of the two is happening on a given output. Part 2 illustrated where this pattern shows up most easily missed: not the hard case where extra scrutiny already feels warranted, but the common, low-acuity one where a plausible answer and a well-grounded one can look identical. This piece has looked more closely at how prompt structure and case framing appear to shape the resulting output — and at a set of conversation-level patterns that structure alone doesn't address.</p>
+<p>None of this amounts to a recommendation for how AI tools should be used in real clinical work. That question depends on considerations — institutional policy, oversight, liability, the specific clinical context — well outside what a series about model behavior can settle. What this series has aimed to do is describe, as clearly as possible, the shape of these tools' reliability: where it tends to be strong, where it tends to be thin, and how easily the two can sound the same.</p>
+
+<div class="series-footer-nav"><a href="2.html">← Part 2: The Common-Case Blind Spot</a><a href="final.html">Next: Part 4 — One Case, Several Framings (quick read) →</a><div class="center"><a href="index.html">AI Literacy for Health Professionals — Full Series Index</a></div></div>
+</body>
+</html>
