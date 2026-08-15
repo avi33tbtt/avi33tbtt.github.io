@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Literacy for Clinical Learners, Part 4: One Case, Several Framings</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    color: #2C2C2A;
+    line-height: 1.7;
+    font-size: 18px;
+    background: #FFFFFF;
+  }
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #D3D1C7;
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-top: 32px;
+  }
+  p { margin: 16px 0; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  ul, ol { padding-left: 24px; }
+  li { margin: 10px 0; }
+  .hl { background: #FCDE5A; padding: 0 2px; }
+  .intro-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-bottom: 32px;
+  }
+  .plain-summary {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #E6F1FB;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 32px;
+  }
+  .plain-summary h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 10px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .plain-summary p { font-size: 15px; margin: 8px 0; line-height: 1.6; }
+  .stage-label {
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #085041;
+    background: #E3F1EA;
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+  .case-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+  .prompt-box {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    background: #FFFFFF;
+    border: 1px solid #B4B2A9;
+    border-left: 3px solid #085041;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .response-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F7F5EF;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    line-height: 1.6;
+    color: #3A3936;
+  }
+  .caveat {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAEEDA;
+    border-left: 3px solid #854F0B;
+    padding: 10px 14px;
+    margin: 8px 0 24px;
+  }
+  .good {
+    border-left: 3px solid #085041;
+  }
+  .bad {
+    border-left: 3px solid #A3271E;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #D3D1C7;
+    margin: 40px 0;
+  }
+</style>
+
+<style>
+.series-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#5F5E5A;padding:10px 0;margin-bottom:8px;border-bottom:1px solid #D3D1C7}
+.series-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-nav a:hover{text-decoration:underline}
+.series-footer-nav{font-family:Arial,Helvetica,sans-serif;font-size:15px;margin-top:48px;padding-top:20px;border-top:1px solid #D3D1C7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.series-footer-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-footer-nav a:hover{text-decoration:underline}
+.series-footer-nav .center{width:100%;text-align:center;order:3;font-size:13px;color:#5F5E5A}
+</style>
+</head>
+<body>
+<div class="series-nav">AI Literacy for Clinical Learners series — <a href="index.html">Index</a> · Part 4 of 4 (Quick Read)</div>
+
+<h1>One Case, Several Framings: An Illustrative Walkthrough</h1>
+<p class="intro-note">A single illustrative example, showing how model output differs depending on how it's prompted — for readers who want to see the pattern without the three-part background. Like the rest of the series, this is an illustration for learning and self-audit, not a template for clinical practice or patient-care decisions.</p>
+
+<div class="plain-summary">
+<h2>What the earlier three pieces described, briefly</h2>
+<p><strong>Part 1</strong> described where these models tend to be more or less reliable: comparatively strong at recall (facts, guideline text), weaker at synthesis and judgment calls — and with no built-in signal indicating which of the two is happening at any given moment.</p>
+<p><strong>Part 2</strong> illustrated where that pattern is easiest to miss: not the rare, hard case where extra scrutiny already feels warranted, but the common, low-acuity case, where a plausible-sounding answer and a well-grounded one can look identical. It compared how output differed across a direct request for a conclusion, a request to evaluate an already-stated plan, and open questioning with no plan offered.</p>
+<p><strong>Part 3</strong> looked at the mechanics in more detail: prompt phrasing and what a case description includes or omits both appear to shape the resulting output.</p>
+<p>This piece runs a single case through several of these framings side by side, purely as an illustration of the pattern — not as a template for real clinical use.</p>
+</div>
+
+<h2>The Case</h2>
+<div class="case-box">
+<strong>52-year-old woman.</strong> Three weeks of fatigue and reduced appetite. Unintentional weight loss, roughly 4 kg over that time. Intermittent, mild, diffuse abdominal discomfort — not sharp, not localized. No fever, no vomiting, bowel habits unchanged. She mentions she's been caring for a parent with declining health over the same period and has been sleeping poorly. No prior major medical history.</div>
+<p>This is a genuinely ambiguous, fictionalized presentation, constructed for illustration. It has a plausible benign story (caregiving stress, poor sleep, reduced appetite) sitting alongside features — unintentional weight loss in a woman over 50 — that are sometimes flagged for further evaluation regardless of how compelling the benign story sounds. That combination makes it a useful example for comparing how output shifts across framings.</p>
+
+<hr>
+
+<h2>Framing 1 — Open-Ended Differential, No Plan Yet</h2>
+<p class="stage-label">Illustrates the "moderate use" band discussed in Part 1</p>
+<p>At this point, no plan has been formed on the human side — the prompt only asks the model to widen the range of possibilities under consideration.</p>
+<div class="prompt-box good">"52F, 3 weeks fatigue, reduced appetite, ~4kg unintentional weight loss, intermittent mild diffuse abdominal discomfort, no fever/vomiting, bowel habits unchanged. Concurrent major caregiving stressor and poor sleep. No further workup done yet. I'm not asking for a diagnosis — just broaden the differential. What categories should I be considering before I narrow anything down?"</div>
+<div class="response-box">A broad differential across several categories: oncologic (GI or hematologic malignancy — age and unintentional weight loss are the flags here), endocrine (new-onset diabetes, hyperthyroidism, adrenal insufficiency), infectious/chronic (TB, HIV), psychiatric/functional (depression, adjustment disorder — plausible given the stressor, but not assumed by default), and medication or substance-related causes. Suggests basic first-line labs (CBC, CMP, TSH, HbA1c) would meaningfully narrow several of these at once.</div>
+<p>Nothing here is a diagnosis — it's a broadened list of categories to consider, in this example including some (adrenal insufficiency, TB) that weren't part of the initial framing.</p>
+
+<hr>
+
+<h2>Framing 2 — Independent Workup (No Model Involved)</h2>
+<p class="stage-label">No model involved</p>
+<p>In this illustrative continuation, further history and first-line labs are gathered independently: no alarm features on further questioning (no blood in stool, no dysphagia, no family history of GI cancer, colon cancer screening reportedly up to date), and results come back as mild anemia, TSH low-normal, HbA1c normal, basic infectious screen not indicated on this history. Nothing points sharply at malignancy, nothing rules it out with certainty either.</p>
+<p>A working impression is formed independently of the model: <strong>most consistent with a stress- and sleep-related picture, given the concurrent caregiving burden</strong> — with a plan of supportive care, close follow-up, deferred imaging, recheck in four weeks. This impression is formed before the model is involved again, which is what makes the next two framings a comparison against something already stated, rather than something generated collaboratively.</p>
+
+<hr>
+
+<h2>Framing 3 — Evaluating an Already-Stated Plan</h2>
+<p class="stage-label">Illustrates the pattern discussed in Parts 2 and 3</p>
+<p>A new conversation thread — deliberately not a continuation of Framing 1's, so nothing about this response is shaped by the earlier exchange.</p>
+<div class="prompt-box good">"52F, 3 weeks fatigue and reduced appetite, ~4kg unintentional weight loss, intermittent mild diffuse abdominal discomfort, no alarm features on history, basic labs show only mild anemia and low-normal TSH, otherwise unremarkable. Concurrent major caregiving stressor. My plan: attribute to stress/poor sleep, supportive care, defer imaging, recheck in 4 weeks. What would make you disagree with that plan, and what am I likely not thinking of?"</div>
+<div class="response-box">Flags one specific concern: a plausible stress-related explanation existing alongside the weight loss doesn't make the weight loss itself less significant — the two facts can be evaluated on their own terms, rather than folded into one story just because one explains the other conveniently. Unintentional weight loss of this magnitude in a woman this age is, on its own, a finding some guidelines discuss as warranting further evaluation independent of how compelling the alternative explanation is. Asks directly: is colon cancer screening actually confirmed up to date, or assumed? Also notes the anemia hasn't been characterized (iron studies, MCV trend) and that "low-normal TSH" is being read as reassuring when it's also compatible with early thyroid dysfunction that hasn't fully declared itself.</div>
+<p>In this example, the response doesn't offer a competing diagnosis, but responds specifically to the place where the stated plan appears most vulnerable — using a plausible story to explain away a finding that has its own independent significance.</p>
+<div class="caveat"><strong>Worth noticing:</strong> this response engaged with specific, checkable points because the plan was stated plainly, without hedge words like "probably stress-related" built into the case description itself. Had the case opened with "looks like a straightforward stress-related picture," the response in this example would likely have looked different, reflecting that framing rather than probing it.</div>
+
+<hr>
+
+<h2>Framing 4 — Open Questioning, No Plan Offered</h2>
+<p class="stage-label">Illustrates the pattern discussed in Parts 2 and 3</p>
+<p>In this illustrative continuation, the same case is later used for teaching purposes, framed differently: no plan is stated, and the model is explicitly asked not to supply one.</p>
+<div class="prompt-box good">"Case for teaching, no conclusions from you: 52F, 3 weeks fatigue and reduced appetite, ~4kg unintentional weight loss, intermittent mild abdominal discomfort, no alarm features, mild anemia, low-normal TSH, concurrent major caregiving stressor. Ask me questions that make me defend my own reasoning, don't tell me what you'd do."</div>
+<div class="response-box">Opens with: "What would you need to see to feel genuinely reassured enough to defer imaging — not what would make you feel better, but what specific finding would actually lower your pretest concern?" Follows with: "If this patient had no caregiving stressor at all — same labs, same weight loss — would your plan change? If yes, what does that tell you about how much weight the stressor is actually carrying in your reasoning versus how much you want it to carry?"</div>
+<p>No conclusion is supplied in this example. The output consists entirely of questions, illustrating how this framing differs in kind from Framing 3, rather than being a better or worse version of it.</p>
+
+<hr>
+
+<h2>Framing 5 — A Direct Request for a Conclusion</h2>
+<p class="stage-label">Illustrates the pattern discussed in Part 2</p>
+<p>For comparison: the same underlying case, asked the way a direct request is often phrased.</p>
+<div class="prompt-box bad">"52F, fatigue, weight loss, mild ab pain, big caregiver stressor lately, labs pretty unremarkable. What's going on and what should I do?"</div>
+<div class="response-box">Most likely explanation is stress- and sleep-related, especially given the temporal correlation with the caregiving burden and the otherwise unremarkable workup. Reasonable plan: reassurance, supportive care, follow-up in a few weeks; escalate only if new symptoms develop.</div>
+<p>Notice what happened in this example: the output reaches <em>the same conclusion</em> reached independently in Framing 2 — but without any of the specific points raised in Framing 3. Nothing here mentions the weight-loss-as-independent-finding point, nothing asks about screening status, nothing flags the anemia as uncharacterized. Nothing about the output's tone here differs from a version of the same output that happened to be wrong — which is the pattern this series has been describing throughout: fluency and grounding aren't the same thing, and the output alone doesn't tell a reader which one it's looking at.</p>
+
+<hr>
+
+<h2>Summary of the Comparison</h2>
+<figure>
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F5E5A"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#A3271E"/>
+    </marker>
+  </defs>
+
+  <!-- Stage 1 -->
+  <rect x="20" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="110" y="55" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">FRAMING 1</text>
+  <text x="110" y="75" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Broaden the</text>
+  <text x="110" y="92" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">differential</text>
+
+  <line x1="200" y1="70" x2="238" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2 -->
+  <rect x="240" y="30" width="180" height="80" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+  <text x="330" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#5F5E5A">FRAMING 2</text>
+  <text x="330" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Independent</text>
+  <text x="330" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">workup + plan</text>
+  <text x="330" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(no model)</text>
+
+  <line x1="420" y1="70" x2="458" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3 -->
+  <rect x="460" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="550" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">FRAMING 3</text>
+  <text x="550" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Evaluate the</text>
+  <text x="550" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">stated plan</text>
+  <text x="550" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(fresh thread)</text>
+
+  <line x1="640" y1="70" x2="678" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 4 -->
+  <rect x="680" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="770" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">FRAMING 4</text>
+  <text x="770" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Open</text>
+  <text x="770" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">questioning</text>
+  <text x="770" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(no plan offered)</text>
+
+  <!-- Divergent path from Stage 2 -->
+  <line x1="330" y1="110" x2="330" y2="180" stroke="#A3271E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrowRed)"/>
+  <text x="330" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#A3271E">different framing</text>
+
+  <rect x="240" y="215" width="180" height="80" rx="8" fill="#FBEAE8" stroke="#A3271E" stroke-width="1.5"/>
+  <text x="330" y="238" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#A3271E">FRAMING 5</text>
+  <text x="330" y="258" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Direct request</text>
+  <text x="330" y="275" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">for a conclusion</text>
+  <text x="330" y="290" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#A3271E">confident, unprobed</text>
+
+  <!-- Legend -->
+  <rect x="20" y="340" width="14" height="14" rx="3" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="42" y="352" font-family="Arial" font-size="12" fill="#2C2C2A">Model responding to reasoning already stated by the human</text>
+
+  <rect x="20" y="365" width="14" height="14" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+  <text x="42" y="377" font-family="Arial" font-size="12" fill="#2C2C2A">Independent human judgment — no model involved</text>
+
+  <rect x="20" y="390" width="14" height="14" rx="3" fill="#FBEAE8" stroke="#A3271E" stroke-width="1.5"/>
+  <text x="42" y="402" font-family="Arial" font-size="12" fill="#2C2C2A">Model supplies a conclusion from a blank slate, unprobed</text>
+
+  <text x="20" y="435" font-family="Arial" font-size="12" fill="#5F5E5A" font-style="italic">This diagram illustrates the framings compared in this example, not a recommended sequence of steps.</text>
+</svg>
+<figcaption>The framings illustrated in this example, shown for comparison rather than as a prescribed sequence.</figcaption>
+</figure>
+
+<h2>Closing</h2>
+<p>Same underlying case, five different framings, illustrating five different patterns of output: broadening a differential before anything is decided, doing independent clinical work with no model involved, evaluating an already-stated plan for its weakest point, probing the reasoning behind a plan with no conclusion on the table, and — for contrast — a direct request for a conclusion, which in this example produced the most confident-sounding output with the least amount of specific engagement.</p>
+<p>This walkthrough is an illustration of the patterns discussed across the series, using a single fictionalized example. It is not a recommended clinical workflow, and the series as a whole has aimed to describe how LLM output tends to vary with framing — not to prescribe how, whether, or when these tools should be used in real clinical practice. That is a separate question for clinicians, educators, and institutions to weigh on their own terms.</p>
+
+<div class="series-footer-nav"><a href="3.html">← Part 3: How Prompt Structure Shapes Model Behavior</a><a href="index.html">Back to Index →</a><div class="center"><a href="index.html">AI Literacy for Clinical Learners — Full Series Index</a></div></div>
+</body>
+</html>

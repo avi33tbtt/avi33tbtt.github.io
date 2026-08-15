@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Literacy for Clinical Learners: Understanding Where LLMs Help and Where They Fail in Clinical Reasoning</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    color: #2C2C2A;
+    line-height: 1.7;
+    font-size: 18px;
+    background: #FFFFFF;
+  }
+  h1 { font-size: 34px; line-height: 1.3; margin-bottom: 8px; font-weight: 700; }
+  h2 { font-size: 22px; margin-top: 40px; margin-bottom: 12px; font-weight: 700; border-bottom: 1px solid #D3D1C7; padding-bottom: 8px; }
+  h3 { font-family: Arial, Helvetica, sans-serif; font-size: 19px; margin: 0 0 6px; }
+  p { margin: 14px 0; }
+  a { color: #B0521C; }
+  a:hover { color: #7A3811; }
+  strong { font-weight: 700; }
+  .intro-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    color: #5F5E5A;
+    margin-bottom: 8px;
+  }
+  .project-box {
+    background: #FAF7F0;
+    border: 1px solid #E4E0D4;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0 32px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .project-box p { margin: 8px 0; font-size: 16px; }
+  .project-box a { font-weight: 600; text-decoration: none; }
+  .project-box a:hover { text-decoration: underline; }
+  .badge {
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: #2C2C2A;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  .quick-read {
+    background: #FCF3D6;
+    border-left: 4px solid #FCDE5A;
+    padding: 16px 20px;
+    margin: 28px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+  }
+  .quick-read a { font-weight: 700; }
+  ol.series-list { padding-left: 0; list-style: none; counter-reset: series; }
+  ol.series-list > li {
+    counter-increment: series;
+    margin: 0 0 28px;
+    padding: 18px 20px 18px 56px;
+    position: relative;
+    border: 1px solid #E4E0D4;
+    border-radius: 8px;
+  }
+  ol.series-list > li::before {
+    content: counter(series);
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #B0521C;
+    background: #FAF7F0;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .quick-item::before { content: "⚡" !important; }
+  .summary { margin: 8px 0 10px; }
+  .read-link {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid #D3D1C7;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+  }
+  footer a { color: #5F5E5A; }
+</style>
+</head>
+<body>
+
+<div class="project-box">
+  <p>🧭 Built under <strong><a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">The Vibe Rounds Paradigm</a></strong>, the main project this series sits within.</p>
+  <p>🩺 Part of the <strong><a href="https://viberounds.ai.studio/" target="_blank" rel="noopener">VibeRounds Clinical Learning Suite</a></strong> — tools on using AI for learning.</p>
+</div>
+
+<h1>AI Literacy for Clinical Learners</h1>
+<p class="intro-note">An educational four-part series examining where large language models (LLMs) tend to be reliable in clinical reasoning contexts, and where they tend to fail. This series is about learning to use LLMs well as a study and self-audit tool — for example, testing your own reasoning against a case, checking your differential for blind spots, or reviewing how you'd justify a plan — not about using them for clinical practice or patient-care decision-making. It is descriptive, not prescriptive: nothing here should be read as an endorsement or recommendation for clinical use. The goal is literacy — understanding the shape of these tools' strengths and limitations so they can be used responsibly for learning — not guidance on adopting them at the bedside.</p>
+
+<div class="quick-read">
+  ⚡ <strong>Short on time?</strong> Skip ahead to <a href="final.html">Part 4: One Case, Several Framings</a> — a single worked example that illustrates the concepts discussed across the series, without the three-part background.
+</div>
+
+<h2>Scope of This Series</h2>
+<p>This series discusses general patterns observed in LLM behavior — where responses tend to be trustworthy and where they tend to break down — for the purpose of building literacy about these tools. Its intended use is as a study aid: helping a learner or clinician self-audit their own reasoning, stress-test a differential, or reflect on how a plan holds up under questioning. It does not evaluate any specific product's clinical safety or efficacy, does not constitute medical or clinical-practice advice, and is not a guide for incorporating AI into patient care or clinical decision-making. Any clinical decisions should rely on a clinician's own judgment, institutional policy, and established clinical resources.</p>
+
+<h2>The Series</h2>
+<ol class="series-list">
+
+<li>
+<h3>Part 1 — <a href="1.html">AI Literacy for Clinical Learners: Mapping Where LLMs Are Actually Usable</a></h3>
+<p class="summary">Introduces a framework for thinking about LLM reliability across a spectrum: generally stronger at recall (facts, definitions, published guidelines), less consistent at synthesizing multiple pieces of evidence, and weakest when reasoning through the ambiguity of a real, messy patient presentation. Describes a recurring failure pattern — premature closure, where a model settles on an early plausible explanation and stops considering alternatives — and notes that this happens while the model's tone remains equally confident whether it's right or wrong. The piece is descriptive of these patterns, not a recommendation for how to use the tools.</p>
+<p class="read-link"><a href="1.html">Read Part 1 →</a></p>
+</li>
+
+<li>
+<h3>Part 2 — <a href="2.html">The Common-Case Blind Spot</a></h3>
+<p class="summary">Examines the case that might be expected to be easiest for an LLM: the boring, low-acuity presentation. Because published medical literature disproportionately discusses the rare or dangerous version of a symptom, model output on a mundane case tends to skew toward over-testing and over-caution — delivered in the same confident tone it would use for a genuine emergency. Discusses this pattern as a limitation to be aware of, not as a problem with a single fix.</p>
+<p class="read-link"><a href="2.html">Read Part 2 →</a></p>
+</li>
+
+<li>
+<h3>Part 3 — <a href="3.html">How Prompt Structure Shapes Model Behavior</a></h3>
+<p class="summary">Looks at how a prompt is structured — not just its tone — affects whether a model pushes back on a stated plan or simply agrees with it, and how the framing of a case (what detail is included or withheld) affects whether an exchange tests reasoning or just leads the model toward a predetermined answer. Uses side-by-side prompt examples to illustrate these dynamics as observations about model behavior, not as instructions for clinical workflow.</p>
+<p class="read-link"><a href="3.html">Read Part 3 →</a></p>
+</li>
+
+<li class="quick-item">
+<h3>Part 4 — <a href="final.html">One Case, Several Framings: An Illustrative Walkthrough</a></h3>
+<p class="summary"><span class="badge">Quick Read</span>Runs a single genuinely ambiguous illustrative case — a 52-year-old woman with weeks of fatigue, weight loss, and vague abdominal discomfort — through several different prompting approaches discussed earlier in the series, so the differences in model output can be compared side by side. Intended as an illustration of the concepts, not a template for real patient care. The fastest way to get a sense of the series' themes without reading the other three parts first.</p>
+<p class="read-link"><a href="final.html">Read Part 4 →</a></p>
+</li>
+
+</ol>
+
+<footer>
+  <p>Educational content · part of the <a href="https://viberounds.ai.studio/" target="_blank" rel="noopener">VibeRounds Clinical Learning Suite</a>, published under <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">The Vibe Rounds Paradigm</a>. This series is for learning purposes only and does not constitute clinical guidance.</p>
+</footer>
+
+</body>
+</html>
