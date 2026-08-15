@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CKD Critical Decision Nodes — Trajectory · Decision · Outcome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1613;
+  --surface:#152420;
+  --surface-2:#1c322c;
+  --line: rgba(143,196,178,0.16);
+  --teal:#4fd1ae;
+  --teal-dim:#2f7a67;
+  --amber:#e8a87c;
+  --red:#e2745c;
+  --blue:#8fb4e8;
+  --violet:#b39ce8;
+  --text:#e8ede9;
+  --muted:#8aa39a;
+  --faint:#5b7069;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 900px 500px at 10% -10%, rgba(79,209,174,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(232,168,124,0.06), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.display{font-family:'Fraunces',serif;}
+a{color:var(--teal);}
+
+header.top{
+  padding:38px 40px 26px;
+  border-bottom:1px solid var(--line);
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--teal); margin:0 0 10px;
+}
+h1.title{
+  font-family:'Fraunces',serif; font-optical-sizing:auto; font-weight:600; font-size:32px;
+  margin:0; letter-spacing:-0.01em; color:#f3f7f4;
+}
+.subtitle{color:var(--muted); font-size:14px; margin-top:8px; max-width:760px; line-height:1.6;}
+.disclaimer{
+  margin-top:14px; font-size:12px; color:var(--faint); max-width:760px; line-height:1.5;
+  border-left:2px solid var(--amber); padding:8px 12px; background:rgba(232,168,124,0.06);
+}
+
+.wrap{ max-width:1180px; margin:0 auto; padding:0 40px; }
+
+/* ---------- nav / filter ---------- */
+.node-nav{
+  display:flex; gap:8px; flex-wrap:wrap; padding:22px 0 6px; position:sticky; top:0; z-index:5;
+  background:linear-gradient(var(--bg) 78%, transparent); padding-top:18px; padding-bottom:14px;
+}
+.node-nav button{
+  background:var(--surface-2); border:1px solid var(--line); color:var(--muted);
+  font-family:'IBM Plex Mono',monospace; font-size:11px; padding:7px 12px; border-radius:20px; cursor:pointer;
+  transition:all .15s;
+}
+.node-nav button:hover{ color:var(--text); border-color:var(--teal-dim); }
+.node-nav button.active{ background:var(--teal); color:#08120f; border-color:var(--teal); font-weight:600; }
+
+/* ---------- section intro ---------- */
+.section-intro{ padding:34px 0 8px; }
+.section-intro h2{ font-family:'Fraunces',serif; font-size:24px; margin:0 0 8px; color:#f3f7f4;}
+.section-intro p{ color:var(--muted); font-size:14px; max-width:800px; line-height:1.7; margin:0; }
+
+/* ---------- KPI strip ---------- */
+.kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:22px 0 6px;}
+.kpi{ background:var(--surface); padding:16px 18px; }
+.kpi .num{ font-family:'Fraunces',serif; font-size:23px; font-weight:600; color:var(--teal); line-height:1;}
+.kpi .lbl{ font-size:11px; color:var(--muted); margin-top:5px;}
+
+/* ---------- case card ---------- */
+.case{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:0; margin:26px 0;
+  overflow:hidden;
+}
+.case-head{
+  padding:20px 26px; border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+  background:linear-gradient(120deg, rgba(79,209,174,0.06), transparent 60%);
+}
+.case-head-left{ flex:1; min-width:260px; }
+.case-tag{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  padding:3px 9px; border-radius:20px; margin-bottom:8px;
+}
+.tag-fluid{ background:rgba(143,180,232,0.14); color:var(--blue); }
+.tag-htn{ background:rgba(226,116,92,0.14); color:var(--red); }
+.tag-electrolyte{ background:rgba(232,168,124,0.14); color:var(--amber); }
+.tag-anemia{ background:rgba(179,156,232,0.14); color:var(--violet); }
+.tag-infection{ background:rgba(79,209,174,0.14); color:var(--teal); }
+.case-head h3{ font-family:'Fraunces',serif; font-size:20px; margin:0 0 4px; color:#f3f7f4; line-height:1.3;}
+.case-demo{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--faint); }
+.case-id-link{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--faint); text-align:right; }
+.case-id-link a{ color:var(--muted); }
+
+.case-body{ padding:22px 26px 26px; }
+
+.trail{ position:relative; padding-left:26px; }
+.trail::before{
+  content:''; position:absolute; left:8px; top:8px; bottom:8px; width:2px;
+  background:linear-gradient(var(--blue), var(--red), var(--teal));
+  opacity:.35;
+}
+.step{ position:relative; margin-bottom:20px; }
+.step:last-child{ margin-bottom:0; }
+.step::before{
+  content:''; position:absolute; left:-26px; top:3px; width:11px; height:11px; border-radius:50%;
+  border:2px solid var(--bg); background:var(--faint);
+}
+.step.s-trajectory::before{ background:var(--blue); }
+.step.s-decision::before{ background:var(--amber); box-shadow:0 0 0 3px rgba(232,168,124,0.15); }
+.step.s-outcome::before{ background:var(--teal); }
+
+.step-label{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:6px;
+}
+.s-trajectory .step-label{ color:var(--blue); }
+.s-decision .step-label{ color:var(--amber); }
+.s-outcome .step-label{ color:var(--teal); }
+
+.step-content{ font-size:13.5px; line-height:1.75; color:var(--text); }
+.step-content b{ color:#f3f7f4; }
+.step-content .chip{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; background:var(--surface-2);
+  border:1px solid var(--line); color:var(--muted); padding:1px 7px; border-radius:5px; margin:2px 3px 0 0;
+}
+
+.decision-box{
+  background:rgba(232,168,124,0.05); border:1px solid rgba(232,168,124,0.25); border-radius:10px;
+  padding:14px 16px; margin-top:8px;
+}
+.decision-box .crux{ font-size:13px; color:var(--amber); font-weight:600; margin-bottom:6px; }
+.decision-box .rationale{ font-size:13px; color:var(--muted); line-height:1.7; }
+
+.vitals-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.vitals-row .v{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; background:var(--surface-2); border:1px solid var(--line);
+  border-radius:6px; padding:4px 8px; color:var(--text);
+}
+.vitals-row .v b{ color:var(--faint); font-weight:500; margin-right:4px; }
+
+.insight-tag{
+  margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
+  font-size:12.5px; color:var(--muted); line-height:1.7;
+}
+.insight-tag b{ color:var(--teal); font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:5px;}
+
+/* ---------- insights section ---------- */
+.insight-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin:20px 0 30px; }
+.insight-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 20px;
+}
+.insight-card .num{
+  font-family:'Fraunces',serif; font-size:15px; color:var(--teal); margin-bottom:6px;
+}
+.insight-card h4{ font-family:'Fraunces',serif; font-size:16px; margin:0 0 8px; color:#f3f7f4; }
+.insight-card p{ font-size:13px; color:var(--muted); line-height:1.7; margin:0; }
+.insight-card .evidence{ margin-top:10px; font-size:11px; font-family:'IBM Plex Mono',monospace; color:var(--faint); }
+
+/* ---------- ladder diagram ---------- */
+.ladder{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 26px; margin:20px 0 30px;}
+.ladder h4{ font-family:'Fraunces',serif; font-size:17px; margin:0 0 14px; color:#f3f7f4;}
+.ladder-row{ display:flex; align-items:center; gap:10px; margin:9px 0; flex-wrap:wrap;}
+.ladder-step{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; background:var(--surface-2); border:1px solid var(--line);
+  padding:6px 11px; border-radius:7px; color:var(--text);
+}
+.ladder-arrow{ color:var(--faint); }
+.ladder-row.escalation .ladder-step{ border-color:rgba(226,116,92,0.35); color:var(--red); }
+
+footer{ padding:30px 40px 60px; color:var(--faint); font-size:11.5px; text-align:center; }
+.case.hide{ display:none; }
+
+/* ---------- Back Nav ---------- */
+.back-nav{
+  position:sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:8px;
+  padding:12px 40px; background:rgba(13,22,19,0.85); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
+}
+.back-nav a{
+  color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:6px;
+  transition:color .15s ease;
+}
+.back-nav a:hover{ color:var(--teal); }
+.back-nav .sep{ color:var(--faint); }
+.back-nav .crumb{ color:var(--text); }
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+@keyframes growBar{ from{transform:scaleX(0);} to{transform:scaleX(1);} }
+@keyframes growBarV{ from{transform:scaleY(0);} to{transform:scaleY(1);} }
+@keyframes popIn{ from{opacity:0; transform:scale(.4);} to{opacity:1; transform:scale(1);} }
+@keyframes drawLine{ from{stroke-dashoffset:1000;} to{stroke-dashoffset:0;} }
+
+header.top, .panel, .kpi, .tile{ animation:fadeUp .5s ease-out backwards; }
+.kpis .kpi:nth-child(1){animation-delay:.02s;}
+.kpis .kpi:nth-child(2){animation-delay:.06s;}
+.kpis .kpi:nth-child(3){animation-delay:.10s;}
+.kpis .kpi:nth-child(4){animation-delay:.14s;}
+.kpis .kpi:nth-child(5){animation-delay:.18s;}
+.kpis .kpi:nth-child(6){animation-delay:.22s;}
+section .panel{ animation-delay:.08s; }
+
+.bar-fill{ animation:growBar .7s cubic-bezier(.22,1,.36,1) backwards; transform-origin:left; }
+svg rect{ animation:growBarV .55s cubic-bezier(.22,1,.36,1) backwards; transform-box:fill-box; transform-origin:bottom; }
+svg circle{ animation:popIn .45s ease-out backwards; }
+svg polyline, svg path.trend-line, svg line.trend{ stroke-dasharray:1000; animation:drawLine 1s ease-out forwards; }
+.tile{ transition:transform .15s ease, border-color .15s ease, background .15s ease; }
+</style>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  var btns = document.querySelectorAll('.node-nav button');
+  var cases = document.querySelectorAll('.case[data-cat]');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      var f = b.getAttribute('data-f');
+      cases.forEach(function(c){
+        if(f==='all' || c.getAttribute('data-cat')===f){ c.classList.remove('hide'); }
+        else { c.classList.add('hide'); }
+      });
+    });
+  });
+});
+</script>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="index.html">&larr; CKD Case Study</a>
+  <span class="sep">/</span>
+  <span class="crumb">Decision Nodes</span>
+</nav>
+
+
+<header class="top">
+  <p class="eyebrow">CKD Case Atlas — Companion Analysis</p>
+  <h1 class="title">Critical Management Decision Nodes</h1>
+  <p class="subtitle">Six case trajectories drawn from the source e-log corpus, isolated at the point where a clinical team had to choose a management path under real physiological constraint — and what happened after. Each card follows <b style="color:#c9d6cf">Trajectory → Decision → Outcome</b>, followed by cross-case insights on the recurring management logic in these records.</p>
+  <div class="disclaimer">Source material: de-identified student case logs (e-log format) from a general medicine / nephrology teaching archive. Presented for educational pattern review, not as validated treatment protocol. Only cases with clear, dated decision-and-response sequences in the source text are included — 6 of 156 logged cases met that bar.</div>
+</header>
+
+<div class="wrap">
+
+<div class="node-nav mono">
+  <button class="active" data-f="all">All 6 cases</button>
+  <button data-f="fluid">Fluid overload / diuretic resistance</button>
+  <button data-f="htn">Hypertensive crisis</button>
+  <button data-f="electrolyte">Acidosis / electrolyte</button>
+  <button data-f="anemia">Severe anemia</button>
+  <button data-f="infection">Infection escalation</button>
+</div>
+
+<div class="section-intro">
+  <h2>The six decision nodes</h2>
+  <p>Ordered by how forcing the decision was — from a diuretic ladder that needed one more rung, to a seizing, hypotensive patient where dialysis itself was the risk being weighed against the risk of not dialysing.</p>
+</div>
+
+<div class="kpis mono">
+  <div class="kpi"><div class="num">6</div><div class="lbl">decision-node cases</div></div>
+  <div class="kpi"><div class="num">4</div><div class="lbl">on maintenance / new dialysis</div></div>
+  <div class="kpi"><div class="num">3</div><div class="lbl">hypertensive crises managed</div></div>
+  <div class="kpi"><div class="num">2</div><div class="lbl">transfusion-first sequencing</div></div>
+  <div class="kpi"><div class="num">1</div><div class="lbl">fatal-risk encephalopathy course</div></div>
+</div>
+
+<!-- ============ CASE 1 — #33 BP crisis ============ -->
+<div class="case" data-cat="htn">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-htn">Hypertensive crisis on dialysis</span>
+      <h3>Uncontrolled BP mid-session in a patient shifted from dialysis for respiratory distress</h3>
+      <div class="case-demo">62F · CKD on MHD, HTN 7yr · presenting SOB grade IV, pedal edema, decreased urine output</div>
+    </div>
+    <div class="case-id-link">Case #33<br><a href="https://102-crazymandadi.blogspot.com/2021/10/a-62-year-old-female-patient-came-to.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">HTN diagnosed 7 years prior on Atenolol; pedal edema and facial puffiness a year back dismissed as "due to hypertension"; underlying kidney disease only picked up on ultrasound 4 months before admission. On this admission she was <b>shifted off dialysis mid-session to the medical unit</b> for sweating and SOB — and during that transfer her blood pressure was recorded at <b>210/130 mmHg</b>.
+        <div class="vitals-row"><span class="v"><b>BP</b>210/130</span><span class="v"><b>SpO2</b>80%→90%</span><span class="v"><b>ABG</b>mild acidosis</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">A staged antihypertensive ladder was run in real time rather than one large bolus dose:</div>
+            <div class="rationale">
+            Nicardia 20mg + Arkamin 0.1mg given stat → BP did not fall → Lasix 80mg + Labetalol 10mg added → BP eased to 170/110 → a further Labetalol 10mg dose brought it to 160/110 → thirty minutes later 140/90 → Nitroglycerin used to consolidate control. In parallel, SpO2 was sitting at 80%, so <b>BiPAP was started concurrently</b> rather than waiting for the BP problem to resolve first — treating the respiratory and pressure crises as linked, not sequential.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          BiPAP brought saturation to 90% over two hours despite the ABG still showing mild acidosis; the patient was then weaned to plain oxygen and stabilised. She continued on a fixed 9-day regimen of fluid restriction (&lt;1.5L/day), salt restriction (&lt;2g/day), Lasix, and Nicardia — with antibiotics (Augmentin, then escalated to Levofloxacin) added from day 4 once a presumed respiratory infection component was suspected, and 3 hemodialysis sessions plus 3 blood transfusions run across the admission.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>A hypertensive emergency arriving mid-dialysis-session forces a choice between finishing ultrafiltration (which itself drops pressure unpredictably) and switching to pharmacologic titration. The team titrated in small graded steps (four drug adjustments in roughly an hour) rather than one aggressive dose — the safer approach when a dialysis patient's volume status is already in flux.</div>
+  </div>
+</div>
+
+<!-- ============ CASE 2 — #646 uremic encephalopathy / dialysis vs hypotension ============ -->
+<div class="case" data-cat="electrolyte">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-electrolyte">Dialysis-vs-hypotension trade-off</span>
+      <h3>Seizure and coma from uremic encephalopathy — dialysing a patient already in shock</h3>
+      <div class="case-demo">48M · undiagnosed CKD stage V, denovo HTN + DM, NSAID abuse 2yr · new-onset tonic seizure, then comatose</div>
+    </div>
+    <div class="case-id-link">Case #646<br><a href="https://jyothsna113.blogspot.com/2021/11/neprho.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">A farmer, CKD flagged incidentally at a femur-fracture operation two years earlier but lost to follow-up, presented after a witnessed bilateral-limb tonic seizure with tongue bite and ten hours of post-ictal confusion. On admission: creatinine 9.3, urea 161, denovo diabetes, and a working diagnosis of <b>severe metabolic acidosis with uremic encephalopathy</b>. By day 1 he had deteriorated to comatose (GCS E1V1M1, fixed mid-dilated pupils, absent deep tendon reflexes).
+        <div class="vitals-row"><span class="v"><b>BP</b>100/40 (on pressors)</span><span class="v"><b>PR</b>107</span><span class="v"><b>SpO2</b>94% on 8L O2</span><span class="v"><b>Creat</b>9.3</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">Dialysis was still performed despite a MAP low enough to require triple inotrope/vasopressor support:</div>
+            <div class="rationale">
+            Noradrenaline, dobutamine and vasopressin infusions were started to hold blood pressure, and — rather than deferring dialysis until hemodynamically stable — the team ran <b>one session of hemodialysis with a deliberately low ultrafiltration rate</b> "due to his hypotension," alongside 2 units of PRBC and 300mEq of bicarbonate replaced intra-dialysis. The refractory acidosis itself was treated as the driver of the shock, so clearing it was judged to outweigh the risk of further hypotension from fluid removal — hence UF was throttled rather than dialysis withheld.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          The seizures were recorded as resolved, but the acidosis was explicitly documented as <b>"refractory"</b> and the shock state persisted, requiring continued vasopressor titration to MAP targets. The team's own open question in the notes — "can acidosis cause shock without decreasing myocardial contractility?" — signals that the outcome at last documented note remained unresolved/guarded rather than a clean recovery.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>This is the corpus's clearest example of a genuine equipoise decision: standard teaching would delay dialysis in hemodynamic shock, but refractory uremic acidosis was judged the proximate threat. The mitigation wasn't "dialyse or don't" — it was a third option, low-UF dialysis under pressor cover, that tried to get the metabolic benefit while limiting the hemodynamic cost.</div>
+  </div>
+</div>
+
+<!-- ============ CASE 3 — #739 transfusion-before-antihypertensives ============ -->
+<div class="case" data-cat="anemia">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-anemia">Sequencing transfusion before BP control</span>
+      <h3>Hypertensive emergency in a patient with a hemoglobin of 4 g/dl</h3>
+      <div class="case-demo">40F · CKD + dilated cardiomyopathy, denovo hypothyroidism · referred in with Hb 4g%, platelets 25k</div>
+    </div>
+    <div class="case-id-link">Case #739<br><a href="https://keerthireddy42.blogspot.com/2021/07/anaemia-under-evaluation-with.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">A young woman with unclear glomerulonephritis (near-normal renal biopsy) and known DCMP presented after a local hospital found Hb 4g/dl and platelets 25k, treated with erythropoietin and <b>5 units PRBC before transfer</b>. On arrival at this facility she carried a provisional diagnosis of hypertensive emergency with grade 1 retinopathy, on a background of raised JVP and a parasternal heave.
+        <div class="vitals-row"><span class="v"><b>BP</b>160/100</span><span class="v"><b>PR</b>125</span><span class="v"><b>SpO2</b>88%</span><span class="v"><b>Hb (post-transfusion)</b>7.3</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">Correction of the anemia was front-loaded at the referring hospital before antihypertensive titration began here:</div>
+            <div class="rationale">
+            Transfusing to raise Hb from 4 to roughly 7.3 g/dl <i>before</i> intensifying antihypertensive therapy reduces the risk that vasodilating/negative-inotrope agents would be started on top of severe anemia-driven high-output physiology (tachycardia 125bpm, raised JVP) — a combination that can precipitate cardiovascular collapse. Once she arrived here already transfused, the regimen started conservatively: Lasix, Telmisartan, fluid/salt restriction, with 4th-hourly vitals — <b>not an aggressive multi-agent push</b> given her still-fragile cardiac state.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          By the next day, BP had come down from 160/100 to 120/90 on the conservative regimen alone (Lasix + Met-XL + Nicardia added), and she was escalated modestly with Metolazone-class add-ons documented for cardiac support (Ecosprin, Spironolactone, Nicardia retard) rather than aggressive vasodilation — consistent with treating this as a volume-and-anemia-driven pressure problem rather than a pure vascular hypertensive emergency.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>The sequencing — correct the oxygen-carrying capacity first, then titrate BP medication — is a recurring but implicit theme across the severe-anemia cases in this corpus: aggressive antihypertensive therapy on top of profound anemia risks worsening high-output cardiac strain rather than relieving it.</div>
+  </div>
+</div>
+
+<!-- ============ CASE 4 — #717 diuretic resistance ladder ============ -->
+<div class="case" data-cat="fluid">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-fluid">Diuretic-resistant anasarca</span>
+      <h3>Escalating from bolus Lasix to a continuous infusion, then adding metolazone sequential blockade</h3>
+      <div class="case-demo">45M · AKI on CKD (diabetic nephropathy), COPD, anemia of chronic disease · gross ascites, scrotal edema, fluid thrill</div>
+    </div>
+    <div class="case-id-link">Case #717<br><a href="https://keerthireddy42.blogspot.com/2021/06/aki-kn-ckd.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">Progressive pedal edema over a month advanced to ascites with a positive fluid thrill and new scrotal swelling. On admission: BP 180/100, creatinine 3.8, urea 85, INR 1.9 — decompensated fluid overload not responding to home management.
+        <div class="vitals-row"><span class="v"><b>Day 1</b>Lasix 80mg IV stat</span><span class="v"><b>Day 2</b>Lasix drip 20mg/hr</span><span class="v"><b>Day 5</b>HD + 1 PRBC</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">The diuretic strategy escalated in three distinct steps rather than repeating the same bolus dose:</div>
+            <div class="rationale">
+            Step 1 (day 1): Lasix 80mg IV stat plus Metolazone 5mg to pre-block distal sodium reabsorption. Step 2 (day 2): converted from intermittent boluses to a <b>continuous Lasix infusion at 20mg/hr</b> — the standard response to diminishing returns from bolus dosing in resistant fluid overload. Step 3 (day 3–5): with ascites still not clearing and hypoxia (end-inspiratory wheeze bilaterally) persisting, the team added <b>hemodialysis with a unit of PRBC</b> for concurrent anemia — using ultrafiltration as a direct mechanical solution once pharmacologic diuresis plateaued.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          BP responded (180/100 → 120/60 by day 3) but then rebounded to 170/70–170/90 by days 6–7, and a fever spike appeared alongside worsening bilateral pedal edema — prompting a further escalation to <b>empiric IV vancomycin through a central line</b>, suggesting a suspected catheter-related or systemic infection superimposed on the fluid-overload course rather than resolution.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>This case documents the textbook diuretic-resistance ladder end to end inside one record: thiazide-type sequential blockade → bolus-to-infusion conversion → ultrafiltration — and shows what triggers the next rung (persistent effusion/wheeze, not just the edema itself).</div>
+  </div>
+</div>
+
+<!-- ============ CASE 5 — #1060 antibiotic escalation + GI bleed ============ -->
+<div class="case" data-cat="infection">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-infection">Infection + incidental GI bleed</span>
+      <h3>Antibiotic choice for CAP-on-CKD, complicated by a melena episode mid-course</h3>
+      <div class="case-demo">80M · CKD 2yr on conservative management, past pulmonary TB, HTN 2yr · fever + SOB + loose stools, SpO2 90% RA</div>
+    </div>
+    <div class="case-id-link">Case #1060<br><a href="https://nehapurohit115.blogspot.com/2021/10/general-medicine-case-discussion.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">A patient who had self-discontinued renal medication a year earlier (staying only on Nodosis) presented in type 1 respiratory failure with fever/chills, an elevated TLC of 22,400, and a chest picture read as community-acquired pneumonia layered onto known CKD — with a normal creatinine of 1.2 at this admission, distinguishing it from a purely renal crisis.
+        <div class="vitals-row"><span class="v"><b>SpO2</b>90% RA</span><span class="v"><b>TLC</b>22,400</span><span class="v"><b>pO2 (ABG)</b>57.2</span><span class="v"><b>Creat</b>1.2</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">Empiric dual antibiotic cover was chosen up front, and fluid targets were kept renal-conservative despite the primary problem being respiratory:</div>
+            <div class="rationale">
+            IV Augmentin + oral Azithromycin were started together on admission (rather than a single agent) — reasonable for a CKD patient where narrower cultures take time and the TLC/fever picture suggested a more severe CAP. Fluid restriction (&lt;1L/day) and salt restriction (&lt;2.4g/day) were kept in place <i>throughout</i> the pneumonia treatment, showing the CKD baseline was not relaxed just because the acute problem was respiratory. When <b>black tarry stools appeared on day 2</b> — after a recent Dulcolax suppository — the team's response was monitoring rather than immediately stopping antibiotics or adding empiric PPI escalation, judged most likely a local mucosal effect rather than an antibiotic-driven bleed.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          SOB and cough progressively decreased over days 2–4, SpO2 rose from 90% to 99–100% on titrated oxygen (weaned from BiPAP-level support to 8L then room air over 4 days), and the melena did not recur — supporting the working call that it was self-limited rather than a marker to change the antibiotic regimen. The same core regimen (Augmentin, Azithromycin, Amlodipine, Nodosis) ran unchanged for all 4 documented days, with only oxygen delivery and CPAP frequency titrated down as the response confirmed itself.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>The decision not to escalate or change antibiotics after an ambiguous bleeding signal — while still watching closely — reflects a judgment that changing a working regimen on an unconfirmed signal carries its own risk, particularly in a CKD patient where drug substitution options are already narrowed by renal clearance.</div>
+  </div>
+</div>
+
+<!-- ============ CASE 6 — #58/#59-style fluid + infection compounded, using #33 continuation is repeat; use case #892-ish? use #1058/#948 -->
+<div class="case" data-cat="fluid">
+  <div class="case-head">
+    <div class="case-head-left">
+      <span class="case-tag tag-fluid">Fluid target vs. renal reserve</span>
+      <h3>Loosening the fluid-restriction ceiling as a marker of clinical improvement</h3>
+      <div class="case-demo">60M · CKD, on Nicardia/Nodosis/Erythropoietin maintenance · abdominal distension, no fever spikes on review</div>
+    </div>
+    <div class="case-id-link">Case (CKD ward, 4/1/2022)<br><a href="https://nehapurohit115.blogspot.com/2022/01/general-medicine-case-discussion.html" target="_blank">source ↗</a></div>
+  </div>
+  <div class="case-body">
+    <div class="trail">
+      <div class="step s-trajectory">
+        <div class="step-label">Trajectory</div>
+        <div class="step-content">A CKD ward patient stable on maintenance therapy (Nicardia, Nodosis, Shelcal, Orofer, weekly erythropoietin) with persistent non-tender abdominal distension but no fever, stable BP (130/80) and pulse (88bpm) at soap-note review.
+        <div class="vitals-row"><span class="v"><b>BP</b>130/80</span><span class="v"><b>PR</b>88</span><span class="v"><b>Fluid limit (prior)</b>&lt;1L/day</span><span class="v"><b>Fluid limit (revised)</b>&lt;2L/day</span></div>
+        </div>
+      </div>
+      <div class="step s-decision">
+        <div class="step-label">Decision</div>
+        <div class="step-content">
+          <div class="decision-box">
+            <div class="crux">The fluid restriction ceiling was relaxed from &lt;1L/day to &lt;2L/day at the same visit medications otherwise stayed unchanged:</div>
+            <div class="rationale">
+            With vitals stable, no fresh complaints, and no fever spikes, the team used the fluid allowance itself as an adjustable dial rather than a fixed rule — loosening it once the abdominal distension was judged non-tender and non-progressive, while <b>keeping every drug (Nicardia, Nodosis, Shelcal, Orofer, erythropoietin) at the same dose</b>. Ultracet and nebulization (Budecort/Duolin) were continued alongside, suggesting a comorbid respiratory component was still being actively managed even as renal fluid targets eased.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step s-outcome">
+        <div class="step-label">Outcome</div>
+        <div class="step-content">
+          The record shows the patient tolerating the wider fluid allowance without new complaints in the documented follow-up, with vitals and abdominal exam unchanged — a pragmatic signal that the tighter restriction had been a precaution during instability rather than a permanent floor.
+        </div>
+      </div>
+    </div>
+    <div class="insight-tag"><b>Why this node matters</b>Most cases in this corpus show restriction tightening as decompensation is treated; this is the rarer example of the reverse move — restriction eased as a direct response to sustained stability, illustrating that fluid targets in these records function as a live titration parameter, not a static prescription.</div>
+  </div>
+</div>
+
+</div><!-- end case list -->
+
+<div class="wrap">
+<div class="section-intro">
+  <h2>Cross-case management insights</h2>
+  <p>Patterns in <em>how</em> decisions were made and re-made across these six trajectories, read across the source material rather than from any single case.</p>
+</div>
+
+<div class="insight-grid">
+  <div class="insight-card">
+    <div class="num">01</div>
+    <h4>Crises are titrated in small steps, not single large doses</h4>
+    <p>In every hypertensive-crisis node (#33, #717, #739), BP was brought down through a sequence of small drug additions with a recheck between each — never one aggressive bolus. In a population where volume status is already unstable from renal failure, this graded approach avoids overshooting into hypotension on top of dialysis-driven fluid shifts.</p>
+    <div class="evidence">Evidence: #33 (4-step titration in ~1hr), #717 (Lasix→Metolazone→infusion), #739 (transfusion before BP drugs)</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">02</div>
+    <h4>Anemia correction is sequenced ahead of vasoactive therapy</h4>
+    <p>Where severe anemia (Hb 4–7g/dl) coincided with hypertension or cardiac strain, transfusion consistently preceded or ran alongside — rather than after — antihypertensive escalation, likely to avoid compounding high-output cardiac stress with vasodilation.</p>
+    <div class="evidence">Evidence: #739 (5 PRBC before BP titration), #646 (PRBC given during the same dialysis session as pressor support)</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">03</div>
+    <h4>Dialysis timing is weighed against hemodynamic tolerance, not deferred by rule</h4>
+    <p>In the most severe node (#646), dialysis was performed despite shock-range blood pressure by pairing it with vasopressor support and a deliberately reduced ultrafiltration rate — treating "when metabolic derangement itself is driving instability" as a case for dialysing carefully, not for waiting.</p>
+    <div class="evidence">Evidence: #646 (low-UF HD under triple-pressor cover)</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">04</div>
+    <h4>Diuretic resistance follows a visible three-rung ladder</h4>
+    <p>Bolus loop diuretic → distal sodium blockade (metolazone) added → conversion to continuous infusion → mechanical ultrafiltration via dialysis. The trigger to climb each rung was a persistent physical sign (ascites, wheeze, fluid thrill) rather than a fixed time interval.</p>
+    <div class="evidence">Evidence: #717 (full ladder across 5 documented days)</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">05</div>
+    <h4>Ambiguous new signals mid-course are monitored, not reflexively treated</h4>
+    <p>A melena episode appearing during antibiotic therapy for CAP-on-CKD did not trigger a regimen change; the team continued the working antibiotic combination and watched for recurrence, weighing the disruption of an effective plan against an unconfirmed adverse signal.</p>
+    <div class="evidence">Evidence: #1060 (Dulcolax-associated melena, day 2)</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">06</div>
+    <h4>Fluid restriction functions as a live dial, not a fixed rule</h4>
+    <p>Restrictions were tightened during instability and loosened once vitals and exam stabilised — the only case of "de-escalation" documented among these six, and a reminder that conservative CKD targets are not meant to be permanent ceilings once the acute driver resolves.</p>
+    <div class="evidence">Evidence: CKD ward case, &lt;1L/day → &lt;2L/day after 2 stable review days</div>
+  </div>
+</div>
+
+<div class="ladder">
+  <h4 class="mono" style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);">Composite diuretic-resistance ladder (synthesized from #717 &amp; #33)</h4>
+  <div class="ladder-row"><span class="ladder-step">Bolus loop diuretic (Lasix 40–80mg IV)</span><span class="ladder-arrow">→ no response →</span></div>
+  <div class="ladder-row"><span class="ladder-step">Add distal blockade (Metolazone 5mg)</span><span class="ladder-arrow">→ no response →</span></div>
+  <div class="ladder-row"><span class="ladder-step">Convert to continuous infusion (Lasix 20mg/hr)</span><span class="ladder-arrow">→ effusion / thrill persists →</span></div>
+  <div class="ladder-row escalation"><span class="ladder-step">Mechanical ultrafiltration via hemodialysis</span><span class="ladder-arrow">→ reassess for infective driver if fever/rebound BP →</span></div>
+  <div class="ladder-row escalation"><span class="ladder-step">Broaden antimicrobial cover (e.g. empiric vancomycin)</span></div>
+</div>
+
+</div>
+
+<footer class="mono">CKD Case Atlas companion — decision-node view · built from the same 156-case source corpus · educational use only, not a treatment reference</footer>
+
+</body>
+</html>
