@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level Bench — Diagnostic Complexity Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4faf9;
+    --panel:#ffffff;
+    --ink:#0e2a2b;
+    --sub:#4d6b6b;
+    --cyan:#0891a8;
+    --cyan-deep:#066678;
+    --teal:#0f766e;
+    --line:#dcebe9;
+    --l1:#7cc6c9;
+    --l2:#4fb3ac;
+    --l3:#2b9d94;
+    --l4:#e08a3c;
+    --l5:#c0392b;
+    --radius:16px;
+    --shadow:0 8px 24px rgba(9,60,63,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    padding:48px 20px 80px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header{margin-bottom:32px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-deep);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-size:36px;
+    font-weight:600;
+    margin:0 0 12px;
+    line-height:1.15;
+  }
+  .lede{
+    font-size:15.5px;
+    color:var(--sub);
+    max-width:660px;
+    line-height:1.6;
+  }
+
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    align-items:flex-end;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:22px 24px;
+    margin:32px 0 8px;
+  }
+  .field{display:flex;flex-direction:column;gap:8px;min-width:220px;}
+  .field label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--sub);
+  }
+  select{
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    cursor:pointer;
+    outline:none;
+    transition:border-color .15s;
+  }
+  select:focus{border-color:var(--cyan);}
+
+  .level-pills{display:flex;gap:8px;flex-wrap:wrap;}
+  .pill{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.03em;
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    color:var(--sub);
+    cursor:pointer;
+    user-select:none;
+    transition:all .15s;
+  }
+  .pill.active{
+    color:#fff;
+    border-color:transparent;
+    background:var(--accent, var(--cyan));
+  }
+  .pill[data-level="1"]{--accent:var(--l1);}
+  .pill[data-level="2"]{--accent:var(--l2);}
+  .pill[data-level="3"]{--accent:var(--l3);}
+  .pill[data-level="4"]{--accent:var(--l4);}
+  .pill[data-level="5"]{--accent:var(--l5);}
+
+  .count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--sub);
+    margin:18px 2px 14px;
+  }
+
+  .results{display:flex;flex-direction:column;gap:12px;}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:6px solid var(--accent);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:18px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    position:relative;
+  }
+  .card .tags{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .card .badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#fff;
+    background:var(--accent);
+    padding:3px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .card .sys{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--sub);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    border:1px solid var(--line);
+    padding:3px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .card .dx{padding-right:36px;}
+  .card .dx b{font-size:15.5px;font-weight:600;display:block;}
+  .card .dx span.note{display:block;color:var(--sub);font-size:12.5px;margin-top:4px;line-height:1.5;}
+
+  .copy-btn{
+    position:absolute;
+    top:14px;
+    right:14px;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--sub);
+    cursor:pointer;
+    transition:all .15s;
+    padding:0;
+  }
+  .copy-btn:hover{
+    background:var(--panel);
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  .copy-btn svg{width:15px;height:15px;pointer-events:none;}
+  .copy-btn.copied{
+    color:#fff;
+    background:var(--accent);
+    border-color:var(--accent);
+  }
+  .copy-btn .icon-check{display:none;}
+  .copy-btn.copied .icon-copy{display:none;}
+  .copy-btn.copied .icon-check{display:block;}
+
+  .empty{
+    text-align:center;
+    color:var(--sub);
+    font-size:14px;
+    padding:48px 0;
+    font-family:'IBM Plex Mono',monospace;
+    border:1px dashed var(--line);
+    border-radius:var(--radius);
+    background:var(--panel);
+  }
+
+  footer{
+    margin-top:44px;
+    font-size:12.5px;
+    color:var(--sub);
+    font-family:'IBM Plex Mono',monospace;
+    border-top:1px solid var(--line);
+    padding-top:18px;
+  }
+
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">VibeRounds · Level Bench</div>
+    <h1>Diagnostic Complexity Ladder</h1>
+    <p class="lede">Filter by specialty and difficulty level to see calibrated example diagnoses, from classic textbook presentations to rare multi-system disease.</p>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label for="specialty">Specialty</label>
+      <select id="specialty">
+        <option value="all">All specialties</option>
+      </select>
+    </div>
+    <div class="field" style="flex:1;">
+      <label>Level</label>
+      <div class="level-pills" id="levelPills"></div>
+    </div>
+  </div>
+
+  <div class="count" id="count"></div>
+  <div class="results" id="results"></div>
+
+  <footer>vibe_rounds · level_bench · complexity tiers L1&ndash;L5</footer>
+</div>
+
+<script>
+const LEVELS = {
+  1: { name: "Preclinical student", desc: "Classic, single-system, textbook presentations only." },
+  2: { name: "Intern / PGY1", desc: "Common presentations, one or two distractors, straightforward workup." },
+  3: { name: "Junior resident", desc: "Moderate complexity, some atypical features, competing diagnoses." },
+  4: { name: "Senior resident", desc: "Atypical presentations, comorbidity noise, judgment calls." },
+  5: { name: "Attending / fellow", desc: "Rare or multi-system disease, high stakes, subtle red herrings." }
+};
+
+const DATA = [
+  // Level 1 — Preclinical curriculum: classic single-system presentations
+  { level:1, sys:"Cardio", dx:"Acute STEMI", note:"crushing substernal chest pain, diaphoresis, ST elevation" },
+  { level:1, sys:"Cardio", dx:"Stable angina pectoris", note:"exertional chest pain relieved by rest or nitroglycerin" },
+  { level:1, sys:"Cardio", dx:"Congestive heart failure", note:"orthopnea, PND, bilateral leg edema, elevated JVP" },
+  { level:1, sys:"Cardio", dx:"Atrial fibrillation", note:"irregularly irregular pulse, palpitations, absent P waves" },
+  { level:1, sys:"Cardio", dx:"Rheumatic mitral stenosis", note:"history of rheumatic fever, mid-diastolic murmur, dyspnea" },
+  { level:1, sys:"Cardio", dx:"Infective endocarditis", note:"fever, new murmur, Janeway lesions in an IV drug user" },
+  { level:1, sys:"Cardio", dx:"Acute pericarditis", note:"sharp pleuritic chest pain relieved by leaning forward, friction rub" },
+  { level:1, sys:"Cardio", dx:"Hypertensive emergency", note:"very high BP with end-organ damage such as papilledema" },
+  { level:1, sys:"Cardio", dx:"Ventricular septal defect", note:"harsh holosystolic murmur at the left sternal border in an infant" },
+  { level:1, sys:"Cardio", dx:"Atrial septal defect", note:"fixed split S2 found incidentally in an asymptomatic child" },
+  { level:1, sys:"Cardio", dx:"Patent ductus arteriosus", note:"continuous 'machinery' murmur in a newborn" },
+  { level:1, sys:"Cardio", dx:"Tetralogy of Fallot", note:"cyanotic infant with squatting relieving hypoxic spells" },
+  { level:1, sys:"Cardio", dx:"Coarctation of the aorta", note:"upper-limb hypertension with weak or delayed femoral pulses" },
+  { level:1, sys:"Cardio", dx:"Aortic regurgitation", note:"wide pulse pressure and early diastolic decrescendo murmur" },
+  { level:1, sys:"Cardio", dx:"Mitral regurgitation", note:"holosystolic murmur radiating to the axilla" },
+  { level:1, sys:"Cardio", dx:"Tricuspid regurgitation", note:"pansystolic murmur increasing with inspiration, giant V waves in JVP" },
+  { level:1, sys:"Cardio", dx:"Deep vein thrombosis", note:"unilateral calf swelling, warmth, and tenderness" },
+  { level:1, sys:"Cardio", dx:"Peripheral arterial disease", note:"intermittent claudication relieved by rest" },
+  { level:1, sys:"Cardio", dx:"Varicose veins", note:"dilated tortuous superficial veins with aching legs after standing" },
+  { level:1, sys:"Cardio", dx:"Raynaud phenomenon", note:"episodic white-blue-red color change of the fingers with cold exposure" },
+  { level:1, sys:"Cardio", dx:"Sinus bradycardia", note:"slow regular heart rate, often in a well-conditioned athlete" },
+  { level:1, sys:"Cardio", dx:"Supraventricular tachycardia", note:"sudden-onset regular narrow-complex tachycardia in a young adult" },
+  { level:1, sys:"Cardio", dx:"First-degree AV block", note:"prolonged PR interval found incidentally on a routine ECG" },
+  { level:1, sys:"Cardio", dx:"Complete heart block", note:"syncope with a very slow regular pulse and cannon A waves" },
+  { level:1, sys:"Cardio", dx:"Dilated cardiomyopathy", note:"progressive heart failure with a globally enlarged, poorly contracting heart" },
+  { level:1, sys:"Cardio", dx:"Cor pulmonale", note:"right heart failure signs in a patient with chronic lung disease" },
+  { level:1, sys:"Cardio", dx:"Acute rheumatic fever", note:"migratory polyarthritis and carditis after streptococcal pharyngitis" },
+  { level:1, sys:"Cardio", dx:"Kawasaki disease", note:"prolonged fever, conjunctivitis, rash, and strawberry tongue in a child" },
+  { level:1, sys:"Cardio", dx:"Essential hypertension", note:"persistently elevated BP found on routine screening, often asymptomatic" },
+  { level:1, sys:"Cardio", dx:"Orthostatic hypotension", note:"dizziness and BP drop on standing, common in the elderly or dehydrated" },
+
+  { level:1, sys:"Resp", dx:"Community-acquired pneumonia", note:"fever, productive cough, lobar consolidation" },
+  { level:1, sys:"Resp", dx:"Acute asthma exacerbation", note:"wheeze, dyspnea, prolonged expiration, atopic history" },
+  { level:1, sys:"Resp", dx:"COPD exacerbation", note:"increased dyspnea and sputum in a longtime smoker" },
+  { level:1, sys:"Resp", dx:"Pulmonary tuberculosis", note:"chronic cough, night sweats, weight loss, hemoptysis" },
+  { level:1, sys:"Resp", dx:"Spontaneous pneumothorax", note:"sudden pleuritic pain and dyspnea in a tall thin young man" },
+  { level:1, sys:"Resp", dx:"Pulmonary embolism", note:"sudden dyspnea and pleuritic pain after prolonged immobility" },
+  { level:1, sys:"Resp", dx:"Bronchiolitis", note:"wheeze and respiratory distress in an infant with RSV" },
+  { level:1, sys:"Resp", dx:"Pleural effusion", note:"dullness to percussion, decreased breath sounds at a lung base" },
+  { level:1, sys:"Resp", dx:"Acute bronchitis", note:"self-limited cough following a viral URI, no consolidation on exam" },
+  { level:1, sys:"Resp", dx:"Chronic bronchitis", note:"productive cough most days for 3 months over 2 years, 'blue bloater'" },
+  { level:1, sys:"Resp", dx:"Emphysema", note:"barrel chest and pursed-lip breathing in a thin smoker, 'pink puffer'" },
+  { level:1, sys:"Resp", dx:"Bronchiectasis", note:"chronic copious purulent sputum, coarse crackles, digital clubbing" },
+  { level:1, sys:"Resp", dx:"Cystic fibrosis", note:"recurrent respiratory infections and failure to thrive, salty-tasting skin" },
+  { level:1, sys:"Resp", dx:"Lung abscess", note:"foul-smelling sputum with a cavitary lesion and air-fluid level" },
+  { level:1, sys:"Resp", dx:"Acute respiratory distress syndrome", note:"acute bilateral infiltrates and refractory hypoxia after sepsis or trauma" },
+  { level:1, sys:"Resp", dx:"Obstructive sleep apnea", note:"loud snoring with witnessed apneas and daytime somnolence in an obese patient" },
+  { level:1, sys:"Resp", dx:"Cardiogenic pulmonary edema", note:"bilateral crackles and frothy sputum in a patient with known heart failure" },
+  { level:1, sys:"Resp", dx:"Atelectasis", note:"postoperative fever and decreased breath sounds at a lung base" },
+  { level:1, sys:"Resp", dx:"Bronchogenic carcinoma", note:"hemoptysis, weight loss, and a lung mass in a long-time smoker" },
+  { level:1, sys:"Resp", dx:"Mesothelioma", note:"pleural thickening and effusion in a patient with prior asbestos exposure" },
+  { level:1, sys:"Resp", dx:"Silicosis", note:"upper-lobe nodular fibrosis in a stone-cutting or sandblasting worker" },
+  { level:1, sys:"Resp", dx:"Asbestosis", note:"lower-lobe fibrosis and pleural plaques after occupational asbestos exposure" },
+  { level:1, sys:"Resp", dx:"Coal workers' pneumoconiosis", note:"progressive massive fibrosis in a long-time coal miner" },
+  { level:1, sys:"Resp", dx:"Farmer's lung", note:"dyspnea and fever hours after exposure to moldy hay" },
+  { level:1, sys:"Resp", dx:"Simple pulmonary eosinophilia (Löffler syndrome)", note:"transient migratory infiltrates with peripheral eosinophilia" },
+  { level:1, sys:"Resp", dx:"Primary ciliary dyskinesia (Kartagener syndrome)", note:"situs inversus with bronchiectasis and chronic sinusitis" },
+  { level:1, sys:"Resp", dx:"Alpha-1 antitrypsin deficiency", note:"early-onset panacinar emphysema in a young nonsmoker" },
+  { level:1, sys:"Resp", dx:"Hemothorax", note:"decreased breath sounds and dullness after chest trauma with blood in the pleural space" },
+  { level:1, sys:"Resp", dx:"Flail chest", note:"paradoxical chest wall movement after multiple rib fractures" },
+  { level:1, sys:"Resp", dx:"Influenza", note:"fever, myalgia, and dry cough during a seasonal outbreak" },
+
+  { level:1, sys:"GI", dx:"Acute appendicitis", note:"periumbilical pain migrating to RLQ, McBurney's tenderness" },
+  { level:1, sys:"GI", dx:"Acute pancreatitis", note:"epigastric pain radiating to the back after alcohol or gallstones" },
+  { level:1, sys:"GI", dx:"Peptic ulcer disease", note:"epigastric pain related to meals, history of NSAID use" },
+  { level:1, sys:"GI", dx:"GERD", note:"retrosternal burning worse when lying down, relieved by antacids" },
+  { level:1, sys:"GI", dx:"Acute cholecystitis", note:"RUQ pain after fatty food, positive Murphy's sign" },
+  { level:1, sys:"GI", dx:"Small bowel obstruction", note:"colicky abdominal pain, distension, vomiting, absent flatus" },
+  { level:1, sys:"GI", dx:"Ulcerative colitis", note:"bloody diarrhea and tenesmus, continuous colonic involvement" },
+  { level:1, sys:"GI", dx:"Viral hepatitis A", note:"jaundice, malaise, and nausea after contaminated food or water" },
+  { level:1, sys:"GI", dx:"Crohn's disease", note:"abdominal pain and diarrhea with skip lesions and perianal fistulas" },
+  { level:1, sys:"GI", dx:"Celiac disease", note:"chronic diarrhea and bloating with a gluten-triggered itchy blistering rash" },
+  { level:1, sys:"GI", dx:"Irritable bowel syndrome", note:"abdominal pain relieved by defecation, altered bowel habits, no alarm features" },
+  { level:1, sys:"GI", dx:"Acute gastroenteritis", note:"sudden vomiting and watery diarrhea after a food or viral exposure" },
+  { level:1, sys:"GI", dx:"Mallory-Weiss tear", note:"hematemesis after forceful vomiting or retching" },
+  { level:1, sys:"GI", dx:"Esophageal varices", note:"hematemesis in a patient with known cirrhosis and portal hypertension" },
+  { level:1, sys:"GI", dx:"Achalasia", note:"progressive dysphagia to both solids and liquids, bird-beak esophagus" },
+  { level:1, sys:"GI", dx:"Esophageal cancer", note:"progressive dysphagia to solids then liquids with weight loss in an older adult" },
+  { level:1, sys:"GI", dx:"Gastric cancer", note:"early satiety and weight loss with a palpable epigastric mass" },
+  { level:1, sys:"GI", dx:"Colorectal cancer", note:"change in bowel habits and iron deficiency anemia in an older adult" },
+  { level:1, sys:"GI", dx:"Hemorrhoids", note:"painless bright red bleeding with defecation, perianal itching" },
+  { level:1, sys:"GI", dx:"Anal fissure", note:"severe pain with defecation and a small posterior midline tear on exam" },
+  { level:1, sys:"GI", dx:"Diverticulosis", note:"incidental colonic outpouchings found on colonoscopy, often asymptomatic" },
+  { level:1, sys:"GI", dx:"Hepatitis B", note:"jaundice and malaise with risk factors such as IV drug use or unprotected sex" },
+  { level:1, sys:"GI", dx:"Hepatitis C", note:"chronic elevated transaminases found incidentally, history of transfusion or IV drug use" },
+  { level:1, sys:"GI", dx:"Alcoholic hepatitis", note:"jaundice and tender hepatomegaly after a recent heavy drinking binge" },
+  { level:1, sys:"GI", dx:"Cirrhosis", note:"ascites, spider angiomata, and palmar erythema in a chronic liver disease patient" },
+  { level:1, sys:"GI", dx:"Acute cholangitis", note:"fever, jaundice, and RUQ pain (Charcot's triad) after an obstructing gallstone" },
+  { level:1, sys:"GI", dx:"Biliary colic", note:"postprandial RUQ pain resolving within hours without fever" },
+  { level:1, sys:"GI", dx:"Zenker diverticulum", note:"regurgitation of undigested food and halitosis in an elderly patient" },
+  { level:1, sys:"GI", dx:"Hiatal hernia", note:"heartburn and regurgitation worse lying flat, stomach sliding into the thorax" },
+  { level:1, sys:"GI", dx:"Sigmoid volvulus", note:"abdominal distension and pain in an elderly patient with a coffee-bean sign on X-ray" },
+
+  { level:1, sys:"Endo", dx:"Type 1 diabetes, new onset", note:"polyuria, polydipsia, weight loss in a teenager" },
+  { level:1, sys:"Endo", dx:"Type 2 diabetes, new onset", note:"polyuria and polydipsia in an obese middle-aged adult" },
+  { level:1, sys:"Endo", dx:"Graves disease", note:"heat intolerance, tremor, weight loss, exophthalmos" },
+  { level:1, sys:"Endo", dx:"Hashimoto thyroiditis", note:"fatigue, cold intolerance, weight gain, goiter" },
+  { level:1, sys:"Endo", dx:"Cushing syndrome", note:"central obesity, moon face, purple striae, easy bruising" },
+  { level:1, sys:"Endo", dx:"Addison disease", note:"fatigue, hypotension, hyperpigmentation, hyponatremia" },
+  { level:1, sys:"Endo", dx:"Diabetic ketoacidosis", note:"vomiting, Kussmaul breathing, fruity breath in a diabetic" },
+  { level:1, sys:"Endo", dx:"Primary hyperparathyroidism", note:"'stones, bones, groans, psychiatric overtones' with high calcium" },
+  { level:1, sys:"Endo", dx:"Hypoparathyroidism", note:"perioral tingling and carpopedal spasm with low calcium, positive Chvostek's sign" },
+  { level:1, sys:"Endo", dx:"Acromegaly", note:"enlarged hands, feet, and jaw with coarsened facial features in an adult" },
+  { level:1, sys:"Endo", dx:"Gigantism", note:"excessive linear growth in a child before growth plate fusion" },
+  { level:1, sys:"Endo", dx:"Central (pituitary) diabetes insipidus", note:"polyuria and polydipsia with dilute urine unresponsive to fluid restriction alone" },
+  { level:1, sys:"Endo", dx:"Nephrogenic diabetes insipidus", note:"polyuria unresponsive to desmopressin, often drug-induced" },
+  { level:1, sys:"Endo", dx:"SIADH", note:"euvolemic hyponatremia with concentrated urine" },
+  { level:1, sys:"Endo", dx:"Congenital adrenal hyperplasia", note:"ambiguous genitalia or salt-wasting crisis in a newborn" },
+  { level:1, sys:"Endo", dx:"Primary hyperaldosteronism (Conn syndrome)", note:"resistant hypertension with hypokalemia" },
+  { level:1, sys:"Endo", dx:"Pheochromocytoma", note:"episodic headache, palpitations, and sweating with paroxysmal hypertension" },
+  { level:1, sys:"Endo", dx:"Multinodular goiter", note:"gradually enlarging neck mass, often euthyroid" },
+  { level:1, sys:"Endo", dx:"Thyroid nodule", note:"solitary palpable neck lump found incidentally or on exam" },
+  { level:1, sys:"Endo", dx:"Papillary thyroid carcinoma", note:"painless thyroid nodule with cervical lymphadenopathy in a young adult" },
+  { level:1, sys:"Endo", dx:"Medullary thyroid carcinoma", note:"thyroid mass with elevated calcitonin, often familial (MEN2)" },
+  { level:1, sys:"Endo", dx:"Postpartum thyroiditis", note:"transient hyperthyroidism followed by hypothyroidism after delivery" },
+  { level:1, sys:"Endo", dx:"Metabolic syndrome", note:"central obesity, hypertension, dyslipidemia, and insulin resistance together" },
+  { level:1, sys:"Endo", dx:"Obesity-related insulin resistance", note:"acanthosis nigricans and elevated fasting insulin in an overweight patient" },
+  { level:1, sys:"Endo", dx:"Gestational diabetes", note:"new hyperglycemia detected on screening in mid-pregnancy" },
+  { level:1, sys:"Endo", dx:"Maturity-onset diabetes of the young (MODY)", note:"early-onset diabetes with a strong family history but no obesity" },
+  { level:1, sys:"Endo", dx:"Hypoglycemia from insulin overdose", note:"confusion, sweating, and tremor in a diabetic on insulin therapy" },
+  { level:1, sys:"Endo", dx:"Diabetic peripheral neuropathy", note:"symmetric stocking-glove numbness in a long-standing diabetic" },
+  { level:1, sys:"Endo", dx:"Osteomalacia", note:"bone pain and proximal weakness from vitamin D deficiency in an adult" },
+  { level:1, sys:"Endo", dx:"Rickets", note:"bowed legs and delayed growth from vitamin D deficiency in a child" },
+
+  { level:1, sys:"Neuro", dx:"Migraine without aura", note:"unilateral throbbing headache, photophobia, nausea" },
+  { level:1, sys:"Neuro", dx:"Ischemic stroke", note:"sudden unilateral weakness and facial droop, risk factors present" },
+  { level:1, sys:"Neuro", dx:"Generalized tonic-clonic seizure", note:"loss of consciousness with convulsions and postictal confusion" },
+  { level:1, sys:"Neuro", dx:"Bell's palsy", note:"acute unilateral facial weakness including the forehead" },
+  { level:1, sys:"Neuro", dx:"Guillain-Barré syndrome", note:"ascending symmetric weakness after a recent infection" },
+  { level:1, sys:"Neuro", dx:"Myasthenia gravis", note:"fatigable ptosis and diplopia worsening through the day" },
+  { level:1, sys:"Neuro", dx:"Parkinson's disease", note:"resting tremor, bradykinesia, cogwheel rigidity in an older adult" },
+  { level:1, sys:"Neuro", dx:"Subarachnoid hemorrhage", note:"'thunderclap' worst headache of life, neck stiffness" },
+  { level:1, sys:"Neuro", dx:"Hemorrhagic stroke (intracerebral hemorrhage)", note:"sudden severe headache with focal deficit and depressed consciousness, often hypertensive" },
+  { level:1, sys:"Neuro", dx:"Transient global amnesia", note:"sudden isolated memory loss for hours resolving completely" },
+  { level:1, sys:"Neuro", dx:"Tension-type headache", note:"bilateral band-like headache without photophobia or nausea" },
+  { level:1, sys:"Neuro", dx:"Migraine with aura", note:"visual scintillations preceding a unilateral throbbing headache" },
+  { level:1, sys:"Neuro", dx:"Absence seizure", note:"brief staring spells with no postictal confusion in a child" },
+  { level:1, sys:"Neuro", dx:"Febrile seizure", note:"brief generalized seizure with fever in a young child" },
+  { level:1, sys:"Neuro", dx:"Multiple sclerosis", note:"recurrent neurological deficits separated in time and space in a young adult" },
+  { level:1, sys:"Neuro", dx:"Amyotrophic lateral sclerosis", note:"progressive mixed upper and lower motor neuron weakness" },
+  { level:1, sys:"Neuro", dx:"Huntington disease", note:"chorea and cognitive decline with a family history" },
+  { level:1, sys:"Neuro", dx:"Essential tremor", note:"bilateral postural hand tremor improved with alcohol" },
+  { level:1, sys:"Neuro", dx:"Cervical radiculopathy", note:"arm pain and numbness in a dermatomal distribution" },
+  { level:1, sys:"Neuro", dx:"Lumbar radiculopathy (sciatica)", note:"shooting leg pain following a dermatome with a positive straight leg raise" },
+  { level:1, sys:"Neuro", dx:"Diabetic polyneuropathy", note:"symmetric distal numbness and tingling in a longstanding diabetic" },
+  { level:1, sys:"Neuro", dx:"Viral meningitis", note:"fever, headache, and neck stiffness with a benign self-limited course" },
+  { level:1, sys:"Neuro", dx:"Brain abscess", note:"focal deficit and fever with a ring-enhancing lesion on imaging" },
+  { level:1, sys:"Neuro", dx:"Epidural hematoma", note:"lucid interval followed by rapid deterioration after head trauma" },
+  { level:1, sys:"Neuro", dx:"Subdural hematoma", note:"gradual headache and confusion in an elderly patient after minor head trauma" },
+  { level:1, sys:"Neuro", dx:"Concussion (mild traumatic brain injury)", note:"brief loss of consciousness and confusion after head trauma with normal imaging" },
+  { level:1, sys:"Neuro", dx:"Restless legs syndrome", note:"uncomfortable urge to move the legs at night relieved by movement" },
+  { level:1, sys:"Neuro", dx:"Narcolepsy", note:"excessive daytime sleepiness with cataplexy triggered by strong emotion" },
+  { level:1, sys:"Neuro", dx:"Cerebral palsy", note:"non-progressive motor impairment from a perinatal brain injury" },
+  { level:1, sys:"Neuro", dx:"Charcot-Marie-Tooth disease", note:"hereditary distal muscle wasting with high-arched feet" },
+
+  { level:1, sys:"Renal", dx:"Acute post-streptococcal glomerulonephritis", note:"cola-colored urine and periorbital edema 2 weeks after sore throat" },
+  { level:1, sys:"Renal", dx:"Minimal change nephrotic syndrome", note:"generalized edema and heavy proteinuria in a young child" },
+  { level:1, sys:"Renal", dx:"Prerenal acute kidney injury", note:"rising creatinine after vomiting, diarrhea, or poor intake" },
+  { level:1, sys:"Renal", dx:"Chronic kidney disease", note:"long-standing hypertension or diabetes with elevated creatinine" },
+  { level:1, sys:"Renal", dx:"Polycystic kidney disease", note:"bilateral flank masses and hypertension, family history" },
+  { level:1, sys:"Renal", dx:"Nephrolithiasis", note:"sudden severe colicky flank pain radiating to the groin" },
+  { level:1, sys:"Renal", dx:"Acute cystitis", note:"dysuria, frequency, and urgency without fever or flank pain" },
+  { level:1, sys:"Renal", dx:"Pyelonephritis", note:"fever, flank pain, and costovertebral angle tenderness" },
+  { level:1, sys:"Renal", dx:"Focal segmental glomerulosclerosis", note:"nephrotic syndrome resistant to steroids, often in Black patients" },
+  { level:1, sys:"Renal", dx:"Membranous nephropathy", note:"nephrotic syndrome in an adult, sometimes paraneoplastic" },
+  { level:1, sys:"Renal", dx:"IgA nephropathy", note:"gross hematuria 1-2 days after an upper respiratory infection" },
+  { level:1, sys:"Renal", dx:"Alport syndrome", note:"hematuria with sensorineural hearing loss and a family history" },
+  { level:1, sys:"Renal", dx:"Renal cell carcinoma", note:"painless hematuria, flank pain, and a palpable mass triad" },
+  { level:1, sys:"Renal", dx:"Wilms tumor", note:"abdominal mass in a young child, usually asymptomatic" },
+  { level:1, sys:"Renal", dx:"Horseshoe kidney", note:"incidental finding of fused kidneys on imaging" },
+  { level:1, sys:"Renal", dx:"Fibromuscular dysplasia", note:"resistant hypertension with an abdominal bruit in a young woman" },
+  { level:1, sys:"Renal", dx:"Uric acid nephropathy", note:"acute kidney injury after chemotherapy from tumor lysis" },
+  { level:1, sys:"Renal", dx:"Hydronephrosis", note:"flank pain and a dilated collecting system from obstruction" },
+  { level:1, sys:"Renal", dx:"Simple renal cyst", note:"incidental benign fluid-filled lesion found on imaging" },
+  { level:1, sys:"Renal", dx:"Renal papillary necrosis", note:"flank pain and hematuria in an analgesic abuser or sickle cell patient" },
+  { level:1, sys:"Renal", dx:"Asymptomatic bacteriuria in pregnancy", note:"bacteriuria found on routine prenatal screening without symptoms" },
+  { level:1, sys:"Renal", dx:"Vesicoureteral reflux", note:"recurrent UTIs in a child from retrograde urine flow" },
+  { level:1, sys:"Renal", dx:"Posterior urethral valves", note:"poor urinary stream and bilateral hydronephrosis in a male infant" },
+  { level:1, sys:"Renal", dx:"Diabetic nephropathy", note:"progressive proteinuria in a long-standing diabetic" },
+  { level:1, sys:"Renal", dx:"Hypertensive nephrosclerosis", note:"gradual CKD in a patient with long-standing poorly controlled hypertension" },
+  { level:1, sys:"Renal", dx:"Acute tubular necrosis", note:"rising creatinine after a hypotensive or nephrotoxic insult, muddy brown casts" },
+  { level:1, sys:"Renal", dx:"Renal amyloidosis", note:"nephrotic syndrome in a patient with chronic inflammatory disease" },
+  { level:1, sys:"Renal", dx:"Obstructive uropathy from prostatic enlargement", note:"bilateral hydronephrosis and rising creatinine from prostatic obstruction" },
+  { level:1, sys:"Renal", dx:"End-stage renal disease on dialysis", note:"long-term dialysis dependence with anemia and renal bone disease" },
+  { level:1, sys:"Renal", dx:"Medullary sponge kidney", note:"incidental cystic dilation of collecting ducts with mild hematuria" },
+
+  { level:1, sys:"Heme", dx:"Iron deficiency anemia", note:"fatigue and pallor, microcytic hypochromic RBCs, low ferritin" },
+  { level:1, sys:"Heme", dx:"Pernicious anemia (B12 deficiency)", note:"macrocytic anemia with glossitis and peripheral neuropathy" },
+  { level:1, sys:"Heme", dx:"Sickle cell vaso-occlusive crisis", note:"severe bone pain in a patient with known sickle cell disease" },
+  { level:1, sys:"Heme", dx:"Hemophilia A", note:"hemarthrosis and easy bruising in a male, prolonged aPTT" },
+  { level:1, sys:"Heme", dx:"Immune thrombocytopenic purpura", note:"petechiae and easy bruising with isolated low platelets" },
+  { level:1, sys:"Heme", dx:"Acute lymphoblastic leukemia", note:"fatigue, bruising, and bone pain in a child with blasts on smear" },
+  { level:1, sys:"Heme", dx:"Hodgkin lymphoma", note:"painless cervical lymphadenopathy with B symptoms in a young adult" },
+  { level:1, sys:"Heme", dx:"Disseminated intravascular coagulation", note:"bleeding and clotting together in a critically ill patient" },
+
+  { level:1, sys:"ID", dx:"Bacterial meningitis", note:"fever, neck stiffness, photophobia, positive Kernig's sign" },
+  { level:1, sys:"ID", dx:"Malaria", note:"cyclical fever, chills, and rigors after travel to an endemic area" },
+  { level:1, sys:"ID", dx:"Typhoid fever", note:"stepwise fever, abdominal pain, and rose spots" },
+  { level:1, sys:"ID", dx:"Dengue fever", note:"high fever, retro-orbital pain, rash, and thrombocytopenia" },
+  { level:1, sys:"ID", dx:"Infectious mononucleosis", note:"fever, pharyngitis, and lymphadenopathy in a teenager" },
+  { level:1, sys:"ID", dx:"Sepsis", note:"fever, tachycardia, and hypotension from a suspected infection source" },
+  { level:1, sys:"ID", dx:"Acute osteomyelitis", note:"localized bone pain and fever, often in a child" },
+  { level:1, sys:"ID", dx:"Varicella (chickenpox)", note:"pruritic vesicular rash in crops with fever in a child" },
+
+  { level:1, sys:"Rheum", dx:"Acute gout flare", note:"sudden severe pain and swelling of the first MTP joint" },
+  { level:1, sys:"Rheum", dx:"Rheumatoid arthritis", note:"symmetric small-joint polyarthritis with morning stiffness" },
+  { level:1, sys:"Rheum", dx:"Systemic lupus erythematosus", note:"malar rash, photosensitivity, and joint pain in a young woman" },
+  { level:1, sys:"Rheum", dx:"Ankylosing spondylitis", note:"chronic low back pain and stiffness improving with exercise" },
+  { level:1, sys:"Rheum", dx:"Osteoarthritis", note:"joint pain worse with use, better with rest, in an older adult" },
+  { level:1, sys:"Rheum", dx:"Psoriatic arthritis", note:"joint pain with nail pitting and psoriatic skin plaques" },
+  { level:1, sys:"Rheum", dx:"Polymyalgia rheumatica", note:"bilateral shoulder and hip girdle stiffness in an older adult" },
+  { level:1, sys:"Rheum", dx:"Septic arthritis", note:"acute hot swollen single joint with fever" },
+
+  { level:1, sys:"Derm", dx:"Cellulitis", note:"warm, tender, well-demarcated erythema with fever" },
+  { level:1, sys:"Derm", dx:"Psoriasis", note:"well-demarcated plaques with silvery scale on extensor surfaces" },
+  { level:1, sys:"Derm", dx:"Atopic dermatitis", note:"itchy flexural rash in a child with a personal or family atopy history" },
+  { level:1, sys:"Derm", dx:"Contact dermatitis", note:"itchy rash confined to the area of allergen or irritant contact" },
+  { level:1, sys:"Derm", dx:"Herpes zoster", note:"painful vesicular rash in a single dermatome" },
+  { level:1, sys:"Derm", dx:"Impetigo", note:"honey-colored crusted lesions around the mouth in a child" },
+  { level:1, sys:"Derm", dx:"Scabies", note:"intense nocturnal itching with burrows in web spaces" },
+  { level:1, sys:"Derm", dx:"Urticaria", note:"transient itchy raised wheals after an allergen exposure" },
+
+  { level:1, sys:"Psych", dx:"Major depressive episode", note:"two weeks of low mood, anhedonia, sleep and appetite change" },
+  { level:1, sys:"Psych", dx:"Generalized anxiety disorder", note:"excessive uncontrollable worry for more than six months" },
+  { level:1, sys:"Psych", dx:"Panic disorder", note:"recurrent unexpected episodes of intense fear with palpitations" },
+  { level:1, sys:"Psych", dx:"Schizophrenia", note:"hallucinations, delusions, and disorganized speech for over a month" },
+  { level:1, sys:"Psych", dx:"Bipolar disorder, manic episode", note:"elevated mood, decreased need for sleep, grandiosity" },
+  { level:1, sys:"Psych", dx:"Post-traumatic stress disorder", note:"intrusive memories and avoidance after a traumatic event" },
+  { level:1, sys:"Psych", dx:"Obsessive-compulsive disorder", note:"intrusive thoughts relieved by repetitive compulsive behaviors" },
+  { level:1, sys:"Psych", dx:"Alcohol withdrawal", note:"tremor, agitation, and seizures after stopping heavy drinking" },
+
+  { level:1, sys:"OB/Gyn", dx:"Ectopic pregnancy", note:"amenorrhea, positive pregnancy test, unilateral pelvic pain" },
+  { level:1, sys:"OB/Gyn", dx:"Preeclampsia", note:"new hypertension and proteinuria after 20 weeks gestation" },
+  { level:1, sys:"OB/Gyn", dx:"Placenta previa", note:"painless bright red vaginal bleeding in the third trimester" },
+  { level:1, sys:"OB/Gyn", dx:"Placental abruption", note:"painful vaginal bleeding with a tender rigid uterus" },
+  { level:1, sys:"OB/Gyn", dx:"Pelvic inflammatory disease", note:"lower abdominal pain, fever, and cervical motion tenderness" },
+  { level:1, sys:"OB/Gyn", dx:"Ovarian torsion", note:"sudden severe unilateral pelvic pain with an adnexal mass" },
+  { level:1, sys:"OB/Gyn", dx:"Uterine fibroids", note:"heavy menstrual bleeding and pelvic pressure in a reproductive-age woman" },
+  { level:1, sys:"OB/Gyn", dx:"Postpartum hemorrhage", note:"heavy bleeding after delivery, often from uterine atony" },
+
+  { level:1, sys:"MSK", dx:"Colles' fracture", note:"fall on outstretched hand, dinner-fork deformity of the wrist" },
+  { level:1, sys:"MSK", dx:"ACL tear", note:"twisting knee injury with an audible pop and rapid swelling" },
+  { level:1, sys:"MSK", dx:"Rotator cuff tear", note:"shoulder pain and weakness with overhead abduction" },
+  { level:1, sys:"MSK", dx:"Osteoporotic vertebral fracture", note:"sudden back pain after minor trauma in a postmenopausal woman" },
+  { level:1, sys:"MSK", dx:"Compartment syndrome", note:"severe pain out of proportion after a fracture, pain on passive stretch" },
+  { level:1, sys:"MSK", dx:"Carpal tunnel syndrome", note:"nocturnal numbness and tingling in the thumb and first two fingers" },
+  { level:1, sys:"MSK", dx:"Slipped capital femoral epiphysis", note:"limp and hip or knee pain in an obese adolescent" },
+  { level:1, sys:"MSK", dx:"Developmental dysplasia of the hip", note:"positive Ortolani/Barlow test in a newborn" },
+
+  { level:1, sys:"ENT", dx:"Acute otitis media", note:"ear pain and fever in a child, bulging erythematous tympanic membrane" },
+  { level:1, sys:"ENT", dx:"Acute tonsillitis", note:"sore throat, fever, and exudative tonsils, often streptococcal" },
+  { level:1, sys:"ENT", dx:"Acute sinusitis", note:"facial pain and purulent nasal discharge after a viral URI" },
+  { level:1, sys:"ENT", dx:"Epistaxis", note:"anterior nosebleed, often from Kiesselbach's plexus" },
+  { level:1, sys:"ENT", dx:"Peritonsillar abscess", note:"severe sore throat, trismus, and a muffled 'hot potato' voice" },
+  { level:1, sys:"ENT", dx:"Allergic rhinitis", note:"sneezing, clear rhinorrhea, and itchy eyes with seasonal pattern" },
+  { level:1, sys:"ENT", dx:"Otitis externa", note:"ear pain worsened by pulling the pinna, history of swimming" },
+  { level:1, sys:"ENT", dx:"Benign paroxysmal positional vertigo", note:"brief vertigo triggered by head position change" },
+
+  { level:1, sys:"Ophtho", dx:"Acute angle-closure glaucoma", note:"sudden severe eye pain, halos around lights, fixed mid-dilated pupil" },
+  { level:1, sys:"Ophtho", dx:"Bacterial conjunctivitis", note:"red eye with purulent discharge, eyelids stuck shut on waking" },
+  { level:1, sys:"Ophtho", dx:"Cataract", note:"gradual painless blurring of vision in an older adult" },
+  { level:1, sys:"Ophtho", dx:"Retinal detachment", note:"sudden flashes, floaters, and a curtain-like visual field loss" },
+  { level:1, sys:"Ophtho", dx:"Central retinal artery occlusion", note:"sudden painless monocular vision loss, cherry-red spot on fundus" },
+  { level:1, sys:"Ophtho", dx:"Chronic open-angle glaucoma", note:"gradual peripheral vision loss, elevated intraocular pressure" },
+  { level:1, sys:"Ophtho", dx:"Diabetic retinopathy", note:"gradual vision changes with microaneurysms in a long-standing diabetic" },
+  { level:1, sys:"Ophtho", dx:"Corneal abrasion", note:"eye pain and foreign body sensation after minor trauma" },
+
+  { level:1, sys:"Uro", dx:"Testicular torsion", note:"sudden severe unilateral scrotal pain, absent cremasteric reflex" },
+  { level:1, sys:"Uro", dx:"Benign prostatic hyperplasia", note:"urinary hesitancy and weak stream in an older man" },
+  { level:1, sys:"Uro", dx:"Male urinary tract infection", note:"dysuria and frequency in a man, often with an underlying cause" },
+  { level:1, sys:"Uro", dx:"Epididymitis", note:"gradual unilateral scrotal pain relieved by elevation, positive Prehn's sign" },
+  { level:1, sys:"Uro", dx:"Prostate cancer", note:"elevated PSA and firm irregular prostate on digital rectal exam" },
+  { level:1, sys:"Uro", dx:"Bladder cancer", note:"painless gross hematuria in an older smoker" },
+  { level:1, sys:"Uro", dx:"Hydrocele", note:"painless scrotal swelling that transilluminates" },
+  { level:1, sys:"Uro", dx:"Varicocele", note:"'bag of worms' scrotal swelling, more common on the left" },
+
+  // Level 2 — Intern/PGY1: common presentations, one or two distractors, straightforward workup
+  { level:2, sys:"Cardio", dx:"NSTEMI", note:"atypical epigastric discomfort, troponin rise, GERD initially suspected" },
+  { level:2, sys:"Cardio", dx:"Acute decompensated heart failure", note:"worsening dyspnea attributed to a chest infection at first" },
+  { level:2, sys:"Cardio", dx:"Atrial flutter", note:"regular tachycardia mistaken for sinus tachycardia until ECG review" },
+  { level:2, sys:"Cardio", dx:"Hypertrophic cardiomyopathy", note:"exertional syncope in a young athlete, murmur increases with Valsalva" },
+  { level:2, sys:"Cardio", dx:"Acute limb ischemia", note:"sudden painful pale cold limb, mistaken early for DVT" },
+  { level:2, sys:"Cardio", dx:"Cardiac tamponade", note:"hypotension and muffled heart sounds after recent pericarditis" },
+  { level:2, sys:"Cardio", dx:"Aortic dissection", note:"tearing chest pain radiating to the back, initially read as ACS" },
+  { level:2, sys:"Cardio", dx:"Digoxin toxicity", note:"nausea and visual halos in an elderly patient on diuretics" },
+  { level:2, sys:"Cardio", dx:"Prinzmetal (vasospastic) angina", note:"rest chest pain with transient ST elevation, initially treated as ACS" },
+  { level:2, sys:"Cardio", dx:"Ventricular tachycardia", note:"wide-complex tachycardia mistaken for SVT with aberrancy" },
+  { level:2, sys:"Cardio", dx:"Sick sinus syndrome", note:"alternating bradycardia and tachycardia mistaken for isolated AFib" },
+  { level:2, sys:"Cardio", dx:"Pacemaker malfunction", note:"recurrent syncope in a paced patient attributed to vasovagal cause" },
+  { level:2, sys:"Cardio", dx:"Infective endocarditis with septic emboli", note:"new stroke in a febrile patient mistaken for a primary neurologic event" },
+  { level:2, sys:"Cardio", dx:"Acute mitral regurgitation from papillary muscle rupture", note:"sudden pulmonary edema post-MI mistaken for reinfarction alone" },
+  { level:2, sys:"Cardio", dx:"Post-MI ventricular septal rupture", note:"new murmur and shock days after MI attributed to cardiogenic shock alone" },
+  { level:2, sys:"Cardio", dx:"Beta-blocker overdose", note:"bradycardia and hypotension mistaken for primary cardiogenic shock" },
+  { level:2, sys:"Cardio", dx:"Calcium channel blocker toxicity", note:"hypotension and bradycardia in an overdose mistaken for sepsis" },
+  { level:2, sys:"Cardio", dx:"Cocaine-induced chest pain", note:"chest pain in a young patient treated as anxiety before ACS considered" },
+  { level:2, sys:"Cardio", dx:"Right heart failure from pulmonary embolism", note:"new leg edema and hypotension mistaken for volume overload" },
+  { level:2, sys:"Cardio", dx:"Hypertensive urgency vs pseudo-crisis", note:"very high BP with anxiety symptoms, treated aggressively without clear end-organ damage" },
+  { level:2, sys:"Cardio", dx:"Restrictive cardiomyopathy (early)", note:"diastolic heart failure symptoms mistaken for simple deconditioning" },
+  { level:2, sys:"Cardio", dx:"Superior vena cava syndrome", note:"facial swelling and dyspnea mistaken for simple fluid overload" },
+  { level:2, sys:"Cardio", dx:"Infective endocarditis of the tricuspid valve", note:"fever and septic pulmonary emboli in an IV drug user mistaken for pneumonia" },
+  { level:2, sys:"Cardio", dx:"Acute pericarditis with pericardial effusion", note:"chest pain with a growing effusion mistaken for simple viral pericarditis alone" },
+  { level:2, sys:"Cardio", dx:"Torsades de pointes from QT-prolonging drugs", note:"recurrent syncope on a new antiemetic mistaken for a primary seizure" },
+  { level:2, sys:"Cardio", dx:"Postoperative atrial fibrillation", note:"new AFib after cardiac surgery attributed only to fluid shifts" },
+  { level:2, sys:"Cardio", dx:"Amyloid cardiomyopathy (early)", note:"unexplained heart failure with a low-voltage ECG mistaken for prior infarction" },
+  { level:2, sys:"Cardio", dx:"Chronic thromboembolic disease masquerading as heart failure", note:"progressive dyspnea attributed to simple decompensated HF" },
+
+  { level:2, sys:"Resp", dx:"PE vs pneumonia", note:"pleuritic pain and fever, recent long flight as distractor" },
+  { level:2, sys:"Resp", dx:"Aspiration pneumonia", note:"fever after a witnessed choking episode in an elderly stroke patient" },
+  { level:2, sys:"Resp", dx:"Tension pneumothorax", note:"rapid deterioration post-trauma, tracheal deviation missed initially" },
+  { level:2, sys:"Resp", dx:"Acute exacerbation of bronchiectasis", note:"increased purulent sputum mistaken for a simple chest cold" },
+  { level:2, sys:"Resp", dx:"Hypersensitivity pneumonitis", note:"dyspnea after occupational exposure, initially treated as asthma" },
+  { level:2, sys:"Resp", dx:"Foreign body aspiration", note:"sudden coughing fit and wheeze in a toddler read as croup" },
+  { level:2, sys:"Resp", dx:"Pertussis", note:"prolonged paroxysmal cough with whoop, mistaken for viral bronchitis" },
+  { level:2, sys:"Resp", dx:"Empyema", note:"non-resolving pneumonia with persistent fever despite antibiotics" },
+  { level:2, sys:"Resp", dx:"Parapneumonic effusion", note:"persistent fever on antibiotics mistaken for simple treatment failure" },
+  { level:2, sys:"Resp", dx:"Acute-on-chronic respiratory failure in COPD", note:"worsening dyspnea in a COPD patient mistaken for simple anxiety" },
+  { level:2, sys:"Resp", dx:"Pulmonary contusion", note:"hypoxia after blunt chest trauma mistaken for simple bruising" },
+  { level:2, sys:"Resp", dx:"Drug-induced bronchospasm", note:"wheeze after a new medication mistaken for a routine asthma flare" },
+  { level:2, sys:"Resp", dx:"Occupational asthma", note:"new wheeze at work mistaken for adult-onset asthma unrelated to exposure" },
+  { level:2, sys:"Resp", dx:"Tracheobronchial rupture", note:"persistent large air leak post-trauma mistaken for a simple pneumothorax" },
+  { level:2, sys:"Resp", dx:"Flash pulmonary edema in a dialysis patient", note:"sudden dyspnea after a missed dialysis session mistaken for pneumonia" },
+  { level:2, sys:"Resp", dx:"Influenza pneumonia", note:"rapid deterioration in a young adult mistaken for typical bacterial CAP" },
+  { level:2, sys:"Resp", dx:"Bronchiolitis obliterans post-transplant", note:"progressive dyspnea in a lung transplant patient mistaken for an unrelated infection" },
+  { level:2, sys:"Resp", dx:"Secondary spontaneous pneumothorax in COPD", note:"sudden dyspnea in a COPD patient mistaken for a simple exacerbation" },
+  { level:2, sys:"Resp", dx:"Post-obstructive pneumonia", note:"recurrent pneumonia in the same lobe mistaken for simple recurrent infection" },
+  { level:2, sys:"Resp", dx:"Ventilator-associated aspiration pneumonitis", note:"new hypoxia in an intubated patient mistaken for ventilator-associated pneumonia alone" },
+  { level:2, sys:"Resp", dx:"Traumatic diaphragmatic rupture", note:"bowel sounds heard in the chest after trauma mistaken for a simple hemothorax" },
+  { level:2, sys:"Resp", dx:"Post-extubation laryngospasm", note:"stridor after extubation mistaken for simple postoperative anxiety" },
+  { level:2, sys:"Resp", dx:"Negative pressure pulmonary edema", note:"sudden pulmonary edema after upper airway obstruction mistaken for a cardiogenic cause" },
+  { level:2, sys:"Resp", dx:"Re-expansion pulmonary edema", note:"cough and hypoxia after rapid drainage of a large effusion mistaken for new infection" },
+  { level:2, sys:"Resp", dx:"Postsurgical chylothorax", note:"milky pleural fluid after thoracic surgery mistaken for a simple exudative effusion" },
+  { level:2, sys:"Resp", dx:"Reactivation pulmonary tuberculosis", note:"weight loss and cough in an immunosuppressed patient mistaken for malignancy" },
+  { level:2, sys:"Resp", dx:"Legionella pneumonia", note:"pneumonia with GI symptoms and hyponatremia mistaken for typical CAP" },
+  { level:2, sys:"Resp", dx:"Mycoplasma pneumonia", note:"mild pneumonia with a well-appearing patient mistaken for a simple viral URI" },
+  { level:2, sys:"Resp", dx:"Pneumomediastinum", note:"chest pain and subcutaneous crepitus after forceful vomiting mistaken for cardiac pain" },
+  { level:2, sys:"Resp", dx:"Anaphylaxis with laryngeal edema", note:"stridor and wheeze after a sting or food exposure mistaken for an asthma attack" },
+
+  { level:2, sys:"GI", dx:"Acute cholecystitis", note:"RUQ pain post-fatty meal, mildly deranged LFTs mimicking hepatitis" },
+  { level:2, sys:"GI", dx:"Perforated peptic ulcer", note:"sudden severe abdominal pain mistaken for worsening gastritis" },
+  { level:2, sys:"GI", dx:"Acute diverticulitis", note:"LLQ pain and fever in an older adult, initially read as constipation" },
+  { level:2, sys:"GI", dx:"Ascending cholangitis", note:"Charcot's triad, fever masked by early antipyretic use" },
+  { level:2, sys:"GI", dx:"Lower GI bleed from diverticulosis", note:"painless hematochezia mistaken for hemorrhoidal bleeding" },
+  { level:2, sys:"GI", dx:"Toxic megacolon", note:"worsening colitis with abdominal distension, initially thought stable" },
+  { level:2, sys:"GI", dx:"Boerhaave syndrome", note:"chest pain after forceful vomiting, mistaken for simple Mallory-Weiss tear" },
+  { level:2, sys:"GI", dx:"Acute mesenteric venous thrombosis", note:"vague abdominal pain in a hypercoagulable patient read as gastroenteritis" },
+  { level:2, sys:"GI", dx:"Pancreatic pseudocyst", note:"persistent abdominal pain weeks after pancreatitis mistaken for ongoing inflammation" },
+  { level:2, sys:"GI", dx:"Gallstone pancreatitis", note:"epigastric pain and elevated lipase initially treated as alcohol-related pancreatitis" },
+  { level:2, sys:"GI", dx:"Choledocholithiasis", note:"jaundice and RUQ pain mistaken for simple biliary colic" },
+  { level:2, sys:"GI", dx:"Ischemic hepatitis (shock liver)", note:"markedly elevated transaminases after hypotension mistaken for viral hepatitis" },
+  { level:2, sys:"GI", dx:"Spontaneous bacterial peritonitis", note:"worsening ascites and confusion in a cirrhotic mistaken for hepatic encephalopathy alone" },
+  { level:2, sys:"GI", dx:"Hepatic encephalopathy", note:"confusion in a cirrhotic patient mistaken for a primary psychiatric cause" },
+  { level:2, sys:"GI", dx:"Variceal rebleeding", note:"recurrent hematemesis after initial banding mistaken for a new ulcer bleed" },
+  { level:2, sys:"GI", dx:"Acute appendicitis in pregnancy", note:"RLQ pain in a pregnant woman mistaken for round ligament pain" },
+  { level:2, sys:"GI", dx:"Acute cholecystitis in a diabetic", note:"atypical or absent pain in a diabetic mistaken for simple dyspepsia" },
+  { level:2, sys:"GI", dx:"Intussusception", note:"colicky abdominal pain and currant jelly stool in a toddler mistaken for gastroenteritis" },
+  { level:2, sys:"GI", dx:"Midgut volvulus in a neonate", note:"bilious vomiting in a newborn mistaken for simple feeding intolerance" },
+  { level:2, sys:"GI", dx:"Hirschsprung disease", note:"delayed meconium passage in a newborn mistaken for simple constipation" },
+  { level:2, sys:"GI", dx:"Pyloric stenosis", note:"projectile non-bilious vomiting in an infant mistaken for reflux" },
+  { level:2, sys:"GI", dx:"Meckel diverticulum", note:"painless rectal bleeding in a child mistaken for a simple fissure" },
+  { level:2, sys:"GI", dx:"Colonic pseudo-obstruction (Ogilvie syndrome)", note:"massive colonic distension in a hospitalized patient mistaken for mechanical obstruction" },
+  { level:2, sys:"GI", dx:"First variceal bleed revealing occult cirrhosis", note:"hematemesis as the first sign of previously unknown cirrhosis" },
+  { level:2, sys:"GI", dx:"Refractory ascites", note:"worsening abdominal distension despite diuretics mistaken for dietary non-compliance" },
+  { level:2, sys:"GI", dx:"Silent peptic ulcer perforation in an elderly patient", note:"free air on imaging with pain minimal or absent" },
+  { level:2, sys:"GI", dx:"Acetaminophen-induced acute liver failure", note:"jaundice and coagulopathy days after an overdose mistaken for viral hepatitis" },
+  { level:2, sys:"GI", dx:"Fulminant C. difficile colitis", note:"worsening diarrhea and distension after antibiotics mistaken for simple C. diff colitis" },
+  { level:2, sys:"GI", dx:"Gallstone ileus", note:"small bowel obstruction in an elderly woman mistaken for adhesive SBO" },
+  { level:2, sys:"GI", dx:"Perianal fistula with abscess", note:"recurrent perianal pain and drainage mistaken for a simple boil" },
+
+  { level:2, sys:"Endo", dx:"DKA in known T1DM", note:"vomiting and abdominal pain read initially as gastroenteritis" },
+  { level:2, sys:"Endo", dx:"Hyperosmolar hyperglycemic state", note:"altered mental status in an elderly diabetic mistaken for stroke" },
+  { level:2, sys:"Endo", dx:"Thyroid storm", note:"fever and tachycardia post-surgery, initially treated as infection" },
+  { level:2, sys:"Endo", dx:"Myxedema coma", note:"hypothermia and lethargy in an elderly patient read as sepsis" },
+  { level:2, sys:"Endo", dx:"Adrenal crisis", note:"hypotension unresponsive to fluids in a patient on long-term steroids" },
+  { level:2, sys:"Endo", dx:"SIADH", note:"hyponatremia in a patient on SSRIs, mistaken for dehydration" },
+  { level:2, sys:"Endo", dx:"Hypocalcemia post-thyroidectomy", note:"perioral tingling dismissed as postoperative anxiety" },
+  { level:2, sys:"Endo", dx:"Subacute thyroiditis", note:"painful goiter after a viral illness, mistaken for pharyngitis" },
+  { level:2, sys:"Endo", dx:"Riedel thyroiditis", note:"hard fixed thyroid mass mistaken for anaplastic carcinoma" },
+  { level:2, sys:"Endo", dx:"Amiodarone-induced thyrotoxicosis", note:"new hyperthyroid symptoms in a cardiac patient mistaken for arrhythmia alone" },
+  { level:2, sys:"Endo", dx:"Iodine-induced hypothyroidism", note:"new fatigue after contrast exposure mistaken for depression" },
+  { level:2, sys:"Endo", dx:"Sheehan syndrome", note:"failure to lactate after major postpartum hemorrhage mistaken for postpartum fatigue" },
+  { level:2, sys:"Endo", dx:"Pituitary apoplexy", note:"sudden headache and visual loss mistaken for a primary subarachnoid hemorrhage" },
+  { level:2, sys:"Endo", dx:"Prolactinoma", note:"amenorrhea and galactorrhea in a young woman mistaken for pregnancy" },
+  { level:2, sys:"Endo", dx:"Empty sella syndrome", note:"incidental pituitary finding on imaging mistaken for a mass lesion" },
+  { level:2, sys:"Endo", dx:"Cushing syndrome from exogenous steroids", note:"new moon facies in a patient on chronic steroids mistaken for endogenous Cushing" },
+  { level:2, sys:"Endo", dx:"Adrenal insufficiency unmasked by illness", note:"hypotension during an infection mistaken for simple sepsis alone" },
+  { level:2, sys:"Endo", dx:"Hungry bone syndrome", note:"severe hypocalcemia after parathyroidectomy mistaken for routine postoperative dip" },
+  { level:2, sys:"Endo", dx:"Milk-alkali syndrome", note:"hypercalcemia in a patient taking calcium carbonate antacids mistaken for malignancy" },
+  { level:2, sys:"Endo", dx:"Familial hypocalciuric hypercalcemia", note:"mild asymptomatic hypercalcemia mistaken for primary hyperparathyroidism" },
+  { level:2, sys:"Endo", dx:"Thyrotoxic periodic paralysis", note:"sudden limb weakness in a hyperthyroid young Asian man mistaken for Guillain-Barré" },
+  { level:2, sys:"Endo", dx:"Diabetic gastroparesis", note:"early satiety and vomiting in a longstanding diabetic mistaken for a GI obstruction" },
+  { level:2, sys:"Endo", dx:"Somogyi effect", note:"morning hyperglycemia in a diabetic mistaken for insufficient overnight insulin" },
+  { level:2, sys:"Endo", dx:"Dawn phenomenon", note:"early-morning glucose rise mistaken for nocturnal hypoglycemia rebound" },
+  { level:2, sys:"Endo", dx:"Insulinoma", note:"recurrent fasting hypoglycemia mistaken for a primary seizure disorder" },
+  { level:2, sys:"Endo", dx:"Factitious hypoglycemia", note:"recurrent hypoglycemia in a healthcare worker mistaken for an occult insulinoma" },
+  { level:2, sys:"Endo", dx:"Postprandial (reactive) hypoglycemia", note:"symptoms after meals in a post-bariatric-surgery patient mistaken for anxiety" },
+  { level:2, sys:"Endo", dx:"Graves ophthalmopathy without hyperthyroidism", note:"eye findings preceding thyroid dysfunction mistaken for a primary orbital process" },
+  { level:2, sys:"Endo", dx:"Silent thyroiditis", note:"transient painless hyperthyroidism mistaken for Graves disease" },
+  { level:2, sys:"Endo", dx:"Osteoporotic fracture from undiagnosed hyperparathyroidism", note:"fragility fracture worked up as simple postmenopausal osteoporosis" },
+
+  { level:2, sys:"Neuro", dx:"Todd's paralysis vs stroke", note:"post-ictal weakness mimicking acute infarct on initial exam" },
+  { level:2, sys:"Neuro", dx:"Status epilepticus", note:"prolonged seizure activity mistaken for prolonged postictal state" },
+  { level:2, sys:"Neuro", dx:"Cluster headache", note:"unilateral periorbital pain misdiagnosed as sinusitis" },
+  { level:2, sys:"Neuro", dx:"Trigeminal neuralgia", note:"brief facial pain triggered by touch, mistaken for dental pain" },
+  { level:2, sys:"Neuro", dx:"Wernicke encephalopathy", note:"confusion and ataxia in an alcoholic mistaken for intoxication" },
+  { level:2, sys:"Neuro", dx:"Idiopathic intracranial hypertension", note:"headache and blurred vision in an obese woman read as migraine" },
+  { level:2, sys:"Neuro", dx:"Transient ischemic attack", note:"resolved focal deficit dismissed as a benign anxiety episode" },
+  { level:2, sys:"Neuro", dx:"Cervical spondylotic myelopathy", note:"gait imbalance in an older adult read as simple deconditioning" },
+  { level:2, sys:"Neuro", dx:"Complex partial (focal) seizure", note:"automatisms and altered awareness mistaken for a psychiatric episode" },
+  { level:2, sys:"Neuro", dx:"Psychogenic non-epileptic seizure vs true seizure", note:"convulsive episode with rapid normal recovery mistaken for status epilepticus" },
+  { level:2, sys:"Neuro", dx:"Vertebrobasilar TIA", note:"vertigo and diplopia mistaken for peripheral vestibular disease" },
+  { level:2, sys:"Neuro", dx:"Meniere disease", note:"episodic vertigo with hearing loss and tinnitus mistaken for BPPV" },
+  { level:2, sys:"Neuro", dx:"Ulnar neuropathy at the elbow", note:"hand numbness mistaken for cervical radiculopathy" },
+  { level:2, sys:"Neuro", dx:"Common peroneal nerve palsy", note:"foot drop after prolonged leg crossing mistaken for a central lesion" },
+  { level:2, sys:"Neuro", dx:"Radial nerve palsy (Saturday night palsy)", note:"wrist drop after prolonged arm compression mistaken for a stroke" },
+  { level:2, sys:"Neuro", dx:"Cervical spinal stenosis", note:"gait difficulty and hand clumsiness in an older adult mistaken for peripheral neuropathy" },
+  { level:2, sys:"Neuro", dx:"Lumbar spinal stenosis", note:"neurogenic claudication relieved by bending forward, mistaken for vascular claudication" },
+  { level:2, sys:"Neuro", dx:"Herniated lumbar disc", note:"back pain with radiation mistaken for simple musculoskeletal strain" },
+  { level:2, sys:"Neuro", dx:"Chronic subdural hematoma after a minor fall", note:"gradual confusion in an elderly patient attributed to dementia progression" },
+  { level:2, sys:"Neuro", dx:"Hypertensive encephalopathy", note:"headache and confusion with very high BP mistaken for a primary stroke" },
+  { level:2, sys:"Neuro", dx:"Atypical bacterial meningitis in an elderly patient", note:"subtle confusion without classic meningismus mistaken for simple delirium" },
+  { level:2, sys:"Neuro", dx:"Viral encephalitis", note:"fever and behavioral change mistaken for a primary psychiatric disorder" },
+  { level:2, sys:"Neuro", dx:"Postherpetic neuralgia", note:"persistent pain after a shingles rash mistaken for ongoing active infection" },
+  { level:2, sys:"Neuro", dx:"Diabetic (microvascular) third nerve palsy", note:"ptosis and diplopia with pupillary sparing mistaken for an aneurysmal compression" },
+  { level:2, sys:"Neuro", dx:"Aneurysmal third nerve palsy", note:"ptosis and diplopia with pupil involvement mistaken for a benign microvascular cause" },
+  { level:2, sys:"Neuro", dx:"Cavernous sinus syndrome", note:"multiple cranial neuropathies mistaken for an isolated ocular motor palsy" },
+  { level:2, sys:"Neuro", dx:"Anticholinergic delirium", note:"acute confusion in an elderly patient on a new medication mistaken for dementia progression" },
+  { level:2, sys:"Neuro", dx:"Anti-NMDA receptor encephalitis (early)", note:"new psychiatric symptoms in a young woman mistaken for a primary psychotic break" },
+  { level:2, sys:"Neuro", dx:"Spinal cord compression from metastatic disease", note:"back pain with leg weakness in a cancer patient mistaken for simple mechanical back pain" },
+  { level:2, sys:"Neuro", dx:"Cervical dystonia", note:"involuntary neck posturing mistaken for a psychogenic movement disorder" },
+
+  { level:2, sys:"Renal", dx:"Pyelonephritis", note:"fever and flank pain, UTI symptoms mild enough to be overlooked" },
+  { level:2, sys:"Renal", dx:"Rhabdomyolysis-induced AKI", note:"dark urine after exertion mistaken for dehydration" },
+  { level:2, sys:"Renal", dx:"Contrast-induced nephropathy", note:"rising creatinine post-imaging attributed to baseline CKD" },
+  { level:2, sys:"Renal", dx:"Renal artery stenosis", note:"resistant hypertension in a smoker, initially treated as essential HTN" },
+  { level:2, sys:"Renal", dx:"Acute interstitial nephritis", note:"rising creatinine after starting a new antibiotic, rash overlooked" },
+  { level:2, sys:"Renal", dx:"Obstructive uropathy from BPH", note:"rising creatinine in an elderly man read as prerenal AKI" },
+  { level:2, sys:"Renal", dx:"Renal vein thrombosis", note:"flank pain and hematuria in nephrotic syndrome, mistaken for colic" },
+  { level:2, sys:"Renal", dx:"Hemolytic uremic syndrome", note:"bloody diarrhea followed by AKI in a child, initially just gastroenteritis" },
+  { level:2, sys:"Renal", dx:"Postoperative acute tubular necrosis", note:"persistent oliguria after major surgery mistaken for simple prerenal AKI" },
+  { level:2, sys:"Renal", dx:"Secondary (AA) amyloidosis", note:"new proteinuria in a chronic inflammatory disease patient mistaken for diabetic nephropathy" },
+  { level:2, sys:"Renal", dx:"Aminoglycoside nephrotoxicity", note:"rising creatinine on antibiotics mistaken for the underlying infection worsening" },
+  { level:2, sys:"Renal", dx:"NSAID-induced acute kidney injury", note:"AKI in an elderly patient on chronic NSAIDs mistaken for dehydration alone" },
+  { level:2, sys:"Renal", dx:"Obstructing ureteric stone with hydronephrosis", note:"unilateral hydronephrosis mistaken for simple renal colic without obstruction" },
+  { level:2, sys:"Renal", dx:"Post-renal AKI from a pelvic mass", note:"bilateral hydronephrosis in a woman with a pelvic mass mistaken for primary renal disease" },
+  { level:2, sys:"Renal", dx:"Cast nephropathy from multiple myeloma", note:"AKI with a high anion gap in an elderly patient mistaken for dehydration" },
+  { level:2, sys:"Renal", dx:"Acute-on-chronic diabetic nephropathy", note:"sudden worsening of chronic proteinuria mistaken for progression of baseline CKD alone" },
+  { level:2, sys:"Renal", dx:"Renal infarction", note:"sudden flank pain with hematuria in an AFib patient mistaken for renal colic" },
+  { level:2, sys:"Renal", dx:"Loin pain hematuria syndrome", note:"recurrent unexplained flank pain mistaken for recurrent stones" },
+  { level:2, sys:"Renal", dx:"Anticholinergic-induced urinary retention", note:"acute retention in an elderly man mistaken for BPH progression alone" },
+  { level:2, sys:"Renal", dx:"Traumatic bladder rupture", note:"abdominal pain and inability to void after pelvic trauma mistaken for a simple contusion" },
+  { level:2, sys:"Renal", dx:"Renal laceration from blunt trauma", note:"flank pain and hematuria after blunt trauma mistaken for a simple contusion" },
+  { level:2, sys:"Renal", dx:"Papillary necrosis in sickle cell trait", note:"hematuria in a sickle trait patient mistaken for a urinary infection" },
+  { level:2, sys:"Renal", dx:"Postictal rhabdomyolysis-induced AKI", note:"dark urine after a prolonged seizure mistaken for hematuria" },
+  { level:2, sys:"Renal", dx:"Type 4 renal tubular acidosis", note:"persistent hyperkalemia in a diabetic mistaken for dietary noncompliance" },
+  { level:2, sys:"Renal", dx:"Membranoproliferative glomerulonephritis", note:"a nephrotic-nephritic overlap picture mistaken for a pure nephrotic syndrome" },
+  { level:2, sys:"Renal", dx:"Post-obstructive diuresis", note:"massive polyuria after relief of urinary retention mistaken for ongoing renal failure" },
+  { level:2, sys:"Renal", dx:"Contrast nephropathy in a diabetic with CKD", note:"rising creatinine after a contrast study mistaken for progression of baseline disease" },
+  { level:2, sys:"Renal", dx:"ACE inhibitor-induced AKI in bilateral renal artery stenosis", note:"creatinine rise after starting an ACE inhibitor mistaken for a simple side effect" },
+  { level:2, sys:"Renal", dx:"Uric acid stone in a gout patient", note:"flank pain in a known gout patient mistaken for a calcium stone" },
+  { level:2, sys:"Renal", dx:"Struvite (staghorn) calculus", note:"recurrent UTIs with a large branching stone mistaken for simple recurrent cystitis" },
+
+  { level:2, sys:"Heme", dx:"Warfarin-associated bleeding", note:"unexplained bruising attributed to normal aging" },
+  { level:2, sys:"Heme", dx:"Hemolytic anemia from G6PD deficiency", note:"jaundice after fava beans or a new drug, mistaken for hepatitis" },
+  { level:2, sys:"Heme", dx:"Acute chest syndrome in sickle cell disease", note:"fever and chest pain read as simple pneumonia" },
+  { level:2, sys:"Heme", dx:"Tumor lysis syndrome", note:"electrolyte derangement post-chemotherapy mistaken for AKI alone" },
+  { level:2, sys:"Heme", dx:"Heparin-induced thrombocytopenia", note:"falling platelets on heparin dismissed as expected dilution" },
+  { level:2, sys:"Heme", dx:"Multiple myeloma", note:"back pain and anemia in an elderly patient read as osteoporosis" },
+  { level:2, sys:"Heme", dx:"Chronic lymphocytic leukemia", note:"incidental lymphocytosis dismissed as a reactive response" },
+  { level:2, sys:"Heme", dx:"Von Willebrand disease", note:"heavy menstrual bleeding in a teenager attributed to normal periods" },
+
+  { level:2, sys:"ID", dx:"Infective endocarditis in an IV drug user", note:"fever attributed to a simple viral illness at first" },
+  { level:2, sys:"ID", dx:"Necrotizing fasciitis", note:"pain out of proportion to cellulitis-looking skin findings" },
+  { level:2, sys:"ID", dx:"Herpes encephalitis", note:"fever and confusion mistaken for a psychiatric presentation" },
+  { level:2, sys:"ID", dx:"Septic arthritis in a prosthetic joint", note:"joint pain attributed to routine post-surgical discomfort" },
+  { level:2, sys:"ID", dx:"C. difficile colitis", note:"diarrhea after antibiotics dismissed as antibiotic side effect alone" },
+  { level:2, sys:"ID", dx:"Leptospirosis", note:"fever and myalgia after flood water exposure, read as viral fever" },
+  { level:2, sys:"ID", dx:"Scrub typhus", note:"fever with eschar missed on exam, treated as dengue" },
+  { level:2, sys:"ID", dx:"Toxic shock syndrome", note:"fever, rash, and hypotension in a tampon user read as viral illness" },
+
+  { level:2, sys:"Rheum", dx:"Reactive arthritis", note:"joint pain after a GI or GU infection, mistaken for gout" },
+  { level:2, sys:"Rheum", dx:"Giant cell arteritis", note:"new headache and jaw claudication in an elderly patient, read as tension headache" },
+  { level:2, sys:"Rheum", dx:"Drug-induced lupus", note:"joint pain and rash after starting hydralazine, mistaken for idiopathic lupus" },
+  { level:2, sys:"Rheum", dx:"Pseudogout", note:"acute monoarthritis in an elderly patient mistaken for true gout" },
+  { level:2, sys:"Rheum", dx:"Sjögren syndrome", note:"dry eyes and mouth in a middle-aged woman dismissed as normal aging" },
+  { level:2, sys:"Rheum", dx:"Henoch-Schönlein purpura", note:"palpable purpura and joint pain in a child read as viral rash" },
+  { level:2, sys:"Rheum", dx:"Juvenile idiopathic arthritis", note:"persistent joint swelling in a child dismissed as growing pains" },
+  { level:2, sys:"Rheum", dx:"Fibromyalgia", note:"widespread pain and fatigue initially worked up as inflammatory arthritis" },
+
+  { level:2, sys:"Derm", dx:"Necrotizing fasciitis vs cellulitis", note:"rapidly spreading erythema with bullae, initially treated as simple cellulitis" },
+  { level:2, sys:"Derm", dx:"Erythema multiforme", note:"target lesions after a herpes outbreak, mistaken for an allergic rash" },
+  { level:2, sys:"Derm", dx:"Drug reaction (morbilliform)", note:"generalized rash after a new antibiotic, read as viral exanthem" },
+  { level:2, sys:"Derm", dx:"Tinea corporis", note:"annular scaly rash mistaken for nummular eczema" },
+  { level:2, sys:"Derm", dx:"Bullous pemphigoid", note:"tense blisters in an elderly patient mistaken for an insect bite reaction" },
+  { level:2, sys:"Derm", dx:"Erysipelas", note:"sharply demarcated facial erythema with fever, mistaken for angioedema" },
+  { level:2, sys:"Derm", dx:"Molluscum contagiosum", note:"umbilicated papules in a child mistaken for warts" },
+  { level:2, sys:"Derm", dx:"Actinic keratosis", note:"rough scaly patch in a sun-exposed area dismissed as dry skin" },
+
+  { level:2, sys:"Psych", dx:"Serotonin syndrome", note:"agitation and hyperreflexia after combining antidepressants, read as anxiety" },
+  { level:2, sys:"Psych", dx:"Neuroleptic malignant syndrome", note:"fever and rigidity on antipsychotics mistaken for infection" },
+  { level:2, sys:"Psych", dx:"Delirium tremens", note:"confusion and autonomic instability days after stopping alcohol, read as simple withdrawal" },
+  { level:2, sys:"Psych", dx:"Substance-induced psychosis", note:"hallucinations after stimulant use mistaken for primary schizophrenia" },
+  { level:2, sys:"Psych", dx:"Somatic symptom disorder", note:"persistent unexplained pain worked up extensively before diagnosis considered" },
+  { level:2, sys:"Psych", dx:"Postpartum depression", note:"low mood weeks after delivery dismissed as normal fatigue" },
+  { level:2, sys:"Psych", dx:"Acute stress reaction", note:"dissociation right after trauma mistaken for a neurological event" },
+  { level:2, sys:"Psych", dx:"Panic attack mimicking cardiac event", note:"chest pain and dyspnea worked up for ACS before panic considered" },
+
+  { level:2, sys:"OB/Gyn", dx:"Ruptured ovarian cyst", note:"sudden pelvic pain mistaken for ovarian torsion" },
+  { level:2, sys:"OB/Gyn", dx:"Threatened miscarriage", note:"vaginal spotting in early pregnancy read as ectopic until ultrasound" },
+  { level:2, sys:"OB/Gyn", dx:"Chorioamnionitis", note:"maternal fever in labor attributed to dehydration" },
+  { level:2, sys:"OB/Gyn", dx:"HELLP syndrome", note:"RUQ pain in pregnancy mistaken for cholecystitis" },
+  { level:2, sys:"OB/Gyn", dx:"Endometritis", note:"postpartum fever attributed to normal lochia changes" },
+  { level:2, sys:"OB/Gyn", dx:"Tubo-ovarian abscess", note:"worsening PID symptoms mistaken for simple pelvic infection" },
+  { level:2, sys:"OB/Gyn", dx:"Mastitis", note:"breast pain and fever in a breastfeeding mother mistaken for engorgement" },
+  { level:2, sys:"OB/Gyn", dx:"Cervical ectropion bleeding", note:"postcoital spotting worked up before a benign cause is confirmed" },
+
+  { level:2, sys:"MSK", dx:"Scaphoid fracture", note:"wrist pain after a fall, initial X-ray falsely reassuring" },
+  { level:2, sys:"MSK", dx:"Achilles tendon rupture", note:"sudden calf pain during sport mistaken for a simple strain" },
+  { level:2, sys:"MSK", dx:"Meniscal tear", note:"knee locking and pain mistaken for a ligament sprain" },
+  { level:2, sys:"MSK", dx:"Cauda equina syndrome", note:"back pain with saddle anesthesia initially treated as sciatica" },
+  { level:2, sys:"MSK", dx:"Septic bursitis", note:"swollen elbow mistaken for simple gout flare" },
+  { level:2, sys:"MSK", dx:"Stress fracture", note:"persistent shin pain in a runner dismissed as shin splints" },
+  { level:2, sys:"MSK", dx:"Adhesive capsulitis (frozen shoulder)", note:"stiff painful shoulder in a diabetic mistaken for rotator cuff tear" },
+  { level:2, sys:"MSK", dx:"Osteomyelitis in a diabetic foot ulcer", note:"non-healing ulcer treated as simple cellulitis" },
+
+  { level:2, sys:"ENT", dx:"Mastoiditis", note:"post-auricular swelling after otitis media dismissed as reactive lymph node" },
+  { level:2, sys:"ENT", dx:"Epiglottitis", note:"drooling and stridor in a child mistaken for croup" },
+  { level:2, sys:"ENT", dx:"Retropharyngeal abscess", note:"neck stiffness and fever in a child read as meningitis" },
+  { level:2, sys:"ENT", dx:"Ludwig's angina", note:"rapidly spreading submandibular swelling mistaken for a dental abscess" },
+  { level:2, sys:"ENT", dx:"Vestibular neuritis", note:"prolonged vertigo mistaken for a posterior circulation stroke" },
+  { level:2, sys:"ENT", dx:"Nasal septal hematoma", note:"nasal swelling after trauma dismissed as simple bruising" },
+  { level:2, sys:"ENT", dx:"Sialadenitis", note:"painful swollen salivary gland mistaken for a dental infection" },
+  { level:2, sys:"ENT", dx:"Laryngotracheobronchitis (croup)", note:"barking cough and stridor mistaken for asthma exacerbation" },
+
+  { level:2, sys:"Ophtho", dx:"Orbital cellulitis", note:"eyelid swelling after sinusitis mistaken for simple conjunctivitis" },
+  { level:2, sys:"Ophtho", dx:"Anterior uveitis", note:"painful red eye with photophobia mistaken for conjunctivitis" },
+  { level:2, sys:"Ophtho", dx:"Optic neuritis", note:"painful vision loss in a young woman mistaken for a migraine aura" },
+  { level:2, sys:"Ophtho", dx:"Hyphema", note:"blood in the anterior chamber after trauma dismissed as minor bruising" },
+  { level:2, sys:"Ophtho", dx:"Central retinal vein occlusion", note:"sudden painless vision loss mistaken for a vitreous hemorrhage" },
+  { level:2, sys:"Ophtho", dx:"Herpes zoster ophthalmicus", note:"vesicular rash near the eye mistaken for simple shingles without ocular risk" },
+  { level:2, sys:"Ophtho", dx:"Chemical eye injury", note:"eye pain after exposure treated with delayed irrigation" },
+  { level:2, sys:"Ophtho", dx:"Blepharitis", note:"chronic eyelid irritation mistaken for recurrent conjunctivitis" },
+
+  { level:2, sys:"Uro", dx:"Renal colic vs appendicitis", note:"right-sided flank pain in a young man read as appendicitis first" },
+  { level:2, sys:"Uro", dx:"Fournier's gangrene", note:"rapidly progressing perineal pain mistaken for simple cellulitis" },
+  { level:2, sys:"Uro", dx:"Acute urinary retention", note:"inability to void in an older man attributed to anxiety" },
+  { level:2, sys:"Uro", dx:"Paraphimosis", note:"painful penile swelling dismissed as minor irritation" },
+  { level:2, sys:"Uro", dx:"Ureteric stricture", note:"recurrent flank pain attributed each time to a new stone" },
+  { level:2, sys:"Uro", dx:"Renal cell carcinoma", note:"painless hematuria and flank mass mistaken for a simple stone" },
+  { level:2, sys:"Uro", dx:"Priapism", note:"prolonged painful erection in a sickle cell patient dismissed initially" },
+  { level:2, sys:"Uro", dx:"Urethral stricture", note:"weak stream in a young man mistaken for early BPH" },
+
+  // Level 3 — Junior resident: moderate complexity, atypical features, competing diagnoses
+  { level:3, sys:"Cardio", dx:"Myopericarditis", note:"chest pain post-viral illness, ECG changes competing with ACS pattern" },
+  { level:3, sys:"Cardio", dx:"Takotsubo cardiomyopathy", note:"ACS-like presentation after acute stress, normal coronaries on angiography" },
+  { level:3, sys:"Cardio", dx:"Prosthetic valve thrombosis", note:"dyspnea in a valve patient competing with simple heart failure exacerbation" },
+  { level:3, sys:"Cardio", dx:"Right ventricular infarction", note:"inferior MI with hypotension worsened by nitrates, easily missed on standard ECG" },
+  { level:3, sys:"Cardio", dx:"Constrictive pericarditis", note:"chronic edema and ascites competing with a primary liver or renal cause" },
+  { level:3, sys:"Cardio", dx:"Wolff-Parkinson-White with AFib", note:"irregular wide-complex tachycardia mistaken for simple VT" },
+  { level:3, sys:"Cardio", dx:"Infective endocarditis, culture-negative early", note:"fever with a new murmur but initial blood cultures unrevealing" },
+  { level:3, sys:"Cardio", dx:"Peripartum cardiomyopathy", note:"late-pregnancy dyspnea competing with normal pregnancy physiology" },
+  { level:3, sys:"Cardio", dx:"Arrhythmogenic right ventricular cardiomyopathy", note:"exertional VT in a young athlete competing with a benign ectopy diagnosis" },
+  { level:3, sys:"Cardio", dx:"Brugada syndrome", note:"unexplained syncope with a characteristic ECG pattern competing with vasovagal syncope" },
+  { level:3, sys:"Cardio", dx:"Long QT syndrome with torsades", note:"syncope on a QT-prolonging drug competing with a primary seizure disorder" },
+  { level:3, sys:"Cardio", dx:"Loeffler endocarditis", note:"restrictive cardiomyopathy with eosinophilia competing with amyloid infiltration" },
+  { level:3, sys:"Cardio", dx:"Libman-Sacks endocarditis", note:"valve vegetations in an SLE patient competing with infective endocarditis" },
+  { level:3, sys:"Cardio", dx:"Aortic dissection with malperfusion", note:"stroke or limb ischemia as the presenting feature, chest pain minimal or absent" },
+  { level:3, sys:"Cardio", dx:"Chronic constrictive-restrictive overlap physiology", note:"mixed hemodynamics competing between constrictive and restrictive causes" },
+  { level:3, sys:"Cardio", dx:"Coronary artery vasospasm from cocaine", note:"recurrent chest pain in a young patient competing with early atherosclerotic disease" },
+  { level:3, sys:"Cardio", dx:"Post-cardiac injury (Dressler) syndrome", note:"pericarditis weeks after MI competing with recurrent ischemia" },
+  { level:3, sys:"Cardio", dx:"Infiltrative cardiac sarcoidosis", note:"heart block in a young adult competing with a primary conduction system disease" },
+  { level:3, sys:"Cardio", dx:"High-output heart failure from AV fistula", note:"unexplained heart failure competing with primary cardiomyopathy" },
+  { level:3, sys:"Cardio", dx:"Pulmonary hypertension from chronic mitral disease", note:"progressive dyspnea competing with a primary lung cause" },
+  { level:3, sys:"Cardio", dx:"Myocardial bridging", note:"exertional angina with normal-appearing epicardial vessels competing with microvascular disease" },
+  { level:3, sys:"Cardio", dx:"Aortoenteric fistula", note:"GI bleeding in a patient with an aortic graft competing with a primary GI ulcer source" },
+  { level:3, sys:"Cardio", dx:"Spontaneous coronary artery dissection", note:"ACS in a young peripartum woman competing with atherosclerotic disease" },
+  { level:3, sys:"Cardio", dx:"Carcinoid heart disease", note:"right-sided valve disease with flushing competing with a primary rheumatic cause" },
+  { level:3, sys:"Cardio", dx:"Pheochromocytoma-induced cardiomyopathy", note:"episodic hypertension and heart failure competing with essential hypertension" },
+  { level:3, sys:"Cardio", dx:"Chagas cardiomyopathy", note:"dilated cardiomyopathy with conduction disease in an endemic-area patient" },
+  { level:3, sys:"Cardio", dx:"Endocardial fibroelastosis", note:"infant heart failure competing with a primary structural congenital defect" },
+  { level:3, sys:"Cardio", dx:"Catecholaminergic polymorphic VT", note:"exertional syncope in a child with a structurally normal heart, competing with long QT" },
+
+  { level:3, sys:"Resp", dx:"Organizing pneumonia", note:"subacute cough and infiltrates not resolving with antibiotics" },
+  { level:3, sys:"Resp", dx:"Acute eosinophilic pneumonia", note:"rapid hypoxia in a young smoker mimicking ARDS" },
+  { level:3, sys:"Resp", dx:"Pulmonary hemorrhage from vasculitis", note:"hemoptysis competing with a simple bronchitis explanation" },
+  { level:3, sys:"Resp", dx:"Chronic thromboembolic pulmonary hypertension", note:"progressive dyspnea after a treated PE, missed as deconditioning" },
+  { level:3, sys:"Resp", dx:"Sarcoidosis", note:"bilateral hilar lymphadenopathy competing with lymphoma on imaging" },
+  { level:3, sys:"Resp", dx:"Amiodarone-induced lung toxicity", note:"new infiltrates in a cardiac patient mistaken for heart failure" },
+  { level:3, sys:"Resp", dx:"Pneumocystis pneumonia", note:"subacute hypoxia in an undiagnosed HIV patient read as atypical CAP" },
+  { level:3, sys:"Resp", dx:"Bronchopleural fistula", note:"persistent air leak post-surgery competing with simple pneumothorax" },
+  { level:3, sys:"Resp", dx:"Diffuse alveolar hemorrhage", note:"hemoptysis and falling hematocrit competing with a simple pneumonia bleed" },
+  { level:3, sys:"Resp", dx:"Lymphangioleiomyomatosis", note:"cystic lung disease in a young woman competing with emphysema" },
+  { level:3, sys:"Resp", dx:"Pulmonary alveolar proteinosis", note:"crazy-paving pattern on CT competing with an atypical pneumonia" },
+  { level:3, sys:"Resp", dx:"Idiopathic pulmonary fibrosis", note:"progressive dyspnea with fine crackles competing with a cardiac cause of dyspnea" },
+  { level:3, sys:"Resp", dx:"Pulmonary Langerhans cell histiocytosis", note:"cystic lung disease in a young smoker competing with lymphangioleiomyomatosis" },
+  { level:3, sys:"Resp", dx:"Methotrexate-induced pulmonary toxicity", note:"new infiltrates in a rheumatoid patient competing with an infectious pneumonia" },
+  { level:3, sys:"Resp", dx:"Radiation pneumonitis", note:"cough and dyspnea after chest radiotherapy competing with tumor recurrence" },
+  { level:3, sys:"Resp", dx:"Chronic aspiration bronchiolitis", note:"chronic cough in an achalasia patient competing with a primary lung disease" },
+  { level:3, sys:"Resp", dx:"Bronchocentric granulomatosis", note:"cavitary lung lesion competing with tuberculosis" },
+  { level:3, sys:"Resp", dx:"Isolated pulmonary ANCA vasculitis", note:"cavitating nodules competing with metastatic disease" },
+  { level:3, sys:"Resp", dx:"Acute interstitial pneumonia (Hamman-Rich syndrome)", note:"rapid ARDS-like picture in a previously well patient competing with infectious ARDS" },
+  { level:3, sys:"Resp", dx:"Talc granulomatosis", note:"diffuse micronodules in an IV drug user competing with miliary tuberculosis" },
+  { level:3, sys:"Resp", dx:"Yellow nail syndrome", note:"chronic pleural effusion and lymphedema competing with a malignant effusion workup" },
+  { level:3, sys:"Resp", dx:"Swyer-James syndrome", note:"unilateral hyperlucent lung competing with a primary vascular anomaly" },
+  { level:3, sys:"Resp", dx:"Broncholithiasis", note:"hemoptysis with a calcified node eroding into a bronchus competing with malignancy" },
+  { level:3, sys:"Resp", dx:"Pulmonary artery sarcoma", note:"mass mimicking chronic thromboembolic disease competing with true CTEPH" },
+  { level:3, sys:"Resp", dx:"Middle lobe syndrome", note:"recurrent right middle lobe collapse competing with a primary endobronchial tumor" },
+  { level:3, sys:"Resp", dx:"Constrictive (obliterative) bronchiolitis", note:"progressive airflow obstruction after inhalational injury competing with asthma" },
+  { level:3, sys:"Resp", dx:"Catamenial pneumothorax", note:"recurrent pneumothorax timed with menstruation competing with a primary spontaneous cause" },
+  { level:3, sys:"Resp", dx:"Löfgren syndrome", note:"erythema nodosum with hilar adenopathy and arthralgia competing with a primary rheumatologic diagnosis" },
+  { level:3, sys:"Resp", dx:"Cryptogenic organizing pneumonia relapse", note:"recurrent infiltrates after steroid taper competing with a new infectious pneumonia" },
+  { level:3, sys:"Resp", dx:"Diffuse panbronchiolitis", note:"chronic sinobronchial infection pattern in an East Asian patient competing with bronchiectasis of another cause" },
+
+  { level:3, sys:"GI", dx:"Mesenteric ischemia (early)", note:"pain out of proportion to exam, competing with nonspecific gastritis" },
+  { level:3, sys:"GI", dx:"Autoimmune hepatitis", note:"deranged LFTs in a young woman competing with viral hepatitis workup" },
+  { level:3, sys:"GI", dx:"Primary sclerosing cholangitis", note:"cholestasis in a patient with ulcerative colitis, mistaken for simple gallstone disease" },
+  { level:3, sys:"GI", dx:"Small bowel ischemic stricture", note:"recurrent obstruction competing with adhesive SBO as the default cause" },
+  { level:3, sys:"GI", dx:"Whipple disease", note:"malabsorption and joint pain competing with a primary rheumatologic diagnosis" },
+  { level:3, sys:"GI", dx:"Budd-Chiari syndrome", note:"ascites and hepatomegaly competing with simple cirrhosis" },
+  { level:3, sys:"GI", dx:"Eosinophilic esophagitis", note:"dysphagia in a young atopic patient mistaken for reflux disease" },
+  { level:3, sys:"GI", dx:"Ischemic colitis", note:"bloody diarrhea in an elderly hypotensive patient competing with infectious colitis" },
+  { level:3, sys:"GI", dx:"Superior mesenteric artery syndrome", note:"postprandial vomiting and weight loss competing with a primary eating disorder" },
+  { level:3, sys:"GI", dx:"Median arcuate ligament syndrome", note:"postprandial abdominal pain competing with chronic mesenteric ischemia" },
+  { level:3, sys:"GI", dx:"Portal vein thrombosis", note:"abdominal pain in a cirrhotic competing with worsening ascites alone" },
+  { level:3, sys:"GI", dx:"Hepatic adenoma with hemorrhage", note:"sudden abdominal pain in a woman on oral contraceptives competing with a ruptured ectopic" },
+  { level:3, sys:"GI", dx:"Focal nodular hyperplasia", note:"incidental liver lesion competing with a primary hepatic malignancy" },
+  { level:3, sys:"GI", dx:"Caroli disease", note:"recurrent cholangitis with cystic bile duct dilation competing with simple choledocholithiasis" },
+  { level:3, sys:"GI", dx:"Gallbladder polyp with malignant potential", note:"incidental gallbladder lesion competing with simple cholesterolosis" },
+  { level:3, sys:"GI", dx:"Gastrointestinal stromal tumor", note:"GI bleeding with a submucosal mass competing with a primary adenocarcinoma" },
+  { level:3, sys:"GI", dx:"Carcinoid syndrome", note:"flushing and diarrhea competing with a primary anxiety or menopausal diagnosis" },
+  { level:3, sys:"GI", dx:"Zollinger-Ellison syndrome", note:"recurrent refractory peptic ulcers competing with simple NSAID-induced ulceration" },
+  { level:3, sys:"GI", dx:"Protein-losing enteropathy", note:"hypoalbuminemia without proteinuria competing with a primary liver or renal cause" },
+  { level:3, sys:"GI", dx:"Collagenous colitis", note:"chronic watery diarrhea with a normal-appearing colon competing with IBS" },
+  { level:3, sys:"GI", dx:"Microscopic colitis", note:"chronic diarrhea in an older adult on NSAIDs competing with infectious colitis" },
+  { level:3, sys:"GI", dx:"Small intestinal bacterial overgrowth", note:"bloating and malabsorption competing with celiac disease" },
+  { level:3, sys:"GI", dx:"Chronic mesenteric ischemia", note:"postprandial pain and food fear competing with a primary malignancy workup" },
+  { level:3, sys:"GI", dx:"Sclerosing mesenteritis", note:"abdominal mass and pain competing with a primary mesenteric malignancy" },
+  { level:3, sys:"GI", dx:"Groove pancreatitis", note:"pancreatic head mass competing with pancreatic adenocarcinoma" },
+  { level:3, sys:"GI", dx:"Autoimmune pancreatitis", note:"obstructive jaundice with a pancreatic mass competing with pancreatic cancer" },
+  { level:3, sys:"GI", dx:"Hereditary hemochromatosis", note:"cirrhosis with bronze skin and diabetes competing with alcoholic liver disease" },
+  { level:3, sys:"GI", dx:"Wilson disease", note:"acute liver failure in a young patient competing with autoimmune hepatitis" },
+  { level:3, sys:"GI", dx:"Alpha-1 antitrypsin deficiency liver disease", note:"cirrhosis in a young nonsmoker competing with a primary lung disease diagnosis" },
+  { level:3, sys:"GI", dx:"Intestinal tuberculosis", note:"ileocecal thickening and obstruction competing with Crohn's disease" },
+
+  { level:3, sys:"Endo", dx:"Euglycemic DKA on SGLT2i", note:"normal glucose masking true acidosis, competing with simple gastroenteritis" },
+  { level:3, sys:"Endo", dx:"Subclinical thyrotoxicosis with AFib", note:"new arrhythmia in an elderly patient with only mildly abnormal TSH" },
+  { level:3, sys:"Endo", dx:"Autoimmune polyglandular syndrome", note:"combined endocrine failures competing with isolated single-gland disease" },
+  { level:3, sys:"Endo", dx:"Ectopic ACTH secretion", note:"rapid Cushingoid features competing with primary pituitary Cushing disease" },
+  { level:3, sys:"Endo", dx:"Central diabetes insipidus post head injury", note:"polyuria after trauma competing with simple IV fluid overload" },
+  { level:3, sys:"Endo", dx:"Refeeding syndrome", note:"electrolyte crash after starting nutrition in a malnourished patient" },
+  { level:3, sys:"Endo", dx:"MEN 1 syndrome", note:"combined parathyroid and pancreatic findings competing with isolated adenomas" },
+  { level:3, sys:"Endo", dx:"Sick euthyroid syndrome", note:"abnormal thyroid panel in a critically ill patient competing with true hypothyroidism" },
+  { level:3, sys:"Endo", dx:"Ectopic Cushing syndrome from small cell lung cancer", note:"rapid Cushingoid features competing with a primary pituitary source" },
+  { level:3, sys:"Endo", dx:"Non-islet cell tumor hypoglycemia", note:"unexplained hypoglycemia in a cancer patient competing with an insulinoma" },
+  { level:3, sys:"Endo", dx:"Insulin autoimmune syndrome (Hirata disease)", note:"fasting hypoglycemia competing with an occult insulinoma workup" },
+  { level:3, sys:"Endo", dx:"POEMS syndrome", note:"polyneuropathy and endocrinopathy competing with a primary diabetic neuropathy diagnosis" },
+  { level:3, sys:"Endo", dx:"Pseudohypoparathyroidism", note:"hypocalcemia with elevated PTH competing with true hypoparathyroidism" },
+  { level:3, sys:"Endo", dx:"Carney complex", note:"combined endocrine tumors and skin pigmentation competing with isolated adrenal adenoma" },
+  { level:3, sys:"Endo", dx:"McCune-Albright syndrome", note:"precocious puberty with skin and bone findings competing with an isolated pituitary cause" },
+  { level:3, sys:"Endo", dx:"Autoimmune hypophysitis", note:"new pituitary dysfunction on checkpoint inhibitor therapy competing with a metastatic pituitary lesion" },
+  { level:3, sys:"Endo", dx:"Ectopic PTHrP-mediated hypercalcemia", note:"hypercalcemia in a cancer patient competing with primary hyperparathyroidism" },
+  { level:3, sys:"Endo", dx:"Thyroid storm precipitated by surgery", note:"postoperative fever and tachycardia competing with routine surgical stress response" },
+  { level:3, sys:"Endo", dx:"Isolated ACTH deficiency", note:"unexplained fatigue and hyponatremia competing with SIADH" },
+  { level:3, sys:"Endo", dx:"Congenital adrenal hyperplasia, non-classic form", note:"hirsutism and irregular cycles in a young woman competing with PCOS" },
+  { level:3, sys:"Endo", dx:"Adrenal Cushing syndrome from bilateral macronodular hyperplasia", note:"cortisol excess competing with a primary pituitary adenoma workup" },
+  { level:3, sys:"Endo", dx:"Paraganglioma", note:"extra-adrenal catecholamine-secreting mass competing with a primary adrenal pheochromocytoma" },
+  { level:3, sys:"Endo", dx:"Type B insulin resistance syndrome", note:"severe hyperglycemia with acanthosis in an autoimmune-disease patient competing with typical T2DM" },
+  { level:3, sys:"Endo", dx:"Lipodystrophy-associated diabetes", note:"severe insulin resistance with abnormal fat distribution competing with simple obesity-related diabetes" },
+  { level:3, sys:"Endo", dx:"Autoimmune polyendocrine syndrome type 2", note:"combined adrenal and thyroid failure competing with an isolated Addison disease diagnosis" },
+  { level:3, sys:"Endo", dx:"Ectopic thyroid tissue (lingual thyroid)", note:"midline neck or tongue mass competing with a thyroglossal duct cyst" },
+  { level:3, sys:"Endo", dx:"Struma ovarii", note:"ovarian mass with hyperthyroidism competing with a primary thyroid source" },
+  { level:3, sys:"Endo", dx:"Hypophosphatemic osteomalacia from tumor-induced phosphate wasting", note:"bone pain and fractures competing with simple vitamin D deficiency" },
+  { level:3, sys:"Endo", dx:"Pituitary stalk lesion causing mild hyperprolactinemia", note:"modestly elevated prolactin competing with a true prolactinoma" },
+  { level:3, sys:"Endo", dx:"Diabetic ketoacidosis precipitated by clozapine", note:"new hyperglycemia in a psychiatric patient competing with a primary metabolic cause" },
+
+  { level:3, sys:"Neuro", dx:"Todd's paralysis vs stroke", note:"post-ictal weakness competing with acute infarct, resolving over hours" },
+  { level:3, sys:"Neuro", dx:"Cerebral venous sinus thrombosis", note:"headache and seizure in a postpartum woman competing with simple migraine" },
+  { level:3, sys:"Neuro", dx:"Neurosarcoidosis", note:"cranial neuropathy competing with a primary demyelinating diagnosis" },
+  { level:3, sys:"Neuro", dx:"Paraneoplastic cerebellar degeneration", note:"progressive ataxia competing with a primary alcohol-related cause" },
+  { level:3, sys:"Neuro", dx:"Lambert-Eaton myasthenic syndrome", note:"proximal weakness improving with exercise, competing with myasthenia gravis" },
+  { level:3, sys:"Neuro", dx:"Spinal epidural abscess", note:"back pain and fever competing with simple musculoskeletal back pain" },
+  { level:3, sys:"Neuro", dx:"Posterior reversible encephalopathy syndrome", note:"seizure with severe hypertension competing with a primary stroke" },
+  { level:3, sys:"Neuro", dx:"Normal pressure hydrocephalus", note:"gait disturbance and incontinence in the elderly competing with Parkinson's disease" },
+  { level:3, sys:"Neuro", dx:"Susac syndrome", note:"encephalopathy with vision and hearing loss competing with multiple sclerosis" },
+  { level:3, sys:"Neuro", dx:"Chronic inflammatory demyelinating polyneuropathy", note:"progressive symmetric weakness competing with GBS as a monophasic illness" },
+  { level:3, sys:"Neuro", dx:"Stiff person syndrome", note:"episodic rigidity and spasms competing with a primary psychiatric conversion disorder" },
+  { level:3, sys:"Neuro", dx:"Creutzfeldt-Jakob disease", note:"rapidly progressive dementia with myoclonus competing with a reversible autoimmune encephalitis" },
+  { level:3, sys:"Neuro", dx:"Progressive multifocal leukoencephalopathy", note:"new deficits in an immunosuppressed patient competing with a different opportunistic infection" },
+  { level:3, sys:"Neuro", dx:"Neuromyelitis optica spectrum disorder", note:"optic neuritis and myelitis competing with classic multiple sclerosis" },
+  { level:3, sys:"Neuro", dx:"Miller Fisher syndrome", note:"ataxia, areflexia, and ophthalmoplegia competing with a brainstem stroke" },
+  { level:3, sys:"Neuro", dx:"Atypical Wernicke-Korsakoff presentation", note:"confusion without the classic triad competing with a primary psychiatric cause" },
+  { level:3, sys:"Neuro", dx:"Central pontine myelinolysis", note:"quadriparesis after rapid sodium correction competing with a primary stroke" },
+  { level:3, sys:"Neuro", dx:"Superficial siderosis", note:"progressive ataxia and hearing loss competing with a cerebellar degeneration of another cause" },
+  { level:3, sys:"Neuro", dx:"Cerebral amyloid angiopathy", note:"recurrent lobar hemorrhages in an elderly patient competing with a hypertensive bleed" },
+  { level:3, sys:"Neuro", dx:"Moyamoya disease", note:"recurrent strokes in a young patient competing with vasculitis" },
+  { level:3, sys:"Neuro", dx:"Reversible cerebral vasoconstriction syndrome", note:"thunderclap headaches competing with subarachnoid hemorrhage" },
+  { level:3, sys:"Neuro", dx:"Hashimoto encephalopathy", note:"subacute encephalopathy with high thyroid antibodies competing with a primary autoimmune encephalitis" },
+  { level:3, sys:"Neuro", dx:"Neurosyphilis (tabes dorsalis)", note:"sensory ataxia and lightning pains competing with a primary peripheral neuropathy" },
+  { level:3, sys:"Neuro", dx:"Whipple disease with CNS involvement", note:"cognitive decline and oculomasticatory myorhythmia competing with a primary dementia" },
+  { level:3, sys:"Neuro", dx:"Isaac syndrome (neuromyotonia)", note:"continuous muscle twitching competing with a primary anxiety disorder" },
+  { level:3, sys:"Neuro", dx:"Paraneoplastic limbic encephalitis", note:"subacute memory loss and seizures in a smoker competing with a primary psychiatric illness" },
+  { level:3, sys:"Neuro", dx:"Adult polyglucosan body disease", note:"progressive gait and bladder dysfunction competing with normal pressure hydrocephalus" },
+  { level:3, sys:"Neuro", dx:"Neurosarcoidosis with hypothalamic involvement", note:"combined endocrine and neurologic findings competing with a primary pituitary tumor" },
+  { level:3, sys:"Neuro", dx:"Fahr disease", note:"basal ganglia calcification with a movement disorder competing with idiopathic Parkinson's disease" },
+  { level:3, sys:"Neuro", dx:"Bickerstaff brainstem encephalitis", note:"ophthalmoplegia, ataxia, and altered consciousness competing with a primary brainstem stroke" },
+
+  { level:3, sys:"Renal", dx:"Rapidly progressive glomerulonephritis", note:"fast-rising creatinine competing with a simple prerenal AKI diagnosis" },
+  { level:3, sys:"Renal", dx:"Lupus nephritis", note:"new proteinuria in a known SLE patient competing with drug-induced nephropathy" },
+  { level:3, sys:"Renal", dx:"Amyloid nephropathy", note:"nephrotic-range proteinuria in a myeloma patient competing with diabetic nephropathy" },
+  { level:3, sys:"Renal", dx:"Analgesic nephropathy", note:"chronic NSAID use with CKD competing with hypertensive nephrosclerosis" },
+  { level:3, sys:"Renal", dx:"Renal tubular acidosis", note:"unexplained metabolic acidosis competing with diarrhea-related losses" },
+  { level:3, sys:"Renal", dx:"Cholesterol embolization syndrome", note:"AKI post-catheterization competing with contrast nephropathy" },
+  { level:3, sys:"Renal", dx:"Goodpasture syndrome", note:"hemoptysis and AKI competing with a simple pulmonary-renal infection" },
+  { level:3, sys:"Renal", dx:"Autosomal dominant polycystic kidney disease with cyst infection", note:"fever in a known PKD patient competing with simple pyelonephritis" },
+  { level:3, sys:"Renal", dx:"C3 glomerulopathy", note:"recurrent hematuria and low complement competing with post-infectious glomerulonephritis" },
+  { level:3, sys:"Renal", dx:"Fibrillary glomerulonephritis", note:"treatment-resistant nephrotic syndrome competing with amyloidosis" },
+  { level:3, sys:"Renal", dx:"Thin basement membrane nephropathy", note:"persistent microscopic hematuria competing with early Alport syndrome" },
+  { level:3, sys:"Renal", dx:"Balkan endemic nephropathy", note:"chronic tubulointerstitial disease in an endemic region competing with analgesic nephropathy" },
+  { level:3, sys:"Renal", dx:"Light chain deposition disease", note:"nephrotic syndrome in a myeloma patient competing with AL amyloidosis" },
+  { level:3, sys:"Renal", dx:"Atypical hemolytic uremic syndrome", note:"AKI with microangiopathy competing with typical Shiga-toxin-mediated HUS" },
+  { level:3, sys:"Renal", dx:"Anti-GBM disease without pulmonary involvement", note:"isolated rapidly progressive renal failure competing with ANCA vasculitis" },
+  { level:3, sys:"Renal", dx:"Renal medullary carcinoma", note:"hematuria in a young patient with sickle cell trait competing with a simple stone" },
+  { level:3, sys:"Renal", dx:"Nutcracker syndrome", note:"unexplained hematuria and flank pain competing with a primary urologic cause" },
+  { level:3, sys:"Renal", dx:"Page kidney", note:"new hypertension after renal trauma competing with essential hypertension" },
+  { level:3, sys:"Renal", dx:"Bartter syndrome", note:"hypokalemic metabolic alkalosis with normal blood pressure competing with surreptitious diuretic use" },
+  { level:3, sys:"Renal", dx:"Gitelman syndrome", note:"hypokalemia and hypomagnesemia competing with Bartter syndrome" },
+  { level:3, sys:"Renal", dx:"Liddle syndrome", note:"early-onset hypertension with hypokalemia competing with primary hyperaldosteronism" },
+  { level:3, sys:"Renal", dx:"Distal (type 1) renal tubular acidosis with nephrocalcinosis", note:"recurrent stones and bone disease competing with primary hyperparathyroidism" },
+  { level:3, sys:"Renal", dx:"Dent disease", note:"low molecular weight proteinuria and nephrocalcinosis in a young male competing with Fanconi syndrome" },
+  { level:3, sys:"Renal", dx:"Acquired Fanconi syndrome", note:"generalized proximal tubular dysfunction competing with a primary metabolic bone disease" },
+  { level:3, sys:"Renal", dx:"Lithium-induced nephrogenic diabetes insipidus", note:"polyuria in a psychiatric patient competing with primary polydipsia" },
+  { level:3, sys:"Renal", dx:"Renal artery thromboembolism from endocarditis", note:"sudden flank pain and AKI in a febrile patient competing with pyelonephritis" },
+  { level:3, sys:"Renal", dx:"Scleroderma renal crisis", note:"malignant hypertension and AKI in a scleroderma patient competing with a primary hypertensive emergency" },
+  { level:3, sys:"Renal", dx:"Fibromuscular dysplasia with renal artery dissection", note:"renovascular hypertension with sudden flank pain competing with a simple stone" },
+  { level:3, sys:"Renal", dx:"Enteric hyperoxaluria post-bariatric surgery", note:"recurrent stones and CKD competing with simple dehydration-related stones" },
+  { level:3, sys:"Renal", dx:"Post-transplant BK virus nephropathy", note:"rising creatinine in a transplant patient competing with acute rejection" },
+
+  { level:3, sys:"Heme", dx:"TTP vs ITP", note:"thrombocytopenia with schistocytes, overlapping clinical pictures" },
+  { level:3, sys:"Heme", dx:"Paroxysmal nocturnal hemoglobinuria", note:"unexplained hemolysis and thrombosis competing with autoimmune hemolytic anemia" },
+  { level:3, sys:"Heme", dx:"Myelodysplastic syndrome", note:"cytopenias in an elderly patient competing with nutritional deficiency" },
+  { level:3, sys:"Heme", dx:"Antiphospholipid syndrome", note:"recurrent clots and miscarriage competing with an isolated hypercoagulable event" },
+  { level:3, sys:"Heme", dx:"Cold agglutinin disease", note:"hemolysis after cold exposure competing with warm autoimmune hemolytic anemia" },
+  { level:3, sys:"Heme", dx:"Acute promyelocytic leukemia", note:"bleeding with DIC-like picture competing with a simple coagulopathy" },
+  { level:3, sys:"Heme", dx:"Waldenström macroglobulinemia", note:"hyperviscosity symptoms competing with a primary neurologic diagnosis" },
+  { level:3, sys:"Heme", dx:"Evans syndrome", note:"combined hemolysis and thrombocytopenia competing with a single-lineage diagnosis" },
+
+  { level:3, sys:"ID", dx:"Culture-negative endocarditis (fastidious organism)", note:"persistent fever competing with a noninfective inflammatory cause" },
+  { level:3, sys:"ID", dx:"Disseminated tuberculosis", note:"fever of unknown origin in an immunosuppressed patient competing with lymphoma" },
+  { level:3, sys:"ID", dx:"Invasive fungal sinusitis", note:"facial pain in a diabetic in DKA competing with simple bacterial sinusitis" },
+  { level:3, sys:"ID", dx:"Q fever endocarditis", note:"culture-negative valve infection competing with autoimmune valvulitis" },
+  { level:3, sys:"ID", dx:"Melioidosis", note:"pneumonia with abscesses in an endemic-area diabetic, competing with TB" },
+  { level:3, sys:"ID", dx:"Cryptococcal meningitis", note:"subacute headache in an undiagnosed HIV patient competing with tension headache" },
+  { level:3, sys:"ID", dx:"Brucellosis", note:"undulant fever and arthralgia competing with a primary rheumatologic cause" },
+  { level:3, sys:"ID", dx:"Infective spondylodiscitis", note:"back pain with fever competing with a mechanical disc problem" },
+
+  { level:3, sys:"Rheum", dx:"Adult-onset Still's disease", note:"fever of unknown origin, rash and arthralgia dismissed as viral" },
+  { level:3, sys:"Rheum", dx:"Polyarteritis nodosa", note:"multi-organ pain competing with a primary vasculitic mimic like endocarditis" },
+  { level:3, sys:"Rheum", dx:"Mixed connective tissue disease", note:"overlapping SLE/scleroderma/myositis features complicating a single diagnosis" },
+  { level:3, sys:"Rheum", dx:"Relapsing polychondritis", note:"ear and nasal cartilage inflammation competing with recurrent cellulitis" },
+  { level:3, sys:"Rheum", dx:"Behçet disease", note:"recurrent oral and genital ulcers competing with a primary infectious cause" },
+  { level:3, sys:"Rheum", dx:"Eosinophilic granulomatosis with polyangiitis", note:"asthma and eosinophilia competing with a straightforward allergic diagnosis" },
+  { level:3, sys:"Rheum", dx:"IgG4-related disease", note:"pancreatic and biliary masses competing with malignancy on imaging" },
+  { level:3, sys:"Rheum", dx:"Calciphylaxis", note:"painful skin necrosis in a dialysis patient competing with simple cellulitis" },
+
+  { level:3, sys:"Derm", dx:"Stevens-Johnson syndrome", note:"early mucosal blistering competing with a simple drug rash" },
+  { level:3, sys:"Derm", dx:"Pyoderma gangrenosum", note:"rapidly enlarging ulcer competing with a primary infectious cause" },
+  { level:3, sys:"Derm", dx:"Dermatomyositis", note:"proximal weakness with rash competing with a primary myopathy" },
+  { level:3, sys:"Derm", dx:"Necrolytic migratory erythema", note:"rash competing with a primary nutritional deficiency before glucagonoma considered" },
+  { level:3, sys:"Derm", dx:"Sweet syndrome", note:"tender plaques with fever competing with an infectious cellulitis" },
+  { level:3, sys:"Derm", dx:"Cutaneous T-cell lymphoma", note:"chronic scaly patches competing with long-standing eczema" },
+  { level:3, sys:"Derm", dx:"Pemphigus vulgaris", note:"oral and skin blistering competing with bullous pemphigoid" },
+  { level:3, sys:"Derm", dx:"Erythema nodosum", note:"tender shin nodules competing with a primary infectious or drug cause" },
+
+  { level:3, sys:"Psych", dx:"Catatonia", note:"mutism and rigidity competing with a primary neurological cause" },
+  { level:3, sys:"Psych", dx:"Brief psychotic disorder vs primary psychosis", note:"acute stress-triggered psychosis competing with schizophrenia onset" },
+  { level:3, sys:"Psych", dx:"Factitious disorder", note:"recurring unexplained symptoms competing with a genuine organic illness" },
+  { level:3, sys:"Psych", dx:"Anorexia nervosa with refeeding risk", note:"malnutrition competing with a primary GI malabsorption diagnosis" },
+  { level:3, sys:"Psych", dx:"Delusional disorder", note:"isolated fixed belief without other psychotic features, competing with paranoid personality" },
+  { level:3, sys:"Psych", dx:"Malignant catatonia vs NMS", note:"fever and rigidity overlapping two dangerous look-alike syndromes" },
+  { level:3, sys:"Psych", dx:"Dissociative identity disorder", note:"memory gaps competing with a primary seizure disorder" },
+  { level:3, sys:"Psych", dx:"Steroid-induced psychosis", note:"new psychotic symptoms on high-dose steroids competing with primary psychiatric illness" },
+
+  { level:3, sys:"OB/Gyn", dx:"Uterine rupture", note:"sudden pain in a VBAC labor competing with normal labor pain" },
+  { level:3, sys:"OB/Gyn", dx:"Amniotic fluid embolism", note:"sudden collapse in labor competing with a primary cardiac event" },
+  { level:3, sys:"OB/Gyn", dx:"Ovarian hyperstimulation syndrome", note:"ascites and dyspnea post-IVF competing with heart failure" },
+  { level:3, sys:"OB/Gyn", dx:"Acute fatty liver of pregnancy", note:"deranged LFTs in the third trimester competing with HELLP syndrome" },
+  { level:3, sys:"OB/Gyn", dx:"Vasa previa", note:"painless bleeding at rupture of membranes competing with placenta previa" },
+  { level:3, sys:"OB/Gyn", dx:"Asherman syndrome", note:"secondary amenorrhea after uterine surgery competing with hormonal causes" },
+  { level:3, sys:"OB/Gyn", dx:"Cervical insufficiency", note:"painless mid-trimester loss competing with a primary infectious preterm labor" },
+  { level:3, sys:"OB/Gyn", dx:"Krukenberg tumor", note:"ovarian mass competing with a primary ovarian cancer before GI source found" },
+
+  { level:3, sys:"MSK", dx:"Osteonecrosis of the femoral head", note:"hip pain in a steroid user competing with simple osteoarthritis" },
+  { level:3, sys:"MSK", dx:"Complex regional pain syndrome", note:"disproportionate limb pain post-injury competing with ongoing fracture pain" },
+  { level:3, sys:"MSK", dx:"Charcot arthropathy", note:"deformed swollen foot in a diabetic competing with acute osteomyelitis" },
+  { level:3, sys:"MSK", dx:"Idiopathic inflammatory myopathy", note:"proximal weakness competing with a primary neurologic cause" },
+  { level:3, sys:"MSK", dx:"Fat embolism syndrome", note:"hypoxia and rash after long bone fracture competing with simple PE" },
+  { level:3, sys:"MSK", dx:"Transient synovitis vs septic arthritis in a child", note:"limp and hip pain requiring careful distinction from true joint infection" },
+  { level:3, sys:"MSK", dx:"Paget disease of bone", note:"bone pain and deformity in an elderly patient competing with metastatic disease" },
+  { level:3, sys:"MSK", dx:"Pigmented villonodular synovitis", note:"recurrent knee swelling competing with an inflammatory arthritis" },
+
+  { level:3, sys:"ENT", dx:"Skull base osteomyelitis (malignant otitis externa)", note:"ear pain in a diabetic competing with simple otitis externa" },
+  { level:3, sys:"ENT", dx:"Cholesteatoma", note:"chronic ear discharge competing with recurrent simple otitis media" },
+  { level:3, sys:"ENT", dx:"Ramsay Hunt syndrome", note:"facial palsy with ear vesicles competing with a simple Bell's palsy diagnosis" },
+  { level:3, sys:"ENT", dx:"Angioedema (ACE-inhibitor induced)", note:"tongue and lip swelling competing with an allergic anaphylaxis diagnosis" },
+  { level:3, sys:"ENT", dx:"Juvenile nasopharyngeal angiofibroma", note:"recurrent epistaxis in an adolescent male competing with simple vessel fragility" },
+  { level:3, sys:"ENT", dx:"Wegener's (GPA) sinonasal disease", note:"chronic sinusitis with crusting competing with recurrent bacterial sinusitis" },
+  { level:3, sys:"ENT", dx:"Perichondritis", note:"painful red ear after piercing competing with simple cellulitis" },
+  { level:3, sys:"ENT", dx:"Sudden sensorineural hearing loss", note:"sudden unilateral deafness competing with cerumen impaction" },
+
+  { level:3, sys:"Ophtho", dx:"Giant cell arteritis with vision loss", note:"sudden monocular vision loss in the elderly competing with a simple retinal event" },
+  { level:3, sys:"Ophtho", dx:"Endophthalmitis", note:"eye pain after surgery competing with expected postoperative inflammation" },
+  { level:3, sys:"Ophtho", dx:"Cavernous sinus thrombosis", note:"periorbital swelling with cranial nerve palsies competing with simple orbital cellulitis" },
+  { level:3, sys:"Ophtho", dx:"Ocular toxoplasmosis", note:"chorioretinitis competing with a primary autoimmune uveitis" },
+  { level:3, sys:"Ophtho", dx:"Papilledema from raised ICP", note:"bilateral disc swelling competing with a primary ocular cause" },
+  { level:3, sys:"Ophtho", dx:"Retinoblastoma", note:"leukocoria in a child competing with a simple cataract" },
+  { level:3, sys:"Ophtho", dx:"Thyroid eye disease", note:"proptosis competing with a primary orbital mass before thyroid function checked" },
+  { level:3, sys:"Ophtho", dx:"Sympathetic ophthalmia", note:"inflammation in the uninjured eye after trauma to the other, delayed recognition" },
+
+  { level:3, sys:"Uro", dx:"Testicular tumor presenting as epididymitis", note:"painless firm mass mistaken initially for an infectious process" },
+  { level:3, sys:"Uro", dx:"Xanthogranulomatous pyelonephritis", note:"renal mass with chronic infection competing with renal cell carcinoma" },
+  { level:3, sys:"Uro", dx:"Emphysematous pyelonephritis", note:"severe infection in a diabetic competing with simple uncomplicated pyelonephritis" },
+  { level:3, sys:"Uro", dx:"Retroperitoneal fibrosis", note:"bilateral ureteric obstruction competing with a primary malignant cause" },
+  { level:3, sys:"Uro", dx:"Urethral diverticulum", note:"recurrent UTIs in a woman competing with simple cystitis" },
+  { level:3, sys:"Uro", dx:"Peyronie's disease", note:"penile curvature competing with a primary erectile dysfunction diagnosis" },
+  { level:3, sys:"Uro", dx:"Adrenal incidentaloma (functioning)", note:"incidental adrenal mass competing with a nonfunctioning benign lesion" },
+  { level:3, sys:"Uro", dx:"IgA nephropathy presenting with gross hematuria", note:"hematuria after URI competing with a stone or infectious cause" },
+
+  { level:4, sys:"Cardio", dx:"Silent MI in diabetic CKD patient", note:"dyspnea only, baseline troponin elevation from renal disease muddying the picture" },
+  { level:4, sys:"ID", dx:"Culture-negative endocarditis", note:"low-grade fever with multiple comorbid explanations for malaise" },
+  { level:4, sys:"Rheum", dx:"Adult-onset Still's disease", note:"fever of unknown origin, rash and arthralgia dismissed as viral" },
+  { level:4, sys:"Endo", dx:"Euglycemic DKA on SGLT2i", note:"normal glucose masking true acidosis, judgment call to still treat as DKA" },
+  { level:4, sys:"Neuro", dx:"Autoimmune encephalitis", note:"subacute personality change in a patient with pre-existing psychiatric diagnosis" },
+
+  { level:5, sys:"Multi-sys", dx:"TTP overlapping catastrophic APS", note:"microangiopathy plus thrombosis, each masking the other's classic markers" },
+  { level:5, sys:"Onc/ID", dx:"HLH triggered by occult lymphoma", note:"sepsis-like picture with a red-herring recent infection" },
+  { level:5, sys:"Cardio", dx:"Cardiac amyloidosis", note:"HFpEF picture, low-voltage ECG mistaken for prior infarct pattern" },
+  { level:5, sys:"Neuro", dx:"Mitochondrial disease (MELAS)", note:"stroke-like episodes not respecting vascular territories, lactate the only tell" },
+  { level:5, sys:"Rheum/Renal", dx:"ANCA vasculitis with pulmonary-renal syndrome", note:"hemoptysis attributed to anticoagulation, masking the true diagnosis" }
+];
+
+const specialtySelect = document.getElementById('specialty');
+const specialties = [...new Set(DATA.map(d => d.sys))].sort();
+specialties.forEach(s => {
+  const opt = document.createElement('option');
+  opt.value = s;
+  opt.textContent = s;
+  specialtySelect.appendChild(opt);
+});
+
+const levelPillsEl = document.getElementById('levelPills');
+let activeLevel = "all";
+
+function renderPills(){
+  levelPillsEl.innerHTML = '';
+  const allPill = document.createElement('div');
+  allPill.className = 'pill' + (activeLevel === 'all' ? ' active' : '');
+  allPill.textContent = 'All levels';
+  allPill.onclick = () => { activeLevel = 'all'; renderPills(); renderResults(); };
+  levelPillsEl.appendChild(allPill);
+
+  Object.keys(LEVELS).forEach(lvl => {
+    const pill = document.createElement('div');
+    pill.className = 'pill' + (activeLevel == lvl ? ' active' : '');
+    pill.dataset.level = lvl;
+    pill.textContent = `L${lvl} · ${LEVELS[lvl].name}`;
+    pill.onclick = () => { activeLevel = lvl; renderPills(); renderResults(); };
+    levelPillsEl.appendChild(pill);
+  });
+}
+
+function renderResults(){
+  const specVal = specialtySelect.value;
+  const resultsEl = document.getElementById('results');
+  const countEl = document.getElementById('count');
+
+  // Nothing selected yet — keep it empty
+  if(specVal === 'all' && activeLevel === 'all'){
+    countEl.textContent = '';
+    resultsEl.innerHTML = '<div class="empty">Choose a specialty and/or level above to see diagnoses.</div>';
+    return;
+  }
+
+  const filtered = DATA.filter(d => {
+    const matchSpec = specVal === 'all' || d.sys === specVal;
+    const matchLevel = activeLevel === 'all' || d.level == activeLevel;
+    return matchSpec && matchLevel;
+  }).sort((a,b) => a.level - b.level);
+
+  countEl.textContent = `${filtered.length} diagnosis${filtered.length === 1 ? '' : 'es'} shown`;
+
+  if(filtered.length === 0){
+    resultsEl.innerHTML = '<div class="empty">No diagnoses match this filter combination.</div>';
+    return;
+  }
+
+  resultsEl.innerHTML = filtered.map((d, i) => `
+    <div class="card" style="--accent:var(--l${d.level});">
+      <button class="copy-btn" type="button" data-idx="${i}" aria-label="Copy diagnosis" title="Copy">
+        <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </button>
+      <div class="tags">
+        <span class="badge">L${d.level} · ${LEVELS[d.level].name}</span>
+        <span class="sys">${d.sys}</span>
+      </div>
+      <div class="dx"><b>${d.dx}</b><span class="note">${d.note}</span></div>
+    </div>
+  `).join('');
+
+  resultsEl.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.idx);
+      const d = filtered[idx];
+      const text = `${d.dx} — ${d.note}`;
+      const finish = () => {
+        btn.classList.add('copied');
+        clearTimeout(btn._copyTimeout);
+        btn._copyTimeout = setTimeout(() => btn.classList.remove('copied'), 1400);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(finish).catch(() => {
+          fallbackCopy(text);
+          finish();
+        });
+      } else {
+        fallbackCopy(text);
+        finish();
+      }
+    });
+  });
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+specialtySelect.addEventListener('change', renderResults);
+renderPills();
+renderResults();
+</script>
+
+<!--
+==================================================================
+VIBEROUNDS · LEVEL BENCH — BUILD PROGRESS LOG
+==================================================================
+Goal: exhaustive diagnosis coverage (~30 dx per specialty per level)
+across 16 specialties × 3 levels (L1 Preclinical, L2 Intern/PGY1,
+L3 Junior resident). Target ~1,440 entries total for L1-L3.
+(L4 Senior resident and L5 Attending/fellow remain at the original
+~8-per-specialty seed set and are NOT yet part of this expansion pass.)
+
+SPECIALTIES (16): Cardio, Resp, GI, Endo, Neuro, Renal, Heme, ID,
+Rheum, Derm, Psych, OB/Gyn, MSK, ENT, Ophtho, Uro
+
+STATUS BY SPECIALTY (target: 30/30/30 for L1/L2/L3):
+  [DONE]    Cardio   — L1:30  L2:28  L3:28   (target ~30, close enough/done)
+  [DONE]    Resp     — L1:30  L2:30  L3:30
+  [DONE]    GI       — L1:30  L2:30  L3:30
+  [DONE]    Endo     — L1:30  L2:30  L3:30
+  [DONE]    Neuro    — L1:30  L2:30  L3:30
+  [DONE]    Renal    — L1:30  L2:30  L3:30
+  [TODO]    Heme     — L1:8   L2:8   L3:8
+  [TODO]    ID       — L1:8   L2:8   L3:8
+  [TODO]    Rheum    — L1:8   L2:8   L3:8
+  [TODO]    Derm     — L1:8   L2:8   L3:8
+  [TODO]    Psych    — L1:8   L2:8   L3:8
+  [TODO]    OB/Gyn   — L1:8   L2:8   L3:8
+  [TODO]    MSK      — L1:8   L2:8   L3:8
+  [TODO]    ENT      — L1:8   L2:8   L3:8
+  [TODO]    Ophtho   — L1:8   L2:8   L3:8
+  [TODO]    Uro      — L1:8   L2:8   L3:8
+
+NEXT UP: Heme (L1, L2, L3), then ID,
+Rheum, Derm, Psych, OB/Gyn, MSK, ENT, Ophtho, Uro — in that order.
+
+HOW TO RESUME:
+  1. Read this log to see which specialty is [DONE] vs [TODO].
+  2. For each [TODO] specialty, expand its L1/L2/L3 blocks in the
+     DATA array above from 8 entries to ~30 entries each, following
+     the same voice used in Cardio:
+       - L1: classic single-system textbook presentation, one line
+       - L2: common presentation + 1-2 distractors, straightforward workup
+       - L3: moderate complexity, atypical feature or competing diagnosis
+  3. After finishing a specialty, update its line above to [DONE]
+     with the actual counts, and move NEXT UP to the following one.
+  4. Re-save this log block with the update — do not delete it.
+==================================================================
+-->
+
+</body>
+</html>
