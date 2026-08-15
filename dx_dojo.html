@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dx Dojo — Diagnostic Reasoning Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F7FAFB; --card:#FFFFFF; --ink:#0B2530; --line:#DCE7EA; --line-soft:#E9F1F3;
+    --accent:#0891B2; --accent-dark:#0A6E85; --accent-soft:#E3F4F8;
+    --alert:#C2410C; --alert-soft:#FCE9DD; --good:#15803D; --good-soft:#E5F6E9;
+    --muted:#5B7480; --tab-inactive:#EEF4F6; --radius:10px; --body-font:'Inter',sans-serif;
+  }
+  html[data-theme="minimalist"]{
+    --paper:#FFFFFF; --card:#FFFFFF; --ink:#161616; --line:#E4E4E4; --line-soft:#F0F0F0;
+    --accent:#161616; --accent-dark:#000000; --accent-soft:#F2F2F2;
+    --alert:#B3261E; --alert-soft:#F8E7E6; --good:#1B5E20; --good-soft:#EAF3EA;
+    --muted:#757575; --tab-inactive:#F2F2F2; --radius:3px; --body-font:'Inter',sans-serif;
+  }
+  html[data-theme="terminal"]{
+    --paper:#000000; --card:#0A0A0A; --ink:#FFB238; --line:#3A2A00; --line-soft:#231A00;
+    --accent:#FFB238; --accent-dark:#FFCB6B; --accent-soft:#1C1400;
+    --alert:#FF4D3D; --alert-soft:#2B0C08; --good:#7CD98A; --good-soft:#0E1F0F;
+    --muted:#9C7A32; --tab-inactive:#141414; --radius:2px; --body-font:'IBM Plex Mono',monospace;
+  }
+  html[data-theme="terminal"] .msg.user .bubble, html[data-theme="terminal"] header.top .rx{color:#000;}
+  html[data-theme="terminal"] .card, html[data-theme="terminal"] .transcript, html[data-theme="terminal"] .msg.assistant .bubble{border-color:var(--line);}
+  html{transition:background .15s ease;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body-font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .15s ease,color .15s ease,font-family .1s ease;}
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{font-weight:800;font-size:24px;margin:0;letter-spacing:-0.02em;color:var(--ink);}
+  header.top .rx{font-weight:600;font-size:11.5px;color:#fff;background:var(--accent);border-radius:20px;padding:4px 11px;letter-spacing:.01em;}
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-weight:500;}
+  header.top .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .theme-select{display:inline-flex;align-items:center;gap:6px;background:var(--tab-inactive);border:1px solid var(--line);color:var(--ink);font-weight:600;font-size:12px;border-radius:999px;padding:6px 30px 6px 12px;cursor:pointer;-webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%235B7480' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:10px;}
+  .theme-select:hover{border-color:var(--accent);}
+
+  .step{margin-bottom:26px;}
+  .step-label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .step-label .num{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700;}
+  .step-label.done .num{background:var(--accent-dark);}
+  .step-label.collapsible{cursor:pointer;user-select:none;}
+  .step-label.collapsible:hover{color:var(--ink);}
+  .collapse-arrow{font-size:10px;margin-left:2px;transition:transform .15s ease;color:var(--muted);}
+  .step-label.collapsed .collapse-arrow{transform:rotate(-90deg);}
+  .card.collapsed{display:none;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);}
+
+  textarea, input[type=text], input[type=password], select{width:100%;font-family:var(--body-font);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:9px 11px;color:var(--ink);}
+  textarea:focus, input:focus, select:focus, button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+  textarea{resize:vertical;min-height:90px;line-height:1.5;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  .tabrow{display:flex;gap:4px;background:var(--tab-inactive);padding:4px;border-radius:999px;margin-bottom:16px;width:fit-content;}
+  .tabrow .tab{font-weight:600;font-size:12.5px;padding:7px 16px;background:transparent;border:none;border-radius:999px;cursor:pointer;color:var(--muted);transition:background .12s,color .12s;}
+  .tabrow .tab.active{background:var(--accent);color:#fff;}
+  .providerpane .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media(max-width:600px){.providerpane .row{grid-template-columns:1fr;}}
+  .key-status{font-size:12px;font-weight:500;margin-top:8px;}
+  .key-status.ok{color:var(--accent-dark);}
+  .key-status.empty{color:var(--muted);}
+  details.settings summary{cursor:pointer;font-size:12.5px;color:var(--accent-dark);font-weight:600;list-style:none;display:flex;align-items:center;gap:6px;}
+  details.settings summary::-webkit-details-marker{display:none;}
+  details.settings summary::before{content:"▸";font-size:10px;}
+  details.settings[open] summary::before{content:"▾";}
+  details.settings{margin-top:10px;}
+
+  .levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  @media(max-width:760px){.levels{grid-template-columns:repeat(2,1fr);}}
+  .level{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:13px 12px;cursor:pointer;transition:border-color .12s,box-shadow .12s,transform .06s;text-align:left;box-shadow:0 1px 2px rgba(11,37,48,.04);}
+  .level:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .level.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 6px 16px -8px rgba(8,145,178,.35);}
+  .level .lname{font-weight:700;font-size:13px;margin-bottom:3px;color:var(--ink);}
+  .level .ldesc{font-size:11px;color:var(--muted);line-height:1.35;}
+
+  .rowflex{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;}
+  .rowflex > div{flex:1;min-width:170px;}
+
+  .genbtn-row{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap;}
+
+  /* training log */
+  .traininglog{margin-top:10px;}
+  .tl-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11.5px;}
+  .tl-label{width:150px;flex-shrink:0;color:var(--muted);font-weight:600;}
+  .tl-bar-bg{flex:1;height:7px;border-radius:999px;background:var(--tab-inactive);overflow:hidden;}
+  .tl-bar-fill{height:100%;background:var(--accent);border-radius:999px;}
+  .tl-count{width:22px;text-align:right;color:var(--muted);font-weight:600;}
+  .tl-empty{font-size:12.5px;color:var(--muted);font-style:italic;}
+
+  /* case view tabs */
+  #caseView{margin-top:18px;display:none;}
+  #caseView.visible{display:block;}
+  .caseviewbox{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:16px 18px;box-shadow:0 1px 2px rgba(11,37,48,.04);white-space:pre-wrap;font-size:14px;line-height:1.6;min-height:80px;}
+  .casemeta{font-size:11.5px;color:var(--muted);margin-bottom:10px;font-weight:600;}
+  .casemeta .chip{background:var(--tab-inactive);padding:3px 9px;border-radius:999px;margin-right:6px;}
+
+  #workspace{margin-top:26px;display:none;}
+  #workspace.visible{display:block;}
+  .ws-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .ws-header .wtitle{font-size:18px;font-weight:800;color:var(--ink);}
+  .ws-header .wsub{font-size:12px;color:var(--muted);font-weight:500;}
+  .ws-actions button{margin-left:8px;}
+  @media(max-width:600px){
+    header.top h1{font-size:20px;}
+    .ws-header{flex-direction:column;align-items:flex-start;gap:10px;}
+    .ws-actions{display:flex;flex-wrap:wrap;gap:8px;}
+    .ws-actions button{margin-left:0;}
+    .composer{flex-direction:column;align-items:stretch;}
+    .msg{max-width:100%;}
+    .levels{grid-template-columns:repeat(2,1fr);}
+  }
+
+  .transcript{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);min-height:120px;max-height:520px;overflow-y:auto;padding:16px;margin-bottom:12px;}
+  .msg{margin-bottom:16px;max-width:88%;}
+  .msg.user{margin-left:auto;}
+  .msg .who{font-size:10.5px;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+  .msg.user .who{text-align:right;}
+  .msg .bubble{padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.55;white-space:pre-wrap;}
+  .msg.assistant .bubble{background:var(--accent-soft);border:1px solid #cdeaf0;border-top-left-radius:4px;}
+  .msg.user .bubble{background:var(--accent);color:#fff;border-top-right-radius:4px;}
+  .msg.system .bubble{background:transparent;border:1px dashed var(--line);color:var(--muted);font-style:italic;font-size:12.5px;border-radius:8px;}
+
+  .composer{display:flex;gap:8px;align-items:flex-end;}
+  .composer textarea{min-height:56px;flex:1;}
+  button{font-weight:700;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 18px;cursor:pointer;transition:background .12s, transform .06s;}
+  button:hover{background:var(--accent-dark);}
+  button.secondary{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  button.secondary:hover{background:var(--tab-inactive);color:var(--ink);border-color:var(--line);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  .banner{font-size:12.5px;color:var(--ink);border:1px solid var(--line-soft);background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:24px;}
+  .banner strong{color:var(--accent-dark);}
+  .error-note{font-size:12.5px;color:var(--alert);background:var(--alert-soft);border:1px solid #f0c8ac;border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;display:none;}
+  .error-note.show{display:block;}
+  .typing{font-size:12px;color:var(--muted);font-weight:500;}
+  .typing::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+  footer{margin-top:50px;font-size:11.5px;color:var(--muted);text-align:center;font-weight:500;}
+
+  .outcome-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+  .outcome-row button.good{background:var(--good);}
+  .outcome-row button.good:hover{background:#0f6b2c;}
+  .outcome-row button.partial{background:#B7791F;}
+  .outcome-row button.partial:hover{background:#8a5c14;}
+  .outcome-row button.miss{background:var(--alert);}
+  .outcome-row button.miss:hover{background:#9a3409;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <h1>Dx Dojo</h1>
+      <span class="rx">deliberate practice, not answer-fishing</span>
+    </div>
+    <div class="top-right">
+      <select id="themeSelect" class="theme-select" aria-label="Theme">
+        <option value="simple">Simple</option>
+        <option value="minimalist">Minimalist</option>
+        <option value="terminal">Terminal</option>
+      </select>
+      <div class="tagline">diagnostic reasoning trainer · student → attending · not for patient care</div>
+    </div>
+  </header>
+
+  <div class="banner"><strong>Educational use only.</strong> Every case is fictional, generated on demand, and calibrated to your training level. Your API key stays in this browser and is sent only to your chosen provider. Diagnoses are withheld until you've committed to a differential — the goal is to build your reasoning, not to read a case report.</div>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-label collapsible" id="label-model"><span class="num">1</span>Model<span class="collapse-arrow" id="arrow-model">&#9662;</span></div>
+    <div class="card" id="card-model">
+      <div class="tabrow" id="providerTabs">
+        <div class="tab active" data-provider="claude">Claude</div>
+        <div class="tab" data-provider="gemini">Gemini</div>
+        <div class="tab" data-provider="openai">ChatGPT</div>
+        <div class="tab" data-provider="other">Other</div>
+      </div>
+      <div class="providerpane">
+        <div class="row" id="endpointRow" style="display:none;">
+          <div style="grid-column:1/-1;">
+            <label for="apiEndpoint">API endpoint (OpenAI-compatible chat/completions URL)</label>
+            <input type="text" id="apiEndpoint" placeholder="https://api.groq.com/openai/v1/chat/completions">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label id="apiKeyLabel" for="apiKey">Claude API key</label>
+            <input type="password" id="apiKey" placeholder="sk-ant-...">
+          </div>
+          <div>
+            <label for="modelName">Model name</label>
+            <input type="text" id="modelName" placeholder="claude-sonnet-4-6">
+          </div>
+        </div>
+        <div class="key-status empty" id="keyStatus">No key saved for this provider yet.</div>
+        <details class="settings">
+          <summary>Where do I get a key?</summary>
+          <div class="hint" style="margin-top:8px;" id="keyHelp"></div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: TRAINING SETUP -->
+  <div class="step">
+    <div class="step-label" id="label-level"><span class="num">2</span>Training level & focus</div>
+    <div class="card" id="card-level">
+      <label style="margin-bottom:8px;">Where are you in training? This sets the baseline difficulty — the case generator adapts from here based on how you do.</label>
+      <div class="levels" id="levels"></div>
+
+      <div class="rowflex">
+        <div>
+          <label for="specialtyFocus">Specialty focus</label>
+          <select id="specialtyFocus"></select>
+          <div class="hint">"Broad rotation" lets the trainer pick — it deliberately spreads cases across specialties instead of clustering, and periodically forces a can't-miss diagnosis regardless of what's due.</div>
+        </div>
+        <div>
+          <label for="antiRepeat">Case variety</label>
+          <select id="antiRepeat">
+            <option value="strict">Strict — never repeat a diagnosis from the last 10 cases</option>
+            <option value="normal" selected>Normal — avoid the last 5 diagnoses</option>
+            <option value="off">Off — fully random each time</option>
+          </select>
+        </div>
+      </div>
+
+      <details class="settings" style="margin-top:14px;">
+        <summary>Your training log (drives case selection)</summary>
+        <div class="traininglog" id="trainingLog"></div>
+      </details>
+
+      <div class="genbtn-row">
+        <button id="generateCaseBtn">Generate a new case</button>
+        <span class="hint" id="genStatus"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE VIEW -->
+  <div id="caseView">
+    <div class="step-label"><span class="num">3</span>Today's case</div>
+    <div class="casemeta" id="caseMeta"></div>
+    <div class="tabrow" id="caseTabs">
+      <div class="tab active" data-view="story">Patient story</div>
+      <div class="tab" data-view="notes">Structured notes</div>
+    </div>
+    <div class="caseviewbox" id="caseStory"></div>
+    <div class="caseviewbox" id="caseNotes" style="display:none;"></div>
+    <div class="genbtn-row">
+      <button id="beginRoundsBtn">Begin Socratic rounds</button>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="ws-header">
+      <div>
+        <div class="wtitle" id="wsTitle">Socratic Rounds</div>
+        <div class="wsub" id="wsSub"></div>
+      </div>
+      <div class="ws-actions">
+        <button class="secondary" id="downloadTranscriptBtn">Download .txt</button>
+        <button class="secondary" id="resetBtn">Reset run</button>
+      </div>
+    </div>
+    <div class="error-note" id="errorNote"></div>
+    <div class="transcript" id="transcript"></div>
+    <div class="composer">
+      <textarea id="composerInput" placeholder="Your response — differential, next question, exam finding to ask for, treatment plan..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+    <div class="outcome-row" id="outcomeRow" style="display:none;">
+      <span class="hint" style="align-self:center;margin-right:4px;">How did this case go? (logs it for future case selection)</span>
+      <button class="good" id="outcomeGood">Nailed it</button>
+      <button class="partial" id="outcomePartial">Partially — needed hints</button>
+      <button class="miss" id="outcomeMiss">Missed it</button>
+    </div>
+  </div>
+
+  <footer>Dx Dojo · runs entirely in your browser · bring your own key · not a diagnostic tool</footer>
+</div>
+
+<script>
+/* ---------- config: providers ---------- */
+const PROVIDERS = {
+  claude: {label:'Claude', keyPlaceholder:'sk-ant-...', modelPlaceholder:'claude-sonnet-4-6',
+    help:'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there.'},
+  gemini: {label:'Gemini', keyPlaceholder:'AIza...', modelPlaceholder:'gemini-2.5-flash',
+    help:'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>.'},
+  openai: {label:'ChatGPT', keyPlaceholder:'sk-...', modelPlaceholder:'gpt-4o-mini',
+    help:'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>.'},
+  other: {label:'Other', keyPlaceholder:'API key (leave blank if none)', modelPlaceholder:'model-name-as-required-by-provider', needsEndpoint:true,
+    help:'Works with any OpenAI-compatible <code>/chat/completions</code> endpoint — Groq, Together, Mistral, DeepSeek, OpenRouter, Ollama, LM Studio, etc.'}
+};
+
+/* ---------- config: training levels ---------- */
+const LEVELS = [
+  {key:'preclinical', name:'Preclinical student', desc:'Classic, single-system, textbook presentations only.'},
+  {key:'intern', name:'Intern / PGY1', desc:'Common presentations, one or two distractors, straightforward workup.'},
+  {key:'junior', name:'Junior resident', desc:'Moderate complexity, some atypical features, competing diagnoses.'},
+  {key:'senior', name:'Senior resident', desc:'Atypical presentations, comorbidity noise, judgment calls.'},
+  {key:'attending', name:'Attending / fellow', desc:'Rare or multi-system disease, high stakes, subtle red herrings.'}
+];
+
+/* ---------- specialties ---------- */
+const SPECIALTIES = ['Broad rotation (recommended)','Cardiology','Pulmonology','Gastroenterology','Nephrology','Neurology',
+  'Endocrinology','Rheumatology','Infectious Disease','Hematology-Oncology','Emergency Medicine','Internal Medicine',
+  'General Surgery','Obstetrics and Gynecology','Pediatrics','Psychiatry','Dermatology','Toxicology',
+  'Critical Care / Intensive Care Medicine','Nephrology and Electrolytes'];
+// dedupe
+const SPECIALTIES_UNIQ = [...new Set(SPECIALTIES)];
+
+// Fixed rotating list of can't-miss / high-stakes diagnoses used to seed
+// periodic "must-not-miss" cases regardless of what the random draw picks.
+const CANT_MISS = [
+  'pulmonary embolism','acute coronary syndrome','aortic dissection','bacterial meningitis',
+  'ectopic pregnancy','testicular torsion','necrotizing fasciitis','acute mesenteric ischemia',
+  'subarachnoid hemorrhage','diabetic ketoacidosis','tension pneumothorax','acute angle-closure glaucoma',
+  'epiglottitis / airway emergency','spinal cord compression','ovarian torsion','anaphylaxis'
+];
+
+const $ = (id) => document.getElementById(id);
+
+/* ---------- state ---------- */
+let state = { provider:'claude', messages:[], running:false, currentCase:null, phase:null };
+
+/* ---------- localStorage: keys/models/endpoints ---------- */
+function loadKeys(){ try{ return JSON.parse(localStorage.getItem('dxdojo_keys')||'{}'); }catch(e){ return {}; } }
+function saveKeys(k){ localStorage.setItem('dxdojo_keys', JSON.stringify(k)); }
+function loadModels(){ try{ return JSON.parse(localStorage.getItem('dxdojo_models')||'{}'); }catch(e){ return {}; } }
+function saveModels(m){ localStorage.setItem('dxdojo_models', JSON.stringify(m)); }
+function loadEndpoints(){ try{ return JSON.parse(localStorage.getItem('dxdojo_endpoints')||'{}'); }catch(e){ return {}; } }
+function saveEndpoints(e){ localStorage.setItem('dxdojo_endpoints', JSON.stringify(e)); }
+
+/* ---------- localStorage: training history (drives variety engine) ---------- */
+function loadHistory(){ try{ return JSON.parse(localStorage.getItem('dxdojo_history')||'[]'); }catch(e){ return []; } }
+function saveHistory(h){ localStorage.setItem('dxdojo_history', JSON.stringify(h.slice(-200))); }
+function loadSelectedLevel(){ try{ return localStorage.getItem('dxdojo_level') || 'intern'; }catch(e){ return 'intern'; } }
+function saveSelectedLevel(l){ try{ localStorage.setItem('dxdojo_level', l); }catch(e){} }
+
+/* ================================================================
+   VARIETY ENGINE
+   Cases are generated live by the connected LLM, so "variety" is
+   enforced by the parameters we hand it, not by drawing from a fixed
+   bank. Three mechanisms, all logged to a local history so they act
+   on real usage rather than pure randomness:
+
+   1. Specialty coverage weighting — specialties seen recently get a
+      lower selection weight, ones not seen in a while get boosted,
+      so the trainee is pushed across the full breadth of medicine
+      instead of clustering on whatever the model defaults to.
+
+   2. Diagnosis-category mix tied to level — each level has a target
+      ratio of common : uncommon : rare diagnoses (e.g. preclinical
+      is 80/15/5, attending is 25/35/40). A weighted draw against that
+      ratio each time keeps common "bread and butter" presentations
+      dominant early and rare/zebra cases dominant later, rather than
+      letting the model wander into zebra-hunting territory too soon.
+
+   3. Can't-miss seeding — independent of the above, every 4th case
+      is forced to be one of a fixed rotating list of high-stakes
+      diagnoses (PE, ACS, dissection, meningitis, torsion, etc.), so
+      those never get crowded out by chance the way pure randomness
+      would allow.
+
+   On top of this, an anti-repeat window excludes the last N exact
+   diagnoses from being regenerated, and the generation prompt asks
+   for varied age/sex/demographics and a classic-vs-atypical roll
+   that gets more atypical as level increases — so within one
+   specialty/category the surface presentation still varies.
+   ================================================================ */
+
+function weightedPick(items, weights){
+  const total = weights.reduce((a,b)=>a+b,0);
+  let r = Math.random()*total;
+  for(let i=0;i<items.length;i++){ r -= weights[i]; if(r<=0) return items[i]; }
+  return items[items.length-1];
+}
+
+function pickSpecialty(focus, history){
+  if(focus && focus !== 'Broad rotation (recommended)') return focus;
+  const pool = SPECIALTIES_UNIQ.slice(1);
+  const recent = history.slice(-12).map(h=>h.specialty);
+  const veryRecent = history.slice(-4).map(h=>h.specialty);
+  const weights = pool.map(s=>{
+    if(veryRecent.includes(s)) return 0.3;
+    if(recent.includes(s)) return 1;
+    return 3;
+  });
+  return weightedPick(pool, weights);
+}
+
+const CATEGORY_MIX = {
+  preclinical: {common:0.8, uncommon:0.15, rare:0.05},
+  intern:      {common:0.65, uncommon:0.25, rare:0.10},
+  junior:      {common:0.50, uncommon:0.30, rare:0.20},
+  senior:      {common:0.35, uncommon:0.35, rare:0.30},
+  attending:   {common:0.25, uncommon:0.35, rare:0.40}
+};
+
+function pickCategory(level){
+  const mix = CATEGORY_MIX[level] || CATEGORY_MIX.intern;
+  return weightedPick(['common','uncommon','rare'], [mix.common, mix.uncommon, mix.rare]);
+}
+
+function shouldForceCantMiss(history){
+  // Every 4th case overall, regardless of category roll above.
+  return (history.length % 4) === 3;
+}
+
+function nextCantMiss(history){
+  const usedRecently = history.slice(-CANT_MISS.length).map(h=>h.cantMiss).filter(Boolean);
+  const candidates = CANT_MISS.filter(d => !usedRecently.includes(d));
+  const pool = candidates.length ? candidates : CANT_MISS;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function antiRepeatDiagnoses(history, mode){
+  if(mode === 'off') return [];
+  const n = mode === 'strict' ? 10 : 5;
+  return history.slice(-n).map(h=>h.diagnosis).filter(Boolean);
+}
+
+function computeNextCaseParams(level, focus, antiRepeatMode){
+  const history = loadHistory();
+  const specialty = pickSpecialty(focus, history);
+  const forceCantMiss = shouldForceCantMiss(history);
+  const category = forceCantMiss ? 'cant-miss' : pickCategory(level);
+  const cantMissDx = forceCantMiss ? nextCantMiss(history) : null;
+  const atypicalChance = {preclinical:0.05, intern:0.2, junior:0.4, senior:0.6, attending:0.75}[level] ?? 0.3;
+  const presentation = Math.random() < atypicalChance ? 'atypical' : 'classic';
+  const avoid = antiRepeatDiagnoses(history, antiRepeatMode);
+  return {specialty, category, cantMissDx, presentation, avoid, level};
+}
+
+/* ---------- training log render ---------- */
+function renderTrainingLog(){
+  const wrap = $('trainingLog');
+  const history = loadHistory();
+  if(!history.length){
+    wrap.innerHTML = '<div class="tl-empty" style="margin-top:8px;">No cases logged yet — generate and complete a case to start building your coverage map.</div>';
+    return;
+  }
+  const bySpecialty = {};
+  history.forEach(h=>{ bySpecialty[h.specialty] = (bySpecialty[h.specialty]||0) + 1; });
+  const max = Math.max(...Object.values(bySpecialty));
+  const rows = Object.entries(bySpecialty).sort((a,b)=>b[1]-a[1]).map(([spec,count])=>`
+    <div class="tl-row">
+      <div class="tl-label">${spec}</div>
+      <div class="tl-bar-bg"><div class="tl-bar-fill" style="width:${(count/max*100).toFixed(0)}%"></div></div>
+      <div class="tl-count">${count}</div>
+    </div>`).join('');
+  const outcomes = {good:0, partial:0, miss:0};
+  history.forEach(h=>{ if(h.outcome && outcomes.hasOwnProperty(h.outcome)) outcomes[h.outcome]++; });
+  wrap.innerHTML = `<div style="margin-top:8px;">${rows}</div>
+    <div class="hint" style="margin-top:8px;">${history.length} case(s) logged · nailed ${outcomes.good} · partial ${outcomes.partial} · missed ${outcomes.miss}</div>`;
+}
+renderTrainingLog();
+
+/* ---------- theme ---------- */
+const VALID_THEMES = ['simple','minimalist','terminal'];
+function applyTheme(theme){
+  if(!VALID_THEMES.includes(theme)) theme = 'simple';
+  document.documentElement.setAttribute('data-theme', theme);
+  if($('themeSelect')) $('themeSelect').value = theme;
+}
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('dxdojo_theme'); }catch(e){}
+  applyTheme(saved || 'simple');
+})();
+$('themeSelect').addEventListener('change', (e)=>{
+  applyTheme(e.target.value);
+  try{ localStorage.setItem('dxdojo_theme', e.target.value); }catch(e){}
+});
+
+/* ---------- render: provider tabs ---------- */
+function renderProviderPane(){
+  const p = PROVIDERS[state.provider];
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('keyHelp').innerHTML = p.help;
+  const keys = loadKeys(); const models = loadModels();
+  $('apiKey').value = keys[state.provider] || '';
+  $('modelName').value = models[state.provider] || '';
+  $('endpointRow').style.display = p.needsEndpoint ? '' : 'none';
+  if(p.needsEndpoint){ $('apiEndpoint').value = loadEndpoints()[state.provider] || ''; }
+  updateKeyStatus();
+}
+function updateKeyStatus(){
+  const keys = loadKeys(); const el = $('keyStatus');
+  if(keys[state.provider]){ el.textContent = 'Key saved locally for ' + PROVIDERS[state.provider].label + '.'; el.className='key-status ok'; }
+  else{ el.textContent = 'No key saved for this provider yet.'; el.className='key-status empty'; }
+}
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.provider = tab.dataset.provider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', ()=>{ const k=loadKeys(); k[state.provider]=$('apiKey').value.trim(); saveKeys(k); updateKeyStatus(); });
+$('modelName').addEventListener('input', ()=>{ const m=loadModels(); m[state.provider]=$('modelName').value.trim(); saveModels(m); });
+$('apiEndpoint').addEventListener('input', ()=>{ const e=loadEndpoints(); e[state.provider]=$('apiEndpoint').value.trim(); saveEndpoints(e); });
+renderProviderPane();
+
+/* ---------- render: levels ---------- */
+let selectedLevel = loadSelectedLevel();
+function renderLevels(){
+  const wrap = $('levels'); wrap.innerHTML='';
+  LEVELS.forEach(l=>{
+    const div = document.createElement('div');
+    div.className = 'level' + (selectedLevel===l.key ? ' selected':'');
+    div.innerHTML = `<div class="lname">${l.name}</div><div class="ldesc">${l.desc}</div>`;
+    div.addEventListener('click', ()=>{ selectedLevel = l.key; saveSelectedLevel(l.key); renderLevels(); });
+    wrap.appendChild(div);
+  });
+}
+renderLevels();
+
+/* ---------- specialty select ---------- */
+(function populateSpecialties(){
+  const sel = $('specialtyFocus');
+  SPECIALTIES_UNIQ.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; sel.appendChild(o); });
+})();
+
+/* ---------- preflight ---------- */
+function preflightOk(){
+  const keys = loadKeys();
+  if(!keys[state.provider] && !PROVIDERS[state.provider].needsEndpoint){
+    applyCollapsed('model', false);
+    alert('Add an API key for ' + PROVIDERS[state.provider].label + ' in Step 1 first.');
+    return false;
+  }
+  if(PROVIDERS[state.provider].needsEndpoint && !loadEndpoints()[state.provider]){
+    applyCollapsed('model', false);
+    alert('Add an API endpoint URL in Step 1 first.');
+    return false;
+  }
+  return true;
+}
+
+/* ---------- collapsible ---------- */
+function applyCollapsed(sectionId, collapsed){
+  const label = $('label-'+sectionId), card = $('card-'+sectionId);
+  if(!label || !card) return;
+  label.classList.toggle('collapsed', collapsed);
+  card.classList.toggle('collapsed', collapsed);
+}
+$('label-model').addEventListener('click', ()=>{
+  applyCollapsed('model', !$('card-model').classList.contains('collapsed'));
+});
+
+/* ---------- case generation ---------- */
+function buildCaseGenPrompt(params){
+  const levelObj = LEVELS.find(l=>l.key===params.level) || LEVELS[1];
+  let categoryLine;
+  if(params.category === 'cant-miss'){
+    categoryLine = `This case MUST be built around the diagnosis "${params.cantMissDx}" — a high-stakes, can't-miss diagnosis. Present it in a way appropriate to the trainee's level (more classic and obvious at junior levels, more subtle/atypical at senior levels), but the true diagnosis must be exactly this condition.`;
+  } else {
+    const label = {common:'a common, "bread and butter" diagnosis for this specialty', uncommon:'a less common but plausible diagnosis', rare:'a rare or zebra diagnosis'}[params.category];
+    categoryLine = `The true diagnosis should be ${label}.`;
+  }
+  const avoidLine = params.avoid && params.avoid.length ? `Do NOT use any of these diagnoses (already used recently): ${params.avoid.join(', ')}.` : '';
+  return `You are generating one clinical training case for a diagnostic-reasoning trainer.
+
+Trainee level: ${levelObj.name} — ${levelObj.desc}
+Specialty: ${params.specialty}
+${categoryLine}
+Presentation style: ${params.presentation === 'atypical' ? 'atypical — include a red herring, comorbidity noise, or an unusual feature that could mislead an unwary trainee, while keeping it medically plausible' : 'classic, relatively textbook presentation appropriate to this level'}
+Vary the patient's age, sex, and background from generic defaults each time.
+${avoidLine}
+
+Return ONLY a single valid JSON object, no markdown fences, no preamble, no commentary, with exactly these keys:
+{
+ "trueDiagnosis": "the exact diagnosis name, never shown to the trainee directly until they've earned it",
+ "specialty": "${params.specialty}",
+ "bodySystem": "primary organ system involved",
+ "difficultyLevel": "${levelObj.name}",
+ "patientStory": "a flowing, 5-9 sentence first-person-adjacent narrative the way a patient or a bystander would tell it — natural language, no medical jargon headers, no diagnosis hints, written like a real story",
+ "structuredNotes": "a clinician-style structured note as plain text with line breaks, using labeled sections: Chief Complaint, HPI, PMH, Medications, Allergies, Social/Family History, Vitals, Physical Exam, and Labs/Imaging (only include tests that would realistically already be available at first presentation) — same clinical facts as the patient story, just reformatted, no diagnosis stated",
+ "mustNotMiss": ${params.category==='cant-miss' ? 'true' : 'false'},
+ "teachingHook": "one sentence on what makes this case pedagogically interesting, for the tutor to use later"
+}`;
+}
+
+async function generateCase(){
+  if(!preflightOk()) return;
+  const btn = $('generateCaseBtn');
+  const status = $('genStatus');
+  btn.disabled = true; btn.textContent = 'Generating…';
+  status.textContent = '';
+  try{
+    const focus = $('specialtyFocus').value;
+    const antiRepeat = $('antiRepeat').value;
+    const params = computeNextCaseParams(selectedLevel, focus, antiRepeat);
+    const prompt = buildCaseGenPrompt(params);
+    const raw = await dispatchOnce(prompt, [{role:'user', content:'Generate the case now.'}]);
+    const cleaned = raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'');
+    let parsed;
+    try{ parsed = JSON.parse(cleaned); }
+    catch(e){
+      const match = cleaned.match(/\{[\s\S]*\}/);
+      if(!match) throw new Error('Could not parse case JSON from model output.');
+      parsed = JSON.parse(match[0]);
+    }
+    state.currentCase = Object.assign(parsed, {
+      specialty: parsed.specialty || params.specialty,
+      cantMiss: params.cantMissDx || null
+    });
+    showCase(state.currentCase);
+    status.textContent = 'New case ready below.';
+  } catch(err){
+    status.textContent = 'Failed: ' + err.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Generate a new case';
+  }
+}
+$('generateCaseBtn').addEventListener('click', generateCase);
+
+function showCase(c){
+  $('caseView').classList.add('visible');
+  $('caseMeta').innerHTML = `<span class="chip">${c.specialty||''}</span><span class="chip">${c.bodySystem||''}</span><span class="chip">${c.difficultyLevel||''}</span>${c.mustNotMiss?'<span class="chip">can\'t-miss</span>':''}`;
+  $('caseStory').textContent = c.patientStory || '';
+  $('caseNotes').textContent = c.structuredNotes || '';
+  $('workspace').classList.remove('visible');
+  $('caseView').scrollIntoView({behavior:'smooth', block:'start'});
+}
+document.querySelectorAll('#caseTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#caseTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const v = tab.dataset.view;
+    $('caseStory').style.display = v==='story' ? '' : 'none';
+    $('caseNotes').style.display = v==='notes' ? '' : 'none';
+  });
+});
+
+/* ---------- Socratic tutor ---------- */
+function buildTutorPrompt(c){
+  return `#DxDojo You are a warm, rigorous clinical tutor running a Socratic diagnostic-reasoning session with a ${c.difficultyLevel}.
+
+GROUND TRUTH (never reveal directly until earned):
+True diagnosis: ${c.trueDiagnosis}
+Specialty: ${c.specialty}
+Teaching hook: ${c.teachingHook || ''}
+
+CASE AS GIVEN TO THE TRAINEE (they can already see both forms):
+Patient story: ${c.patientStory}
+Structured notes: ${c.structuredNotes}
+
+RULES:
+1. Ask one focused question at a time — about history, exam, a specific test they'd order, or their evolving differential. Wait for their answer before continuing.
+2. Never lecture in paragraphs. Guide by questioning, the way a good attending does on rounds.
+3. Acknowledge correct reasoning briefly, then probe the next gap. If they're off track, ask a question that exposes the gap rather than stating the error outright.
+4. Do not reveal the true diagnosis just because they ask for it. If they ask for the answer without having offered their own differential or next step, redirect once: "Give me your leading differential and what you'd check next, first." Only reveal after a genuine attempt and explicit surrender.
+5. Once the trainee correctly identifies (or has genuinely attempted and been told) the true diagnosis, move to a MANAGEMENT phase: ask them, one step at a time, to commit to initial workup/treatment before you confirm or correct it. Apply the same "attempt before reveal" rule to treatment as to diagnosis.
+6. Keep the whole session realistic to a ${c.difficultyLevel}'s expected knowledge — don't demand fellowship-level minutiae from a preclinical student, and don't spoon-feed an attending.
+7. Start now: in one short line, name the one thing that makes this case pedagogically interesting (do not reveal the diagnosis), then ask your first question.`;
+}
+
+function startRounds(){
+  if(!state.currentCase){ alert('Generate a case first.'); return; }
+  state.messages = [];
+  state.phase = 'rounds';
+  $('wsSub').textContent = state.currentCase.specialty + ' · ' + state.currentCase.difficultyLevel;
+  $('transcript').innerHTML = '';
+  $('outcomeRow').style.display = 'none';
+  $('errorNote').classList.remove('show');
+  $('workspace').classList.add('visible');
+  state.systemPrompt = buildTutorPrompt(state.currentCase);
+  appendMsg('system', 'Socratic rounds started.');
+  $('workspace').scrollIntoView({behavior:'smooth', block:'start'});
+  callModel([]);
+}
+$('beginRoundsBtn').addEventListener('click', startRounds);
+
+$('resetBtn').addEventListener('click', ()=>{
+  state.messages = []; state.phase = null;
+  $('workspace').classList.remove('visible');
+});
+
+/* ---------- outcome logging ---------- */
+function logOutcome(outcome){
+  const c = state.currentCase; if(!c) return;
+  const history = loadHistory();
+  history.push({
+    ts: Date.now(), level: selectedLevel, specialty: c.specialty, bodySystem: c.bodySystem,
+    diagnosis: c.trueDiagnosis, cantMiss: c.cantMiss || null, outcome
+  });
+  saveHistory(history);
+  renderTrainingLog();
+  $('outcomeRow').style.display = 'none';
+  appendMsg('system', 'Outcome logged: ' + outcome + '. Generate a new case above whenever you\'re ready.');
+}
+$('outcomeGood').addEventListener('click', ()=>logOutcome('good'));
+$('outcomePartial').addEventListener('click', ()=>logOutcome('partial'));
+$('outcomeMiss').addEventListener('click', ()=>logOutcome('miss'));
+
+/* ---------- composer ---------- */
+$('sendBtn').addEventListener('click', sendComposer);
+$('composerInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendComposer(); }
+});
+function sendComposer(){
+  const val = $('composerInput').value.trim();
+  if(!val || state.running) return;
+  $('composerInput').value = '';
+  appendMsg('user', val);
+  state.messages.push({role:'user', content: val});
+  callModel(state.messages);
+  // Surface the outcome buttons once the trainee has engaged a few turns —
+  // they can self-report whenever they feel the case has concluded.
+  if(state.messages.length >= 4) $('outcomeRow').style.display = 'flex';
+}
+
+/* ---------- transcript rendering ---------- */
+function appendMsg(role, text){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const who = role==='user' ? 'You' : role==='assistant' ? PROVIDERS[state.provider].label : 'System';
+  div.innerHTML = `<div class="who">${who}</div><div class="bubble"></div>`;
+  div.querySelector('.bubble').textContent = text;
+  t.appendChild(div); t.scrollTop = t.scrollHeight;
+  return div;
+}
+function appendTyping(){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg assistant'; div.id = 'typingIndicator';
+  div.innerHTML = `<div class="who">${PROVIDERS[state.provider].label}</div><div class="bubble typing">thinking</div>`;
+  t.appendChild(div); t.scrollTop = t.scrollHeight;
+}
+function removeTyping(){ const el = $('typingIndicator'); if(el) el.remove(); }
+
+/* ---------- transcript export ---------- */
+function buildTranscriptText(){
+  const lines = ['Dx Dojo — Socratic Rounds', $('wsSub').textContent, 'Exported: '+new Date().toLocaleString(), '----------------------------------------', ''];
+  state.messages.forEach(m=>{
+    const who = m.role==='user' ? 'You' : PROVIDERS[state.provider].label;
+    lines.push(who+':'); lines.push(m.content); lines.push('');
+  });
+  return lines.join('\n');
+}
+$('downloadTranscriptBtn').addEventListener('click', ()=>{
+  const blob = new Blob([buildTranscriptText()], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'dx-dojo-transcript-' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-') + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ---------- model dispatch (ongoing conversation) ---------- */
+async function callModel(messagesSoFar){
+  state.running = true; $('sendBtn').disabled = true; $('errorNote').classList.remove('show');
+  appendTyping();
+  try{
+    const reply = await dispatchOnce(state.systemPrompt, messagesSoFar.length ? messagesSoFar : [{role:'user', content:'Begin.'}]);
+    removeTyping();
+    appendMsg('assistant', reply);
+    state.messages.push({role:'assistant', content: reply});
+  } catch(err){
+    removeTyping();
+    $('errorNote').textContent = 'Request failed: ' + err.message + ' — check your API key, model name, and that the provider allows browser requests.';
+    $('errorNote').classList.add('show');
+  } finally {
+    state.running = false; $('sendBtn').disabled = false;
+  }
+}
+
+/* single-shot dispatch used for case generation */
+async function dispatchOnce(system, msgs){
+  const keys = loadKeys(); const models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+  if(state.provider === 'claude') return callClaude(apiKey, model, system, msgs);
+  if(state.provider === 'gemini') return callGemini(apiKey, model, system, msgs);
+  if(state.provider === 'other'){ return callCustom(loadEndpoints()['other'], apiKey, model, system, msgs); }
+  return callOpenAI(apiKey, model, system, msgs);
+}
+
+/* ---------- provider API calls ---------- */
+async function callClaude(apiKey, model, system, msgs){
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({model, max_tokens:4096, system, messages: msgs.map(m=>({role:m.role, content:m.content}))})
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+async function callGemini(apiKey, model, system, msgs){
+  const contents = msgs.map(m=>({role: m.role==='assistant'?'model':'user', parts:[{text:m.content}]}));
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`,{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({systemInstruction:{parts:[{text:system}]}, contents})
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  const parts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
+  return parts.map(p=>p.text||'').join('\n').trim();
+}
+async function callCustom(endpoint, apiKey, model, system, msgs){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const messages = [{role:'system', content: system}].concat(msgs);
+  const headers = {'Content-Type':'application/json'};
+  if(apiKey) headers['Authorization'] = 'Bearer '+apiKey;
+  const res = await fetch(endpoint, {method:'POST', headers, body: JSON.stringify({model, messages, max_tokens:4096})});
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  if(data.choices && data.choices[0] && data.choices[0].message) return (data.choices[0].message.content||'').trim();
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+async function callOpenAI(apiKey, model, system, msgs){
+  const messages = [{role:'system', content: system}].concat(msgs);
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+    body: JSON.stringify({model, messages, max_tokens:4096})
+  });
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status+' '+t.slice(0,200)); }
+  const data = await res.json();
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+</script>
+</body>
+</html>
