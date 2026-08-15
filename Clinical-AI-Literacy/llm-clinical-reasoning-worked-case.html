@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>One Case, Every Mode: A Complete Walkthrough</title>
+<style>
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    color: #2C2C2A;
+    line-height: 1.7;
+    font-size: 18px;
+    background: #FFFFFF;
+  }
+  h1 {
+    font-size: 32px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #D3D1C7;
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-top: 32px;
+  }
+  p { margin: 16px 0; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  ul, ol { padding-left: 24px; }
+  li { margin: 10px 0; }
+  .hl { background: #FCDE5A; padding: 0 2px; }
+  .intro-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    margin-bottom: 32px;
+  }
+  .plain-summary {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #E6F1FB;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 32px;
+  }
+  .plain-summary h2 {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin: 0 0 10px;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .plain-summary p { font-size: 15px; margin: 8px 0; line-height: 1.6; }
+  .stage-label {
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #085041;
+    background: #E3F1EA;
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+  .case-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F1EFE8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+  .prompt-box {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    background: #FFFFFF;
+    border: 1px solid #B4B2A9;
+    border-left: 3px solid #085041;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 12px 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .response-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #F7F5EF;
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    line-height: 1.6;
+    color: #3A3936;
+  }
+  .caveat {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #5F5E5A;
+    background: #FAEEDA;
+    border-left: 3px solid #854F0B;
+    padding: 10px 14px;
+    margin: 8px 0 24px;
+  }
+  .good {
+    border-left: 3px solid #085041;
+  }
+  .bad {
+    border-left: 3px solid #A3271E;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #D3D1C7;
+    margin: 40px 0;
+  }
+</style>
+
+<style>
+.series-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#5F5E5A;padding:10px 0;margin-bottom:8px;border-bottom:1px solid #D3D1C7}
+.series-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-nav a:hover{text-decoration:underline}
+.series-footer-nav{font-family:Arial,Helvetica,sans-serif;font-size:15px;margin-top:48px;padding-top:20px;border-top:1px solid #D3D1C7;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.series-footer-nav a{color:#B0521C;text-decoration:none;font-weight:600}
+.series-footer-nav a:hover{text-decoration:underline}
+.series-footer-nav .center{width:100%;text-align:center;order:3;font-size:13px;color:#5F5E5A}
+</style>
+</head>
+<body>
+<div class="series-nav">Clinical AI Literacy series — <a href="index.html">Index</a> · Part 4 of 4 (Quick Read)</div>
+
+<h1>One Case, Every Mode: A Complete Walkthrough</h1>
+<p class="intro-note">A worked example, start to finish — for readers who want the practice without the three-part backstory</p>
+
+<div class="plain-summary">
+<h2>What the earlier three pieces established, briefly</h2>
+<p><strong>Part 1</strong> mapped where these models are actually reliable: strong at recall (facts, guideline text), weaker at synthesis and judgment calls, and — critically — with no built-in signal telling a user which one it's doing at any given moment. The safest use is as a checking tool, not a deciding one.</p>
+<p><strong>Part 2</strong> showed where that gap bites hardest: not the rare, hard case where every clinician is already careful, but the common, low-acuity case, where a plausible-sounding answer and a correct answer feel identical. It identified three modes of use — <strong>Answer mode</strong> (asking for a conclusion) is the risky one; <strong>Analytics mode</strong> (auditing your own already-stated plan) and <strong>Socratic mode</strong> (defending your reasoning with no conclusion offered) are safe, because in both, the clinician's own judgment stays the thing that decides.</p>
+<p><strong>Part 3</strong> got into the mechanics: a prompt only functions as a real check if its easiest response is disagreement, not agreement, and a case only tests the model if the clinician's own conclusion is kept out of it until the mode calls for it.</p>
+<p>This piece skips the theory and just runs one case through all of it.</p>
+</div>
+
+<h2>The Case</h2>
+<div class="case-box">
+<strong>52-year-old woman.</strong> Three weeks of fatigue and reduced appetite. Unintentional weight loss, roughly 4 kg over that time. Intermittent, mild, diffuse abdominal discomfort — not sharp, not localized. No fever, no vomiting, bowel habits unchanged. She mentions she's been caring for a parent with declining health over the same period and has been sleeping poorly. No prior major medical history.</div>
+<p>This is a genuinely ambiguous presentation. It has a plausible benign story (caregiving stress, poor sleep, reduced appetite) sitting right next to features — unintentional weight loss in a woman over 50 — that some guidelines flag for further workup regardless of how good the benign story sounds. That combination is exactly the setup this series has been warning about, so it's a good case to walk end to end.</p>
+
+<hr>
+
+<h2>Stage 1 — Broadening the Differential</h2>
+<p class="stage-label">Moderate-use band · Part 1</p>
+<p>At this point nothing has been decided. The clinician hasn't formed a working diagnosis yet, so this is a legitimate use of the model: widen the net before committing to a narrative, not narrow toward one.</p>
+<div class="prompt-box good">"52F, 3 weeks fatigue, reduced appetite, ~4kg unintentional weight loss, intermittent mild diffuse abdominal discomfort, no fever/vomiting, bowel habits unchanged. Concurrent major caregiving stressor and poor sleep. No further workup done yet. I'm not asking for a diagnosis — just broaden the differential. What categories should I be considering before I narrow anything down?"</div>
+<div class="response-box">A broad differential across several categories: oncologic (GI or hematologic malignancy — age and unintentional weight loss are the flags here), endocrine (new-onset diabetes, hyperthyroidism, adrenal insufficiency), infectious/chronic (TB, HIV), psychiatric/functional (depression, adjustment disorder — genuinely plausible given the stressor, but shouldn't be assumed by default), and medication or substance-related causes. Suggests basic first-line labs (CBC, CMP, TSH, HbA1c) would meaningfully narrow several of these at once.</div>
+<p>Nothing here is a diagnosis. It's a checklist — and it did its one job: adrenal insufficiency and TB weren't on the clinician's initial radar. That's the entire value of this stage, and it's also where this stage ends. The clinician goes and does the workup; the model doesn't get consulted again until there's something to test.</p>
+
+<hr>
+
+<h2>Stage 2 — The Clinician's Own Workup and Plan</h2>
+<p class="stage-label">No model involved</p>
+<p>This is the part no prompt replaces. The clinician orders the first-line labs, takes a more targeted history (no alarm features — no blood in stool, no dysphagia, no family history of GI cancer, colon cancer screening up to date), and gets results back: mild anemia, TSH low-normal, HbA1c normal, basic infectious screen not indicated on this history. Nothing pointing sharply at malignancy, nothing ruling it out with certainty either.</p>
+<p>Working impression: <strong>most consistent with a stress- and sleep-related picture, given the concurrent caregiving burden</strong> — plan is supportive care, close follow-up, defer imaging for now, recheck in four weeks. This plan is the clinician's, formed independently, before the model is consulted again. That ordering is what makes the next two stages real checks instead of theater.</p>
+
+<hr>
+
+<h2>Stage 3 — Self-Audit (Analytics Mode)</h2>
+<p class="stage-label">Part 2 / Part 3 — the plan is stated first, disagreement is invited</p>
+<p>New conversation thread — deliberately not a continuation of Stage 1's, so nothing about this response is shaped by the earlier differential-broadening exchange.</p>
+<p>This and the Socratic exchange below don't require a bare prompt typed from scratch each time — a framework like <a href="http://avi33tbtt.github.io/">VibeRounds</a> packages both modes as ready-made tools: an Analytics module built for exactly this kind of self-audit of an already-stated plan, and a separate Socratic module built to interrogate reasoning without ever supplying a conclusion. Either works for what follows; the point that matters is the mode, not the interface.</p>
+<div class="prompt-box good">"52F, 3 weeks fatigue and reduced appetite, ~4kg unintentional weight loss, intermittent mild diffuse abdominal discomfort, no alarm features on history, basic labs show only mild anemia and low-normal TSH, otherwise unremarkable. Concurrent major caregiving stressor. My plan: attribute to stress/poor sleep, supportive care, defer imaging, recheck in 4 weeks. What would make you disagree with that plan, and what am I likely not thinking of?"</div>
+<div class="response-box">Flags one specific concern: a plausible stress-related explanation existing alongside the weight loss doesn't make the weight loss itself less significant — the two facts should be evaluated on their own terms, not folded into one story just because one explains the other conveniently. Unintentional weight loss of this magnitude in a woman this age is, on its own, a finding some guidelines treat as warranting further workup independent of how compelling the alternative explanation is. Asks directly: is colon cancer screening actually confirmed up to date, or assumed? Also notes the anemia hasn't been characterized (iron studies, MCV trend) and that "low-normal TSH" is being read as reassuring when it's also compatible with early thyroid dysfunction that hasn't fully declared itself.</div>
+<p>This is the exchange doing exactly what it's supposed to: not offering a competing diagnosis, but pressure-testing the one specific place where the clinician's plan was most vulnerable — using a plausible story to explain away a finding that has its own independent significance.</p>
+<div class="caveat"><strong>Worth noticing:</strong> this pushback was possible because the plan was stated plainly, with no hedge words like "probably stress-related" baked into the case description itself. If the case had opened with "looks like a straightforward stress-related picture," the response would likely have mirrored that framing back instead of challenging it.</div>
+
+<hr>
+
+<h2>Stage 4 — Socratic Mode</h2>
+<p class="stage-label">Part 2 / Part 3 — used later, for reflection, no plan offered</p>
+<p>A few days later, teaching a resident on the same de-identified case. Different mode, different purpose: not auditing a decision already made, but sharpening the reasoning itself, with no conclusion in the prompt at all.</p>
+<div class="prompt-box good">"Case for teaching, no conclusions from you: 52F, 3 weeks fatigue and reduced appetite, ~4kg unintentional weight loss, intermittent mild abdominal discomfort, no alarm features, mild anemia, low-normal TSH, concurrent major caregiving stressor. Act as a Socratic peer — ask me questions that make me defend my own reasoning, don't tell me what you'd do."</div>
+<div class="response-box">Opens with: "What would you need to see to feel genuinely reassured enough to defer imaging — not what would make you feel better, but what specific finding would actually lower your pretest concern?" Follows with: "If this patient had no caregiving stressor at all — same labs, same weight loss — would your plan change? If yes, what does that tell you about how much weight the stressor is actually carrying in your reasoning versus how much you want it to carry?"</div>
+<p>No answer was ever supplied. The value here is entirely in the second question — it isolates whether the stress narrative is doing real explanatory work or just making an ambiguous case feel more resolved than it is. That's a different kind of value than Stage 3 produced, and it's why the series treats these as two distinct tools, not interchangeable ones.</p>
+
+<hr>
+
+<h2>Stage 5 — What Skipping the Structure Looks Like</h2>
+<p class="stage-label">Answer mode — the mode this series argues against</p>
+<p>For contrast: the same case, asked the way most people actually type it.</p>
+<div class="prompt-box bad">"52F, fatigue, weight loss, mild ab pain, big caregiver stressor lately, labs pretty unremarkable. What's going on and what should I do?"</div>
+<div class="response-box">Most likely explanation is stress- and sleep-related, especially given the temporal correlation with the caregiving burden and the otherwise unremarkable workup. Reasonable plan: reassurance, supportive care, follow-up in a few weeks; escalate only if new symptoms develop.</div>
+<p>Notice what happened: this is <em>the same conclusion</em> the clinician reached independently in Stage 2 — but arrived at with none of the scrutiny Stage 3 applied. Nothing here mentions the weight-loss-as-independent-finding point, nothing asks about screening status, nothing flags the anemia as uncharacterized. Accepted as written, this response would have quietly closed the door Stage 3 opened. The output isn't wrong, exactly — it's just untested, and a reader has no way to tell the difference between this and a version that <em>was</em> wrong, because the tone is identical either way.</p>
+
+<hr>
+
+<h2>The Workflow, End to End</h2>
+<figure>
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F5E5A"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#A3271E"/>
+    </marker>
+  </defs>
+
+  <!-- Stage 1 -->
+  <rect x="20" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="110" y="55" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">STAGE 1</text>
+  <text x="110" y="75" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Broaden the</text>
+  <text x="110" y="92" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">differential</text>
+
+  <line x1="200" y1="70" x2="238" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 2 -->
+  <rect x="240" y="30" width="180" height="80" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+  <text x="330" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#5F5E5A">STAGE 2</text>
+  <text x="330" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Clinician's own</text>
+  <text x="330" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">workup + plan</text>
+  <text x="330" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(no model)</text>
+
+  <line x1="420" y1="70" x2="458" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 3 -->
+  <rect x="460" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="550" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">STAGE 3</text>
+  <text x="550" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Self-audit the</text>
+  <text x="550" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">stated plan</text>
+  <text x="550" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(fresh thread)</text>
+
+  <line x1="640" y1="70" x2="678" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Stage 4 -->
+  <rect x="680" y="30" width="180" height="80" rx="8" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="770" y="50" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#085041">STAGE 4</text>
+  <text x="770" y="70" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Socratic</text>
+  <text x="770" y="87" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">reflection</text>
+  <text x="770" y="102" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#5F5E5A">(no plan offered)</text>
+
+  <!-- Divergent bad path from Stage 2 -->
+  <line x1="330" y1="110" x2="330" y2="180" stroke="#A3271E" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrowRed)"/>
+  <text x="330" y="200" text-anchor="middle" font-family="Arial" font-size="11" fill="#A3271E">skip the check</text>
+
+  <rect x="240" y="215" width="180" height="80" rx="8" fill="#FBEAE8" stroke="#A3271E" stroke-width="1.5"/>
+  <text x="330" y="238" text-anchor="middle" font-family="Arial" font-size="11" font-weight="700" fill="#A3271E">STAGE 5</text>
+  <text x="330" y="258" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">Answer mode</text>
+  <text x="330" y="275" text-anchor="middle" font-family="Arial" font-size="13" fill="#2C2C2A">direct request</text>
+  <text x="330" y="290" text-anchor="middle" font-family="Arial" font-size="10" font-style="italic" fill="#A3271E">confident, untested</text>
+
+  <!-- Legend -->
+  <rect x="20" y="340" width="14" height="14" rx="3" fill="#E3F1EA" stroke="#085041" stroke-width="1.5"/>
+  <text x="42" y="352" font-family="Arial" font-size="12" fill="#2C2C2A">Model used to check reasoning the clinician already owns</text>
+
+  <rect x="20" y="365" width="14" height="14" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+  <text x="42" y="377" font-family="Arial" font-size="12" fill="#2C2C2A">Clinician's own judgment — no model involved</text>
+
+  <rect x="20" y="390" width="14" height="14" rx="3" fill="#FBEAE8" stroke="#A3271E" stroke-width="1.5"/>
+  <text x="42" y="402" font-family="Arial" font-size="12" fill="#2C2C2A">Skipped structure — model supplies the conclusion untested</text>
+
+  <text x="20" y="435" font-family="Arial" font-size="12" fill="#5F5E5A" font-style="italic">Read left to right: widen → decide → audit → reflect. The dashed red branch is the shortcut this series argues against.</text>
+</svg>
+<figcaption>The four-stage workflow used on the case above, with the Answer-mode shortcut shown as the branch to avoid.</figcaption>
+</figure>
+
+<h2>Closing</h2>
+<p>Same case, four different exchanges, four different jobs: <strong>widen</strong> the differential before committing to anything, do the actual clinical work yourself, <strong>audit</strong> your own stated plan for its weakest point, and separately, <strong>rehearse</strong> the reasoning behind it with no conclusion on the table at all. The one mode left out on purpose — asking the model to just tell you what's going on — is the one that produces the most confident-sounding output and the least actual checking, which is exactly why it's the one to avoid for anything beyond simple recall.</p>
+<p>If there's one habit to take from all of this, it's the ordering: <strong>your own reasoning goes first, every time.</strong> The model's only job is to test whatever you already committed to — never to hand you the conclusion you bring the case in order to get.</p>
+
+<div class="series-footer-nav"><a href="llm-clinical-reasoning-practice.html">← Part 3: From Diagnosis to Practice</a><a href="index.html">Back to Index →</a><div class="center"><a href="index.html">Clinical AI Literacy — Full Series Index</a></div></div>
+</body>
+</html>
