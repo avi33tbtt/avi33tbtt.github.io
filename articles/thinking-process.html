@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</title>
+<style>
+  :root {
+    --ink: #0f172a;
+    --sub: #475569;
+    --line: #e2e8f0;
+    --accent: #0891B2;
+    --accent-dark: #0e7490;
+    --accent-soft: #ecfeff;
+    --accent-soft2: #cffafe;
+    --mark-bg: #cffafe;
+    --bg: #ffffff;
+    --card: #f8fafc;
+    --code-bg: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .topbar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  h1 + p em {
+    color: var(--sub);
+    font-style: normal;
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 2.6em 0 0.7em;
+    color: var(--ink);
+    scroll-margin-top: 20px;
+  }
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin: 1.9em 0 0.5em;
+    color: var(--accent-dark);
+  }
+  p { margin: 0 0 1.15em; font-size: 1.02rem; color: #1e293b; }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 2.8em 0;
+  }
+  strong { color: var(--ink); font-weight: 700; }
+  mark {
+    background: var(--mark-bg);
+    padding: 0.05em 0.3em;
+    border-radius: 4px;
+    color: var(--accent-dark);
+    font-weight: 600;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  blockquote {
+    margin: 1.5em 0;
+    padding: 1.1em 1.3em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    font-size: 0.98rem;
+    color: #1e293b;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.35em; margin: 0 0 1.15em; }
+  li { margin-bottom: 0.6em; font-size: 1.02rem; color: #1e293b; }
+  li::marker { color: var(--accent); }
+  a { color: var(--accent-dark); text-decoration: underline; text-decoration-color: var(--accent-soft2); text-underline-offset: 2px; }
+  a:hover { text-decoration-color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5em 0 2em;
+    font-size: 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-soft);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-dark);
+    font-weight: 700;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fdfe; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5em 0 2em;
+    border-radius: 12px;
+  }
+  .table-scroll table { margin: 0; }
+  .svg-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 32px 0;
+  }
+  .svg-scroll svg { display: block; min-width: 520px; }
+  img { max-width: 100%; height: auto; }
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+    .wrap { padding: 28px 16px 64px; max-width: 100%; }
+    .eyebrow { font-size: 0.68rem; padding: 3px 10px; margin-bottom: 14px; }
+    h1 { font-size: 1.45rem; line-height: 1.3; }
+    h1 + p em { font-size: 0.95rem; }
+    h2 { font-size: 1.18rem; margin: 2em 0 0.6em; }
+    h3 { font-size: 1rem; margin: 1.6em 0 0.4em; }
+    p, li { font-size: 0.96rem; }
+    ul, ol { padding-left: 1.15em; }
+    table { min-width: 560px; font-size: 0.82rem; }
+    th, td { padding: 9px 10px; }
+    blockquote { padding: 0.9em 1em; font-size: 0.92rem; }
+    mark { padding: 0.05em 0.25em; }
+  }
+  @media (max-width: 380px) {
+    h1 { font-size: 1.3rem; }
+    .wrap { padding: 24px 12px 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar"><span class="dot"></span><a href="https://avi33tbtt.github.io/" style="color: inherit; text-decoration: none;">Project website: avi33tbtt.github.io</a></div>
+<div class="wrap">
+<h1>Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</h1>
+<p><em>A thinking-process write-up from building VibeRounds</em></p>
+<hr />
+<h2>Summary</h2>
+<p><strong>Every one of these modes operates on reasoning, text, patterns, or logical consistency. None of them operate on the patient.</strong> Pathways, knowledge graphs, RAG, GraphRAG, and neuro-symbolic validation each get genuinely better at one thing — checking timing, checking facts, checking provenance, checking logic — and each of those checks is real and worth having. What none of them can do, by design, is confirm that the reference being checked against is the right frame for the specific person in front of you. That gap doesn't close with better tooling; it's a <mark>category boundary, not a maturity level</mark>. The honest use of this whole architecture is a post-hoc plan auditor and self-audit tool, not a diagnostic safety net.</p>
+<p>That is exactly why VibeRounds stays deliberately scoped to <strong>self-audit of clinical reasoning</strong> — a learning exercise where a learner or practitioner examines their own thinking against a reference and sees where it holds up or breaks — and doesn't extend into clinical decision-making. Not because the tooling isn't good enough yet, but because the tooling, however good, answers a different question than the one that actually determines a patient's care. This distinction matters more now than it would have a year ago: LLM chatbots are being used — and misused — for medical questions at a scale that's outrunning most people's understanding of what these systems can actually verify. The <a href="https://classworkdecjan.blogspot.com/2026/08/the-forward-deployment-engineers.html">FDE lens on strategic restraint</a> applies directly here — the harder discipline isn't building the most capable system, it's having the clarity to say precisely where machine scale ends and human judgment has to take over, and holding that line even as the tooling gets more impressive.</p>
+<h3>Tech summary</h3>
+<p>Pathway grounding, knowledge graphs, RAG, GraphRAG, and neuro-symbolic validation are all, underneath their different mechanisms, <strong>pull-based knowledge-recall-and-cross-check systems</strong>: given a query, they retrieve, structure, or validate against reference material well. None of them generate the query. In the worked vignette, changing "vomited 2 times" to "projectile vomiting" changes the correct clinical action, but every layer still passes every check on both inputs — because retrieval relevance, graph criteria, provenance, and logical consistency all operate on the query as framed, and nothing in the stack audits whether the framing itself missed the one word that should have redirected it. Scaled up as a full "everything you may have missed" dump, this compounds instead of resolving: more findings, not better-triaged ones. The tractable engineering problem isn't more retrieval or a bigger graph — it's a ranking and triage layer on top, narrow enough in scope that a false-positive rate and a false-negative rate can both be measured and held to a bar, with an explicit "say nothing" output as a first-class result, not an edge case.</p>
+<p>It's worth separating what this stack is actually built to fix from what it can't touch. It's a reliability layer against hallucination, unsourced claims, and broken logic once a case is already framed correctly — and that's a moving target: as the base LLM gets more reliable on its own, the marginal engineering value of each additional layer compresses toward the LLM-only baseline. That compression is a hypothesis, not a measured result, and it's a fair one to be skeptical of, given how curated-data-hungry the upper layers (knowledge graph, GraphRAG, neuro-symbolic) get relative to their payoff. What doesn't compress under any model-capability curve is the framing gap: nothing in this stack detects that a query was mis-scoped in the first place, and no amount of retrieval or validation architecture changes that.</p>
+<p><mark>Knowledge management and reasoning tools can give you knowledge and reasoning — they cannot tell you what knowledge or reasoning you need.</mark> That's the line every layer in this stack sits on one side of, no matter how the retrieval or the graph gets upgraded.</p>
+<h3>Clinical summary</h3>
+<p>Every technology described here will confirm a plan is internally consistent, correctly sourced, and logically sound — and still miss the thing that mattered, because none of them notice what you didn't ask them to check. If you already caught that "projectile" was a red flag, these tools help you confirm dosing and cite the right guideline faster. If you didn't catch it, none of them catch it for you — a passed check on a wrong frame looks identical to a passed check on a right one, and that's the actual danger: not visible errors, but <mark>silent false reassurance</mark>. That makes this class of tool a genuinely useful second pass on a plan you've already committed to — a guideline-adherence check, an interaction check, a dosing check — and not something to lean on as a safety net for the noticing itself. The clinical skill the vignette turns on (recognizing "projectile" as a branch point) still has to live in your head first; the tooling can sharpen and double-check that skill, not substitute for it. Watch, too, for the tool trying to compensate by flagging everything, or by always nudging toward more workup — both degrade trust faster than an occasional real miss does.</p>
+<p>Worth knowing as the underlying models keep improving: the value of the extra checking layers (pathway, graph, neuro-symbolic) is tied to how often the base model still hallucinates a dose or fabricates a citation — as that gets rarer, plain LLM answer mode or Socratic mode alone may cover most of what the fuller stack currently does, for routine cases. That's a hypothesis this piece is flagging, not a settled claim. What stays constant regardless is the noticing itself — a clinician who never learns to ask "was it projectile?" won't be prompted to by any version of this stack, however reliable the underlying model becomes.</p>
+<p><mark>These tools can give you knowledge and reasoning — they cannot tell you what knowledge or reasoning this patient needs.</mark> That distinction is the whole difference between a good second pass and a false sense of coverage.</p>
+<h3>FDE summary</h3>
+<p>The deployment question here isn't "is the tooling good enough yet" — it's "what question is this system actually being asked to answer, and does the interface honestly represent that." Every layer in this stack is legitimately strong at reasoning-validity (is this claim consistent with a reference) and none of them, by design, can be strong at patient-validity (is the reference the right frame right now) — that's a category boundary, not a capability gap that better models or more retrieval closes. The failure mode to design against isn't a wrong answer; it's a <mark>confident, fully-checked, silently wrong</mark> one, because that's what erodes the exact vigilance a clinician needs to keep. Which means the forward-deployment discipline here is scope discipline: ship the narrow, falsifiable version (interaction checks, dosing thresholds, single-guideline adherence, provenance on claims) where "consistent with reference" and "correct" actually converge, resist the pull to market it as decision support once it works well in the narrow scope, and if you build the triage layer on top, hold it to the same bar as the alerting systems it risks becoming — measured for both alert fatigue and directional bias (overtreatment nudges), not just for recall.</p>
+<p>There's a roadmap implication worth being explicit about: don't build the escalation ladder (pathway → KG → RAG/GraphRAG → neuro-symbolic) as though each rung is a permanent, straightforwardly-better upgrade. Each rung's marginal value is a function of how unreliable the base LLM still is — a function that's actively moving, and moving fast, in the LLM's favor. Sizing engineering investment in the upper layers against today's reliability gap risks over-building infrastructure whose payoff shrinks as the underlying model improves — this is a hypothesis to validate with real false-positive/false-negative measurement, not something to bank a roadmap on yet. The one investment that doesn't depreciate on that curve is anything that targets the noticing gap directly — an elicitation layer that demands missing red-flag descriptors before reasoning proceeds — because that gap is architectural, not a reliability number that trends toward zero.</p>
+<p><mark>Knowledge management and reasoning tools can supply knowledge and reasoning — they cannot supply the judgment of what knowledge or reasoning a given moment calls for.</mark> That judgment is the product you're not allowed to quietly promise, however good the underlying stack gets.</p>
+<hr />
+<h2>What this implies about the stack's actual value, and what it doesn't</h2>
+<p>It's worth separating two different problems this piece is about, because they don't move on the same variable — and getting this distinction right is the single most important thing to take from everything that follows. <mark>Problem one is the noticing/framing gap</mark> — whether the tool needs "projectile" to be present, or asks for it if it isn't. Nothing in the stack touches this, and nothing about a more capable underlying LLM changes that: <strong>it is not a reliability problem, it is a category boundary, and it doesn't shrink as the model gets better.</strong> <mark>Problem two is a completely separate question</mark>: once a case has been framed correctly, is the LLM's own reasoning about it factually correct, properly sourced, and logically consistent — no hallucinated dosing threshold, no fabricated citation, no broken logical step? This is exactly what pathway grounding, the knowledge graph, RAG/GraphRAG, and neuro-symbolic validation are built to catch, and it's a reliability problem, not a category boundary — one that scales with how good the underlying LLM already is.</p>
+<p>Which means the honest follow-through is this: if LLM output reliability on problem two keeps improving — <strong>low</strong> rate of hallucination, unsupported claims, or logical slips, on the kind of non-edge-case clinical scenario most self-audit use actually consists of — then most of that stack's marginal value shrinks toward the LLM-only version of VibeRounds itself, and the quicker, plainer tool (LLM answer mode or Socratic mode on their own) becomes the practical default rather than an early rung on an escalation ladder. Framing pathway through neuro-symbolic as successive upgrades risks implying they're straightforwardly better than the LLM-only base case; the more accurate framing is that each layer's value is contingent on how much residual unreliability the base LLM still has on problem two, and that value compresses as the base model improves. <mark>What doesn't compress, no matter how much problem two improves, is the noticing gap</mark> — problem one was never the thing any of this stack was built to solve, at any point on the reliability curve.</p>
+<p>To be clear about status: that "low residual error rate on non-edge-case scenarios" claim is a hypothesis, not a measured result. It's exactly the kind of claim that needs to be tested empirically rather than assumed — false-positive rate, false-negative rate, and error rate held to an actual bar across real self-audit sessions — and that validation work is ongoing as part of the <a href="https://avi33tbtt.github.io/">VibeRounds project</a>, not something this piece is asserting as already settled.</p>
+<div class="svg-scroll">
+<figure style="margin: 0;">
+<svg width="100%" viewBox="0 0 680 400" role="img" aria-label="A line chart with model capability on the x-axis and error rate on the y-axis. A teal line shows LLM-only error rate, already low and falling fast as the model improves. A coral line shows error rate with the full stack added, starting lower but converging with the teal line as capability rises, because the stack's marginal benefit shrinks. An annotation notes that LLMs are already highly useful and improving quickly, while the higher layers of the stack demand increasing amounts of curated reference data to build and maintain.">
+<defs>
+<marker id="arrow5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect x="90" y="40" width="10" height="10" fill="#0F6E56"/>
+<text x="106" y="49" font-size="12" fill="#475569">LLM-only error rate</text>
+<rect x="300" y="40" width="10" height="10" fill="#993C1D"/>
+<text x="316" y="49" font-size="12" fill="#475569">with-stack error rate</text>
+<path d="M90,300 L280,240 L460,190 L610,160" fill="none" stroke="#0F6E56" stroke-width="2"/>
+<path d="M90,230 L280,195 L460,170 L610,158" fill="none" stroke="#993C1D" stroke-width="2"/>
+<line x1="90" y1="330" x2="620" y2="330" fill="none" stroke="#475569" stroke-width="1" marker-end="url(#arrow5)"/>
+<text x="620" y="350" text-anchor="end" font-size="12" fill="#475569">model capability</text>
+<text x="90" y="90" text-anchor="start" font-size="12" fill="#475569">LLMs are already highly useful</text>
+<text x="90" y="106" text-anchor="start" font-size="12" fill="#475569">and improving fast on their own</text>
+<path d="M180,112 Q160,150 140,220" fill="none" stroke="#475569" stroke-width="0.5" stroke-dasharray="2 2" marker-end="url(#arrow5)"/>
+<text x="480" y="90" text-anchor="start" font-size="12" fill="#475569">higher stack layers need</text>
+<text x="480" y="106" text-anchor="start" font-size="12" fill="#475569">growing curated-data effort</text>
+<path d="M500,112 Q480,140 460,168" fill="none" stroke="#475569" stroke-width="0.5" stroke-dasharray="2 2" marker-end="url(#arrow5)"/>
+<text x="340" y="380" text-anchor="middle" font-size="12" fill="#475569">hypothesis, pending validation — VibeRounds project</text>
+</svg>
+</figure>
+</div>
+<p>Everything below — pathway, knowledge graph, RAG, GraphRAG, neuro-symbolic — is the walk through problem two, layer by layer. Keep problem one in view while reading it: no matter how good any of these layers gets at reliability, none of them are answering the question this piece is actually about.</p>
+<hr />
+<h2>Step one: ground it in a pathway</h2>
+<p>The first, obvious move to make an LLM's clinical reasoning trustworthy is to anchor it to something authoritative — feed it a clinical pathway, tell it to reason against an EBM hierarchy, ground its differential in a specific guideline. This helps, and it helps in a specific way a fact alone can't: a pathway (tested against acute pancreatitis) gives a learning module a <em>sequence</em>, not just a criterion — fluid resuscitation titrated hour-by-hour, a concrete 48-hour organ-failure threshold defining severe disease, a real pause point for a diagnostic time-out instead of a generic "reconsider" prompt.</p>
+<p>But it doesn't take long to notice the ceiling, and it's not the ceiling you'd expect. A pathway doesn't just state a fact — it issues a timed, directly actionable instruction that carries the implicit weight of "per protocol." That borrowed authority is exactly what makes a wrong instruction here compound faster and get trusted more readily than a wrong fact would. And a pathway is still a single document: one institution's synthesis of the evidence, for one typical presentation. The moment a real case has two competing problems, an atypical trajectory, or a patient the pathway's inclusion criteria never anticipated, "reason inside this pathway" stops being a grounding instruction and starts being a straitjacket — the model stays perfectly consistent with the document, and the document was never built to cover this patient.</p>
+<p>So the natural next move is to give the model something richer than one document.</p>
+<blockquote>
+<p><strong>What this is good for, as self-audit:</strong> a pathway lets a learner check their own reasoning for <em>timing and sequence</em> — whether they'd have acted in the right window, not just cited the right fact. It converts "pause and reconsider" into a concrete, defensible checkpoint (a specific hour, a specific threshold) a learner can hold their own reasoning against after the fact: "here, at hour 48, would I have reassessed?"</p>
+</blockquote>
+<hr />
+<h2>Adding a knowledge graph</h2>
+<p>A knowledge graph promises what a single pathway can't: structured, queryable facts instead of one linear document. Tested against chronic kidney disease, this is a real, visible upgrade — it turns a hedge like "findings are consistent with chronic kidney disease" into a checkable criterion: eGFR below 60 mL/min/1.73m² persisting for three months or more, held as an explicit graph entry rather than an internally coherent but unverified assertion. It also makes disagreement between structured facts surface as a visible signal, and produces a computable coverage flag — a proxy for how sparse the ground truth actually is for a given case — instead of the model's confidence silently smoothing over that gap.</p>
+<p>It also introduces its own risk, though, and it's a subtler one than "the graph might be wrong": the graph can raise the floor by making fabrication checkable, while doing nothing to stop <em>correct</em> data from being misapplied to an atypical or comorbid case that doesn't actually match the entry being invoked. The fact is real. The fit to this patient isn't guaranteed by the fact being real. And practically, building and maintaining a graph with genuine coverage is a large, ongoing engineering commitment — one that, in testing, didn't clearly outperform a much simpler prompting approach for most everyday cases. The complexity cost was real; the accuracy gain was inconsistent.</p>
+<blockquote>
+<p><strong>What this is good for, as self-audit:</strong> a graph lets a learner turn their own hedge into a falsifiable claim and <em>see the coverage behind it</em>. Because the coverage flag exposes how sparse or dense the ground truth is for a given case, a learner reviewing their own reasoning can tell "I checked this and it held up" apart from "this was never actually checkable with what I had" — a distinction free-text reasoning erases entirely.</p>
+</blockquote>
+<hr />
+<h2>Trying GraphRAG</h2>
+<p>The next obvious step is GraphRAG — combine retrieval with graph structure, so the model doesn't just generate from memory but pulls in relevant, connected facts at generation time. This closes part of the gap: it reduces outright fabrication, because now there's something concrete to point to.</p>
+<p>But GraphRAG's core operation is still retrieval by relevance — topical and structural closeness, not logical validation. It can retrieve a passage that mentions a drug and a condition in the same neighborhood of the graph without knowing that the actual relationship between them is "contraindicated." Relevance is not correctness. A GraphRAG system can hand you a beautifully connected, entirely plausible answer that quietly violates a rule the graph itself contains, because nothing in the retrieval step checks the <em>logic</em> of what's assembled — only its proximity.</p>
+<p>That's the gap that finally pointed toward something categorically different: not more retrieval, but actual verification.</p>
+<blockquote>
+<p><strong>Worked example:</strong> the <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html">Evidence-Pyramid Trajectory Mapper — ASV corpus</a> is a live demonstration of exactly this layer. It processes 17 papers on snakebite antivenom (12 case reports, 2 RCTs, 1 systematic review, 2 meta-analyses) and builds a togglable trajectory network across them — every case's path from presentation to outcome, with shared checkpoints (like "ASV administered" or "fasciotomy") drawn as convergence nodes where multiple trajectories cross. It's a genuinely useful self-audit tool: a learner can toggle only the fatal trajectories, or only the ASV-escalation trajectories, and see which checkpoints actually recur across the corpus versus which are paper-specific — turning "I read a few case reports" into "here is the structure those case reports share." And it stays disciplined about its own limits — it explicitly does <em>not</em> pool statistics across papers of different design (a 3-sample case report and a 65-study meta-analysis can't be merged into one number), and every trajectory node is sourced back to a specific paragraph, table, or figure in the original paper. That's provenance done well. But note what it still is: a map of what the literature <em>reported</em>, with disagreement and rare divergent outcomes surfaced as a visible pattern — not a validation of what's true, and not a claim about what any specific new patient's trajectory will be.</p>
+<p><strong>What this is good for, as self-audit:</strong> GraphRAG's real contribution to a learning exercise isn't accuracy — it's <em>provenance</em>. Because every claim is tied to a retrieved, connected source at generation time, a learner can trace any assertion in their own reasoning back to exactly what was pulled and why, instead of trying to reconstruct where an unsourced claim came from after the fact. That traceability is what makes evidence-appraisal language safe to learn from at all — it's only dangerous when it's <em>not</em> backed by a real retrieval step.</p>
+</blockquote>
+<h3>A quick clarification: these three are not the same thing</h3>
+<p>It's easy to lump "knowledge graph," "GraphRAG," and "neuro-symbolic" together as one blob of "structured grounding," but they do three different jobs on top of the same kind of underlying structure:</p>
+<ul>
+<li>A <strong>knowledge graph</strong> is the data itself — facts and relationships stored as nodes and edges. On its own it doesn't retrieve or check anything; it's just where structured facts live, waiting to be queried.</li>
+<li><strong>GraphRAG</strong> is a <em>retrieval</em> method that walks that graph's relationships to pull relevant, connected facts into the model's context before it generates a response. The operation is relevance — "what's near this topic in the graph?" — the same job standard RAG does with vector similarity, just walking edges instead of embeddings. It decides what the model <em>sees</em>; it does not check what the model <em>says</em>.</li>
+<li><strong>Neuro-symbolic integration</strong> is a <em>verification</em> method. It takes a claim the model already generated, converts it into a formal logical statement, and runs that statement through a reasoner against a rule set for a binary verdict — violates a rule, or doesn't. The operation is computation, not retrieval, and it happens <em>after</em> generation, not before.</li>
+</ul>
+<p>The distinction matters in practice: GraphRAG can retrieve a graph entry saying "Drug X contraindicated in Condition Y" and place it right next to the model's own claim in context — and the model can still ignore it, because retrieval doesn't enforce anything. Only the neuro-symbolic layer actually computes whether the claim contradicts that entry and can hard-block the output if it does. That's why the three stack well together rather than substituting for each other: the graph as the shared data source, GraphRAG pulling relevant pieces into context at generation time, and a neuro-symbolic check validating the final claim against that same graph's rules before it ever reaches a learner.</p>
+<hr />
+<h2>Finally, neuro-symbolic integration</h2>
+<p>Neuro-symbolic grounding was the attempt to close that last gap properly: don't just retrieve facts near the model's claim, <em>check</em> the claim against a formal rule set and get a binary answer back. The pipeline:</p>
+<ol>
+<li><strong>Neural proposal</strong> — the LLM generates a plan. A hypothesis, not yet grounded.</li>
+<li><strong>Semantic lifting</strong> — the harness extracts the prose into structured triples: <code>[Action: Prescribe] → [Target: BetaBlocker]</code>, evaluated against <code>[Patient State: Cardiogenic Shock]</code>.</li>
+<li><strong>Symbolic validation</strong> — a formal reasoner (OWL/SHACL, over something like SNOMED-CT and RxNorm) checks the triples against explicit rules. Binary output: valid, or contradiction.</li>
+<li><strong>Intercept and correction</strong> — a contradiction never reaches the learner as a plain answer. It's converted into a targeted question that forces attention to the exact boundary crossed.</li>
+</ol>
+<p>This is a genuinely different mechanism from everything before it. A pathway constrains style. A graph adds structure. GraphRAG improves retrieval. None of those <em>compute</em> logical validity. Symbolic validation does — it can hard-reject a claim that topically looks fine but logically isn't, which retrieval-based approaches structurally cannot do.</p>
+<p>And the encouraging part: the hard components already exist. Reasoners like HermiT and Pellet, ontologies like SNOMED-CT and RxNorm, constraint languages like SHACL — all mature, all open. The real engineering is the glue: extracting clean triples from fluent prose, and routing a failed check into something pedagogically useful instead of a blunt rejection.</p>
+<p>But scaling this up to <em>encyclopedic</em> clinical coverage — the dream of a symbolic layer that can validate reasoning across the whole of medicine — runs into the same wall every layer before it hit, just further out. Even a comprehensive, hard-won ontology is still one curated reference, checking claims against itself. And no matter how large or how logically rigorous that reference gets, it cannot see the patient.</p>
+<blockquote>
+<p><strong>What this is good for, as self-audit:</strong> this is the only layer that gives a learner a genuinely binary, defensible verdict on their own reasoning — not "this seems consistent" but "this violates rule X, full stop." For self-audit, that's the sharpest tool in the stack: it catches the exact class of error a learner is worst at catching on their own — a plausible-sounding plan that quietly breaks a hard safety rule — without needing anyone to have already spotted the problem for them.</p>
+</blockquote>
+<h3>Tools and databases actually useful for this layer</h3>
+<p>None of this needs to be built from scratch. What's mature and open:</p>
+<p><strong>Reasoners / symbolic engines</strong>
+- <strong>HermiT</strong>, <strong>Pellet</strong>, <strong>FaCT++</strong> — OWL 2 description-logic reasoners; compute satisfiability and classification over an ontology.
+- <strong>SWI-Prolog</strong> (via <code>pyswip</code>) — general-purpose logic programming, good for custom rule sets outside OWL's expressivity.
+- <strong>Owlready2</strong> (Python) — ORM-style wrapper that embeds HermiT and lets ontologies be queried like objects.
+- <strong>pySHACL</strong> / <strong>RDFLib</strong> — validate RDF graph data against SHACL shape constraints, pure Python.</p>
+<p><strong>Graph stores / triple stores</strong>
+- <strong>Apache Jena / Fuseki</strong> — SPARQL endpoint + reasoning support, widely used in biomedical semantic web work.
+- <strong>GraphDB</strong> (Ontotext) — enterprise RDF triple store with built-in OWL inferencing.
+- <strong>Neo4j</strong> — property-graph database; not RDF-native but practical for building the trajectory-style graphs shown above.</p>
+<p><strong>Clinical ontologies / terminologies</strong>
+- <strong>SNOMED CT</strong> — the primary clinical concept hierarchy (diseases, findings, procedures).
+- <strong>UMLS</strong> — meta-thesaurus that cross-maps SNOMED, ICD, MeSH, and dozens of other vocabularies into one namespace.
+- <strong>RxNorm</strong> — normalized drug names, useful as the anchor for interaction/contraindication rules.
+- <strong>ICD-10 / ICD-11</strong> — diagnostic coding, useful where a rule needs to key off a billing/administrative category rather than a clinical concept.
+- <strong>LOINC</strong> — standardized lab/observation identifiers, needed if a rule references a specific lab value or threshold.</p>
+<p><strong>Drug safety / interaction data</strong>
+- <strong>DrugBank</strong> — structured drug data: mechanism, targets, pharmacokinetics, known interactions.
+- <strong>ChEBI</strong> — chemical entity ontology, useful for structure-level reasoning (e.g., drug class membership).
+- <strong>OpenFDA (FAERS)</strong> — adverse-event reporting data, useful for surfacing signal frequency rather than hard rules.</p>
+<p><strong>Interoperability / structural standards</strong>
+- <strong>HL7 FHIR</strong> — the standard for representing patient/clinical data as structured resources; the natural target format for the "semantic lifting" step that turns LLM prose into checkable entities.</p>
+<p><strong>Extraction / glue (the part that has to be custom-built)</strong>
+- <strong>spaCy</strong> (with biomedical pipelines like scispaCy) or <strong>Hugging Face</strong> clinical NER models — extracting entities from free text.
+- <strong>Pydantic</strong> / <strong>Instructor</strong> — forcing LLM output into a validated structured schema before it's handed to the reasoner.</p>
+<p>The pattern across all of it: the logic engines and the reference data are commodity infrastructure at this point. The actual engineering effort — and the actual differentiator — is the extraction and routing layer that turns fluent LLM prose into something one of these engines can check, and turns a failed check into something a learner can learn from rather than just a red X.</p>
+<hr />
+<h2>What each layer is actually good for, as a self-audit tool</h2>
+<p><em>Socratic mode, guided discovery, and analytics mode are all part of VibeRounds itself — three faces of the same pedagogically grounded, LLM-built system, not separate tools.</em></p>
+<div class="svg-scroll">
+<figure style="margin: 0;">
+<svg width="100%" viewBox="0 0 680 650" style="display:block;" role="img" aria-label="The clinical reasoning-check pyramid: nine layers from LLM answer mode at the base to neuro-symbolic at the top. Socratic mode, guided discovery, and analytics mode are highlighted as three parts of VibeRounds.">
+<defs>
+<marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#0e7490" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<text x="340" y="30" text-anchor="middle" font-size="14" font-weight="500" fill="#0f172a">Most rigorous</text>
+
+<g><rect x="240" y="50" width="200" height="44" rx="4" fill="#0e7490" stroke="#0e7490" stroke-width="0.5"/>
+<text x="340" y="66" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#ecfeff">Neuro-symbolic</text>
+<text x="340" y="82" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#cffafe">Binary logical validity</text></g>
+
+<g><rect x="215" y="98" width="250" height="44" rx="4" fill="#0891B2" stroke="#0891B2" stroke-width="0.5"/>
+<text x="340" y="114" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#ecfeff">GraphRAG</text>
+<text x="340" y="130" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#cffafe">Traceable provenance</text></g>
+
+<g><rect x="190" y="146" width="300" height="44" rx="4" fill="#0ea5b8" stroke="#0ea5b8" stroke-width="0.5"/>
+<text x="340" y="162" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#ecfeff">RAG</text>
+<text x="340" y="178" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#e0fbff">Cited against references</text></g>
+
+<g><rect x="165" y="194" width="350" height="44" rx="4" fill="#22b8cf" stroke="#22b8cf" stroke-width="0.5"/>
+<text x="340" y="210" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#083344">Knowledge graph</text>
+<text x="340" y="226" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0e4a57">Structured facts and criteria</text></g>
+
+<g><rect x="140" y="242" width="400" height="44" rx="4" fill="#3ac9dc" stroke="#3ac9dc" stroke-width="0.5"/>
+<text x="340" y="258" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#083344">Pathway</text>
+<text x="340" y="274" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0e4a57">Timing and sequence</text></g>
+
+<rect x="34" y="290" width="6" height="140" rx="3" fill="#7f77dd"/>
+
+<g><rect x="115" y="290" width="450" height="44" rx="4" fill="#7f77dd" stroke="#7f77dd" stroke-width="0.5"/>
+<text x="330" y="306" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#eeedfe">Analytics mode</text>
+<text x="330" y="322" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#cecbf6">Aggregate pattern across attempts</text></g>
+
+<g><rect x="90" y="338" width="500" height="44" rx="4" fill="#8f88e0" stroke="#8f88e0" stroke-width="0.5"/>
+<text x="330" y="354" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#eeedfe">Guided discovery</text>
+<text x="330" y="370" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#cecbf6">Pedagogically grounded LLM-built modules</text></g>
+
+<g><rect x="65" y="386" width="550" height="44" rx="4" fill="#a09ae4" stroke="#a09ae4" stroke-width="0.5"/>
+<text x="330" y="402" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#eeedfe">Socratic mode</text>
+<text x="330" y="418" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#cecbf6">Step-by-step questioning of learner's logic</text></g>
+
+<g><rect x="40" y="434" width="600" height="44" rx="4" fill="#a7e3ee" stroke="#a7e3ee" stroke-width="0.5"/>
+<text x="340" y="450" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#083344">LLM answer mode</text>
+<text x="340" y="466" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0e4a57">Broadest, a single direct answer</text></g>
+
+<text x="340" y="500" text-anchor="middle" font-size="14" font-weight="500" fill="#0f172a">Most permissive / broadest</text>
+
+<rect x="60" y="518" width="560" height="82" rx="12" fill="#f0eefe" stroke="#7f77dd" stroke-width="1.5"/>
+<text x="340" y="546" text-anchor="middle" font-size="15" font-weight="700" fill="#3C3489">VibeRounds</text>
+<text x="340" y="568" text-anchor="middle" font-size="12.5" fill="#534AB7">Socratic, guided discovery, and analytics</text>
+<text x="340" y="586" text-anchor="middle" font-size="12.5" fill="#534AB7">are three parts of one system</text>
+
+<text x="340" y="628" text-anchor="middle" font-size="12" fill="#475569">Every layer checks reasoning against a reference — none checks whether the reference fits this patient</text>
+</svg>
+</figure>
+</div>
+
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Lets a learner check</th>
+<th>Verdict style</th>
+<th>What it can't tell the learner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM answer mode</strong></td>
+<td>Whether my final answer matches a direct model-generated response</td>
+<td>Direct answer / comparison</td>
+<td>Whether the model's own answer is itself the right frame</td>
+</tr>
+<tr>
+<td><strong>Socratic mode</strong> — base of the VibeRounds paradigm</td>
+<td>My own reasoning process, step by step, through guided questioning around the case data — the goal is the learning outcome, not solving the case itself</td>
+<td>Prompted self-correction</td>
+<td>Whether the question sequence itself covers the right ground</td>
+</tr>
+<tr>
+<td><strong>Guided discovery</strong> — pedagogically grounded VibeRounds modules built with an LLM</td>
+<td>How my reasoning holds up across a single-pass run of one module, with case-based reasoning answers aimed at a learning outcome rather than a solved case</td>
+<td>Sequential module pass/flag</td>
+<td>Whether the modules chosen fit this particular case</td>
+</tr>
+<tr>
+<td><strong>Analytics mode (single module or pipeline)</strong> — also part of VibeRounds</td>
+<td>Aggregate patterns across one module or a full pipeline of reasoning attempts</td>
+<td>Pattern / trend surfaced</td>
+<td>Whether the aggregate pattern applies to this specific patient</td>
+</tr>
+<tr>
+<td><strong>Pathway</strong></td>
+<td>Timing &amp; sequence — did my plan act in the right window</td>
+<td>Checkpoint / time-boxed</td>
+<td>Whether this patient fits the pathway at all</td>
+</tr>
+<tr>
+<td><strong>Knowledge graph</strong></td>
+<td>Facts &amp; criteria, plus how much ground truth actually existed</td>
+<td>Criterion met / not met, or "unverifiable"</td>
+<td>Whether a correct fact was applied to the wrong context</td>
+</tr>
+<tr>
+<td><strong>RAG</strong> (textbooks, guidelines, evidence-based papers, cases)</td>
+<td>Whether a claim is backed by <em>some</em> retrieved source at all</td>
+<td>Cited / uncited</td>
+<td>Whether the retrieved source is the right one, or just the closest match</td>
+</tr>
+<tr>
+<td><strong>GraphRAG</strong></td>
+<td>Provenance — where a claim in my reasoning actually came from</td>
+<td>Traceable / untraceable</td>
+<td>Whether the retrieved material was the right frame</td>
+</tr>
+<tr>
+<td><strong>Neuro-symbolic</strong></td>
+<td>Logical consistency of my reasoning against a hard rule set</td>
+<td>Binary: valid / contradiction</td>
+<td>Whether the rule set itself is the right rule set here</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Read across the row, and the pattern is the same one from every section above: each layer sharpens a learner's self-audit of <em>something specific and real</em>, and each layer's blind spot is precisely the thing that requires seeing the patient, not the reference.</p>
+<hr />
+<h2>Worked example: one word change, one missed diagnosis</h2>
+<p>Take a simple pediatric vignette — acute diarrhea and vomiting, otherwise unremarkable history — and run it through every mode above, changing exactly one input detail between two versions:</p>
+<ul>
+<li><strong>Input 1:</strong> child has vomited 2 times today, along with loose stools.</li>
+<li><strong>Input 2:</strong> child has been having projectile vomiting, along with loose stools.</li>
+</ul>
+<p>Here's the part worth sitting with: not one of the technologies below can be counted on to <em>need</em> the difference between these two inputs. All nine do exactly what they're designed to do, correctly, on whatever input they're handed — that's true across the board, not just for a favored subset. Three of them (LLM answer mode, Socratic mode, guided discovery) have an output that happens to be sensitive to a single descriptor, because their operation reads the free text directly: given Input 2, they correctly pick up "projectile" and steer toward pyloric stenosis. The other six aren't failing to react — they're correctly doing a different kind of operation, one that matches against a fixed criterion, relevance target, timing window, or rule set rather than against phrasing: RAG's retrieval, the knowledge graph's criterion check, the pathway's timing check, and neuro-symbolic validation's rule check would all be equally correct whether the note said "projectile" or "frequent," because nothing in what they check is keyed to that word. Analytics mode averages the difference away across the pipeline, which is also its operation working as designed. None of these six are worse at their job than the three that shifted — they simply have a different job, one that was never going to move on a single word in the first place. What none of the nine have, whether their output shifts or not, is the capability that would actually close the gap: <em>needing</em> that word to be present, and asking for it if it isn't. That decision — noticing that "projectile" is the word that should redirect the whole case, and making sure it gets written down — happens in the clinician's head, before any of these tools are ever queried. If the clinician who's documenting the case already registers "projectile" as a red flag, they've usually already started reasoning toward pyloric stenosis or a raised-ICP workup on their own; the tools downstream just help them recall the criteria or dosing, or confirm the answer, once they've already pointed themselves the right direction. And if the clinician <em>doesn't</em> register it — if it's charted as a passing descriptor, or left out entirely — none of these tools independently raises a hand to say "wait, that word matters" or asks for it back. They work with the query they're given. They don't audit whether the query itself missed, or omitted, the one word that should have changed it.</p>
+<p>That's the real shape of the failure below: every one of the nine modes performs its own operation correctly on the input as given — three will land on Input 2's answer because their operation reads phrasing, six will produce the same correct-for-their-job output on both inputs because their operation checks something phrasing doesn't touch — and not one of the nine will ever ask for the word if it isn't there. Knowledge utilization was never the same thing as patient-centeredness — patient-centeredness would mean the tool itself insisting on the level of detail it needs, independent of whether the human documenting the case already knew to supply it. None of them do that, and being "correct on the input given" is precisely what makes that absence easy to miss: every mode looks like it's working.</p>
+<ul>
+<li><strong>LLM answer mode</strong> actually does notice the word "projectile" when it's present in Input 2 — given that input, it can generate a different, more appropriate answer that flags pyloric stenosis as a consideration rather than defaulting to gastroenteritis. That correctness, though, is entirely downstream of the clinician already having written "projectile" into the note. The tool answering well when the detail is present doesn't teach the clinician anything about needing to capture that detail in the first place — chart the same case as "vomited several times" instead, and the tool has nothing to work with; it answers gastroenteritis just as fluently, because nothing about the query told it to ask for more. Knowledge recall: correct, conditional on the input. Patient-centeredness: absent — the tool's accuracy depends entirely on documentation habits it has no hand in shaping.</li>
+<li><strong>Socratic mode</strong> asks Socratic learning/reasoning questions built around the case data — episode count, fever, hydration status, stool character — with the goal being the learner's reasoning process itself, not solving Input 2 as a case. Given Input 2, it succeeds: "projectile" is already in the data, so the questioning legitimately routes toward it and the learner is walked into recognizing pyloric stenosis as a live consideration. But that success only happens because the word was already there to route on — the mode has no way to <em>need</em> "projectile" in the first place; it has no mechanism that requires that level of descriptive precision before questioning begins. Give it Input 1's "vomited 2 times" instead, and it asks the same competent, learner-centered questions around hydration and stool character, and never once asks for more precision on the vomiting itself, because nothing in the mode's design treats descriptive precision as something to demand rather than something to receive. Knowledge cross-check: sound. Patient-centeredness: absent — the mode teaches reasoning against whatever data it's handed, not whether that data was precise enough to hand over in the first place.</li>
+<li><strong>Guided discovery</strong> runs the case as a single pass through one module, producing case-based reasoning answers aimed at a learning outcome — not necessarily at solving Input 2 as a case. Given Input 2, it succeeds: "projectile" is present in the input, so the module branches correctly and the learning outcome delivered includes pyloric stenosis as a differential. But again, the module has no way to <em>need</em> that word — nothing in a single-pass module run requires a minimum descriptive precision before the pass begins, it just branches on whatever's there. Run the identical module on Input 1, and it passes cleanly through history, exam, differential, and plan, delivering a coherent gastroenteritis-focused learning outcome, with nothing in the pass ever flagging that the vomiting description was underspecified. Patient-centeredness: absent — the module delivers its intended learning outcome correctly on the case as handed to it, and never questions whether the handoff itself buried the signal.</li>
+<li><strong>Analytics mode</strong>, run as a chain of guided-discovery modules pipelined on this single case, shows the same supportive-care plan holding up consistently across the pipeline for both variants, with high internal consistency. This is the clearest version of the problem: the consistency is built from the same recall pattern repeating module to module, so it isn't reassurance — it's the blind spot at scale, just within one case instead of across many. Patient-centeredness: absent, and actively obscured by looking like agreement.</li>
+<li><strong>RAG</strong> retrieves textbook and guideline passages on gastroenteritis management for both inputs, well-sourced and directly relevant to the query "vomiting and diarrhea, management." Knowledge recall: strong. Patient-centeredness: absent — retrieval matched the query, and the query never asked about projectile vomiting as its own entity, so nothing about pyloric stenosis was ever in the candidate set to retrieve.</li>
+<li><strong>GraphRAG</strong> does the same thing with structured provenance attached — every claim traces to a real, connected source. Still absent: the graph walk starts from the same query, so it walks toward gastroenteritis neighbors, never toward the structural differential "projectile" should have opened.</li>
+<li><strong>Knowledge graph</strong> confirms "vomiting + diarrhea" as criteria consistent with acute gastroenteritis for both inputs, criterion met either way — a true fact, correctly checked. Patient-centeredness: absent — the graph was never queried for the <em>other</em> true fact, that projectile vomiting is itself a criterion for something else, because nothing prompted that second query.</li>
+<li><strong>Pathway</strong> grounding checks timing — was fluid status reassessed at the right interval — and both inputs pass the checkpoint cleanly. Patient-centeredness: absent — the pathway was never asked whether this child belongs on it at all.</li>
+<li><strong>Neuro-symbolic</strong> validation checks the plan against hard rules — no contraindicated medication, dosing within range — and both inputs pass, no contradiction found. Patient-centeredness: absent — the rule set validates internal safety of the plan given, not whether the plan is answering the right clinical question.</li>
+</ul>
+<p><strong>Minimal worked demo, run on Input 2:</strong> the claim under test is the plan actually proposed — "oral rehydration, supportive care, reassess in 48h" — converted into a formal statement and checked against the loaded rule set.</p>
+<pre style="background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-size: 0.85rem; overflow-x: auto; line-height: 1.6;">Claim: plan(oral_rehydration) ∧ plan(supportive_care) ∧ plan(reassess_48h)
+Rule 1: ¬contraindicated(oral_rehydration, patient)         → holds, no contraindication on file
+Rule 2: fluid_volume(plan) ≤ maintenance + deficit(patient)  → holds, volume within bound
+Rule 3: no_drug_interaction(plan)                            → holds, vacuously (no drug in plan)
+
+Verdict: VALID — no rule in the loaded set is violated.</pre>
+<p>That verdict is correct and useless in the same breath. It's correct because every rule that was actually loaded is genuinely satisfied — the reasoner isn't wrong about anything it checked. It's useless for this case because no rule in the set encodes anything like <code>vomiting_character(projectile) ∧ age(3–12 weeks) → consider(pyloric_stenosis)</code> — that clinical pattern was never formalized into the rule base at all, so there's nothing for the claim to be checked against and nothing to fail. The reasoner didn't miss it; it was never asked. Widening the rule set to also cover pyloric stenosis would catch this one gap — but it would still only catch the gaps someone thought to formalize in advance, which is the same category boundary in a different rule file.</p>
+<p>The pattern holds across all nine: every mode is good — genuinely good — at knowledge utilization. Recall works, cross-checking works, provenance holds up, logic is valid. What none of them supply is the noticing: the moment where a specific word in a specific chart line should redirect the whole case. That noticing is clinical pattern-recognition, and it lives in the clinician's head before any query is typed. If it's already there, the clinician is usually already ahead of the tool. If it isn't there, no amount of downstream recall or cross-checking puts it there — because recall answers the question you ask it, and the failure here was never in the answering. It was in what got asked.</p>
+<h3>Correct on the input given is not the same capability as asking</h3>
+<p>Every one of the nine modes is correct on the input it's given — that's the point of the section above, and it's worth not losing once the discussion narrows to the three whose output shifts between Input 1 and Input 2. Their shift isn't a higher grade of correctness than the other six; it's just a different mechanism, one that happens to read phrasing. But it's worth being precise about what even <em>that</em> mechanism doesn't get you, because it's tempting to mistake "this mode picked up 'projectile' when it was there" for something closer to patient-centeredness than it is: <strong>there's a difference between a phrasing-sensitive operation reacting correctly once a word is already present, and a tool asking the question that would produce the word in the first place.</strong> A clinician taking a real history on an infant with vomiting and loose stools doesn't wait for "projectile" to be volunteered — they ask, directly, "does it shoot out, or does it dribble or roll out?" — because they already hold the pattern that this is the fork in the road for this age and symptom combination, before the encounter even starts. That's an <em>active elicitation</em> move, and it's a different capability from being phrasing-sensitive. None of LLM answer mode, Socratic mode, or guided discovery make that move, and the reasons differ slightly even though the outcome — silence on Input 1 — is identical:</p>
+<ul>
+<li><strong>LLM answer mode</strong> has no elicitation step at all. It is answer-generation from whatever's given, full stop. It could in principle be prompted to ask clarifying questions before committing to a plan, but as built, it just answers.</li>
+<li><strong>Socratic mode</strong> does ask questions — but they're built <em>around the data it was handed</em> (episode count, fever, hydration, stool character), not around what's <em>missing</em> relative to a red-flag differential. It's Socratic about the reasoning process, not Socratic about the completeness of the history. Those are different targets for the same technique — and Socratic mode currently only aims at the first one.</li>
+<li><strong>Guided discovery</strong> branches on whatever's present in the module's single pass; it has no mechanism to halt and demand a missing descriptor before branching.</li>
+</ul>
+<p>This distinction matters beyond bookkeeping, because it identifies which of the nine is actually fixable and which isn't. Socratic mode is architecturally the closest of the nine to closing this specific gap, precisely because it already has a question-asking mechanism — it's just pointed at the wrong target. A version that kept a small, explicit checklist of age/symptom-triggered <em>mandatory descriptors</em> — "if infant, if vomiting, then vomiting character (projectile vs. non-projectile) must be asked before reasoning proceeds" — would be actively eliciting the missing detail instead of passively reasoning around whatever arrived. RAG, GraphRAG, the knowledge graph, the pathway, and neuro-symbolic validation don't have an equivalent lever: their operation is retrieve-or-validate against a fixed query, and there's no question-asking step in any of them to redirect.</p>
+<p>That fix is still bounded, and it's worth saying exactly how. A mandatory-descriptor checklist only asks what someone thought to encode as mandatory in advance — the same category boundary the neuro-symbolic rule set hits two sections up, just moved into the elicitation step instead of the validation step. It would close <em>this</em> gap — a known red-flag descriptor never asked for, for a known presentation — but not the general one: a presentation nobody thought to build a checklist entry for still gets no question asked about it. Elicitation-by-checklist converts an unbounded noticing problem into a bounded, auditable coverage problem — closer to the knowledge graph's coverage flag than to true patient-centeredness — which is a real improvement, but not the category-level fix the rest of this piece argues doesn't exist.</p>
+<hr />
+<h2>The contextualizing bottleneck</h2>
+<p>Pull one word out of everything above and the whole stack reorganizes around it: <mark>contextualizing</mark>. Not recall, not cross-checking, not logical validity — contextualizing, in the specific sense of deciding, out of everything true about a case, which fact is the one that should redirect the reasoning right now. That's not a retrieval problem and it never was one. It's a judgment a human makes, and every layer in this piece — pathway through neuro-symbolic, LLM answer mode through analytics — sits downstream of that judgment rather than inside it.</p>
+<p>Here's the part that matters more than the architecture: <strong>that human capacity to contextualize is itself bounded by the human's own knowledge base.</strong> A clinician who has never encountered pyloric stenosis, who doesn't know that "projectile" is doing different work than "frequent," cannot contextualize their way to the right frame no matter how attentively they read the chart — the word can be sitting right in front of them and still not function as a signal, because a signal only becomes a signal against prior knowledge that says "this pattern means something." Noticing isn't a general-purpose skill; it's pattern-recognition keyed to what's already been learned. Contextualizing ability has a ceiling, and the ceiling is set by what the human contextualizing already knows.</p>
+<p>And that ceiling isn't only about recognizing the right word in a chart line — it's worth being exhaustive here, because every one of these inputs is something a text-based system either doesn't have access to or can't weigh the way a clinician does:</p>
+<ul>
+<li><strong>Clinical examination</strong> — the palpation, auscultation, and inspection findings that never make it into text as anything richer than a summary adjective, if they make it in at all.</li>
+<li><strong>Local epidemiology</strong> — what's actually circulating in this community, this season, right now, which shifts the prior probability of every differential before a single test is ordered.</li>
+<li><strong>Experience from cases already seen</strong> — the illness scripts a clinician has personally built from prior patients, which shape what a new presentation is compared against and often outrun anything written in a textbook or guideline.</li>
+<li><strong>Patient and family values, for shared decision-making</strong> — what this patient or family actually wants out of care, which no reference material can supply and which changes what "correct" even means for this case.</li>
+<li><strong>Resource constraints</strong> — what tests, referrals, beds, staff, and time are actually available right now, which determines what's a realistic plan versus a textbook-correct one.</li>
+<li><strong>Bedside gestalt</strong> — the "sick or not sick" read a clinician forms from a child's overall affect and interaction, which routinely precedes and overrides any single documented finding.</li>
+<li><strong>Longitudinal knowledge of this specific patient</strong> — their baseline, their trajectory, what's different about them today versus their last ten visits, none of which a single encounter's text captures.</li>
+<li><strong>Caregiver reliability and observation skill</strong> — how much weight a reported detail should carry, which depends on who's reporting it and how they tend to report.</li>
+<li><strong>Social and structural context</strong> — housing, access to follow-up, ability to return if things worsen, which shape what a safe plan looks like as much as the diagnosis does.</li>
+<li><strong>Setting and acuity</strong> — the same finding means something different in a walk-in clinic than in an emergency department at 3am, and that setting-dependent weighting is rarely written down anywhere a tool could retrieve it.</li>
+</ul>
+<p>None of this is a criticism of the tooling for missing it — these inputs were never text in the first place, so no amount of better retrieval over the chart recovers them. It's the point: contextualizing draws on a wide, largely undocumented field of human judgment, and "the tool didn't have access to the right word" is only the narrowest, most legible slice of a much larger gap.</p>
+<p>This is exactly where it's tempting to say the tooling should just close that gap — widen the aperture, surface more, and let the system compensate for what the human doesn't know. Two ways to do that, and both break differently:</p>
+<ul>
+<li><strong>Push everything up and down the stack — full analytics, every layer's output surfaced at once.</strong> This is the brute-force "here's everything you may have missed" failure from earlier in a new outfit. More surfaced facts isn't more contextualizing; it's <mark>overload</mark> — a clinician handed forty checked-and-passed facts has to do the same contextualizing work as before, just now with more noise to contextualize through, and the tool that was supposed to lighten the judgment load has quietly relocated it downstream instead.</li>
+<li><strong>Triage down to a short, ranked list — the ranking approach argued for earlier.</strong> This avoids overload, but doesn't avoid the deeper problem: a triage layer has to encode, in advance, some model of what's worth flagging — which means it inherits whatever blind spots that model has. If most training data, most clinicians, or most prior cases share a gap, the triage layer learns that gap as "not worth flagging," and it fails exactly where the base reasoning already fails, just with the appearance of having been checked. <mark>Consensus and confidence compound the risk instead of catching it</mark> — the same failure mode this piece already named for analytics mode, now showing up one layer up, in the tool built to fix analytics mode's problem.</li>
+</ul>
+<p>And even a triage layer that somehow avoided both failures — genuinely well-calibrated, genuinely not overloading, correctly promoting "projectile vomiting" to the top of a short list — still runs into the ceiling from two paragraphs up. <strong>Surfacing the right word is not the same as producing understanding of it.</strong> A clinician who has never learned what projectile vomiting in an infant implies can be shown that exact flag, ranked first, cited to a real source, and still not contextualize it correctly — because acting on a flag requires the same prior knowledge that noticing it unprompted would have required. The tool can point at the signal. It cannot install the knowledge base that makes the signal mean something. That transfer — turning a flagged word into genuine clinical understanding — is teaching, not retrieval, and no layer in this stack, however well it scales, is built to do that.</p>
+<p>So the honest shape of the ceiling has three parts, not one: tooling can't contextualize on its own (that's the category-boundary argument this piece opened with); pushing more surfaced knowledge at a human doesn't fix that, it just trades the noticing problem for an overload problem; and triaging down to fix overload doesn't fix that either, it just trades overload for inherited bias — and even a triage layer that solved both still can't manufacture the background knowledge a human needs to make a surfaced flag actually mean something to them. Each fix addresses a real failure mode. None of them touches the one underneath all three: contextualizing is a human act, bounded by what that human already knows, and no amount of architecture moves that boundary — it can only change how gracefully or how badly the system fails at the edge of it.</p>
+<hr />
+<h2>The constraint that survives every escalation</h2>
+<p>Trace the whole sequence — pathway grounding, knowledge graph, RAG, GraphRAG, neuro-symbolic validation — and one fact holds at every stage, unchanged by how much more sophisticated the tooling gets:</p>
+<p><strong>Every one of these modes operates on reasoning, text, patterns, or logical consistency. None of them operate on the patient.</strong></p>
+<p>A care plan's correctness depends on information no text-based system has privileged access to — evolving physiology, unstated goals of care, an exam finding that never made it into text, a bedside trend a clinician notices and a document never will — and on a standard of "right" that isn't reducible to concordance with any reference set, however good that reference is. A pathway, a graph, a retrieval system, and a symbolic reasoner can each get better at one thing: helping a learner check whether <em>their own claim</em> is factually and logically consistent with the data, values, and reference material available. None of them, by design, can check whether that reference was the right frame for this patient, right now.</p>
+<p>More tooling doesn't close that gap. It was never a tooling gap. It's a category boundary — <mark>reasoning-validity versus patient-validity</mark> — and no amount of escalation from pathway to graph to GraphRAG to symbolic logic moves it, because each of those tools is answering a different question than the one that actually determines whether a care plan is correct.</p>
+<hr />
+<h2>Where the value actually lives</h2>
+<p>That reframing doesn't make neuro-symbolic grounding useless — it relocates where it's genuinely useful. The mistake was aiming it at the whole of clinical reasoning. Pointed at a narrow, well-bounded scope, it earns its keep completely differently as a self-audit tool:</p>
+<ul>
+<li>A <strong>single guideline or textbook chapter</strong>, checked for internal consistency with a specific claim a learner made.</li>
+<li>A <strong>drug-drug interaction check</strong> — a bounded, well-structured dataset where "contraindicated" is an unambiguous fact, not a judgment call.</li>
+<li>A <strong>dosing calculation against renal or hepatic clearance</strong> — arithmetic against a threshold, exactly the kind of thing a symbolic engine is built for.</li>
+<li>A <strong>specific institutional pathway</strong>, checked for whether a learner's proposed plan actually follows the steps it claims to follow.</li>
+</ul>
+<p>In these narrow, bounded scopes, symbolic factualness is doing exactly what it's good at: catching a hallucinated interaction, a dosing error, a broken logical step, in a learner's own reasoning before they walk away with a false sense of confidence. It adds real, high-confidence value there — precisely <em>because</em> the scope is small enough that "consistent with this one reference" and "actually correct" come close to converging.</p>
+<p>The failure only shows up when the ambition scales past that — when the goal quietly becomes "ground the model against the whole of clinical knowledge" instead of "help a learner check this one claim against this one well-defined tool." At encyclopedic scope, the reference itself becomes a stand-in for judgment it was never built to carry, and the gap between reasoning-validity and patient-validity reopens exactly as wide as it started.</p>
+<hr />
+<h2>So what is this architecture actually good for</h2>
+<p>Pull the whole stack together — pathway, knowledge graph, RAG, GraphRAG, neuro-symbolic, LLM answer mode, Socratic mode, guided discovery, analytics — and the same fault line runs through every layer: each one operates on <strong>the plan, the claim, or the reasoning that already exists</strong>. None of them operate on the noticing that produces a plan in the first place. That's the whole difference between the two things this architecture keeps getting confused for.</p>
+<p><strong>Why it makes a bad CDSS or diagnostic safety net:</strong>
+- A safety net's job is to catch what the clinician <em>missed</em> — to raise a flag the clinician didn't ask for. Every layer here is <mark>pull, not push</mark>: it answers the query it's given, and "projectile" only gets checked if something already decided to check it.
+- Every layer validates <em>consistency with a reference</em>, not <em>fitness of the reference to this patient</em>. A plan can pass every check — guideline followed, facts correct, citations traceable, logic valid — and still be built on the wrong frame, because nothing in the stack questions the frame itself.
+- Consensus and confidence compound the risk instead of catching it: if most clinicians share a blind spot, analytics-style validation reads that shared miss as agreement, not danger. And the failure is silent — no error, no contradiction, no low-confidence flag — which is worse than being visibly wrong, because it never signals "look again."
+- Net effect: deployed as a safety net, this architecture reliably confirms reasoning that already started in the right direction, and just as reliably rubber-stamps reasoning that started in the wrong one.</p>
+<p><strong>Why it makes a good post-hoc plan auditor, self-audit tool, or learning tool:</strong>
+- Once a plan or a claim already exists, checking it against a reference is a closed, well-bounded comparison — exactly what pathways, knowledge graphs, RAG/GraphRAG provenance, and neuro-symbolic validation are built to do well.
+- It turns vague self-assessment into something checkable: "was I in the right time window," "is this claim actually sourced," "does this interaction violate a known rule" — each a real, falsifiable question a learner or clinician can hold their own reasoning against after the fact.
+- The narrower the scope, the more the tool's verdict and actual correctness converge — a drug interaction check, a dosing calculation, a single guideline's steps — which is precisely where this stack should be pointed.
+- As a learning tool, its value is teaching the clinician to <em>notice what to check</em> over time, by making the gap between "I reasoned this" and "this holds up against the reference" visible and repeatable — not by replacing the noticing itself.</p>
+<p>Same architecture, opposite verdict, depending entirely on what it's asked to be: a system that decides whether a patient is being seen correctly, or a system that checks whether a plan someone already committed to is internally sound. It is not, and cannot become, the first without becoming something structurally different from everything described above.</p>
+<p>So the honest shape of the answer isn't "neuro-symbolic grounding doesn't work." It's: <strong>it works precisely to the degree the scope stays narrow enough that fact-checking and correctness are the same question.</strong> Past that point, every layer — pathway, graph, GraphRAG, symbolic reasoner — remains a genuinely good tool for a learner to self-audit their own reasoning, and still not a way to decide a patient's care.</p>
+<hr />
+<h2>One more design trap: "here's everything you may have missed"</h2>
+<p>Given all of the above, the tempting implementation is to run every layer against the plan and surface every discrepancy it finds — a brute-force "things you may have missed" list. This is a bad strategy, and it's worth saying why, because it's the most natural way to misuse a well-scoped auditor.</p>
+<p><strong>Why the brute-force list fails:</strong>
+- It optimizes for the tool's own recall, not the clinician's attention. Every layer above is good at <em>finding</em> things to flag — that's its job — but "found" and "worth interrupting a clinician for" are different bars, and a full dump conflates them.
+- It reintroduces the exact problem the auditor was supposed to solve: a long list makes the clinician re-derive which item actually matters, which is the same judgment call the tool was meant to support, just relocated one step downstream and dressed up as having already been done.
+- It trains exactly the wrong habit. Faced with a long list on every plan, clinicians learn to skim and dismiss rather than read and weigh — which means the one time the list contains something like "projectile" buried at item six, it gets the same half-attention as items one through five.</p>
+<p><strong>Why a short, ranked list — top few, or a single key-error reminder — is worth exploring instead:</strong>
+- It forces the tool to do the triage a full dump defers, which is a legitimate and checkable thing to build: severity, specificity, and how far the finding is from what the plan already accounts for are all real signals a ranking can be built on.
+- It matches how the good uses in this piece actually work — a single pathway checkpoint, a single interaction check, a single dosing threshold — one sharp, falsifiable finding a clinician can act on immediately, not a wall of possibilities to sort through.
+- It's honest about what the tool is for: not "here is everything the reference contains," but "here is the one thing most worth your second look, given what you already wrote."</p>
+<p><strong>The caveat that has to hold, or this backfires too:</strong> a short list only stays useful if it doesn't become its own source of distortion. Two specific failure modes to design against:
+- <strong>Bias toward overtreatment.</strong> If the "top finding" is always framed as a risk to escalate rather than a genuinely open question, clinicians will learn to treat the flag as an instruction rather than a prompt — and a system that only ever nudges toward <em>more</em> workup, more caution, more intervention will systematically bias plans upward regardless of whether that's actually correct for the patient in front of them. The list has to be able to say nothing, or say "this looks fine," as often as it flags something.
+- <strong>Alert fatigue.</strong> Even a short list, repeated on every plan whether or not there's anything genuinely worth flagging, degrades the same way a long list does — just slower. If the top-few slot gets filled by habit rather than by a real finding, clinicians recalibrate their trust downward and the signal stops working exactly when a genuine one shows up.</p>
+<p>Both failure modes point to the same design constraint: the value of a short list isn't in being short — it's in being <em>right often enough, and silent when there's nothing to say</em>, that a clinician's attention to it stays earned rather than habitual. That's a much harder bar than "surface everything the layers found," and it's also the only version of this that has a chance of staying a self-audit tool instead of drifting back into being a bad safety net with fewer items on the page.</p>
+<hr />
+<h2>Worked examples: pathway, knowledge graph, and GraphRAG in VibeRounds</h2>
+<p>Everything through analytics mode above is built, integrated, and in active use inside VibeRounds. The three layers above that — pathway, knowledge graph, and GraphRAG — are demonstrated as standalone tools rather than fully wired into the VibeRounds module pipeline yet. Here's what each one grounds against, concretely.</p>
+<ul>
+<li><strong>Pathway — <a href="https://avi33tbtt.github.io/pathways/acute-pancreatitis.html">Acute Pancreatitis pathway</a>.</strong> Encodes a full time-boxed management sequence — immediate steps (0–24h), first-line management, escalation care, monitoring, complications, red flags — each tied to a concrete window rather than a general instruction, including the 48-hour organ-failure threshold that defines severe disease under the Revised Atlanta Classification. This is what gives a Diagnostic Time-Out module a real pause point instead of a generic "pause and reconsider" prompt.</li>
+<li><strong>Knowledge graph — <a href="https://avi33tbtt.github.io/tools/concepts/">Clinical Data Explorer</a>.</strong> A browsable concept graph linking diseases, findings, and investigations by system and prevalence tier, with a two-level single-concept explorer. Applied to chronic kidney disease, it turns a hedge like "findings are consistent with CKD" into a checkable criterion — eGFR below 60 mL/min/1.73m² persisting three months or more — held as structured, queryable data rather than an unverified assertion.</li>
+<li><strong>GraphRAG — <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html">Evidence-Pyramid Trajectory Mapper — ASV corpus</a>.</strong> Processes 17 papers on snakebite antivenom into a togglable trajectory network, with shared checkpoints across cases drawn as convergence nodes and every node sourced back to a specific paragraph, table, or figure. Full description earlier in this piece, under the GraphRAG layer.</li>
+</ul>
+<p>The fuller writeup of the pathway and knowledge-graph examples — including the failure modes each introduces and a proposed empirical study measuring accuracy, failure-detectability, and learner calibration with and without these layers — is in <a href="https://avi33tbtt.github.io/ground_truth_layers.html">Ground-Truth Layers: Knowledge Graphs, Pathways &amp; Evidence in Vibe Rounds</a>.</p>
+<hr />
+<h2>Conclusion</h2>
+<p>Nine different technologies, one recurring shape: each is a genuinely strong knowledge-recall-and-cross-check engine, and none of them supply the noticing that decides whether a care plan was ever pointed the right way. That's not a shortfall to be engineered away with a bigger graph, a better retriever, or a stricter rule set — it's what these tools structurally are. They answer the query they're given; they don't audit whether the query itself missed the one word that should have redirected it. A pathway confirms timing. A knowledge graph confirms a criterion. RAG and GraphRAG confirm provenance. Neuro-symbolic validation confirms logical consistency. LLM answer mode, Socratic mode, guided discovery, and analytics mode each confirm that the reasoning, however it was walked through, holds together on its own terms. Every one of those confirmations can be true at once, on a plan built on the wrong frame, and nothing in the stack raises a hand to say so.</p>
+<p>That is exactly why this architecture makes a bad CDSS and a good self-audit tool — the same properties that disqualify it from deciding a patient's care are what make it trustworthy as a post-hoc check on a plan someone already committed to. And it's why even the honest version of this — a plan auditor, not a safety net — still has a design trap waiting on the other side: dump every finding and you've just relocated the judgment call downstream; build a short, ranked list instead and you've built something genuinely useful, but only if it can say nothing as readily as it flags something, and only if it stays rare enough that a clinician's attention to it never curdles into habit.</p>
+<p>None of this is an argument against building the tooling. It's an argument for building it honestly scoped — narrow enough that "consistent with the reference" and "actually correct" converge, transparent about what it checks and what it can't, and never marketed past the boundary where reasoning-validity stops being the same question as patient-validity. VibeRounds stays on the self-audit side of that line on purpose. <mark>The noticing still belongs to the clinician</mark> — medicine has always known this as the rule that you only see what you already know to look for, and no reference layer, however well-grounded, expands what a clinician knows to look for. The tooling's job is to make what they already noticed easier to check — not to notice for them.</p>
+</div>
+</body>
+</html>
