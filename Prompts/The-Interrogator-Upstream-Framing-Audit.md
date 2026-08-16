@@ -1,4 +1,4 @@
-# Module 58 — The Interrogator: Upstream Framing Audit
+# The Interrogator: Upstream Framing Audit
 
 **Objective:** Force explicit interrogation of a case's *framing* — the branch points, missing variables, and unjustified treatment links — before any downstream reasoning, differential-building, or plan-checking is allowed to proceed. This module does not answer the case. It refuses to let the case be considered complete until its gaps are named, justified, or formally overridden.
 
