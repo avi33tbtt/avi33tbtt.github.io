@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 4 — Pivot Lens Selector (Disease / Intervention / Combo)</title>
+<style>
+  :root{
+    --paper:#F4F5F1; --paper-raised:#FBFBF9; --ink:#182420; --ink-soft:#4B564F;
+    --ink-faint:#7C877E; --rule:#D9DCD3; --rule-strong:#B9C0B4;
+    --teal:#2F6F62; --teal-deep:#1D4740; --teal-wash:#E6EFEC;
+    --rust:#A85A34; --rust-wash:#F3E7DE;
+    --blue:#33448A; --blue-wash:#DCE6FF;
+    --purple:#6A3B8A; --purple-wash:#EFE3F5;
+    --spike:#C4402E;
+    --mono:"IBM Plex Mono","SF Mono",monospace; --sans:-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  header{max-width:1180px;margin:0 auto;padding:40px 24px 20px;border-bottom:1px solid var(--rule-strong);}
+  h1{font-size:26px;margin:0 0 6px;}
+  .sub{color:var(--ink-soft);font-size:14px;}
+  main{max-width:1180px;margin:0 auto;padding:24px;}
+  .scope-box{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:2px;padding:14px 18px;font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+  .scope-box strong{color:var(--ink);}
+  .audit-banner{background:var(--ink);color:#DCE7E2;font-family:var(--mono);font-size:12px;letter-spacing:.02em;
+    padding:10px 16px;border-radius:5px;margin-bottom:20px;}
+  .audit-banner b{color:#fff;}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--paper-raised);
+    border:1px solid var(--rule-strong);border-radius:6px;padding:16px;margin-bottom:20px;}
+  .controls label{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px;}
+  input[type=file]{font-family:var(--sans);font-size:13px;}
+  select{font-family:var(--mono);padding:6px 8px;border:1px solid var(--rule-strong);border-radius:4px;font-size:13px;min-width:210px;}
+  button{font-family:var(--sans);font-weight:600;background:var(--teal);color:#fff;border:none;
+    border-radius:5px;padding:9px 16px;cursor:pointer;font-size:13px;}
+  button:hover{background:var(--teal-deep);}
+  button:disabled{background:var(--rule-strong);cursor:not-allowed;}
+  .lens{display:flex;border:1.5px solid var(--teal);border-radius:6px;overflow:hidden;}
+  .lens button{background:var(--paper-raised);color:var(--teal-deep);border-radius:0;padding:9px 18px;}
+  .lens button.active{background:var(--teal);color:#fff;}
+  .lens button:hover{background:var(--teal-wash);}
+  .lens button.active:hover{background:var(--teal-deep);}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+  .stat{background:var(--teal-wash);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--teal-deep);}
+  .stat b{font-size:20px;display:block;}
+  h2{font-size:17px;border-bottom:1px solid var(--rule);padding-bottom:6px;margin-top:36px;}
+  .note{font-size:13px;color:var(--ink-faint);margin-top:6px;}
+
+  .anchor-card{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:4px solid var(--teal);
+    border-radius:4px;padding:16px 20px;margin-bottom:18px;}
+  .anchor-card .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:6px;}
+  .anchor-card .question{font-size:16px;font-style:italic;color:var(--ink);margin:4px 0 8px;}
+  .anchor-card .assumption{font-size:12px;color:var(--rust);background:var(--rust-wash);border-radius:4px;padding:6px 10px;display:inline-block;}
+
+  .cardGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+  .pcard{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--teal);
+    border-radius:4px;padding:14px 16px;cursor:pointer;}
+  .pcard.t2d{border-left-color:var(--rust);}
+  .pcard.flag{border-left-color:var(--spike);}
+  .pcard:hover{box-shadow:0 1px 6px rgba(0,0,0,.08);}
+  .pcard .pid{font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
+  .pcard .headline{font-weight:600;margin:4px 0 8px;}
+  .pcard .chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .pill{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;background:var(--rule);color:var(--ink-soft);}
+  .pill.warn{background:#F7DAD4;color:var(--spike);}
+  .pill.good{background:var(--teal-wash);color:var(--teal-deep);}
+
+  .groupHead{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);
+    margin:22px 0 8px;display:flex;align-items:center;gap:10px;}
+  .groupHead .n{background:var(--rule);color:var(--ink-soft);border-radius:10px;padding:1px 8px;font-size:11px;}
+
+  table.varTable{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+  table.varTable th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);
+    text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong);}
+  table.varTable td{padding:8px 10px;border-bottom:1px solid var(--rule);color:var(--ink-soft);}
+  table.varTable tr:hover td{background:var(--teal-wash);cursor:pointer;}
+  table.varTable td.num{font-family:var(--mono);}
+
+  #detail{background:var(--paper-raised);border:1px solid var(--rule-strong);border-radius:6px;
+    padding:14px 18px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;margin-top:16px;color:var(--ink-soft);}
+  #detail.empty{color:var(--ink-faint);font-family:var(--sans);font-style:italic;}
+
+  .site-nav{max-width:900px;margin:0 auto;padding:12px 28px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:6px 4px;font-family:var(--mono),monospace;font-size:12px;
+    border-bottom:1px solid var(--rule-strong,#B9C0B4);background:var(--paper,#F4F5F1);}
+  .site-nav a{color:var(--ink-soft,#4B564F);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;}
+  .site-nav a:hover{background:var(--teal-wash,#E6EFEC);color:var(--teal-deep,#1D4740);}
+  .site-nav a.current{background:var(--teal,#2F6F62);color:#fff;font-weight:600;}
+  .site-nav .sep{color:var(--rule-strong,#B9C0B4);}
+  .site-nav .spacer{flex:1 1 auto;}
+  .site-nav a.other-project{color:var(--rust,#A85A34);border:1px solid var(--rust,#A85A34);}
+  .site-nav a.other-project:hover{background:var(--rust-wash,#F3E7DE);}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html">Tour</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html">Idea</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html">Build log</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step1_corpus_generator.html">Step 1</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step2_graph_builder.html">Step 2</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step3_dashboard.html">Step 3</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step4_pivot_lens.html" class="current">Step 4</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step5_comparator_filter.html">Step 5</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step6_clinical_output_view.html">Step 6</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step7_generalization_check.html">Step 7</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/nested-analysis-view.html" title="Not yet live — output pending upload">Nested view</a>
+<span class="spacer"></span>
+<a class="other-project" href="https://avi33tbtt.github.io/VibeRounds/" target="_blank" rel="noopener">More projects: VibeRounds ↗</a>
+</nav>
+
+<header>
+  <h1>Step 4 — Pivot Lens Selector</h1>
+  <div class="sub">cohort_graph.json → re-anchor the same graph around Disease / Intervention / Disease+Intervention combo (Section 5) · same file as Step 3, no re-ingestion</div>
+</header>
+<main>
+
+  <div class="audit-banner"><b>Scope note (carried from Section 0):</b> this is an audit/analytics view surfacing evidence, variation and confounders across a synthetic cohort — it is not a decision-support tool and makes no treatment recommendation for any individual patient.</div>
+
+  <div class="scope-box">
+    <strong>What this does:</strong> loads the same <code>cohort_graph.json</code> from Step 2/3 and re-indexes it around a chosen
+    <strong>anchor</strong> instead of a chosen patient. Three lenses, same underlying graph, same data, no rebuild:
+    <strong>Disease-centered</strong> (anchor = a Diagnosis node — "given patients diagnosed with X, what walked in and what did we do?"),
+    <strong>Intervention-centered</strong> (anchor = an Intervention node — "when we deploy Y, who receives it and how do outcomes vary?"),
+    and <strong>Disease + Intervention combo</strong> (anchor = the composite hyper-node — "when Diagnosis A patients receive Intervention B, why do outcomes diverge?").
+    Selecting a lens re-clusters the same patients around the new anchor; it never re-derives or special-cases T1D vs. T2D in code.
+  </div>
+
+  <div class="controls">
+    <label>Cohort graph file
+      <input type="file" id="fileInput" accept="application/json,.json">
+    </label>
+    <button type="button" id="loadSampleBtn">Load sample data</button>
+    <span class="note" id="loadStatus">No file loaded yet &mdash; use the cohort_graph.json exported from Step 2 (same file works for Step 3 and Step 4).</span>
+  </div>
+
+  <div id="app" style="display:none;">
+
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <label>Pivot lens
+        <div class="lens" id="lensToggle">
+          <button data-lens="disease" class="active" type="button">Disease-centered</button>
+          <button data-lens="intervention" type="button">Intervention-centered</button>
+          <button data-lens="combo" type="button">Disease + Intervention combo</button>
+        </div>
+      </label>
+      <label id="diseaseAnchorWrap">Diagnosis anchor
+        <select id="diseaseAnchor"></select>
+      </label>
+      <label id="interventionAnchorWrap" style="display:none;">Intervention anchor
+        <select id="interventionAnchor"></select>
+      </label>
+      <label id="comboDiseaseWrap" style="display:none;">Diagnosis
+        <select id="comboDisease"></select>
+      </label>
+      <label id="comboInterventionWrap" style="display:none;">Intervention
+        <select id="comboIntervention"></select>
+      </label>
+    </div>
+
+    <div id="view"></div>
+
+    <div id="detail" class="empty">Click a card or table row to see its raw node attributes here.</div>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   Step 4 — pivot lens selector.
+   Reads the same node-link cohort_graph.json produced by Step 2
+   and consumed unchanged by Step 3:
+     { directed, multigraph, nodes:[{id,node_type,patient_id,...}],
+       links:[{source,target,edge_type,...}] }
+   No new fields are required on the graph — every lens is computed
+   from existing node_type / term / target / patient_id attributes.
+   ============================================================ */
+
+let COHORT = null;
+let PATIENTS = [];
+let DISEASE_TERMS = [];       // distinct DiagnosisNode.term values
+let INTERVENTION_GROUPS = []; // normalized intervention buckets: {label, match(node)}
+let state = { lens: "disease", disease: "", intervention: "", comboDisease: "", comboIntervention: "" };
+
+function h(tag, attrs, children){
+  const n = document.createElement(tag);
+  if (attrs) for (const [k,v] of Object.entries(attrs)){
+    if (k === "text") n.textContent = v; else if (k === "class") n.className = v; else n.setAttribute(k, v);
+  }
+  if (children) for (const c of children) if (c) n.appendChild(c);
+  return n;
+}
+
+/* ---------------- load ---------------- */
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const json = JSON.parse(reader.result);
+      loadCohort(json);
+      document.getElementById("loadStatus").textContent = `Loaded ${f.name}`;
+    } catch (err){
+      document.getElementById("loadStatus").textContent = "Could not parse that file as JSON: " + err.message;
+    }
+  };
+  reader.readAsText(f);
+});
+
+const SAMPLE_DATA_URL = "https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/cohort_graph.json";
+document.getElementById("loadSampleBtn").addEventListener("click", () => {
+  const statusEl = document.getElementById("loadStatus");
+  statusEl.textContent = "Loading sample data\u2026";
+  fetch(SAMPLE_DATA_URL)
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(json => {
+      loadCohort(json);
+      statusEl.textContent = "Loaded sample data (cohort_graph.json)";
+    })
+    .catch(err => {
+      statusEl.textContent = "Could not load sample data: " + err.message;
+    });
+});
+
+function loadCohort(json){
+  const nodes = new Map();
+  for (const n of (json.nodes || [])) nodes.set(n.id, n);
+  COHORT = { nodes, links: json.links || json.edges || [] };
+
+  PATIENTS = Array.from(nodes.values())
+    .filter(n => n.node_type === "PatientNode")
+    .map(n => ({ id: n.id, condition_type: n.condition_type, attrs: n }))
+    .sort((a,b) => a.id.localeCompare(b.id));
+
+  buildDiseaseTerms();
+  buildInterventionGroups();
+  populateAnchorSelects();
+
+  document.getElementById("app").style.display = "block";
+  renderStats();
+  render();
+}
+
+function renderStats(){
+  const t1d = PATIENTS.filter(p => p.condition_type === "T1D").length;
+  const t2d = PATIENTS.filter(p => p.condition_type === "T2D").length;
+  const stats = document.getElementById("stats");
+  stats.innerHTML = "";
+  const items = [
+    ["Patients", PATIENTS.length + ` (${t1d} T1D / ${t2d} T2D)`],
+    ["Nodes", COHORT.nodes.size],
+    ["Edges", COHORT.links.length],
+    ["Diagnosis anchors available", DISEASE_TERMS.length],
+    ["Intervention anchors available", INTERVENTION_GROUPS.length]
+  ];
+  for (const [label, val] of items){
+    stats.appendChild(h("div", { class: "stat" }, [h("b", { text: String(val) }), h("span", { text: label })]));
+  }
+}
+
+/* ---------------- graph helpers ---------------- */
+
+function nodesForPatient(pid){
+  return Array.from(COHORT.nodes.values()).filter(n => n.patient_id === pid || n.id === pid);
+}
+function allNodesOfType(t){
+  return Array.from(COHORT.nodes.values()).filter(n => n.node_type === t);
+}
+function patientOf(pid){
+  return PATIENTS.find(p => p.id === pid);
+}
+
+/* ---- disease anchors: distinct DiagnosisNode.term values ---- */
+function buildDiseaseTerms(){
+  const s = new Set();
+  for (const n of allNodesOfType("DiagnosisNode")) if (n.term) s.add(n.term);
+  DISEASE_TERMS = Array.from(s).sort((a,b) => {
+    // surface the two primary conditions first, matching "T1D patients" example from spec
+    const rank = t => (t === "Type 1 diabetes mellitus" ? 0 : t === "Type 2 diabetes mellitus" ? 1 : 2);
+    return rank(a) - rank(b) || a.localeCompare(b);
+  });
+}
+
+/* ---- intervention anchors: normalized target buckets ----
+   The raw graph has free-text `target` strings (e.g. "Insulin (basal-bolus regimen)",
+   "Basal-bolus insulin regimen", "Metformin + SGLT2 inhibitor"). Per Section 6.2 these
+   would be standardized via RxNorm/LOINC in a real system; for this demo we bucket by
+   a case-insensitive keyword match on `target`, which is enough to make "insulin regimen"
+   a single selectable anchor without special-casing T1D vs. T2D in the render code. */
+function buildInterventionGroups(){
+  const targets = new Set();
+  for (const n of allNodesOfType("InterventionNode")) if (n.target) targets.add(n.target);
+
+  const groups = [
+    { label: "Insulin regimen", test: t => /insulin/i.test(t) },
+    { label: "Metformin (any combination)", test: t => /metformin/i.test(t) },
+  ];
+  // catch anything not covered by the two keyword buckets above as its own literal anchor
+  const covered = t => groups.some(g => g.test(t));
+  for (const t of targets){
+    if (!covered(t)) groups.push({ label: t, test: x => x === t });
+  }
+  INTERVENTION_GROUPS = groups.map(g => ({
+    label: g.label,
+    match: (n) => n.node_type === "InterventionNode" && n.target && g.test(n.target)
+  }));
+}
+
+/* ---- pump-therapy modality flag (used only by the combo example lens) ----
+   The corpus does not carry a first-class "pump vs. injection" field on the Intervention
+   node itself. We infer it from OutcomeNode.reason text ("Insulin pump failure"), which is
+   the only place pump/CGM device modality shows up in this synthetic dataset. This is
+   noted in the UI as an approximation, per Step 7's instruction to flag special-casing /
+   data gaps rather than hide them. */
+function patientHasPumpEvidence(pid){
+  return nodesForPatient(pid).some(n => n.node_type === "OutcomeNode" && /pump/i.test(n.reason || ""));
+}
+
+function patientsMatchingDisease(term){
+  return PATIENTS.filter(p => nodesForPatient(p.id).some(n => n.node_type === "DiagnosisNode" && n.term === term));
+}
+function patientsMatchingIntervention(group){
+  return PATIENTS.filter(p => nodesForPatient(p.id).some(group.match));
+}
+
+/* ---------------- anchor select population ---------------- */
+
+function populateAnchorSelects(){
+  const dSel = document.getElementById("diseaseAnchor");
+  dSel.innerHTML = "";
+  for (const t of DISEASE_TERMS) dSel.appendChild(h("option", { value: t, text: t }));
+  state.disease = DISEASE_TERMS[0] || "";
+
+  const iSel = document.getElementById("interventionAnchor");
+  iSel.innerHTML = "";
+  for (const g of INTERVENTION_GROUPS) iSel.appendChild(h("option", { value: g.label, text: g.label }));
+  state.intervention = INTERVENTION_GROUPS[0] ? INTERVENTION_GROUPS[0].label : "";
+
+  const cdSel = document.getElementById("comboDisease");
+  cdSel.innerHTML = "";
+  for (const t of DISEASE_TERMS) cdSel.appendChild(h("option", { value: t, text: t }));
+  // default to the worked example from the Step 4 spec: "T1D + insulin pump therapy"
+  state.comboDisease = DISEASE_TERMS.includes("Type 1 diabetes mellitus") ? "Type 1 diabetes mellitus" : (DISEASE_TERMS[0] || "");
+  cdSel.value = state.comboDisease;
+
+  const ciSel = document.getElementById("comboIntervention");
+  ciSel.innerHTML = "";
+  for (const g of INTERVENTION_GROUPS) ciSel.appendChild(h("option", { value: g.label, text: g.label }));
+  const insulinGroup = INTERVENTION_GROUPS.find(g => g.label === "Insulin regimen");
+  state.comboIntervention = insulinGroup ? insulinGroup.label : (INTERVENTION_GROUPS[0] ? INTERVENTION_GROUPS[0].label : "");
+  ciSel.value = state.comboIntervention;
+}
+
+/* ---------------- controls wiring ---------------- */
+
+document.getElementById("lensToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-lens]");
+  if (!btn) return;
+  state.lens = btn.dataset.lens;
+  for (const b of document.querySelectorAll("#lensToggle button")) b.classList.toggle("active", b === btn);
+  document.getElementById("diseaseAnchorWrap").style.display = state.lens === "disease" ? "flex" : "none";
+  document.getElementById("interventionAnchorWrap").style.display = state.lens === "intervention" ? "flex" : "none";
+  document.getElementById("comboDiseaseWrap").style.display = state.lens === "combo" ? "flex" : "none";
+  document.getElementById("comboInterventionWrap").style.display = state.lens === "combo" ? "flex" : "none";
+  render();
+});
+document.getElementById("diseaseAnchor").addEventListener("change", (e) => { state.disease = e.target.value; render(); });
+document.getElementById("interventionAnchor").addEventListener("change", (e) => { state.intervention = e.target.value; render(); });
+document.getElementById("comboDisease").addEventListener("change", (e) => { state.comboDisease = e.target.value; render(); });
+document.getElementById("comboIntervention").addEventListener("change", (e) => { state.comboIntervention = e.target.value; render(); });
+
+/* ---------------- detail panel ---------------- */
+
+function showDetail(node){
+  const panel = document.getElementById("detail");
+  panel.classList.remove("empty");
+  const lines = Object.entries(node)
+    .filter(([k,v]) => v !== null && v !== undefined && v !== "")
+    .map(([k,v]) => `${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`);
+  panel.textContent = lines.join("\n");
+}
+
+/* ---------------- render dispatch ---------------- */
+
+function render(){
+  const view = document.getElementById("view");
+  view.innerHTML = "";
+  if (state.lens === "disease") view.appendChild(renderDiseaseLens(state.disease));
+  else if (state.lens === "intervention") view.appendChild(renderInterventionLens(state.intervention));
+  else view.appendChild(renderComboLens(state.comboDisease, state.comboIntervention));
+}
+
+/* ---------------- Lens 1: Disease-centered ----------------
+   Anchor = Diagnosis node. "Given patients diagnosed with X, what
+   presentations walked in, and what did we do?" */
+
+function renderDiseaseLens(term){
+  const wrap = document.createDocumentFragment();
+  const matched = patientsMatchingDisease(term);
+
+  const card = h("div", { class: "anchor-card" });
+  card.appendChild(h("div", { class: "kicker", text: "Disease-centered lens · anchor = Diagnosis node" }));
+  card.appendChild(h("div", { text: `Anchor: ${term}` }));
+  card.appendChild(h("div", { class: "question", text: `“Given patients diagnosed with ${term}, what presentations walked in, and what did we do?”` }));
+  card.appendChild(h("div", { class: "note", text: `${matched.length} patient(s) carry this diagnosis (as primary or comorbidity).` }));
+  wrap.appendChild(card);
+
+  wrap.appendChild(h("div", { class: "groupHead" }, [
+    h("span", { text: "Matched cohort" }), h("span", { class: "n", text: String(matched.length) })
+  ]));
+  wrap.appendChild(patientCardGrid(matched, p => {
+    const patientNodes = nodesForPatient(p.id);
+    const dx = patientNodes.find(n => n.node_type === "DiagnosisNode" && n.term === term);
+    const chips = [];
+    if (dx) chips.push(h("span", { class: "pill" + (dx.role === "primary" ? " good" : ""), text: dx.role === "primary" ? "primary dx" : "comorbidity" }));
+    const outcomes = patientNodes.filter(n => n.node_type === "OutcomeNode");
+    const spikes = outcomes.filter(n => String(n.spike_event) === "true").length;
+    if (spikes) chips.push(h("span", { class: "pill warn", text: `${spikes} spike event(s)` }));
+    chips.push(h("span", { class: "pill", text: `${p.attrs.facility_tier || "?"} / ${p.attrs.resource_status || "?"}` }));
+    return chips;
+  }));
+
+  return wrap;
+}
+
+/* ---------------- Lens 2: Intervention-centered ----------------
+   Anchor = Intervention node. "When we deploy intervention Y, who
+   actually receives it, and how do outcomes vary?" */
+
+function renderInterventionLens(label){
+  const wrap = document.createDocumentFragment();
+  const group = INTERVENTION_GROUPS.find(g => g.label === label);
+  const matched = group ? patientsMatchingIntervention(group) : [];
+
+  const card = h("div", { class: "anchor-card" });
+  card.appendChild(h("div", { class: "kicker", text: "Intervention-centered lens · anchor = Intervention node" }));
+  card.appendChild(h("div", { text: `Anchor: ${label}` }));
+  card.appendChild(h("div", { class: "question", text: `“When we deploy ${label}, who actually receives it, and how do outcomes vary?”` }));
+  card.appendChild(h("div", { class: "note", text: `${matched.length} patient(s) have an intervention matching this anchor.` }));
+  wrap.appendChild(card);
+
+  // outcome variance table — this is the "how do outcomes vary" half of the lens
+  wrap.appendChild(h("div", { class: "groupHead" }, [
+    h("span", { text: "Outcome variation across recipients" }), h("span", { class: "n", text: String(matched.length) })
+  ]));
+  const table = h("table", { class: "varTable" });
+  const thead = h("tr", {}, [
+    h("th", { text: "Patient" }), h("th", { text: "Condition" }), h("th", { text: "Facility tier" }),
+    h("th", { text: "Resource status" }), h("th", { text: "Spike events" }), h("th", { text: "Max LOS (days)" })
+  ]);
+  table.appendChild(thead);
+  for (const p of matched){
+    const patientNodes = nodesForPatient(p.id);
+    const outcomes = patientNodes.filter(n => n.node_type === "OutcomeNode");
+    const spikes = outcomes.filter(n => String(n.spike_event) === "true").length;
+    const maxLOS = outcomes.reduce((m,n) => Math.max(m, Number(n.length_of_stay_days)||0), 0);
+    const row = h("tr", {}, [
+      h("td", { text: p.id }), h("td", { text: p.condition_type }),
+      h("td", { text: p.attrs.facility_tier || "—" }), h("td", { text: p.attrs.resource_status || "—" }),
+      h("td", { class: "num", text: String(spikes) }), h("td", { class: "num", text: String(maxLOS) })
+    ]);
+    row.addEventListener("click", () => showDetail(p.attrs));
+    table.appendChild(row);
+  }
+  wrap.appendChild(table);
+
+  wrap.appendChild(h("div", { class: "groupHead" }, [ h("span", { text: "Recipient patients" }) ]));
+  wrap.appendChild(patientCardGrid(matched, p => [
+    h("span", { class: "pill", text: `${p.attrs.facility_tier || "?"} / ${p.attrs.resource_status || "?"}` })
+  ]));
+
+  return wrap;
+}
+
+/* ---------------- Lens 3: Disease + Intervention combo ----------------
+   Anchor = composite (Diagnosis + Intervention) hyper-node. "When
+   Diagnosis A patients receive Intervention B, why do outcomes
+   diverge — and what explains the variance?"
+   Worked example from the Step 4 spec: T1D + insulin pump therapy.
+   Pump-vs-injection modality isn't a first-class field on this corpus
+   (see patientHasPumpEvidence above), so when the intervention anchor
+   is "Insulin regimen" this view additionally splits the matched
+   cohort by inferred pump-failure evidence as a stand-in variance axis,
+   and says so plainly rather than hiding the substitution. */
+
+function renderComboLens(diseaseTerm, interventionLabel){
+  const wrap = document.createDocumentFragment();
+  const group = INTERVENTION_GROUPS.find(g => g.label === interventionLabel);
+  const dxMatched = new Set(patientsMatchingDisease(diseaseTerm).map(p => p.id));
+  const matched = group ? patientsMatchingIntervention(group).filter(p => dxMatched.has(p.id)) : [];
+  const isInsulinAnchor = /insulin/i.test(interventionLabel);
+
+  const card = h("div", { class: "anchor-card" });
+  card.appendChild(h("div", { class: "kicker", text: "Disease + Intervention combo lens · anchor = composite hyper-node" }));
+  card.appendChild(h("div", { text: `Anchor: ${diseaseTerm} + ${interventionLabel}` }));
+  card.appendChild(h("div", { class: "question", text: `“When ${diseaseTerm} patients receive ${interventionLabel}, why do outcomes diverge — and what explains the variance?”` }));
+  card.appendChild(h("div", { class: "note", text: `${matched.length} patient(s) match both the diagnosis and intervention anchor.` }));
+  if (isInsulinAnchor){
+    card.appendChild(h("div", { class: "assumption",
+      text: "Note: this corpus has no first-class pump-vs-injection field. The pump/CGM split below is inferred from OutcomeNode.reason text (e.g. \"Insulin pump failure\"), flagged here as an approximation rather than a modeled attribute — see Step 7 open issues." }));
+  }
+  wrap.appendChild(card);
+
+  if (isInsulinAnchor){
+    const withPump = matched.filter(p => patientHasPumpEvidence(p.id));
+    const withoutPump = matched.filter(p => !patientHasPumpEvidence(p.id));
+
+    wrap.appendChild(h("div", { class: "groupHead" }, [
+      h("span", { text: "Pump/CGM device-failure evidence in record" }), h("span", { class: "n", text: String(withPump.length) })
+    ]));
+    wrap.appendChild(patientCardGrid(withPump, p => outcomeVarianceChips(p), true));
+
+    wrap.appendChild(h("div", { class: "groupHead" }, [
+      h("span", { text: "No pump/CGM device-failure evidence in record" }), h("span", { class: "n", text: String(withoutPump.length) })
+    ]));
+    wrap.appendChild(patientCardGrid(withoutPump, p => outcomeVarianceChips(p)));
+  } else {
+    wrap.appendChild(h("div", { class: "groupHead" }, [
+      h("span", { text: "Matched cohort" }), h("span", { class: "n", text: String(matched.length) })
+    ]));
+    wrap.appendChild(patientCardGrid(matched, p => outcomeVarianceChips(p)));
+  }
+
+  return wrap;
+}
+
+function outcomeVarianceChips(p){
+  const patientNodes = nodesForPatient(p.id);
+  const outcomes = patientNodes.filter(n => n.node_type === "OutcomeNode");
+  const spikes = outcomes.filter(n => String(n.spike_event) === "true").length;
+  const chips = [];
+  if (spikes) chips.push(h("span", { class: "pill warn", text: `${spikes} spike event(s)` }));
+  chips.push(h("span", { class: "pill", text: `${p.attrs.facility_tier || "?"} / ${p.attrs.resource_status || "?"}` }));
+  return chips;
+}
+
+/* ---------------- shared card grid ---------------- */
+
+function patientCardGrid(patients, chipBuilder, flagged){
+  const grid = h("div", { class: "cardGrid" });
+  if (!patients.length){
+    grid.appendChild(h("div", { class: "note", text: "No patients match this anchor combination." }));
+    return grid;
+  }
+  for (const p of patients){
+    const card = h("div", { class: "pcard" + (p.condition_type === "T2D" ? " t2d" : "") + (flagged ? " flag" : "") });
+    card.appendChild(h("div", { class: "pid", text: p.id }));
+    card.appendChild(h("div", { class: "headline", text: `${p.condition_type} patient` }));
+    const chips = h("div", { class: "chips" });
+    for (const c of chipBuilder(p)) chips.appendChild(c);
+    card.appendChild(chips);
+    card.addEventListener("click", () => showDetail(p.attrs));
+    grid.appendChild(card);
+  }
+  return grid;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 7 — Generalization Sanity Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F1; --paper-raised:#FBFBF9; --ink:#182420; --ink-soft:#4B564F;
+    --ink-faint:#7C877E; --rule:#D9DCD3; --rule-strong:#B9C0B4;
+    --teal:#2F6F62; --teal-deep:#1D4740; --teal-wash:#E6EFEC;
+    --rust:#A85A34; --rust-wash:#F3E7DE;
+    --spike:#C4402E; --spike-wash:#F7DAD4;
+    --serif:"Source Serif 4", Georgia, serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", "SF Mono", monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+
+  .masthead{max-width:760px;margin:0 auto;padding:56px 28px 32px;border-bottom:1px solid var(--rule-strong);}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-deep);
+    display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .eyebrow .node{width:7px;height:7px;border-radius:50%;background:var(--teal);display:inline-block;flex:none;}
+  .eyebrow .edge{flex:1 1 auto;height:1px;background:repeating-linear-gradient(to right, var(--rule-strong) 0 4px, transparent 4px 8px);max-width:140px;}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.6vw,40px);line-height:1.16;letter-spacing:-.01em;margin:0 0 12px;}
+  .subtitle{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink-soft);max-width:56ch;margin:0;}
+
+  main{max-width:760px;margin:0 auto;padding:0 28px 80px;}
+
+  .verdict{margin:36px 0;padding:22px 26px;background:var(--teal-wash);border:1px solid var(--rule-strong);
+    border-left:4px solid var(--teal);border-radius:2px;}
+  .verdict-tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-deep);display:block;margin-bottom:8px;}
+  .verdict p{margin:0;font-size:15px;color:var(--ink);line-height:1.75;}
+  .verdict strong{color:var(--teal-deep);}
+
+  section{margin-top:44px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--ink-faint);}
+  h2{font-family:var(--serif);font-weight:600;font-size:23px;margin:0;}
+  h3{font-family:var(--serif);font-weight:600;font-size:18px;margin:26px 0 8px;}
+  p{font-size:15px;color:var(--ink-soft);}
+  code{font-family:var(--mono);font-size:.88em;background:var(--paper-raised);border:1px solid var(--rule);
+    border-radius:3px;padding:1px 5px;color:var(--ink);}
+
+  table.audit{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0 6px;}
+  table.audit th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);
+    text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule-strong);}
+  table.audit td{padding:10px 10px;border-bottom:1px solid var(--rule);color:var(--ink-soft);vertical-align:top;}
+  table.audit code{white-space:nowrap;}
+  .status{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;display:inline-block;white-space:nowrap;}
+  .status.gen{background:var(--teal-wash);color:var(--teal-deep);}
+  .status.flag{background:var(--rust-wash);color:var(--rust);}
+
+  .issue{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:2px;padding:16px 20px;margin:16px 0;}
+  .issue .itag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--rust);display:block;margin-bottom:8px;}
+  .issue p{margin:6px 0;}
+  .issue p:first-of-type{margin-top:0;}
+  .issue p:last-child{margin-bottom:0;}
+
+  .method-list{padding-left:20px;}
+  .method-list li{font-size:15px;color:var(--ink-soft);margin-bottom:8px;}
+
+  footer{max-width:760px;margin:0 auto;padding:32px 28px 60px;border-top:1px solid var(--rule-strong);
+    font-family:var(--mono);font-size:12px;color:var(--ink-faint);}
+
+  .site-nav{max-width:900px;margin:0 auto;padding:12px 28px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:6px 4px;font-family:var(--mono),monospace;font-size:12px;
+    border-bottom:1px solid var(--rule-strong,#B9C0B4);background:var(--paper,#F4F5F1);}
+  .site-nav a{color:var(--ink-soft,#4B564F);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;}
+  .site-nav a:hover{background:var(--teal-wash,#E6EFEC);color:var(--teal-deep,#1D4740);}
+  .site-nav a.current{background:var(--teal,#2F6F62);color:#fff;font-weight:600;}
+  .site-nav .sep{color:var(--rule-strong,#B9C0B4);}
+  .site-nav .spacer{flex:1 1 auto;}
+  .site-nav a.other-project{color:var(--rust,#A85A34);border:1px solid var(--rust,#A85A34);}
+  .site-nav a.other-project:hover{background:var(--rust-wash,#F3E7DE);}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html">Tour</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html">Idea</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html">Build log</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step1_corpus_generator.html">Step 1</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step2_graph_builder.html">Step 2</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step3_dashboard.html">Step 3</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step4_pivot_lens.html">Step 4</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step5_comparator_filter.html">Step 5</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step6_clinical_output_view.html">Step 6</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step7_generalization_check.html" class="current">Step 7</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/nested-analysis-view.html" title="Not yet live — output pending upload">Nested view</a>
+<span class="spacer"></span>
+<a class="other-project" href="https://avi33tbtt.github.io/VibeRounds/" target="_blank" rel="noopener">More projects: VibeRounds ↗</a>
+</nav>
+
+
+<div class="masthead">
+  <div class="eyebrow"><span class="node"></span><span>STEP 7 &middot; SANITY CHECK</span><span class="edge"></span></div>
+  <h1 class="title">Generalization Sanity Check</h1>
+  <p class="subtitle">Confirming, in writing, whether the same graph schema and the same toggle / lens / filter / output components handled T1D&rsquo;s acute-spike pattern and T2D&rsquo;s slow-branching pattern without special-casing either disease &mdash; and naming it plainly where they didn&rsquo;t.</p>
+</div>
+
+<main>
+
+  <div class="verdict">
+    <span class="verdict-tag">Verdict</span>
+    <p><strong>Mostly confirmed, with two flagged exceptions.</strong> Every component from Step 2 (ingestion) through Step 6 (output view) uses one code path for both diseases, dispatching purely on generic node attributes (<code>node_type</code>, <code>term</code>, <code>target</code>, <code>status</code>) rather than on <code>condition_type</code>. The two places <code>condition_type</code> is read for anything beyond counting, filtering, or color-coding are Step 4/5&rsquo;s pump-evidence proxy and Step 5&rsquo;s per-disease intervention-timing filter &mdash; both are documented below as open issues rather than silently accepted.</p>
+  </div>
+
+  <section id="method">
+    <div class="sec-head"><span class="sec-num">7.1</span><h2>Method</h2></div>
+    <p>This check does not re-run the demo. It audits the actual source of <code>step2_graph_builder.html</code> through <code>step6_clinical_output_view.html</code> for every place <code>condition_type</code>, <code>"T1D"</code>, or <code>"T2D"</code> appears, and classifies each occurrence as:</p>
+    <ul class="method-list">
+      <li><strong>Generalized</strong> &mdash; used only to filter, count, or label (e.g. a disease dropdown, a T1D-vs-T2D count in a stats bar, a CSS class that recolors a card) with no difference in what gets computed or rendered.</li>
+      <li><strong>Special-cased</strong> &mdash; the rendering or filtering logic itself branches differently depending on which disease the patient has, beyond simply matching a value.</li>
+    </ul>
+  </section>
+
+  <section id="audit">
+    <div class="sec-head"><span class="sec-num">7.2</span><h2>Component-by-component audit</h2></div>
+    <table class="audit">
+      <tr><th>Component</th><th>Disease dispatch</th><th>Status</th></tr>
+      <tr>
+        <td>Step 2 &mdash; FHIR-to-graph ingestion</td>
+        <td>Single ingestion function walks every patient&rsquo;s FHIR-flavored bundle into the same five node types regardless of <code>condition_type</code>; the file&rsquo;s own header note reads &ldquo;same code path for T1D and T2D &mdash; no special-casing.&rdquo;</td>
+        <td><span class="status gen">Generalized</span></td>
+      </tr>
+      <tr>
+        <td>Step 3 &mdash; Atemporal / temporal dashboard</td>
+        <td>Mode A and Mode B rendering functions take a patient list and read only <code>node_type</code>, <code>severity</code>, and <code>timestamp</code>; <code>condition_type</code> is used solely by the disease filter dropdown and a comment confirms &ldquo;same function for T1D and T2D.&rdquo;</td>
+        <td><span class="status gen">Generalized</span></td>
+      </tr>
+      <tr>
+        <td>Step 4 &mdash; Pivot lens selector</td>
+        <td>Disease-centered and intervention-centered lenses match on <code>DiagnosisNode.term</code> / <code>InterventionNode.target</code>, not on <code>condition_type</code> at all. The combo lens is generalized <em>except</em> for one sub-branch &mdash; see Issue&nbsp;1 below.</td>
+        <td><span class="status flag">Mostly generalized</span></td>
+      </tr>
+      <tr>
+        <td>Step 5 &mdash; Comparator filter</td>
+        <td>Outcome / facility / resource axes are fully generic. The intervention-timing axis explicitly branches on <code>condition_type</code> to decide which field to read &mdash; see Issue&nbsp;2 below.</td>
+        <td><span class="status flag">Special-cased (by design)</span></td>
+      </tr>
+      <tr>
+        <td>Step 6 &mdash; Clinically-readable output view</td>
+        <td>Evidence panel loops over <code>["T1D","T2D"]</code> to build a side-by-side pair of cards, but the card-building function itself is one function called twice with different data, not two implementations. Variation and confounders panels don&rsquo;t branch on disease at all.</td>
+        <td><span class="status gen">Generalized</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="issues">
+    <div class="sec-head"><span class="sec-num">7.3</span><h2>Open issues</h2></div>
+
+    <div class="issue">
+      <span class="itag">Issue 1 &mdash; pump-vs-injection is inferred from text, and only makes sense for T1D</span>
+      <p><code>patientHasPumpEvidence()</code> (Step 4, reused in Step 5) scans <code>OutcomeNode.reason</code> for the substring &ldquo;pump.&rdquo; This function is called unconditionally, but it is only ever meaningful for T1D patients &mdash; the corpus has no pump/injection concept for T2D, so calling it on a T2D patient returns <code>false</code> by construction rather than a real negative. The combo lens in Step 4 works around this by only applying the pump/no-pump split when the selected intervention anchor matches <code>/insulin/i</code>, which is itself a T1D-flavored assumption baked into a general-purpose branch.</p>
+      <p><strong>Why it exists:</strong> the underlying synthetic corpus (Step 1) never gave T1D delivery modality a first-class field, and never gave T2D one at all &mdash; there was no clean attribute to generalize over.</p>
+      <p><strong>Disposition:</strong> flagged in-UI in both Step 4 and Step 5 (an amber assumption note), not hidden. A real implementation would need delivery-modality as a normalized field on the Intervention node for every disease it's expected to apply to, rather than inferring it from free text.</p>
+    </div>
+
+    <div class="issue">
+      <span class="itag">Issue 2 &mdash; intervention-timing filter reads a different field per disease</span>
+      <p>Step 5&rsquo;s intervention-timing axis is explicitly disease-appropriate by spec (&ldquo;early vs. delayed insulin initiation for T2D; pump vs. injection for T1D&rdquo;), so <code>rowFor()</code> and <code>filteredPatients()</code> both contain a direct <code>p.condition_type === "T2D"</code> / <code>"T1D"</code> branch that reads <code>time_to_insulin_initiation_years</code> for one and calls <code>patientHasPumpEvidence()</code> for the other. This is a real branch in the filtering logic, not just a label difference.</p>
+      <p><strong>Why it exists:</strong> the two diseases have genuinely different clinically meaningful timing questions (T2D: when insulin was added to an existing regimen; T1D: which delivery device is in use) &mdash; there is no single generic field that captures both, so the Section 6 spec asked for this axis to differ by design.</p>
+      <p><strong>Disposition:</strong> treated as an accepted, intentional exception rather than a gap. It's isolated to one filter axis; every other axis in Step 5 (outcome, facility tier, resource status, population) is fully generic and identical for both diseases.</p>
+    </div>
+  </section>
+
+  <section id="conclusion">
+    <div class="sec-head"><span class="sec-num">7.4</span><h2>Conclusion</h2></div>
+    <p>The generalization claim from Section 7b holds at the level it was meant to be tested: the graph schema, the ingestion pipeline, the atemporal/temporal toggle, the disease- and intervention-centered pivot lenses, and the evidence/variation/confounders output view all use one code path driven by generic node attributes, and would behave identically if a third disease were dropped into the same schema tomorrow. The two exceptions are both in the comparator layer, both are about picking <em>which clinically relevant field to read</em> rather than about rendering T1D and T2D differently once a field is chosen, and both are surfaced in-UI as flagged assumptions rather than papered over. That is the useful signal Section 7b's closing paragraph asked this step to produce.</p>
+  </section>
+
+</main>
+
+<footer>
+  Step 7 of 7 &middot; Person-Centered Clinical Analytics demo architecture &middot; audits step2_graph_builder.html through step6_clinical_output_view.html against cohort_graph.json
+</footer>
+
+</body>
+</html>
