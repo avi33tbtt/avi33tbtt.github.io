@@ -1,0 +1,6624 @@
+{
+  "meta": {
+    "description": "Synthetic FHIR-flavored patient corpus for the Person-Centered Clinical Analytics T1D/T2D demo pilot. All data fabricated - not real patient data.",
+    "generated": "2026-08-17",
+    "seed": 42,
+    "t1d_count": 9,
+    "t2d_count": 9
+  },
+  "t1d_patients": [
+    {
+      "patient_id": "t1d-97da2849",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1987,
+        "diagnosis_age": 15
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "presentation_delay_hours": 4,
+        "spike_event_count": 3
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-97da2849",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-97da2849"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1987-04-02",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-8a907d09",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2002-04-02"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-402c802d",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "2002-04-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-c5700893",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2002-04-02",
+              "valueQuantity": {
+                "value": 496,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-a34bd834",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "2002-04-02",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-210579e1",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2003-04-21"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "1.3"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "35.4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-e4b28d1f",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2003-04-21",
+              "valueQuantity": {
+                "value": 443,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-7dbfe684",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Insulin pump failure"
+                }
+              ],
+              "period": {
+                "start": "2006-05-22"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.2"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "19.2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-b5ce17d2",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2006-05-22",
+              "valueQuantity": {
+                "value": 96,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-3ae5c62d",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2011-02-22"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "4.4"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "12"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-0baee397",
+              "subject": {
+                "reference": "Patient/t1d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2011-02-22",
+              "valueQuantity": {
+                "value": 247,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-20bb4450",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1985,
+        "diagnosis_age": 6
+      },
+      "tags": {
+        "facility_tier": "primary",
+        "resource_status": "plenty",
+        "presentation_delay_hours": 8,
+        "spike_event_count": 5
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-20bb4450",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-20bb4450"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1985-07-28",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-4666a65e",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "1991-07-28"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-79893545",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "1991-07-28"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-32b51509",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1991-07-28",
+              "valueQuantity": {
+                "value": 551,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-376bec72",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "1991-07-28",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-8f7ddb01",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "1994-09-07"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.4"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "35.9"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-8acfdadd",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1994-09-07",
+              "valueQuantity": {
+                "value": 135,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-d2501abf",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Insulin pump failure"
+                }
+              ],
+              "period": {
+                "start": "1997-07-10"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "3.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "37.7"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-7b242047",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1997-07-10",
+              "valueQuantity": {
+                "value": 533,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-76542848",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2000-08-23"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "26.4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-a6202f1d",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2000-08-23",
+              "valueQuantity": {
+                "value": 347,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-1fcac8c8",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "DKA admission"
+                }
+              ],
+              "period": {
+                "start": "2003-07-28"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "4"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "13.8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-1104aa8f",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2003-07-28",
+              "valueQuantity": {
+                "value": 139,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-48dea9c4",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Severe hypoglycemic event"
+                }
+              ],
+              "period": {
+                "start": "2004-07-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.6"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "14.6"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-c8a88ffc",
+              "subject": {
+                "reference": "Patient/t1d-20bb4450"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2004-07-16",
+              "valueQuantity": {
+                "value": 42,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-4aad6e5e",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1995,
+        "diagnosis_age": 9
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "presentation_delay_hours": 12,
+        "spike_event_count": 4
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-4aad6e5e",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-4aad6e5e"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1995-07-14",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-24f74acb",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2004-07-14"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-2de8717e",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "2004-07-14"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "12"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-679b8021",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2004-07-14",
+              "valueQuantity": {
+                "value": 553,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-16dda104",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "2004-07-14",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-744b8791",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2006-08-26"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "3.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "9.2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-be100533",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2006-08-26",
+              "valueQuantity": {
+                "value": 478,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-3c821c6d",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2011-07-24"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "0.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "27.8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-7f228a3c",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2011-07-24",
+              "valueQuantity": {
+                "value": 484,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-0f9405bc",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2013-05-31"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "2.5"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "35.8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d72a83d1",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2013-05-31",
+              "valueQuantity": {
+                "value": 181,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-fd538c77",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Severe hypoglycemic event"
+                }
+              ],
+              "period": {
+                "start": "2014-09-12"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.4"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "24.9"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-70d56480",
+              "subject": {
+                "reference": "Patient/t1d-4aad6e5e"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2014-09-12",
+              "valueQuantity": {
+                "value": 36,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-a1ecac09",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1990,
+        "diagnosis_age": 11
+      },
+      "tags": {
+        "facility_tier": "secondary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 2,
+        "spike_event_count": 5
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-a1ecac09",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-a1ecac09"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1990-07-07",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-b0b25be4",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2001-07-07"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-e709777c",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "2001-07-07"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-b9fd70e0",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2001-07-07",
+              "valueQuantity": {
+                "value": 386,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-87a89daf",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "2001-07-07",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-dac5d7ea",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2006-08-14"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "1.3"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "37.1"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-25b02395",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2006-08-14",
+              "valueQuantity": {
+                "value": 180,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-9e76da57",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Insulin pump failure"
+                }
+              ],
+              "period": {
+                "start": "2010-09-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "0.7"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "26"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f291ac69",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2010-09-02",
+              "valueQuantity": {
+                "value": 336,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-8aec001e",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Insulin pump failure"
+                }
+              ],
+              "period": {
+                "start": "2015-06-24"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "2.2"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "27.3"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-080ba06d",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2015-06-24",
+              "valueQuantity": {
+                "value": 40,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-696932bb",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2017-05-31"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.4"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "28.4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-ef695afe",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2017-05-31",
+              "valueQuantity": {
+                "value": 198,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-8f0a9f4f",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2021-06-18"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "2.7"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "9.8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f48634fa",
+              "subject": {
+                "reference": "Patient/t1d-a1ecac09"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2021-06-18",
+              "valueQuantity": {
+                "value": 165,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-585729ea",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1982,
+        "diagnosis_age": 11
+      },
+      "tags": {
+        "facility_tier": "secondary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 8,
+        "spike_event_count": 4
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-585729ea",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-585729ea"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1982-08-03",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-9aa620b6",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "1993-08-03"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-02a407b2",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "1993-08-03"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-3495597d",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1993-08-03",
+              "valueQuantity": {
+                "value": 563,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-135edf72",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "1993-08-03",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-0d1889f8",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "1997-09-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "2"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "34.7"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-8ee13e6b",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1997-09-02",
+              "valueQuantity": {
+                "value": 418,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-978b96f3",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Severe hypoglycemic event"
+                }
+              ],
+              "period": {
+                "start": "2000-07-27"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.6"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "38.2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-02015c87",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2000-07-27",
+              "valueQuantity": {
+                "value": 41,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-1d61f0c9",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2002-10-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "7.6"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "19.5"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-9e3d3f76",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2002-10-02",
+              "valueQuantity": {
+                "value": 77,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-313bcfde",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "DKA admission"
+                }
+              ],
+              "period": {
+                "start": "2003-07-21"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "4.3"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "6.9"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-b8d30dee",
+              "subject": {
+                "reference": "Patient/t1d-585729ea"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2003-07-21",
+              "valueQuantity": {
+                "value": 178,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-320faa1a",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1983,
+        "diagnosis_age": 12
+      },
+      "tags": {
+        "facility_tier": "primary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 6,
+        "spike_event_count": 2
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-320faa1a",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-320faa1a"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1983-01-06",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-14ef830c",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "1995-01-06"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-e5ffc254",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "1995-01-06"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "6"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-a89a91ea",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1995-01-06",
+              "valueQuantity": {
+                "value": 371,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-96c361f3",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "1995-01-06",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-9aaed7c2",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Insulin pump failure"
+                }
+              ],
+              "period": {
+                "start": "1999-01-19"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "3.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "20.4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-a63fe6ee",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1999-01-19",
+              "valueQuantity": {
+                "value": 297,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-f0fb7445",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2000-01-06"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "8.1"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "21.8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-30b240c1",
+              "subject": {
+                "reference": "Patient/t1d-320faa1a"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2000-01-06",
+              "valueQuantity": {
+                "value": 191,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-b875a94c",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1981,
+        "diagnosis_age": 15
+      },
+      "tags": {
+        "facility_tier": "secondary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 48,
+        "spike_event_count": 3
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-b875a94c",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-b875a94c"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1981-09-01",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-4664a53a",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "1996-09-01"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-8fde986d",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "1996-09-01"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 5
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "48"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-0902b232",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1996-09-01",
+              "valueQuantity": {
+                "value": 426,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-6f7bdc4d",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "1996-09-01",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-4ecaa8e6",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "1998-07-10"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 3
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.1"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "15.7"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d1ebd31d",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "1998-07-10",
+              "valueQuantity": {
+                "value": 577,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-f9831e44",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2000-09-09"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.6"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "9.1"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-a3433efa",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2000-09-09",
+              "valueQuantity": {
+                "value": 598,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-7a3ac925",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "DKA admission"
+                }
+              ],
+              "period": {
+                "start": "2002-10-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.1"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "20.1"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d18c4071",
+              "subject": {
+                "reference": "Patient/t1d-b875a94c"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2002-10-02",
+              "valueQuantity": {
+                "value": 138,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-c73988df",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 2005,
+        "diagnosis_age": 6
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 4,
+        "spike_event_count": 4
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-c73988df",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-c73988df"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "2005-10-29",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-3c7249bb",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2011-10-29"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-7debd530",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "2011-10-29"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 5
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "4"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-94ffbf3c",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2011-10-29",
+              "valueQuantity": {
+                "value": 502,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-148afcbc",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "2011-10-29",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-b3a3c402",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2016-12-11"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.8"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "9.2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-ff55eb35",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2016-12-11",
+              "valueQuantity": {
+                "value": 146,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-463f28d5",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2017-11-08"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "8.5"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "34.1"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-fb238e6d",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2017-11-08",
+              "valueQuantity": {
+                "value": 548,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-033fe675",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2018-09-03"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "6.5"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "38.2"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-34b77f81",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2018-09-03",
+              "valueQuantity": {
+                "value": 323,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-37658717",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2023-10-30"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.7"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "40.9"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-20436eea",
+              "subject": {
+                "reference": "Patient/t1d-c73988df"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2023-10-30",
+              "valueQuantity": {
+                "value": 456,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t1d-3e3bd895",
+      "condition_type": "T1D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1988,
+        "diagnosis_age": 12
+      },
+      "tags": {
+        "facility_tier": "primary",
+        "resource_status": "constrained",
+        "presentation_delay_hours": 8,
+        "spike_event_count": 2
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t1d-3e3bd895",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t1d-3e3bd895"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1988-04-02",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-2753553c",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "46635009",
+                    "display": "Type 1 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 1 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2000-04-02"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-6da71922",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "New-onset DKA at diagnosis"
+                }
+              ],
+              "period": {
+                "start": "2000-04-02"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/presentation_delay_hours",
+                  "valueString": "8"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-386c97d9",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2000-04-02",
+              "valueQuantity": {
+                "value": 598,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-63beecca",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Insulin (basal-bolus regimen)"
+                  }
+                ],
+                "text": "Insulin (basal-bolus regimen)"
+              },
+              "authoredOn": "2000-04-02",
+              "dosageInstruction": [
+                {
+                  "text": "Basal-bolus insulin, titrated per glucose logs"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-56feb08e",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Sick-day hyperglycemia admission"
+                }
+              ],
+              "period": {
+                "start": "2001-02-15"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "5.7"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "17.6"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-1064dd90",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2001-02-15",
+              "valueQuantity": {
+                "value": 171,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-2173c89e",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "CGM sensor failure / data gap"
+                }
+              ],
+              "period": {
+                "start": "2006-03-13"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/spike_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/time_to_er_hours",
+                  "valueString": "8.1"
+                },
+                {
+                  "url": "demo/time_to_stabilization_hours",
+                  "valueString": "35"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-b4200c10",
+              "subject": {
+                "reference": "Patient/t1d-3e3bd895"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2006-03-13",
+              "valueQuantity": {
+                "value": 395,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "t2d_patients": [
+    {
+      "patient_id": "t2d-14771bf7",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1965,
+        "diagnosis_age": 54
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "constrained",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-14771bf7",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-14771bf7"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1965-02-01",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-2103bb63",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2019-02-01"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-6c127f61",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2019-02-01"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f9f7661c",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2019-02-01",
+              "valueQuantity": {
+                "value": 6.9,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-ef964b32",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2021-02-01"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "regimen_escalation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-e6f2e566",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2021-02-01",
+              "valueQuantity": {
+                "value": 8.3,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-8fc7021c",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "6809",
+                    "display": "Metformin"
+                  }
+                ],
+                "text": "Metformin"
+              },
+              "authoredOn": "2024-02-01",
+              "dosageInstruction": [
+                {
+                  "text": "500mg PO BID, titrate to 1000mg BID"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-0cbb7abe",
+              "subject": {
+                "reference": "Patient/t2d-14771bf7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2024-02-01",
+              "valueQuantity": {
+                "value": 7.5,
+                "unit": "%"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-c68fc937",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1949,
+        "diagnosis_age": 46
+      },
+      "tags": {
+        "facility_tier": "quaternary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": 18,
+        "comorbidity_count": 4,
+        "comorbidities": [
+          {
+            "name": "Dyslipidemia",
+            "onset": "2011-12-16"
+          },
+          {
+            "name": "Hypertension",
+            "onset": "2011-12-16"
+          },
+          {
+            "name": "Diabetic retinopathy",
+            "onset": "2011-12-16"
+          },
+          {
+            "name": "Chronic kidney disease",
+            "onset": "2010-12-16"
+          }
+        ]
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-c68fc937",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-c68fc937"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1949-12-16",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-2b81282f",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "1995-12-16"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-f8477444",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "1995-12-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f2712e68",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "1995-12-16",
+              "valueQuantity": {
+                "value": 6.9,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-6b87041e",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2000-12-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "regimen_escalation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-c8449b2f",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2000-12-16",
+              "valueQuantity": {
+                "value": 8.7,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-05d830cf",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "6809",
+                    "display": "Metformin"
+                  }
+                ],
+                "text": "Metformin"
+              },
+              "authoredOn": "2005-12-16",
+              "dosageInstruction": [
+                {
+                  "text": "500mg PO BID, titrate to 1000mg BID"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-24534f15",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2005-12-16",
+              "valueQuantity": {
+                "value": 8.4,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-333f45b3",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "4821",
+                    "display": "Metformin + Sulfonylurea"
+                  }
+                ],
+                "text": "Metformin + Sulfonylurea"
+              },
+              "authoredOn": "2007-12-16",
+              "dosageInstruction": [
+                {
+                  "text": "Add glipizide 5mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-8b2e82ca",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2007-12-16",
+              "valueQuantity": {
+                "value": 8.5,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-11fb5b25",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "1373463",
+                    "display": "Metformin + SGLT2 inhibitor"
+                  }
+                ],
+                "text": "Metformin + SGLT2 inhibitor"
+              },
+              "authoredOn": "2009-12-16",
+              "dosageInstruction": [
+                {
+                  "text": "Add empagliflozin 10mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d54b7529",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2009-12-16",
+              "valueQuantity": {
+                "value": 5.8,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-bb057b1e",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Basal insulin added"
+                  }
+                ],
+                "text": "Basal insulin added"
+              },
+              "authoredOn": "2013-12-16",
+              "dosageInstruction": [
+                {
+                  "text": "Add basal insulin, titrate to fasting glucose target"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-c98f30b1",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2013-12-16",
+              "valueQuantity": {
+                "value": 6.9,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-d80ed31f",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Basal-bolus insulin regimen"
+                  }
+                ],
+                "text": "Basal-bolus insulin regimen"
+              },
+              "authoredOn": "2018-12-16",
+              "dosageInstruction": [
+                {
+                  "text": "Full basal-bolus regimen"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-2a652ee0",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2018-12-16",
+              "valueQuantity": {
+                "value": 6,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-e2dfb3ce",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "55822004",
+                    "display": "Dyslipidemia"
+                  }
+                ],
+                "text": "Dyslipidemia"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2011-12-16"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-841df0b9",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "38341003",
+                    "display": "Hypertension"
+                  }
+                ],
+                "text": "Hypertension"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2011-12-16"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-a2a5a211",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "4855003",
+                    "display": "Diabetic retinopathy"
+                  }
+                ],
+                "text": "Diabetic retinopathy"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2011-12-16"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-25c1a01e",
+              "subject": {
+                "reference": "Patient/t2d-c68fc937"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "709044004",
+                    "display": "Chronic kidney disease"
+                  }
+                ],
+                "text": "Chronic kidney disease"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2010-12-16"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-0c34488f",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1955,
+        "diagnosis_age": 60
+      },
+      "tags": {
+        "facility_tier": "secondary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 4,
+        "comorbidities": [
+          {
+            "name": "Hypertension",
+            "onset": "2020-05-21"
+          },
+          {
+            "name": "Diabetic retinopathy",
+            "onset": "2022-05-21"
+          },
+          {
+            "name": "Dyslipidemia",
+            "onset": "2020-05-21"
+          },
+          {
+            "name": "Chronic kidney disease",
+            "onset": "2019-05-21"
+          }
+        ]
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-0c34488f",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-0c34488f"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1955-05-21",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-af20ec30",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2015-05-21"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-8a7c1d62",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2015-05-21"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-faba604c",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2015-05-21",
+              "valueQuantity": {
+                "value": 9.3,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-ba2e8dc3",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2019-05-21"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "regimen_escalation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-903ae485",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2019-05-21",
+              "valueQuantity": {
+                "value": 9.1,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-148123d2",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "6809",
+                    "display": "Metformin"
+                  }
+                ],
+                "text": "Metformin"
+              },
+              "authoredOn": "2023-05-21",
+              "dosageInstruction": [
+                {
+                  "text": "500mg PO BID, titrate to 1000mg BID"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-b7509ab2",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2023-05-21",
+              "valueQuantity": {
+                "value": 6.3,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-95176b7f",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "38341003",
+                    "display": "Hypertension"
+                  }
+                ],
+                "text": "Hypertension"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2020-05-21"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-c8ea2ee0",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "4855003",
+                    "display": "Diabetic retinopathy"
+                  }
+                ],
+                "text": "Diabetic retinopathy"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2022-05-21"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-f787485e",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "55822004",
+                    "display": "Dyslipidemia"
+                  }
+                ],
+                "text": "Dyslipidemia"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2020-05-21"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-4c83b5a9",
+              "subject": {
+                "reference": "Patient/t2d-0c34488f"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "709044004",
+                    "display": "Chronic kidney disease"
+                  }
+                ],
+                "text": "Chronic kidney disease"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2019-05-21"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-e6355bc7",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1969,
+        "diagnosis_age": 65
+      },
+      "tags": {
+        "facility_tier": "quaternary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-e6355bc7",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-e6355bc7"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1969-01-16",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-adab764d",
+              "subject": {
+                "reference": "Patient/t2d-e6355bc7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2034-01-16"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-16b0ca67",
+              "subject": {
+                "reference": "Patient/t2d-e6355bc7"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2034-01-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-65ef4d0e",
+              "subject": {
+                "reference": "Patient/t2d-e6355bc7"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2034-01-16",
+              "valueQuantity": {
+                "value": 6.9,
+                "unit": "%"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-f2023fd4",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1976,
+        "diagnosis_age": 43
+      },
+      "tags": {
+        "facility_tier": "quaternary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-f2023fd4",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-f2023fd4"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1976-12-28",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-6dfa2c18",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2019-12-28"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-848462bd",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2019-12-28"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-a8a88131",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2019-12-28",
+              "valueQuantity": {
+                "value": 8.5,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-31e6ab7d",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2021-12-28"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "regimen_escalation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-1ffd3757",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2021-12-28",
+              "valueQuantity": {
+                "value": 9.1,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-84a67203",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "6809",
+                    "display": "Metformin"
+                  }
+                ],
+                "text": "Metformin"
+              },
+              "authoredOn": "2025-12-28",
+              "dosageInstruction": [
+                {
+                  "text": "500mg PO BID, titrate to 1000mg BID"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-1f5390a2",
+              "subject": {
+                "reference": "Patient/t2d-f2023fd4"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2025-12-28",
+              "valueQuantity": {
+                "value": 7.2,
+                "unit": "%"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-4baf5572",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1969,
+        "diagnosis_age": 64
+      },
+      "tags": {
+        "facility_tier": "secondary",
+        "resource_status": "constrained",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-4baf5572",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-4baf5572"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1969-02-07",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-9b3354e5",
+              "subject": {
+                "reference": "Patient/t2d-4baf5572"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2033-02-07"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-223c4f27",
+              "subject": {
+                "reference": "Patient/t2d-4baf5572"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2033-02-07"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-aa6e0a9b",
+              "subject": {
+                "reference": "Patient/t2d-4baf5572"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2033-02-07",
+              "valueQuantity": {
+                "value": 9,
+                "unit": "%"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-2b73d92d",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1962,
+        "diagnosis_age": 65
+      },
+      "tags": {
+        "facility_tier": "primary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-2b73d92d",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-2b73d92d"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1962-07-24",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-71980a52",
+              "subject": {
+                "reference": "Patient/t2d-2b73d92d"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2027-07-24"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-e2324c0a",
+              "subject": {
+                "reference": "Patient/t2d-2b73d92d"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2027-07-24"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f9393803",
+              "subject": {
+                "reference": "Patient/t2d-2b73d92d"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2027-07-24",
+              "valueQuantity": {
+                "value": 9.3,
+                "unit": "%"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-b77ffc83",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1952,
+        "diagnosis_age": 65
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 2,
+        "comorbidities": [
+          {
+            "name": "Dyslipidemia",
+            "onset": "2022-05-24"
+          },
+          {
+            "name": "Hypertension",
+            "onset": "2018-05-24"
+          }
+        ]
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-b77ffc83",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-b77ffc83"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1952-05-24",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-47ff78b0",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2017-05-24"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-102e8e63",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2017-05-24"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-074c70a7",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2017-05-24",
+              "valueQuantity": {
+                "value": 8.8,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-d8bf5d0b",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2019-05-24"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "regimen_escalation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-e42c85ee",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2019-05-24",
+              "valueQuantity": {
+                "value": 6.2,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-c8a92751",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "6809",
+                    "display": "Metformin"
+                  }
+                ],
+                "text": "Metformin"
+              },
+              "authoredOn": "2023-05-24",
+              "dosageInstruction": [
+                {
+                  "text": "500mg PO BID, titrate to 1000mg BID"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-f03c2ed6",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2023-05-24",
+              "valueQuantity": {
+                "value": 8.1,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-f6f05290",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "4821",
+                    "display": "Metformin + Sulfonylurea"
+                  }
+                ],
+                "text": "Metformin + Sulfonylurea"
+              },
+              "authoredOn": "2025-05-24",
+              "dosageInstruction": [
+                {
+                  "text": "Add glipizide 5mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-885a8eba",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2025-05-24",
+              "valueQuantity": {
+                "value": 8.5,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-b8fd8ebd",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "55822004",
+                    "display": "Dyslipidemia"
+                  }
+                ],
+                "text": "Dyslipidemia"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2022-05-24"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-4a8b7d73",
+              "subject": {
+                "reference": "Patient/t2d-b77ffc83"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "38341003",
+                    "display": "Hypertension"
+                  }
+                ],
+                "text": "Hypertension"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2018-05-24"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "t2d-63f0aaae",
+      "condition_type": "T2D",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1968,
+        "diagnosis_age": 54
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "constrained",
+        "time_to_insulin_initiation_years": null,
+        "comorbidity_count": 1,
+        "comorbidities": [
+          {
+            "name": "Hypertension",
+            "onset": "2024-03-17"
+          }
+        ]
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-63f0aaae",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-63f0aaae"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1968-03-17",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-0d95721a",
+              "subject": {
+                "reference": "Patient/t2d-63f0aaae"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2022-03-17"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-120132b0",
+              "subject": {
+                "reference": "Patient/t2d-63f0aaae"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2022-03-17"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-6d1086e3",
+              "subject": {
+                "reference": "Patient/t2d-63f0aaae"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2022-03-17",
+              "valueQuantity": {
+                "value": 9.1,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-2f0498cf",
+              "subject": {
+                "reference": "Patient/t2d-63f0aaae"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "38341003",
+                    "display": "Hypertension"
+                  }
+                ],
+                "text": "Hypertension"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2024-03-17"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

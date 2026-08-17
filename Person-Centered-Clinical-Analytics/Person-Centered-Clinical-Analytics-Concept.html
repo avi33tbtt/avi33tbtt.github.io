@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Person-Centered Clinical Analytics: Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F1;
+    --paper-raised:#FBFBF9;
+    --ink:#182420;
+    --ink-soft:#4B564F;
+    --ink-faint:#7C877E;
+    --rule:#D9DCD3;
+    --rule-strong:#B9C0B4;
+    --teal:#2F6F62;
+    --teal-deep:#1D4740;
+    --teal-wash:#E6EFEC;
+    --rust:#A85A34;
+    --rust-wash:#F3E7DE;
+    --serif:"Source Serif 4", Georgia, serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", "SF Mono", monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---- masthead ---- */
+  .masthead{
+    max-width:760px;
+    margin:0 auto;
+    padding:64px 28px 40px;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow .node{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--teal);
+    display:inline-block;
+    flex:none;
+  }
+  .eyebrow .edge{
+    flex:1 1 auto;
+    height:1px;
+    background:repeating-linear-gradient(to right, var(--rule-strong) 0 4px, transparent 4px 8px);
+    max-width:140px;
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(32px, 5vw, 46px);
+    line-height:1.14;
+    letter-spacing:-0.01em;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+  .subtitle{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0;
+  }
+
+  /* ---- scope note (signature element) ---- */
+  .scope{
+    max-width:760px;
+    margin:36px auto 0;
+    padding:0 28px;
+  }
+  .scope-box{
+    position:relative;
+    background:var(--paper-raised);
+    border:1px solid var(--rule-strong);
+    border-left:3px solid var(--rust);
+    border-radius:2px;
+    padding:22px 26px 24px;
+  }
+  .scope-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--rust);
+    display:block;
+    margin-bottom:10px;
+  }
+  .scope-box p{
+    margin:0;
+    font-size:15px;
+    line-height:1.75;
+    color:var(--ink-soft);
+  }
+  .scope-box strong{color:var(--ink);font-weight:600;}
+  .scope-box em{font-family:var(--serif);font-style:italic;color:var(--ink);}
+
+  /* ---- content ---- */
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 28px 100px;
+  }
+  section{
+    padding-top:54px;
+  }
+  section + section{
+    border-top:1px solid var(--rule);
+  }
+
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .sec-num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--teal);
+    letter-spacing:.02em;
+    flex:none;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:26px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  h3{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:19px;
+    margin:34px 0 10px;
+    color:var(--ink);
+  }
+  h3.sub-diabetes{
+    padding:14px 16px;
+    background:var(--teal-wash);
+    border-radius:3px;
+    margin:30px 0 14px;
+  }
+
+  p{margin:14px 0;color:var(--ink);}
+  .lede{
+    font-family:var(--serif);
+    font-size:17.5px;
+    color:var(--ink-soft);
+    margin-top:16px;
+  }
+
+  .core-principle{
+    margin:22px 0;
+    padding:16px 20px;
+    border-left:2px solid var(--teal);
+    background:transparent;
+  }
+  .core-principle .label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+    display:block;
+    margin-bottom:6px;
+  }
+  .core-principle p{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:17px;
+    margin:0;
+    color:var(--ink);
+  }
+
+  ul, ol{padding-left:22px;margin:14px 0;}
+  li{margin:7px 0;}
+  li::marker{color:var(--teal);}
+
+  code{
+    font-family:var(--mono);
+    font-size:.87em;
+    background:var(--teal-wash);
+    color:var(--teal-deep);
+    padding:1px 5px;
+    border-radius:3px;
+  }
+
+  pre{
+    font-family:var(--mono);
+    font-size:13px;
+    line-height:1.65;
+    background:var(--ink);
+    color:#DCE7E2;
+    padding:20px 22px;
+    border-radius:4px;
+    overflow-x:auto;
+    margin:20px 0;
+  }
+  pre code{background:none;color:inherit;padding:0;}
+  pre .arrow{color:#7FBFAE;}
+
+  blockquote{
+    margin:22px 0;
+    padding:16px 22px;
+    background:var(--paper-raised);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:15.5px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+    font-size:14.5px;
+  }
+  th{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    text-align:left;
+    color:var(--ink-faint);
+    font-weight:500;
+    padding:10px 14px;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  td{
+    padding:12px 14px;
+    border-bottom:1px solid var(--rule);
+    vertical-align:top;
+    color:var(--ink-soft);
+  }
+  tr:last-child td{border-bottom:1px solid var(--rule-strong);}
+  td strong, th strong{color:var(--ink);}
+
+  .ui-control{
+    font-family:var(--mono);
+    font-size:13px;
+    background:var(--ink);
+    color:#DCE7E2;
+    padding:10px 16px;
+    border-radius:4px;
+    display:inline-block;
+    margin:8px 0 4px;
+  }
+
+  .checklist{list-style:none;padding-left:0;margin:18px 0;}
+  .checklist li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:9px 0;
+    border-bottom:1px solid var(--rule);
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .box{
+    flex:none;
+    width:15px;height:15px;
+    margin-top:3px;
+    border:1.5px solid var(--rule-strong);
+    border-radius:3px;
+  }
+  .checklist .box.checked{
+    background:var(--teal) linear-gradient(var(--teal),var(--teal)) center/9px 9px no-repeat;
+    border-color:var(--teal);
+  }
+
+  .divider-glyph{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:44px 0 0;
+    color:var(--rule-strong);
+  }
+
+  strong{color:var(--ink);font-weight:600;}
+  em{font-style:italic;}
+  a{color:var(--teal-deep);}
+
+  footer{
+    max-width:760px;
+    margin:0 auto;
+    padding:36px 28px 60px;
+    border-top:1px solid var(--rule-strong);
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-faint);
+    display:flex;
+    justify-content:space-between;
+  }
+
+  @media (max-width:600px){
+    .masthead{padding:44px 20px 28px;}
+    main{padding:0 20px 80px;}
+    section{padding-top:40px;}
+    h2{font-size:22px;}
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}
+    tr{border-bottom:1px solid var(--rule-strong);padding:14px 0;}
+    td{border-bottom:none;padding:5px 0;}
+    td::before{
+      content:attr(data-label);
+      display:block;
+      font-family:var(--mono);
+      font-size:10px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--ink-faint);
+      margin-bottom:3px;
+    }
+    footer{flex-direction:column;gap:6px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">
+    <span class="node"></span><span class="edge"></span>
+    <span>concept note &mdash; not a deployed system &middot; part 1 of 2</span>
+  </div>
+  <h1 class="title">Person-Centered Clinical Analytics</h1>
+  <p class="subtitle">An early architecture sketch for reasoning across whole patients, not single diagnoses &mdash; and an honest account of where that idea stops short of guiding care. <em>The companion implementation demo (Part 2) walks through the working build.</em></p>
+</div>
+
+<div class="scope">
+  <div class="scope-box">
+    <span class="scope-tag">Scope note</span>
+    <p>This is an early-stage <strong>idea and demo concept</strong>, not a validated or deployable system. Its potential value lies in <strong>learning, post hoc audit, and person-centered analytics</strong> &mdash; helping clinicians and researchers see patterns, variation, and comparative evidence across retrospective cases. It is <strong>not</strong> clinically robust enough to function as a patient-centered decision-making, guiding, or prediction system. Real-world constraints and contextualization are largely absent from the underlying data: a case corpus drawn from a high-resource, quaternary-care setting can meaningfully mislead a user practicing in a resource-constrained facility, and vice versa. Facility tier and resource-gradient tagging (Section 6.4) help <em>flag</em> this gap, but cannot fully close it. Clinical acumen must remain the decision-maker; at best, this idea could evolve into analytics and reasoning support, not a substitute for clinical judgment, and it is not intended as a Clinical Decision Support (CDS) / SaMD tool in the regulatory sense.</p>
+  </div>
+</div>
+
+<main>
+
+  <section id="vision">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Vision</h2></div>
+    <p class="lede">Explore an idea for a clinical reasoning and analytics demo that moves from raw, scattered patient data to structured, comparative evidence &mdash; without collapsing patients into rigid, single-disease silos. The system is <strong>person-centered first</strong>, and disease-, intervention-, or combo-centered analytics are projections on top of that person-centered data, not the starting point.</p>
+
+    <div class="core-principle">
+      <span class="label">Core principle</span>
+      <p>Disease-centered analytics run against person-centered data &mdash; comparative insight is generated without stripping away a patient&rsquo;s comorbidities, context, or environmental constraints.</p>
+    </div>
+  </section>
+
+  <section id="framework">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Implementation framework</h2></div>
+    <p class="lede">Original 3-phase roadmap.</p>
+
+    <h3>Phase 1 &mdash; Scaffolding (infrastructure)</h3>
+    <ul>
+      <li>Align data model with <strong>FHIR / SNOMED / LOINC</strong>.</li>
+      <li>Select a pilot condition (e.g., snakebite envenomation, or CKD).</li>
+      <li>Define &ldquo;bucketing&rdquo; logic: filter patients by diagnosis codes and timeframes.</li>
+    </ul>
+
+    <h3>Phase 2 &mdash; Reasoning layer (LLM integration)</h3>
+    <ul>
+      <li>Build an <strong>extraction engine</strong>: prompts/scripts that pull &ldquo;critical decision nodes&rdquo; from narrative records.</li>
+      <li>Build <strong>nested analysis</strong>: scripts that find a common decision point (e.g., &ldquo;ASV dosage decision&rdquo;) across multiple records and index the variation.</li>
+    </ul>
+
+    <h3>Phase 3 &mdash; Guardrail (clinical validation)</h3>
+    <ul>
+      <li>Human clinician is the final interpreter and decision-maker; the system surfaces evidence, it does not decide.</li>
+      <li>Dashboard must present AI findings in a <strong>clinically readable</strong> way: evidence, variation, and confounding context at a glance.</li>
+    </ul>
+  </section>
+
+  <section id="data-model">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Person-centered data model</h2></div>
+    <p class="lede">Rather than starting from a disease, the pipeline starts from the whole person:</p>
+    <p style="font-family:var(--mono);font-size:14px;color:var(--teal-deep);">Observations &rarr; Diagnosis &rarr; Interventions/Plan (atemporal) &rarr; Outcomes</p>
+
+    <h3>3.1 &mdash; Knowledge graph structure</h3>
+<pre><code>[ Patient / Person ]
+       │
+       ├──(Has Observation)──► [ Observations: Signs, Symptoms, Vitals, Labs ]
+       │
+       ├──(Has Diagnosis)────► [ Diagnoses: Coded terms, Lists, Descriptive one-liner ]
+       │
+       ├──(Receives Plan)────► [ Interventions / Plan: Meds, Procedures, Orders ]
+       │                       (Atemporal: what was chosen, not strictly when)
+       │
+       └──(Results In)───────► [ Outcomes: Clinical status, resolution, complications ]</code></pre>
+
+    <h3>3.2 &mdash; Node types &amp; attributes</h3>
+    <table>
+      <thead><tr><th>Node</th><th>Attributes</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Node"><strong>PatientNode</strong></td><td data-label="Attributes">Anonymized ID, baseline demographics, immutable patient-level context</td></tr>
+        <tr><td data-label="Node"><strong>ObservationNode</strong></td><td data-label="Attributes">Raw text / SNOMED-LOINC code, severity, timestamp or sequence order</td></tr>
+        <tr><td data-label="Node"><strong>DiagnosisNode</strong></td><td data-label="Attributes">Term/phrase text, confidence level, primary vs. secondary/comorbidity</td></tr>
+        <tr><td data-label="Node"><strong>InterventionNode</strong></td><td data-label="Attributes">Action type, target, parameters (dose/frequency); stripped of strict temporal metadata for holistic viewing</td></tr>
+        <tr><td data-label="Node"><strong>OutcomeNode</strong></td><td data-label="Attributes">Resulting status, response to plan, adverse events, discharge state</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.3 &mdash; Relational edges</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li><code>(Observation) -[:SUGGESTS]-&gt; (Diagnosis)</code></li>
+      <li><code>(Diagnosis) -[:INDICATES_PLAN]-&gt; (Intervention)</code></li>
+      <li><code>(Intervention) -[:PRODUCED_OUTCOME]-&gt; (Outcome)</code></li>
+      <li><code>(ComorbidityDiagnosis) -[:MODULATES]-&gt; (Intervention)</code></li>
+      <li><code>(Observation) -[:CONSTRAINS]-&gt; (Intervention)</code></li>
+    </ul>
+
+    <h3>3.4 &mdash; Technical pipeline</h3>
+    <ol>
+      <li><strong>Ingestion &amp; parsing</strong> &mdash; raw EMR notes, discharge summaries, or FHIR JSON bundles per patient.</li>
+      <li><strong>Entity extraction (person-centered pass)</strong> &mdash; holistic scan for all active observations, full diagnosis set, full intervention bundle, and final outcomes (no disease pre-filter).</li>
+      <li><strong>Graph construction</strong> &mdash; instantiate nodes/edges per individual.</li>
+      <li><strong>Comparative aggregation</strong> &mdash; overlay multiple person-graphs to compare intervention bundles vs. outcomes across similar patients.</li>
+    </ol>
+  </section>
+
+  <section id="temporality">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Dual-mode temporality</h2></div>
+    <p class="lede">Time is modeled as an <strong>edge property</strong>, not a rigid node sequence, so the dashboard can toggle modes instantly.</p>
+
+<pre><code>[ Patient Node ]
+       │
+       ├──(HAS_OBSERVATION {timestamp: t1})──────► [ Observation ]
+       ├──(HAS_DIAGNOSIS {onset: t1})────────────► [ Diagnosis ]
+       ├──(RECEIVES_PLAN {atemporal_bundle: true})► [ Intervention / Plan ]
+       └──(RESULTS_IN {time_to_outcome_delta: d})─► [ Outcome ]</code></pre>
+
+    <table>
+      <thead><tr><th>Mode</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Mode"><strong>A &mdash; Atemporal / Gestalt</strong></td><td data-label="Description">Hides timestamps; aggregates all conditions, baselines, and plans into one unified cluster to assess total patient complexity</td></tr>
+        <tr><td data-label="Mode"><strong>B &mdash; Temporal trajectory</strong></td><td data-label="Description">Activates timestamp/sequence edges; renders as timeline/funnel showing how observations &rarr; diagnoses &rarr; interventions unfolded over time</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Multi-patient / population view</h3>
+    <ul>
+      <li><strong>Cohort super-nodes</strong>: patients with similar baseline profiles dynamically grouped.</li>
+      <li><strong>Vectorized trajectory averaging</strong> instead of overlapping spaghetti lines, e.g.:
+        <ul>
+          <li>Path A (65%): Observation &rarr; Diagnosis X &rarr; Bundle 1 &rarr; Positive outcome (avg 4.2 days)</li>
+          <li>Path B (35%): Observation &rarr; Diagnosis X+Y &rarr; Bundle 2 &rarr; Complication (avg 2.1 days)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Dashboard modes</h3>
+    <table>
+      <thead><tr><th>Component</th><th>Atemporal mode</th><th>Temporal mode</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Component">Primary view</td><td data-label="Atemporal">Network graph of patient/cohort profile</td><td data-label="Temporal">Sankey / chronological event graph</td></tr>
+        <tr><td data-label="Component">Data filter</td><td data-label="Atemporal">Multi-morbidity pattern, baseline vitals, intervention class</td><td data-label="Temporal">Time windows, sequence steps, time-to-outcome velocity</td></tr>
+        <tr><td data-label="Component">Core question</td><td data-label="Atemporal">&ldquo;What is the complete clinical picture, and what plan matches it?&rdquo;</td><td data-label="Temporal">&ldquo;At what timeline point did management diverge, and how did timing affect outcome?&rdquo;</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="pivot-lenses">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Three pivot lenses</h2></div>
+    <p class="lede">The same underlying person-centered graph can be re-anchored around three different centers without rebuilding it.</p>
+
+    <table>
+      <thead><tr><th>Lens</th><th>Anchor</th><th>Clinical question</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Lens"><strong>Disease-centered</strong></td><td data-label="Anchor">Diagnosis node</td><td data-label="Question">&ldquo;Given patients diagnosed with X, what presentations walked in, and what did we do?&rdquo;</td></tr>
+        <tr><td data-label="Lens"><strong>Intervention-centered</strong></td><td data-label="Anchor">Intervention/Plan node</td><td data-label="Question">&ldquo;When we deploy intervention Y, who actually receives it, and how do outcomes vary?&rdquo;</td></tr>
+        <tr><td data-label="Lens"><strong>Disease + intervention combo</strong></td><td data-label="Anchor">Composite (Diagnosis + Intervention) hyper-node</td><td data-label="Question">&ldquo;When Diagnosis A patients receive Intervention B, why do outcomes diverge &mdash; and what explains the variance?&rdquo;</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ui-control">Pivot by: &#9675; Disease &nbsp;|&nbsp; &#9675; Intervention &nbsp;|&nbsp; &#9679; Disease + intervention combo</div>
+    <p style="font-size:14px;color:var(--ink-faint);">Selecting a lens re-indexes the graph layout and re-clusters trajectories around the new anchor.</p>
+  </section>
+
+  <section id="comparator">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Scaling to a global population</h2></div>
+    <p class="lede">A 3-part comparator framework.</p>
+
+    <h3>6.1 &mdash; Population (disease or disease combo)</h3>
+    <p>Anchor diagnosis/cluster, normalized globally via <strong>SNOMED CT</strong> so the same diagnosis matches across facility types and geographies.</p>
+
+    <h3>6.2 &mdash; Intervention</h3>
+    <p>Standardized via <strong>LOINC</strong> and procedural coding so different local names/workflows map to the same underlying intervention.</p>
+
+    <h3>6.3 &mdash; Comparator (subgroup &amp; context matrix)</h3>
+    <ul>
+      <li><strong>Outcome-based subgroups</strong>: rapid recovery vs. complications/prolonged stay.</li>
+      <li><strong>Intervention-based subgroups</strong>: dosing, timing, alternative combinations.</li>
+      <li><strong>Temporal subgroups</strong>: time-of-intervention (e.g., golden-hour vs. delayed).</li>
+      <li><strong>Individual vs. cohort vector</strong>: pin the current patient against any matched subgroup.</li>
+    </ul>
+
+    <h3>6.4 &mdash; Normalization for global context</h3>
+    <ul>
+      <li><strong>Facility tier weighting</strong>: primary / secondary / tertiary / quaternary &mdash; adjusts for baseline acuity differences and referral bias.</li>
+      <li><strong>Resource gradient scaling</strong>: resource-plenty vs. resource-constrained &mdash; flags/clusters decisions driven by infrastructure or cost constraints rather than clinical failure.</li>
+    </ul>
+
+    <h3>6.5 &mdash; Example query</h3>
+    <blockquote>&ldquo;Show me patients with [disease combo] who received [intervention], filtered by [resource-constrained tertiary facilities], broken down by [temporal time-of-intervention subgroups], and map [my current patient&rsquo;s] trajectory against that specific comparator curve.&rdquo;</blockquote>
+  </section>
+
+  <section id="pilot-asv">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Pilot application: ASV (snakebite) case study</h2></div>
+    <p class="lede">Existing prototype: &ldquo;Critical Hub Node Navigation&rdquo; ASV demo (12-case corpus), which already functions as an early <strong>Intervention Node</strong> view with meta-analysis/RCT evidence layered on individual case reports.</p>
+
+    <h3>Integration plan</h3>
+    <p><strong>1. Population layer</strong> (disease + context) &mdash; Move beyond &ldquo;snake bite&rdquo; alone to a full baseline profile per case (age group, rural/urban, time from bite to admission, etc.) &mdash; group by &ldquo;patient gestalt,&rdquo; not just diagnosis label.</p>
+    <p><strong>2. Intervention layer</strong> (ASV critical node) &mdash; Treat each ASV decision (high vs. low dose, FFP adjuncts) as a comparative node. Tag each node with facility tier (e.g., quaternary = resource-plenty; rural = resource-constrained).</p>
+    <p><strong>3. Comparator layer</strong> (subgroup engine) &mdash; Outcome subgroup: recovery without neuro deficit vs. recovery with sequelae. Temporal subgroup: &ldquo;golden hour&rdquo; (ASV &lt;2h) vs. &ldquo;delayed&rdquo; (ASV &gt;6h) &mdash; test whether RCT/meta-analysis evidence aligns with local case-report results within each temporal band.</p>
+
+    <h3>Action plan</h3>
+    <ol>
+      <li>Tag the 12 cases with a JSON metadata layer:
+<pre><code>{
+  "facility_tier": "primary | secondary | tertiary",
+  "resource_status": "plenty | constrained",
+  "presentation_delay": "&lt;hours&gt;"
+}</code></pre>
+      </li>
+      <li>Define the pivot function: a filter over the existing &ldquo;Unified Case Insights&rdquo; view, e.g., &ldquo;show trajectories from secondary facilities where ASV was delayed &gt;4 hours.&rdquo;</li>
+      <li>Use this tagged, filterable ASV dataset as the working prototype for the global comparator framework (Section 6) before generalizing to other conditions.</li>
+    </ol>
+  </section>
+
+  <section id="pilot-diabetes">
+    <div class="sec-head"><span class="sec-num">07b</span><h2>Longitudinal pilot example: type 1 vs. type 2 diabetes</h2></div>
+    <p class="lede">The ASV/snakebite pilot (Section 7) is a good fit for the <strong>acute, single-encounter</strong> case: a short decision window, a bounded intervention, and outcomes resolved within days. But the person-centered model (Sections 3&ndash;4) is equally, if not more, meant for <strong>longitudinal</strong> care &mdash; conditions where the observation &rarr; diagnosis &rarr; intervention &rarr; outcome loop repeats over years or decades, and where the &ldquo;Intervention/Plan&rdquo; node isn&rsquo;t a single choice but an evolving regimen.</p>
+    <p>Diabetes mellitus is a useful example precisely because Type 1 and Type 2 stress the model in two different, complementary ways:</p>
+
+    <h3 class="sub-diabetes">Type 1 diabetes (T1D) &mdash; acute-resource-heavy, chronic condition</h3>
+    <ul>
+      <li>Diagnosis is typically early-onset and abrupt (often presenting as DKA), but management is lifelong.</li>
+      <li>Within the longitudinal trajectory, care demand is <strong>episodic and unpredictable</strong>: hypoglycemic events, DKA admissions, sick-day management, insulin pump/CGM failures. These are acute-care spikes layered on top of a chronic baseline.</li>
+      <li>Temporal Mode (Section 4, Mode B) needs to render this as a trajectory with <strong>irregular, high-acuity spikes</strong> rather than a smooth curve &mdash; the interesting comparator question is less &ldquo;did outcomes converge over time&rdquo; and more &ldquo;how did the system absorb the spikes&rdquo; (time-to-ER, time-to-stabilization, spike frequency per patient-year).</li>
+      <li>Facility-tier and resource-gradient tagging (Section 6.4) matter acutely here: a T1D patient in a resource-constrained setting with unreliable insulin/CGM supply chains has a fundamentally different risk profile than one in a resource-plenty setting, even with an identical HbA1c history.</li>
+    </ul>
+
+    <h3 class="sub-diabetes">Type 2 diabetes (T2D) &mdash; balanced, decades-long chronic management</h3>
+    <ul>
+      <li>Diagnosis is typically gradual, often incidental (screening-detected), with a long asymptomatic runway.</li>
+      <li>Management is a <strong>slow-moving, multi-decade regimen</strong>: lifestyle intervention &rarr; oral agents &rarr; combination therapy &rarr; insulin, with comorbidity accumulation (hypertension, dyslipidemia, CKD, retinopathy) modulating the plan at each stage (<code>ComorbidityDiagnosis -[:MODULATES]-&gt; Intervention</code>, Section 3.3).</li>
+      <li>Temporal Mode here is closer to the model&rsquo;s original intent: a <strong>long, gradually branching trajectory</strong> where the comparator question is &ldquo;at what point did management diverge, and how did that divergence compound over years&rdquo; &mdash; e.g., early vs. delayed insulin initiation, and its effect on complication-free years.</li>
+      <li>Resource gradient scaling matters differently: it&rsquo;s less about acute-supply failure and more about <strong>sustained access</strong> &mdash; years of consistent follow-up, medication adherence support, and screening for complications, which resource-constrained settings may not sustain at the same cadence as resource-plenty ones.</li>
+    </ul>
+
+    <h3>Why pairing T1D + T2D is useful for the demo</h3>
+    <p>Running both through the same person-centered graph structure stress-tests whether Mode A (Atemporal/Gestalt) and Mode B (Temporal Trajectory) genuinely generalize:</p>
+    <ul>
+      <li>T1D exercises the model&rsquo;s ability to represent <strong>acute spikes within a chronic timeline</strong> (irregular edges, high-acuity subgroups).</li>
+      <li>T2D exercises the model&rsquo;s ability to represent <strong>slow divergence and comorbidity accumulation</strong> over a much longer time horizon (smooth but branching trajectories, multi-decade <code>time_to_outcome_delta</code>).</li>
+    </ul>
+    <p>If the same graph schema and dashboard toggle can meaningfully represent both without special-casing, that&rsquo;s a reasonable signal the underlying architecture (Sections 3&ndash;4) is sound &mdash; independent of whether the pilot itself is clinically deployable (see scope note, top of document).</p>
+  </section>
+
+  <section id="next-steps">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Open decisions / next steps</h2></div>
+    <ul class="checklist">
+      <li><span class="box"></span><span>Confirm pilot case(s): ASV/snakebite (acute, single-encounter) remains the primary demo; evaluate adding T1D vs. T2D (Section 7b) as a second, longitudinal demo, and/or CKD in parallel.</span></li>
+      <li><span class="box"></span><span>Finalize EMR data format assumption: FHIR resources (Patient, Observation, Condition, MedicationRequest, Encounter) confirmed as source.</span></li>
+      <li><span class="box checked"></span><span>Build FHIR-to-graph ingestion mapping (HTML/JS, in-browser &mdash; no Python; Neo4j-ready CSV export for later). Done: <code>step2_graph_builder.html</code>.</span></li>
+      <li><span class="box"></span><span>Define full tagging schema for facility tier / resource status / temporal delay across the case corpus.</span></li>
+      <li><span class="box"></span><span>For a longitudinal pilot (T1D/T2D), define how multi-decade sequences are chunked/sampled for the dashboard (Section 7b) without losing acute-spike detail for T1D.</span></li>
+      <li><span class="box"></span><span>Prototype the Pivot Lens selector and Atemporal/Temporal toggle in the dashboard UI.</span></li>
+      <li><span class="box"></span><span>Design the &ldquo;clinically readable&rdquo; validation dashboard for Phase 3 (evidence + variation + confounders at a glance).</span></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <span>Person-centered clinical analytics &mdash; concept &amp; demo architecture</span>
+  <span>Idea stage &middot; not for clinical use</span>
+</footer>
+
+</body>
+</html>
