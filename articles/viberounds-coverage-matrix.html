@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Paradigm Coverage of the Four Tasks</title>
+<style>
+  :root{
+    --paper:#f3f0e8;
+    --ink:#1f2b2a;
+    --navy:#1e3a3a;
+    --line:#c9c2ae;
+    --teal:#2f6f6a;
+    --teal-deep:#1c4c48;
+    --amber:#c47c2f;
+    --amber-soft:#e9d3ab;
+    --red:#a4453a;
+    --card:#faf8f2;
+    --none:#e7e2d3;
+    --partial:#dfd0a8;
+    --strong:#2f6f6a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:#ffffff;color:var(--ink);
+    font-family:'Iowan Old Style','Georgia',serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:60px 26px 100px;}
+  .eyebrow{
+    font-family:'Courier New',monospace;font-size:12.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--teal-deep);
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px rgba(196,124,47,.18);}
+  h1{font-size:clamp(28px,4.4vw,42px);line-height:1.14;letter-spacing:-.01em;margin:0 0 12px;color:var(--navy);font-weight:600;}
+  .dek{font-family:'Courier New',monospace;font-size:14.5px;color:#4b5150;max-width:680px;margin:0 0 36px;}
+
+  .legend{
+    display:flex;gap:22px;flex-wrap:wrap;
+    font-family:'Courier New',monospace;font-size:11.5px;color:#4b5150;
+    margin-bottom:40px;padding:14px 16px;background:var(--card);border:1px solid var(--line);
+  }
+  .legend .sw{display:inline-flex;align-items:center;gap:7px;}
+  .dot{width:11px;height:11px;display:inline-block;border:1px solid var(--ink);}
+
+  h2{
+    font-family:'Courier New',monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--teal-deep);margin:0 0 20px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+
+  /* matrix */
+  .matrix-scroll{overflow-x:auto;margin-bottom:56px;}
+  table.matrix{border-collapse:collapse;width:100%;min-width:760px;background:var(--card);}
+  table.matrix th, table.matrix td{border:1px solid var(--line);padding:12px 12px;vertical-align:top;}
+  table.matrix thead th{
+    background:var(--navy);color:var(--paper);
+    font-family:'Courier New',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+    text-align:left;font-weight:normal;
+  }
+  table.matrix thead th.corner{background:var(--ink);}
+  table.matrix tbody th{
+    background:#efe9d8;text-align:left;font-size:14.5px;color:var(--navy);font-weight:600;
+    font-family:'Iowan Old Style','Georgia',serif;min-width:190px;
+  }
+  table.matrix tbody th .sub{display:block;font-family:'Courier New',monospace;font-size:10.5px;font-weight:normal;color:#7a745f;margin-top:3px;}
+  td.cell{min-width:180px;}
+  td.cell-none{background:#ece8dc;}
+  td.cell-partial{background:var(--amber-soft);}
+  td.cell-strong{background:#dbe9e7;}
+  .level{
+    display:inline-block;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;padding:2px 8px;margin-bottom:7px;color:var(--paper);
+  }
+  .level.none{background:#9a9481;color:var(--paper);}
+  .level.partial{background:var(--amber);}
+  .level.strong{background:var(--strong);}
+  td.cell p{font-size:12.8px;color:#3c423f;margin:0;}
+
+  .never-strip{
+    font-family:'Courier New',monospace;font-size:11.5px;color:#6b5a3d;
+    background:var(--amber-soft);border-left:2px solid var(--amber);padding:8px 10px;margin-top:56px;
+  }
+
+  .task-notes{margin-top:44px;}
+  .tn{
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--teal);
+    padding:16px 18px;margin-bottom:14px;
+  }
+  .tn h3{margin:0 0 6px;font-size:16.5px;color:var(--navy);}
+  .tn p{margin:0;font-size:13.5px;color:#3c423f;}
+  .tn .verdict{
+    font-family:'Courier New',monospace;font-size:11px;color:var(--red);letter-spacing:.03em;
+    display:block;margin-top:8px;
+  }
+
+  .refs{
+    font-family:'Courier New',monospace;font-size:12.5px;color:var(--teal-deep);
+    margin:0 0 44px;padding-left:22px;line-height:1.9;
+  }
+  .refs li{margin-bottom:4px;}
+  .refs a{color:var(--teal-deep);}
+
+  footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--line);
+    font-family:'Courier New',monospace;font-size:11.5px;color:#8a8578;}
+  footer a{color:var(--teal-deep);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">VibeRounds &nbsp;·&nbsp; paradigm audit</div>
+  <h1>Where the VibeRounds stack actually reaches, task by task</h1>
+  <p class="dek">Mapping VibeRounds' own components — Socratic learning, Guided Discovery, Analytics mode, the 57+ module toolset, and the Research layer — against the four jobs the "Best of Both Worlds" article defines. Not every VibeRounds piece was built to cover every job, and the gaps are the point.</p>
+
+  <div class="legend">
+    <span class="sw"><span class="dot" style="background:var(--none);"></span> Not built for this job</span>
+    <span class="sw"><span class="dot" style="background:var(--amber);"></span> Partial / adjacent coverage</span>
+    <span class="sw"><span class="dot" style="background:var(--strong);"></span> Core, purpose-built coverage</span>
+  </div>
+
+  <h2>Coverage matrix</h2>
+  <div class="matrix-scroll">
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th class="corner">VibeRounds component</th>
+        <th>Job 01 — Trivial automation</th>
+        <th>Job 02 — Post-hoc audit</th>
+        <th>Job 03 — Case-based sandbox</th>
+        <th>Job 04 — Longitudinal analytics</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Socratic Learning<span class="sub">Stage 3 · personas, tiered hints</span></th>
+        <td class="cell cell-none"><span class="level none">None</span><p>No symbolic checker. Never verifies a dose or interaction against a bounded reference — it questions the learner instead.</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>The Socratic Attending "stress-test" mode interrogates a committed answer after the fact — functionally an audit, but of reasoning, not of a finalized clinical plan against a rule set.</p></td>
+        <td class="cell cell-strong"><span class="level strong">Strong</span><p>This <em>is</em> the sandbox home base — forced commitment, tiered hints, answer-withholding, effort-weighted assistance, all built for consequence-free reps.</p></td>
+        <td class="cell cell-none"><span class="level none">None</span><p>A single session produces a transcript, not a trend. No mechanism here aggregates across sessions.</p></td>
+      </tr>
+      <tr>
+        <th>Guided Discovery<span class="sub">Stage 4 · scaffolded environments</span></th>
+        <td class="cell cell-none"><span class="level none">None</span><p>Explicitly prompt-level, not automated verification — "no claim checked against an external source unless a module says so."</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>Bias-detection and assumption-audit modules (Layer 3) can review a plan already drafted, but as a metacognitive lens, not a rule-compliance check.</p></td>
+        <td class="cell cell-strong"><span class="level strong">Strong</span><p>Parameters set so the learner is likely, not guaranteed, to reach the right conclusion — Case Simulator lives here.</p></td>
+        <td class="cell cell-none"><span class="level none">None</span><p>Layer 6 names "competency tracking, longitudinal archive" as an architectural layer, but competency tracking hasn't been built yet — it's a named intent, not a feature.</p></td>
+      </tr>
+      <tr>
+        <th>Analytics Mode<span class="sub">single-module runs, e.g. Clinical Pre-Mortem</span></th>
+        <td class="cell cell-none"><span class="level none">None</span><p>A single-module run reasons about one case; it isn't a hard-block reasoner and makes no falsifiable bounded claim.</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>A module like Clinical Pre-Mortem run on an already-drafted plan approximates a second pass, but it's one module chosen by the user, not a systematic audit stack.</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>Useful as a single deep-dive rep, but lacks the sandbox's deliberate variation and mandatory-descriptor elicitation across many cases.</p></td>
+        <td class="cell cell-none"><span class="level none">None</span><p>Analytics Mode names a single run through one module — not the same as pattern-finding across a learner's history.</p></td>
+      </tr>
+      <tr>
+        <th>Tools / CCOS Modules<span class="sub">57+ modules · Case Analytics, PaJR</span></th>
+        <td class="cell cell-none"><span class="level none">None</span><p>Domain 3 (bedside decision support) is named on the site as early-stage: "EMR integration and FHIR infrastructure remain pre-implementation." No live dosing or interaction checker exists yet.</p></td>
+        <td class="cell cell-strong"><span class="level strong">Strong</span><p>The Trust Layer's "prioritised claim verification" and evidence-anchoring modules are the closest fit — risk-based, source-tied review of a claim already made.</p></td>
+        <td class="cell cell-strong"><span class="level strong">Strong</span><p>Case Lens (8-lens audit), Clinical Polemos, SDM Lens, Phronesis all give varied, repeatable rehearsal environments across specialties.</p></td>
+        <td class="cell cell-strong"><span class="level strong">Strong</span><p>Case Analytics and the PaJR longitudinal dashboard are the clearest built tools for this job — an 8-month caregiving log with tailored insight layers.</p></td>
+      </tr>
+      <tr>
+        <th>Research<span class="sub">Stage 5 · evidence mapping</span></th>
+        <td class="cell cell-none"><span class="level none">None</span><p>Orthogonal to bedside automation entirely — this layer works on published literature, not a live patient plan.</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>Evidence-anchoring ties a claim to a source the user must verify — a research-grade version of the audit idea, but for a manuscript claim, not a clinical plan.</p></td>
+        <td class="cell cell-none"><span class="level none">None</span><p>Not a rehearsal environment — it's a synthesis exercise across a literature corpus, not a single learner's noticing.</p></td>
+        <td class="cell cell-partial"><span class="level partial">Partial</span><p>The ASV evidence-mapping demo tracks a trajectory across a growing case-report corpus — pattern-finding, but across published cases, not one learner's misses.</p></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Read against the article's own boundary lines</h2>
+  <div class="task-notes">
+    <div class="tn">
+      <h3>Job 01 — Trivial automation</h3>
+      <p>VibeRounds covers none of this job by design. It's a Socratic prompt paradigm, not a symbolic reasoner — the site says so directly: "prompt-level uncertainty framing, not automated verification." Domain 3 (bedside decision support) is marked early-stage with no EMR/FHIR integration.</p>
+      <span class="verdict">Gap is total, and named openly by the source, not hidden.</span>
+    </div>
+    <div class="tn">
+      <h3>Job 02 — Post-hoc audit</h3>
+      <p>The Trust Layer's prioritised claim verification and evidence-anchoring modules are the strongest match — risk-based, tied to source, checking a claim already made. But it's still a prompt asking a model to reason about consistency, not a rule engine hard-blocking a violation.</p>
+      <span class="verdict">Real coverage, capped below symbolic-audit precision.</span>
+    </div>
+    <div class="tn">
+      <h3>Job 03 — Case-based sandbox</h3>
+      <p>This is where the paradigm was purpose-built: forced commitment, tiered hints, answer-withholding, effort-weighted depth, deliberate case variation across dozens of demo tools (Case Simulator, Decision Lab, Case Lens, Phronesis).</p>
+      <span class="verdict">Closest thing to full coverage anywhere in the matrix.</span>
+    </div>
+    <div class="tn">
+      <h3>Job 04 — Longitudinal analytics</h3>
+      <p>Case Analytics and PaJR are real, built examples of pattern-over-time. But the domain-maturity map on the site rates Guided Discovery research at "medium maturity — worked case complete, awaiting multi-case validation," so the pattern-across-learners claim isn't validated at scale yet.</p>
+      <span class="verdict">Built and demoed, not yet proven across many learners.</span>
+    </div>
+  </div>
+
+  <div class="never-strip">
+    Same discipline both articles insist on: none of these tools notices for the clinician or the learner. VibeRounds itself states this outright — "all outputs are learning observations, not clinical decisions."
+  </div>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li><a href="https://github.com/avi33tbtt/avi33tbtt.github.io/blob/master/articles/human-vs-llm-energy-efficiency.html" target="_blank" rel="noopener">human-vs-llm-energy-efficiency.html</a></li>
+    <li><a href="https://github.com/avi33tbtt/avi33tbtt.github.io/blob/master/articles/thinking-process.html" target="_blank" rel="noopener">thinking-process.html</a></li>
+    <li><a href="https://github.com/avi33tbtt/avi33tbtt.github.io/blob/master/articles/healthcare-trivial-vs-deep-reasoning.html" target="_blank" rel="noopener">healthcare-trivial-vs-deep-reasoning.html</a></li>
+    <li><a href="https://github.com/avi33tbtt/avi33tbtt.github.io/blob/master/articles/clinical-ai-best-of-both-worlds.html" target="_blank" rel="noopener">clinical-ai-best-of-both-worlds.html</a></li>
+  </ol>
+
+  <footer>
+    Sources: <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">avi33tbtt.github.io</a> (VibeRounds home) and <a href="https://avi33tbtt.github.io/articles/clinical-ai-best-of-both-worlds.html" target="_blank" rel="noopener">clinical-ai-best-of-both-worlds.html</a>. Coverage levels are a qualitative reading of the two pages, not a measured benchmark.
+  </footer>
+
+</div>
+</body>
+</html>
