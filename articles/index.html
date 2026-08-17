@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Article Index: Reasoning-Validity vs. Patient-Validity</title>
+<style>
+  :root {
+    --ink: #0f172a;
+    --sub: #475569;
+    --line: #e2e8f0;
+    --accent: #0891B2;
+    --accent-dark: #0e7490;
+    --accent-soft: #ecfeff;
+    --accent-soft2: #cffafe;
+    --mark-bg: #cffafe;
+    --bg: #ffffff;
+    --card: #f8fafc;
+    --code-bg: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .topbar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  h1 + p.lede {
+    color: var(--sub);
+    font-size: 1.05rem;
+    margin: 0 0 8px;
+  }
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 2.6em 0 0.9em;
+    color: var(--ink);
+    scroll-margin-top: 20px;
+  }
+  p { margin: 0 0 1.15em; font-size: 1.02rem; color: #1e293b; }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 2.8em 0;
+  }
+  strong { color: var(--ink); font-weight: 700; }
+  mark {
+    background: var(--mark-bg);
+    color: var(--ink);
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  /* article card */
+  .thread-label {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sub);
+    margin: 0 0 6px;
+  }
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 24px;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--accent-dark);
+    background: var(--accent-soft);
+    transform: translateX(2px);
+  }
+  .card .num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .card .num.adjacent {
+    color: var(--sub);
+  }
+  .card h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .card p {
+    margin: 0 0 12px;
+    font-size: 0.98rem;
+    color: #334155;
+  }
+  .card .learn {
+    background: #fff;
+    border: 1px solid var(--accent-soft2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    color: #164e63;
+  }
+  .card .learn strong {
+    color: var(--accent-dark);
+    font-weight: 700;
+  }
+  .card .url {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    word-break: break-all;
+  }
+
+  .divider-note {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 44px 0 20px;
+    color: var(--sub);
+    font-size: 0.85rem;
+  }
+  .divider-note::before,
+  .divider-note::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .chain-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft2);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 24px 0 8px;
+    font-size: 0.82rem;
+  }
+  .chain-strip .step {
+    background: #fff;
+    border: 1px solid var(--accent-soft2);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
+  .chain-strip .arrow {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--sub);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"><span class="dot"></span> VibeRounds · Article Index <span style="margin-left:auto;font-weight:600;"><a href="https://avi33tbtt.github.io/" style="color:var(--accent-dark);text-decoration:none;border-bottom:1px solid var(--accent-soft2);">VibeRounds project ↗</a></span></div>
+
+<div class="wrap">
+
+  <span class="eyebrow">Reading guide</span>
+  <h1>Reasoning-Validity vs. Patient-Validity: Six Articles, One Thread</h1>
+  <p class="lede">A short summary of what each piece teaches, in the order that builds the argument.</p>
+  <p>Five of these six articles form a single connected chain — a foundational distinction that gets repackaged, operationalized into a framework, then audited against the real VibeRounds build. The sixth is an adjacent project under the same umbrella that doesn't extend the chain, but is worth knowing about.</p>
+
+  <div class="chain-strip">
+    <span class="step">01 Foundation</span><span class="arrow">→</span>
+    <span class="step">02 Reframe</span><span class="arrow">→</span>
+    <span class="step">03 Operationalize</span><span class="arrow">→</span>
+    <span class="step">04 Audit reality</span><span class="arrow">→</span>
+    <span class="step">05 Build protocol</span>
+  </div>
+
+  <div class="divider-note">Core thread</div>
+
+  <div class="card-list">
+
+    <a class="card" href="https://avi33tbtt.github.io/articles/thinking-process.html">
+      <span class="num">01 · Foundation</span>
+      <h3>Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</h3>
+      <p>The piece everything else builds on. Walks through the full clinical-AI verification stack — pathway grounding, knowledge graphs, RAG, GraphRAG, neuro-symbolic validation — and shows each layer checking a claim against a reference, never checking whether the reference is the right frame for the patient.</p>
+      <div class="learn"><strong>What you'll learn:</strong> the core distinction between <mark>reasoning-validity</mark> (is this claim consistent with a reference) and <mark>patient-validity</mark> (is the reference the right frame right now) — and why the gap is a category boundary, not something better tooling closes.</div>
+      <span class="url">avi33tbtt.github.io/articles/thinking-process.html</span>
+    </a>
+
+    <a class="card" href="https://avi33tbtt.github.io/articles/healthcare-trivial-vs-deep-reasoning.html">
+      <span class="num">02 · Reframe</span>
+      <h3>Trivial Tasks vs. Deep Reasoning in Clinical AI</h3>
+      <p>A tighter read on Article 01, splitting the same argument into two clean buckets and adding a side-by-side comparison table.</p>
+      <div class="learn"><strong>What you'll learn:</strong> why bounded checks (dosing, interactions, guideline citations) are a <mark>reliability problem that keeps shrinking</mark>, while noticing which detail should redirect a case is a <mark>category boundary that doesn't</mark>.</div>
+      <span class="url">avi33tbtt.github.io/articles/healthcare-trivial-vs-deep-reasoning.html</span>
+    </a>
+
+    <a class="card" href="https://avi33tbtt.github.io/articles/clinical-ai-best-of-both-worlds.html">
+      <span class="num">03 · Operationalize</span>
+      <h3>Best of Both Worlds: Augmenting Clinical Training Without Pretending to Replace Noticing</h3>
+      <p>Follows directly from Article 02's table, turning the two-bucket split into a four-job architecture — each job with its own honest scope and its own forbidden claim.</p>
+      <div class="learn"><strong>What you'll learn:</strong> the <mark>four jobs</mark> — trivial-task automation, post-hoc audit, case-based sandbox, longitudinal analytics — and why asking one system to do all four is the design mistake, not under-building the tooling.</div>
+      <span class="url">avi33tbtt.github.io/articles/clinical-ai-best-of-both-worlds.html</span>
+    </a>
+
+    <a class="card" href="https://avi33tbtt.github.io/articles/viberounds-coverage-matrix.html">
+      <span class="num">04 · Audit reality</span>
+      <h3>VibeRounds — Paradigm Coverage of the Four Tasks</h3>
+      <p>Takes the four-job framework from Article 03 and checks it against what VibeRounds' actual components — Socratic Learning, Guided Discovery, Analytics Mode, the 57+ module toolset, and the Research layer — really cover today.</p>
+      <div class="learn"><strong>What you'll learn:</strong> a task-by-task coverage matrix showing where VibeRounds has <mark>strong, purpose-built coverage</mark> (the sandbox), where it's <mark>partial</mark>, and where the gap is <mark>total and named openly</mark> (bounded automation).</div>
+      <span class="url">avi33tbtt.github.io/articles/viberounds-coverage-matrix.html</span>
+    </a>
+
+    <a class="card" href="https://avi33tbtt.github.io/articles/clinical-ai-audit-decision-framework.html">
+      <span class="num">05 · Build protocol</span>
+      <h3>Post-Hoc Clinical AI Audit — Staged Decision Framework</h3>
+      <p>An interactive six-stage decision tool for actually composing a rigorous audit protocol, rather than assuming one. Cross-references Job 03 from the coverage matrix and re-runs the same "where VibeRounds actually lands" reality check from Article 04.</p>
+      <div class="learn"><strong>What you'll learn:</strong> how persona and audit-type (Stage 0) license every downstream choice — scenario generation, query formulation, answer arms, audit method, and <mark>blinded scoring</mark> — and why a learner's sandbox and an auditor's compliance check should never share a rubric.</div>
+      <span class="url">avi33tbtt.github.io/articles/clinical-ai-audit-decision-framework.html</span>
+    </a>
+
+  </div>
+
+  <div class="divider-note">Adjacent project</div>
+
+  <div class="card-list">
+    <a class="card" href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics-blog.html" style="border-left-color:#94a3b8;">
+      <span class="num adjacent">Adjacent · Not part of the core chain</span>
+      <h3>Person-Centered Clinical Analytics: A Walkthrough for Medical Learners and Analysts</h3>
+      <p>A separate, self-contained demo (synthetic T1D vs. T2D patient data) built around a different question: can one disease-agnostic graph schema — Observations → Diagnosis → Interventions → Outcomes — represent any patient, without disease-specific branching in the code.</p>
+      <div class="learn"><strong>What you'll learn:</strong> how to stress-test a data model for hidden special-casing, why a sticky <mark>confounders banner</mark> matters more than the numbers themselves, and how cohort-level trajectory maps complement single-patient views. Doesn't extend the reasoning-validity/patient-validity thread — shares only the family discipline of being honest about what a tool can't claim.</div>
+      <span class="url">avi33tbtt.github.io/articles/person-centered-clinical-analytics-blog.html</span>
+    </a>
+  </div>
+
+  <div class="divider-note">From the adjacent project</div>
+
+  <figure style="margin:0 0 8px;">
+    <img src="https://avi33tbtt.github.io/articles/assets/nested-view-screenshot.png"
+         alt="Nested Analysis View screenshot: a trajectory network of 4000 patients (1500 T1D + 2500 T2D) across six checkpoints — Diagnosis, Presentation, Initial plan, Escalation, Advanced/Recurrent, Disposition — with teal T1D lines and rust T2D lines converging through shared hub nodes sized by patient count."
+         style="width:100%;border-radius:10px;border:1px solid var(--line);display:block;">
+    <figcaption style="font-size:0.85rem;color:var(--sub);margin-top:10px;">
+      The Nested Analysis View from <a href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics-blog.html" style="color:var(--accent-dark);">Person-Centered Clinical Analytics</a> — teal lines are T1D trajectories, rust lines are T2D trajectories, and dark hub nodes (sized by patient count) mark checkpoints where paths converge.
+    </figcaption>
+  </figure>
+
+  <footer>
+    Index compiled from the VibeRounds article series (avi33tbtt.github.io). Read order 01→05 follows the citation chain each article names explicitly in its own "Source articles" section.
+  </footer>
+
+</div>
+
+</body>
+</html>
