@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best of Both Worlds: Augmenting Clinical Training Without Pretending to Replace Noticing</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6a6a6a;
+    --border: #e3e3e3;
+    --highlight: #fff2a8;
+    --link: #0645ad;
+    --code-bg: #f5f5f2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; padding: 3.5rem 1.5rem 6rem; }
+  .kicker {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-muted); margin: 0 0 1rem;
+  }
+  .kicker a { color: var(--text-muted); text-decoration: underline; }
+  h1 { font-size: 32px; font-weight: 700; line-height: 1.25; margin: 0 0 0.75rem; }
+  .dek { font-style: italic; color: var(--text-muted); font-size: 19px; margin: 0 0 2.5rem; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  h2 { font-size: 24px; font-weight: 700; margin: 2.75rem 0 1rem; line-height: 1.3; }
+  h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    color: var(--text-muted); margin: 2rem 0 0.75rem;
+  }
+  p { margin: 0 0 1.25rem; }
+  strong { font-weight: 700; }
+  mark { background: var(--highlight); color: var(--text); padding: 0.05em 0.1em; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.2rem 0 0.2rem 1.25rem;
+    border-left: 3px solid #1a1a1a; font-size: 17px;
+  }
+  blockquote p { margin: 0 0 0.6rem; }
+  blockquote p:last-child { margin-bottom: 0; }
+  a { color: var(--link); }
+  ul, ol { padding-left: 1.4rem; margin: 0 0 1.25rem; }
+  li { margin-bottom: 0.5rem; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14.5px;
+  }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th {
+    font-weight: 700; color: var(--text-muted); font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 2px solid var(--text);
+  }
+  code { font-family: "SF Mono", Menlo, monospace; background: var(--code-bg); padding: 0.1em 0.35em; font-size: 0.85em; border-radius: 3px; }
+  .sources {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--code-bg); border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem; margin: 2rem 0; font-size: 14.5px;
+  }
+  .sources .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin: 0 0 0.9rem; }
+  .sources p { margin: 0 0 1rem; }
+  .sources p:last-child { margin-bottom: 0; }
+  .sources .desc { color: var(--text-muted); display: block; margin-top: 0.3rem; line-height: 1.6; }
+  footer {
+    margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 13px; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">A follow-on to <a href="https://avi33tbtt.github.io/articles/thinking-process.html">the VibeRounds thinking-process piece</a></p>
+
+  <h1>Best of both worlds: augmenting clinical training without pretending to replace noticing</h1>
+  <p class="dek">Automate what's bounded. Audit what's already been decided. Practice noticing in a sandbox where getting it wrong costs nothing. Track the pattern across reps. Leave the noticing itself with the clinician.</p>
+
+  <div class="sources">
+    <p class="label">Source articles</p>
+    <p>
+      <a href="https://avi33tbtt.github.io/articles/thinking-process.html">Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</a>
+      <span class="desc">Establishes the core distinction this piece builds on: reasoning-validity (is this claim consistent with a reference) versus patient-validity (is the reference the right frame for this patient). The whole verification stack — pathway, knowledge graph, RAG, GraphRAG, neuro-symbolic — sits on the reasoning-validity side, permanently.</span>
+    </p>
+    <p>
+      <a href="https://avi33tbtt.github.io/articles/human-vs-llm-energy-efficiency.html">Humans vs. LLMs: An Energy Efficiency Investigation</a>
+      <span class="desc">Companion piece establishing the same split from a different angle: LLMs win decisively on standardized, bounded tasks; humans hold the edge on genuinely novel reasoning.</span>
+    </p>
+    <p>
+      <a href="https://avi33tbtt.github.io/articles/healthcare-trivial-vs-deep-reasoning.html">Trivial Tasks vs. Deep Reasoning in Clinical AI</a>
+      <span class="desc">Lays out the two-sided version of this argument directly: bounded checks (dosing, interactions, guideline citations) are a reliability problem that keeps shrinking, while noticing which detail should redirect a case is a category boundary that doesn't. Includes the side-by-side table this piece's three-jobs framing builds on.</span>
+    </p>
+  </div>
+
+  <hr>
+
+  <h2>Three jobs, not one</h2>
+  <p>The mistake worth avoiding isn't under-building the tooling — it's asking one architecture to do three jobs that actually need different designs. Trivial-task automation, post-hoc self-audit, and skill-building are three separate problems, each with a different honest scope, and each genuinely improvable by AI without ever asking the AI to notice for the clinician.</p>
+
+  <table>
+    <tr><th>Job</th><th>What it's for</th><th>What it must never claim</th></tr>
+    <tr><td>Trivial-task automation</td><td>Handle bounded, falsifiable checks fast and reliably</td><td>That passing these checks means the plan is right for this patient</td></tr>
+    <tr><td>Post-hoc self-audit</td><td>Check a plan a clinician already committed to, against a reference</td><td>That a clean audit is the same as having caught what mattered</td></tr>
+    <tr><td>Case-based sandbox</td><td>Let a learner practice noticing, safely and repeatedly, with consequence-free failure</td><td>That practicing on cases substitutes for the judgment that comes from real patients</td></tr>
+    <tr><td>Longitudinal pattern analytics</td><td>Show a learner which categories of red flags they personally, consistently miss across many cases over time</td><td>That the aggregate pattern predicts what they'll catch on the next, specific patient</td></tr>
+  </table>
+  <p style="font-size: 15px; color: var(--text-muted); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">A fourth pillar is worth naming separately from the sandbox, even though both live on the "noticing" side of the line: the sandbox trains a rep, one case at a time; analytics looks across hundreds of a learner's own reps to surface a trend — "you consistently under-weight vomiting character in infants" — that no single case could reveal on its own.</p>
+
+  <h2>1. Automate the trivial, and let it actually run in the background</h2>
+  <p>Drug interaction checks, dosing calculations against renal or hepatic clearance thresholds, confirming a plan follows the steps a pathway claims it follows — these are bounded, falsifiable questions where "consistent with the reference" and "actually correct" are close to the same thing. This is exactly where the mature infrastructure earns its keep: OWL reasoners, SNOMED CT, RxNorm, SHACL constraint checks. There's no reason a clinician's cognitive budget should go toward re-verifying a beta-blocker dose in cardiogenic shock when a symbolic reasoner can hard-block it in milliseconds.</p>
+  <p>The design discipline that keeps this genuinely useful rather than corrosive: run it silently, and only surface a finding when there actually is one. A system that pings the clinician on every clean check trains them to stop reading pings — which is exactly the failure mode that lets a real one slip through unnoticed later.</p>
+
+  <h2>2. Post-hoc audit: a second pass on a plan, not a first look at the patient</h2>
+  <p>Once a plan already exists — drafted, ordered, about to be signed — checking it against a reference is a closed, well-bounded comparison. Was the fluid volume within the maintenance-plus-deficit bound? Does this claim trace back to an actual guideline? Is there a hard rule this plan silently violates? These are real, falsifiable questions a clinician can hold their own reasoning against after the fact.</p>
+  <p>The value here isn't accuracy alone — it's making self-assessment checkable instead of a vague gut feeling. <mark>A clinician who already caught the right signal gets faster confirmation; a clinician who didn't gets a clean-but-uninformative audit</mark> — because the audit only checks what it was asked to check, not whether the right question was asked in the first place. That asymmetry doesn't go away with a better auditor. It's the reason this stays a second pass, never a first look.</p>
+
+  <blockquote>
+    <p><strong>The design trap to avoid here specifically:</strong> dumping every discrepancy the stack finds. A long list relocates the judgment call downstream and dressed up as already done — the clinician still has to re-derive what matters, just with more noise to sort through. A short, ranked, occasionally silent list — one that can say "nothing to flag" as often as it flags something — is a much harder bar to hit, and the only version that stays useful instead of becoming background noise.</p>
+  </blockquote>
+
+  <h2>3. The case-based sandbox: where noticing actually gets trained</h2>
+  <p>This is the piece that closes the loop the first two can't touch. If contextualizing — deciding which fact in a case should redirect the reasoning — is bounded by what the clinician already knows, then the lever that actually moves the ceiling isn't a better tool at the point of care. It's more reps, taken somewhere the cost of missing "projectile" is a flagged learning moment instead of a delayed diagnosis.</p>
+  <p>A well-built sandbox does a few things a live chart never can:</p>
+  <ul>
+    <li><strong>Deliberately varies the one word that matters.</strong> Run the same vignette twice, changing only "vomited 2 times" to "projectile vomiting," and ask the learner to explain why their plan changed — or should have. That's a rep a real clinic rarely hands you twice.</li>
+    <li><strong>Makes the miss visible and safe.</strong> A learner who reasons straight to gastroenteritis on the projectile-vomiting version, in a sandbox, gets a targeted question forcing them back to the branch point — not a patient who went home undiagnosed.</li>
+    <li><strong>Uses Socratic questioning aimed at the gap, not just the data given.</strong> Ordinary case-based reasoning asks questions built around whatever's already in the vignette. A sandbox worth building instead keeps a small, explicit checklist of age- and symptom-triggered mandatory descriptors, and asks for them before reasoning proceeds — actively eliciting the detail a learner didn't think to ask for, rather than passively waiting for it to already be there.</li>
+    <li><strong>Surfaces patterns across attempts, not just single cases.</strong> Analytics across a learner's history of misses — which categories of red flags they consistently skip past — is a legitimate, checkable signal about where their pattern library has gaps, even though it can never confirm they'll catch the next real one.</li>
+  </ul>
+  <p>None of this teaches noticing directly, in the sense of installing it. What it does is give a learner far more encounters with the exact moment where noticing has to happen than real clinical volume alone would ever provide — and it does that without any patient bearing the cost of a missed rep.</p>
+
+  <h3>What the sandbox has to stay honest about</h3>
+  <ul>
+    <li>A mandatory-descriptor checklist only elicits what someone thought to encode in advance. A presentation nobody built a checklist entry for still gets no question asked about it — the sandbox narrows the noticing gap for known red flags, it doesn't close it for unknown ones.</li>
+    <li>Passing every module in the sandbox is not the same claim as being ready to notice the same thing on a real patient, under real time pressure, with an incomplete history and a worried family in the room. The sandbox trains recognition; it doesn't certify judgment.</li>
+    <li>If the sandbox's own case library shares the same blind spots as its designers or its training data, learners inherit that blind spot too, just with the appearance of having been tested on it. The case library needs the same scrutiny the reasoning stack does.</li>
+  </ul>
+
+  <h2>4. Longitudinal analytics: seeing the pattern across hundreds of reps</h2>
+  <p>A single sandbox case tells a learner whether they caught the branch point this time. It can't tell them whether they have a recurring gap — the same category of red flag skipped across dozens of unrelated cases, invisible from inside any one of them. That's a different kind of signal, and it needs the same discipline the source article insists on for every other layer: it's a pattern surfaced, not a verdict on the learner, and never a claim about whether this specific learner will catch the next specific case.</p>
+  <p>Done honestly, this looks like: "across your last forty pediatric vomiting cases, you asked about stool character in 38 and vomiting force in 11" — a countable, falsifiable observation the learner can act on, not a score or a ranking against peers. Done badly, it becomes exactly the failure the source article already named for analytics mode on a single case, just at scale: <mark>consensus and confidence compounding the risk instead of catching it</mark>. If most learners in a cohort share the same blind spot, an aggregate that only flags outliers will read the shared miss as normal, not as a gap worth surfacing to everyone.</p>
+  <p>The guardrail that keeps this useful: the pattern has to point back to specific, revisitable cases — "here's the case where you didn't ask" — not just a percentage. A trend with no case attached is a statistic to feel vaguely bad about. A trend with three linked cases is something a learner can actually go back and re-reason through.</p>
+
+  <h2>Putting the four together</h2>
+  <p>The four jobs aren't stages of one escalating pipeline — they run in parallel, at different points in a clinician's day and training, doing different things:</p>
+  <ul>
+    <li><strong>At the point of care</strong>, trivial-task automation runs quietly underneath a plan as it's built — catching the hallucinated dose or the missed interaction — while the clinician's attention stays on the patient.</li>
+    <li><strong>Right after a plan is drafted</strong>, post-hoc audit gives a fast, bounded second pass — sourced, internally consistent, rule-compliant — before it's finalized.</li>
+    <li><strong>Away from the bedside entirely</strong>, the sandbox is where the actual skill — noticing — gets built and rehearsed, one case at a time, on vignettes deliberately designed to expose exactly the kind of gap a real chart won't announce.</li>
+    <li><strong>Across weeks or months of that practice</strong>, longitudinal analytics turns individual reps into a visible trend, so a learner can see the shape of their own blind spot instead of re-discovering it case by case.</li>
+  </ul>
+  <p>What ties them together is the same discipline the source article argues for throughout: each piece stays inside the job it can actually do, and none of them is marketed past that boundary. The trivial-task layer never claims a clean check means the frame was right. The audit never claims a clean audit means nothing was missed. The sandbox never claims a passed module means the learner will catch the next real one. The analytics layer never claims a trend predicts the next patient. Used this way, all four pull in the same direction — freeing up a clinician's attention and building their pattern library — without any of them quietly promising to notice on the clinician's behalf.</p>
+
+  <hr>
+
+  <h2>Takeaway</h2>
+  <ul>
+    <li>Trivial-task automation and post-hoc audit both belong at the point of care and right after — they're reliability tools, and reliability is what this generation of tooling is genuinely good at.</li>
+    <li>The case-based sandbox belongs somewhere else entirely: off to the side, where a learner can rehearse noticing against deliberately varied cases without a patient absorbing the cost of a missed rep.</li>
+    <li>Longitudinal analytics belongs one level above the sandbox: not another rep, but a way of seeing the shape of a recurring gap across many reps at once — always tied back to specific, revisitable cases, never reduced to a bare score.</li>
+    <li>None of the four tools notices for the clinician. What they do, together, is remove noise from the trivial layer, sharpen confidence on the plan layer, and multiply and illuminate the reps that build the pattern library noticing actually depends on.</li>
+    <li>The honest architecture keeps all four narrow and named for what they are — automation, audit, practice, pattern — rather than folding them into one system quietly implied to be a safety net.</li>
+  </ul>
+
+  <footer>
+    Sources: <a href="https://avi33tbtt.github.io/articles/thinking-process.html">Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</a>, <a href="https://avi33tbtt.github.io/articles/human-vs-llm-energy-efficiency.html">Humans vs. LLMs: An Energy Efficiency Investigation</a>, and <a href="https://avi33tbtt.github.io/articles/healthcare-trivial-vs-deep-reasoning.html">Trivial Tasks vs. Deep Reasoning in Clinical AI</a> (VibeRounds project).
+  </footer>
+
+</div>
+</body>
+</html>
