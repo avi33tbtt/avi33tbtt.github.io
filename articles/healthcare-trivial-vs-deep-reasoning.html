@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trivial Tasks vs. Deep Reasoning in Clinical AI</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #6a6a6a;
+    --border: #e3e3e3;
+    --highlight: #fff2a8;
+    --link: #0645ad;
+    --code-bg: #f5f5f2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+  }
+  .kicker {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+  }
+  .kicker a { color: var(--text-muted); text-decoration: underline; }
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+  }
+  .dek {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 19px;
+    margin: 0 0 2.5rem;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 2.75rem 0 1rem;
+    line-height: 1.3;
+  }
+  h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    margin: 2rem 0 0.75rem;
+  }
+  p { margin: 0 0 1.25rem; }
+  strong { font-weight: 700; }
+  mark {
+    background: var(--highlight);
+    color: var(--text);
+    padding: 0.05em 0.1em;
+  }
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.2rem 0 0.2rem 1.25rem;
+    border-left: 3px solid #1a1a1a;
+    font-size: 17px;
+  }
+  blockquote p { margin: 0 0 0.6rem; }
+  blockquote p:last-child { margin-bottom: 0; }
+  a { color: var(--link); }
+  ul, ol { padding-left: 1.4rem; margin: 0 0 1.25rem; }
+  li { margin-bottom: 0.5rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 2px solid var(--text);
+  }
+  code {
+    font-family: "SF Mono", Menlo, monospace;
+    background: var(--code-bg);
+    padding: 0.1em 0.35em;
+    font-size: 0.85em;
+    border-radius: 3px;
+  }
+  .byline {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0 0 2.5rem;
+  }
+  .sources {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    font-size: 14.5px;
+  }
+  .sources .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0 0 0.9rem;
+  }
+  .sources p { margin: 0 0 1rem; }
+  .sources p:last-child { margin-bottom: 0; }
+  .sources .desc { color: var(--text-muted); display: block; margin-top: 0.3rem; line-height: 1.6; }
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">A read on <a href="https://avi33tbtt.github.io/articles/thinking-process.html">the VibeRounds thinking-process piece</a></p>
+
+  <h1>Trivial tasks vs. deep reasoning in clinical AI</h1>
+  <p class="dek">Bounded checks are a reliability problem, and reliability keeps improving. Noticing which detail should redirect a case is a category boundary, and it doesn't.</p>
+
+  <div class="sources">
+    <p class="label">Source articles</p>
+    <p>
+      <a href="https://avi33tbtt.github.io/articles/thinking-process.html">Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</a>
+      <span class="desc">Walks through pathway grounding, knowledge graphs, RAG, GraphRAG, and neuro-symbolic validation, arguing each is a genuinely strong knowledge-recall-and-cross-check engine — and that none of them can confirm the reference being checked is the right frame for the specific patient. That "noticing" gap is a category boundary, not something better tooling closes.</span>
+    </p>
+    <p>
+      <a href="https://avi33tbtt.github.io/articles/human-vs-llm-energy-efficiency.html">Humans vs. LLMs: An Energy Efficiency Investigation</a>
+      <span class="desc">Compares human and LLM efficiency across training and task tiers, and finds a parallel pattern: LLMs win decisively on standardized, bounded tasks, while genuinely novel reasoning stays the tier where humans hold the durable edge.</span>
+    </p>
+  </div>
+
+  <hr>
+
+  <h2>Trivial tasks: a reliability problem, and a shrinking one</h2>
+  <p>A drug interaction check. A dosing calculation against renal or hepatic clearance. Confirming a plan follows the exact steps a pathway claims it follows. These are bounded, falsifiable questions — "contraindicated" is either true or it isn't, a dose either falls within a threshold or it doesn't. For tasks shaped like this, checking a claim against a reference and checking whether the claim is actually correct are close to <mark>the same operation</mark>.</p>
+  <p>That's exactly why the verification stack described in the source article — pathway grounding, knowledge graphs, RAG, GraphRAG, neuro-symbolic validation — earns its keep here. Each layer adds a genuinely stronger check on one narrow thing: timing, a stored fact, provenance of a claim, or formal logical consistency against a rule set. And because the underlying tools (OWL reasoners, SNOMED CT, RxNorm, SHACL validators) are mature, open infrastructure, this is engineering that keeps getting better as base models hallucinate less and the glue connecting fluent prose to a formal check improves.</p>
+
+  <h2>Deep reasoning: a category boundary, not a maturity level</h2>
+  <p>Contrast that with the task the source article calls "noticing" or "contextualizing": deciding, out of everything true about a case, which single detail should redirect the reasoning. In the article's worked example, changing "vomited 2 times" to "projectile vomiting" changes the correct clinical action entirely — but every layer in the stack passes every check on both versions of the note, because retrieval relevance, graph criteria, pathway timing, and logical consistency all operate on the query as framed. Nothing in the stack audits whether the framing itself missed the word that should have changed the case.</p>
+  <p>This is the article's central claim: that gap doesn't close with a bigger graph, a better retriever, or a stricter rule set. It's a <mark>category boundary</mark>, because contextualizing draws on things that were never text in the first place — an exam finding that never made it into the chart, local epidemiology, a clinician's bedside "sick or not sick" read, prior cases they've personally seen, patient values, resource constraints. No amount of retrieval over the chart recovers information that was never in the chart to begin with.</p>
+
+  <blockquote>
+    <p><strong>The asymmetry that matters:</strong> a passed check on a wrong frame looks identical to a passed check on a right one. That's the actual danger — not a visible error a clinician can catch, but silent false reassurance from a system that did everything it was designed to do correctly.</p>
+  </blockquote>
+
+  <h3>What each side of the line looks like</h3>
+  <table>
+    <tr><th>Trivial / bounded</th><th>Deep reasoning / noticing</th></tr>
+    <tr><td>Drug interaction check</td><td>Recognizing which chart detail should redirect the whole differential</td></tr>
+    <tr><td>Dosing calculation against a threshold</td><td>Weighing an exam finding, bedside gestalt, or patient values that never made it into text</td></tr>
+    <tr><td>Confirming a plan follows a pathway's steps</td><td>Deciding whether the pathway is even the right frame for this patient</td></tr>
+    <tr><td>Citing the source a claim came from</td><td>Judging whether that source was the right one to reach for</td></tr>
+    <tr><td>Improves as the base model improves</td><td>Doesn't improve just because the base model does — bounded by what the clinician already knows</td></tr>
+  </table>
+
+  <h2>Why this shapes what the tooling should — and shouldn't — be</h2>
+  <p>A safety net's job is to catch what the clinician missed and raise a flag they didn't ask for. Every layer in this stack is the opposite: <mark>pull, not push</mark>. It answers the query it's given. That makes it a poor diagnostic safety net, but a genuinely good self-audit tool — a way for a clinician or learner to check whether a claim they already made holds up against a reference, once the case has already been framed correctly.</p>
+  <p>The honest scope, per the source article, is narrow on purpose: a single guideline chapter, a drug interaction check, a dosing calculation, one institutional pathway — places where "consistent with the reference" and "actually correct" converge closely enough that the check is trustworthy. The failure mode is marketing this architecture past that boundary, as something that can validate the whole of clinical reasoning, when the one thing that determines whether a plan is right for this patient — the noticing — never happens inside any of these layers at all.</p>
+
+  <hr>
+
+  <h2>Takeaway</h2>
+  <ul>
+    <li>Trivial clinical tasks are a reliability problem, and reliability is exactly the kind of thing engineering keeps improving.</li>
+    <li>Deep reasoning is a different kind of problem: deciding which fact in a case should redirect the reasoning, which happens in the clinician's head before any tool is ever queried.</li>
+    <li>Nothing in the verification stack — however many layers deep — audits the frame itself; it only checks consistency within the frame it's given.</li>
+    <li>The right use of this class of tooling is a post-hoc self-audit on a plan already committed to, not a safety net that catches what the clinician missed.</li>
+  </ul>
+
+  <footer>
+    Sources: <a href="https://avi33tbtt.github.io/articles/thinking-process.html">Good for Self-Audit of Reasoning, Still Not a Way to Decide a Patient's Care</a> and <a href="https://avi33tbtt.github.io/articles/human-vs-llm-energy-efficiency.html">Humans vs. LLMs: An Energy Efficiency Investigation</a> (VibeRounds project).
+  </footer>
+
+</div>
+</body>
+</html>
