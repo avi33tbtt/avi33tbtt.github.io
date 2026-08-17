@@ -1,0 +1,4041 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "nodes": [
+    {
+      "id": "t1d-97da2849",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-97da2849",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 1987,
+      "diagnosis_age": 15,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "presentation_delay_hours": 4,
+      "spike_event_count": 3
+    },
+    {
+      "id": "t1d-97da2849::dx::cond-8a907d09",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-97da2849",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2002-04-02"
+    },
+    {
+      "id": "t1d-97da2849::obs::obs-c5700893",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 496,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2002-04-02"
+    },
+    {
+      "id": "t1d-97da2849::obs::obs-e4b28d1f",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 443,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2003-04-21"
+    },
+    {
+      "id": "t1d-97da2849::obs::obs-b5ce17d2",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 96,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2006-05-22"
+    },
+    {
+      "id": "t1d-97da2849::obs::obs-0baee397",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 247,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2011-02-22"
+    },
+    {
+      "id": "t1d-97da2849::iv::medreq-a34bd834",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-97da2849",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "2002-04-02"
+    },
+    {
+      "id": "t1d-97da2849::oc::enc-402c802d",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-97da2849",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 2,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2002-04-02"
+    },
+    {
+      "id": "t1d-97da2849::oc::enc-210579e1",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-97da2849",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "1.3",
+      "time_to_stabilization_hours": "35.4",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2003-04-21"
+    },
+    {
+      "id": "t1d-97da2849::oc::enc-7dbfe684",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-97da2849",
+      "status": "stabilized_no_deficit",
+      "reason": "Insulin pump failure",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "6.2",
+      "time_to_stabilization_hours": "19.2",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2006-05-22"
+    },
+    {
+      "id": "t1d-97da2849::oc::enc-3ae5c62d",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-97da2849",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "4.4",
+      "time_to_stabilization_hours": "12",
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2011-02-22"
+    },
+    {
+      "id": "t1d-20bb4450",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-20bb4450",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 1985,
+      "diagnosis_age": 6,
+      "facility_tier": "primary",
+      "resource_status": "plenty",
+      "presentation_delay_hours": 8,
+      "spike_event_count": 5
+    },
+    {
+      "id": "t1d-20bb4450::dx::cond-4666a65e",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-20bb4450",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "1991-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-32b51509",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 551,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "1991-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-8acfdadd",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 135,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "1994-09-07"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-7b242047",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 533,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "1997-07-10"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-a6202f1d",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 347,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2000-08-23"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-1104aa8f",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 139,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2003-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::obs::obs-c8a88ffc",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-20bb4450",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 42,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2004-07-16"
+    },
+    {
+      "id": "t1d-20bb4450::iv::medreq-376bec72",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-20bb4450",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "1991-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-79893545",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 3,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "primary",
+      "resource_status": "plenty",
+      "start": "1991-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-8f7ddb01",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "6.4",
+      "time_to_stabilization_hours": "35.9",
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "start": "1994-09-07"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-d2501abf",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized_no_deficit",
+      "reason": "Insulin pump failure",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "3.8",
+      "time_to_stabilization_hours": "37.7",
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "1997-07-10"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-76542848",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "6.8",
+      "time_to_stabilization_hours": "26.4",
+      "facility_tier": "quaternary",
+      "resource_status": "constrained",
+      "start": "2000-08-23"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-1fcac8c8",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized_no_deficit",
+      "reason": "DKA admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 3,
+      "spike_event": "true",
+      "time_to_er_hours": "4",
+      "time_to_stabilization_hours": "13.8",
+      "facility_tier": "quaternary",
+      "resource_status": "constrained",
+      "start": "2003-07-28"
+    },
+    {
+      "id": "t1d-20bb4450::oc::enc-48dea9c4",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-20bb4450",
+      "status": "stabilized_with_sequelae",
+      "reason": "Severe hypoglycemic event",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "5.6",
+      "time_to_stabilization_hours": "14.6",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2004-07-16"
+    },
+    {
+      "id": "t1d-4aad6e5e",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-4aad6e5e",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 1995,
+      "diagnosis_age": 9,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "presentation_delay_hours": 12,
+      "spike_event_count": 4
+    },
+    {
+      "id": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-4aad6e5e",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2004-07-14"
+    },
+    {
+      "id": "t1d-4aad6e5e::obs::obs-679b8021",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-4aad6e5e",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 553,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2004-07-14"
+    },
+    {
+      "id": "t1d-4aad6e5e::obs::obs-be100533",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-4aad6e5e",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 478,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2006-08-26"
+    },
+    {
+      "id": "t1d-4aad6e5e::obs::obs-7f228a3c",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-4aad6e5e",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 484,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2011-07-24"
+    },
+    {
+      "id": "t1d-4aad6e5e::obs::obs-d72a83d1",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-4aad6e5e",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 181,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2013-05-31"
+    },
+    {
+      "id": "t1d-4aad6e5e::obs::obs-70d56480",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-4aad6e5e",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 36,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2014-09-12"
+    },
+    {
+      "id": "t1d-4aad6e5e::iv::medreq-16dda104",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-4aad6e5e",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "2004-07-14"
+    },
+    {
+      "id": "t1d-4aad6e5e::oc::enc-2de8717e",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-4aad6e5e",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 4,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2004-07-14"
+    },
+    {
+      "id": "t1d-4aad6e5e::oc::enc-744b8791",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-4aad6e5e",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "3.8",
+      "time_to_stabilization_hours": "9.2",
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2006-08-26"
+    },
+    {
+      "id": "t1d-4aad6e5e::oc::enc-3c821c6d",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-4aad6e5e",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "0.8",
+      "time_to_stabilization_hours": "27.8",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2011-07-24"
+    },
+    {
+      "id": "t1d-4aad6e5e::oc::enc-0f9405bc",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-4aad6e5e",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 3,
+      "spike_event": "true",
+      "time_to_er_hours": "2.5",
+      "time_to_stabilization_hours": "35.8",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2013-05-31"
+    },
+    {
+      "id": "t1d-4aad6e5e::oc::enc-fd538c77",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-4aad6e5e",
+      "status": "stabilized_no_deficit",
+      "reason": "Severe hypoglycemic event",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "6.4",
+      "time_to_stabilization_hours": "24.9",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2014-09-12"
+    },
+    {
+      "id": "t1d-a1ecac09",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-a1ecac09",
+      "condition_type": "T1D",
+      "gender": "male",
+      "birth_year": 1990,
+      "diagnosis_age": 11,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 2,
+      "spike_event_count": 5
+    },
+    {
+      "id": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-a1ecac09",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2001-07-07"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-b9fd70e0",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 386,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2001-07-07"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-25b02395",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 180,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2006-08-14"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-f291ac69",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 336,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2010-09-02"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-080ba06d",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 40,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2015-06-24"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-ef695afe",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 198,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2017-05-31"
+    },
+    {
+      "id": "t1d-a1ecac09::obs::obs-f48634fa",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-a1ecac09",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 165,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2021-06-18"
+    },
+    {
+      "id": "t1d-a1ecac09::iv::medreq-87a89daf",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-a1ecac09",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "2001-07-07"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-e709777c",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 4,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2001-07-07"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-dac5d7ea",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "1.3",
+      "time_to_stabilization_hours": "37.1",
+      "facility_tier": "quaternary",
+      "resource_status": "constrained",
+      "start": "2006-08-14"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-9e76da57",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized_with_sequelae",
+      "reason": "Insulin pump failure",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "0.7",
+      "time_to_stabilization_hours": "26",
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2010-09-02"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-8aec001e",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized_no_deficit",
+      "reason": "Insulin pump failure",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 3,
+      "spike_event": "true",
+      "time_to_er_hours": "2.2",
+      "time_to_stabilization_hours": "27.3",
+      "facility_tier": "primary",
+      "resource_status": "constrained",
+      "start": "2015-06-24"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-696932bb",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized_with_sequelae",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 3,
+      "spike_event": "true",
+      "time_to_er_hours": "6.4",
+      "time_to_stabilization_hours": "28.4",
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2017-05-31"
+    },
+    {
+      "id": "t1d-a1ecac09::oc::enc-8f0a9f4f",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-a1ecac09",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "2.7",
+      "time_to_stabilization_hours": "9.8",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2021-06-18"
+    },
+    {
+      "id": "t1d-585729ea",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-585729ea",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 1982,
+      "diagnosis_age": 11,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 8,
+      "spike_event_count": 4
+    },
+    {
+      "id": "t1d-585729ea::dx::cond-9aa620b6",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-585729ea",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "1993-08-03"
+    },
+    {
+      "id": "t1d-585729ea::obs::obs-3495597d",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-585729ea",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 563,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "1993-08-03"
+    },
+    {
+      "id": "t1d-585729ea::obs::obs-8ee13e6b",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-585729ea",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 418,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "1997-09-02"
+    },
+    {
+      "id": "t1d-585729ea::obs::obs-02015c87",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-585729ea",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 41,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2000-07-27"
+    },
+    {
+      "id": "t1d-585729ea::obs::obs-9e3d3f76",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-585729ea",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 77,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2002-10-02"
+    },
+    {
+      "id": "t1d-585729ea::obs::obs-b8d30dee",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-585729ea",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 178,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2003-07-21"
+    },
+    {
+      "id": "t1d-585729ea::iv::medreq-135edf72",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-585729ea",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "1993-08-03"
+    },
+    {
+      "id": "t1d-585729ea::oc::enc-02a407b2",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-585729ea",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 3,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "1993-08-03"
+    },
+    {
+      "id": "t1d-585729ea::oc::enc-0d1889f8",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-585729ea",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "2",
+      "time_to_stabilization_hours": "34.7",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "1997-09-02"
+    },
+    {
+      "id": "t1d-585729ea::oc::enc-978b96f3",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-585729ea",
+      "status": "stabilized_with_sequelae",
+      "reason": "Severe hypoglycemic event",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "6.6",
+      "time_to_stabilization_hours": "38.2",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2000-07-27"
+    },
+    {
+      "id": "t1d-585729ea::oc::enc-1d61f0c9",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-585729ea",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "7.6",
+      "time_to_stabilization_hours": "19.5",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2002-10-02"
+    },
+    {
+      "id": "t1d-585729ea::oc::enc-313bcfde",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-585729ea",
+      "status": "stabilized_with_sequelae",
+      "reason": "DKA admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "4.3",
+      "time_to_stabilization_hours": "6.9",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2003-07-21"
+    },
+    {
+      "id": "t1d-320faa1a",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-320faa1a",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 1983,
+      "diagnosis_age": 12,
+      "facility_tier": "primary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 6,
+      "spike_event_count": 2
+    },
+    {
+      "id": "t1d-320faa1a::dx::cond-14ef830c",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-320faa1a",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "1995-01-06"
+    },
+    {
+      "id": "t1d-320faa1a::obs::obs-a89a91ea",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-320faa1a",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 371,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "1995-01-06"
+    },
+    {
+      "id": "t1d-320faa1a::obs::obs-a63fe6ee",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-320faa1a",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 297,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "1999-01-19"
+    },
+    {
+      "id": "t1d-320faa1a::obs::obs-30b240c1",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-320faa1a",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 191,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2000-01-06"
+    },
+    {
+      "id": "t1d-320faa1a::iv::medreq-96c361f3",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-320faa1a",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "1995-01-06"
+    },
+    {
+      "id": "t1d-320faa1a::oc::enc-e5ffc254",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-320faa1a",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 2,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "primary",
+      "resource_status": "constrained",
+      "start": "1995-01-06"
+    },
+    {
+      "id": "t1d-320faa1a::oc::enc-9aaed7c2",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-320faa1a",
+      "status": "stabilized_no_deficit",
+      "reason": "Insulin pump failure",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "3.8",
+      "time_to_stabilization_hours": "20.4",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "1999-01-19"
+    },
+    {
+      "id": "t1d-320faa1a::oc::enc-f0fb7445",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-320faa1a",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "8.1",
+      "time_to_stabilization_hours": "21.8",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2000-01-06"
+    },
+    {
+      "id": "t1d-b875a94c",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-b875a94c",
+      "condition_type": "T1D",
+      "gender": "male",
+      "birth_year": 1981,
+      "diagnosis_age": 15,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 48,
+      "spike_event_count": 3
+    },
+    {
+      "id": "t1d-b875a94c::dx::cond-4664a53a",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-b875a94c",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "1996-09-01"
+    },
+    {
+      "id": "t1d-b875a94c::obs::obs-0902b232",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-b875a94c",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 426,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "1996-09-01"
+    },
+    {
+      "id": "t1d-b875a94c::obs::obs-d1ebd31d",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-b875a94c",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 577,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "1998-07-10"
+    },
+    {
+      "id": "t1d-b875a94c::obs::obs-a3433efa",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-b875a94c",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 598,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2000-09-09"
+    },
+    {
+      "id": "t1d-b875a94c::obs::obs-d18c4071",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-b875a94c",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 138,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2002-10-02"
+    },
+    {
+      "id": "t1d-b875a94c::iv::medreq-6f7bdc4d",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-b875a94c",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "1996-09-01"
+    },
+    {
+      "id": "t1d-b875a94c::oc::enc-8fde986d",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-b875a94c",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 5,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "1996-09-01"
+    },
+    {
+      "id": "t1d-b875a94c::oc::enc-4ecaa8e6",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-b875a94c",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 3,
+      "spike_event": "true",
+      "time_to_er_hours": "5.1",
+      "time_to_stabilization_hours": "15.7",
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "1998-07-10"
+    },
+    {
+      "id": "t1d-b875a94c::oc::enc-f9831e44",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-b875a94c",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "5.6",
+      "time_to_stabilization_hours": "9.1",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2000-09-09"
+    },
+    {
+      "id": "t1d-b875a94c::oc::enc-7a3ac925",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-b875a94c",
+      "status": "stabilized_no_deficit",
+      "reason": "DKA admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "6.1",
+      "time_to_stabilization_hours": "20.1",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2002-10-02"
+    },
+    {
+      "id": "t1d-c73988df",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-c73988df",
+      "condition_type": "T1D",
+      "gender": "female",
+      "birth_year": 2005,
+      "diagnosis_age": 6,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 4,
+      "spike_event_count": 4
+    },
+    {
+      "id": "t1d-c73988df::dx::cond-3c7249bb",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-c73988df",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2011-10-29"
+    },
+    {
+      "id": "t1d-c73988df::obs::obs-94ffbf3c",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-c73988df",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 502,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2011-10-29"
+    },
+    {
+      "id": "t1d-c73988df::obs::obs-ff55eb35",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-c73988df",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 146,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2016-12-11"
+    },
+    {
+      "id": "t1d-c73988df::obs::obs-fb238e6d",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-c73988df",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 548,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2017-11-08"
+    },
+    {
+      "id": "t1d-c73988df::obs::obs-34b77f81",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-c73988df",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 323,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2018-09-03"
+    },
+    {
+      "id": "t1d-c73988df::obs::obs-20436eea",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-c73988df",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 456,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2023-10-30"
+    },
+    {
+      "id": "t1d-c73988df::iv::medreq-148afcbc",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-c73988df",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "2011-10-29"
+    },
+    {
+      "id": "t1d-c73988df::oc::enc-7debd530",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-c73988df",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 5,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2011-10-29"
+    },
+    {
+      "id": "t1d-c73988df::oc::enc-b3a3c402",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-c73988df",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "5.8",
+      "time_to_stabilization_hours": "9.2",
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2016-12-11"
+    },
+    {
+      "id": "t1d-c73988df::oc::enc-463f28d5",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-c73988df",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "8.5",
+      "time_to_stabilization_hours": "34.1",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2017-11-08"
+    },
+    {
+      "id": "t1d-c73988df::oc::enc-033fe675",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-c73988df",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "6.5",
+      "time_to_stabilization_hours": "38.2",
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "start": "2018-09-03"
+    },
+    {
+      "id": "t1d-c73988df::oc::enc-37658717",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-c73988df",
+      "status": "stabilized_no_deficit",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 1,
+      "spike_event": "true",
+      "time_to_er_hours": "5.7",
+      "time_to_stabilization_hours": "40.9",
+      "facility_tier": "primary",
+      "resource_status": "plenty",
+      "start": "2023-10-30"
+    },
+    {
+      "id": "t1d-3e3bd895",
+      "node_type": "PatientNode",
+      "patient_id": "t1d-3e3bd895",
+      "condition_type": "T1D",
+      "gender": "male",
+      "birth_year": 1988,
+      "diagnosis_age": 12,
+      "facility_tier": "primary",
+      "resource_status": "constrained",
+      "presentation_delay_hours": 8,
+      "spike_event_count": 2
+    },
+    {
+      "id": "t1d-3e3bd895::dx::cond-2753553c",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t1d-3e3bd895",
+      "term": "Type 1 diabetes mellitus",
+      "snomed_code": "46635009",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2000-04-02"
+    },
+    {
+      "id": "t1d-3e3bd895::obs::obs-386c97d9",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-3e3bd895",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 598,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2000-04-02"
+    },
+    {
+      "id": "t1d-3e3bd895::obs::obs-1064dd90",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-3e3bd895",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 171,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2001-02-15"
+    },
+    {
+      "id": "t1d-3e3bd895::obs::obs-b4200c10",
+      "node_type": "ObservationNode",
+      "patient_id": "t1d-3e3bd895",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 395,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2006-03-13"
+    },
+    {
+      "id": "t1d-3e3bd895::iv::medreq-63beecca",
+      "node_type": "InterventionNode",
+      "patient_id": "t1d-3e3bd895",
+      "action_type": "MedicationRequest",
+      "target": "Insulin (basal-bolus regimen)",
+      "rxnorm_code": "5856",
+      "parameters": "Basal-bolus insulin, titrated per glucose logs",
+      "authored_on": "2000-04-02"
+    },
+    {
+      "id": "t1d-3e3bd895::oc::enc-6da71922",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-3e3bd895",
+      "status": "stabilized",
+      "reason": "New-onset DKA at diagnosis",
+      "encounter_class": "IMP",
+      "length_of_stay_days": 2,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "primary",
+      "resource_status": "constrained",
+      "start": "2000-04-02"
+    },
+    {
+      "id": "t1d-3e3bd895::oc::enc-56feb08e",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-3e3bd895",
+      "status": "stabilized_no_deficit",
+      "reason": "Sick-day hyperglycemia admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": "true",
+      "time_to_er_hours": "5.7",
+      "time_to_stabilization_hours": "17.6",
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2001-02-15"
+    },
+    {
+      "id": "t1d-3e3bd895::oc::enc-2173c89e",
+      "node_type": "OutcomeNode",
+      "patient_id": "t1d-3e3bd895",
+      "status": "stabilized_with_sequelae",
+      "reason": "CGM sensor failure / data gap",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 2,
+      "spike_event": "true",
+      "time_to_er_hours": "8.1",
+      "time_to_stabilization_hours": "35",
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2006-03-13"
+    },
+    {
+      "id": "t2d-14771bf7",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-14771bf7",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1965,
+      "diagnosis_age": 54,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-14771bf7::dx::cond-2103bb63",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-14771bf7",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2019-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::obs::obs-f9f7661c",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-14771bf7",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.9,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2019-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::obs::obs-e6f2e566",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-14771bf7",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.3,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2021-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::obs::obs-0cbb7abe",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-14771bf7",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 7.5,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2024-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::iv::medreq-8fc7021c",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-14771bf7",
+      "action_type": "MedicationRequest",
+      "target": "Metformin",
+      "rxnorm_code": "6809",
+      "parameters": "500mg PO BID, titrate to 1000mg BID",
+      "authored_on": "2024-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::oc::enc-6c127f61",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-14771bf7",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2019-02-01"
+    },
+    {
+      "id": "t2d-14771bf7::oc::enc-ef964b32",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-14771bf7",
+      "status": "regimen_escalation",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2021-02-01"
+    },
+    {
+      "id": "t2d-c68fc937",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-c68fc937",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1949,
+      "diagnosis_age": 46,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": 18,
+      "comorbidity_count": 4,
+      "comorbidities": [
+        {
+          "name": "Dyslipidemia",
+          "onset": "2011-12-16"
+        },
+        {
+          "name": "Hypertension",
+          "onset": "2011-12-16"
+        },
+        {
+          "name": "Diabetic retinopathy",
+          "onset": "2011-12-16"
+        },
+        {
+          "name": "Chronic kidney disease",
+          "onset": "2010-12-16"
+        }
+      ]
+    },
+    {
+      "id": "t2d-c68fc937::dx::cond-2b81282f",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-c68fc937",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "1995-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-c68fc937",
+      "term": "Dyslipidemia",
+      "snomed_code": "55822004",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2011-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::dx::cond-841df0b9",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-c68fc937",
+      "term": "Hypertension",
+      "snomed_code": "38341003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2011-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::dx::cond-a2a5a211",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-c68fc937",
+      "term": "Diabetic retinopathy",
+      "snomed_code": "4855003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2011-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::dx::cond-25c1a01e",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-c68fc937",
+      "term": "Chronic kidney disease",
+      "snomed_code": "709044004",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2010-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-f2712e68",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.9,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "1995-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-c8449b2f",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.7,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2000-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-24534f15",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.4,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2005-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-8b2e82ca",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.5,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2007-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-d54b7529",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 5.8,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2009-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-c98f30b1",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.9,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2013-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::obs::obs-2a652ee0",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-c68fc937",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2018-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::iv::medreq-05d830cf",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-c68fc937",
+      "action_type": "MedicationRequest",
+      "target": "Metformin",
+      "rxnorm_code": "6809",
+      "parameters": "500mg PO BID, titrate to 1000mg BID",
+      "authored_on": "2005-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::iv::medreq-333f45b3",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-c68fc937",
+      "action_type": "MedicationRequest",
+      "target": "Metformin + Sulfonylurea",
+      "rxnorm_code": "4821",
+      "parameters": "Add glipizide 5mg PO daily",
+      "authored_on": "2007-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::iv::medreq-11fb5b25",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-c68fc937",
+      "action_type": "MedicationRequest",
+      "target": "Metformin + SGLT2 inhibitor",
+      "rxnorm_code": "1373463",
+      "parameters": "Add empagliflozin 10mg PO daily",
+      "authored_on": "2009-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-c68fc937",
+      "action_type": "MedicationRequest",
+      "target": "Basal insulin added",
+      "rxnorm_code": "5856",
+      "parameters": "Add basal insulin, titrate to fasting glucose target",
+      "authored_on": "2013-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-c68fc937",
+      "action_type": "MedicationRequest",
+      "target": "Basal-bolus insulin regimen",
+      "rxnorm_code": "5856",
+      "parameters": "Full basal-bolus regimen",
+      "authored_on": "2018-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::oc::enc-f8477444",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-c68fc937",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "1995-12-16"
+    },
+    {
+      "id": "t2d-c68fc937::oc::enc-6b87041e",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-c68fc937",
+      "status": "regimen_escalation",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2000-12-16"
+    },
+    {
+      "id": "t2d-0c34488f",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-0c34488f",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1955,
+      "diagnosis_age": 60,
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 4,
+      "comorbidities": [
+        {
+          "name": "Hypertension",
+          "onset": "2020-05-21"
+        },
+        {
+          "name": "Diabetic retinopathy",
+          "onset": "2022-05-21"
+        },
+        {
+          "name": "Dyslipidemia",
+          "onset": "2020-05-21"
+        },
+        {
+          "name": "Chronic kidney disease",
+          "onset": "2019-05-21"
+        }
+      ]
+    },
+    {
+      "id": "t2d-0c34488f::dx::cond-af20ec30",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-0c34488f",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2015-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::dx::cond-95176b7f",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-0c34488f",
+      "term": "Hypertension",
+      "snomed_code": "38341003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2020-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::dx::cond-c8ea2ee0",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-0c34488f",
+      "term": "Diabetic retinopathy",
+      "snomed_code": "4855003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2022-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::dx::cond-f787485e",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-0c34488f",
+      "term": "Dyslipidemia",
+      "snomed_code": "55822004",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2020-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::dx::cond-4c83b5a9",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-0c34488f",
+      "term": "Chronic kidney disease",
+      "snomed_code": "709044004",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2019-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::obs::obs-faba604c",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-0c34488f",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9.3,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2015-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::obs::obs-903ae485",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-0c34488f",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9.1,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2019-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::obs::obs-b7509ab2",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-0c34488f",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.3,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2023-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::iv::medreq-148123d2",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-0c34488f",
+      "action_type": "MedicationRequest",
+      "target": "Metformin",
+      "rxnorm_code": "6809",
+      "parameters": "500mg PO BID, titrate to 1000mg BID",
+      "authored_on": "2023-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::oc::enc-8a7c1d62",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-0c34488f",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "start": "2015-05-21"
+    },
+    {
+      "id": "t2d-0c34488f::oc::enc-ba2e8dc3",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-0c34488f",
+      "status": "regimen_escalation",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "start": "2019-05-21"
+    },
+    {
+      "id": "t2d-e6355bc7",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-e6355bc7",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1969,
+      "diagnosis_age": 65,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-e6355bc7::dx::cond-adab764d",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-e6355bc7",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2034-01-16"
+    },
+    {
+      "id": "t2d-e6355bc7::obs::obs-65ef4d0e",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-e6355bc7",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.9,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2034-01-16"
+    },
+    {
+      "id": "t2d-e6355bc7::oc::enc-16b0ca67",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-e6355bc7",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2034-01-16"
+    },
+    {
+      "id": "t2d-f2023fd4",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-f2023fd4",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1976,
+      "diagnosis_age": 43,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-f2023fd4",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2019-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::obs::obs-a8a88131",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-f2023fd4",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.5,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2019-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::obs::obs-1ffd3757",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-f2023fd4",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9.1,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2021-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::obs::obs-1f5390a2",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-f2023fd4",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 7.2,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2025-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::iv::medreq-84a67203",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-f2023fd4",
+      "action_type": "MedicationRequest",
+      "target": "Metformin",
+      "rxnorm_code": "6809",
+      "parameters": "500mg PO BID, titrate to 1000mg BID",
+      "authored_on": "2025-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::oc::enc-848462bd",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-f2023fd4",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2019-12-28"
+    },
+    {
+      "id": "t2d-f2023fd4::oc::enc-31e6ab7d",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-f2023fd4",
+      "status": "regimen_escalation",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2021-12-28"
+    },
+    {
+      "id": "t2d-4baf5572",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-4baf5572",
+      "condition_type": "T2D",
+      "gender": "male",
+      "birth_year": 1969,
+      "diagnosis_age": 64,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-4baf5572::dx::cond-9b3354e5",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-4baf5572",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2033-02-07"
+    },
+    {
+      "id": "t2d-4baf5572::obs::obs-aa6e0a9b",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-4baf5572",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2033-02-07"
+    },
+    {
+      "id": "t2d-4baf5572::oc::enc-223c4f27",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-4baf5572",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "constrained",
+      "start": "2033-02-07"
+    },
+    {
+      "id": "t2d-2b73d92d",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-2b73d92d",
+      "condition_type": "T2D",
+      "gender": "male",
+      "birth_year": 1962,
+      "diagnosis_age": 65,
+      "facility_tier": "primary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-2b73d92d::dx::cond-71980a52",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-2b73d92d",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2027-07-24"
+    },
+    {
+      "id": "t2d-2b73d92d::obs::obs-f9393803",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-2b73d92d",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9.3,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2027-07-24"
+    },
+    {
+      "id": "t2d-2b73d92d::oc::enc-e2324c0a",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-2b73d92d",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "primary",
+      "resource_status": "plenty",
+      "start": "2027-07-24"
+    },
+    {
+      "id": "t2d-b77ffc83",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-b77ffc83",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1952,
+      "diagnosis_age": 65,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 2,
+      "comorbidities": [
+        {
+          "name": "Dyslipidemia",
+          "onset": "2022-05-24"
+        },
+        {
+          "name": "Hypertension",
+          "onset": "2018-05-24"
+        }
+      ]
+    },
+    {
+      "id": "t2d-b77ffc83::dx::cond-47ff78b0",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-b77ffc83",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2017-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-b77ffc83",
+      "term": "Dyslipidemia",
+      "snomed_code": "55822004",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2022-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::dx::cond-4a8b7d73",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-b77ffc83",
+      "term": "Hypertension",
+      "snomed_code": "38341003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2018-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::obs::obs-074c70a7",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-b77ffc83",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.8,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2017-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::obs::obs-e42c85ee",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-b77ffc83",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 6.2,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2019-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::obs::obs-f03c2ed6",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-b77ffc83",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.1,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2023-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::obs::obs-885a8eba",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-b77ffc83",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 8.5,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2025-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-b77ffc83",
+      "action_type": "MedicationRequest",
+      "target": "Metformin",
+      "rxnorm_code": "6809",
+      "parameters": "500mg PO BID, titrate to 1000mg BID",
+      "authored_on": "2023-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-b77ffc83",
+      "action_type": "MedicationRequest",
+      "target": "Metformin + Sulfonylurea",
+      "rxnorm_code": "4821",
+      "parameters": "Add glipizide 5mg PO daily",
+      "authored_on": "2025-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::oc::enc-102e8e63",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-b77ffc83",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2017-05-24"
+    },
+    {
+      "id": "t2d-b77ffc83::oc::enc-d8bf5d0b",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-b77ffc83",
+      "status": "regimen_escalation",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2019-05-24"
+    },
+    {
+      "id": "t2d-63f0aaae",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-63f0aaae",
+      "condition_type": "T2D",
+      "gender": "male",
+      "birth_year": 1968,
+      "diagnosis_age": 54,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "time_to_insulin_initiation_years": null,
+      "comorbidity_count": 1,
+      "comorbidities": [
+        {
+          "name": "Hypertension",
+          "onset": "2024-03-17"
+        }
+      ]
+    },
+    {
+      "id": "t2d-63f0aaae::dx::cond-0d95721a",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-63f0aaae",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2022-03-17"
+    },
+    {
+      "id": "t2d-63f0aaae::dx::cond-2f0498cf",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-63f0aaae",
+      "term": "Hypertension",
+      "snomed_code": "38341003",
+      "confidence": "confirmed",
+      "role": "comorbidity",
+      "onset": "2024-03-17"
+    },
+    {
+      "id": "t2d-63f0aaae::obs::obs-6d1086e3",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-63f0aaae",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 9.1,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2022-03-17"
+    },
+    {
+      "id": "t2d-63f0aaae::oc::enc-120132b0",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-63f0aaae",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "constrained",
+      "start": "2022-03-17"
+    }
+  ],
+  "links": [
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::dx::cond-8a907d09",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2002-04-02"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::obs::obs-c5700893",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2002-04-02"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::obs::obs-e4b28d1f",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2003-04-21"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::obs::obs-b5ce17d2",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2006-05-22"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::obs::obs-0baee397",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2011-02-22"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::iv::medreq-a34bd834",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2002-04-02"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::oc::enc-402c802d",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2002-04-02"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::oc::enc-210579e1",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 384,
+      "start": "2003-04-21"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::oc::enc-7dbfe684",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1511,
+      "start": "2006-05-22"
+    },
+    {
+      "source": "t1d-97da2849",
+      "target": "t1d-97da2849::oc::enc-3ae5c62d",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3248,
+      "start": "2011-02-22"
+    },
+    {
+      "source": "t1d-97da2849::obs::obs-c5700893",
+      "target": "t1d-97da2849::dx::cond-8a907d09",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-97da2849::obs::obs-e4b28d1f",
+      "target": "t1d-97da2849::dx::cond-8a907d09",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-97da2849::obs::obs-b5ce17d2",
+      "target": "t1d-97da2849::dx::cond-8a907d09",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-97da2849::obs::obs-0baee397",
+      "target": "t1d-97da2849::dx::cond-8a907d09",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-97da2849::dx::cond-8a907d09",
+      "target": "t1d-97da2849::iv::medreq-a34bd834",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-97da2849::obs::obs-c5700893",
+      "target": "t1d-97da2849::iv::medreq-a34bd834",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-97da2849::iv::medreq-a34bd834",
+      "target": "t1d-97da2849::oc::enc-402c802d",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "1991-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-32b51509",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1991-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-8acfdadd",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1994-09-07"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-7b242047",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1997-07-10"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-a6202f1d",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-08-23"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-1104aa8f",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2003-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::obs::obs-c8a88ffc",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2004-07-16"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::iv::medreq-376bec72",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "1991-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-79893545",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "1991-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-8f7ddb01",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1137,
+      "start": "1994-09-07"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-d2501abf",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2174,
+      "start": "1997-07-10"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-76542848",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3314,
+      "start": "2000-08-23"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-1fcac8c8",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 4383,
+      "start": "2003-07-28"
+    },
+    {
+      "source": "t1d-20bb4450",
+      "target": "t1d-20bb4450::oc::enc-48dea9c4",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 4737,
+      "start": "2004-07-16"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-32b51509",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-8acfdadd",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-7b242047",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-a6202f1d",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-1104aa8f",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-c8a88ffc",
+      "target": "t1d-20bb4450::dx::cond-4666a65e",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-20bb4450::dx::cond-4666a65e",
+      "target": "t1d-20bb4450::iv::medreq-376bec72",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-20bb4450::obs::obs-32b51509",
+      "target": "t1d-20bb4450::iv::medreq-376bec72",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-20bb4450::iv::medreq-376bec72",
+      "target": "t1d-20bb4450::oc::enc-79893545",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2004-07-14"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::obs::obs-679b8021",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2004-07-14"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::obs::obs-be100533",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2006-08-26"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::obs::obs-7f228a3c",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2011-07-24"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::obs::obs-d72a83d1",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2013-05-31"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::obs::obs-70d56480",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2014-09-12"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::iv::medreq-16dda104",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2004-07-14"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::oc::enc-2de8717e",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2004-07-14"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::oc::enc-744b8791",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 773,
+      "start": "2006-08-26"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::oc::enc-3c821c6d",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2566,
+      "start": "2011-07-24"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::oc::enc-0f9405bc",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3243,
+      "start": "2013-05-31"
+    },
+    {
+      "source": "t1d-4aad6e5e",
+      "target": "t1d-4aad6e5e::oc::enc-fd538c77",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3712,
+      "start": "2014-09-12"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-679b8021",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-be100533",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-7f228a3c",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-d72a83d1",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-70d56480",
+      "target": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-4aad6e5e::dx::cond-24f74acb",
+      "target": "t1d-4aad6e5e::iv::medreq-16dda104",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-4aad6e5e::obs::obs-679b8021",
+      "target": "t1d-4aad6e5e::iv::medreq-16dda104",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-4aad6e5e::iv::medreq-16dda104",
+      "target": "t1d-4aad6e5e::oc::enc-2de8717e",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2001-07-07"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-b9fd70e0",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2001-07-07"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-25b02395",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2006-08-14"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-f291ac69",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2010-09-02"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-080ba06d",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2015-06-24"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-ef695afe",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2017-05-31"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::obs::obs-f48634fa",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2021-06-18"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::iv::medreq-87a89daf",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2001-07-07"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-e709777c",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2001-07-07"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-dac5d7ea",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1864,
+      "start": "2006-08-14"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-9e76da57",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3344,
+      "start": "2010-09-02"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-8aec001e",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 5100,
+      "start": "2015-06-24"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-696932bb",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 5807,
+      "start": "2017-05-31"
+    },
+    {
+      "source": "t1d-a1ecac09",
+      "target": "t1d-a1ecac09::oc::enc-8f0a9f4f",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 7286,
+      "start": "2021-06-18"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-b9fd70e0",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-25b02395",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-f291ac69",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-080ba06d",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-ef695afe",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-f48634fa",
+      "target": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-a1ecac09::dx::cond-b0b25be4",
+      "target": "t1d-a1ecac09::iv::medreq-87a89daf",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-a1ecac09::obs::obs-b9fd70e0",
+      "target": "t1d-a1ecac09::iv::medreq-87a89daf",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-a1ecac09::iv::medreq-87a89daf",
+      "target": "t1d-a1ecac09::oc::enc-e709777c",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "1993-08-03"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::obs::obs-3495597d",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1993-08-03"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::obs::obs-8ee13e6b",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1997-09-02"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::obs::obs-02015c87",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-07-27"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::obs::obs-9e3d3f76",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2002-10-02"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::obs::obs-b8d30dee",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2003-07-21"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::iv::medreq-135edf72",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "1993-08-03"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::oc::enc-02a407b2",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "1993-08-03"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::oc::enc-0d1889f8",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1491,
+      "start": "1997-09-02"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::oc::enc-978b96f3",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2550,
+      "start": "2000-07-27"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::oc::enc-1d61f0c9",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3347,
+      "start": "2002-10-02"
+    },
+    {
+      "source": "t1d-585729ea",
+      "target": "t1d-585729ea::oc::enc-313bcfde",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3639,
+      "start": "2003-07-21"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-3495597d",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-8ee13e6b",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-02015c87",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-9e3d3f76",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-b8d30dee",
+      "target": "t1d-585729ea::dx::cond-9aa620b6",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-585729ea::dx::cond-9aa620b6",
+      "target": "t1d-585729ea::iv::medreq-135edf72",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-585729ea::obs::obs-3495597d",
+      "target": "t1d-585729ea::iv::medreq-135edf72",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-585729ea::iv::medreq-135edf72",
+      "target": "t1d-585729ea::oc::enc-02a407b2",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::dx::cond-14ef830c",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "1995-01-06"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::obs::obs-a89a91ea",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1995-01-06"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::obs::obs-a63fe6ee",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1999-01-19"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::obs::obs-30b240c1",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-01-06"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::iv::medreq-96c361f3",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "1995-01-06"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::oc::enc-e5ffc254",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "1995-01-06"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::oc::enc-9aaed7c2",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1474,
+      "start": "1999-01-19"
+    },
+    {
+      "source": "t1d-320faa1a",
+      "target": "t1d-320faa1a::oc::enc-f0fb7445",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1826,
+      "start": "2000-01-06"
+    },
+    {
+      "source": "t1d-320faa1a::obs::obs-a89a91ea",
+      "target": "t1d-320faa1a::dx::cond-14ef830c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-320faa1a::obs::obs-a63fe6ee",
+      "target": "t1d-320faa1a::dx::cond-14ef830c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-320faa1a::obs::obs-30b240c1",
+      "target": "t1d-320faa1a::dx::cond-14ef830c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-320faa1a::dx::cond-14ef830c",
+      "target": "t1d-320faa1a::iv::medreq-96c361f3",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-320faa1a::obs::obs-a89a91ea",
+      "target": "t1d-320faa1a::iv::medreq-96c361f3",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-320faa1a::iv::medreq-96c361f3",
+      "target": "t1d-320faa1a::oc::enc-e5ffc254",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::dx::cond-4664a53a",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "1996-09-01"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::obs::obs-0902b232",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1996-09-01"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::obs::obs-d1ebd31d",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1998-07-10"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::obs::obs-a3433efa",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-09-09"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::obs::obs-d18c4071",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2002-10-02"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::iv::medreq-6f7bdc4d",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "1996-09-01"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::oc::enc-8fde986d",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "1996-09-01"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::oc::enc-4ecaa8e6",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 677,
+      "start": "1998-07-10"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::oc::enc-f9831e44",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1469,
+      "start": "2000-09-09"
+    },
+    {
+      "source": "t1d-b875a94c",
+      "target": "t1d-b875a94c::oc::enc-7a3ac925",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2222,
+      "start": "2002-10-02"
+    },
+    {
+      "source": "t1d-b875a94c::obs::obs-0902b232",
+      "target": "t1d-b875a94c::dx::cond-4664a53a",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-b875a94c::obs::obs-d1ebd31d",
+      "target": "t1d-b875a94c::dx::cond-4664a53a",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-b875a94c::obs::obs-a3433efa",
+      "target": "t1d-b875a94c::dx::cond-4664a53a",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-b875a94c::obs::obs-d18c4071",
+      "target": "t1d-b875a94c::dx::cond-4664a53a",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-b875a94c::dx::cond-4664a53a",
+      "target": "t1d-b875a94c::iv::medreq-6f7bdc4d",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-b875a94c::obs::obs-0902b232",
+      "target": "t1d-b875a94c::iv::medreq-6f7bdc4d",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-b875a94c::iv::medreq-6f7bdc4d",
+      "target": "t1d-b875a94c::oc::enc-8fde986d",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2011-10-29"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::obs::obs-94ffbf3c",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2011-10-29"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::obs::obs-ff55eb35",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2016-12-11"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::obs::obs-fb238e6d",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2017-11-08"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::obs::obs-34b77f81",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2018-09-03"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::obs::obs-20436eea",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2023-10-30"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::iv::medreq-148afcbc",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2011-10-29"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::oc::enc-7debd530",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2011-10-29"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::oc::enc-b3a3c402",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1870,
+      "start": "2016-12-11"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::oc::enc-463f28d5",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2202,
+      "start": "2017-11-08"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::oc::enc-033fe675",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2501,
+      "start": "2018-09-03"
+    },
+    {
+      "source": "t1d-c73988df",
+      "target": "t1d-c73988df::oc::enc-37658717",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 4384,
+      "start": "2023-10-30"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-94ffbf3c",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-ff55eb35",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-fb238e6d",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-34b77f81",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-20436eea",
+      "target": "t1d-c73988df::dx::cond-3c7249bb",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-c73988df::dx::cond-3c7249bb",
+      "target": "t1d-c73988df::iv::medreq-148afcbc",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-c73988df::obs::obs-94ffbf3c",
+      "target": "t1d-c73988df::iv::medreq-148afcbc",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-c73988df::iv::medreq-148afcbc",
+      "target": "t1d-c73988df::oc::enc-7debd530",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::dx::cond-2753553c",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2000-04-02"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::obs::obs-386c97d9",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-04-02"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::obs::obs-1064dd90",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2001-02-15"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::obs::obs-b4200c10",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2006-03-13"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::iv::medreq-63beecca",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2000-04-02"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::oc::enc-6da71922",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2000-04-02"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::oc::enc-56feb08e",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 319,
+      "start": "2001-02-15"
+    },
+    {
+      "source": "t1d-3e3bd895",
+      "target": "t1d-3e3bd895::oc::enc-2173c89e",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 2171,
+      "start": "2006-03-13"
+    },
+    {
+      "source": "t1d-3e3bd895::obs::obs-386c97d9",
+      "target": "t1d-3e3bd895::dx::cond-2753553c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-3e3bd895::obs::obs-1064dd90",
+      "target": "t1d-3e3bd895::dx::cond-2753553c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-3e3bd895::obs::obs-b4200c10",
+      "target": "t1d-3e3bd895::dx::cond-2753553c",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t1d-3e3bd895::dx::cond-2753553c",
+      "target": "t1d-3e3bd895::iv::medreq-63beecca",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t1d-3e3bd895::obs::obs-386c97d9",
+      "target": "t1d-3e3bd895::iv::medreq-63beecca",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t1d-3e3bd895::iv::medreq-63beecca",
+      "target": "t1d-3e3bd895::oc::enc-6da71922",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::dx::cond-2103bb63",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2019-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::obs::obs-f9f7661c",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2019-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::obs::obs-e6f2e566",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2021-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::obs::obs-0cbb7abe",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2024-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::iv::medreq-8fc7021c",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2024-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::oc::enc-6c127f61",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2019-02-01"
+    },
+    {
+      "source": "t2d-14771bf7",
+      "target": "t2d-14771bf7::oc::enc-ef964b32",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 731,
+      "start": "2021-02-01"
+    },
+    {
+      "source": "t2d-14771bf7::obs::obs-f9f7661c",
+      "target": "t2d-14771bf7::dx::cond-2103bb63",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-14771bf7::obs::obs-e6f2e566",
+      "target": "t2d-14771bf7::dx::cond-2103bb63",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-14771bf7::obs::obs-0cbb7abe",
+      "target": "t2d-14771bf7::dx::cond-2103bb63",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-14771bf7::dx::cond-2103bb63",
+      "target": "t2d-14771bf7::iv::medreq-8fc7021c",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-14771bf7::obs::obs-0cbb7abe",
+      "target": "t2d-14771bf7::iv::medreq-8fc7021c",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "1995-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2011-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::dx::cond-841df0b9",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2011-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::dx::cond-a2a5a211",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2011-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::dx::cond-25c1a01e",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2010-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-f2712e68",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "1995-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-c8449b2f",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2000-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-24534f15",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2005-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-8b2e82ca",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2007-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-d54b7529",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2009-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-c98f30b1",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2013-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::obs::obs-2a652ee0",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2018-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::iv::medreq-05d830cf",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2005-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::iv::medreq-333f45b3",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2007-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::iv::medreq-11fb5b25",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2009-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2013-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2018-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::oc::enc-f8477444",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "1995-12-16"
+    },
+    {
+      "source": "t2d-c68fc937",
+      "target": "t2d-c68fc937::oc::enc-6b87041e",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1827,
+      "start": "2000-12-16"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-f2712e68",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-c8449b2f",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-24534f15",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-8b2e82ca",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-d54b7529",
+      "target": "t2d-c68fc937::dx::cond-2b81282f",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-c98f30b1",
+      "target": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-2a652ee0",
+      "target": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-2b81282f",
+      "target": "t2d-c68fc937::iv::medreq-05d830cf",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-2b81282f",
+      "target": "t2d-c68fc937::iv::medreq-333f45b3",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-2b81282f",
+      "target": "t2d-c68fc937::iv::medreq-11fb5b25",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-2b81282f",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-2b81282f",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-e2dfb3ce",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-841df0b9",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-841df0b9",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-a2a5a211",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-a2a5a211",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-25c1a01e",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::dx::cond-25c1a01e",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-24534f15",
+      "target": "t2d-c68fc937::iv::medreq-05d830cf",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-8b2e82ca",
+      "target": "t2d-c68fc937::iv::medreq-333f45b3",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-d54b7529",
+      "target": "t2d-c68fc937::iv::medreq-11fb5b25",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-c98f30b1",
+      "target": "t2d-c68fc937::iv::medreq-bb057b1e",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-c68fc937::obs::obs-2a652ee0",
+      "target": "t2d-c68fc937::iv::medreq-d80ed31f",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::dx::cond-af20ec30",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2015-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::dx::cond-95176b7f",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2020-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::dx::cond-c8ea2ee0",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2022-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::dx::cond-f787485e",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2020-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::dx::cond-4c83b5a9",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2019-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::obs::obs-faba604c",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2015-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::obs::obs-903ae485",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2019-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::obs::obs-b7509ab2",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2023-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2023-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::oc::enc-8a7c1d62",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2015-05-21"
+    },
+    {
+      "source": "t2d-0c34488f",
+      "target": "t2d-0c34488f::oc::enc-ba2e8dc3",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1461,
+      "start": "2019-05-21"
+    },
+    {
+      "source": "t2d-0c34488f::obs::obs-faba604c",
+      "target": "t2d-0c34488f::dx::cond-af20ec30",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-0c34488f::obs::obs-903ae485",
+      "target": "t2d-0c34488f::dx::cond-4c83b5a9",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-0c34488f::obs::obs-b7509ab2",
+      "target": "t2d-0c34488f::dx::cond-c8ea2ee0",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-0c34488f::dx::cond-af20ec30",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-0c34488f::dx::cond-95176b7f",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-0c34488f::dx::cond-c8ea2ee0",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-0c34488f::dx::cond-f787485e",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-0c34488f::dx::cond-4c83b5a9",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-0c34488f::obs::obs-b7509ab2",
+      "target": "t2d-0c34488f::iv::medreq-148123d2",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-e6355bc7",
+      "target": "t2d-e6355bc7::dx::cond-adab764d",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2034-01-16"
+    },
+    {
+      "source": "t2d-e6355bc7",
+      "target": "t2d-e6355bc7::obs::obs-65ef4d0e",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2034-01-16"
+    },
+    {
+      "source": "t2d-e6355bc7",
+      "target": "t2d-e6355bc7::oc::enc-16b0ca67",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2034-01-16"
+    },
+    {
+      "source": "t2d-e6355bc7::obs::obs-65ef4d0e",
+      "target": "t2d-e6355bc7::dx::cond-adab764d",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2019-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::obs::obs-a8a88131",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2019-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::obs::obs-1ffd3757",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2021-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::obs::obs-1f5390a2",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2025-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::iv::medreq-84a67203",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2025-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::oc::enc-848462bd",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2019-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4",
+      "target": "t2d-f2023fd4::oc::enc-31e6ab7d",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 731,
+      "start": "2021-12-28"
+    },
+    {
+      "source": "t2d-f2023fd4::obs::obs-a8a88131",
+      "target": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-f2023fd4::obs::obs-1ffd3757",
+      "target": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-f2023fd4::obs::obs-1f5390a2",
+      "target": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-f2023fd4::dx::cond-6dfa2c18",
+      "target": "t2d-f2023fd4::iv::medreq-84a67203",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-f2023fd4::obs::obs-1f5390a2",
+      "target": "t2d-f2023fd4::iv::medreq-84a67203",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-4baf5572",
+      "target": "t2d-4baf5572::dx::cond-9b3354e5",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2033-02-07"
+    },
+    {
+      "source": "t2d-4baf5572",
+      "target": "t2d-4baf5572::obs::obs-aa6e0a9b",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2033-02-07"
+    },
+    {
+      "source": "t2d-4baf5572",
+      "target": "t2d-4baf5572::oc::enc-223c4f27",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2033-02-07"
+    },
+    {
+      "source": "t2d-4baf5572::obs::obs-aa6e0a9b",
+      "target": "t2d-4baf5572::dx::cond-9b3354e5",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-2b73d92d",
+      "target": "t2d-2b73d92d::dx::cond-71980a52",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2027-07-24"
+    },
+    {
+      "source": "t2d-2b73d92d",
+      "target": "t2d-2b73d92d::obs::obs-f9393803",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2027-07-24"
+    },
+    {
+      "source": "t2d-2b73d92d",
+      "target": "t2d-2b73d92d::oc::enc-e2324c0a",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2027-07-24"
+    },
+    {
+      "source": "t2d-2b73d92d::obs::obs-f9393803",
+      "target": "t2d-2b73d92d::dx::cond-71980a52",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::dx::cond-47ff78b0",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2017-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2022-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::dx::cond-4a8b7d73",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2018-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::obs::obs-074c70a7",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2017-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::obs::obs-e42c85ee",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2019-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::obs::obs-f03c2ed6",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2023-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::obs::obs-885a8eba",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2025-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2023-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2025-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::oc::enc-102e8e63",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2017-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83",
+      "target": "t2d-b77ffc83::oc::enc-d8bf5d0b",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 730,
+      "start": "2019-05-24"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-074c70a7",
+      "target": "t2d-b77ffc83::dx::cond-47ff78b0",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-e42c85ee",
+      "target": "t2d-b77ffc83::dx::cond-4a8b7d73",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-f03c2ed6",
+      "target": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-885a8eba",
+      "target": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-47ff78b0",
+      "target": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-47ff78b0",
+      "target": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "target": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-b8fd8ebd",
+      "target": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-4a8b7d73",
+      "target": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-b77ffc83::dx::cond-4a8b7d73",
+      "target": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "edge_type": "MODULATES"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-f03c2ed6",
+      "target": "t2d-b77ffc83::iv::medreq-c8a92751",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-b77ffc83::obs::obs-885a8eba",
+      "target": "t2d-b77ffc83::iv::medreq-f6f05290",
+      "edge_type": "CONSTRAINS"
+    },
+    {
+      "source": "t2d-63f0aaae",
+      "target": "t2d-63f0aaae::dx::cond-0d95721a",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2022-03-17"
+    },
+    {
+      "source": "t2d-63f0aaae",
+      "target": "t2d-63f0aaae::dx::cond-2f0498cf",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2024-03-17"
+    },
+    {
+      "source": "t2d-63f0aaae",
+      "target": "t2d-63f0aaae::obs::obs-6d1086e3",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2022-03-17"
+    },
+    {
+      "source": "t2d-63f0aaae",
+      "target": "t2d-63f0aaae::oc::enc-120132b0",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2022-03-17"
+    },
+    {
+      "source": "t2d-63f0aaae::obs::obs-6d1086e3",
+      "target": "t2d-63f0aaae::dx::cond-0d95721a",
+      "edge_type": "SUGGESTS"
+    }
+  ]
+}
