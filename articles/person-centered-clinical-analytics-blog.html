@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Person-Centered Clinical Analytics: A Walkthrough for Medical Learners and Analysts</title>
+<style>
+  :root {
+    --ink: #0f172a;
+    --sub: #475569;
+    --line: #e2e8f0;
+    --accent: #0891B2;
+    --accent-dark: #0e7490;
+    --accent-soft: #ecfeff;
+    --accent-soft2: #cffafe;
+    --mark-bg: #cffafe;
+    --bg: #ffffff;
+    --card: #f8fafc;
+    --code-bg: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .topbar {
+    border-bottom: 1px solid var(--line);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .topbar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  h1 + p em {
+    color: var(--sub);
+    font-style: normal;
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 2.6em 0 0.7em;
+    color: var(--ink);
+    scroll-margin-top: 20px;
+  }
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin: 1.9em 0 0.5em;
+    color: var(--accent-dark);
+  }
+  p { margin: 0 0 1.15em; font-size: 1.02rem; color: #1e293b; }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 2.8em 0;
+  }
+  strong { color: var(--ink); font-weight: 700; }
+  mark {
+    background: var(--mark-bg);
+    padding: 0.05em 0.3em;
+    border-radius: 4px;
+    color: var(--accent-dark);
+    font-weight: 600;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  blockquote {
+    margin: 1.5em 0;
+    padding: 1.1em 1.3em;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    font-size: 0.98rem;
+    color: #1e293b;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.35em; margin: 0 0 1.15em; }
+  li { margin-bottom: 0.6em; font-size: 1.02rem; color: #1e293b; }
+  li::marker { color: var(--accent); }
+  a { color: var(--accent-dark); text-decoration: underline; text-decoration-color: var(--accent-soft2); text-underline-offset: 2px; }
+  a:hover { text-decoration-color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.5em 0 2em;
+    font-size: 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-soft);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-dark);
+    font-weight: 700;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fdfe; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  pre.flow {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 0.92rem;
+    color: var(--accent-dark);
+    overflow-x: auto;
+    margin: 0 0 1.5em;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1.5em 0 2em;
+    border-radius: 12px;
+  }
+  .table-scroll table { margin: 0; }
+  img { max-width: 100%; height: auto; }
+  figure { margin: 2em 0; }
+  figure img {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--sub);
+    text-align: center;
+  }
+  .scope-box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 1.1em 1.3em;
+    font-size: 0.98rem;
+    color: #1e293b;
+    margin: 1.5em 0 2em;
+  }
+  .scope-box p { margin: 0; }
+  .bonus-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-dark);
+    background: var(--accent-soft2);
+    padding: 2px 9px;
+    border-radius: 12px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+    .wrap { padding: 28px 16px 64px; max-width: 100%; }
+    .eyebrow { font-size: 0.68rem; padding: 3px 10px; margin-bottom: 14px; }
+    h1 { font-size: 1.45rem; line-height: 1.3; }
+    h1 + p em { font-size: 0.95rem; }
+    h2 { font-size: 1.18rem; margin: 2em 0 0.6em; }
+    h3 { font-size: 1rem; margin: 1.6em 0 0.4em; }
+    p, li { font-size: 0.96rem; }
+    ul, ol { padding-left: 1.15em; }
+    table { min-width: 560px; font-size: 0.82rem; }
+    th, td { padding: 9px 10px; }
+    blockquote { padding: 0.9em 1em; font-size: 0.92rem; }
+    mark { padding: 0.05em 0.25em; }
+  }
+  @media (max-width: 380px) {
+    h1 { font-size: 1.3rem; }
+    .wrap { padding: 24px 12px 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar"><span class="dot"></span><span>Person-Centered Clinical Analytics — project write-up</span></div>
+<div class="wrap">
+
+<span class="eyebrow">For medical learners &amp; analysts</span>
+<h1>Person-Centered Clinical Analytics: A Walkthrough for Medical Learners and Analysts</h1>
+<p><em>A hands-on tour of a synthetic Type 1 vs. Type 2 diabetes demo — what it is, how to run it, and what it can teach you about analyzing patients instead of diagnoses.</em></p>
+
+<div class="scope-box">
+<p><strong>Scope note, up front:</strong> everything described here runs on synthetic, seeded patient data (9 T1D + 9 T2D records in the core pipeline, an 18-patient sample in the nested view below). Nothing in this project touches real PHI, and it is <strong>not</strong> clinical decision support or a validated system. Treat it as a learning sandbox for a data-modeling idea, not a tool for patient care.</p>
+</div>
+
+<hr />
+
+<h2>1. The idea in one sentence</h2>
+<p>Most clinical dashboards start from a diagnosis and ask "how are my T2D patients doing?" This project starts from the <strong>person</strong> and asks a different question: what if every patient — regardless of disease — was represented as the same shape of graph, so that comparing across diseases, cohorts, or facilities becomes a matter of re-slicing one dataset instead of building a new report each time?</p>
+<p>That shape is a simple, four-stage chain repeated for every patient:</p>
+<pre class="flow">Observations → Diagnosis → Interventions / Plan → Outcomes</pre>
+<p>Every tool in this project reads and re-presents that same graph. Nothing about the <em>underlying data structure</em> changes between a Type 1 diabetes patient and a Type 2 diabetes patient — only the values on the nodes differ. If that sounds unremarkable, it's the point: <mark>the interesting engineering question isn't "can I build a T1D dashboard and a T2D dashboard," it's "can I build one dashboard that doesn't know or care which disease it's looking at."</mark></p>
+
+<h2>2. Why T1D vs. T2D is a good stress test</h2>
+<p>T1D and T2D are both "diabetes" in casual conversation, but as data-generating processes they look almost nothing alike:</p>
+<div class="table-scroll">
+<table>
+<tr><th></th><th>Type 1 DM</th><th>Type 2 DM</th></tr>
+<tr><td>Clinical pattern</td><td>Irregular, <strong>acute glycemic spike events</strong> (autoimmune, insulin-dependent from diagnosis)</td><td><strong>Slow, branching regimen progression</strong> — diet → oral agents → insulin, escalated over years</td></tr>
+<tr><td>The clinically interesting question</td><td>Which delivery device is in use (pump vs. injection)?</td><td>When was insulin added to the regimen (early vs. delayed initiation)?</td></tr>
+<tr><td>Shape of the data over time</td><td>Spiky, event-driven</td><td>Smooth, stage-driven</td></tr>
+</table>
+</div>
+<p>That contrast is deliberate. If a single graph schema and a single set of rendering functions can honestly represent <em>both</em> an acute-spike disease and a slow-branching disease without special-casing either one, that's reasonably strong evidence the model generalizes — which matters if you ever wanted to extend it beyond diabetes.</p>
+
+<h2>3. Under the hood: the graph schema, in full</h2>
+<p>The "one shape for every patient" claim in Section 1 rests on a specific knowledge-graph schema. It's worth seeing the whole thing before the walkthrough, because Steps 2–6 are really just five node types and five edge types, read and re-rendered five different ways.</p>
+<div class="table-scroll">
+<table>
+<tr><th>Node</th><th>Attributes</th></tr>
+<tr><td><code>PatientNode</code></td><td>Anonymized ID, baseline demographics, immutable patient-level context</td></tr>
+<tr><td><code>ObservationNode</code></td><td>Raw text / SNOMED-LOINC code, severity, timestamp or sequence order</td></tr>
+<tr><td><code>DiagnosisNode</code></td><td>Term/phrase text, confidence level, primary vs. secondary/comorbidity</td></tr>
+<tr><td><code>InterventionNode</code></td><td>Action type, target, parameters (dose/frequency); stripped of strict temporal metadata for holistic viewing</td></tr>
+<tr><td><code>OutcomeNode</code></td><td>Resulting status, response to plan, adverse events, discharge state</td></tr>
+</table>
+</div>
+<p>The five edges carry the clinical logic — note that comorbidities and raw observations can each independently push back on the intervention, not just feed forward into it:</p>
+<ul>
+<li><code>(Observation) -[:SUGGESTS]-&gt; (Diagnosis)</code></li>
+<li><code>(Diagnosis) -[:INDICATES_PLAN]-&gt; (Intervention)</code></li>
+<li><code>(Intervention) -[:PRODUCED_OUTCOME]-&gt; (Outcome)</code></li>
+<li><code>(ComorbidityDiagnosis) -[:MODULATES]-&gt; (Intervention)</code></li>
+<li><code>(Observation) -[:CONSTRAINS]-&gt; (Intervention)</code></li>
+</ul>
+<p>Time itself is modeled as a property <em>on the edges</em> (<code>{timestamp: t1}</code>, <code>{atemporal_bundle: true}</code>, <code>{time_to_outcome_delta: d}</code>) rather than as a rigid node sequence — that's the actual mechanism behind the Step 3 atemporal/temporal toggle. Flipping the toggle doesn't swap datasets; it just tells the renderer whether to read the timestamp properties on the same edges or ignore them.</p>
+
+<h2>4. The three pivot lenses and the comparator framework, in detail</h2>
+<p>Step 4's "re-anchor without re-loading" is one instance of a more general idea from the concept article: the same person-centered graph supports three interchangeable anchors.</p>
+<div class="table-scroll">
+<table>
+<tr><th>Lens</th><th>Anchor</th><th>Clinical question</th></tr>
+<tr><td>Disease-centered</td><td>Diagnosis node</td><td>Given patients diagnosed with X, what presentations walked in, and what did we do?</td></tr>
+<tr><td>Intervention-centered</td><td>Intervention/Plan node</td><td>When we deploy intervention Y, who actually receives it, and how do outcomes vary?</td></tr>
+<tr><td>Disease + intervention combo</td><td>Composite hyper-node</td><td>When Diagnosis A patients receive Intervention B, why do outcomes diverge — and what explains the variance?</td></tr>
+</table>
+</div>
+<p>Step 5's comparator matrix is the small, working version of a larger framework the concept article sketches for scaling this beyond one demo cohort to a global population: a <strong>population</strong> anchor normalized via SNOMED CT, an <strong>intervention</strong> anchor normalized via LOINC, and a <strong>comparator</strong> layer that can subgroup by outcome, by intervention detail (dosing, timing), or by time-of-intervention — all further weighted by <strong>facility tier</strong> (primary/secondary/tertiary/quaternary) and <strong>resource gradient</strong> (resource-plenty vs. resource-constrained), so that a spike in complications gets flagged as possibly infrastructure-driven rather than silently blamed on the clinical decision. The <code>facility_tier</code> and <code>resource_status</code> tags Step 1 attaches to every synthetic patient exist specifically to make that weighting demonstrable in Step 5 and Step 6.</p>
+<blockquote><p><strong>Worked example, from the concept article:</strong> "Show me patients with [disease combo] who received [intervention], filtered by [resource-constrained tertiary facilities], broken down by [temporal time-of-intervention subgroups], and map [my current patient's] trajectory against that specific comparator curve." Step 5's one-click "Load example query" button reproduces a version of exactly this.</p></blockquote>
+
+<h2>5. Where the idea came from: an acute-care pilot first</h2>
+<p>T1D vs. T2D isn't the project's original test case. The person-centered model was first sketched against <strong>ASV (anti-snake-venom) treatment for snakebite envenomation</strong> — a single-encounter, acute-care scenario built on an earlier 12-case "Critical Hub Node Navigation" demo, where the interesting comparator question was dosing timing (a "golden hour" ASV administration within 2 hours vs. a delayed one past 6 hours) against a fixed intervention window of days, not years.</p>
+<p>The T1D/T2D pilot documented in this walkthrough was deliberately chosen as the <strong>second</strong> test case because it stresses the model in the opposite direction: instead of one bounded decision window, diabetes management is a decades-long, evolving regimen. Running an acute single-encounter condition and a chronic multi-decade condition through the identical five-node graph schema is a stronger generalization test than either pilot alone — which is exactly what Step 7's audit is checking for.</p>
+
+<h2>6. The project as a pipeline, not seven separate tools</h2>
+<p>The seven build steps form a literal data pipeline — each step downloads a JSON file the next step loads:</p>
+<div class="table-scroll">
+<table>
+<tr><th>Step</th><th>Question it answers</th><th>Reads</th><th>Produces</th></tr>
+<tr><td>1 — Corpus generator</td><td>Where does the data come from?</td><td>— (generates it)</td><td><code>dm_corpus.json</code></td></tr>
+<tr><td>2 — Graph builder</td><td>How does raw data become a graph?</td><td><code>dm_corpus.json</code></td><td><code>cohort_graph.json</code></td></tr>
+<tr><td>3 — Dashboard</td><td>What does the graph look like per patient / per cohort?</td><td><code>cohort_graph.json</code></td><td>(read-only view)</td></tr>
+<tr><td>4 — Pivot lens</td><td>What if I re-center on a diagnosis or intervention instead of a patient?</td><td><code>cohort_graph.json</code></td><td>(read-only view)</td></tr>
+<tr><td>5 — Comparator filter</td><td>How do I compare matched subgroups?</td><td><code>cohort_graph.json</code></td><td>(read-only view)</td></tr>
+<tr><td>6 — Clinical output view</td><td>How is this shown to a clinician, plainly?</td><td><code>cohort_graph.json</code></td><td>(read-only view)</td></tr>
+<tr><td>7 — Generalization check</td><td>Does the code actually generalize across diseases?</td><td>the Step 2–6 source</td><td>written verdict</td></tr>
+</table>
+</div>
+<p>Everything runs client-side in the browser (plain HTML/JS, no server, no upload) — you can open each file locally and follow along.</p>
+
+<h2>7. Walking through the pipeline</h2>
+
+<p><em>Live links: <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html" target="_blank" rel="noopener">guided tour</a> · <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html" target="_blank" rel="noopener">concept article (Part 1)</a> · <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html" target="_blank" rel="noopener">build log (Part 2)</a></em></p>
+
+<h3>Step 1 — Corpus generator: synthetic, but structurally honest</h3>
+<p>Generates FHIR-flavored JSON bundles (Patient, Condition, Observation, MedicationRequest, Encounter) for a small seeded cohort — 9 T1D and 9 T2D patients by default. Each record is tagged with <code>facility_tier</code>, <code>resource_status</code>, and a <strong>disease-appropriate timing field</strong>.</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step1_corpus_generator.html" target="_blank" rel="noopener"><strong>Try Step 1 live &rarr;</strong></a></p>
+<blockquote><p><strong>What to notice:</strong> open one T1D record next to one T2D record. The T1D record has irregular spike events; the T2D record has a slow, staged regimen. That contrast — generated by two genuinely separate, hand-authored generator functions — is the raw material the rest of the pipeline has to handle without cheating.</p></blockquote>
+
+<h3>Step 2 — Graph builder: one schema, five node types</h3>
+<p>Turns the raw corpus into a knowledge graph with five node types (<code>PatientNode</code>, <code>ObservationNode</code>, <code>DiagnosisNode</code>, <code>InterventionNode</code>, <code>OutcomeNode</code>) connected by relational edges (<code>SUGGESTS</code>, <code>INDICATES_PLAN</code>, <code>PRODUCED_OUTCOME</code>, <code>MODULATES</code>, <code>CONSTRAINS</code>). This is the same function for every patient, T1D or T2D — the disease only shows up as a value on a node, never as a fork in the code.</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step2_graph_builder.html" target="_blank" rel="noopener"><strong>Try Step 2 live &rarr;</strong></a></p>
+
+<h3>Step 3 — Dashboard: atemporal vs. temporal, one toggle</h3>
+<p>Loads the graph and renders it two ways behind a single toggle:</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step3_dashboard.html" target="_blank" rel="noopener"><strong>Try Step 3 live &rarr;</strong></a></p>
+<ul>
+<li><strong>Mode A (Atemporal/Gestalt):</strong> strips timestamps, clusters each patient's whole profile.</li>
+<li><strong>Mode B (Temporal trajectory):</strong> plots timestamped edges on a shared "years since diagnosis" axis, with spike markers and severity sizing.</li>
+</ul>
+<blockquote><p><strong>What to notice:</strong> flip the toggle on a T1D patient and a T2D patient. The <em>same</em> rendering logic produces a spiky trajectory for one and a smooth branching one for the other — because the shape difference lives in the data, not in a disease-specific rendering branch.</p></blockquote>
+
+<h3>Step 4 — Pivot lens: re-anchor without re-loading</h3>
+<p>Instead of a fixed patient-centric view, you can re-index the same graph around a <strong>Disease-centered</strong>, <strong>Intervention-centered</strong>, or combined <strong>Disease + Intervention</strong> anchor. Switching lenses doesn't reload data — it's a different query over the same graph.</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step4_pivot_lens.html" target="_blank" rel="noopener"><strong>Try Step 4 live &rarr;</strong></a></p>
+
+<h3>Step 5 — Comparator filter: build a matched-subgroup query</h3>
+<p>Three independent filter layers: a population filter (T1D / T2D / all), a disease-appropriate intervention-timing filter, and a comparator matrix (outcome × facility tier × resource status) with a group-by control. There's a one-click "load example query" button that reproduces a worked comparison end-to-end.</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step5_comparator_filter.html" target="_blank" rel="noopener"><strong>Try Step 5 live &rarr;</strong></a></p>
+
+<h3>Step 6 — Clinical output view: the honesty layer</h3>
+<p>Re-presents what Steps 3–5 already established, but organized the way a clinician would want to read it: a T1D/T2D evidence card pair, a variation table broken out by facility tier and resource status, and — most importantly — a <strong>Confounders section</strong> listing every approximation and data gap in the demo, kept visible via a sticky banner.</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step6_clinical_output_view.html" target="_blank" rel="noopener"><strong>Try Step 6 live &rarr;</strong></a></p>
+<blockquote><p><strong>What to notice first, before anything else on this page:</strong> the Confounders section. It's the most useful part of the whole demo, because it tells you exactly which numbers <em>not</em> to over-trust.</p></blockquote>
+
+<h3>Step 7 — Generalization check: did we actually earn the claim?</h3>
+<p>A written audit (not an interactive tool) that scans the real source code of Steps 2–6 for every place disease type is referenced, and classifies each occurrence as:</p>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step7_generalization_check.html" target="_blank" rel="noopener"><strong>Try Step 7 live &rarr;</strong></a></p>
+<ul>
+<li><strong>Generalized</strong> — used only to filter, count, or label.</li>
+<li><strong>Special-cased</strong> — the logic itself branches differently depending on disease.</li>
+</ul>
+<p><mark>Verdict: mostly confirmed, with two flagged exceptions</mark>, both isolated to the comparator layer:</p>
+<ol>
+<li><code>patientHasPumpEvidence()</code> infers pump-vs-injection from free text in <code>OutcomeNode.reason</code> — a hack that's only meaningful for T1D, because the synthetic corpus never gave delivery modality a first-class field for either disease. Flagged in-UI as an amber assumption note in Steps 4 and 5.</li>
+<li>Step 5's intervention-timing filter explicitly branches on <code>condition_type</code> because T1D and T2D genuinely have different clinically meaningful timing questions (device choice vs. initiation delay) — there's no single generic field that captures both, so this is an <em>intentional, disease-appropriate</em> exception rather than a gap.</li>
+</ol>
+
+<h3>Bonus — Nested Analysis View: everyone's trajectory, one map<span class="bonus-tag">New</span></h3>
+<p>Steps 3–6 each show <strong>one lens at a time</strong> — a toggle, an anchor, a filter, a summary. The Nested Analysis View is a companion page that goes a level further: it takes the same <code>cohort_graph.json</code> and nests <strong>every patient's trajectory into a single alluvial-style network</strong>, T1D and T2D overlaid on shared nodes.</p>
+<p>Every patient — regardless of disease — walks the same six generic checkpoints:</p>
+<pre class="flow">Diagnosis → Presentation → Initial plan → Escalation → Advanced/recurrent → Disposition</pre>
+<p>Where two or more patients land on the same value at the same checkpoint, their lines are drawn through <strong>one shared node</strong> instead of parallel ones, so the map visually surfaces convergence (many patients funneling through the same checkpoint — a "hub") and divergence (paths splitting apart) at a glance. Pick any single patient and their path highlights against the rest of the cohort, answering "how is my patient moving relative to everyone else on the same map?"</p>
+
+<figure>
+<img src="assets/nested-view-screenshot.png" alt="Nested Analysis View screenshot: a trajectory network of 4000 patients (1500 T1D + 2500 T2D) across six checkpoints — Diagnosis, Presentation, Initial plan, Escalation, Advanced/Recurrent, Disposition — with teal T1D lines and rust T2D lines converging through shared hub nodes sized by patient count. A detail panel below shows one highlighted T1D patient's full checkpoint sequence.">
+<figcaption>The Nested Analysis View rendering a larger example cohort — teal lines are T1D trajectories, rust lines are T2D trajectories, and dark hub nodes (sized by patient count) mark checkpoints where paths converge, like the 1,221-patient <code>stabilized_no_deficit</code> disposition hub on the right.</figcaption>
+</figure>
+
+<p>The page ships with a sample cohort but works with any <code>cohort_graph.json</code> you generated yourself in Step 2 — the screenshot above happens to show a larger 4,000-patient example (1,500 T1D + 2,500 T2D), which is exactly the kind of scale where the "one shared map" idea pays off: at that size, no one is reading 4,000 individual trajectory lines one at a time, but the hub nodes still tell you at a glance where the cohort funnels and where it diverges.</p>
+
+<blockquote>
+<p><strong>What to notice:</strong> hover a hub node — the tooltip breaks down how many T1D vs. T2D patients pass through it. In the screenshot, notice how the "Insulin pump failure" and "DKA admission" hubs sit almost entirely in T1D's teal territory, while T2D's rust line stays comparatively sparse through Escalation and Advanced/Recurrent before both conditions converge again at Disposition. Then check the confounder note below the map: T1D patients tend to populate the "Escalation" and "Advanced/Recurrent" columns much more densely than T2D patients do, simply because the synthetic corpus gives T1D more recurring event density (irregular spike events over years) than T2D (which the corpus mostly logs as one or two outcome nodes). The page is explicit that this is a <strong>real difference in event density per disease</strong>, not a rendering gap — the same generic six-checkpoint structure is used for both, consistent with the Step 7 audit.</p>
+</blockquote>
+<p><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/nested-analysis-view.html" target="_blank" rel="noopener"><strong>Try the Nested Analysis View live &rarr;</strong></a></p>
+
+<p><strong>Why it's worth the extra step:</strong> Steps 3–6 teach you to read <em>one</em> patient or <em>one</em> filtered subgroup at a time. The Nested Analysis View teaches a different, complementary skill — reading an entire cohort's shape at once, spotting which checkpoints act as bottlenecks or common outcomes across dozens or thousands of trajectories simultaneously, without losing the ability to drop back down to a single patient's line.</p>
+
+<hr />
+
+<h2>8. What a learner or analyst actually gets out of this</h2>
+<p>Beyond "diabetes has two subtypes that look different," the exercise is really teaching a handful of transferable analytics habits:</p>
+<ul>
+<li><strong>Model the person, not the diagnosis.</strong> A four-stage graph (Observations → Diagnosis → Interventions → Outcomes) is disease-agnostic by construction. If you ever need to add a third condition, the question becomes "does it fit this shape?" rather than "how do I bolt on another dashboard?"</li>
+<li><strong>Generic dispatch beats disease-specific branching.</strong> Steps 2–6 dispatch on structural node attributes (<code>node_type</code>, <code>term</code>, <code>target</code>, <code>status</code>) instead of on the disease name. That's the difference between code that scales to more diseases and code that grows a new <code>if</code> branch every time.</li>
+<li><strong>Atemporal and temporal views answer different questions.</strong> A gestalt snapshot tells you <em>what</em> a patient's profile looks like; a trajectory tells you <em>when</em> things happened relative to diagnosis. Neither replaces the other — this project forces you to hold both.</li>
+<li><strong>Pivoting the anchor, not just filtering, is a distinct analytic move.</strong> Re-centering on a diagnosis or an intervention (Step 4) surfaces different patterns than filtering a patient list ever could — it's the same graph, queried differently.</li>
+<li><strong>Comparator design is where clinical nuance actually lives.</strong> Step 5 is the one place the demo <em>intentionally</em> treats T1D and T2D differently, and it explains why in the audit rather than hiding it. That's a good model for how real comparator studies should document their assumptions.</li>
+<li><strong>Audit your own generalization claims.</strong> Step 7 is arguably the most valuable step for an analyst to internalize: after building something you believe is disease-agnostic, go back and grep your own code for every place the "special" variable appears, and be honest about which occurrences are cosmetic and which are structural.</li>
+<li><strong>List your confounders where the reader can't miss them.</strong> Step 6's sticky Confounders banner is a small UX choice with an outsized lesson: the credibility of an analytics view often comes less from the numbers themselves and more from how clearly you disclose their limits.</li>
+<li><strong>Cohort-level shape and single-patient detail are two different reading modes, and you need both.</strong> The Nested Analysis View's shared-node convergence pattern shows you something no single-patient trajectory ever could — where the cohort as a whole bottlenecks or fans out — while still letting you trace one patient's line through it. A raw difference in how "busy" one disease's checkpoints look (T1D's recurring events vs. T2D's sparser ones) is itself a finding worth flagging as a data-density confounder, not silently smoothed over.</li>
+</ul>
+
+<h2>9. How to try it yourself</h2>
+<ol>
+<li>Open <strong>Step 1</strong>, generate the synthetic corpus, and download <code>dm_corpus.json</code>.</li>
+<li>Open <strong>Step 2</strong>, load that file, build the graph, and download <code>cohort_graph.json</code>.</li>
+<li>Open <strong>Steps 3–6</strong> in any order, loading <code>cohort_graph.json</code> into each via the file-load control.</li>
+<li>Read <strong>Step 7</strong> — it's a written report, no file load needed.</li>
+<li>Optionally, open the <strong>Nested Analysis View</strong> and load the same <code>cohort_graph.json</code> (or click "Load sample data" to fetch a hosted example) to see the whole cohort's trajectories on one map.</li>
+</ol>
+<p>Everything runs entirely in your browser; nothing is uploaded anywhere, and no real patient data is involved at any stage.</p>
+
+<h2>10. Where to go next</h2>
+<ul>
+<li>Want the "why" behind the data model — the graph schema, the pivot lenses, the comparator framework? Read the <strong>concept article</strong> (Part 1).</li>
+<li>Want the engineering detail — what was asked for at each step, what was actually built, and the open issues? Read the <strong>build log</strong> (Part 2).</li>
+<li>Already have your own <code>cohort_graph.json</code>? Skip straight to Steps 3–6 above and load it into whichever lens interests you.</li>
+</ul>
+
+<hr />
+<p style="text-align:center; color: var(--sub); font-size: 0.9rem;"><em>Person-centered clinical analytics — synthetic data only, not for clinical use.</em></p>
+
+</div>
+</body>
+</html>
