@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 6 — Clinically-Readable Output View (Evidence / Variation / Confounders)</title>
+<style>
+  :root{
+    --paper:#F4F5F1; --paper-raised:#FBFBF9; --ink:#182420; --ink-soft:#4B564F;
+    --ink-faint:#7C877E; --rule:#D9DCD3; --rule-strong:#B9C0B4;
+    --teal:#2F6F62; --teal-deep:#1D4740; --teal-wash:#E6EFEC;
+    --rust:#A85A34; --rust-wash:#F3E7DE;
+    --blue:#33448A; --blue-wash:#DCE6FF;
+    --purple:#6A3B8A; --purple-wash:#EFE3F5;
+    --spike:#C4402E;
+    --mono:"IBM Plex Mono","SF Mono",monospace; --sans:-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  header{max-width:1180px;margin:0 auto;padding:40px 24px 20px;border-bottom:1px solid var(--rule-strong);}
+  h1{font-size:26px;margin:0 0 6px;}
+  .sub{color:var(--ink-soft);font-size:14px;}
+  main{max-width:1180px;margin:0 auto;padding:24px;}
+
+  /* persistent audit banner, per Section 0 / Step 6 requirement — sticky so it's
+     always visible regardless of scroll position, not just a one-time notice */
+  .audit-banner{position:sticky;top:0;z-index:20;background:var(--ink);color:#DCE7E2;font-family:var(--mono);
+    font-size:12px;letter-spacing:.02em;padding:12px 16px;border-radius:5px;margin-bottom:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);}
+  .audit-banner b{color:#fff;}
+
+  .scope-box{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:2px;padding:14px 18px;font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+  .scope-box strong{color:var(--ink);}
+
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--paper-raised);
+    border:1px solid var(--rule-strong);border-radius:6px;padding:16px;margin-bottom:20px;}
+  .controls label{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px;}
+  input[type=file]{font-family:var(--sans);font-size:13px;}
+  .note{font-size:13px;color:var(--ink-faint);margin-top:6px;}
+
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+  .stat{background:var(--teal-wash);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--teal-deep);}
+  .stat b{font-size:20px;display:block;}
+
+  section.block{margin-top:36px;}
+  .block-head{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--rule-strong);padding-bottom:8px;margin-bottom:16px;}
+  .block-head h2{font-size:18px;margin:0;}
+  .block-head .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);}
+
+  .evidenceGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:820px){.evidenceGrid{grid-template-columns:1fr;}}
+  .condCard{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:4px solid var(--blue);border-radius:6px;padding:16px 18px;}
+  .condCard.t1d{border-left-color:var(--teal);}
+  .condCard.t2d{border-left-color:var(--rust);}
+  .condCard h3{margin:0 0 4px;font-size:16px;}
+  .condCard .sublabel{font-size:12px;color:var(--ink-faint);margin-bottom:12px;}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--rule);}
+  .kv:last-child{border-bottom:none;}
+  .kv span:first-child{color:var(--ink-soft);}
+  .kv span:last-child{font-family:var(--mono);color:var(--ink);}
+  .barlist{margin-top:10px;}
+  .barrow{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px;}
+  .barrow .label{flex:0 0 190px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .barrow .track{flex:1;background:var(--rule);border-radius:4px;height:8px;overflow:hidden;}
+  .barrow .fill{background:var(--teal);height:100%;}
+  .condCard.t2d .barrow .fill{background:var(--rust);}
+  .barrow .count{flex:0 0 22px;text-align:right;font-family:var(--mono);color:var(--ink-faint);}
+
+  table.varTable{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+  table.varTable th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);
+    text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong);}
+  table.varTable td{padding:8px 10px;border-bottom:1px solid var(--rule);color:var(--ink-soft);}
+  table.varTable td.num{font-family:var(--mono);}
+  table.varTable tr.flagged td{background:var(--rust-wash);}
+  .pill{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;background:var(--rule);color:var(--ink-soft);display:inline-block;}
+  .pill.warn{background:#F7DAD4;color:var(--spike);}
+  .pill.good{background:var(--teal-wash);color:var(--teal-deep);}
+
+  .confounderList{display:flex;flex-direction:column;gap:10px;}
+  .confounder{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:4px;padding:12px 16px;font-size:13px;color:var(--ink-soft);}
+  .confounder .ctitle{font-weight:600;color:var(--ink);margin-bottom:3px;}
+  .confounder .cmeta{font-family:var(--mono);font-size:11px;color:var(--rust);margin-top:6px;}
+
+  #detail{background:var(--paper-raised);border:1px solid var(--rule-strong);border-radius:6px;
+    padding:14px 18px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;margin-top:16px;color:var(--ink-soft);}
+  #detail.empty{color:var(--ink-faint);font-family:var(--sans);font-style:italic;}
+
+  .site-nav{max-width:900px;margin:0 auto;padding:12px 28px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:6px 4px;font-family:var(--mono),monospace;font-size:12px;
+    border-bottom:1px solid var(--rule-strong,#B9C0B4);background:var(--paper,#F4F5F1);}
+  .site-nav a{color:var(--ink-soft,#4B564F);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;}
+  .site-nav a:hover{background:var(--teal-wash,#E6EFEC);color:var(--teal-deep,#1D4740);}
+  .site-nav a.current{background:var(--teal,#2F6F62);color:#fff;font-weight:600;}
+  .site-nav .sep{color:var(--rule-strong,#B9C0B4);}
+  .site-nav .spacer{flex:1 1 auto;}
+  .site-nav a.other-project{color:var(--rust,#A85A34);border:1px solid var(--rust,#A85A34);}
+  .site-nav a.other-project:hover{background:var(--rust-wash,#F3E7DE);}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html">Tour</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html">Idea</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html">Build log</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step1_corpus_generator.html">Step 1</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step2_graph_builder.html">Step 2</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step3_dashboard.html">Step 3</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step4_pivot_lens.html">Step 4</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step5_comparator_filter.html">Step 5</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step6_clinical_output_view.html" class="current">Step 6</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/nested-analysis-view.html">Nested view</a>
+<span class="spacer"></span>
+<a class="other-project" href="https://avi33tbtt.github.io/VibeRounds/" target="_blank" rel="noopener">More projects: VibeRounds ↗</a>
+</nav>
+
+
+<div class="audit-banner"><b>Audit / analytics view:</b> this page surfaces evidence, variation and confounders across a synthetic cohort. It is not a decision-support tool and makes no treatment recommendation for any individual patient. (Carried forward from Section 0 as a persistent element, not a one-time notice — per Step 6.)</div>
+
+<header>
+  <h1>Step 6 — Clinically-Readable Output View</h1>
+  <div class="sub">cohort_graph.json → evidence + variation + confounders at a glance (Phase 3 / Section 2) · same file as Steps 2–5, no re-ingestion</div>
+</header>
+<main>
+
+  <div class="scope-box">
+    <strong>What this does:</strong> loads the same <code>cohort_graph.json</code> used by Steps 2&ndash;5 and assembles three panels that Section 2
+    asked the output view to surface together, at a glance, rather than requiring someone to run Steps 3&ndash;5 separately to piece them together:
+    <strong>Evidence</strong> (what actually happened, per diagnosis group &mdash; presentations, interventions, complication rate),
+    <strong>Variation</strong> (how outcomes differ by facility tier and resource status, the two structural variables tagged throughout this corpus),
+    and <strong>Confounders</strong> (every approximation or data gap introduced in Steps 4&ndash;5, collected in one place instead of scattered across pages).
+    Nothing here is derived beyond what Steps 3&ndash;5 already computed &mdash; this view re-presents it, it does not re-analyze it.
+  </div>
+
+  <div class="controls">
+    <label>Cohort graph file
+      <input type="file" id="fileInput" accept="application/json,.json">
+    </label>
+    <button type="button" id="loadSampleBtn">Load sample data</button>
+    <span class="note" id="loadStatus">No file loaded yet &mdash; use the cohort_graph.json exported from Step 2 (same file works for Steps 3–6).</span>
+  </div>
+
+  <div id="app" style="display:none;">
+
+    <div class="stats" id="stats"></div>
+
+    <section class="block">
+      <div class="block-head"><h2>Evidence</h2><span class="kicker">what walked in, what we did, per diagnosis group</span></div>
+      <div class="evidenceGrid" id="evidenceGrid"></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><h2>Variation</h2><span class="kicker">complication rate by facility tier &amp; resource status</span></div>
+      <div id="variationView"></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><h2>Confounders &amp; known limitations</h2><span class="kicker">carried forward from Steps 4–5, collected here</span></div>
+      <div class="confounderList" id="confounderList"></div>
+    </section>
+
+    <div id="detail" class="empty">Click a row to see its raw attributes here.</div>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   Step 6 — clinically-readable output view.
+   Reads the same node-link cohort_graph.json produced by Step 2
+   and consumed unchanged by Steps 3–5. This page performs no new
+   derivations beyond what Steps 3–5 already established (complication
+   flag, pump-evidence approximation, insulin-timing bucket) — it
+   re-presents them together as evidence / variation / confounders.
+   ============================================================ */
+
+let COHORT = null;
+let PATIENTS = [];
+const COMPLICATED_STATUS = "stabilized_with_sequelae";
+
+function h(tag, attrs, children){
+  const n = document.createElement(tag);
+  if (attrs) for (const [k,v] of Object.entries(attrs)){
+    if (k === "text") n.textContent = v; else if (k === "class") n.className = v; else n.setAttribute(k, v);
+  }
+  if (children) for (const c of children) if (c) n.appendChild(c);
+  return n;
+}
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const json = JSON.parse(reader.result);
+      loadCohort(json);
+      document.getElementById("loadStatus").textContent = `Loaded ${f.name}`;
+    } catch (err){
+      document.getElementById("loadStatus").textContent = "Could not parse that file as JSON: " + err.message;
+    }
+  };
+  reader.readAsText(f);
+});
+
+const SAMPLE_DATA_URL = "https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/cohort_graph.json";
+document.getElementById("loadSampleBtn").addEventListener("click", () => {
+  const statusEl = document.getElementById("loadStatus");
+  statusEl.textContent = "Loading sample data\u2026";
+  fetch(SAMPLE_DATA_URL)
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(json => {
+      loadCohort(json);
+      statusEl.textContent = "Loaded sample data (cohort_graph.json)";
+    })
+    .catch(err => {
+      statusEl.textContent = "Could not load sample data: " + err.message;
+    });
+});
+
+function loadCohort(json){
+  const nodes = new Map();
+  for (const n of (json.nodes || [])) nodes.set(n.id, n);
+  COHORT = { nodes, links: json.links || json.edges || [] };
+  PATIENTS = Array.from(nodes.values())
+    .filter(n => n.node_type === "PatientNode")
+    .map(n => ({ id: n.id, condition_type: n.condition_type, attrs: n }))
+    .sort((a,b) => a.id.localeCompare(b.id));
+
+  document.getElementById("app").style.display = "block";
+  renderStats();
+  renderEvidence();
+  renderVariation();
+  renderConfounders();
+}
+
+function nodesForPatient(pid){
+  return Array.from(COHORT.nodes.values()).filter(n => n.patient_id === pid || n.id === pid);
+}
+function allNodesOfType(t){
+  return Array.from(COHORT.nodes.values()).filter(n => n.node_type === t);
+}
+function patientHasPumpEvidence(pid){
+  return nodesForPatient(pid).some(n => n.node_type === "OutcomeNode" && /pump/i.test(n.reason || ""));
+}
+function isComplicated(pid){
+  return nodesForPatient(pid).some(n => n.node_type === "OutcomeNode" && n.status === COMPLICATED_STATUS);
+}
+
+function showDetail(obj){
+  const panel = document.getElementById("detail");
+  panel.classList.remove("empty");
+  const lines = Object.entries(obj)
+    .filter(([k,v]) => v !== null && v !== undefined && v !== "")
+    .map(([k,v]) => `${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`);
+  panel.textContent = lines.join("\n");
+}
+
+/* ---------------- stats ---------------- */
+
+function conditionTypesInData(){
+  return Array.from(new Set(PATIENTS.map(p => p.condition_type))).sort((a,b) => {
+    const rank = t => (t === "T1D" ? 0 : t === "T2D" ? 1 : 2);
+    return rank(a) - rank(b) || a.localeCompare(b);
+  });
+}
+
+/* Friendly display name for a condition_type code: prefer the primary DiagnosisNode.term
+   shared by patients of that condition, fall back to the raw code if none is found. */
+function conditionLabel(cond){
+  if (cond === "T1D") return "Type 1 diabetes";
+  if (cond === "T2D") return "Type 2 diabetes";
+  const patientIds = new Set(PATIENTS.filter(p => p.condition_type === cond).map(p => p.id));
+  const dx = allNodesOfType("DiagnosisNode").find(n => n.role === "primary" && patientIds.has(n.patient_id));
+  return (dx && dx.term) || cond;
+}
+
+function renderStats(){
+  const byCondition = conditionTypesInData().map(c => `${PATIENTS.filter(p => p.condition_type === c).length} ${c}`).join(" / ");
+  const complicated = PATIENTS.filter(p => isComplicated(p.id)).length;
+  const stats = document.getElementById("stats");
+  stats.innerHTML = "";
+  const items = [
+    ["Patients", PATIENTS.length + ` (${byCondition})`],
+    ["Nodes", COHORT.nodes.size],
+    ["Edges", COHORT.links.length],
+    ["Cohort complication rate", PATIENTS.length ? Math.round(100*complicated/PATIENTS.length) + "%" : "—"]
+  ];
+  for (const [label, val] of items){
+    stats.appendChild(h("div", { class: "stat" }, [h("b", { text: String(val) }), h("span", { text: label })]));
+  }
+}
+
+/* ---------------- evidence ---------------- */
+
+function renderEvidence(){
+  const grid = document.getElementById("evidenceGrid");
+  grid.innerHTML = "";
+  for (const cond of conditionTypesInData()){
+    const patients = PATIENTS.filter(p => p.condition_type === cond);
+    const pids = new Set(patients.map(p => p.id));
+    const outcomes = allNodesOfType("OutcomeNode").filter(n => pids.has(n.patient_id));
+    const interventions = allNodesOfType("InterventionNode").filter(n => pids.has(n.patient_id));
+    const complicated = patients.filter(p => isComplicated(p.id)).length;
+
+    const reasonCounts = new Map();
+    for (const o of outcomes){
+      if (!o.reason) continue;
+      reasonCounts.set(o.reason, (reasonCounts.get(o.reason) || 0) + 1);
+    }
+    const topReasons = Array.from(reasonCounts.entries()).sort((a,b) => b[1]-a[1]).slice(0, 5);
+    const maxCount = topReasons.length ? topReasons[0][1] : 1;
+
+    const targetCounts = new Map();
+    for (const iv of interventions){
+      if (!iv.target) continue;
+      targetCounts.set(iv.target, (targetCounts.get(iv.target) || 0) + 1);
+    }
+    const topTargets = Array.from(targetCounts.entries()).sort((a,b) => b[1]-a[1]).slice(0, 4).map(([k,v]) => `${k} (${v})`).join(", ") || "none recorded";
+
+    const card = h("div", { class: "condCard " + cond.toLowerCase() });
+    card.appendChild(h("h3", { text: conditionLabel(cond) }));
+    card.appendChild(h("div", { class: "sublabel", text: `${patients.length} patient(s) in cohort` }));
+
+    card.appendChild(h("div", { class: "kv" }, [h("span", { text: "Complication rate" }), h("span", { text: patients.length ? `${complicated} / ${patients.length} (${Math.round(100*complicated/patients.length)}%)` : "—" })]));
+    card.appendChild(h("div", { class: "kv" }, [h("span", { text: "Interventions recorded" }), h("span", { text: String(interventions.length) })]));
+    card.appendChild(h("div", { class: "kv" }, [h("span", { text: "Top interventions" }), h("span", { text: topTargets })]));
+
+    const bars = h("div", { class: "barlist" });
+    bars.appendChild(h("div", { class: "note", text: "Most common outcome reasons:" }));
+    for (const [reason, count] of topReasons){
+      bars.appendChild(h("div", { class: "barrow" }, [
+        h("span", { class: "label", text: reason }),
+        h("div", { class: "track" }, [h("div", { class: "fill", style: `width:${Math.round(100*count/maxCount)}%` })]),
+        h("span", { class: "count", text: String(count) })
+      ]));
+    }
+    card.appendChild(bars);
+    grid.appendChild(card);
+  }
+}
+
+/* ---------------- variation ---------------- */
+
+function renderVariation(){
+  const view = document.getElementById("variationView");
+  view.innerHTML = "";
+
+  function groupRate(keyFn, values){
+    const table = h("table", { class: "varTable" });
+    table.appendChild(h("tr", {}, [
+      h("th", { text: "Group" }), h("th", { text: "Patients" }), h("th", { text: "Complicated" }), h("th", { text: "Rate" })
+    ]));
+    for (const v of values){
+      const group = PATIENTS.filter(p => keyFn(p) === v);
+      if (!group.length) continue;
+      const complicated = group.filter(p => isComplicated(p.id)).length;
+      const rate = Math.round(100*complicated/group.length);
+      const row = h("tr", { class: rate >= 50 ? "flagged" : "" }, [
+        h("td", { text: v }), h("td", { class: "num", text: String(group.length) }),
+        h("td", { class: "num", text: String(complicated) }), h("td", { class: "num", text: `${rate}%` })
+      ]);
+      row.addEventListener("click", () => showDetail({ group: v, n_patients: group.length, n_complicated: complicated, rate_pct: rate, patient_ids: group.map(p => p.id).join(", ") }));
+      table.appendChild(row);
+    }
+    return table;
+  }
+
+  view.appendChild(h("div", { style:"font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin:14px 0 8px;", text: "By facility tier" }));
+  view.appendChild(groupRate(p => p.attrs.facility_tier, ["primary","secondary","tertiary","quaternary"]));
+
+  view.appendChild(h("div", { style:"font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin:22px 0 8px;", text: "By resource status" }));
+  view.appendChild(groupRate(p => p.attrs.resource_status, ["plenty","constrained"]));
+
+  view.appendChild(h("div", { class: "note", text: "Rows with a 50%+ complication rate are highlighted. Small group sizes in this synthetic cohort mean these rates should be read as signal to investigate, not as validated effect estimates." }));
+}
+
+/* ---------------- confounders ---------------- */
+
+function renderConfounders(){
+  const list = document.getElementById("confounderList");
+  list.innerHTML = "";
+
+  const t2dWithTiming = PATIENTS.filter(p => p.condition_type === "T2D" && p.attrs.time_to_insulin_initiation_years !== null && p.attrs.time_to_insulin_initiation_years !== undefined).length;
+  const t2dTotal = PATIENTS.filter(p => p.condition_type === "T2D").length;
+  const t1dPumpEvidence = PATIENTS.filter(p => p.condition_type === "T1D" && patientHasPumpEvidence(p.id)).length;
+  const t1dTotal = PATIENTS.filter(p => p.condition_type === "T1D").length;
+
+  const entries = [
+    {
+      title: "Pump-vs-injection modality is not a first-class field (Step 4 / Step 5)",
+      body: "The corpus does not tag T1D delivery modality directly. It is inferred from OutcomeNode.reason text mentioning \u201cpump\u201d, which only captures pump failures that reached an encounter \u2014 patients on uneventful pump therapy are indistinguishable from injection patients under this proxy.",
+      meta: `Currently flags ${t1dPumpEvidence} of ${t1dTotal} T1D patients as having pump-failure evidence.`
+    },
+    {
+      title: "T2D insulin-initiation timing is mostly unrecorded (Step 5)",
+      body: "time_to_insulin_initiation_years is null for the majority of T2D patients in this synthetic corpus \u2014 either insulin was never initiated or the timing wasn\u2019t captured. Filtering on \u201cearly vs. delayed\u201d insulin initiation therefore excludes most of the T2D population by construction.",
+      meta: `Only ${t2dWithTiming} of ${t2dTotal} T2D patients carry a non-null value.`
+    },
+    {
+      title: "Small subgroup sizes throughout",
+      body: `This is a synthetic demo cohort (${PATIENTS.length} patients total, across ${conditionTypesInData().length} conditions). Facility-tier and resource-status breakdowns above can have denominators of one or two patients per cell \u2014 percentages at that scale are illustrative of the mechanism, not statistically meaningful.`,
+      meta: "Applies to every panel on this page and every filter in Step 5."
+    },
+    {
+      title: "\u201cComplicated\u201d is a single status value, not a clinical adjudication",
+      body: "The evidence/variation panels above treat any Outcome node with status stabilized_with_sequelae as \u201ccomplicated.\u201d That is a schema-level label carried from Step 1\u2019s corpus generation, not an independently adjudicated clinical outcome.",
+      meta: "Same definition used in Step 5\u2019s comparator matrix."
+    }
+  ];
+
+  for (const e of entries){
+    const box = h("div", { class: "confounder" });
+    box.appendChild(h("div", { class: "ctitle", text: e.title }));
+    box.appendChild(h("div", { text: e.body }));
+    box.appendChild(h("div", { class: "cmeta", text: e.meta }));
+    list.appendChild(box);
+  }
+}
+</script>
+</body>
+</html>
