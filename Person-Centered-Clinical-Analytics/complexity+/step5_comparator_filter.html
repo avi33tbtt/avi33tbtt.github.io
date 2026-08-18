@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 5 — Comparator Filter (Population / Intervention Timing / Matrix)</title>
+<style>
+  :root{
+    --paper:#F4F5F1; --paper-raised:#FBFBF9; --ink:#182420; --ink-soft:#4B564F;
+    --ink-faint:#7C877E; --rule:#D9DCD3; --rule-strong:#B9C0B4;
+    --teal:#2F6F62; --teal-deep:#1D4740; --teal-wash:#E6EFEC;
+    --rust:#A85A34; --rust-wash:#F3E7DE;
+    --blue:#33448A; --blue-wash:#DCE6FF;
+    --purple:#6A3B8A; --purple-wash:#EFE3F5;
+    --spike:#C4402E;
+    --mono:"IBM Plex Mono","SF Mono",monospace; --sans:-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  header{max-width:1180px;margin:0 auto;padding:40px 24px 20px;border-bottom:1px solid var(--rule-strong);}
+  h1{font-size:26px;margin:0 0 6px;}
+  .sub{color:var(--ink-soft);font-size:14px;}
+  main{max-width:1180px;margin:0 auto;padding:24px;}
+  .scope-box{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:2px;padding:14px 18px;font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+  .scope-box strong{color:var(--ink);}
+  .audit-banner{background:var(--ink);color:#DCE7E2;font-family:var(--mono);font-size:12px;letter-spacing:.02em;
+    padding:10px 16px;border-radius:5px;margin-bottom:20px;}
+  .audit-banner b{color:#fff;}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--paper-raised);
+    border:1px solid var(--rule-strong);border-radius:6px;padding:16px;margin-bottom:20px;}
+  .controls label{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px;}
+  input[type=file]{font-family:var(--sans);font-size:13px;}
+  select{font-family:var(--mono);padding:6px 8px;border:1px solid var(--rule-strong);border-radius:4px;font-size:13px;min-width:190px;}
+  button{font-family:var(--sans);font-weight:600;background:var(--teal);color:#fff;border:none;
+    border-radius:5px;padding:9px 16px;cursor:pointer;font-size:13px;}
+  button:hover{background:var(--teal-deep);}
+  button.secondary{background:var(--rust);}
+  button.secondary:hover{background:#8a4527;}
+  button:disabled{background:var(--rule-strong);cursor:not-allowed;}
+  .togglegrp{display:flex;border:1.5px solid var(--teal);border-radius:6px;overflow:hidden;}
+  .togglegrp button{background:var(--paper-raised);color:var(--teal-deep);border-radius:0;padding:8px 14px;font-size:12px;}
+  .togglegrp button.active{background:var(--teal);color:#fff;}
+  .togglegrp button:hover{background:var(--teal-wash);}
+  .togglegrp button.active:hover{background:var(--teal-deep);}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+  .stat{background:var(--teal-wash);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--teal-deep);}
+  .stat b{font-size:20px;display:block;}
+  h2{font-size:17px;border-bottom:1px solid var(--rule);padding-bottom:6px;margin-top:36px;}
+  .note{font-size:13px;color:var(--ink-faint);margin-top:6px;}
+
+  .matrix{background:var(--paper-raised);border:1px solid var(--rule-strong);border-radius:6px;padding:16px 18px;margin-bottom:20px;}
+  .matrix-title{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-deep);margin-bottom:12px;}
+  .matrix-row{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:14px;}
+  .matrix-row:last-child{margin-bottom:0;}
+  .matrix-field{display:flex;flex-direction:column;gap:6px;}
+  .matrix-field .flabel{font-size:12px;color:var(--ink-soft);}
+  .matrix-field .fnote{font-size:11px;color:var(--ink-faint);max-width:220px;}
+
+  .query-card{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:4px solid var(--blue);
+    border-radius:4px;padding:14px 18px;margin-bottom:18px;}
+  .query-card .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+  .query-card .qtext{font-size:15px;font-style:italic;color:var(--ink);margin:4px 0 8px;}
+  .query-card .assumption{font-size:12px;color:var(--rust);background:var(--rust-wash);border-radius:4px;padding:6px 10px;display:inline-block;margin-top:4px;}
+
+  .groupHead{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);
+    margin:22px 0 8px;display:flex;align-items:center;gap:10px;}
+  .groupHead .n{background:var(--rule);color:var(--ink-soft);border-radius:10px;padding:1px 8px;font-size:11px;}
+
+  table.resultTable{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+  table.resultTable th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);
+    text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule-strong);}
+  table.resultTable td{padding:8px 10px;border-bottom:1px solid var(--rule);color:var(--ink-soft);}
+  table.resultTable tr:hover td{background:var(--teal-wash);cursor:pointer;}
+  table.resultTable td.num{font-family:var(--mono);}
+  .pill{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;background:var(--rule);color:var(--ink-soft);display:inline-block;}
+  .pill.warn{background:#F7DAD4;color:var(--spike);}
+  .pill.good{background:var(--teal-wash);color:var(--teal-deep);}
+  .pill.t2d{background:var(--rust-wash);color:var(--rust);}
+
+  #detail{background:var(--paper-raised);border:1px solid var(--rule-strong);border-radius:6px;
+    padding:14px 18px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;margin-top:16px;color:var(--ink-soft);}
+  #detail.empty{color:var(--ink-faint);font-family:var(--sans);font-style:italic;}
+
+  .site-nav{max-width:900px;margin:0 auto;padding:12px 28px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:6px 4px;font-family:var(--mono),monospace;font-size:12px;
+    border-bottom:1px solid var(--rule-strong,#B9C0B4);background:var(--paper,#F4F5F1);}
+  .site-nav a{color:var(--ink-soft,#4B564F);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;}
+  .site-nav a:hover{background:var(--teal-wash,#E6EFEC);color:var(--teal-deep,#1D4740);}
+  .site-nav a.current{background:var(--teal,#2F6F62);color:#fff;font-weight:600;}
+  .site-nav .sep{color:var(--rule-strong,#B9C0B4);}
+  .site-nav .spacer{flex:1 1 auto;}
+  .site-nav a.other-project{color:var(--rust,#A85A34);border:1px solid var(--rust,#A85A34);}
+  .site-nav a.other-project:hover{background:var(--rust-wash,#F3E7DE);}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html">Tour</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html">Idea</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html">Build log</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step1_corpus_generator.html">Step 1</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step2_graph_builder.html">Step 2</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step3_dashboard.html">Step 3</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step4_pivot_lens.html">Step 4</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step5_comparator_filter.html" class="current">Step 5</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/step6_clinical_output_view.html">Step 6</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/nested-analysis-view.html">Nested view</a>
+<span class="spacer"></span>
+<a class="other-project" href="https://avi33tbtt.github.io/VibeRounds/" target="_blank" rel="noopener">More projects: VibeRounds ↗</a>
+</nav>
+
+<header>
+  <h1>Step 5 — Comparator Filter</h1>
+  <div class="sub">cohort_graph.json → population × intervention timing × outcome/temporal/resource comparator matrix (Section 6) · same file as Steps 2–4, no re-ingestion</div>
+</header>
+<main>
+
+  <div class="audit-banner"><b>Scope note (carried from Section 0):</b> this is an audit/analytics view surfacing evidence, variation and confounders across a synthetic cohort — it is not a decision-support tool and makes no treatment recommendation for any individual patient.</div>
+
+  <div class="scope-box">
+    <strong>What this does:</strong> loads the same <code>cohort_graph.json</code> from Steps 2–4 and layers three independent filter axes over it,
+    without deriving any new fields or re-ingesting data: a <strong>population filter</strong> (T1D / T2D / all), a <strong>disease-appropriate
+    intervention-timing filter</strong> (early vs. delayed insulin initiation for T2D; pump-failure evidence vs. none for T1D — the same
+    approximation flagged in Step 4), and a <strong>comparator matrix</strong> of outcome (complication-free / complicated), facility tier, and
+    resource status. Each filter only constrains the population it applies to and passes other patients through unfiltered, so mixed T1D+T2D
+    views stay meaningful. Results can be grouped by patient, by facility tier, by resource status, or by time-to-first-complication bucket.
+  </div>
+
+  <div class="controls">
+    <label>Cohort graph file
+      <input type="file" id="fileInput" accept="application/json,.json">
+    </label>
+    <button type="button" id="loadSampleBtn">Load sample data</button>
+    <span class="note" id="loadStatus">No file loaded yet &mdash; use the cohort_graph.json exported from Step 2 (same file works for Steps 3–5).</span>
+  </div>
+
+  <div id="app" style="display:none;">
+
+    <div class="stats" id="stats"></div>
+
+    <div class="matrix">
+      <div class="matrix-title">Population</div>
+      <div class="matrix-row">
+        <div class="matrix-field">
+          <span class="flabel">Diagnosis group</span>
+          <div class="togglegrp" id="popToggle">
+            <button data-pop="ALL" class="active" type="button">All conditions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-title">Intervention timing (disease-appropriate)</div>
+      <div class="matrix-row">
+        <div class="matrix-field">
+          <span class="flabel">T2D — insulin initiation timing</span>
+          <select id="t2dTiming">
+            <option value="ANY">Any</option>
+            <option value="EARLY">Early (&lt; 5 years post-diagnosis)</option>
+            <option value="DELAYED">Delayed (&ge; 5 years post-diagnosis)</option>
+            <option value="NONE">Not yet / not recorded</option>
+          </select>
+          <span class="fnote">Uses PatientNode.time_to_insulin_initiation_years. Only applies to T2D patients; T1D patients pass through.</span>
+        </div>
+        <div class="matrix-field">
+          <span class="flabel">T1D — device modality</span>
+          <select id="t1dDevice">
+            <option value="ANY">Any</option>
+            <option value="PUMP">Pump-failure evidence in record</option>
+            <option value="NOPUMP">No pump-failure evidence</option>
+          </select>
+          <span class="fnote">Approximation, same as Step 4: inferred from OutcomeNode.reason text, not a first-class field. Only applies to T1D patients.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="matrix">
+      <div class="matrix-title">Comparator matrix</div>
+      <div class="matrix-row">
+        <div class="matrix-field">
+          <span class="flabel">Outcome</span>
+          <div class="togglegrp" id="outcomeToggle">
+            <button data-val="ANY" class="active" type="button">Any</button>
+            <button data-val="CLEAN" type="button">Complication-free</button>
+            <button data-val="COMPLICATED" type="button">Complicated</button>
+          </div>
+          <span class="fnote">"Complicated" = at least one OutcomeNode with status stabilized_with_sequelae.</span>
+        </div>
+        <div class="matrix-field">
+          <span class="flabel">Facility tier</span>
+          <select id="facilityFilter">
+            <option value="ANY">Any</option>
+            <option value="primary">Primary</option>
+            <option value="secondary">Secondary</option>
+            <option value="tertiary">Tertiary</option>
+            <option value="quaternary">Quaternary</option>
+          </select>
+        </div>
+        <div class="matrix-field">
+          <span class="flabel">Resource status</span>
+          <div class="togglegrp" id="resourceToggle">
+            <button data-val="ANY" class="active" type="button">Any</button>
+            <button data-val="plenty" type="button">Plenty</button>
+            <button data-val="constrained" type="button">Resource-constrained</button>
+          </div>
+        </div>
+        <div class="matrix-field">
+          <span class="flabel">Group results by</span>
+          <select id="groupBy">
+            <option value="patient">Patient (flat table)</option>
+            <option value="complication">Time-to-first-complication bucket</option>
+            <option value="facility">Facility tier</option>
+            <option value="resource">Resource status</option>
+          </select>
+        </div>
+      </div>
+      <div class="matrix-row">
+        <button id="exampleQueryBtn" type="button" class="secondary">Load Section 6 example query</button>
+        <button id="resetBtn" type="button">Reset filters</button>
+      </div>
+    </div>
+
+    <div id="queryNote"></div>
+
+    <div id="view"></div>
+
+    <div id="detail" class="empty">Click a table row or card to see its raw patient/outcome attributes here.</div>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   Step 5 — comparator filter.
+   Reads the same node-link cohort_graph.json produced by Step 2
+   and consumed unchanged by Steps 3 and 4:
+     { directed, multigraph, nodes:[{id,node_type,patient_id,...}],
+       links:[{source,target,edge_type,...}] }
+   Every filter axis below is computed from existing attributes —
+   no new fields are written back onto the graph, and none of the
+   axes special-case T1D vs. T2D beyond which disease-appropriate
+   fields they read (per Step 7's generalization requirement).
+   ============================================================ */
+
+let COHORT = null;
+let PATIENTS = [];
+let state = {
+  population: "ALL",
+  t2dTiming: "ANY",
+  t1dDevice: "ANY",
+  outcome: "ANY",
+  facility: "ANY",
+  resource: "ANY",
+  groupBy: "patient"
+};
+
+const COMPLICATED_STATUS = "stabilized_with_sequelae";
+const EARLY_INSULIN_YEARS = 5;
+
+function h(tag, attrs, children){
+  const n = document.createElement(tag);
+  if (attrs) for (const [k,v] of Object.entries(attrs)){
+    if (k === "text") n.textContent = v; else if (k === "class") n.className = v; else n.setAttribute(k, v);
+  }
+  if (children) for (const c of children) if (c) n.appendChild(c);
+  return n;
+}
+
+/* ---------------- load ---------------- */
+
+document.getElementById("fileInput").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const json = JSON.parse(reader.result);
+      loadCohort(json);
+      document.getElementById("loadStatus").textContent = `Loaded ${f.name}`;
+    } catch (err){
+      document.getElementById("loadStatus").textContent = "Could not parse that file as JSON: " + err.message;
+    }
+  };
+  reader.readAsText(f);
+});
+
+const SAMPLE_DATA_URL = "https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/complexity+/cohort_graph.json";
+document.getElementById("loadSampleBtn").addEventListener("click", () => {
+  const statusEl = document.getElementById("loadStatus");
+  statusEl.textContent = "Loading sample data\u2026";
+  fetch(SAMPLE_DATA_URL)
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(json => {
+      loadCohort(json);
+      statusEl.textContent = "Loaded sample data (cohort_graph.json)";
+    })
+    .catch(err => {
+      statusEl.textContent = "Could not load sample data: " + err.message;
+    });
+});
+
+function loadCohort(json){
+  const nodes = new Map();
+  for (const n of (json.nodes || [])) nodes.set(n.id, n);
+  COHORT = { nodes, links: json.links || json.edges || [] };
+
+  PATIENTS = Array.from(nodes.values())
+    .filter(n => n.node_type === "PatientNode")
+    .map(n => ({ id: n.id, condition_type: n.condition_type, attrs: n }))
+    .sort((a,b) => a.id.localeCompare(b.id));
+
+  document.getElementById("app").style.display = "block";
+  populatePopToggle();
+  renderStats();
+  render();
+}
+
+function conditionTypesInData(){
+  return Array.from(new Set(PATIENTS.map(p => p.condition_type))).sort((a,b) => {
+    const rank = t => (t === "T1D" ? 0 : t === "T2D" ? 1 : 2);
+    return rank(a) - rank(b) || a.localeCompare(b);
+  });
+}
+
+function populatePopToggle(){
+  const wrap = document.getElementById("popToggle");
+  wrap.innerHTML = "";
+  wrap.appendChild(h("button", { "data-pop": "ALL", class: "active", type: "button", text: "All conditions" }));
+  for (const c of conditionTypesInData()){
+    wrap.appendChild(h("button", { "data-pop": c, type: "button", text: `${c} only` }));
+  }
+}
+
+function renderStats(){
+  const byCondition = conditionTypesInData().map(c => `${PATIENTS.filter(p => p.condition_type === c).length} ${c}`).join(" / ");
+  const complicatedCount = PATIENTS.filter(p => patientComplicationInfo(p.id).complicated).length;
+  const constrainedCount = PATIENTS.filter(p => p.attrs.resource_status === "constrained").length;
+  const stats = document.getElementById("stats");
+  stats.innerHTML = "";
+  const items = [
+    ["Patients", PATIENTS.length + ` (${byCondition})`],
+    ["Nodes", COHORT.nodes.size],
+    ["Edges", COHORT.links.length],
+    ["Patients with a complicated outcome", complicatedCount],
+    ["Patients in resource-constrained settings", constrainedCount]
+  ];
+  for (const [label, val] of items){
+    stats.appendChild(h("div", { class: "stat" }, [h("b", { text: String(val) }), h("span", { text: label })]));
+  }
+}
+
+/* ---------------- graph helpers ---------------- */
+
+function nodesForPatient(pid){
+  return Array.from(COHORT.nodes.values()).filter(n => n.patient_id === pid || n.id === pid);
+}
+
+/* ---- T1D device-modality approximation (same substitution as Step 4) ---- */
+function patientHasPumpEvidence(pid){
+  return nodesForPatient(pid).some(n => n.node_type === "OutcomeNode" && /pump/i.test(n.reason || ""));
+}
+
+/* ---- T2D insulin-initiation timing bucket ---- */
+function t2dTimingBucket(p){
+  const years = p.attrs.time_to_insulin_initiation_years;
+  if (years === null || years === undefined) return "NONE";
+  return Number(years) < EARLY_INSULIN_YEARS ? "EARLY" : "DELAYED";
+}
+
+/* ---- complication info: complicated flag + time-to-first-complication ---- */
+function patientComplicationInfo(pid){
+  const nodes = nodesForPatient(pid);
+  const dx = nodes.find(n => n.node_type === "DiagnosisNode" && n.role === "primary")
+          || nodes.find(n => n.node_type === "DiagnosisNode");
+  const complications = nodes
+    .filter(n => n.node_type === "OutcomeNode" && n.status === COMPLICATED_STATUS && n.start)
+    .sort((a,b) => new Date(a.start) - new Date(b.start));
+  if (!complications.length) return { complicated: false, days: null, bucket: "No complication recorded" };
+  const first = complications[0];
+  let days = null;
+  if (dx && dx.onset){
+    days = Math.round((new Date(first.start) - new Date(dx.onset)) / 86400000);
+  }
+  let bucket = "Unknown interval (missing onset date)";
+  if (days !== null){
+    if (days < 180) bucket = "< 180 days from diagnosis";
+    else if (days < 365) bucket = "180 days – 1 year";
+    else if (days < 3*365) bucket = "1 – 3 years";
+    else bucket = "3+ years";
+  }
+  return { complicated: true, days, bucket, reason: first.reason, facility_tier: first.facility_tier, resource_status: first.resource_status };
+}
+
+/* ---------------- filtering ---------------- */
+
+function filteredPatients(){
+  return PATIENTS.filter(p => {
+    if (state.population !== "ALL" && p.condition_type !== state.population) return false;
+
+    if (p.condition_type === "T2D" && state.t2dTiming !== "ANY"){
+      if (t2dTimingBucket(p) !== state.t2dTiming) return false;
+    }
+    if (p.condition_type === "T1D" && state.t1dDevice !== "ANY"){
+      const hasPump = patientHasPumpEvidence(p.id);
+      if (state.t1dDevice === "PUMP" && !hasPump) return false;
+      if (state.t1dDevice === "NOPUMP" && hasPump) return false;
+    }
+
+    if (state.outcome !== "ANY"){
+      const complicated = patientComplicationInfo(p.id).complicated;
+      if (state.outcome === "CLEAN" && complicated) return false;
+      if (state.outcome === "COMPLICATED" && !complicated) return false;
+    }
+
+    if (state.facility !== "ANY" && p.attrs.facility_tier !== state.facility) return false;
+    if (state.resource !== "ANY" && p.attrs.resource_status !== state.resource) return false;
+
+    return true;
+  });
+}
+
+/* ---------------- controls wiring ---------------- */
+
+function wireToggle(id, key, onChange){
+  document.getElementById(id).addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-pop], button[data-val]");
+    if (!btn) return;
+    const val = btn.dataset.pop ?? btn.dataset.val;
+    state[key] = val;
+    for (const b of document.querySelectorAll(`#${id} button`)) b.classList.toggle("active", b === btn);
+    onChange ? onChange() : render();
+  });
+}
+wireToggle("popToggle", "population");
+wireToggle("outcomeToggle", "outcome");
+wireToggle("resourceToggle", "resource");
+
+document.getElementById("t2dTiming").addEventListener("change", e => { state.t2dTiming = e.target.value; render(); });
+document.getElementById("t1dDevice").addEventListener("change", e => { state.t1dDevice = e.target.value; render(); });
+document.getElementById("facilityFilter").addEventListener("change", e => { state.facility = e.target.value; render(); });
+document.getElementById("groupBy").addEventListener("change", e => { state.groupBy = e.target.value; render(); });
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = { population: "ALL", t2dTiming: "ANY", t1dDevice: "ANY", outcome: "ANY", facility: "ANY", resource: "ANY", groupBy: "patient" };
+  syncControlsToState();
+  document.getElementById("queryNote").innerHTML = "";
+  render();
+});
+
+document.getElementById("exampleQueryBtn").addEventListener("click", () => {
+  // Worked example from the Step 5 spec (Section 6):
+  // "Show T2D patients on delayed insulin initiation in resource-constrained
+  //  settings, grouped by time-to-first-complication."
+  state = { population: "T2D", t2dTiming: "DELAYED", t1dDevice: "ANY", outcome: "ANY", resource: "constrained", facility: "ANY", groupBy: "complication" };
+  syncControlsToState();
+  const t2dWithTiming = PATIENTS.filter(p => p.condition_type === "T2D" && p.attrs.time_to_insulin_initiation_years !== null).length;
+  const t2dTotal = PATIENTS.filter(p => p.condition_type === "T2D").length;
+  const note = h("div", { class: "query-card" });
+  note.appendChild(h("div", { class: "kicker", text: "Section 6 worked example" }));
+  note.appendChild(h("div", { class: "qtext", text: "“Show T2D patients on delayed insulin initiation in resource-constrained settings, grouped by time-to-first-complication.”" }));
+  note.appendChild(h("div", { class: "assumption",
+    text: `Data-completeness note: only ${t2dWithTiming} of ${t2dTotal} T2D patients in this synthetic corpus have a recorded time_to_insulin_initiation_years value — the rest are null (insulin not yet initiated, or not captured). A near-empty result here is a real gap in the underlying data, not a bug in the filter; per Step 7, that gap is surfaced rather than hidden.` }));
+  document.getElementById("queryNote").innerHTML = "";
+  document.getElementById("queryNote").appendChild(note);
+  render();
+});
+
+function syncControlsToState(){
+  for (const b of document.querySelectorAll("#popToggle button")) b.classList.toggle("active", b.dataset.pop === state.population);
+  for (const b of document.querySelectorAll("#outcomeToggle button")) b.classList.toggle("active", b.dataset.val === state.outcome);
+  for (const b of document.querySelectorAll("#resourceToggle button")) b.classList.toggle("active", b.dataset.val === state.resource);
+  document.getElementById("t2dTiming").value = state.t2dTiming;
+  document.getElementById("t1dDevice").value = state.t1dDevice;
+  document.getElementById("facilityFilter").value = state.facility;
+  document.getElementById("groupBy").value = state.groupBy;
+}
+
+/* ---------------- detail panel ---------------- */
+
+function showDetail(obj){
+  const panel = document.getElementById("detail");
+  panel.classList.remove("empty");
+  const lines = Object.entries(obj)
+    .filter(([k,v]) => v !== null && v !== undefined && v !== "")
+    .map(([k,v]) => `${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`);
+  panel.textContent = lines.join("\n");
+}
+
+/* ---------------- render ---------------- */
+
+function rowFor(p){
+  const complication = patientComplicationInfo(p.id);
+  const timing = p.condition_type === "T2D" ? t2dTimingBucket(p) : (patientHasPumpEvidence(p.id) ? "PUMP" : "NOPUMP");
+  const timingLabel = p.condition_type === "T2D"
+    ? ({EARLY:"Early insulin", DELAYED:"Delayed insulin", NONE:"Not initiated / n/a"})[timing]
+    : ({PUMP:"Pump-failure evidence", NOPUMP:"No pump evidence"})[timing];
+  const row = h("tr", {}, [
+    h("td", { text: p.id }),
+    h("td", {}, [h("span", { class: "pill" + (p.condition_type === "T2D" ? " t2d" : ""), text: p.condition_type })]),
+    h("td", { text: timingLabel }),
+    h("td", { text: p.attrs.facility_tier || "—" }),
+    h("td", { text: p.attrs.resource_status || "—" }),
+    h("td", {}, [complication.complicated
+      ? h("span", { class: "pill warn", text: "Complicated" })
+      : h("span", { class: "pill good", text: "Complication-free" })]),
+    h("td", { class: "num", text: complication.days !== null ? `${complication.days} d` : "—" })
+  ]);
+  row.addEventListener("click", () => showDetail(Object.assign({}, p.attrs, { complication_bucket: complication.bucket, complication_reason: complication.reason })));
+  return row;
+}
+
+function resultTable(patients){
+  const table = h("table", { class: "resultTable" });
+  table.appendChild(h("tr", {}, [
+    h("th", { text: "Patient" }), h("th", { text: "Condition" }), h("th", { text: "Intervention timing" }),
+    h("th", { text: "Facility tier" }), h("th", { text: "Resource status" }), h("th", { text: "Outcome" }),
+    h("th", { text: "Time to first complication" })
+  ]));
+  for (const p of patients) table.appendChild(rowFor(p));
+  return table;
+}
+
+function render(){
+  const view = document.getElementById("view");
+  view.innerHTML = "";
+  const matched = filteredPatients();
+
+  view.appendChild(h("div", { class: "groupHead" }, [
+    h("span", { text: "Matched cohort" }), h("span", { class: "n", text: String(matched.length) })
+  ]));
+
+  if (!matched.length){
+    view.appendChild(h("div", { class: "note", text: "No patients match this filter combination." }));
+    return;
+  }
+
+  if (state.groupBy === "patient"){
+    view.appendChild(resultTable(matched));
+    return;
+  }
+
+  let groups;
+  if (state.groupBy === "complication"){
+    groups = new Map();
+    for (const p of matched){
+      const bucket = patientComplicationInfo(p.id).bucket;
+      if (!groups.has(bucket)) groups.set(bucket, []);
+      groups.get(bucket).push(p);
+    }
+    const order = ["< 180 days from diagnosis", "180 days – 1 year", "1 – 3 years", "3+ years", "Unknown interval (missing onset date)", "No complication recorded"];
+    groups = new Map(order.filter(k => groups.has(k)).map(k => [k, groups.get(k)]));
+  } else if (state.groupBy === "facility"){
+    groups = new Map();
+    for (const p of matched){
+      const k = p.attrs.facility_tier || "unknown";
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(p);
+    }
+  } else {
+    groups = new Map();
+    for (const p of matched){
+      const k = p.attrs.resource_status || "unknown";
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(p);
+    }
+  }
+
+  for (const [label, group] of groups.entries()){
+    view.appendChild(h("div", { class: "groupHead" }, [
+      h("span", { text: label }), h("span", { class: "n", text: String(group.length) })
+    ]));
+    view.appendChild(resultTable(group));
+  }
+}
+</script>
+</body>
+</html>
