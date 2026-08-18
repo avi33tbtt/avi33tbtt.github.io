@@ -195,6 +195,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [The Interrogator: Upstream Framing Audit](The-Interrogator-Upstream-Framing-Audit.md) | The Interrogator: Upstream Framing Audit |
 | -- | [Module CM — Clinical Media Educational Report Generator](Module-CM-Clinical-Media-Educational-Report.md) | Module CM — Clinical Media Educational Report Generator |
 | -- | [Module IE — Investigations & Examinations Utility Mapper](Module-IE-Investigations-Examinations-Utility-Mapper.md) | Module IE — Investigations & Examinations Utility Mapper |
+| -- | [Module ARC — Adversarial Case Record Audit](Module-ARC-Adversarial-Case-Record-Audit.md) | Module ARC — Adversarial Case Record Audit |
 
 
 
