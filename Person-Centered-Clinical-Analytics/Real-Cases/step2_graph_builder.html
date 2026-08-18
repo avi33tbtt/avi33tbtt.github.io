@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 2 — FHIR-to-Graph Ingestion (T1D vs T2D)</title>
+<style>
+  :root{
+    --paper:#F4F5F1; --paper-raised:#FBFBF9; --ink:#182420; --ink-soft:#4B564F;
+    --ink-faint:#7C877E; --rule:#D9DCD3; --rule-strong:#B9C0B4;
+    --teal:#2F6F62; --teal-deep:#1D4740; --teal-wash:#E6EFEC;
+    --rust:#A85A34; --rust-wash:#F3E7DE;
+    --mono:"IBM Plex Mono","SF Mono",monospace; --sans:-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  header{max-width:1080px;margin:0 auto;padding:40px 24px 20px;border-bottom:1px solid var(--rule-strong);}
+  h1{font-size:26px;margin:0 0 6px;}
+  .sub{color:var(--ink-soft);font-size:14px;}
+  main{max-width:1080px;margin:0 auto;padding:24px;}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:var(--paper-raised);
+    border:1px solid var(--rule-strong);border-radius:6px;padding:16px;margin-bottom:20px;}
+  .controls label{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px;}
+  input[type=file]{font-family:var(--sans);font-size:13px;}
+  select{font-family:var(--mono);padding:6px 8px;border:1px solid var(--rule-strong);border-radius:4px;}
+  button{font-family:var(--sans);font-weight:600;background:var(--teal);color:#fff;border:none;
+    border-radius:5px;padding:10px 18px;cursor:pointer;font-size:14px;}
+  button:hover{background:var(--teal-deep);}
+  button.secondary{background:var(--rust);}
+  button.secondary:hover{background:#8a4527;}
+  button:disabled{background:var(--rule-strong);cursor:not-allowed;}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+  .stat{background:var(--teal-wash);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--teal-deep);}
+  .stat b{font-size:20px;display:block;}
+  h2{font-size:17px;border-bottom:1px solid var(--rule);padding-bottom:6px;margin-top:36px;}
+  .note{font-size:13px;color:var(--ink-faint);margin-top:6px;}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px;}
+  .pill{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:12px;background:var(--rule);color:var(--ink-soft);}
+  .pill.node-Patient{background:#1D4740;color:#fff;}
+  .pill.node-Observation{background:#E6EFEC;color:var(--teal-deep);}
+  .pill.node-Diagnosis{background:#F3E7DE;color:var(--rust);}
+  .pill.node-Intervention{background:#DCE6FF;color:#33448A;}
+  .pill.node-Outcome{background:#EFE3F5;color:#6A3B8A;}
+  table{border-collapse:collapse;width:100%;font-size:13px;margin-bottom:20px;}
+  th,td{border-bottom:1px solid var(--rule);padding:6px 8px;text-align:left;vertical-align:top;}
+  th{font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--ink-faint);}
+  td.mono, th.mono{font-family:var(--mono);font-size:12px;}
+  .edge-type{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:3px;background:var(--teal-wash);color:var(--teal-deep);white-space:nowrap;}
+  .edge-type.rel{background:var(--rust-wash);color:var(--rust);}
+  pre{background:#10231e;color:#d8ede6;padding:14px;border-radius:6px;overflow:auto;font-size:12px;max-height:420px;}
+  .exportRow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .patientPicker{display:flex;gap:10px;align-items:center;margin-bottom:14px;}
+  .scope-box{background:var(--paper-raised);border:1px solid var(--rule-strong);border-left:3px solid var(--rust);
+    border-radius:2px;padding:14px 18px;font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+  .scope-box strong{color:var(--ink);}
+
+  .site-nav{max-width:900px;margin:0 auto;padding:12px 28px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:6px 4px;font-family:var(--mono),monospace;font-size:12px;
+    border-bottom:1px solid var(--rule-strong,#B9C0B4);background:var(--paper,#F4F5F1);}
+  .site-nav a{color:var(--ink-soft,#4B564F);text-decoration:none;padding:4px 8px;border-radius:4px;white-space:nowrap;}
+  .site-nav a:hover{background:var(--teal-wash,#E6EFEC);color:var(--teal-deep,#1D4740);}
+  .site-nav a.current{background:var(--teal,#2F6F62);color:#fff;font-weight:600;}
+  .site-nav .sep{color:var(--rule-strong,#B9C0B4);}
+  .site-nav .spacer{flex:1 1 auto;}
+  .site-nav a.other-project{color:var(--rust,#A85A34);border:1px solid var(--rust,#A85A34);}
+  .site-nav a.other-project:hover{background:var(--rust-wash,#F3E7DE);}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html">Tour</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html">Idea</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html">Build log</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step1_corpus_generator.html">Step 1</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step2_graph_builder.html" class="current">Step 2</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step3_dashboard.html">Step 3</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step4_pivot_lens.html">Step 4</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step5_comparator_filter.html">Step 5</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step6_clinical_output_view.html">Step 6</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/step7_generalization_check.html">Step 7</a>
+<span class="sep">/</span>
+<a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/nested-analysis-view.html" title="Not yet live — output pending upload">Nested view</a>
+<span class="spacer"></span>
+<a class="other-project" href="https://avi33tbtt.github.io/VibeRounds/" target="_blank" rel="noopener">More projects: VibeRounds ↗</a>
+</nav>
+
+<header>
+  <h1>Step 2 — FHIR-to-Graph Ingestion</h1>
+  <div class="sub">dm_corpus.json → person-centered knowledge graph (Section 3.1–3.3 / Section 4) · runs entirely in-browser, no Python/Node required</div>
+</header>
+<main>
+
+  <div class="scope-box">
+    <strong>What this does:</strong> loads the Step 1 corpus (dm_corpus.json), and for every patient instantiates
+    <code>PatientNode / ObservationNode / DiagnosisNode / InterventionNode / OutcomeNode</code>
+    connected by the patient-anchor edges (<code>HAS_OBSERVATION</code>, <code>HAS_DIAGNOSIS</code>, <code>RECEIVES_PLAN</code>, <code>RESULTS_IN</code> — time as an edge property)
+    plus the relational edges (<code>SUGGESTS</code>, <code>INDICATES_PLAN</code>, <code>PRODUCED_OUTCOME</code>, <code>MODULATES</code>, <code>CONSTRAINS</code>).
+    Same code path for T1D and T2D — no special-casing.
+  </div>
+
+  <div class="controls">
+    <label>Corpus file
+      <input type="file" id="fileInput" accept="application/json,.json">
+    </label>
+    <button id="loadSampleBtn" class="secondary" type="button">Load sample data</button>
+    <button id="buildBtn" disabled>Build graph</button>
+  </div>
+
+  <div id="statsWrap" style="display:none;">
+    <div class="stats" id="stats"></div>
+
+    <div class="legend">
+      <span class="pill node-Patient">PatientNode</span>
+      <span class="pill node-Observation">ObservationNode</span>
+      <span class="pill node-Diagnosis">DiagnosisNode</span>
+      <span class="pill node-Intervention">InterventionNode</span>
+      <span class="pill node-Outcome">OutcomeNode</span>
+    </div>
+
+    <h2>Export</h2>
+    <div class="exportRow">
+      <button id="dlCohortJsonBtn">Download cohort_graph.json (node-link)</button>
+      <button id="dlGraphmlBtn">Download cohort_graph.graphml</button>
+      <button id="dlNodesCsvBtn">Download neo4j_nodes.csv</button>
+      <button id="dlEdgesCsvBtn">Download neo4j_edges.csv</button>
+      <button id="dlSummaryBtn">Download graph_summary.json</button>
+    </div>
+    <p class="note">GraphML opens in Gephi/yEd. The Neo4j CSV pair follows <code>neo4j-admin database import</code> / <code>LOAD CSV</code> column conventions (<code>id:ID</code>, <code>:LABEL</code>, <code>:START_ID</code>, <code>:END_ID</code>, <code>:TYPE</code>) — schema-ready for later, not loaded into a live instance here.</p>
+
+    <h2>Inspect a patient graph</h2>
+    <div class="patientPicker">
+      <select id="patientSelect"></select>
+      <span class="note" id="patientMeta"></span>
+    </div>
+
+    <h3 style="font-size:14px;">Nodes</h3>
+    <div id="nodeTableWrap"></div>
+
+    <h3 style="font-size:14px;">Edges</h3>
+    <div id="edgeTableWrap"></div>
+
+    <h2>Cohort graph summary (JSON)</h2>
+    <pre id="summaryJson"></pre>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   Step 2 graph builder — plain JS port of the ingestion logic.
+   No external libraries; graph is represented as plain objects:
+     nodes: Map<nodeId, {id, node_type, ...attrs}>
+     edges: Array<{source, target, edge_type, ...attrs}>
+   ============================================================ */
+
+const NODE_TYPES = ["PatientNode","ObservationNode","DiagnosisNode","InterventionNode","OutcomeNode"];
+const RELATIONAL_EDGES = new Set(["SUGGESTS","INDICATES_PLAN","PRODUCED_OUTCOME","MODULATES","CONSTRAINS"]);
+const LINK_WINDOW_DAYS = 45;
+
+function parseDate(s){
+  if (!s) return null;
+  const d = new Date(s.slice(0,10) + "T00:00:00Z");
+  return isNaN(d.getTime()) ? null : d;
+}
+function daysBetween(a, b){
+  if (!a || !b) return null;
+  return Math.round((b - a) / 86400000);
+}
+function extValue(resource, urlSuffix){
+  const exts = resource.extension || [];
+  for (const ext of exts){
+    if (ext.url && ext.url.endsWith(urlSuffix)){
+      for (const key of ["valueString","valueInteger","valueBoolean","valueDecimal"]){
+        if (key in ext) return ext[key];
+      }
+    }
+  }
+  return null;
+}
+
+function flattenBundle(bundle){
+  const fb = { patient:null, conditions:[], observations:[], medicationRequests:[], procedures:[], encounters:[] };
+  for (const entry of ((bundle && bundle.entry) || [])){
+    const r = entry.resource || {};
+    switch(r.resourceType){
+      case "Patient": fb.patient = r; break;
+      case "Condition": fb.conditions.push(r); break;
+      case "Observation": fb.observations.push(r); break;
+      // MedicationRequest (ordered) and MedicationStatement (recorded as taken) are both
+      // treated as intervention/plan nodes downstream.
+      case "MedicationRequest": fb.medicationRequests.push(r); break;
+      case "MedicationStatement": fb.medicationRequests.push(r); break;
+      case "Procedure": fb.procedures.push(r); break;
+      case "Encounter": fb.encounters.push(r); break;
+    }
+  }
+  return fb;
+}
+
+/* ---------------- corpus normalization ----------------
+   Supports two corpus shapes:
+   1) Legacy Step-1 shape: { t1d_patients:[...], t2d_patients:[...] }, each patient record
+      already has patient_id / condition_type / demographics / tags / fhir_bundle.
+   2) case-corpus shape: { cases: [ { caseId, sourceFile, summary, bundle } ] } where "bundle"
+      is a raw FHIR Bundle and there is no separate patient_id/demographics/tags — these are
+      derived here from the Patient resource embedded in the bundle.
+*/
+function extractPatientDemographics(bundle){
+  const demo = { gender: undefined, birth_year: undefined, diagnosis_age: undefined };
+  for (const entry of ((bundle && bundle.entry) || [])){
+    const r = entry.resource || {};
+    if (r.resourceType === "Patient"){
+      demo.gender = r.gender;
+      const ageExt = (r.extension || []).find(e => e.url && e.url.endsWith("patient-age"));
+      if (ageExt && ageExt.valueQuantity) demo.diagnosis_age = ageExt.valueQuantity.value;
+      break;
+    }
+  }
+  return demo;
+}
+
+function normalizeCorpus(corpus){
+  if (!corpus) return [];
+  // Legacy shape
+  if (corpus.t1d_patients || corpus.t2d_patients){
+    return [].concat(corpus.t1d_patients || [], corpus.t2d_patients || []);
+  }
+  // case-corpus shape
+  if (Array.isArray(corpus.cases)){
+    return corpus.cases.map(c => ({
+      patient_id: c.caseId || c.sourceFile,
+      condition_type: (c.summary && c.summary.conditionType) || null,
+      demographics: extractPatientDemographics(c.bundle),
+      tags: {},
+      fhir_bundle: c.bundle
+    }));
+  }
+  return [];
+}
+
+class Graph {
+  constructor(){
+    this.nodes = new Map();
+    this.edges = [];
+  }
+  addNode(id, attrs){
+    this.nodes.set(id, Object.assign({ id }, attrs));
+  }
+  addEdge(source, target, edgeType, attrs){
+    this.edges.push(Object.assign({ source, target, edge_type: edgeType }, attrs || {}));
+  }
+  merge(other){
+    for (const [id, attrs] of other.nodes) this.nodes.set(id, attrs);
+    for (const e of other.edges) this.edges.push(e);
+    return this;
+  }
+}
+
+function closestOnOrBefore(target, diagnosisNodes, fallback){
+  if (!target) return fallback;
+  let bestId = null, bestDelta = null;
+  for (const { id, date } of diagnosisNodes){
+    if (!date || date > target) continue;
+    const delta = daysBetween(date, target);
+    if (bestDelta === null || delta < bestDelta){ bestId = id; bestDelta = delta; }
+  }
+  return bestId || fallback;
+}
+
+function nearestAfter(target, candidates, windowDays){
+  let bestId = null, bestDelta = null;
+  for (const { id, date } of candidates){
+    if (!date || date < target) continue;
+    const delta = daysBetween(target, date);
+    if (windowDays !== null && windowDays !== undefined && delta > windowDays) continue;
+    if (bestDelta === null || delta < bestDelta){ bestId = id; bestDelta = delta; }
+  }
+  return bestId;
+}
+
+function buildPatientGraph(patientRecord){
+  const G = new Graph();
+  const pid = patientRecord.patient_id;
+  const conditionType = patientRecord.condition_type;
+  const demo = patientRecord.demographics || {};
+  const tags = patientRecord.tags || {};
+  const fb = flattenBundle(patientRecord.fhir_bundle);
+
+  const patientNode = pid;
+  const patientAttrs = {
+    node_type: "PatientNode",
+    patient_id: pid,
+    condition_type: conditionType,
+    gender: demo.gender,
+    birth_year: demo.birth_year,
+    diagnosis_age: demo.diagnosis_age,
+    facility_tier: tags.facility_tier,
+    resource_status: tags.resource_status
+  };
+  for (const [k,v] of Object.entries(tags)){
+    if (k !== "facility_tier" && k !== "resource_status") patientAttrs[k] = v;
+  }
+  G.addNode(patientNode, patientAttrs);
+
+  // ---- Diagnosis nodes ----
+  const diagnosisNodes = []; // {id, date, isPrimary}
+  let primaryDxId = null;
+  fb.conditions.forEach((cond, i) => {
+    const dxId = `${pid}::dx::${cond.id || i}`;
+    const onset = cond.onsetDateTime;
+    const isPrimary = (i === 0);
+    const term = (cond.code && cond.code.text) || "Unknown condition";
+    G.addNode(dxId, {
+      node_type: "DiagnosisNode",
+      patient_id: pid,
+      term,
+      snomed_code: cond.code && cond.code.coding && cond.code.coding[0] && cond.code.coding[0].code,
+      confidence: "confirmed",
+      role: isPrimary ? "primary" : "comorbidity",
+      onset
+    });
+    G.addEdge(patientNode, dxId, "HAS_DIAGNOSIS", { onset });
+    diagnosisNodes.push({ id: dxId, date: parseDate(onset), isPrimary });
+    if (isPrimary) primaryDxId = dxId;
+  });
+
+  // ---- Observation nodes ----
+  const observationNodes = []; // {id, date}
+  fb.observations.forEach((obs, i) => {
+    const obsId = `${pid}::obs::${obs.id || i}`;
+    const eff = obs.effectiveDateTime;
+    const val = obs.valueQuantity || {};
+    G.addNode(obsId, {
+      node_type: "ObservationNode",
+      patient_id: pid,
+      label: (obs.code && obs.code.text) || "Observation",
+      loinc_code: obs.code && obs.code.coding && obs.code.coding[0] && obs.code.coding[0].code,
+      value: val.value,
+      unit: val.unit,
+      severity: extValue(obs, "severity"),
+      timestamp: eff
+    });
+    G.addEdge(patientNode, obsId, "HAS_OBSERVATION", { timestamp: eff });
+    observationNodes.push({ id: obsId, date: parseDate(eff) });
+  });
+
+  // ---- Intervention nodes (MedicationRequest / MedicationStatement + Procedure) ----
+  const interventionNodes = []; // {id, date}
+  fb.medicationRequests.forEach((mr, i) => {
+    const ivId = `${pid}::iv::med::${mr.id || i}`;
+    const authored = mr.authoredOn || mr.effectiveDateTime;
+    const med = mr.medicationCodeableConcept || {};
+    const dosageText = mr.dosageInstruction && mr.dosageInstruction[0] && mr.dosageInstruction[0].text;
+    const noteText = mr.note && mr.note[0] && mr.note[0].text;
+    G.addNode(ivId, {
+      node_type: "InterventionNode",
+      patient_id: pid,
+      action_type: mr.resourceType || "MedicationRequest",
+      target: med.text || "Medication",
+      rxnorm_code: med.coding && med.coding[0] && med.coding[0].code,
+      parameters: dosageText || noteText,
+      authored_on: authored
+    });
+    G.addEdge(patientNode, ivId, "RECEIVES_PLAN", { atemporal_bundle: !authored, authored_on: authored });
+    interventionNodes.push({ id: ivId, date: parseDate(authored) });
+  });
+  fb.procedures.forEach((proc, i) => {
+    const ivId = `${pid}::iv::proc::${proc.id || i}`;
+    const performed = proc.performedDateTime || (proc.performedPeriod && proc.performedPeriod.start);
+    G.addNode(ivId, {
+      node_type: "InterventionNode",
+      patient_id: pid,
+      action_type: "Procedure",
+      target: (proc.code && proc.code.text) || "Procedure",
+      rxnorm_code: proc.code && proc.code.coding && proc.code.coding[0] && proc.code.coding[0].code,
+      parameters: null,
+      authored_on: performed
+    });
+    G.addEdge(patientNode, ivId, "RECEIVES_PLAN", { atemporal_bundle: !performed, authored_on: performed });
+    interventionNodes.push({ id: ivId, date: parseDate(performed) });
+  });
+
+  // ---- Outcome nodes (Encounter) ----
+  const outcomeNodes = []; // {id, date}
+  const primaryOnsetDate = primaryDxId
+    ? diagnosisNodes.find(d => d.id === primaryDxId).date
+    : null;
+  fb.encounters.forEach((enc, i) => {
+    const ocId = `${pid}::oc::${enc.id || i}`;
+    const start = enc.period && enc.period.start;
+    const outcomeStatus = extValue(enc, "outcome_status");
+    const delta = primaryOnsetDate ? daysBetween(primaryOnsetDate, parseDate(start)) : null;
+    G.addNode(ocId, {
+      node_type: "OutcomeNode",
+      patient_id: pid,
+      status: outcomeStatus,
+      reason: enc.reasonCode && enc.reasonCode[0] && enc.reasonCode[0].text,
+      encounter_class: enc.class && enc.class.code,
+      length_of_stay_days: extValue(enc, "length_of_stay_days"),
+      spike_event: extValue(enc, "spike_event"),
+      time_to_er_hours: extValue(enc, "time_to_er_hours"),
+      time_to_stabilization_hours: extValue(enc, "time_to_stabilization_hours"),
+      facility_tier: extValue(enc, "facility_tier"),
+      resource_status: extValue(enc, "resource_status"),
+      start
+    });
+    G.addEdge(patientNode, ocId, "RESULTS_IN", { time_to_outcome_delta: delta, start });
+    outcomeNodes.push({ id: ocId, date: parseDate(start) });
+  });
+
+  // ---- Relational edges (Section 3.3) ----
+
+  // (Observation) -[:SUGGESTS]-> (Diagnosis)
+  for (const { id: obsId, date: obsDate } of observationNodes){
+    const targetDx = closestOnOrBefore(obsDate, diagnosisNodes, primaryDxId);
+    if (targetDx) G.addEdge(obsId, targetDx, "SUGGESTS", {});
+  }
+
+  // (Diagnosis) -[:INDICATES_PLAN]-> (Intervention)  [primary diagnosis -> whole med bundle]
+  for (const { id: dxId, isPrimary } of diagnosisNodes){
+    if (!isPrimary) continue;
+    for (const { id: ivId } of interventionNodes){
+      G.addEdge(dxId, ivId, "INDICATES_PLAN", {});
+    }
+  }
+
+  // (ComorbidityDiagnosis) -[:MODULATES]-> (Intervention authored on/after comorbidity onset)
+  for (const { id: dxId, date: dxDate, isPrimary } of diagnosisNodes){
+    if (isPrimary || !dxDate) continue;
+    for (const { id: ivId, date: ivDate } of interventionNodes){
+      if (ivDate && ivDate >= dxDate) G.addEdge(dxId, ivId, "MODULATES", {});
+    }
+  }
+
+  // (Observation) -[:CONSTRAINS]-> (nearest following Intervention within window)
+  for (const { id: obsId, date: obsDate } of observationNodes){
+    if (!obsDate) continue;
+    const nearestIv = nearestAfter(obsDate, interventionNodes, LINK_WINDOW_DAYS);
+    if (nearestIv) G.addEdge(obsId, nearestIv, "CONSTRAINS", {});
+  }
+
+  // (Intervention) -[:PRODUCED_OUTCOME]-> (nearest following Outcome, no window cap)
+  for (const { id: ivId, date: ivDate } of interventionNodes){
+    if (!ivDate) continue;
+    const nearestOc = nearestAfter(ivDate, outcomeNodes, null);
+    if (nearestOc) G.addEdge(ivId, nearestOc, "PRODUCED_OUTCOME", {});
+  }
+
+  return G;
+}
+
+function buildCohortGraph(patientGraphs){
+  const cohort = new Graph();
+  for (const g of patientGraphs.values()) cohort.merge(g);
+  return cohort;
+}
+
+function summarize(patientGraphs, cohort){
+  function nodeTypeCounts(g){
+    const c = {};
+    for (const attrs of g.nodes.values()) c[attrs.node_type] = (c[attrs.node_type]||0)+1;
+    return c;
+  }
+  function edgeTypeCounts(g){
+    const c = {};
+    for (const e of g.edges) c[e.edge_type] = (c[e.edge_type]||0)+1;
+    return c;
+  }
+  const perPatient = {};
+  for (const [pid, g] of patientGraphs){
+    perPatient[pid] = {
+      condition_type: g.nodes.get(pid).condition_type,
+      n_nodes: g.nodes.size,
+      n_edges: g.edges.length,
+      node_types: nodeTypeCounts(g),
+      edge_types: edgeTypeCounts(g)
+    };
+  }
+  return {
+    n_patients: patientGraphs.size,
+    cohort_n_nodes: cohort.nodes.size,
+    cohort_n_edges: cohort.edges.length,
+    cohort_node_types: nodeTypeCounts(cohort),
+    cohort_edge_types: edgeTypeCounts(cohort),
+    per_patient: perPatient
+  };
+}
+
+/* ---------------- export helpers ---------------- */
+
+function nodeLinkJson(cohort){
+  return {
+    directed: true,
+    multigraph: true,
+    nodes: Array.from(cohort.nodes.values()).map(a => Object.assign({}, a)),
+    links: cohort.edges.map(e => Object.assign({}, e))
+  };
+}
+
+function xmlEscape(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+}
+function graphmlCell(v){
+  if (v === null || v === undefined) return "";
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
+}
+function toGraphml(cohort){
+  const nodeKeys = new Set(), edgeKeys = new Set();
+  for (const attrs of cohort.nodes.values()) for (const k of Object.keys(attrs)) if (k!=="id") nodeKeys.add(k);
+  for (const e of cohort.edges) for (const k of Object.keys(e)) if (!["source","target"].includes(k)) edgeKeys.add(k);
+  const nodeKeyList = Array.from(nodeKeys), edgeKeyList = Array.from(edgeKeys);
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<graphml xmlns="http://graphml.graphdrawing.org/xmlns">\n';
+  nodeKeyList.forEach((k,i) => { xml += `  <key id="n${i}" for="node" attr.name="${xmlEscape(k)}" attr.type="string"/>\n`; });
+  edgeKeyList.forEach((k,i) => { xml += `  <key id="e${i}" for="edge" attr.name="${xmlEscape(k)}" attr.type="string"/>\n`; });
+  xml += '  <graph edgedefault="directed">\n';
+  for (const [id, attrs] of cohort.nodes){
+    xml += `    <node id="${xmlEscape(id)}">\n`;
+    nodeKeyList.forEach((k,i) => {
+      if (attrs[k] !== undefined) xml += `      <data key="n${i}">${xmlEscape(graphmlCell(attrs[k]))}</data>\n`;
+    });
+    xml += '    </node>\n';
+  }
+  cohort.edges.forEach((e, idx) => {
+    xml += `    <edge id="e${idx}" source="${xmlEscape(e.source)}" target="${xmlEscape(e.target)}">\n`;
+    edgeKeyList.forEach((k,i) => {
+      if (e[k] !== undefined) xml += `      <data key="e${i}">${xmlEscape(graphmlCell(e[k]))}</data>\n`;
+    });
+    xml += '    </edge>\n';
+  });
+  xml += '  </graph>\n</graphml>\n';
+  return xml;
+}
+
+function csvCell(v){
+  if (v === null || v === undefined) return "";
+  if (typeof v === "object") v = JSON.stringify(v);
+  const s = String(v);
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+function toNeo4jNodesCsv(cohort){
+  const attrKeys = new Set();
+  for (const attrs of cohort.nodes.values()) for (const k of Object.keys(attrs)) if (!["id","node_type"].includes(k)) attrKeys.add(k);
+  const keys = Array.from(attrKeys).sort();
+  const lines = ["id:ID,:LABEL," + keys.map(csvCell).join(",")];
+  for (const [id, attrs] of cohort.nodes){
+    lines.push([csvCell(id), csvCell(attrs.node_type), ...keys.map(k => csvCell(attrs[k]))].join(","));
+  }
+  return lines.join("\n");
+}
+function toNeo4jEdgesCsv(cohort){
+  const attrKeys = new Set();
+  for (const e of cohort.edges) for (const k of Object.keys(e)) if (!["source","target","edge_type"].includes(k)) attrKeys.add(k);
+  const keys = Array.from(attrKeys).sort();
+  const lines = [":START_ID,:END_ID,:TYPE," + keys.map(csvCell).join(",")];
+  for (const e of cohort.edges){
+    lines.push([csvCell(e.source), csvCell(e.target), csvCell(e.edge_type), ...keys.map(k => csvCell(e[k]))].join(","));
+  }
+  return lines.join("\n");
+}
+
+function download(filename, content, mime){
+  const blob = new Blob([content], { type: mime || "application/octet-stream" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ---------------- UI wiring ---------------- */
+
+let state = { corpus: null, patientGraphs: null, cohort: null, summary: null };
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById("fileInput").addEventListener("change", (ev) => {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      state.corpus = JSON.parse(reader.result);
+      const n = normalizeCorpus(state.corpus).length;
+      if (!n){
+        alert("Parsed the file but found 0 patients/cases in it. " +
+              "Expected {t1d_patients, t2d_patients} or {cases:[...]} shape.");
+      }
+      document.getElementById("buildBtn").disabled = false;
+    } catch(e){
+      alert("Could not parse JSON: " + e.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+const SAMPLE_DATA_URL = "https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/Real-Cases/case-corpus.json";
+document.getElementById("loadSampleBtn").addEventListener("click", () => {
+  const btn = document.getElementById("loadSampleBtn");
+  btn.disabled = true;
+  const prevText = btn.textContent;
+  btn.textContent = "Loading\u2026";
+  fetch(SAMPLE_DATA_URL)
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(corpus => {
+      state.corpus = corpus;
+      const n = normalizeCorpus(corpus).length;
+      document.getElementById("buildBtn").disabled = false;
+      alert("Loaded sample corpus (" + n + " cases).");
+    })
+    .catch(err => {
+      alert("Could not load sample data: " + err.message);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = prevText;
+    });
+});
+
+document.getElementById("buildBtn").addEventListener("click", () => {
+  const corpus = state.corpus;
+  if (!corpus) return;
+  const allPatients = normalizeCorpus(corpus);
+  if (!allPatients.length){
+    alert("No patients found in this corpus file. Expected either {t1d_patients, t2d_patients} " +
+          "or {cases: [...]} (case-corpus format).");
+    return;
+  }
+
+  const patientGraphs = new Map();
+  for (const p of allPatients){
+    patientGraphs.set(p.patient_id, buildPatientGraph(p));
+  }
+  const cohort = buildCohortGraph(patientGraphs);
+  const summary = summarize(patientGraphs, cohort);
+
+  state.patientGraphs = patientGraphs;
+  state.cohort = cohort;
+  state.summary = summary;
+
+  renderStats(summary);
+  populatePatientSelect(patientGraphs);
+  document.getElementById("summaryJson").textContent = JSON.stringify(summary, null, 2);
+  document.getElementById("statsWrap").style.display = "block";
+});
+
+function renderStats(summary){
+  const el = document.getElementById("stats");
+  el.innerHTML =
+    `<div class="stat"><b>${summary.n_patients}</b>patients ingested</div>` +
+    `<div class="stat"><b>${summary.cohort_n_nodes}</b>cohort nodes</div>` +
+    `<div class="stat"><b>${summary.cohort_n_edges}</b>cohort edges</div>` +
+    `<div class="stat"><b>${summary.cohort_edge_types.MODULATES||0}</b>MODULATES edges (comorbidity→plan)</div>` +
+    `<div class="stat"><b>${summary.cohort_edge_types.CONSTRAINS||0}</b>CONSTRAINS edges (obs→plan)</div>`;
+}
+
+function populatePatientSelect(patientGraphs){
+  const sel = document.getElementById("patientSelect");
+  sel.innerHTML = Array.from(patientGraphs.keys())
+    .map(pid => `<option value="${escapeHtml(pid)}">${escapeHtml(pid)}</option>`).join("");
+  sel.onchange = () => renderPatientGraph(sel.value);
+  if (patientGraphs.size) renderPatientGraph(sel.value);
+}
+
+function nodeTypeClass(nt){
+  return "node-" + nt.replace("Node","");
+}
+
+function renderPatientGraph(pid){
+  const g = state.patientGraphs.get(pid);
+  if (!g) return;
+  const patientAttrs = g.nodes.get(pid);
+  document.getElementById("patientMeta").textContent =
+    `${patientAttrs.condition_type} · ${patientAttrs.gender}, dx age ${patientAttrs.diagnosis_age} · ` +
+    `${patientAttrs.facility_tier}/${patientAttrs.resource_status} · ` +
+    `${g.nodes.size} nodes, ${g.edges.length} edges`;
+
+  // nodes table
+  let nodeRows = "";
+  for (const [id, attrs] of g.nodes){
+    if (id === pid) continue; // skip patient node itself, shown in meta line
+    const cls = nodeTypeClass(attrs.node_type);
+    const summaryText = attrs.term || attrs.label || attrs.target || attrs.status || attrs.reason || "";
+    const dateText = attrs.onset || attrs.timestamp || attrs.authored_on || attrs.start || "";
+    nodeRows += `<tr>
+      <td class="mono"><span class="pill ${cls}">${attrs.node_type}</span></td>
+      <td class="mono">${escapeHtml(id.split("::").pop())}</td>
+      <td>${escapeHtml(summaryText)}</td>
+      <td class="mono">${escapeHtml(dateText)}</td>
+    </tr>`;
+  }
+  document.getElementById("nodeTableWrap").innerHTML =
+    `<table><thead><tr><th>Type</th><th>ID</th><th>Summary</th><th class="mono">Date</th></tr></thead>
+     <tbody>${nodeRows}</tbody></table>`;
+
+  // edges table
+  let edgeRows = "";
+  for (const e of g.edges){
+    const isRel = RELATIONAL_EDGES.has(e.edge_type);
+    const shortSrc = e.source.split("::").pop();
+    const shortTgt = e.target.split("::").pop();
+    const props = Object.entries(e).filter(([k]) => !["source","target","edge_type"].includes(k) && e[k] !== null && e[k] !== undefined)
+      .map(([k,v]) => `${k}=${typeof v==="object"?JSON.stringify(v):v}`).join(", ");
+    edgeRows += `<tr>
+      <td><span class="edge-type${isRel ? " rel" : ""}">${e.edge_type}</span></td>
+      <td class="mono">${escapeHtml(shortSrc)}</td>
+      <td class="mono">${escapeHtml(shortTgt)}</td>
+      <td class="mono">${escapeHtml(props)}</td>
+    </tr>`;
+  }
+  document.getElementById("edgeTableWrap").innerHTML =
+    `<table><thead><tr><th>Edge type</th><th>Source</th><th>Target</th><th>Properties</th></tr></thead>
+     <tbody>${edgeRows}</tbody></table>`;
+}
+
+document.getElementById("dlCohortJsonBtn").addEventListener("click", () => {
+  download("cohort_graph.json", JSON.stringify(nodeLinkJson(state.cohort), null, 2), "application/json");
+});
+document.getElementById("dlGraphmlBtn").addEventListener("click", () => {
+  download("cohort_graph.graphml", toGraphml(state.cohort), "application/xml");
+});
+document.getElementById("dlNodesCsvBtn").addEventListener("click", () => {
+  download("neo4j_nodes.csv", toNeo4jNodesCsv(state.cohort), "text/csv");
+});
+document.getElementById("dlEdgesCsvBtn").addEventListener("click", () => {
+  download("neo4j_edges.csv", toNeo4jEdgesCsv(state.cohort), "text/csv");
+});
+document.getElementById("dlSummaryBtn").addEventListener("click", () => {
+  download("graph_summary.json", JSON.stringify(state.summary, null, 2), "application/json");
+});
+</script>
+</body>
+</html>
