@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FHIR Case Corpus Generator</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Arial, sans-serif; max-width: 1100px; margin: 20px auto; padding: 0 16px; color: #1a1a1a; background:#fafafa; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .sub { color: #666; font-size: 13px; margin-bottom: 16px; }
+  .dropzone { border: 2px dashed #bbb; border-radius: 8px; padding: 28px; text-align: center; color: #666; font-size: 14px; background: #fff; cursor: pointer; margin-bottom: 14px; }
+  .dropzone.drag { border-color: #1a1a1a; background: #f0f0f0; color: #1a1a1a; }
+  input[type=file] { display: none; }
+  .toolbar { margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { background: #1a1a1a; color: #fff; border: none; padding: 9px 16px; border-radius: 6px; font-size: 13.5px; cursor: pointer; }
+  button.secondary { background: #eee; color: #1a1a1a; border: 1px solid #ccc; }
+  button.danger { background: #fdecec; color: #a11; border: 1px solid #f0b8b8; padding: 4px 10px; font-size: 12px; }
+  button:hover { opacity: 0.85; }
+  input[type=text] { padding: 6px 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 14px; background:#fff; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f0f0f0; }
+  .panel-label { font-weight: 600; font-size: 13px; margin: 18px 0 6px; }
+  pre#output { width: 100%; max-height: 500px; overflow: auto; background: #0d1117; color: #c9d1d9; font-size: 11.5px; padding: 12px; box-sizing: border-box; border-radius: 6px; margin: 0; white-space: pre-wrap; word-break: break-word; }
+  .warn { background: #fff8e1; border: 1px solid #f0d878; padding: 8px 12px; border-radius: 6px; font-size: 12.5px; margin: 10px 0; }
+  .err { background: #fdecec; border: 1px solid #f0b8b8; color: #a11; padding: 8px 12px; border-radius: 6px; font-size: 12.5px; margin: 6px 0; }
+  .stat { display:inline-block; background:#eef; color:#224; padding:2px 8px; border-radius:4px; font-size:11.5px; margin-right:4px; }
+  .empty { color:#888; font-size:13px; padding: 10px 0; }
+</style>
+</head>
+<body>
+
+<h1>FHIR case corpus generator</h1>
+<div class="sub">Upload multiple FHIR bundle JSON files (e.g. from the narrative-to-FHIR converter) and merge them into a single labeled corpus for downstream analysis. Runs entirely in your browser — no files are uploaded anywhere.</div>
+
+<div class="dropzone" id="dropzone">
+  Drag and drop FHIR case JSON files here, or click to browse<br>
+  <span style="font-size:12px;">Accepts one or more .json files, each a FHIR Bundle</span>
+</div>
+<input type="file" id="fileInput" multiple accept="application/json,.json">
+
+<div id="errors"></div>
+
+<div class="toolbar">
+  <label style="font-size:13px;">Corpus label: <input type="text" id="corpusLabel" value="case-corpus" style="width:180px;"></label>
+  <button id="mergeBtn">Merge into corpus</button>
+  <button class="secondary" id="downloadBtn">Download corpus JSON</button>
+  <button class="secondary" id="clearBtn">Clear all</button>
+</div>
+
+<div class="panel-label" id="loadedLabel">Loaded cases (0)</div>
+<table id="caseTable" style="display:none;">
+  <thead><tr><th>Case ID</th><th>Source file</th><th>Patient</th><th>Conditions</th><th>Observations</th><th>Meds/Procedures</th><th></th></tr></thead>
+  <tbody id="caseTableBody"></tbody>
+</table>
+<div class="empty" id="emptyMsg">No cases loaded yet.</div>
+
+<div class="panel-label">Merged corpus JSON</div>
+<pre id="output">// Load case files and click "Merge into corpus" to see output here</pre>
+
+<script>
+let cases = [];
+
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const errorsDiv = document.getElementById('errors');
+
+dropzone.addEventListener('click', ()=> fileInput.click());
+dropzone.addEventListener('dragover', e=>{ e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', ()=> dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e=>{
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e=> handleFiles(e.target.files));
+
+function handleFiles(fileList){
+  errorsDiv.innerHTML = '';
+  Array.from(fileList).forEach(file=>{
+    if(!file.name.toLowerCase().endsWith('.json')){
+      showError(file.name + ': not a .json file, skipped.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      let parsed;
+      try{
+        parsed = JSON.parse(ev.target.result);
+      }catch(e){
+        showError(file.name + ': invalid JSON — ' + e.message);
+        return;
+      }
+      if(parsed.resourceType !== 'Bundle'){
+        showError(file.name + ': not a FHIR Bundle (resourceType="' + (parsed.resourceType||'?') + '"), skipped.');
+        return;
+      }
+      const caseId = deriveCaseId(file.name, parsed);
+      cases.push({caseId, sourceFile: file.name, bundle: parsed});
+      renderTable();
+    };
+    reader.readAsText(file);
+  });
+}
+
+function showError(msg){
+  const div = document.createElement('div');
+  div.className = 'err';
+  div.textContent = msg;
+  errorsDiv.appendChild(div);
+}
+
+function deriveCaseId(filename, bundle){
+  const base = filename.replace(/\.json$/i, '');
+  let n = 1;
+  let candidate = base;
+  const existing = new Set(cases.map(c=>c.caseId));
+  while(existing.has(candidate)){
+    n++;
+    candidate = base + '-' + n;
+  }
+  return candidate;
+}
+
+function summarizeBundle(bundle){
+  const entries = (bundle.entry || []).map(e=>e.resource).filter(Boolean);
+  const patient = entries.find(r=>r.resourceType === 'Patient');
+  let patientLabel = 'unknown';
+  if(patient){
+    const ageExt = (patient.extension||[]).find(x=>x.url && x.url.includes('patient-age'));
+    const gender = patient.gender || 'unknown';
+    patientLabel = (ageExt ? ageExt.valueString : '') + (ageExt ? ', ' : '') + gender;
+  }
+  const conditions = entries.filter(r=>r.resourceType==='Condition').length;
+  const observations = entries.filter(r=>r.resourceType==='Observation').length;
+  const meds = entries.filter(r=>r.resourceType==='MedicationStatement').length;
+  const procs = entries.filter(r=>r.resourceType==='Procedure').length;
+  return {patientLabel, conditions, observations, medsProcs: meds+procs};
+}
+
+function renderTable(){
+  const tbody = document.getElementById('caseTableBody');
+  const table = document.getElementById('caseTable');
+  const emptyMsg = document.getElementById('emptyMsg');
+  document.getElementById('loadedLabel').textContent = 'Loaded cases (' + cases.length + ')';
+
+  if(cases.length === 0){
+    table.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  table.style.display = 'table';
+  emptyMsg.style.display = 'none';
+
+  tbody.innerHTML = '';
+  cases.forEach((c, idx)=>{
+    const s = summarizeBundle(c.bundle);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${escapeHtml(c.caseId)}" data-idx="${idx}" class="caseIdInput" style="width:140px;"></td>
+      <td>${escapeHtml(c.sourceFile)}</td>
+      <td>${escapeHtml(s.patientLabel)}</td>
+      <td><span class="stat">${s.conditions}</span></td>
+      <td><span class="stat">${s.observations}</span></td>
+      <td><span class="stat">${s.medsProcs}</span></td>
+      <td><button class="danger" data-remove="${idx}">Remove</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('.caseIdInput').forEach(inp=>{
+    inp.addEventListener('change', e=>{
+      const idx = Number(e.target.dataset.idx);
+      const newId = e.target.value.trim();
+      if(newId) cases[idx].caseId = newId;
+    });
+  });
+  tbody.querySelectorAll('[data-remove]').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const idx = Number(e.target.dataset.remove);
+      cases.splice(idx, 1);
+      renderTable();
+    });
+  });
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById('mergeBtn').addEventListener('click', ()=>{
+  if(cases.length === 0){
+    document.getElementById('output').textContent = '// No cases loaded. Upload FHIR case JSON files first.';
+    return;
+  }
+  const label = document.getElementById('corpusLabel').value.trim() || 'case-corpus';
+  const corpus = {
+    corpusId: label,
+    generatedAt: new Date().toISOString(),
+    caseCount: cases.length,
+    cases: cases.map(c=>({
+      caseId: c.caseId,
+      sourceFile: c.sourceFile,
+      summary: summarizeBundle(c.bundle),
+      bundle: c.bundle
+    }))
+  };
+  window.caseCorpus = corpus;
+  document.getElementById('output').textContent = JSON.stringify(corpus, null, 2);
+});
+
+document.getElementById('downloadBtn').addEventListener('click', ()=>{
+  const content = document.getElementById('output').textContent;
+  if(!content || content.startsWith('//')){
+    showError('Nothing to download — click "Merge into corpus" first.');
+    return;
+  }
+  const label = document.getElementById('corpusLabel').value.trim() || 'case-corpus';
+  const blob = new Blob([content], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = label + '.json';
+  a.click();
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  cases = [];
+  errorsDiv.innerHTML = '';
+  document.getElementById('output').textContent = '// Load case files and click "Merge into corpus" to see output here';
+  renderTable();
+  fileInput.value = '';
+});
+
+renderTable();
+</script>
+</body>
+</html>
