@@ -193,6 +193,8 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Clinical Document Gap Analysis Finder](Clinical_Document_Gap_Analysis_Finder.md) | Clinical Document Gap Analysis Finder |
 | -- | [Complication & Trajectory Map Generator](Complication-Trajectory-Map.md) | Complication & Trajectory Map Generator |
 | -- | [The Interrogator: Upstream Framing Audit](The-Interrogator-Upstream-Framing-Audit.md) | The Interrogator: Upstream Framing Audit |
+| -- | [Module CM — Clinical Media Educational Report Generator](Module-CM-Clinical-Media-Educational-Report.md) | Module CM — Clinical Media Educational Report Generator |
+| -- | [Module IE — Investigations & Examinations Utility Mapper](Module-IE-Investigations-Examinations-Utility-Mapper.md) | Module IE — Investigations & Examinations Utility Mapper |
 
 
 
