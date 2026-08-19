@@ -1,0 +1,105 @@
+Case ID: case_079
+Case link: https://127rohithsomani.blogspot.com/2021/06/medicine-case-discussion-9th-june-2021.html
+
+Title: MEDICINE CASE DISCUSSION — 9th June 2021 — Case of 48 years female patient with dengue
+
+A 48 year old female patient presented with chief complaints:
+- Fever since 5 days
+- Vomiting and pain abdomen since 3 days
+
+HISTORY OF PRESENT ILLNESS:
+- Patient was apparently asymptomatic 5 days back; she had high grade fever which was intermittent and not associated with chills and rigors
+- 3 days back she developed per-abdominal pain and vomiting
+- Pain type: colicky
+- 2-3 episodes of vomiting per day, non-projectile, non-bile stained
+- Generalized weakness and decreased appetite since 3 days
+- Went to local hospital, diagnosed dengue positive, referred to this hospital as platelet count was low
+
+HISTORY OF PAST ILLNESS:
+- No h/o cough, cold, SOB
+- No h/o loose stools, bleeding gums
+- No h/o any rash over body
+- No other complaints
+- Not a known case of DM, HTN, asthma, epilepsy, CAD, TB
+
+TREATMENT HISTORY:
+No previous treatment history
+
+PERSONAL HISTORY:
+- Appetite: decreased since 3 days
+- Bowel and bladder movements: normal
+- No allergies
+- No addictions
+
+FAMILY HISTORY: Not significant
+
+PHYSICAL EXAMINATION:
+- Conscious, coherent, cooperative, well-nourished, well-oriented to time, place, person
+- Pallor: no
+- Icterus: no
+- Cyanosis: no
+- Lymphadenopathy: no
+- Edema: no
+- Clubbing of fingers: no
+
+VITALS:
+- Temperature: 100°F
+- RR: 18/min
+- PR: 86/min
+- BP: 130/80 mmHg
+- SpO2: 98%
+
+SYSTEMIC EXAMINATION:
+
+CVS: S1 & S2 heard, no murmurs or cardiac thrills
+
+Respiratory system:
+- No dyspnoea
+- No wheeze
+- Trachea central
+- Breath sounds: vesicular
+
+Abdomen:
+- Inspection: scaphoid shape
+- Palpation: tenderness present in right hypochondrium, epigastrium, umbilical region; no palpable mass; hernial orifices normal; liver and spleen not palpable
+- Percussion: liver span normal
+- Auscultation: bowel sounds present
+
+CNS: intact
+Gait: normal
+
+INVESTIGATIONS:
+
+USG abdomen:
+- Gallbladder wall edema
+- Mild ascites
+- Right kidney mild hydronephrosis
+
+Chest X-ray: [embedded image; findings not extractable as text]
+
+Hematology report (qualitative description given in text; specific numeric values only in embedded image):
+- WBC: lymphocytic leucocytosis
+- Platelet: thrombocytopenia
+
+Blood group: AB positive
+
+Bilirubin level (qualitative description given in text; specific numeric values only in embedded image):
+- Total bilirubin: elevated
+- Direct bilirubin: elevated
+
+Blood urea: [value in embedded image, not extracted as text]
+
+Serum electrolytes: [values in embedded image, not extracted as text]
+
+[NOTE — extraction limitation: chest X-ray findings, exact hemogram values (WBC count, platelet count), exact bilirubin values, blood urea value, and serum electrolyte values are all embedded as images with no accompanying numeric text — only qualitative descriptors ("lymphocytic leucocytosis," "thrombocytopenia," "elevated") are available for the hematology and bilirubin panels, and blood urea/electrolytes have no text description at all, only images. USG findings, by contrast, are given in full as text. The auditor should treat any DRM-output claims of specific numeric lab values (e.g., an exact platelet count, exact bilirubin level, exact electrolyte values) as unverifiable from this extraction and apply the fabrication-check criterion accordingly — only the qualitative direction of these results (low platelets, elevated bilirubin) can be confirmed from text, not specific numbers.]
+
+PROBABLE DIAGNOSIS:
+Dengue, as the test for NS1 antigen is positive.
+
+TREATMENT:
+- IV fluids: normal saline or Ringer lactate at rate of 150ml/hr
+- Tab. Pan 40mg OD in morning before breakfast
+- Inj. Optineuron 1 ampule in 100ml NS IV/OD
+- Tab. Dolo 650mg BD
+- BP/PR/Temp/SpO2 monitoring every 4 hours
+- Watch for bleeding manifestations

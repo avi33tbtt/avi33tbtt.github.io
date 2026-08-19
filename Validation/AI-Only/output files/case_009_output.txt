@@ -1,0 +1,124 @@
+Case link: http://divyarachana.blogspot.com/2021/03/a-66f-with-co-feveronoffincreased.html
+
+DATA COMPLETENESS NOTE: Investigation results appear only as embedded images in the source, not
+machine-readable text. No numeric labs (RFT/creatinine, CBP, stool studies) are given in the
+prose despite the provisional diagnosis naming "AKI (intrinsic)" — this is flagged explicitly
+below rather than inferred.
+
+---
+DIAGNOSTIC REASONING MAP — Case_009 (66F, fever on/off + increased stool frequency + vomiting)
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 66F, fever (on/off), increased stool frequency (3 episodes/day x2d, normal
+  consistency, no blood/mucus), nausea and vomiting (10 episodes/day x2d, non-projectile,
+  non-bilious, food particles, ~30min post-prandial)
+  Decision Point: Yes — Type: Bifurcating
+  Insight: The triad of fever + diarrhea (non-bloody) + high-frequency vomiting in an elderly
+  patient should immediately activate two parallel tracks — acute gastroenteritis (infective,
+  self-limited) vs. a systemic/pre-renal process where GI symptoms are secondary to volume loss
+  or another driver — and the very high vomiting frequency (10/day) is disproportionate to
+  typical uncomplicated gastroenteritis, which should have been flagged as atypical rather than
+  taken at face value.
+
+NODE 2 — History
+  2a. History of similar complaints 3 months ago: Decision Point: Missed
+      Insight: A recurrent identical presentation in an elderly patient is a decision point that
+      should prompt investigation into a recurring underlying cause (e.g., partial bowel
+      obstruction, biliary pathology, recurrent UTI/pyelonephritis with GI symptoms) rather than
+      being treated as coincidental — the case narrative does not show this being reasoned
+      through.
+  2b. No significant weight loss: Decision Point: Closing
+      Insight: Lowers (but does not eliminate) concern for an occult malignant process as the
+      driver of the recurrent symptoms.
+  2c. Malnourished on exam, obese abdomen shape (noted together): Decision Point: Missed
+      Insight: "Looks malnourished" alongside an obese abdomen is an internally tension-holding
+      finding (possible sarcopenic obesity, or ascites masquerading as obesity) that is not
+      explored further in the write-up — this combination itself should have been a decision
+      point rather than two separately listed observations.
+  2d. No known DM/HTN/TB/CAD/asthma/CVA/thyroid/epilepsy: Decision Point: No
+      Insight: Reduces likelihood of several common confounders but does not narrow the acute
+      differential meaningfully.
+  Single most important history: 2a (recurrence at 3 months) — most should have changed the
+  approach from "treat this episode" to "investigate the recurring pattern."
+  Missing history: No stated urinary symptoms directly asked (relevant given eventual AKI
+  diagnosis), no medication history (nephrotoxic exposure e.g. NSAIDs), no oral intake/hydration
+  timeline prior to admission, no fluid loss estimate to support a pre-renal AKI mechanism.
+
+NODE 3 — Examination
+  3a. Temp 100.2°F, PR 96, BP 120/80, SpO2 99%, GRBS 83: Decision Point: No
+      Insight: Vitals are only mildly deranged (low-grade fever, high-normal pulse) — notably
+      not showing frank hypotension or tachycardia that would be expected with clinically
+      significant dehydration from 10 episodes/day of vomiting, which is a tension the case
+      doesn't address.
+  3b. No pallor/icterus/cyanosis/clubbing/lymphadenopathy/pedal edema: Decision Point: Closing
+      Insight: Argues against chronic anemia, hepatobiliary disease, and fluid-overload states
+      as contributors — narrows toward an acute, non-chronic process.
+  3c. Diffuse abdominal tenderness, no organomegaly, obese shape: Decision Point: Bifurcating
+      Insight: Diffuse (rather than localized) tenderness is nonspecific and consistent with
+      enteritis, but the absence of localizing signs means a surgical abdomen or focal source
+      (e.g., cholecystitis, appendicitis) is not strongly supported nor fully excluded — this
+      should be an open branch pending investigation, not implicitly closed.
+  System 1 nodes: Fever + diarrhea + vomiting quickly read as "gastroenteritis" (illness script
+  match)
+  System 2 nodes: Reconciling near-normal vital signs against the reported severity of vomiting
+  frequency — a node that appears to have been under-examined given the eventual AKI diagnosis.
+  Unfollowed finding: The malnourished/obese exam tension (2c/3-adjacent) is documented but not
+  investigated further in the text.
+
+NODE 4 — Investigations
+  4a. Investigation images (labeled as 3 image files in source): Decision Point: Cannot classify
+      Insight: Values are embedded as images only, not extractable as text. Given the final
+      diagnosis specifies "AKI (intrinsic)," renal function values (creatinine, urea, electrolytes)
+      are presumably among these images but cannot be verified from the text — auditor should
+      re-fetch image assets directly if numeric confirmation is required.
+  Unused/unverifiable results: All investigation data supporting the AKI diagnosis is
+  inaccessible in text form.
+  Missing investigations (as documented in text): No stool studies, no blood/urine culture, no
+  explicit creatinine trend documented in prose despite AKI being the working diagnosis.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Acute gastroenteritis with AKI (intrinsic)
+  Point of closure: Not explicitly narrated in the text — diagnosis appears directly under
+  "Provisional Diagnosis" without a stated reasoning bridge from findings to conclusion.
+  Classification of leap: Pattern-recognition closure (System 1) — the presenting triad matches
+  the "gastroenteritis" illness script strongly, and "AKI (intrinsic)" is appended without
+  supporting renal-function values shown in text; as written, this is closer to an asserted
+  label than a demonstrated synthesis.
+  Open branches at closure: Pre-renal AKI (from vomiting-driven volume loss) is not explicitly
+  distinguished from intrinsic AKI in the text — the "intrinsic" qualifier is stated but not
+  justified against a documented FeNa, urine microscopy, or exclusion of a pre-renal picture,
+  which is the standard branch point for that distinction. Recurrent-episode history (2a) is
+  also never folded into the synthesis.
+  Synthesis insight: The diagnosis's most clinically important qualifier — "intrinsic" rather
+  than "pre-renal" AKI — is exactly the kind of claim that changes management (fluid strategy,
+  nephrology involvement, prognosis) and is the node most at risk of being asserted without
+  visible evidentiary support in this write-up.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 1 — Early anchoring to "gastroenteritis" from the presenting triad likely
+  carried forward without being revisited when vitals turned out disproportionately mild for the
+  reported vomiting frequency.
+  Availability: Not clearly present in this text.
+  Premature closure: Node 5 — The "intrinsic AKI" qualifier is asserted without the case
+  narrative showing the pre-renal-vs-intrinsic reasoning (urine studies, FeNa, response to
+  fluids) that this distinction requires.
+  Framing: Node 1 — Complaint framed by triage as gastroenteritis-pattern symptoms, which may
+  have limited deeper interrogation of the recurrent-episode history (2a).
+  Search satisficing: Node 2/5 — The 3-months-ago recurrence (2a) was not pursued into a search
+  for an underlying recurring cause once the current episode looked treatable as acute
+  gastroenteritis.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 5 (Synthesis — intrinsic vs. pre-renal AKI)
+  Why: This is the node where a management-changing qualifier ("intrinsic") is added to the
+  diagnosis without the case text showing the evidence that distinguishes it from the far more
+  common pre-renal AKI expected from a patient vomiting 10 times a day. For a learner, the
+  transferable lesson is that renal-injury classification is a decision point in its own right,
+  not a label that follows automatically from "AKI is present" — it needs its own explicit
+  evidence trail (urine studies, fluid-responsiveness) documented at the time of diagnosis.
+
+---
+FABRICATION CHECK (per Section 4 rubric): No node above introduces findings absent from the
+source text. Image-only investigation data and the unjustified "intrinsic" AKI qualifier are
+flagged as gaps rather than filled in with plausible values.

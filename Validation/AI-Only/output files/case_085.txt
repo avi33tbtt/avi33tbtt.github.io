@@ -1,0 +1,48 @@
+Case ID: case_085
+Case link: https://22bangarilaxmiraj.blogspot.com/2022/05/27-year-old-male-pt-with-shortness-of.html
+
+Title: 27 year old male Pt with shortness of breath, burning micturition
+
+CHIEF COMPLAINTS:
+A patient came to OPD with c/o SOB grade 4 since morning, burning micturition since 3 days, bilateral flank pain since 3 days.
+
+HISTORY OF PRESENTING ILLNESS:
+
+Patient apparently asymptomatic 1 year ago, with similar complaints for which he was admitted at an outside hospital where he was told he has kidney disease, HTN, DM. Managed conservatively.
+
+PAST HISTORY:
+- Known case of HTN & DM since 1 year
+- Known case of renal calculi 3 years back
+
+GENERAL EXAMINATION:
+Patient conscious, coherent, cooperative.
+No pallor, icterus, cyanosis, clubbing, lymphadenopathy, edema (recorded in source as "No PICKLE" — a mnemonic shorthand for this list of negative findings).
+
+VITALS:
+- Temperature: 90°F (as recorded in source; note this value is physiologically implausible for a living patient and is very likely a transcription error, possibly intended as ~98°F or reported in a different unit/format — flagged for auditor, not silently corrected)
+- PR: 113 bpm
+- RR: 18 cpm
+- BP: 130/100 mmHg
+- GRBS: 136 mg/dl
+
+CVS: heart sounds S1 S2 heard, no murmurs
+Respiratory system: NVBS
+Per abdomen: non-tender, soft
+CNS: NAD
+
+INVESTIGATIONS:
+[NOTE — extraction limitation: the Investigations section consists of 10 embedded images with no accompanying text values, labels, or findings whatsoever. No specific lab names, values, or imaging findings could be extracted as text for this case. Given the diagnosis of "AKI on CKD," this represents a major gap — renal function tests (urea, creatinine, electrolytes), urinalysis, and likely imaging (USG KUB, given the history of renal calculi) would normally be central to this diagnosis, and none of that data is recoverable from this extraction.]
+
+DIAGNOSIS:
+AKI on CKD
+
+TREATMENT:
+- Tab. Lasix PO 40mg BD
+- Tab. Met XL 25mg PO/OD
+- Tab. Atorvas 25mg PO HS
+- Tab. PCM 500mg PO/OD
+- Tab. Pan 40mg PO OD
+- Tab. Nicardia 20mg BD
+- Inj. HAI 8am-2pm-8pm
+
+[OVERALL FLAG for auditor: this case is notably thinner than most in the corpus — brief history, minimal exam detail, and an entirely image-based investigations section (10 images, zero extractable text) despite carrying a lab-dependent diagnosis (AKI on CKD). Any DRM-output claims of specific investigation values should be treated as unverifiable per the fabrication-check criterion in Section 4. Also flagged: the recorded temperature of 90°F is very likely an error in the source and should not be treated as a confirmed vital sign without noting the implausibility.]

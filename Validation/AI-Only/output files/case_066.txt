@@ -1,0 +1,55 @@
+Case ID: case_066
+Case link: https://12avirnenivaishnavi.blogspot.com/2022/04/drug-induced-hepatitis-secondary-to.html
+
+Title: DRUG INDUCED HEPATITIS SECONDARY TO BORDERLINE LEPROMATOUS LEPROSY DAPSONE SYNDROME
+
+31 year old male, photographer by occupation, came to the casualty with complaints of:
+- Yellowish discolouration of sclera since 4 days
+- Fever since 2 days, insidious onset, gradually progressive, subsided on medication
+- C/o nausea and vomitings since 2 days, non-bilious and non-projectile, food particle as content; was taken to local hospital in view of vomitings
+
+HISTORY OF PRESENT ILLNESS:
+
+Patient was apparently asymptomatic 17 years back, then his mother observed a hypopigmented patch over the cheek and multiple hypopigmented patches all over the body; this was neglected, thought to be due to vitamin deficiency. 15 days back, mother observed a hypopigmented patch on the right arm and took him to a local hospital, where he was diagnosed with Hansen's (leprosy) and was started on treatment since then.
+
+No complaints of shortness of breath, palpitations, headache, orthopnea, PND.
+Non-alcoholic. Non-smoker.
+
+ON EXAMINATION:
+- Patient is conscious, coherent, cooperative
+- Oriented to time, place and person
+- Pallor ++
+- Icterus ++
+- No cyanosis, clubbing, or lymphadenopathy
+- Febrile: 99.9 F
+- BP: 130/80 mmHg
+- PR: 83 bpm, regular, normal volume
+
+SYSTEMIC EXAMINATION:
+- CVS: S1 S2, no murmurs
+- RS: NVBS+, no crepts
+- P/A: mild splenomegaly+, BS+
+- CNS:
+  - Tone: UL right normal, left normal; LL right normal, left normal
+  - Power: UL right 5/5, left 5/5; LL right 5/5, left 5/5
+  - Reflexes: Biceps, Supinator, Triceps, Ankle, Knee — right 2+ each, plantar flexor; left 2+ each, plantar flexor
+- Sensory:
+  - Fine touch: present
+  - Crude touch: present
+  - Lost sensation over the hypopigmented lesion on lower limbs
+  - Intact sensation over the lesions on forearm and neck (touch, pain and temperature intact over forearm/neck lesions; pain and touch lost over lower limb lesions)
+
+DIAGNOSIS (working/differential):
+- ? Wilson's disease with Hansen's
+- ? Drug induced hepatitis
+
+TREATMENT GIVEN:
+1. Tab. Udiliv 300mg PO/BD
+2. Tab. Rifaximine 550mg PO/BD
+3. Syp. Lactulose 10ml PO/TID
+4. Inj. Pantop 40mg IV/OD
+5. Inj. Zofer 4mg IV/SOS
+6. IVF NS and RL @ 50ml with 1 amp of Optineuron IV/OD
+7. Monitor vitals 2nd hourly
+
+[NOTE — extraction limitation: this case page includes several embedded lab/investigation report images (four images total, appearing after the examination section and before the diagnosis) whose numeric content could not be extracted as text. No investigation values (e.g., LFTs, dapsone-related labs, eosinophil counts, or other bloodwork that would typically support a "drug-induced hepatitis" / dapsone syndrome diagnosis) are available in this text version. The auditor should treat any DRM-output claims of specific investigation results for this case as unverifiable from this extraction, and should flag them rather than accept them at face value, per the fabrication-check criterion in Section 4.]

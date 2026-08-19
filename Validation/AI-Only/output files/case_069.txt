@@ -1,0 +1,71 @@
+Case ID: case_069
+Case link: https://138sanjaygeneralmedicine.blogspot.com/2020/05/general-medicine-case-presentation-by.html
+
+Title: GENERAL MEDICINE case presentation by R.Sanjay138 — "A 42 yr old Women With Multiple Health Events"
+
+[IMPORTANT FLAG — non-standard source, read before running through Module DRM:
+This page is NOT a conventional case write-up with History / Examination / Investigations / Diagnosis sections. It is a student author's own speculative interpretive analysis of a separately-linked "real" patient case (referenced but not reproduced here: https://classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html). The content below consists almost entirely of the student's inferential attributions — e.g. "may indicate X," "these features are suggestive of Y," genetic-marker-to-disease-risk claims from a purported genome sequencing report — rather than documented clinical findings, exam signs, or lab results in the usual sense. There is no formal General/Systemic examination section and no lab/investigation panel as seen in other e-log cases.
+Recommendation: this source is a poor fit for the DRM rubric's 5-node structure (Presenting Complaint / History / Examination / Investigations / Synthesis), since "Examination" and "Investigations" as defined in the rubric don't really exist here — only genetic-marker lists and a symptom-to-hypothesis narrative. If included in the pilot, expect the auditor to have difficulty distinguishing source claims from the student-author's own speculation, and consider flagging this case for the "unusually high specificity/confidence disproportionate to info given" contamination signal in Section 3, or excluding it from the sample and substituting another case.]
+
+Symptoms and the student-author's speculative attributions, as presented on the page:
+
+JAUNDICE at birth, persistent for a time — author suggests this may indicate haemolytic anaemia due to erythroblastosis fetalis.
+
+SLEEPLESSNESS since birth — author attributes this to possible G6PD deficiency or AMPD1 deficiency, reasoning from other reported symptoms (anemia, symptom exacerbation after fava beans/antiviral drugs for G6PD; muscle dysfunction for AMPD1).
+
+OEDEMA (fluctuating) — described as extremely fluctuating within days; patient-reported triggers: emotional stress, "wrong" food, excess exercise, smoke; relieved spontaneously; associated with shortness of breath and dark urine. Author attributes this to G6PD deficiency causing free-radical organ damage and ion loss.
+
+NEUROLOGICAL SYMPTOMS — history of delayed development with aggression, anxiety, sensory disorders, severe headaches (with aura, numbness, vertigo) and a history of CSF rhinorrhoea. Author attributes these to glycine deficiency/oxidative brain damage from G6PD deficiency.
+
+FATIGUE — attributed by author to hemolytic anemia and to AMPD1 deficiency-related muscle weakness.
+
+OTHER REPORTED FEATURES (as listed by the author, with author's own diagnostic labels):
+- Excessive body hair at age 3
+- Increased pain tolerance — attributed to "WNK1 Hereditary Sensory Neuropathy"
+- MTHFR gene — attributed to hyperhomocysteinemia
+- VWF mutation — attributed to bleeding disorders / menstrual bleeding
+- ANKK1 — attributed to ADHD
+- Increased risk of opportunistic infections
+- Genital ulcers
+- Uveitis
+
+FAMILY HISTORY (as stated):
+- Mother diagnosed with fibromyalgia
+- Father had a heart attack in his 40s
+- Grandfather had an early death
+- Author notes an "increased familial risk of cardiovascular disease"
+
+GENETICS (as listed by the author, purportedly from genome sequencing):
+- Seattle type G6PD deficiency
+- AMPD1 deficiency, heterozygous
+- MTHFR homozygous C677T (stated as 10-20% efficiency in processing folic acid, high homocysteine, low B12/folate)
+- WNK1 mutation
+- HLA-DRA — stated 3x higher peanut allergy risk in European-ancestry populations
+- VWF — associated with Von Willebrand disease type 1
+- DIO2 — stated increased risk of osteoarthritis and bipolar disorder
+- CHRNA5 — stated increased nicotine dependence risk, decreased cocaine dependence risk
+- ANKK1 — stated tardive dyskinesia risk, higher ADHD risk, more alcohol dependence, lower postoperative nausea risk, increased obesity
+- TG — stated risk of autoimmune thyroiditis
+- LOXL1/LOXL1-AS1 — stated 10x higher glaucoma risk in most populations
+- PNPLA3 — stated increased liver fat / alcoholic liver disease risk
+- BACE1 — stated increased Alzheimer's risk in ApoE4 carriers
+- BSN — stated gene linked to Crohn's disease
+- General statement of increased risk for: Alzheimer's, ADHD, autoimmune thyroid and other autoimmune disorders, lung cancer, cluster headache, obesity, raised ICP, diabetes, RA, bipolar disorder, lung cancer/issues
+
+PROPOSED TREATMENT (as listed by author):
+Topical therapy: creams for oral/genital ulcers; eye drops for uveitis.
+Systemic therapy: immunosuppressants (e.g. infliximab), high-dose corticosteroids; note that colchicine is proposed for genital ulcers but stated as contraindicated here due to G6PD deficiency.
+
+General measures listed:
+1. Ribose diet
+2. L-serine for sleep
+3. Reducing oxidative stress
+4. Vitamin B complex
+5. Antioxidant vitamins
+6. Fructose + antioxidants
+7. Salt + butter
+8. Keto diet
+9. Iron/folate supplements for anemia
+10. Antioxidant supplement pycnogenol
+11. Cimetidine for swelling instead of NSAIDs
+12. NAC

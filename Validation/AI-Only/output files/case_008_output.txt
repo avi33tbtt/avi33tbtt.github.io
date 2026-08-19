@@ -1,0 +1,142 @@
+Case link: http://avinashrollnumber1.blogspot.com/2021/04/general-medicine-case-7.html
+
+DATA COMPLETENESS NOTE: The investigation results (CBP, LFT, RFT, CUE, USG abdomen, 2D echo,
+PT/aPTT/INR) in this source are embedded as images, not machine-readable text. All investigation
+nodes below reflect only what is stated in prose. Nodes where numeric/imaging findings could not
+be verified from text are marked "Cannot classify" rather than inferred, to avoid fabrication.
+
+---
+DIAGNOSTIC REASONING MAP — Case_008 (55M toddy climber, RUQ pain + fever)
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 55M, toddy climber, RUQ pain x10d (sudden onset, dragging, non-radiating, worse
+  standing) + fever x7d (high-grade, continuous, chills/rigor)
+  Decision Point: Yes — Type: Bifurcating
+  Insight: RUQ pain + fever in a chronic alcohol-exposed (toddy) male immediately splits into
+  hepatobiliary infective (abscess/cholangitis) vs. hepatocellular (alcoholic hepatitis) branches
+  before any exam data is available — occupation/exposure history is doing diagnostic work here
+  that a generic "abdominal pain" complaint would not.
+
+NODE 2 — History
+  2a. Occupation (toddy climber, alcohol 1L/day x30y): Decision Point: Pivotal
+      Insight: Chronic heavy alcohol intake is the single strongest prior for both alcoholic
+      liver disease and amoebic/pyogenic liver abscess (amoebiasis risk is epidemiologically
+      linked to alcohol use in endemic settings), and should anchor the differential toward the
+      liver before exam.
+  2b. Recent hospitalization 14d ago with similar complaints, treated 3d IV antibiotics:
+      Decision Point: Missed (flagged, not confirmed)
+      Insight: A partially-treated infection recurring after a short antibiotic course is a
+      classic pattern for an undrained abscess (source control failure) rather than a new
+      infection — this should have been explicitly weighed at the time, and the case narrative
+      doesn't show it being reasoned through.
+  2c. Pain aggravated on standing, relieved somewhat by medication: Decision Point: Missed
+      Insight: Positional/postural aggravation of RUQ pain is a soft clue toward a
+      space-occupying hepatic lesion (capsular stretch) but is under-explored in the write-up;
+      not enough to classify further without exam correlation.
+  2d. Tobacco (beedi 10/day x30y): Decision Point: No
+      Insight: Relevant background comorbidity risk but not decision-relevant to this
+      presentation.
+  Single most important history: The 14-day-old partially-treated illness (2b) — most should
+  have changed the differential toward "inadequately source-controlled infection" rather than a
+  fresh diagnostic workup from zero.
+  Missing history: No documentation of amoebic exposure risk (contaminated water/food), no
+  travel history taken, no explicit alcohol-related liver disease history (prior jaundice
+  episodes, ascites), no HIV risk assessment despite chronic illness pattern.
+
+NODE 3 — Examination
+  3a. Mild scleral icterus: Decision Point: Bifurcating
+      Insight: Confirms hepatobiliary involvement but doesn't distinguish obstructive vs.
+      hepatocellular vs. abscess-driven cholestasis — needs LFT pattern to resolve, which the
+      case doesn't report as numeric values.
+  3b. Pedal edema (pitting, progressive, up to ankles): Decision Point: Bifurcating
+      Insight: In this context most likely hypoalbuminemia from chronic liver disease rather
+      than CHF (JVP normal, no murmurs, S1S2 normal) — the exam itself does useful work ruling
+      out a cardiac branch of the "bilateral pedal edema" differential the case-author correctly
+      listed.
+  3c. Decreased air entry + fine crepitations right lower lobe / right infra-axillary &
+      infrascapular: Decision Point: Pivotal
+      Insight: Sympathetic right-sided pleural effusion adjacent to a right lobe liver process
+      is a well-recognized contiguous-spread pattern in liver abscess (diaphragmatic irritation)
+      — this finding should have been read together with 3a rather than treated as an isolated
+      respiratory finding.
+  3d. Liver span 11cm, not palpable, no mass, no free fluid, RUQ tenderness only:
+      Decision Point: Closing
+      Insight: A non-palpable liver with normal span argues against massive hepatomegaly or a
+      large superficial mass, narrowing toward a smaller/deep lesion (consistent with abscess)
+      rather than diffuse cirrhotic enlargement.
+  System 1 nodes: icterus + toddy history (rapid pattern match to hepatic pathology)
+  System 2 nodes: reconciling pedal edema against CVS exam (deliberate ruling-out of cardiac
+  cause); reconciling pleural findings with abdominal pathology
+  Unfollowed finding: The provisional differential lists 8 causes of bilateral pedal edema
+  (gravitational, venous, drug, CHF, lymphedema, pretibial myxedema, renal, liver failure) but
+  the exam only actively rules out CHF — renal and drug causes are listed but never explicitly
+  closed against RFT/CUE data (which exist only as unreadable images in the source).
+
+NODE 4 — Investigations
+  4a. CBP, LFT, RFT, CUE, PT/aPTT/INR: Decision Point: Cannot classify
+      Insight: Values present only as embedded images in the source, not extractable as text;
+      auditor/reviewer should re-fetch the image assets directly if numeric verification is
+      required. Do not treat any numeric claim about these as sourced from this run.
+  4b. Chest X-ray — mild pleural effusion: Decision Point: Closing/Confirming
+      Insight: Corroborates node 3c; supports a hepatic-source diagnosis over a primary
+      pulmonary one.
+  4c. USG abdomen: Decision Point: Cannot classify
+      Insight: Referenced but findings not given in text (image only); this is the single most
+      important missing data point for confirming "liver abscess," since the final diagnosis
+      explicitly leans on "confirmed by ultrasound" — that claim cannot be verified from the
+      text alone.
+  4d. 2D echo: Decision Point: Cannot classify
+      Insight: Presumably ordered to formally exclude cardiac cause of edema (consistent with
+      3b) but result not in text.
+  Unused/unverifiable results: All four image-based investigations are referenced as supporting
+  the final diagnosis but their actual values are outside this run's reach.
+  Missing investigations: No stated blood/pus culture, no amoebic serology, despite this being
+  the epidemiologically likely organism in a toddy-climber with recurrent partially-treated
+  illness.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Liver abscess (probable pyogenic or amoebic), "confirmed by
+  ultrasound"
+  Point of closure: After USG abdomen, per the write-up
+  Classification of leap: Pattern-recognition closure (System 1) — RUQ pain + fever + icterus +
+  alcohol history + right pleural effusion fits the liver abscess illness script strongly, and
+  USG is cited as confirmatory, but the actual USG findings are not reported in the text, so
+  from this reviewer's vantage the closure is asserted rather than demonstrated.
+  Open branches at closure: Cholangitis/biliary obstruction not explicitly excluded by imaging
+  findings (text doesn't report biliary tree status); alcoholic hepatitis not explicitly excluded
+  (no LFT pattern given in text); renal cause of edema not explicitly excluded (no RFT values in
+  text).
+  Synthesis insight: The clinical gestalt (occupation, alcohol, recurrent partially-treated
+  fever, RUQ pain, right effusion) strongly supports liver abscess and is a reasonable pattern
+  match, but as written the case narrative treats the ultrasound as the closing decision point
+  without showing the reasoning — a fabrication-risk zone for any downstream user of this DRM
+  output who might assume the numeric confirmation exists in accessible text.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 1 — Occupation ("toddy climber") anchors reasoning toward alcohol-related
+  hepatic disease from the first line, which is a reasonable but unverified prior.
+  Availability: Not clearly present — no evidence of a recent memorable case biasing this
+  write-up.
+  Premature closure: Node 5 — Diagnosis is asserted as "confirmed by ultrasound" without the USG
+  findings being shown, meaning closure is documented but not demonstrated in the source text.
+  Framing: Node 1 — The case is pre-framed by the referring narrative's own provisional
+  differential list (8 causes of pedal edema), which structures the case-author's reasoning
+  toward a checklist-elimination approach rather than an open differential.
+  Search satisficing: Node 4–5 — Once USG was cited as supportive, no further culture/serology
+  confirmation (pyogenic vs. amoebic) was pursued in the text, despite this distinction changing
+  management (metronidazole vs. drainage + antibiotics).
+
+HIGHEST-YIELD DECISION POINT
+  Node: 4c (USG abdomen) / Node 5 (Synthesis)
+  Why: This is the exact node where the reasoning pathway asserts confirmation it doesn't
+  textually demonstrate. For a learner, the transferable lesson isn't about liver abscess
+  specifically — it's that "confirmed by [imaging]" is not itself an insight; the actual imaging
+  findings (lesion size, single vs. multilobar, wall characteristics, free fluid) must be stated
+  for the reasoning chain to be auditable, and their absence here is itself a decision point
+  about how to write up cases, not just how to diagnose them.
+
+---
+FABRICATION CHECK (per Section 4 rubric): No node above introduces findings absent from the
+source text. Where source data was genuinely inaccessible (image-only investigation values),
+nodes are marked "cannot classify" rather than inferred, to avoid fabricating lab values.

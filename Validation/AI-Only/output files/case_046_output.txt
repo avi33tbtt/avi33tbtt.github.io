@@ -1,0 +1,56 @@
+Case link: http://swarna46.blogspot.com/2021/03/42-m-with-alcoholic-liver-disease-with.html
+
+---
+DIAGNOSTIC REASONING MAP — case_046 / 42M, pedal + scrotal edema, SOB, alcohol use
+Date: 2026-08-18
+Learner: [optional]
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 42M, bilateral pedal edema (Grade 3) x3 weeks, scrotal swelling x3 weeks, SOB x2 weeks, later facial puffiness and bilateral upper-limb edema, raised JVP, no fever.
+  Decision Point: Yes — Type: Bifurcating
+  Insight: Progressive edema plus raised JVP plus SOB points toward a fluid-overload state, but the semantic set alone doesn't distinguish primarily cardiac (e.g., HFpEF) from primarily hepatic (cirrhotic ascites/hypoalbuminemia) mechanisms — both were ultimately named in the diagnosis, so this node should have opened parallel cardiac and hepatic branches rather than anchoring to one.
+
+NODE 2 — History
+  2a. Alcohol use history: Decision Point: Missed — Insight: The title names "alcoholic dependance syndrome," but the body text as presented does not state a quantified alcohol history (duration/quantity). Alcohol history is the single most decision-relevant historical feature for distinguishing alcoholic liver disease from other causes of edema, yet it is not elicited in the visible narrative.
+  2b. Symptom progression pattern (edema -> SOB -> abdominal distension -> scrotal swelling -> facial puffiness, over ~3 weeks): Decision Point: Bifurcating — Insight: A caudal-to-cranial progression of edema (legs first, face later) is classically more consistent with a dependent/right-heart or hypoalbuminemic process than a renal (facial-first) one, supporting the HFpEF+CLD framing.
+  2c. Family history of paternal stroke: Decision Point: Closing (weakly) — Insight: Suggests possible vascular/cerebrovascular risk background but doesn't directly bear on this presentation; low relevance, appropriately not pursued further.
+  2d. Absence of fever, GI symptoms, palpitations, syncope: Decision Point: Closing — Insight: Helps de-prioritize infective, cardiac-arrhythmic, and primary GI causes of the presentation.
+  Missing history: quantified alcohol intake/duration, prior liver disease diagnosis, medication history, jaundice history, any prior echocardiogram/heart failure diagnosis — none of these appear in the visible case text despite being needed to justify "HFpEF" and "alcoholic dependence syndrome" in the diagnosis label.
+
+NODE 3 — Examination
+  3a. JVP raised: Decision Point: Pivotal — Insight: Directly implicates right heart filling pressure elevation, pointing toward a cardiac (or cardio-hepatic) contribution to the edema rather than isolated hypoalbuminemic edema.
+  3b. Pallor+: Decision Point: Missed — Insight: Pallor is noted but not investigated further in the visible text (no Hb value discussed); in a patient with possible chronic liver disease this could reflect anemia of chronic disease, GI blood loss, or nutritional deficiency, and is a finding that should have generated its own branch.
+  3c. No icterus: Decision Point: Closing — Insight: Absence of jaundice is notable given a working diagnosis that includes liver disease; this negative finding is under-annotated in the source and deserves explicit reconciliation with the "alcoholic liver disease" label.
+  3d. Abdominal distension, no tenderness: Decision Point: Bifurcating — Insight: Non-tender distension is consistent with ascites (hepatic) but the exam as documented doesn't explicitly test for shifting dullness/fluid thrill, so cardiac vs. hepatic ascites isn't clearly discriminated here.
+  System 1 nodes: JVP raised -> fluid overload (rapid pattern match).
+  System 2 nodes: Reconciling non-icteric exam with a liver-disease label required analytic reasoning that the visible documentation does not show being done explicitly.
+
+NODE 4 — Investigations
+  Flagged data gap: Investigation results are embedded as scanned images in the source page and are not extractable as text via automated fetch. Per protocol Section 4 (fabrication check), no specific lab values are asserted here.
+  4a. Investigations ordered (unspecified panel, per referenced images): Decision Point: Missed (auditing standpoint) — Insight: Cannot verify whether liver function tests, echocardiogram, or renal function results actually support "HFpEF" and "alcoholic liver disease" without reading the image content; this is the auditor's central limitation for this case.
+  Unused results: Cannot assess.
+  Missing investigations: Cannot assess from available text.
+
+NODE 5 — Diagnostic Synthesis
+  Closure type: Pattern-recognition closure, likely premature given the visible gaps — the provisional diagnosis was reached without a documented alcohol history, without documented LFTs/echo in text, and without reconciling the absence of icterus.
+  Open branches at closure: Cardiac (HFpEF/right heart failure) vs. hepatic (cirrhotic) vs. nutritional/nephrotic contributions to the edema — the title suggests multiple diagnoses were carried simultaneously ("HFpEF with alcoholic dependence syndrome with chronic liver disease") rather than a single closed diagnosis, which is itself notable.
+  Synthesis insight: The case as documented supports a combined cardio-hepatic edema picture rather than a single closing diagnosis, but the visible reasoning trail doesn't show explicit discrimination between the two mechanisms — this looks like parallel-hypothesis carrying rather than true synthesis.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 2 — "Alcoholic liver disease" may have been anchored to from history/social context not fully shown in the text, before edema mechanism was examination-confirmed.
+  Availability: Not clearly identifiable from the visible text.
+  Premature closure: Node 5 — provisional diagnosis given without documented LFTs, echo, or alcohol quantification in the visible record.
+  Framing: Node 1 — the blog post's own title pre-frames the case with three diagnoses bundled together, which could bias a reader (or an AI) toward accepting the composite label rather than examining each mechanism independently.
+  Search satisficing: Possibly at Node 4 — cannot verify without image content.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 2a (alcohol history) / 4a (investigation results)
+  Why: The entire diagnostic label hinges on liver disease and alcohol dependence, but neither a quantified alcohol history nor readable investigation results are present in the extractable case text. Better documentation practice (or, for this audit, actual access to the image-based labs) would be needed before this case could be scored with confidence on fabrication or insight-correctness criteria — this is a case where the auditor's own limitation (image-based data) directly caps how much can be validated.
+---
+
+Fabrication check: No — every claim above traces to text explicitly present in the fetched case page; no findings, history, or results were invented.
+
+Contamination flag (Section 3): Low — this is an obscure student e-log-book case with idiosyncratic formatting; no signs of pattern-matched recall beyond what's in the text.
+
+Data-completeness flag: Yes, non-standard — investigations are image-only and unreadable by this fetch method, which limits Node 4 scoring specifically. Suggest marking this case's log entry as "output saved = Y, investigations unscored (image-only source)" rather than a clean Y.

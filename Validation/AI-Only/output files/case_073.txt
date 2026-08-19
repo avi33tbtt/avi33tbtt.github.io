@@ -1,0 +1,57 @@
+Case ID: case_073
+Case link: https://12avirnenivaishnavi.blogspot.com/2022/05/56-year-old-male-with-generalised.html
+
+Title: 56 year old male with generalised lymphadenopathy
+
+A 56 year old male, daily wage labourer, came with c/o:
+- Pain abdomen since 20 days
+- Multiple masses per abdomen since 1 week
+- Fever (high grade) associated with chills and rigor since 1 week
+
+HISTORY OF PRESENTING ILLNESS:
+
+Patient was apparently asymptomatic 5 months back, then he developed dry cough which was sudden in onset, gradually progressive. Later he had fever — high grade, associated with chills and rigor.
+
+He went to the hospital for the above complaints — fever was relieved with medications, no relapse after stopping the medicines.
+
+Patient observed loss of weight and loss of appetite, and 2 months later, on advice of a govt doctor, he got tested for Koch's (TB) and HIV — report was positive, and he was started on ART and ATT.
+
+He now came with c/o abdominal discomfort, pain in periumbilical region associated with multiple masses felt over abdomen, with fever, chills and rigor.
+
+No h/o burning micturition.
+No c/o cough or SOB.
+
+VITALS:
+- Temp: afebrile (at this visit)
+- PR: 88 bpm
+- BP: 110/80 mmHg
+- RR: 18 cpm
+- GRBS: 106 mg/dl
+
+GENERAL EXAMINATION:
+- Patient is conscious, coherent and cooperative
+- No pallor, icterus, cyanosis, clubbing
+- Lymphadenopathy present (multiple palpable lymph nodes in neck and per abdomen)
+
+SYSTEMIC EXAMINATION:
+- CVS: S1 S2 +
+- CNS: NAD
+- RS: BAE+, clear
+- P/A: soft, non-tender; multiple lymph nodes palpable
+
+PROVISIONAL DIAGNOSIS:
+Fever with generalised lymphadenopathy
+? TB ? Lymphoma with RVD (retroviral disease / HIV)
+
+INVESTIGATIONS:
+[NOTE — extraction limitation: the Investigations section on the source page consists entirely of 11 embedded images with no accompanying text values or labels. No specific lab names or results (e.g., CBC, ESR, LDH, CD4 count, imaging/biopsy findings) could be extracted as text. This is a significant gap given the provisional diagnosis explicitly raises TB vs. lymphoma vs. HIV-related disease — findings that would normally hinge on specific investigation results (e.g., CD4 count, LDH, imaging, node biopsy/FNAC) which are not available in this text extraction.]
+
+TREATMENT:
+- T. Dolo 650mg PO/TID
+- T. MVT PO/OD
+- Inj. Neomol 1g IV/SOS
+
+SURGERY REFERRAL:
+[NOTE — extraction limitation: the surgery referral section consists of 3 embedded images with no accompanying text; the content/recommendation of the surgical referral could not be extracted.]
+
+[OVERALL FLAG for auditor: this case has substantially less verifiable text content than typical for this corpus — essentially the entire diagnostic workup (investigations) and the surgical referral are image-only. Any DRM-output claims referencing specific investigation values, imaging, biopsy, or CD4/viral load results for this case should be treated as unverifiable from this extraction and flagged under the fabrication-check criterion (Section 4) rather than accepted as confirmed.]

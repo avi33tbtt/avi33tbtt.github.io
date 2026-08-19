@@ -1,0 +1,185 @@
+Case link: http://durgakrishna09.blogspot.com/2021/05/a-22yr-female-with-ckd-on-mhd.html
+
+DATA COMPLETENESS NOTE: All investigation report images (labs, fundoscopy findings, renal
+imaging, etc.) are embedded as images, not machine-readable text, EXCEPT the specific urea/
+creatinine values and BP readings from the diagnostic-odyssey narrative, and the treatment list —
+these are used below. Image-only investigations are marked "cannot classify."
+
+---
+DIAGNOSTIC REASONING MAP — Case_016 (22F, blurring of vision → found to have malignant
+hypertension and markedly elevated renal function, now CKD on maintenance hemodialysis)
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 22F student (MPC graduate, preparing for physics PG entrance exam), heavy menstrual
+  bleeding 5 days before her exam (treated by RMP), followed the next day by non-progressive
+  blurring of vision present throughout the day, eventually traced over ~2-3 weeks to malignant
+  hypertension (BP 220/100) and markedly elevated urea/creatinine (~16, units not specified),
+  now on maintenance hemodialysis (MHD)
+  Decision Point: Yes — Type: Missed (retrospectively identifiable)
+  Insight: In a 22-year-old presenting with new visual symptoms, "blurring of vision" should
+  trigger fundoscopic examination and blood pressure measurement as a near-reflexive first step
+  given how effectively and cheaply these can identify hypertensive retinopathy — the actual
+  diagnostic path took multiple ophthalmology visits across two cities before a BP reading was
+  finally obtained, representing a significant delay in reaching an easily obtainable, high-yield
+  data point (this is a textbook "missed" decision point — recognized only in retrospect from the
+  case's own timeline).
+
+NODE 2 — History
+  2a. Heavy menstrual bleeding 5 days before the exam, treated by RMP with unspecified medication,
+      symptoms relieved: Decision Point: Missed
+      Insight: Heavy menstrual bleeding immediately preceding new-onset visual symptoms and
+      (eventually discovered) severe hypertension and renal failure raises the question of
+      whether this was itself an early manifestation of the same underlying process (e.g.,
+      uremic platelet dysfunction or a coagulation abnormality secondary to advancing renal
+      failure) rather than an unrelated gynecological event — this causal link is never
+      explicitly explored in the text.
+  2b. Grandmother's death delaying ophthalmology follow-up by 2-3 days: Decision Point: No
+      Insight: A documented but non-clinical (psychosocial/logistical) reason for care delay;
+      relevant to the case timeline but not itself a reasoning decision point.
+  2c. First ophthalmologist (unspecified location) found "swelling of veins in the eye, water
+      accumulation in the eye, and anemia," and recommended a specialist in Hyderabad — but the
+      family instead went to a different city (Guntur) due to having a known family doctor there:
+      Decision Point: Pivotal
+      Insight: The first ophthalmologist's findings — venous engorgement/swelling and fluid
+      accumulation in the eye — are textbook descriptions of papilledema and retinal edema,
+      classic findings of malignant/hypertensive retinopathy, and this was the earliest point in
+      the documented timeline where the underlying diagnosis could plausibly have been suspected;
+      the decision to seek care via a personal/logistical connection (family doctor in a
+      different city) rather than the recommended referral pathway is a system-level decision
+      point that measurably delayed diagnosis, though this reflects patient/family circumstance
+      rather than a clinical reasoning failure per se.
+  2d. Second ophthalmologist (Guntur) unable to interpret the eye findings, but incidentally
+      checked BP 2-3 times and found it consistently ~220/100: Decision Point: Pivotal
+      Insight: This is the actual turning-point decision in the case — a clinician who could not
+      characterize the retinal findings nonetheless took the sensible step of checking vital
+      signs, and this simple action (not a specialized test) is what finally uncovered the
+      life-threatening hypertension; this underscores that basic vital sign measurement can be
+      more diagnostically decisive than specialist-level pattern recognition when the specialist
+      is looking at an unfamiliar picture.
+  2e. No H/o similar complaints in the past; no known DM/HTN/CVA/CAD/TB/asthma; regular menstrual
+      cycles otherwise (3/28, no clots): Decision Point: Closing
+      Insight: Absence of any prior diagnosed hypertension confirms this is either truly new-onset
+      or previously undetected/asymptomatic hypertension that had already caused substantial
+      silent renal damage by the time of this presentation — consistent with how CKD from
+      longstanding unrecognized hypertension often first declares itself via an acute
+      hypertensive-emergency complication (here, hypertensive retinopathy).
+  Single most important history: 2d (the incidental BP check by the second ophthalmologist) —
+  this single vital sign measurement, not any imaging or lab test, was the actual decision point
+  that unlocked the correct diagnosis.
+  Missing history: No documented family history of renal or hypertensive disease; no prior BP
+  readings on record from any earlier routine visit (e.g., during the menorrhagia consultation)
+  that might establish how long the hypertension had been present; no detail on the RMP medication
+  given for menorrhagia (relevant to excluding a drug-related contribution to either the bleeding
+  or the subsequent picture).
+
+NODE 3 — Examination
+  3a. Pallor present; no icterus/clubbing/cyanosis/lymphadenopathy/pedal edema:
+      Decision Point: Bifurcating
+      Insight: Pallor without pedal edema is consistent with the anemia of chronic kidney disease
+      (reduced erythropoietin) at a stage before significant fluid overload became clinically
+      apparent — this pattern is consistent with, though not specific to, an advanced but not yet
+      grossly decompensated CKD picture at the time of examination.
+  System 1 nodes: Once BP 220/100 and urea/creatinine ~16 were known, the pattern (severe
+  hypertension + markedly elevated renal function + hypertensive retinopathy) would very quickly
+  and correctly pattern-match to malignant hypertension causing (or caused by) renal failure —
+  this rapid recognition, once the key data existed, is appropriate System 1 reasoning.
+  System 2 nodes: The deliberate analytical work in this case happened at the presentation-seeking
+  stage, not at the clinical-reasoning stage — i.e., the "hard part" of this case was obtaining
+  the right measurement (BP) rather than interpreting it once obtained, which is somewhat unusual
+  and worth flagging as a distinct category of diagnostic delay (access/measurement delay vs.
+  reasoning delay).
+  Unfollowed finding: The case doesn't specify whether a formal fundoscopic exam (documenting
+  papilledema/hemorrhages/exudates — grade of hypertensive retinopathy) was performed at KIMS on
+  this admission to correlate with and confirm the two outside ophthalmologists' impressions.
+
+NODE 4 — Investigations
+  4a. Urea and creatinine "around 16" (units not specified in text — presumably creatinine in
+      mg/dL given the clinical severity, though this is inferred from context, not stated):
+      Decision Point: Pivotal
+      Insight: A creatinine in this range (if mg/dL, consistent with severe/end-stage renal
+      failure) combined with BP 220/100 defines a hypertensive emergency with renal involvement,
+      justifying the immediate central line placement and initiation of dialysis described in the
+      history — the case appropriately does not delay treatment pending further diagnostic
+      characterization once these two findings were established.
+  4b. Investigation report images (~12 files — presumably repeat renal function, hemoglobin,
+      renal ultrasound/echotexture, possibly retinal photography): Decision Point: Cannot classify
+      Insight: Values not extractable from text; a renal ultrasound showing small/shrunken kidneys
+      with altered echotexture would be particularly informative for distinguishing acute-on-
+      chronic vs. purely acute renal failure, and is presumably among these images but cannot be
+      verified here.
+  Unused/unverifiable results: Whether the elevated creatinine at first presentation represented
+  truly new (acute) renal failure or an acute decompensation of previously silent chronic disease
+  cannot be determined from the visible text — this distinction matters significantly for
+  prognosis and whether recovery of native renal function was ever a realistic possibility, but
+  is not addressed.
+  Missing investigations (as documented in text): No stated formal fundoscopic grading, no stated
+  renal biopsy or discussion of whether one was considered, no stated workup for a secondary
+  cause of severe hypertension in a 22-year-old (e.g., renal artery stenosis, glomerulonephritis,
+  or an underlying primary renal disease that caused the hypertension rather than the reverse) —
+  this last point is a significant gap, since determining whether the hypertension caused the
+  renal failure or vice versa fundamentally changes patient counseling and future management.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: CKD on maintenance hemodialysis (title diagnosis), with malignant
+  hypertension and hypertensive retinopathy as the presenting/discovering features
+  Point of closure: Reached pragmatically at the point of severe BP + severely elevated renal
+  function, prompting emergency dialysis initiation — the case moves directly from "diagnosis
+  discovered" to "treatment started" without an explicit intermediate synthesis step being
+  narrated.
+  Classification of leap: Forced closure — the severity of the findings (malignant hypertension,
+  markedly elevated creatinine) necessitated immediate action (central line, dialysis) rather
+  than allowing time for a more complete etiological workup before treatment began; this is
+  clinically appropriate given the acuity, but it means the underlying question of primary cause
+  (chronic glomerulonephritis presenting late vs. primary/essential hypertension causing
+  nephrosclerosis vs. another underlying renal disease) was never definitively closed in the
+  visible record — the patient is left with a descriptive diagnosis (CKD on MHD) rather than an
+  etiological one.
+  Open branches at closure: The primary etiology of this patient's renal failure — whether a
+  primary glomerular disease, a secondary hypertensive nephrosclerosis, or another cause — remains
+  unresolved in this text. Given the patient's young age (22), this etiological question has
+  substantial implications (recurrence risk in a future transplant, genetic/familial screening
+  considerations, disease-specific management) that a purely symptomatic/dialysis-focused pathway
+  does not address.
+  Synthesis insight: This case's most important lesson is procedural rather than pathophysiological
+  — the diagnostic delay here was driven by care-access decisions (choosing a familiar doctor over
+  a recommended specialist referral) and by relying on specialist pattern-recognition (ophthalmology)
+  in a domain where a basic vital sign (BP) was actually the decisive test, rather than by any
+  failure of clinical reasoning once the right data was available.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 2c — The first ophthalmologist's uncertain interpretation ("swelling of veins…
+  water accumulation… anemia") without an immediate BP check suggests the specialist may have
+  anchored within their own domain (ophthalmological pathology) rather than considering a systemic
+  cause producing eye findings.
+  Availability: Not clearly present in this text.
+  Premature closure: Not present — if anything, the opposite problem (delayed closure) is the
+  issue in this case, not premature closure.
+  Framing: Node 2c — The family's choice to seek care via a known personal connection (family
+  doctor in Guntur) rather than following the recommended specialist referral (Hyderabad) is a
+  patient/family-level framing decision that shaped and delayed the diagnostic pathway — worth
+  naming as a system-level bias-adjacent factor even though it isn't a clinician cognitive bias
+  per se.
+  Search satisficing: Node 2c — The first ophthalmologist, upon recognizing findings outside their
+  interpretive comfort zone, referred appropriately (a good practice) but did not personally check
+  a vital sign that would have been immediately informative; this may reflect a scope-of-practice/
+  role-based satisficing ("this is outside my domain, refer onward") rather than pursuing an easy
+  cross-disciplinary check within their own visit.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 2c/2d (the ophthalmology visits preceding the incidental BP discovery)
+  Why: This case's highest-yield lesson is not about differential diagnosis reasoning but about
+  the value of basic vital sign measurement at any point of contact with the healthcare system,
+  regardless of specialty. A 22-year-old with new visual symptoms was seen by two ophthalmologists
+  before a blood pressure reading was obtained; the finding that ultimately explained everything
+  (BP 220/100) required no specialized equipment or test. The transferable, generalizable
+  principle: "When any specialist encounters unexplained findings outside their expected pattern
+  library, checking basic vital signs before referring onward can shortcut a diagnostic delay of
+  days to weeks" — a low-cost, high-yield habit that this case shows was nearly skipped entirely.
+
+---
+FABRICATION CHECK (per Section 4 rubric): No node above introduces findings absent from the
+source text. The urea/creatinine value ("around 16") and BP readings (220/100) are taken directly
+from prose; the units for the urea/creatinine figure are not specified in the source and this
+ambiguity is flagged rather than assumed. All investigation report images are marked "cannot
+classify" rather than inferred.

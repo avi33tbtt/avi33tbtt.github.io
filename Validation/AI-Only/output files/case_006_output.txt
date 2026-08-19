@@ -1,0 +1,57 @@
+Case link: http://harshamnvsr.blogspot.com/2021/02/42yr-man-with-alcohol-dependance.html
+
+---
+DIAGNOSTIC REASONING MAP — Case 006 / 42M, Alcoholic Liver Disease with Alcohol Dependence Syndrome
+Date: 2026-08-17
+Learner: n/a (pilot generation run)
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 42-year-old male farmer presented to casualty with irrelevant talk, giddiness, and epigastric pain, all since that morning.
+  Decision Point: Yes — Type: Bifurcating
+  Insight: "Irrelevant talk" (confusion) plus giddiness in a patient with heavy chronic alcohol use should immediately activate at least two parallel branches — hypoglycemia and alcohol withdrawal/intoxication-related encephalopathy — since both can produce this exact triad and require different immediate management (glucose vs. sedation).
+
+NODE 2 — History
+  2a. 20-year history of daily whiskey use, escalating from ~90 ml/day to 720 ml/day (one full bottle) over the last 10 years: Decision Point: Type Pivotal — Insight: This quantifies a very high, sustained daily alcohol load, which is the central driver of both the chronic liver disease and the dependence/withdrawal risk framing the rest of the case.
+  2b. Repeated prior admissions with irrelevant talk and giddiness, and a diagnosis one week prior of Alcoholic Liver Disease with Alcohol Dependence Syndrome, with documented hypoglycemia (GRBS 20 mg/dl) on that admission: Decision Point: Type Pivotal — Insight: A near-identical prior presentation with confirmed hypoglycemia strongly raises the pre-test probability that the current identical symptom pattern (irrelevant talk + giddiness) is again hypoglycemia-driven, likely from a combination of alcoholic liver disease impairing gluconeogenesis and erratic oral intake.
+  2c. Last alcohol intake 180 ml, 1 hour prior to presentation: Decision Point: Type Bifurcating — Insight: Recent heavy intake keeps both active intoxication/hypoglycemia and evolving withdrawal (which can begin within hours of the last drink in dependent patients) simultaneously plausible, rather than resolving the branch.
+  Most important history feature: The prior admission with an almost identical presentation and confirmed hypoglycemia is the single feature that most should have shaped the pre-test probability for this admission.
+  Missing history: No documented seizure history, no mention of prior delirium tremens episodes, no nutritional/dietary history (relevant to thiamine status given empiric thiamine was given), and no documented time course of when epigastric pain began relative to the last drink — none of these are stated in the source and should not be assumed.
+
+NODE 3 — Examination
+  3a. Confused with irrelevant talk: Decision Point: Type Pivotal — Insight: Confirms an altered mental status requiring urgent evaluation of reversible causes (glucose, thiamine deficiency, withdrawal) before attributing it to chronic alcohol dependence alone.
+  3b. BP 90/60 mmHg (relatively low): Decision Point: Type Bifurcating — Insight: Mild hypotension could reflect volume depletion (poor oral intake, vomiting not documented) or an early systemic/autonomic effect of alcohol; it is a decision-relevant vital sign that was not explicitly reasoned about in the source case.
+  3c. GRBS 111 mg/dl at presentation (normal, in contrast to the prior admission's GRBS of 20 mg/dl): Decision Point: Type Closing — Insight: This is a critical negative finding relative to the pre-test hypothesis raised by the prior admission — it effectively closes the acute-hypoglycemia branch for this specific presentation and should redirect reasoning toward withdrawal, alcoholic ketoacidosis/gastritis (epigastric pain), or other causes of confusion.
+  3d. Epigastric tenderness on abdominal exam, bowel sounds present: Decision Point: Type Bifurcating — Insight: Epigastric tenderness in this context raises alcoholic gastritis or pancreatitis as parallel branches; the case does not report amylase/lipase or any pancreatitis-specific work-up, so this branch's resolution cannot be confirmed from the extractable text.
+  Findings listed but not followed up: The relatively low BP (90/60) does not appear to be explicitly addressed or trended in the visible text beyond the initial vitals.
+  System 1 vs System 2: The confusion + heavy alcohol history combination likely triggered rapid System 1 recognition of "alcohol-related presentation." The normal GRBS on this admission (discordant with the prior low GRBS) is a finding that required System 2 reconciliation — the reasoning had to actively update away from the hypoglycemia hypothesis that the history alone would have favored.
+
+NODE 4 — Investigations
+  4a. Psychiatry referral was taken in view of alcohol withdrawal: Decision Point: Type Bifurcating — Insight: This documents that the withdrawal branch was actively pursued by the clinical team, consistent with reconciling the normal GRBS by shifting weight toward withdrawal as a driver of the confusion, though the specific referral findings are not present in extractable text.
+  4b. Remaining investigation results (routine labs, hemogram on 26/2/21, and other investigation images referenced in the case): Not extractable — presented only as embedded images that could not be read as text in this generation pass.
+  Decision Point: Cannot be classified for 4b — no verifiable data available to this generation run.
+  Insight: Per Section 4 of the validation protocol, no investigation-level decision points or interpretation can be responsibly generated for the un-extracted images; doing so would constitute fabrication.
+  Unused results: Cannot be assessed for the image-based investigations.
+  Missing investigations: Cannot be confirmed from extractable text whether liver function tests, coagulation profile, amylase/lipase, or ultrasound abdomen were performed, though these would be expected given the stated diagnosis of alcoholic liver disease; their absence from the visible text is a data-completeness gap, not evidence they were not done.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Alcoholic Liver Disease with Alcohol Dependence Syndrome.
+  Point in case reasoning was reached: Stated as the final diagnosis; the specific investigation results that would substantiate "liver disease" (e.g., LFTs, ultrasound) are not visible in the extractable text — only the diagnosis label and the psychiatry referral for withdrawal are visible.
+  Closure type: Likely a pattern-recognition (System 1) closure carried over largely unchanged from the prior week's admission and diagnosis, reinforced by the matching history and exam pattern — but this cannot be fully confirmed without the underlying investigation data for this specific admission.
+  Open branches at closure: Alcoholic gastritis/pancreatitis (raised by epigastric tenderness) does not appear to be explicitly closed or confirmed in the visible text; hypoglycemia was appropriately closed by the normal GRBS.
+  Synthesis insight: The diagnosis is consistent with the strong prior history (established alcoholic liver disease, one week earlier), but the case as extracted leans on that prior diagnosis being carried forward rather than showing fresh confirmatory evidence (labs/imaging) for this specific admission, which is a reasonable but not fully documented closure given the data available to this reviewer.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 2b — the prior week's identical diagnosis and presentation likely anchored the team quickly to "alcoholic liver disease with dependence syndrome" again, which happened to be appropriate here but represents a real anchoring risk if this admission's picture had differed more substantially.
+  Availability: Node 2b — the recent, memorable prior admission with the same patient plausibly increased the salience of the same diagnosis being applied again, which overlaps with anchoring here.
+  Premature closure: Node 4 — with investigation results for this admission not visible in the extractable text, it cannot be determined whether closure to "alcoholic liver disease" occurred before confirmatory labs/imaging were reviewed for this specific presentation, or only after.
+  Framing: Node 1 — the blog post title itself ("42YR MAN WITH ALCOHOL DEPENDANCE SYNDROME") pre-frames the diagnosis before the reasoning pathway is presented, a real framing effect for anyone working through the case forward.
+  Commission/Omission bias: Cannot be assessed (investigation images not extracted).
+  Search satisficing: Node 3d/5 — the epigastric tenderness raises a branch (gastritis/pancreatitis) that does not appear to have been explicitly pursued to closure in the visible text, a possible instance of stopping once the overarching pattern (alcohol dependence) was matched.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 3c — Normal GRBS (111 mg/dl) on this admission, discordant with the prior admission's severe hypoglycemia (GRBS 20 mg/dl) despite an essentially identical symptom presentation.
+  Why: This is the pivotal moment where the reasoning had to actively resist carrying forward the prior admission's specific mechanism (hypoglycemia) even while carrying forward the broader diagnosis (alcohol dependence/liver disease). Recognizing early that "same syndrome, different acute mechanism" is possible — and explicitly re-opening the differential for the confusion (withdrawal, gastritis-related, other) rather than assuming hypoglycemia recurred — is the reasoning move most likely to generalize to future cases of recurrent presentations in patients with an established diagnosis.
+
+CONTAMINATION / DATA-COMPLETENESS FLAG
+  Most investigation results (routine labs, hemogram, and other referenced investigation panels) could not be extracted from the source as fetched — they are presented only as embedded images. No investigation values have been stated or inferred anywhere in this DRM beyond the GRBS values, which were given as plain text in the case narrative itself. Per Section 3/9.2 of the validation protocol, this is reported as a case-level data-completeness limitation: the presenting complaint, history, and exam layers are complete and traceable to source text, but the investigation layer and full synthesis justification remain incomplete pending manual transcription of the investigation images by a human reviewer.

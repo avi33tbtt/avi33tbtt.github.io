@@ -1,0 +1,171 @@
+Case link: http://jessusanjay.blogspot.com/2021/02/54-yr-old-male-with-left-upper-lobe.html
+
+DATA COMPLETENESS NOTE: All investigation report images (labs, CXR, sputum/AFB or other TB-
+directed tests) are embedded as images, not machine-readable text. No investigation numeric or
+microbiological values are available in prose. The post's title itself ("...pneumonia secondary
+to Koch's [TB]") states a more definitive diagnosis than the "Provisional diagnosis" line at the
+end of the body text ("?pneumonia secondary to pulmonary tuberculosis") — this discrepancy
+between title and body is noted as-is, not resolved.
+
+---
+DIAGNOSTIC REASONING MAP — Case_018 (54M, chest pain + SOB + productive cough x10d, with
+constitutional symptoms x15-20d, provisional dx pneumonia ?secondary to pulmonary TB)
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 54M, left-sided pricking chest pain x10d (sudden onset, non-radiating, exertional),
+  SOB Grade 3 x10d, cough with yellow non-blood-stained non-foul-smelling expectoration x10d,
+  fever x10d (high-grade, intermittent, with chills/rigors and body aches)
+  Decision Point: Yes — Type: Bifurcating
+  Insight: A 10-day history of pleuritic chest pain, significant dyspnea (Grade 3), and purulent
+  cough with fever is a classic community-acquired pneumonia semantic pattern — but the
+  additional history of weight loss and evening temperature rise over a longer window (15-20
+  days, i.e., predating the acute 10-day illness) is the critical qualifier that should split the
+  differential early between straightforward bacterial pneumonia and a pneumonia occurring on a
+  background of a more chronic, constitutional-symptom-driving process (classically pulmonary
+  TB) — this longer constitutional timeline embedded within the HPI is easy to under-weight if
+  the 10-day acute complaint is read as the whole story.
+
+NODE 2 — History
+  2a. Weight loss and evening rise of temperature since 15-20 days (i.e., predating and
+      outlasting the 10-day acute complaint): Decision Point: Pivotal
+      Insight: This is the single most diagnostically important item in the entire history — the
+      classic triad-adjacent pattern of evening pyrexia and weight loss, present for longer than
+      the acute presenting complaint, is a strong independent pointer toward tuberculosis as an
+      underlying process rather than a purely acute bacterial pneumonia, and appropriately appears
+      to have driven the "?secondary to Koch's" provisional diagnosis.
+  2b. No known DM/HTN/CVA/asthma/epilepsy/TB (i.e., no PRIOR diagnosed TB): Decision Point:
+      Closing (partial)
+      Insight: Absence of a prior TB diagnosis doesn't exclude currently active, previously
+      undiagnosed TB — this is a "no known case of" limitation (reflects prior diagnosis status,
+      not actual screening), and given the constitutional symptom pattern in 2a, this history item
+      should not be read as meaningfully lowering TB suspicion.
+  2c. No palpitations, PND, burning micturition, loose stools, decreased urine output:
+      Decision Point: Closing
+      Insight: These negatives reduce concern for a cardiac (PND) or urinary source contributing
+      to the SOB/systemic symptoms, keeping the differential appropriately centered on the
+      respiratory system.
+  Single most important history: 2a — the 15-20 day constitutional symptom window, longer than
+  the acute complaint itself, is what should (and appears to) drive suspicion toward a
+  TB-associated process rather than simple bacterial pneumonia.
+  Missing history: No documented TB contact history (household or occupational exposure), no
+  documented prior chest X-ray or PPD/IGRA testing, no smoking history, no occupational exposure
+  history (e.g., silica, biomass fuel) that would be relevant risk-factor information for both TB
+  and other chronic lung processes.
+
+NODE 3 — Examination
+  3a. No pallor/icterus/cyanosis/clubbing/lymphadenopathy/koilonychia/generalized edema:
+      Decision Point: Closing
+      Insight: Absence of clubbing and lymphadenopathy somewhat reduces (though doesn't exclude)
+      concern for a more chronic/advanced process such as bronchiectasis or malignancy; these are
+      appropriately unremarkable negatives for a 10-20 day illness.
+  3b. Left suprascapular findings: decreased vocal fremitus, resonant percussion (not dull),
+      reduced breath sounds, no added sounds: Decision Point: Pivotal
+      Insight: This examination pattern — decreased fremitus and reduced breath sounds but
+      PRESERVED resonance (not dull) — is an important and somewhat atypical combination. Classic
+      lobar consolidation (bacterial pneumonia) typically produces increased fremitus and dull
+      percussion over the consolidated area; here, fremitus is decreased and percussion remains
+      resonant, a pattern more suggestive of early/patchy disease, pleural thickening, or
+      cavitary change (as can occur with upper-lobe TB) rather than dense lobar consolidation —
+      this exam pattern itself provides supportive evidence for the TB-associated hypothesis and
+      is a finding that deserved more explicit discussion in the write-up than it received.
+  3c. Trachea central, chest expansion 4cm, no local rise of temperature or tenderness:
+      Decision Point: Closing
+      Insight: Central trachea and preserved chest expansion argue against a large pleural
+      effusion or significant volume loss, consistent with a localized upper-lobe process rather
+      than extensive lung involvement.
+  System 1 nodes: Left-sided chest findings + productive cough + fever rapidly pattern-matched to
+  "pneumonia" as the presenting syndrome.
+  System 2 nodes: Integrating the atypical exam pattern (decreased fremitus + resonant, not dull,
+  percussion — 3b) with the constitutional symptom timeline (2a) to arrive at "pneumonia secondary
+  to Koch's" rather than stopping at a simple bacterial pneumonia diagnosis represents genuine
+  analytical work, though the exam-pattern reasoning specifically is not spelled out explicitly in
+  the text — it's visible only by piecing together the individual findings.
+  Unfollowed finding: The localization is specifically noted as "left suprascapular" — an upper
+  zone location — which is classically the most TB-favored site (upper lobe/apical predilection);
+  this anatomically specific detail is never explicitly connected in the text to the TB hypothesis,
+  even though it independently supports it and is consistent with the post's own title ("Left
+  upper lobe pneumonia").
+
+NODE 4 — Investigations
+  4a. Investigation report images (labs + CXR + at least one additional image set — 7 total,
+      unclear exact composition): Decision Point: Cannot classify
+      Insight: Values not extractable from text. Given the provisional diagnosis explicitly
+      invokes TB, sputum AFB smear/CBNAAT (GeneXpert) results or a CXR showing upper-lobe
+      infiltrate/cavitation would be the decisive confirmatory data, but none of these are stated
+      in prose.
+  Unused/unverifiable results: The entire evidentiary basis for "?secondary to Koch's" (whether
+  from CXR pattern, sputum microbiology, or another test) is inaccessible in text form despite
+  being the central diagnostic question of the case.
+  Missing investigations (as documented in text): No stated sputum AFB/CBNAAT result, no stated
+  HIV status (relevant given TB association and standard co-testing practice), no stated ESR or
+  other inflammatory marker trend.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Pneumonia (left upper lobe) — question mark-qualified as "secondary
+  to pulmonary tuberculosis" in the body text, though the post's own title states this more
+  definitively as fact ("Left upper lobe pneumonia secondary to Koch's") without the qualifier.
+  Point of closure: Not reached in the visible body text — appropriately left as "?" (provisional,
+  under evaluation) in the diagnosis line itself, even though empiric treatment (Augmentin,
+  azithromycin — standard bacterial pneumonia coverage) was started without anti-tubercular
+  therapy, and the title's more definitive phrasing is not matched by definitive-test evidence
+  visible in the text.
+  Classification of leap: Mixed/inconsistent — the body text's diagnosis line is appropriately
+  hedged ("?secondary to..."), representing honest open-differential reasoning, but the post's
+  title asserts the TB link as settled fact ("secondary to Koch's," no question mark) — this
+  title-vs-body inconsistency is itself a notable feature: if the title reflects a later-confirmed
+  outcome not narrated in the visible treatment course (which shows only 3 days of purely
+  bacterial coverage, no anti-TB drugs), then the confirmatory step and its timing are simply
+  missing from this record; if the title is simply loosely worded relative to the still-provisional
+  body diagnosis, that's a documentation-discipline issue worth flagging on its own.
+  Open branches at closure: Whether this is TB-associated pneumonia, TB alone (mimicking
+  pneumonia), post-obstructive pneumonia from another cause, or a purely bacterial process that
+  happens to co-occur with unrelated constitutional symptoms is never definitively resolved in the
+  visible record. The treatment given (3 days documented, broad bacterial coverage only) does not
+  yet reflect anti-tubercular therapy, meaning as of the last visible treatment day the TB question
+  remained genuinely open despite the title's confident phrasing.
+  Synthesis insight: This case illustrates a subtle but important documentation-level reasoning
+  gap: the diagnosis line correctly preserves uncertainty ("?"), the treatment given is consistent
+  with that uncertainty (bacterial coverage only, pending confirmatory TB workup), but the post's
+  own title overstates certainty relative to both — a reasoning map audit should flag when a
+  case's own summary/title claims more diagnostic certainty than the visible body evidence
+  supports, since a downstream reader skimming only the title would come away with an inaccurately
+  confident impression.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 1 — The acute 10-day complaint (chest pain, SOB, productive cough, fever) could
+  have anchored reasoning toward simple bacterial pneumonia alone; the fact that the longer
+  constitutional symptom window (2a) was captured and incorporated into the differential suggests
+  this anchor was appropriately resisted.
+  Availability: Not clearly present in this text.
+  Premature closure: Node 5 (title only) — the post's title states the TB link with more certainty
+  than the body text or documented treatment (which shows no anti-TB drugs across 3 recorded days)
+  supports — a form of premature closure at the documentation/labeling level, even if not
+  necessarily at the actual clinical decision-making level.
+  Framing: Node 3b — The examination finding pattern (decreased fremitus, resonant percussion,
+  reduced breath sounds) in the upper zone is consistent with, but not exclusively diagnostic of,
+  TB — the pre-existing suspicion from the history (2a) may have shaped how this ambiguous exam
+  pattern was interpreted and labeled, rather than the exam pattern independently driving the
+  hypothesis.
+  Search satisficing: Node 4 — Once the constitutional-symptom history (2a) suggested TB, the
+  visible record doesn't show (in text) the specific confirmatory test that would close this
+  question (sputum AFB/CBNAAT), leaving the diagnosis suspended in the "?" state through the last
+  documented treatment day.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 5 (title-vs-body diagnostic certainty mismatch)
+  Why: The most transferable lesson from this case isn't about the pneumonia-vs-TB differential
+  itself (which is reasonably handled — the constitutional symptom history and upper-zone exam
+  pattern are appropriately integrated into an honestly hedged "?" diagnosis) but about
+  documentation discipline: a case's title/summary should never claim more diagnostic certainty
+  than the body evidence supports. Here, the title flatly states "pneumonia secondary to Koch's"
+  while the diagnosis line and treatment plan both reflect genuine, appropriately-preserved
+  uncertainty. For a learner using this module, the reasoning map itself — and by extension any
+  written case summary — should carry its hedges (the "?") all the way through to the headline,
+  not just the body.
+
+---
+FABRICATION CHECK (per Section 4 rubric): No node above introduces findings absent from the
+source text. All investigation report images are marked "cannot classify" rather than inferred.
+The title-vs-body diagnostic certainty discrepancy is reported as an observed feature of the
+source text itself, not resolved or corrected by inventing a confirmatory test result.

@@ -1,0 +1,104 @@
+Case ID: case_082
+Case link: https://171mkfarhanelogcases.blogspot.com/2021/12/a-60-year-old-male-with-acute-on.html
+
+Title: A 60 YEAR OLD MALE WITH ?ACUTE ON CHRONIC SDH
+
+A 60 year old male, farmer by occupation, came to the OPD with chief complaints of:
+- Vomiting since 15 days
+- Giddiness since 15 days
+
+HISTORY OF PRESENT ILLNESS:
+- Patient was apparently asymptomatic 2 months back, then he had an alleged history of head injury, following which he went to hospital and was diagnosed with subdural hematoma, being treated conservatively.
+- Since 15 days, patient had vomiting immediately after intake of food, which is non-bilious and non-projectile, with food particles as contents.
+- No h/o cold, cough, fever.
+- No abdominal distension or facial edema.
+- No loose stools.
+
+HISTORY OF PAST ILLNESS:
+Not a known case of DM, HTN, epilepsy, asthma.
+
+PERSONAL HISTORY:
+- Appetite normal
+- Mixed diet
+- Sleep normal
+- Bowel and bladder normal
+- Addictions: smoker
+
+GENERAL EXAMINATION:
+- Patient conscious, coherent, cooperative, well oriented to time, place, person
+- No pallor, icterus, cyanosis, clubbing, lymphadenopathy
+[NOTE: 4 embedded images accompany the general examination section on the source page; no additional text findings accompany them — content not extractable.]
+
+VITALS:
+- Temperature: afebrile
+- Blood pressure: 150/90 mmHg
+- Pulse rate: 80 bpm
+- SpO2: 98% at RA
+- GRBS: 147 mg%
+
+SYSTEMIC EXAMINATION:
+- CVS: S1, S2+
+- CNS: NAD
+- RS: BAE+, NVBS
+- P/A: soft and tender
+- GIT: bowel sounds+
+- GCS: 15/15
+
+CNS EXAMINATION (detailed):
+- Higher mental functions: intact
+- Cranial nerves: intact
+- Sensory system: no significant findings
+  - Vibration: wrist (right present, left present), elbow (right present, left present), lower limb (right present, left present)
+  - Proprioception: present (both sides)
+- Motor system:
+  - Tone: upper limbs normal both sides; lower limbs normal both sides
+  - Power: upper limbs 4+/4+ (right/left); lower limbs 4+/4+ (right/left)
+  - Reflexes: biceps, triceps, supinator, knee, ankle — right 3+ each, left 3+ each
+  - Plantar: flexors (both sides)
+- Cerebral signs:
+  - Finger-nose coordination: impaired ("No" recorded, indicating incoordination present)
+  - Knee-heel coordination: impaired ("No" recorded, indicating incoordination present)
+
+INVESTIGATIONS:
+[NOTE — extraction limitation: the Investigations section consists of 12 embedded images with no accompanying text values, labels, or findings whatsoever. No specific lab names, imaging modality names, or results could be extracted as text for this section. This is a substantial gap: the provisional diagnosis (cervical myelopathy and acute on chronic subdural hematoma) is a neuroimaging-dependent diagnosis (would typically require CT/MRI brain and/or spine), and none of that imaging data is available in this extraction.]
+
+PROVISIONAL DIAGNOSIS:
+Cervical myelopathy and acute on chronic subdural hematoma
+
+PLAN OF CARE:
+- Inj. Optineuron 1 amp in 100ml NS/IV/OD
+- Inj. Zofer 4mg IV/TID
+- Tab. Pan 40mg OD
+- Tab. Ondansetron chewable tablets TID
+- BP/PR/Temperature monitoring every 4th hourly
+
+UPDATE — Date: 4/12/2021 (SOAP note):
+
+S: No fresh complaints
+
+O:
+- Patient conscious, coherent, cooperative
+- PR: 74 bpm
+- BP: 140/80 mmHg
+- RR: 22 cpm
+- RS: BAE+
+- CVS: S1 S2+
+- P/A: soft, non-tender
+- CNS: E4V5M6 (GCS)
+- B/L pupils normal size, reacting to light
+
+A:
+Chronic subdural hematoma with compressive myelopathy
+
+P:
+1. Inj. Optineuron 1 amp in 100ml NS/IV/OD
+2. Inj. Zofer 4mg/IV/TID
+3. Tab. Pan 40mg/OD
+4. BP, PR, Temperature monitoring 4th hourly
+5. GCS monitoring 4th hourly
+6. Monitor vitals and inform SOS
+
+QUESTIONS POSED BY CASE AUTHOR (not part of clinical record):
+1. What could be the reason for increased blood pressure after trauma?
+
+[OVERALL FLAG for auditor: this case's entire Investigations section (12 images) is unextractable as text, and 4 additional images in the general/neuro exam section have no accompanying text content. The provisional and updated diagnoses (subdural hematoma with compressive myelopathy) are imaging-dependent (CT/MRI) diagnoses that cannot be verified against any text-based investigation data here. Any DRM-output claims of specific imaging findings, lab values, or the images' content should be treated as unverifiable per the fabrication-check criterion in Section 4.]

@@ -1,0 +1,50 @@
+Case link: https://102-crazymandadi.blogspot.com/2021/10/blog-post.html
+
+DIAGNOSTIC REASONING MAP — case_047 / 16M, fever + vomiting x5 days, Viral Pyrexia with Thrombocytopenia
+Date: 2026-08-18
+Module: DRM — Diagnostic Reasoning Map
+Source: https://102-crazymandadi.blogspot.com/2021/10/blog-post.html
+
+NODE 1 — Presenting Complaint
+  Finding: 16M, fever x5 days (low-grade, intermittent, no chills/rigor), vomiting 5 days back (7-8 episodes)
+  Decision Point: Yes — Type: Bifurcating
+  Insight: Low-grade intermittent fever without chills/rigor in an adolescent, combined with a high-frequency vomiting episode, should activate a broad acute febrile illness pattern (viral syndrome, dengue, enteric fever, etc.) rather than a bacterial/rigor-associated pattern (which would favor pyelonephritis, cholangitis, or malaria with classical paroxysms) — the absence of chills/rigor is a semantic qualifier that meaningfully narrows the branch away from those latter causes.
+
+NODE 2 — History
+  2a. Vomiting non-projectile, bilious, food particle content: Decision Point: Missed (as a discriminator) — Insight: Bilious vomiting is a somewhat unusual descriptor in an otherwise viral-syndrome-consistent picture (bilious content suggests reflux of duodenal contents, more typical of an obstructive or significant GI process) and is not explicitly reconciled with the eventual benign "viral pyrexia" diagnosis — this deserved brief consideration of an intestinal obstructive process, though the absence of abdominal distension and presence of bowel sounds on exam does argue against it.
+  2b. No pain abdomen, no loose stools, no cold/cough/SOB: Decision Point: Closing — Insight: Absence of respiratory symptoms reduces the likelihood of an influenza-type or COVID-type viral illness as the primary driver, and absence of diarrhea reduces likelihood of a primarily gastroenteric infection, keeping the picture more consistent with a systemic viral fever syndrome (e.g., dengue) than a localized organ-system infection.
+  2c. Outside platelet count 73,000 (9/10/21), prompting transfer to this hospital: Decision Point: Pivotal — Insight: A pre-existing, externally documented thrombocytopenia is the single most important piece of history driving both the referral and the provisional diagnosis label ("with thrombocytopenia") — in a 16-year-old with fever and thrombocytopenia, this should prompt explicit consideration of dengue fever as a leading specific diagnosis, not just a generic "viral pyrexia" label.
+  2d. Decreased appetite, no addictions: Decision Point: Closing — Insight: Anorexia is a nonspecific systemic symptom that supports an ongoing febrile illness but does not discriminate between causes.
+  Missing history: No documented rash, retro-orbital pain, myalgia/arthralgia, or bleeding manifestations (gum bleeding, epistaxis) despite thrombocytopenia being present — these are directly relevant to formally considering dengue fever as a specific rather than generic viral diagnosis; no travel history; no history of mosquito exposure or others in the household/area with similar illness; no tourniquet test result documented.
+
+NODE 3 — Examination
+  3a. No pallor, icterus, cyanosis, clubbing, lymphadenopathy: Decision Point: Closing — Insight: Absence of icterus and lymphadenopathy reduces likelihood of a hepatitis-predominant or lymphoproliferative/infectious mononucleosis-type process being the dominant driver.
+  3b. Mild tenderness in umbilical region, bowel sounds present, abdomen soft: Decision Point: Missed — Insight: Mild umbilical tenderness is noted but not further explored or explained — in the context of bilious vomiting (Node 2a), this combination could have prompted a more targeted abdominal workup (e.g., ultrasound) to exclude an intra-abdominal process, but this is not pursued in the documented exam or plan.
+  3c. Stable vitals (Temp 99F, PR 86, BP 100/80, RR 20, SpO2 99%), no meningeal signs, CNS intact: Decision Point: Closing — Insight: Normal vitals and absent meningeal signs argue against severe sepsis, shock, or CNS involvement at presentation, appropriately supporting a lower-acuity monitoring approach rather than aggressive intervention.
+  System 1 nodes: Fever + thrombocytopenia in an adolescent → viral fever/dengue-type pattern recognition
+  System 2 nodes: Would be expected in explicitly weighing bilious vomiting + umbilical tenderness against an obstructive/surgical differential, but this reasoning is not shown as documented
+
+NODE 4 — Investigations
+  4a–4x: Not extractable — five investigation-panel images are linked in the source (in-hospital labs), and their content is not present as readable text. Only the single outside platelet count (73,000 on 9/10/21) is available as text and is used above; in-hospital lab trends (repeat platelet counts, hematocrit, NS1/dengue serology, LFTs) are not fabricated here.
+  Unused results: Cannot be assessed without the image-based lab data.
+  Missing investigations (implied by the "thrombocytopenia" label but not shown as text): No documented repeat platelet count trend during the admission, no dengue NS1 antigen or IgM/IgG serology despite this being the most directly relevant confirmatory test for the leading specific diagnosis, no hematocrit/PCV trend (relevant for detecting hemoconcentration in dengue), no peripheral smear.
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Viral pyrexia with thrombocytopenia
+  Closure type: Pattern-recognition closure (System 1), and notably a generic rather than specific label — the diagnosis names the syndrome (fever + thrombocytopenia) without committing to a specific etiology (e.g., dengue fever), which is either appropriately cautious pending serology (data not visible in extractable text) or represents an under-specified closure given how classically this presentation (adolescent, fever, thrombocytopenia, no localizing signs) fits dengue.
+  Open branches at closure: Specific etiological diagnosis (dengue vs. other viral fever) is left open in the provisional/working diagnosis label itself; the bilious vomiting and umbilical tenderness (Nodes 2a/3b) are also not explicitly closed against an alternative surgical/obstructive process, though the benign symptomatic treatment course (IV fluids, antipyretics, PPI) suggests the team was not clinically worried about this branch, even if it wasn't explicitly documented as ruled out.
+  Synthesis insight: The clinical course across the two SOAP notes (afebrile by Day 1, no fresh complaints, stable vitals) is reassuring and consistent with a resolving self-limited viral illness, supporting that the generic "viral pyrexia with thrombocytopenia" label was a clinically reasonable and safe closure even without an explicit etiological label documented in the extractable text.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Not clearly demonstrated — the diagnosis remained appropriately generic/non-committal on etiology rather than anchoring to a specific single cause.
+  Availability: Cannot assess from available text.
+  Premature closure: Possible — labeling this "viral pyrexia" without explicitly pursuing dengue-specific serology (given the classical fever + thrombocytopenia picture in an adolescent) could reflect a mild premature closure at the level of specific etiology, though the syndromic label itself is defensible and the patient improved regardless.
+  Framing: Not clearly identifiable from the extractable text.
+  Commission/Omission bias: Node 4 — Omission bias is plausible: dengue serology is the single most relevant confirmatory test for this presentation and is not documented as having been sent, despite thrombocytopenia being prominent enough to appear in the diagnosis label itself.
+  Search satisficing: Node 4-5 — Once the syndromic pattern (fever + thrombocytopenia, clinically improving) was recognized and the patient began improving symptomatically, further etiological search (specific serology) does not appear to have been pursued or at least is not documented — consistent with search satisficing once a plausible, clinically reassuring picture emerged.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 4/5 — specific etiological diagnosis (e.g., dengue) not pursued despite classical presentation
+  Why: An adolescent with acute fever and thrombocytopenia (73,000) is a textbook setup for dengue fever, and confirmatory serology (NS1/IgM) is inexpensive, fast, and directly decision-relevant (affecting monitoring intensity, warning-sign surveillance, and reporting) — the highest-yield, most transferable lesson from this case is that a compatible syndromic label ("viral pyrexia with thrombocytopenia") should not substitute for pursuing an available, specific, and actionable etiological diagnosis when the clinical picture strongly suggests one.
+
+FABRICATION FLAG: No — all claims above are traceable to the case text provided; in-hospital investigation panels are image-only and are marked as unavailable rather than invented, and only the one text-stated outside platelet value is used as data.

@@ -1,0 +1,65 @@
+Case link: https://102-crazymandadi.blogspot.com/2021/10/70-year-old-male-with-acute-on-chronic.html
+
+---
+DIAGNOSTIC REASONING MAP — case_049 / 70M, bilateral pedal edema, hiccups, vomiting, HTN
+Date: 2026-08-18
+Learner: [optional]
+Module: DRM — Diagnostic Reasoning Map
+
+NODE 1 — Presenting Complaint
+  Finding: 70M, progressive bilateral pitting pedal edema x1.5 months with facial puffiness, no SOB/oliguria/abdominal distension; hiccups x15 days; vomiting (food content, non-projectile, bilious) starting 10 days back, worse with travel/motion; recurrence of a prior pedal edema episode 2 years ago that resolved with medication.
+  Decision Point: Yes — Type: Bifurcating
+  Insight: Chronic bilateral edema with facial involvement but no SOB/oliguria/abdominal distension weakens a purely cardiac or purely hepatic-ascitic picture and should have raised renal (nephrotic/renal failure) and drug-toxicity causes early, especially combined with hiccups and vomiting, which are uremic-symptom-consistent rather than purely cardiac.
+
+NODE 2 — History
+  2a. Recurrent pedal edema 2 years ago, resolved with medication (unspecified): Decision Point: Missed — Insight: A prior edema episode "treated with medication" that resolved is a key clue toward chronic analgesic/NSAID use as a recurring precipitant, but the specific medication is not named in the visible text, leaving a critical gap for the "analgesic nephropathy" component of the eventual diagnosis.
+  2b. Hiccups x15 days: Decision Point: Bifurcating — Insight: Persistent hiccups can reflect uremia/metabolic derangement or a central/phrenic irritative process; in the context of eventual renal failure diagnosis this is plausibly a uremic symptom, but the case does not explicitly link it.
+  2c. Vomiting worse with travel (motion-provoked), bilious, non-projectile: Decision Point: Closing (partial) — Insight: Motion-provoked vomiting suggests a vestibular/motion-sickness component that may be incidental rather than directly tied to the renal picture; the case doesn't reconcile whether this is coincidental or uremic-related.
+  2d. K/C/O HTN since 1.5 years: Decision Point: Pivotal — Insight: Longstanding hypertension is a major risk factor for chronic kidney disease and provides the "chronic" component of the eventual "acute on chronic renal failure" diagnosis.
+  2e. Urinary hesitancy + dribbling, no increased frequency: Decision Point: Bifurcating — Insight: Suggests possible bladder outlet obstruction (e.g., prostatic) which could contribute to a post-renal component or be a red herring for the primarily parenchymal renal failure diagnosis; not explicitly investigated further in the visible text.
+  2f. Alcohol 90ml occasional, tobacco (chutta) stopped 3 years ago: Decision Point: Closing — Insight: Modest/remote substance exposure, lower relevance to the acute presentation.
+  Missing history: specific identity/dose/duration of the medication used for the prior edema episode (critical for substantiating "analgesic nephropathy"), any prior renal function tests/baseline creatinine, NSAID or other nephrotoxic drug history beyond the implied prior medication.
+
+NODE 3 — Examination
+  3a. BP 200/100 mmHg on admission: Decision Point: Pivotal — Insight: Severe hypertension both suggests longstanding poorly controlled disease contributing to chronic kidney damage and can itself be a marker of acute renal impairment (volume overload, reduced excretion).
+  3b. Bilateral grade 2 pitting pedal edema: Decision Point: Closing (supports renal/volume overload branch) — Insight: Consistent with a renal or cardiac volume-overload state; combined with absence of raised JVP-type findings or gallop (not mentioned), leans away from primary cardiac cause.
+  3c. Decreased air entry left ISA/IAA (base): Decision Point: Bifurcating — Insight: Could reflect pleural effusion from volume overload (renal or cardiac) — this finding was not explicitly followed up with imaging correlation in the visible text beyond a later chest X-ray being ordered.
+  3d. CVS S1S2 heard, no murmurs: Decision Point: Closing — Insight: Argues against a primary valvular/structural cardiac cause for the edema.
+  3e. Micturition: hesitancy + dribbling: Decision Point: Missed — Insight: A prostatic/outflow contribution to renal impairment (post-renal component) is suggested by exam/history but not clearly pursued (e.g., no mention of PVR, prostate exam, or renal ultrasound findings on hydronephrosis in the visible text).
+  System 1 nodes: BP 200/100 + bilateral edema -> rapid pattern match to "renal vs cardiac failure" (reflected in initial provisional diagnosis "?CCF/?Renal failure").
+  System 2 nodes: Distinguishing CCF from renal failure, and identifying "sepsis-induced" and "analgesic nephropathy" as final qualifiers, required integrating fever course (Day 3 spike), decreased breath sounds, and presumably lab/imaging data not fully visible in text.
+
+NODE 4 — Investigations
+  Data limitation: ECG, chest X-ray, 2D echo, USG abdomen, ABG, and CUE images are embedded as scanned images and not extractable as text via automated fetch, except for the explicitly transcribed CUE findings (below). Node 4 scoring is therefore partial.
+  4a. CUE: Albumin +++, sugar nil, pus cells 4-5, epithelial cells 3-4 (explicitly given in text): Decision Point: Pivotal — Insight: Marked albuminuria (+++) strongly supports a renal/glomerular or tubular pathology contributing to the edema and is consistent with the eventual renal failure diagnosis; mild pyuria could reflect concurrent or contributing infection, tying into the later "sepsis-induced" qualifier.
+  4b. ECG, Chest X-ray, 2D Echo, USG Abdomen, ABG (image-only, unreadable): Decision Point: Missed (auditor limitation) — Insight: These are the results that would most directly confirm/refute "?CCF" vs renal failure (echo for cardiac function, USG for renal size/echotexture consistent with chronic disease, ABG for metabolic acidosis of renal failure) but cannot be verified from available text.
+  4c. Fever spike Day 3 (99.7°F), treated empirically: Decision Point: Bifurcating — Insight: A fever spike during the admission is the most direct textual support for the later "sepsis-induced" qualifier in the diagnosis, though no culture/blood count results are visible to confirm infection source.
+  Unused results: Cannot fully assess given image-only investigation data.
+  Missing investigations: No visible baseline/serial serum creatinine or urea values in text, despite these being essential to substantiate "acute on chronic renal failure."
+
+NODE 5 — Diagnostic Synthesis
+  Working diagnosis reached: Acute on Chronic Renal Failure (Sepsis induced), Analgesic Nephropathy (finalized by Day 5, evolved from initial "?CCF/?Renal failure").
+  At what point reached: Between Day 4 and Day 5 of admission, after a fever spike (Day 3) and presumably after lab/imaging results became available (not all visible in text).
+  Classify the leap: Primarily analytical closure — the diagnosis evolved over several days as new data (fever, presumed labs) accumulated, rather than being fixed at first presentation; however, the "analgesic nephropathy" component appears to rely on history (prior medication use for edema) that is not explicitly detailed in the visible text, suggesting an element of inference beyond what's documented.
+  Open branches at closure: Cardiac failure (CCF) was the other major branch in the initial provisional diagnosis and does not appear explicitly ruled out in the visible text (no echo findings, ejection fraction, or BNP mentioned) — it may have been closed via the image-embedded 2D echo, which cannot be verified here. Bladder outlet obstruction (post-renal component suggested by urinary hesitancy/dribbling) also appears to remain unaddressed as an explicit branch in the final diagnosis.
+  Synthesis insight: The final diagnosis integrates three distinct mechanisms (chronic renal impairment from longstanding HTN and presumed analgesic use, an acute sepsis-driven insult, and a nephrotic-range-appearing albuminuria) — plausible but only partially traceable to explicit data in the extractable text; several key confirmatory results sit in unreadable images.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Node 1 — Initial framing as "?CCF/?Renal failure" set a cardio-renal frame early; by Day 5 this had narrowed to a renal-dominant diagnosis, but no explicit documentation shows CCF being actively excluded rather than just dropped.
+  Availability: Not clearly identifiable from the visible text.
+  Premature closure: Not strongly evident — the diagnosis appears to have evolved appropriately over multiple days rather than closing prematurely; if anything, the risk here is under-documentation of the reasoning rather than premature reasoning itself.
+  Framing: Node 1 — the blog post's own title asserts the final compound diagnosis outright ("Acute on Chronic Renal failure (Sepsis induced) Analgesic nephropathy"), which frames the reader/auditor toward accepting the label before evaluating the supporting evidence chain.
+  Omission bias: Node 4 — urinary hesitancy/dribbling (possible post-renal/obstructive contributor) does not appear to have prompted an explicit follow-up (e.g., PVR, prostate assessment) in the visible record.
+  Search satisficing: Possibly at Node 4 — once "renal failure" was accepted as a frame, the outflow-obstruction lead may not have been actively pursued.
+
+HIGHEST-YIELD DECISION POINT
+  Node: 2a (prior edema episode / medication history) and 4b (image-only investigations)
+  Why: The "analgesic nephropathy" qualifier — one of three components of the final diagnosis — rests on a history detail (prior medication use for edema) that is never specified in the visible text, and the confirmatory imaging/labs (echo, USG, ABG) that would validate the full triad of diagnoses are locked in unreadable images. Earlier, explicit documentation of the analgesic name/duration and legible investigation results would most change how confidently this case could be scored for both insight-correctness and fabrication-risk.
+
+---
+
+Fabrication check: No — every claim above traces to text explicitly present in the fetched case page; no findings, history, or results were invented. Image-only investigation content is explicitly flagged as unverifiable rather than assumed or guessed.
+
+Contamination flag (Section 3): Low — obscure individual student e-log case with idiosyncratic formatting and day-by-day ward notes; no signs of pattern-matched recall beyond the visible text.
+
+Data-completeness flag: Yes, non-standard — ECG, CXR, 2D echo, USG abdomen, and ABG are image-only and unreadable by this fetch method; only the CUE (urinalysis) values were given as plain text. Recommend logging this case as "output saved = Y, investigations partially unscored (image-only source, CUE only readable)" rather than a clean Y.

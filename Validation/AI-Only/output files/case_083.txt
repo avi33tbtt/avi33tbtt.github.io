@@ -1,0 +1,398 @@
+Case ID: case_083
+Case link: https://2018-21batchpgy3gmpracticals.blogspot.com/2021/08/18100006007-case-presentations.html
+
+[IMPORTANT PROTOCOL FLAG: This single URL contains THREE distinct, unrelated patient cases (a university exam post with "Long Case," "Short Case-1," and "Short Case-2"). This breaks the 1-case-per-URL assumption in Section 9.1 of the protocol. Recommendation: treat these as three separate DRM runs (e.g., case_083a, case_083b, case_083c) rather than one, since running Module DRM once across all three unrelated diagnoses would conflate the 5-node structure (Presenting Complaint/History/Examination/Investigations/Synthesis) across patients with nothing in common. All three are transcribed in full below, clearly delimited, so you can choose how to proceed.]
+
+==================================================================
+CASE 083a — LONG CASE: 47yo male, decompensated chronic liver disease
+==================================================================
+
+A 47 year male patient, resident of Nalgonda, came with chief complaints of abdominal distension and swelling of bilateral lower limbs since 6 months, gradually increasing since 10 days, and fever since 2 days.
+
+HISTORY OF PRESENT ILLNESS:
+
+Patient was apparently asymptomatic 18 months back, then noticed abdominal distension, insidious in onset and gradually progressive, and subsequently noticed bilateral lower limb swelling. He was hospitalized for one week, took medication which increased urine output, and abdominal paracentesis was done; he felt better. However he discontinued medicine 6 months back and presented with similar complaints, was hospitalized and treated conservatively; hospitalized again 3 months back with similar complaints, again abdominal paracentesis of 1.5-2 litres was done. He is on medication.
+
+Past 10 days: noticed abdominal distension associated with swelling of bilateral lower limbs, starting at ankle and progressing up to knee.
+
+- H/o fever, high grade, intermittent, not associated with chills, since 2 days
+- H/o anorexia, fatigue and generalized weakness since 3 months
+- H/o disturbed sleep since one month, with excessive daytime sleepiness and disturbed night sleep
+- H/o yellowish discoloration of eyes 3 months back, now subsided
+- No h/o nausea and vomiting
+- No h/o pain abdomen
+- No h/o decreased urine output
+- No h/o high coloured urine and clay coloured stools
+- No history of shortness of breath
+- No history of blood transfusions
+
+PAST MEDICAL ILLNESS:
+History of abdominal distension, bilateral pedal edema, and hematemesis (one episode, 50ml) 18 months back, admitted for 10 days, relieved with diuretics; abdominal paracentesis and gastro-oesophageal ligation was done.
+Appendicectomy 25 years ago.
+No history of hypertension, diabetes, thyroid, epilepsy or seizure disorder.
+
+PERSONAL HISTORY:
+- Diet: mixed
+- Sleep: disturbed, excessive daytime sleep, night time disturbed sleep since one month
+- Appetite: decreased
+- Bladder habits: regular and normal
+- Habits: chronic alcohol consumption since 20 years daily — country liquor ~500ml/day (~110g ethanol/day), whisky ~150ml/day (~50g ethanol/day). Last binge of alcohol: 3 days before admission, took 100g.
+
+SUMMARY (as stated in source): Decompensated chronic liver disease secondary to ethanol consumption, with ascites, portal hypertension, hepatic encephalopathy stage 1, and spontaneous bacterial peritonitis.
+
+GENERAL EXAMINATION:
+- Moderately built and nourished
+- Oriented to time, place, person
+- GCS: E4 V5 M6
+
+VITALS:
+- Pulse: 82 bpm, regular, normal volume and character, no radio-radial or radio-femoral delay
+- BP: 100/70 mmHg, right arm supine
+- RR: 18 cpm, thoracoabdominal
+- SpO2: 98% on room air
+- JVP: not elevated
+
+PHYSICAL EXAMINATION:
+- Pallor: present
+- Icterus: absent
+- No cyanosis, clubbing, generalized lymphadenopathy
+- Pedal edema: present
+
+Head to toe:
+- Axillary and pubic hair: sparse
+- B/l parotid enlargement: negative
+- No fetor hepaticus
+- No asterixis
+- No gynaecomastia
+- Spider nevi: absent
+- No palmar erythema
+- No leuconychia
+- Flapping tremors: seen
+
+INSPECTION:
+- Oral cavity: no dental caries, no tobacco staining
+- Abdomen: flanks full, distension; appendicectomy scar present; distended veins present; no visible peristalsis or pulsations
+
+PALPATION:
+- No tenderness or local rise of temperature
+- Abdomen soft; no guarding and rigidity
+- Lower border of liver not palpable
+- Spleen not palpable
+- Kidneys bimanually palpable, ballotable
+- Fluid thrill: present
+- Abdominal girth: 98 cm
+- Xiphisternum to umbilicus: 16 cm
+- Pubic symphysis to umbilicus: 13 cm
+
+PERCUSSION:
+Liver span: 15.7 cm in mid-clavicular line
+
+AUSCULTATION:
+Normal bowel sounds heard; no hepatic bruit, venous hum or friction rub.
+
+External genitalia: no testicular atrophy.
+Spine: normal.
+
+PROVISIONAL DIAGNOSIS:
+Decompensated chronic liver disease
+Etiology: chronic ethanol related
+Ascites, SBP, hepatic encephalopathy
+? Hepatorenal syndrome
+Esophageal gastric variceal ligation bands present (history)
+Child-Pugh score: C
+
+INVESTIGATIONS:
+
+CBP:
+- Hb: 10.7
+- TLC: 19,100
+- Platelets: 1.50 lakh
+- Neutrophils: 90%
+
+CUE:
+- Albumin: 2+
+- Sugar: nil
+- RBCs: nil
+- Pus cells: 4-5
+
+RFT:
+- Blood urea: 116 mg/dl
+- Serum creatinine: 4.8 mg/dl
+- Sodium: 128 meq/l
+- Potassium: 5.5 meq/l
+- Chloride: 102 meq/l
+- Uric acid: 5.0
+- Calcium: 9.1
+- Phosphorus: 8.0
+
+LFT:
+- Total bilirubin: 1.63 mg/dl
+- Direct bilirubin: 0.40 mg/dl
+- SGOT: 34 IU/L
+- SGPT: 20 IU/L
+- ALP: 186 IU/L
+- Total protein: 5.4 gm/dl
+- Albumin: 2.06 gm/dl
+
+RBS: 70 mg/dl
+
+Ascitic fluid analysis:
+- SAAG: 1.74 (serum albumin 2.01, ascitic albumin 0.36)
+- Ascitic LDH: 120 IU/L
+- Ascitic sugar: 52 mg/dl
+- Ascitic protein: 0.8 g/dl
+- Appearance: clear
+- Neutrophil count: 405
+- Total count: 675
+- RBCs: present
+
+- PT: 16 sec
+- APTT: 32 sec
+- INR: 1.11
+- HIV: negative
+- HbsAg: negative
+- HCV: negative
+
+ECG: [embedded image; findings not extractable as text]
+X-ray: [embedded image; findings not extractable as text]
+
+TREATMENT GIVEN:
+1. Tab. Pan 40mg OD
+2. Tab. Rifagut 550mg PO BD
+3. Syp. Hepamerz 10ml BD
+4. Syp. Lactulose 10ml HS
+5. Tab. Udiliv 300mg PO BD
+6. Inj. Ciprofloxacin 500mg IV BD
+7. Daily abdominal girth monitoring
+8. Salt restricted diet
+
+[NOTE: ECG and X-ray are image-only; all lab values (CBP, CUE, RFT, LFT, ascitic fluid analysis, coagulation, serology) were available as text.]
+
+==================================================================
+CASE 083b — SHORT CASE-1: 43yo female, right pleural effusion/empyema
+==================================================================
+
+A 43 year old female came to OPD with chief complaints of:
+- Chest pain since 10 days
+- Fever since 10 days
+- Cough with expectoration since 10 days
+
+HISTORY OF PRESENT ILLNESS:
+
+Patient was apparently asymptomatic 10 days back, then presented with pain in the right side of the chest region, non-radiating, increased with inspiration and coughing. She also complained of fever, moderate to high grade, associated with chills and rigors, since 10 days. Cough with scanty mucoid expectorant, not blood tinged, non-foul smelling, since the past 10 days.
+
+No complaints of weight loss, dyspnea, burning micturition, vomiting, diarrhea.
+No history of DM, HTN, CAD, CVA, thyroid disorders, pulmonary tuberculosis.
+
+ON EXAMINATION:
+- Conscious, coherent, cooperative
+- Moderately built, well nourished
+- Pallor present; no cyanosis, clubbing, pedal edema, lymphadenopathy
+- Temperature: 100.6°F
+- Pulse: 98 bpm, regular, normal volume, no radio-radial or radio-femoral delay
+- BP: 140/80 mmHg, right arm supine
+- RR: 22 cpm
+- SpO2: 91% on room air
+- GRBS: 105 mg/dl
+
+RESPIRATORY SYSTEM EXAMINATION:
+
+Inspection:
+- Shape of chest: elliptical
+- Symmetry: bilateral symmetry
+- Trachea: central
+- Apex beat: seen in 5th ICS midclavicular line
+- RR: 22 cpm, regular, thoracoabdominal
+- No accessory/intercostal muscle usage
+- No engorged veins over chest/neck
+- No spine abnormality
+
+Palpation:
+- All inspectory findings confirmed
+- Trachea central; apex beat felt (5th ICS midclavicular line)
+- Movements (left/right): upper thorax N/N; anterior N/N; posterior N/decreased
+- Chest expansion: N (left) / decreased (right)
+- Chest expansion by region (left/right): supraclavicular N/N; infraclavicular N/N; mammary N/decreased; inframammary N/decreased; axillary N/decreased; infra-axillary N/decreased; suprascapular N/N; interscapular N/decreased; infrascapular N/decreased
+- Vocal fremitus (left/right): supraclavicular N/N; infraclavicular N/N; mammary N/decreased; axillary N/decreased; infra-axillary N/decreased; suprascapular N/N; interscapular N/decreased; infrascapular N/decreased
+
+Percussion (left/right):
+- Supraclavicular: resonant/resonant
+- Infraclavicular: resonant/resonant
+- Mammary: resonant/dull
+- Inframammary: resonant/dull
+- Axillary: resonant/dull
+- Infra-axillary: resonant/dull
+- Suprascapular: resonant/resonant
+- Interscapular: resonant/dull
+- Infrascapular: resonant/dull
+
+Auscultation (left/right):
+- Supraclavicular: NVBS/NVBS
+- Infraclavicular: NVBS/NVBS
+- Mammary: NVBS/reduced
+- Axillary: NVBS/reduced
+- Infra-axillary: NVBS/reduced
+- Suprascapular: NVBS/reduced
+- Interscapular: NVBS/reduced
+- Infrascapular: NVBS/reduced
+- No added sounds; no wheeze/crepts/rub
+
+CVS: S1 S2 heard, no murmurs
+P/A: soft, non-tender, no organomegaly
+CNS: HMF intact, speech normal, sensory system normal, motor system normal
+
+PROVISIONAL DIAGNOSIS:
+Right sided pleural effusion
+
+INVESTIGATIONS:
+
+ECG: [embedded image; findings not extractable as text]
+Chest X-ray PA view: [embedded images; findings not extractable as text]
+
+Haemogram:
+- Hb: 9.5 gm/dl
+- TLC: 17,200 cells/cumm
+- Lymphocytes: 15%
+- RBC: 4.12
+- Platelets: 3.7 lakh cells/cumm
+
+Smear: normocytic hypochromic, with neutrophilia and thrombocytosis
+
+LFT:
+- TB: 0.6 mg/dl
+- DB: 0.2 mg/dl
+- SGOT: 16
+- SGPT: 27
+- ALP: 239
+- TP: 6.8
+- Albumin: 2.9
+- A/G ratio: 0.74
+
+RFT:
+- Blood urea: 27 mg/dl
+- Serum creatinine: 0.8 mg/dl
+
+RBS: 128 mg/dl
+USG abdomen: normal
+
+Pleural fluid analysis (pleural tap done, right side 6th posterior intercostal space, white viscous fluid):
+- Cell count: volume 1ml, colour "pus like material", appearance cloudy
+- Total count: plenty cells/cumm
+- Differential count: neutrophils 86%, lymphocytes 14%, RBC nil, others nil
+- Sugars: 34 mg/dl
+- Protein: 4.3 gm/dl
+
+Serum protein: 6.9 g/dl
+Serum LDH: 319 IU/L
+
+Cytology report: smears showed rich cellularity composed of degenerating neutrophils only against eosinophilic proteinaceous background. Impression: cytology suggestive of acute inflammatory condition.
+
+FINAL DIAGNOSIS:
+Type 1 respiratory failure due to pleural effusion/empyema, likely due to a bacterial infection.
+
+TREATMENT:
+1. IV fluids
+2. Inj. Augmentin 1.2g IV BD
+3. Inj. Pantop 40mg IV OD
+4. Tab. Dolo 650mg PO SOS
+5. Syrup Ascoril 10ml PO TID with one glass of water
+6. IV Metrogyl 500mg IV TID
+
+[NOTE: ECG and chest X-ray images have no accompanying text findings. All other lab/fluid analysis values were available as text and are captured in full above — this is one of the more completely text-documented cases in the corpus, notably including full pleural fluid and cytology data supporting the empyema diagnosis.]
+
+==================================================================
+CASE 083c — SHORT CASE-2: 18yo male, suspected Guillain-Barré Syndrome
+==================================================================
+
+An 18 year old male presented with complaints of difficulty in walking since 1 month, bilateral lower limb weakness since 15 days.
+
+HISTORY OF PRESENT ILLNESS:
+
+Patient was apparently asymptomatic 15 days back, then gradually developed weakness in both lower limbs, initially with difficulty wearing/holding footwear, then gradually ascending to involve calf muscles causing difficulty walking (required wall support). After a few days, developed difficulty getting up from bed, standing from sitting, and squatting.
+
+- H/o difficulty climbing stairs
+- H/o difficulty getting up from bed — appeared 5 days after onset of initial symptom
+- 1 day later: weakness in hands — difficulty holding glasses, buttoning/unbuttoning shirt, writing
+- No h/o difficulty wearing a t-shirt
+- Difficulty mixing food but no difficulty taking food to mouth
+- History of buckling of knees: present
+
+Extensive negative review of systems (as stated in source): no h/o difficulty breathing; no h/o difficulty lifting head off pillow; no h/o sensory deficit for touch, temperature; no h/o tingling/numbness in UL/LL; no h/o band-like sensation; no h/o low backache; no h/o trauma; no h/o giddiness while washing face; no h/o cotton wool sensation; no h/o urinary urgency/hesitancy/increased frequency; no h/o urinary incontinence; no h/o nausea/vomiting/diarrhea; no h/o seizures; no h/o spine disturbances; no h/o head trauma; no h/o memory loss; no h/o smell abnormality; no h/o blurring/double vision or eye movement difficulty; no h/o facial sensation abnormality; no h/o difficulty chewing; no h/o difficulty closing eyes; no h/o drooling; no h/o giddiness/swaying; no h/o dysphagia/dysphasia; no h/o tongue deviation; no h/o difficulty reaching objects; no h/o tremors/tongue fasciculations; no h/o incoordination drinking water; no h/o fever/neck stiffness.
+
+PAST HISTORY:
+No h/o similar complaints in past. Not a known case of DM/HTN/epilepsy/CVA/CAD.
+
+PERSONAL HISTORY:
+Mixed diet, normal appetite, normal bowel/bladder movements.
+H/o alcohol since 2 years, weekly twice. No h/o smoking.
+No significant family history.
+
+GENERAL EXAMINATION:
+- Moderately built, poorly nourished
+- Afebrile
+- Pallor: present
+- Icterus: negative
+- No cyanosis, clubbing, lymphadenopathy, edema
+- No short neck, no scars, no trophic ulcers, no neurocutaneous markers
+
+VITALS:
+- BP: 100/60 mmHg
+- PR: 80 bpm
+
+SYSTEMIC EXAMINATION:
+- CVS: S1 S2 heard, no murmurs
+- RS: BAE+, NVBS heard
+- P/A: soft, non-tender
+- CNS:
+  - HMF: patient conscious, oriented to place/time/person; no aphasia/dysarthria; no dysphonia; no memory loss; no emotional lability
+  - Cranial nerves: intact
+
+MOTOR SYSTEM:
+- Bulk: right normal, left normal; measurements UL 28.5cm both sides, LL 37cm both sides
+- Tone: wrists — hypotonia both sides; biceps — normal both sides; LL — hypotonia both sides
+- Power: distal muscle group (wrists) 40% both sides; proximal muscle group (extensors+flexors) 3/5 both sides; distal muscle group (extensors+flexors) 4/5 both sides
+
+REFLEXES:
+Superficial (right/left):
+- Abdominal: absent/absent
+- Plantar: mute/mute
+- Cremasteric: present/present
+
+Deep tendon (right/left):
+- Biceps: present/present
+- Triceps: present/present
+- Supinator: not elicitable (recorded as "---") both sides
+- Finger flexor: not elicitable both sides
+- Knee: not elicitable both sides
+- Ankle: not elicitable both sides
+
+SENSORY SYSTEM (right/left, all normal):
+- Spinothalamic: crude touch N/N, pain N/N, temperature N/N
+- Posterior column: fine touch N/N, vibration N/N, position sense N/N
+- Cortical: 2-point discrimination N/N, tactile localisation N/N
+
+CEREBELLUM: normal examination
+
+INVESTIGATIONS:
+
+Hemogram:
+- Hb: 10.4 gm/dl
+- Platelets: 2.56 lakhs/cumm
+- TLC: 10,400 cells/cumm
+- Lymphocytes: 10%
+- Smear: microcytic hypochromic anemia
+
+Serum electrolytes:
+- Sodium: 143 meq/l
+- Potassium: 3.9 meq/l
+- Chloride: 95 meq/l
+
+Chest X-ray: [embedded image; findings not extractable as text]
+ECG: [embedded image; findings not extractable as text]
+
+DIAGNOSIS:
+Bilaterally symmetrical ascending, proximal > distal, LMN type quadriparesis due to peripheral neuropathy up to level C7, likely due to Guillain-Barré Syndrome (Acute Inflammatory Demyelinating Polyneuropathy).
+
+Investigations noted as pending/referenced but not detailed in source: Nerve conduction studies (mentioned as a heading at the end of the page with no accompanying results/text or images).
+
+[NOTE — extraction limitation: chest X-ray and ECG are image-only. Critically, the nerve conduction study (NCS) — which would be the key confirmatory investigation for a GBS/AIDP diagnosis — is referenced only by heading with no results, values, or images provided at all on the source page. This is the single most diagnostically important missing piece for this case: the DRM/auditor should not accept any DRM-output claims of specific NCS findings (e.g., specific conduction velocities, demyelinating vs. axonal pattern) as verified, since no such data exists in the source at all, not even as an unextracted image.]
