@@ -196,7 +196,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module CM — Clinical Media Educational Report Generator](Module-CM-Clinical-Media-Educational-Report.md) | Module CM — Clinical Media Educational Report Generator |
 | -- | [Module IE — Investigations & Examinations Utility Mapper](Module-IE-Investigations-Examinations-Utility-Mapper.md) | Module IE — Investigations & Examinations Utility Mapper |
 | -- | [Module ARC — Adversarial Case Record Audit](Module-ARC-Adversarial-Case-Record-Audit.md) | Module ARC — Adversarial Case Record Audit |
-
+| -- | [Module CC-UG — Uncertainty & Evidence Gap Mapper](Module-CC-UG-Uncertainty-Evidence-Gap-Mapper.md) | Module CC-UG — Uncertainty & Evidence Gap Mapper |
 
 
 
