@@ -1,0 +1,144 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_029
+Case link: http://soumya9814.blogspot.com/2021/01/this-is-online-e-log-book-to-discuss.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output, including the first-presentation history/exam/labs, the
+discharge treatment list, and the second-presentation (22/2) follow-up note.
+The generation output's own "CONTAMINATION FLAG" self-assessment (low-
+moderate, sparse text-based) is reasonable and consistent with what this
+audit found.
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — SOB (NYHA 2-3), cough with
+    whitish sputum x2 days, decreased sleep/appetite x10 days, and the
+    negative palpitations/chest pain/orthopnoea/PND all match the source
+    exactly.
+  Insight correctness: 2/2 — the non-cardiac-vs-cardiac framing given the
+    DM/HTN background is specific and reasonable.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a (prior similar episode
+    ~1 year ago, self-treated with RMP vitamin tablets), 2b (DM/HTN on
+    teneligliptin, telmisartan+metoprolol), 2c (purely vegetarian,
+    occasional non-veg), and 2d (negative melena/weight loss/night sweats/
+    burning micturition) all trace to precisely quoted source sentences.
+  Insight correctness: 2/2 — the vegetarian-diet-supports-B12/folate-
+    deficiency reasoning (2c) is specific and correct.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 for what is flagged. One additional gap
+    not mentioned: the source's family history section ("no familial
+    history of diabetes, hypertension, stroke, cancer, asthma, tuberculosis")
+    is never referenced anywhere in the output — a minor, low-yield omission
+    given the case's actual differential, but a real one.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — pallor present with negative
+    icterus/clubbing/cyanosis/edema/lymphadenopathy, bilateral crepts in the
+    infrascapular region, and the pansystolic murmur all match the source's
+    first-presentation exam exactly.
+  Insight correctness: 2/2 — the flow-murmur-from-high-output-state
+    reasoning (3c) and the crepts-as-fluid-overload-or-infection ambiguity
+    (3b) are both specific and clinically sound.
+  Fabrication check: No.
+  Missed-data / unfollowed finding: the output does not use a genuinely
+    useful piece of corroborating evidence available in the source: the
+    22/2 second-presentation exam explicitly documents "no wheeze and
+    crepts" — i.e., the crepts had resolved by the follow-up visit. This
+    would have been direct supporting evidence for the output's own 3b
+    hypothesis (crepts as a transient high-output/anemia-related finding
+    rather than a fixed pulmonary pathology), but it's never cited.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — Na+ 127/K+ 3.0/Cl- 94 (30/1)
+    and the Na 139/K 3.0 response by 1/2 both match the source exactly, as
+    does the verbatim provisional diagnosis line and the 400–509 mg/dL
+    capillary glucose range on the second presentation (22/2).
+  Insight correctness: 1/2 — most of the reasoning here is sound (the
+    tolvaptan-response-as-weak-retrospective-evidence point, the treatment-
+    response-vs-upfront-workup distinction), but Node 4a's insight text
+    invokes "the source does not show the SAAG/volume-status reasoning that
+    justified that choice" — SAAG (serum-ascites albumin gradient) is a
+    test for characterizing ascitic fluid, not a hyponatremia
+    volume-status tool, and there is no mention of ascites anywhere in this
+    patient's exam (abdomen is explicitly documented as soft, non-tender,
+    no organomegaly). This appears to be a conceptual mismatch — the
+    correct parallel concept for this case is serum/urine osmolality, which
+    the output itself correctly names in the "Missing investigations" line
+    just below. The SAAG reference is not a source-fabrication (it doesn't
+    claim SAAG was measured or state a value), but it's a real internal
+    inconsistency/technical inaccuracy within the same output.
+  Fabrication check: No — image-only investigation panels are not OCR'd,
+    and no specific lab value beyond the text-stated electrolytes is
+    invented.
+  Missed-data flag accuracy: 2/2 — correctly notes no B12/folate levels, no
+    reticulocyte count, no osmolality/cortisol/thyroid panel are available
+    in text.
+
+NODE 5 — Diagnostic Synthesis
+  Closure type classification: 2/2 — reasonably characterized as pattern-
+    recognition-leaning-analytical, consistent with how the source presents
+    the diagnosis (hedged with "?") and the labs that followed.
+  Insight correctness: 2/2 — the synthesis appropriately distinguishes what
+    is well-supported (dietary history, isolated pallor, sodium-correction
+    pattern) from what is left implicit (cardiac/endocrine branch closure).
+  Fabrication check: No.
+  Note: the discharge treatment list (Vit B12 1000mg IM weekly x1 month,
+  folic acid 5mg x1 week, Livogen 150mg, plus a revised insulin regimen —
+  Mixtard 25U + Actrapid 16U) is accurately referenced only indirectly
+  ("vitamin B12/folic acid/iron repletion and insulin dose changes" in 4d)
+  rather than itemized, which is a reasonable level of compression, not an
+  error.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — reasonable and well-supported.
+  Availability: Yes — a plausible and appropriately hedged read of the
+    "treated with vitamins before" detail priming a recurrence assumption.
+  Premature closure: Yes — the tolvaptan-before-documented-workup point is
+    accurate and specific.
+  Framing: Yes — correctly distinguishes documentation-level framing (the
+    blog's own title) from real-time clinical bias, a useful distinction.
+  Search satisficing: Yes — accurately notes the second-admission
+    hyperglycemia precipitant search is not shown as completed in text.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+Every quoted history item, exam finding, lab value (both hyponatremia
+readings), provisional diagnosis line, and second-presentation glucose
+range matches the source exactly. No node introduces content absent from
+the source, and the auditor-facing note's own contamination self-assessment
+is accurate and appropriately calibrated to how sparse this particular
+source is.
+
+One internal technical inaccuracy was found (the SAAG reference in Node 4a,
+a mismatched test for this clinical scenario) — not a fabricated finding,
+but a real conceptual slip within otherwise-correct reasoning. One
+corroborating piece of evidence available in the source (resolved crepts on
+the 22/2 follow-up exam) was not used to reinforce the output's own
+high-output-state hypothesis for the earlier crepts finding.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_029 | 2,2,2,1.5,2 | Y | N | 36/40 | Accurate reconstruction of a sparse, two-visit case with well-calibrated hedging throughout, but contains one internal technical inaccuracy (an irrelevant SAAG reference in a hyponatremia discussion where osmolality is the correct concept) and misses a useful piece of follow-up evidence (resolved crepts on the second visit) that would have supported its own reasoning.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, with Node 4 insight scored 1/2 for the SAAG inaccuracy]
+plus bias overlay pass [max 10 per protocol's stated max-40 ceiling] = 36/40.
+No fabrication flags to subtract.)

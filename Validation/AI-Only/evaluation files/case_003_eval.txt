@@ -1,0 +1,30 @@
+CLAUDE AUDITOR EVALUATION — case_003
+Source re-fetched directly: http://ashakiran923.blogspot.com/2021/03/unit-2-case.html
+No companion/answer-key post found linked from this specific case's page (the "BI MONTHLY EXAM" post found in case_001 references only the case_001 link, not this one) — no contamination flag warranted on that basis.
+Auditor run: fresh evaluation, scored against primary source text (not against the DRM output's internal claims), per protocol Section 3a/9.3.
+
+Case ID | Node | Decision-pt classification (0-2) | Insight correctness (0-2) | Fabrication flag (Y/N) | Missed-data flag accuracy (0-2, N/A if none claimed) | Notes
+case_003 | Node 1 (Presenting Complaint) | 2 | 2 | N | N/A | 5d fever (high-grade, intermittent, chills/rigors), 3d altered sensorium, 4d irrelevant talking, today's involuntary RT UL movement all confirmed verbatim.
+case_003 | Node 2 (History, 2a-2d) | 2 | 2 | N | 2 | Vomiting x2 Day 1, headache, farm-labourer occupation, no comorbidities, no prior hospital visits all confirmed. Missing-history list (movement character, exposure history, sick contacts) confirmed genuinely absent from source.
+case_003 | Node 3 (Examination, 3a-3f) | 2 | 2 | N | N/A | GCS E4V1M4, neck stiffness "+?", hypertonia all 4 limbs with exaggerated reflexes, vitals (BP 130/90, PR94, RR21, SpO2 97%, GRBS 112) all confirmed verbatim. Notably, 3d correctly identifies a genuine internal contradiction in the source itself — the note states "HIGHER MENTAL FUNCTIONS ARE INTACT" in one line and "NOT ORIENTED TO TIME, PLACE, PERSON" in the next — this is a real charting inconsistency in the primary source, not an invented one, and the auditor confirms the DRM's catch is accurate and well-reasoned rather than an over-read.
+case_003 | Node 4 (Investigations) | 2 | 2 | N | 2 | CSF findings (neutrophils 10%, lymphocytes 90%, normal sugar/protein/chloride) match verbatim. Fundoscopy "no papilledema" is a fair paraphrase of the source's "FUNDOSCOPY - NO FEATURES OF RAISED ICT." ATT added Day 7 without documented new confirmatory data — confirmed accurate (source shows only "TAB ATT PO/OD" appearing in the Day 7 plan with no repeat CSF/imaging noted in the accessible text). Falcigo (antimalarial) given Day 2 with no documented positive smear/antigen result in the text — confirmed accurate; this is a genuinely well-caught gap, correctly labeled "fabrication-risk-adjacent" rather than asserting a result exists.
+case_003 | Node 5 (Diagnostic Synthesis) | 2 | 2 | N | N/A | The reconstructed diagnosis trajectory (?viral/?metabolic encephalitis → viral encephalitis/?metabolic encephalopathy → meningoencephalitis ?viral ?tubercular) matches the source's own Day 1 / Day 3 / Day 7 assessment lines almost exactly. Empiric multi-cover treatment list (acyclovir, ATT, antimalarial, steroids) confirmed against orders (Inj Acyclovir, Tab ATT, Inj Falcigo, Inj Dexa all present). Appropriately declines to force a false closure where the source itself leaves "?viral ?tubercular" open.
+
+FABRICATION SUMMARY
+No fabrications found — hard or soft. Every finding, result, and treatment cited traces to the source text, including images-referenced items the DRM correctly declined to fill in (MRI, CSF/blood/urine culture results not reported in text). This is the cleanest of the three cases audited so far: no invented anatomical specifics (unlike case_001's "everted umbilicus") and no explicit/implied mislabeling (unlike case_002's SpO2 note).
+
+BIAS AUDIT OVERLAY
+Anchoring: reasonable — case title itself frames toward meningoencephalitis; DRM correctly notes the differential was nonetheless kept broad in practice.
+Availability: Day-7 ATT addition without new confirmatory data, in a locally TB-prevalent setting, is a defensible availability/practice-pattern read — not overstated as certain.
+Premature closure: correctly assessed as not present, with the more accurate opposite-direction observation (diffuse escalation) noted instead of forcing a category that doesn't fit.
+Framing: reasonable, tied to the blog post's own title framing.
+Commission bias: accurate — sequential acyclovir/antimalarial/ATT additions without stepwise confirmatory results are verified in the treatment orders.
+
+CONTAMINATION FLAG
+Generator's own note ("low-to-moderate... no unusually confident claims disproportionate to given information") is reasonable but can be tightened: unlike case_001, no companion/answer-key post specific to this case was found on review. Auditor assessment: contamination risk here is low, not low-to-moderate — recommend the generator distinguish "no external answer-key post found" (this case) from "answer-key post found and linked" (case_001) rather than defaulting to a similar-sounding hedge for both.
+
+COMPOSITE SCORE
+All applicable scored criteria at ceiling (2s) across Nodes 1–5. Zero fabrication flags, hard or soft.
+
+ONE-LINE JUSTIFICATION
+The cleanest case audited to date: accurate on every checkable data point, correctly flags a genuine charting inconsistency in the source, and avoids fabricating results even where doing so would have been easy (unread MRI/culture images).

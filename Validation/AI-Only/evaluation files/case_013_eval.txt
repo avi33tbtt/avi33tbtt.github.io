@@ -1,0 +1,160 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_013
+Case link: http://mohithak.blogspot.com/2021/03/31yearbold-male-with-numbness-and.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI timeline, history, exam including the full motor/
+reflex table, investigations, final diagnosis, treatment). Image-only
+investigation reports could not be verified; the DRM output correctly marks
+these "cannot classify."
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — "Pivotal" is well-justified;
+    a sudden focal deficit with transient speech involvement in a young adult
+    is a genuine stroke-alarm presentation.
+  Insight correctness: 1/2 — mostly correct, but contains a timing misread.
+    The DRM states numbness (7pm) was "followed within 5 minutes by left
+    lower limb weakness progressing to left upper limb weakness." The source
+    sentence — "he developed numbness of left upper limb and lower limb at
+    7pm and then he developed weakness of left lower limb which gradually
+    progressed to left upper limb within 5min" — more naturally reads as the
+    5-minute window describing the LL-to-UL weakness progression, not the
+    gap between numbness onset and weakness onset. The DRM's phrasing
+    conflates these two intervals. The underlying source sentence is itself
+    a little ambiguous, so this isn't a clean fabrication, but it's a
+    specific, confidently-stated temporal claim that overstates what the
+    text actually pins down — relevant here because stroke timelines
+    (thrombolysis window) are exactly the kind of detail that should be
+    read conservatively, not smoothed over.
+  Fabrication check: No — not an invented event, a reasonable-but-imprecise
+    reading of a genuinely ambiguous source sentence.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — negative ROS (2a), family
+    history of DM/HTN with patient not a known case himself (2b), and the
+    alcohol/smoking history (2c) all trace to real source lines.
+  Insight correctness: 1/2 — the "single most important history" line states
+    the patient has been drinking and smoking "since age 13, i.e., 18 years
+    by age 31" as if this were a directly stated fact. The source only says
+    "since 18yrs" / "since 18 years," which — consistent with this blog's own
+    phrasing convention elsewhere in the corpus (e.g., case_011's "alcoholic
+    since 7 years") — most plausibly means an 18-year duration, making the
+    age-13 start a reasonable derived inference. But it is presented flatly
+    ("alcohol + smoking since age 13") rather than flagged as a calculated
+    inference from an ambiguous duration phrase, which risks reading as a
+    more precise fact than the source actually supports. This is the kind of
+    unflagged inference the fabrication check is meant to catch even when
+    the underlying arithmetic is reasonable.
+  Fabrication check: No — the source does state an 18-year duration; the
+    age-13 figure is derived, not invented, but should have been hedged.
+  Missed-data flag accuracy: 2/2 — the stated "Missing history" list (no
+    lipid/glucose screening history, no clear pre-hospital symptom timeline
+    for thrombolysis-window purposes) is accurate and clinically relevant.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — BMI 41.2 (167cm/115kg),
+    truncal obesity, acanthosis nigricans, and "hesitation cuts" all match
+    the source's images/labels exactly. The motor exam (4-/5 left-sided
+    across shoulder/elbow/wrist/hip/knee, 5/5 right-sided) and the reflex
+    table (biceps/triceps/supinator/knee/ankle recorded "-" bilaterally,
+    plantar flexor bilaterally) match the source table precisely, including
+    the somewhat unusual bilaterally-absent deep tendon reflexes.
+  Insight correctness: 2/2 — the acanthosis-nigricans-as-insulin-resistance-
+    marker reasoning and the "bilaterally absent reflexes don't cleanly fit
+    a unilateral basal ganglia lesion" observation are both specific,
+    correct, and non-generic — genuinely close reading of an odd exam
+    finding most summaries would have glossed over.
+  Fabrication check: No.
+  Missed-data flag / unfollowed finding: 2/2 — correctly identifies
+    "hesitation cuts" as a real but unexplained/unexplored finding in the
+    source, without over-interpreting it (does not claim self-harm as fact,
+    appropriately hedges "presumably").
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — the final diagnosis's stated
+    localization ("acute infarct in body of right caudate nucleus and right
+    lentiform nucleus") is quoted correctly and verbatim from the source.
+  Insight correctness: 2/2 — the contralateral correlation (right basal
+    ganglia infarct ↔ left-sided weakness) and the sensory-sparing/pure-motor
+    correlation are anatomically accurate.
+  Fabrication check: No — image-only investigations correctly marked "cannot
+    classify" rather than inferred glucose/lipid/imaging values.
+  Missed-data flag accuracy: 2/2 — correctly notes absence of a stated
+    carotid Doppler or echocardiogram / embolic-source workup in the text,
+    which is clinically apt for a stroke in a 31-year-old.
+  Note: the DRM output does not mention that the source's actual treatment
+    (aspirin + clopidogrel + atorvastatin) is itself evidence that the
+    treating team implicitly closed on an atherosclerotic/small-vessel
+    mechanism without stating that reasoning explicitly — this is real,
+    text-available evidence that would have strengthened the Node 5 argument
+    about an unclosed etiological branch, and was available in the source's
+    treatment section but wasn't used.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — "Acute ischemic stroke with
+    trunkal obesity" (provisional) and the final localization diagnosis are
+    both quoted accurately from the source.
+  Insight correctness: 2/2 — the closed-localization-but-open-etiology
+    argument is well-supported and is arguably the single best insight in
+    this output — a genuinely non-generic, clinically important observation
+    for a young-stroke case.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — plausible and appropriately hedged.
+  Availability: Correctly marked "not clearly present."
+  Premature closure: Yes — the etiological-workup gap is accurately drawn
+    from the visible text (no stated hypercoagulable/cardioembolic screen).
+  Framing: Yes — reasonable, appropriately speculative.
+  Search satisficing: Yes — accurate; no further etiological workup is shown
+    in the source after localization.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+Every specific value checked (vitals, BMI/height/weight, full motor and
+reflex table, final diagnosis wording) matches the source exactly, and the
+image-only investigations are correctly withheld rather than inferred. No
+node introduces a finding, value, or event absent from the source.
+
+Two accuracy-adjacent issues are worth flagging (neither rises to
+fabrication, but both are the kind of imprecision the rubric's fabrication
+check is meant to surface):
+  1. Node 1 conflates two different time intervals in the HOPI sentence
+     (numbness→weakness gap vs. LL→UL weakness progression), stating a more
+     precise timeline than the source actually supports — notable because
+     stroke timelines carry real clinical weight (thrombolysis window).
+  2. Node 2 presents a derived figure ("since age 13") as if directly stated,
+     when the source only gives a duration ("since 18 years") that requires
+     an inference to convert to an age. The inference is reasonable and
+     consistent with this blog's own phrasing conventions elsewhere in the
+     corpus, but it is not the same epistemic status as a source-stated fact
+     and should have been hedged accordingly.
+Both are precision/hedging issues rather than invented content, but both
+also represent a case where the DRM output was less careful about flagging
+its own inferences than it was in flagging the alcohol-duration ambiguity in
+case_011 — a pattern worth tracking across further cases.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_013 | 1.5,1.5,2,2,2 | Y | N | 34/40 | Strong, well-supported "closed localization, open etiology" synthesis and precise exam/reflex reconstruction, but two unflagged interpretive claims (a conflated timing interval and an unhedged derived age) slightly overstate what the source text actually pins down.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, with Node 1 and Node 2 insight scored 1/2 each for the
+unhedged inferences above] plus bias overlay pass [max 10 per protocol's
+stated max-40 ceiling] = 34/40. No fabrication flags to subtract.)

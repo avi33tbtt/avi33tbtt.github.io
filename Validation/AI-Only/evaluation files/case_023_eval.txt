@@ -1,0 +1,53 @@
+CLAUDE AUDITOR EVALUATION — case_023
+Protocol: VibeRounds Module DRM — Validation Protocol (Revised v2)
+Source re-fetched directly from: https://hemachowdary.blogspot.com/2021/05/60-years-old-female-with-aki-on-ckd.html
+Auditor run: fresh/isolated evaluation, re-derived against primary source per Section 3a/9.3 (not scored against the DRM output's own internal claims).
+
+===========================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+===========================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2 — Pivotal classification is well justified given the later-revealed solitary-kidney status; 10-day timeline for loin pain/oliguria/dysuria matches source exactly.
+  Insight correctness: 2 — Correctly front-loads the single-kidney urgency framing even before that history is formally introduced in Node 2, which is good anticipatory reasoning rather than generic phrasing.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2 — Sub-node typing matches source structure (fever/vomiting/appetite onset, nephrectomy history, cervix/hysterectomy history, prior similar episode, HTN/negative PMH).
+  Insight correctness: 2 — Specific and clinically sound (pyelonephritis-in-solitary-kidney concern at 2a; ureteric injury/stricture hypothesis at 2c linking pelvic surgery to current obstruction risk).
+  Fabrication check: No — right nephrectomy 20 years ago, suprapubic pain/cervix growth/hysterectomy 7 years back, similar complaints 6 years back (conservative management), HTN x5 years, negative DM/TB/asthma history all verified against source. Note: source's OCR'd phrase "wonderful on cervix" is a clear typo for "growth on cervix" — the DRM's reading is the correct, non-fabricating interpretation.
+  Missed-data flag accuracy: 2 — Correctly flags the undocumented cause of the original right-kidney failure and the unestablished cause of the two prior episodes.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2 — All findings (conscious/coherent/cooperative, no cyanosis/clubbing/lymphadenopathy, fixed flexion deformity of knee, flat nails, vitals incl. GRBS 160, obese/"tunnel obesity" abdomen, soft/non-tender/no organomegaly/no palpable masses, bowel sounds present) verified exactly against source.
+  Insight correctness: 2 — The GRBS 160-in-a-non-diabetic observation (3c) and the flat-nails/knee-deformity "unintegrated findings" observation (3b) are specific, non-obvious reads rather than restatements.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2 — Correctly and importantly flags the absence of any documented costovertebral angle tenderness assessment, a genuinely high-yield omission for this presentation.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2 — Correctly identifies that all lab/imaging data are embedded-image-only (confirmed — no numeric values or ultrasound findings appear as text in the source).
+  Insight correctness: 2 — Appropriately identifies renal ultrasound (obstruction status) as the single highest-yield missing data point without overclaiming what it shows.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2 — Correctly flags absent urine routine/culture and absent creatinine/urea trend in text.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2 — Correctly and importantly identifies that "AKI on CKD" appears only as the case title, not as a diagnosis line derived in the visible body text — this is an accurate and epistemically careful distinction (confirmed: no "Diagnosis:" line exists in the source body text).
+  Insight correctness: 2 — Appropriately instructs the auditor to verify supporting values in the investigation images rather than treating the title as confirmed fact — good calibration, not overclaiming.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Bias correctly identified: Yes — Anchoring, framing (title-driven), and omission bias are each tied to specific, verifiable facts (solitary kidney status, case pre-titled with the diagnosis, absent CVA tenderness/urine studies). Premature closure is appropriately hedged rather than overcalled. "Availability" appropriately left unflagged.
+
+===========================================================
+SUMMARY TABLE (format per Section 9.3)
+===========================================================
+Case ID | Node scores (5 nodes, 0-2 each) | Bias overlay correct | Fabrication flag | Composite score | One-line justification
+case_023 | N1=2, N2=2, N3=2, N4=2, N5=2 | Y | N | 10/10 | Fully grounded reconstruction; every history, exam, and investigation-gap claim verified against the re-fetched source, including a correct disambiguation of an OCR'd source typo and an appropriately careful distinction between the case's title-as-diagnosis and any text-confirmed diagnostic line.
+
+===========================================================
+NOTES FOR MASTER LOG / AGGREGATION
+===========================================================
+- No fabrication flag for this case.
+- Notably good calibration: the DRM output explicitly declines to treat "AKI on CKD" as independently confirmed from visible text alone and instructs the auditor to verify against source images — this is the kind of appropriately hedged behavior the protocol is trying to detect and should be treated as a positive signal.
+- No contamination signal (Section 3) — specificity is proportionate to documented source content.
+- Auditor and generator are the same model family (Claude); report as "Claude-rated," not an independent-model check, per Section 3a/8.

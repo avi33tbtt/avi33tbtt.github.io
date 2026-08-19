@@ -1,0 +1,159 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_022
+Case link: http://mohithak.blogspot.com/2021/02/54year-old-male-patient-with-status.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI/timeline, past history, full exam including the
+motor/reflex table, serum potassium values, diagnosis line, and treatment
+across the documented SOAP updates). Investigation/ophthalmology images
+could not be verified as text; the DRM output correctly marks these
+"cannot classify."
+
+================================================================
+HEADLINE FINDING — ONE TRANSCRIPTION ERROR (not a fabrication, but a real
+value inaccuracy)
+================================================================
+Node 3c's "Finding" line states: **"power 5/5 upper limbs bilaterally, 4/4
+lower limbs bilaterally."** The source table actually reads "LL - 4/5 . 4/5"
+(right and left lower limb power both 4/5, not 4/4 — "4/4" isn't even a
+standard power-grading notation, since power is conventionally graded out
+of 5). This appears to be a one-time transcription slip: every subsequent
+reference to this finding in the same output (the 3c Insight text, Node 4c,
+the "Unused/unclear results" line, and the Highest-Yield Decision Point
+section) correctly says "4/5." So this is an isolated typo rather than a
+systemic misreading, but it is a literal inaccuracy in the one place a
+reader would look first (the Finding line itself), and is exactly the kind
+of small numeric slip the fabrication check is meant to catch even when
+it's clearly not an invented finding.
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — the fever (6 days prior,
+    2-day duration) → headache/visual symptoms → GTCS timeline matches the
+    source's HOPI precisely.
+  Insight correctness: 2/2 — the febrile-prodrome-then-neurological-symptoms
+    reasoning toward an infective CNS process is specific and correct.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a–2f all trace to real
+    source sentences: fever x2 days low-grade/intermittent/chills; severe
+    headache with blurring/diplopia on day 2 of fever; the seizure clustering
+    across multiple facilities; the negative ROS list; DM x15 years on
+    metformin+glimepiride, HTN x3 years on atenolol, occasional alcohol,
+    ex-smoker (20 years); and the outside CT's "chronic lacunar infarcts in
+    lentiform nucleus" (source: "lentifrom," a source typo the DRM output
+    silently corrects to standard spelling — a reasonable and harmless
+    normalization, not a factual change).
+  Insight correctness: 2/2 — the 2b insight (headache+diplopia as the
+    clearest pivot toward CNS infective process) is specific and well-
+    supported.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 for what is flagged (vaccination, travel/
+    vector exposure, prior respiratory symptoms, GRBS-seizure timeline
+    correlation) — all accurate gaps.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 1/2 — GCS 15/15, GRBS 335, the
+    reflex table (1+ throughout, flexor plantars bilaterally), cranial
+    nerves normal, sensory/cerebellar intact, and Kernig's negative all
+    match the source exactly. However, the UL/LL power finding contains the
+    "4/4" transcription error described above (should be 4/5), and the
+    node also omits the other admission vitals (PR 79, BP 130/90, SpO2 97%)
+    that are present in the source alongside the GRBS value.
+  Insight correctness: 2/2 — the unresolved-focal-weakness observation (3c
+    insight) is a genuinely good catch, correctly identified as
+    unreconciled with any final diagnosis, and is unaffected by the 4/4-vs-
+    4/5 typo since the insight text itself correctly says 4/5.
+  Fabrication check: No — not an invented finding, a mistranscribed value.
+  Missed-data / unfollowed finding: 2/2 — correctly flags that the
+    bilateral lower-limb weakness is never explicitly reconciled with any
+    of the five final diagnoses.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — correctly identifies three
+    in-hospital investigation image blocks (verified: exactly 3 images
+    appear under "Investigations" in the source) plus a separate
+    ophthalmology-referral image set (verified: 2 images appear under
+    "OPTHALMOLOGY REFERAL"), and correctly extracts the two text-stated
+    serum potassium values (2.7 on 26/2, 2.8 on 27/2) exactly as documented.
+  Insight correctness: 2/2 — the hypokalaemia-as-alternative-explanation-
+    for-the-LL-weakness reasoning is a specific, clinically sound connection
+    that the source itself never makes explicit.
+  Fabrication check: No — image-only investigations correctly marked
+    "cannot classify," and the four non-potassium diagnoses (encephalitis,
+    hypoproteinemia, nephropathy, retinopathy) are explicitly flagged as
+    lacking extractable supporting text rather than being backfilled with
+    invented values.
+  Missed-data flag accuracy: 2/2 for what is flagged. One available piece
+    of corroborating evidence is not used: the source's 26/2 SOAP update
+    documents a recurrence of headache and fever the morning after
+    admission ("C/O HEADACHE SINCE MORNING, C/O FEVER SINCE MRNG"), which
+    is real, text-available evidence of an ongoing infective/inflammatory
+    process consistent with the encephalitis diagnosis — this would have
+    strengthened Node 5's synthesis but is not mentioned anywhere in the
+    output.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — the five-part diagnosis
+    line is quoted verbatim from the source.
+  Insight correctness: 2/2 — correctly distinguishes the well-evidenced
+    hypokalaemia diagnosis (directly supported by stated lab values) from
+    the other four diagnoses (evidentiary basis not visible in text) rather
+    than treating all five as equally supported — a genuinely careful
+    epistemic distinction.
+  Fabrication check: No.
+  Note: the treatment additions on 26/2–27/2 (Tab. Aspirin 75mg + Tab.
+  Atorvastatin 40mg, and Syp. Potchlor for potassium repletion) are not
+  mentioned anywhere in the synthesis. The potassium chloride syrup in
+  particular is direct corroborating evidence that the team acted on the
+  hypokalaemia diagnosis, which would have reinforced (not changed) the
+  output's own reasoning — a missed citation opportunity, not an error.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — reasonable and well-supported (chronic lacunar infarcts
+    as a plausible early distractor).
+  Availability: Correctly and honestly marked as not determinable from the
+    fetched text.
+  Premature closure: Correctly marked as not strongly evidenced, with a
+    well-reasoned distinction (under-integration of a finding vs. false
+    early closure).
+  Framing: Yes — reasonable, appropriately hedged.
+  Omission bias: Yes — accurately notes the LL weakness prompted no
+    documented follow-up.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+No node invents a finding, value, or diagnosis absent from the source. The
+one factual issue found — "4/4" instead of "4/5" for lower-limb power in
+the Node 3c Finding line — is an isolated transcription slip rather than a
+fabricated or systematically misunderstood value; the correct figure (4/5)
+is used consistently everywhere else in the same output, including in the
+reasoning that actually depends on it. Two further completeness gaps
+(unused 26/2 fever/headache recurrence, unused potassium-repletion/
+antiplatelet treatment detail) are omissions of available corroborating
+evidence, not invented or incorrect content.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_022 | 2,2,1.5,2,2 | Y | N | 37/40 | Strong multi-diagnosis synthesis with a genuinely good catch (unreconciled focal weakness) and careful evidentiary hedging across five stated diagnoses, but contains one isolated numeric transcription slip (4/4 vs. the source's 4/5) and misses two pieces of available corroborating evidence (fever/headache recurrence, potassium-repletion treatment).
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, with Node 3 classification scored 1/2 for the transcription
+error] plus bias overlay pass [max 10 per protocol's stated max-40 ceiling]
+= 37/40. No fabrication flags to subtract.)

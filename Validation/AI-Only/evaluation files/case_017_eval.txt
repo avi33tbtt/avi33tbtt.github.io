@@ -1,0 +1,142 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_017
+Case link: http://drkulkarnithesis.blogspot.com/2021/03/55m-with-rt-upper-limb-lower-limb.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI, functional history, past history/medications, full
+exam including motor/tone/reflex table, and the treatment list). All
+investigation report images (CBP, CUE, USG, electrolytes, creatinine,
+HbA1c, ECG, graphical timeline, CT brain) are image-only in the source; the
+DRM output correctly marks these "cannot classify."
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — "Pivotal" is well-justified;
+    the presentation (sudden right-sided weakness + facial deviation on
+    waking, with known HTN/DM) is a textbook acute stroke picture.
+  Insight correctness: 2/2 — the wake-up-stroke/thrombolysis-window framing
+    is specific and clinically apt.
+  Fabrication check: No — HTN x8 years on Telma-AM 40/5, DM x3 months on
+    Glimi-M1 all match the source exactly.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a (wake-up timing), 2b
+    (preserved combing/buttoning/stairs/rolling but chappal slippage), 2c
+    (negative ROS list), and 2d (HTN/DM duration and treatment) all trace to
+    real, precisely quoted source sentences — including the somewhat unusual
+    functional-task detail (chappal slippage) that a less careful read could
+    have skipped.
+  Insight correctness: 2/2 — the "preserved proximal/bilateral tasks but
+    lost distal foot control suggests mild-to-moderate weakness" reasoning
+    is specific and, notably, correctly anticipates the exam grading (4/5
+    LL) discussed later — a genuinely well-connected piece of reasoning.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 — the "Missing history" list (no exact
+    bedtime/symptom-recognition time, no lipid or prior stroke/TIA history,
+    no medication adherence detail) is accurate; none of these appear in
+    the source.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — BP 140/80, PR 78, pedal
+    edema+, the full motor table (Rt UL 5/5, Rt LL 4/5, Lt 5/5 throughout,
+    tone normal bilaterally), the full reflex table (biceps 3+/2+, triceps
+    2+/2+, supinator 2+/2+, knee 3+/3+, ankle 1+/1+, plantar ?E/F), and the
+    intact-sensory/no-cerebellar/no-meningeal findings all match the source
+    exactly, including the exact reflex grades and the equivocal-extensor
+    right plantar notation.
+  Insight correctness: 2/2 — two genuinely strong, specific insights: (1)
+    correctly flags the internal inconsistency between the chief complaint
+    ("weakness of right upper limb AND lower limb") and the actual exam
+    (right UL full power, only right LL reduced) rather than letting it pass
+    silently — this is a real discrepancy in the source, precisely caught;
+    (2) correctly localizes the asymmetric reflexes (3+ right biceps vs. 2+
+    left; equivocal right plantar) as the most specific UMN localizing
+    finding, correctly reasoning to a left-hemisphere lesion given crossed
+    pathways.
+  Fabrication check: No.
+  Missed-data / unfollowed finding: 2/2 — correctly and usefully flags that
+    the pedal edema is documented once and never explained or connected to
+    the working diagnosis anywhere in the source.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — correctly enumerates the
+    investigation set (CBP, CUE, USG abdomen, serum electrolytes, serum
+    creatinine, HbA1c, ECG, graphical timeline, CT brain) as image-only,
+    with an accurate image count ("9 total") matching the source's actual
+    investigation image count.
+  Insight correctness: 2/2 — correctly infers, from the treatment regimen
+    (Clopitab-A [clopidogrel+aspirin], Atorvastatin 40mg, no thrombolytic
+    mentioned), that an ischemic stroke outside the thrombolysis window was
+    presumed — treatment list matches the source's exactly (Optineuron, PAN
+    40, Metformin 500, Telma-AM 40/5, Clopitab-A 75/150, Atorvas 40mg,
+    physiotherapy, vitals/GRBS monitoring).
+  Fabrication check: No — no investigation values are invented; the
+    inference about ischemic-vs-hemorrhagic status is explicitly flagged as
+    inferred from treatment, not stated as a confirmed CT finding.
+  Missed-data flag accuracy: 2/2 — correctly notes HbA1c value not visible
+    despite DM being a named risk factor, and absence of a stated lipid
+    profile or carotid/CT angiogram workup.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — correctly identifies that
+    no named diagnosis ("acute ischemic stroke") appears anywhere in the
+    visible text — the post's own title is purely descriptive ("Rt upper
+    limb & lower limb weakness with k/c/o DM and HTN"), exactly as the
+    source shows, and the DRM output does not overstate this into a
+    confirmed diagnosis.
+  Insight correctness: 2/2 — the observation that the working diagnosis
+    must be reverse-engineered from the prescription list, and that this is
+    itself a documentation gap worth flagging, is a genuinely useful and
+    accurate meta-observation about this specific source.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — reasonable, and correctly credited as non-harmful given
+    the presentation genuinely fits stroke.
+  Availability: Correctly marked "not clearly present."
+  Premature closure: Yes — accurately notes the absence of a stated CT
+    interpretation despite treatment implying a specific mechanism.
+  Framing: Yes — accurately ties the bilateral-complaint-vs-unilateral-exam
+    discrepancy to a framing/carry-forward risk.
+  Search satisficing: Yes — accurately notes the pedal edema thread is
+    dropped once the stroke workup took priority.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+This is the most precisely reconstructed case evaluated so far: every
+exam value (motor, tone, all five reflex rows including the equivocal
+plantar response), history item, and treatment drug/dose matches the
+source exactly, and the investigation image count is precisely correct.
+No node introduces content absent from the source, and the two
+inferential claims made (ischemic-stroke-outside-thrombolysis-window from
+treatment pattern; left-hemisphere localization from reflex asymmetry) are
+both explicitly flagged as inferences rather than presented as stated
+facts — exactly the kind of hedging the rubric's fabrication check is
+looking for.
+
+No material omissions or unflagged inconsistencies were found in this
+case (unlike case_013, case_015, and case_016).
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_017 | 2,2,2,2,2 | Y | N | 40/40 | The cleanest reconstruction in the sample so far — exact match on every exam/history/treatment detail, correctly catches a real chief-complaint-vs-exam discrepancy, and clearly labels both inferential claims (stroke mechanism, localization) as inferences rather than stated fact.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, all full marks] plus bias overlay pass [max 10 per
+protocol's stated max-40 ceiling] = 40/40. No fabrication flags to
+subtract, no unflagged omissions identified.)

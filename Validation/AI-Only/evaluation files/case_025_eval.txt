@@ -1,0 +1,53 @@
+CLAUDE AUDITOR EVALUATION — case_025
+Protocol: VibeRounds Module DRM — Validation Protocol (Revised v2)
+Source re-fetched directly from: https://jeeharikasahu.blogspot.com/2021/02/21year-old-with-complaints-of-vomitings.html
+Auditor run: fresh/isolated evaluation, re-derived against primary source per Section 3a/9.3 (not scored against the DRM output's own internal claims).
+
+===========================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+===========================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2 — Bifurcating framing (single evolving illness vs. two sequential processes) is reasonable; timeline (vomiting x1wk, loose stools/pain x2d) matches source exactly.
+  Insight correctness: 2 — Non-generic; correctly sets up the question resolved later at Node 2e/5.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2 — Sub-node typing matches source structure (occupational/marital background, prior thrombocytopenia episode, fried-rice-linked vomiting escalation, pain migration, stool evolution).
+  Insight correctness: 2 — Specific and clinically grounded (Bacillus cereus/reheated-rice association at 2c; bleeding-risk reframing at 2e is the case's central insight and is well-argued).
+  Fabrication check: No — waiter job (1 month), marriage (1 month), prior thrombocytopenia admission (2 years, 2 days), fried rice/vomiting escalation (4 episodes → 7-8/day), pain migration (umbilical→epigastric), and stool evolution (watery → dark/blood-tinged, ~7 episodes, no tenesmus) all verified verbatim against source.
+  Missed-data flag accuracy: 2 — Correctly flags absent NSAID/alcohol history and absent melena confirmation.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2 — All findings (thin built, dehydrated+, PR 120, BP 120/80, Temp 101°F, CVS/lungs normal, epigastric tenderness, bowel sounds present) verified exactly against source.
+  Insight correctness: 2 — The PR-120-with-maintained-BP discrimination point (3b) is specific and clinically useful, not generic.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2 — Correctly flags absent DRE/direct stool inspection.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 1 — Image count stated as "eleven embedded investigation images across two batches." Source actually contains 13 images across two batches (11 in the first batch, indices 0–10; 2 more in a second batch, indices 0–1, immediately before the diagnosis line). The "two batches" structure is correctly identified, but the total count is understated by 2. Flagged as a minor accuracy error, not a clinical-finding fabrication — no lab/imaging value was invented or misattributed.
+  Insight correctness: 2 — The interpretive content (expected CBC/platelet/dengue panel, "W/F bleeding manifestations" as evidence the team was clinically alert) is accurate and well-reasoned regardless of the count issue.
+  Fabrication check: No — no clinical finding, value, or result was invented; the miscount is a meta/administrative detail about the source page's image structure, not a patient-data fabrication. Recommend correcting for the record.
+  Missed-data flag accuracy: 2 — Correctly flags absent Hb/platelet trend, absent stool occult blood/microscopy, absent dengue NS1/serology.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2 — Correctly identifies "Acute Gastroenteritis" as the explicitly stated diagnosis line (confirmed: appears as text in source, positioned right after the investigation images and before Day 1 treatment, exactly as the DRM describes).
+  Insight correctness: 2 — The "diagnosis under-states what the treatment plan implies the team was worried about" observation is a genuinely useful, specific synthesis point, well supported by the repeated "W/F bleeding manifestations" order.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Bias correctly identified: Yes — Anchoring, premature closure, framing (title omits blood-tinged stools), and omission bias are each tied to specific, verifiable facts. "Availability" appropriately left unflagged.
+
+===========================================================
+SUMMARY TABLE (format per Section 9.3)
+===========================================================
+Case ID | Node scores (5 nodes, 0-2 each) | Bias overlay correct | Fabrication flag | Composite score | One-line justification
+case_025 | N1=2, N2=2, N3=2, N4=1, N5=2 | Y | N | 9/10 | Strong, well-grounded reconstruction with an accurate reading of the stated diagnosis and treatment plan; the only issue is a minor miscount of embedded investigation images (11 stated vs. 13 actual) — an administrative detail error, not a fabricated clinical finding, so no fabrication flag applies.
+
+===========================================================
+NOTES FOR MASTER LOG / AGGREGATION
+===========================================================
+- No fabrication flag for this case (clinical content fully grounded).
+- Minor accuracy note for the log: investigation image count understated (11 vs. actual 13 across two batches). Recommend tracking this separately from the fabrication-flag rate if the study wants a distinct "source-metadata accuracy" metric, since it's a different failure mode than inventing clinical content.
+- No contamination signal (Section 3) — specificity proportionate to documented source content.
+- Auditor and generator are the same model family (Claude); report as "Claude-rated," not an independent-model check, per Section 3a/8.

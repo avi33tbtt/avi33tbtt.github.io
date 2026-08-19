@@ -1,0 +1,55 @@
+CLAUDE AUDITOR EVALUATION — case_020
+Protocol: VibeRounds Module DRM — Validation Protocol (Revised v2)
+Source re-fetched directly from: https://mantripragadarambabu.blogspot.com/2021/08/case-presentation.html
+Auditor run: fresh/isolated evaluation, re-derived against primary source per Section 3a/9.3 (not scored against the DRM output's own internal claims).
+
+===========================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+===========================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2 — Bifurcating classification (musculoskeletal/renal track vs. cardiopulmonary/renal-volume track) is a reasonable, defensible split; complaint duration (back pain 2yr, SOB 1yr) matches source exactly.
+  Insight correctness: 2 — Non-generic; correctly anticipates analgesic use as a linking thread, which is later confirmed in the History node.
+  Fabrication check: No.
+  Note: source HPI also lists "Patient complains of body pains" as a distinct symptom — not carried into this node. Minor completeness gap, not a misstatement.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2 — Sub-node typing matches source structure well (mechanical pain pattern, dialysis status, analgesic/eye-drop use, edema/HTN onset, eye history/negative PMH).
+  Insight correctness: 2 — Analgesic nephropathy hypothesis (2c) is a specific, clinically correct inference tying the 6-year painkiller use to both the CKD and the chronic back pain; 2b's reframing insight ("follow-up/complication review" vs. fresh diagnostic puzzle) is sound.
+  Fabrication check: No — dialysis (2 months, twice weekly), painkiller use (6 yrs), eye-drop use (6 yrs), pedal edema (2 months), HTN (1 yr), thorn-injury/eye-removal history, and "no DM/epilepsy" all verified verbatim against source.
+  Missed-data flag accuracy: 2 — Correctly flags absent HTN control history, absent renal aetiology workup, absent dialysis-trigger explanation. Could additionally have flagged the omitted "body pains" complaint from the source HPI, but this is a minor gap rather than an inaccuracy.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2 — All findings (well-built/conscious/coherent/well-nourished, no pallor/icterus/cyanosis, bilateral pedal edema, no lymphadenopathy, vitals, CVS/respiratory/abdominal exam including "no bowel sounds") verified exactly against source.
+  Insight correctness: 2 — The "absence of pallor is atypical for a dialysis patient" observation (3a) is a genuinely useful, non-obvious clinical read rather than a restatement of the finding.
+  Fabrication check: No.
+  Missed-data flag accuracy: N/A (none claimed at this node).
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2 — Correctly lists the five investigation panels ordered (CBP, blood urea, serum creatinine, serum electrolytes, complete urine exam) and correctly identifies them all as embedded-image-only in the source (unreadable in this fetch too — confirmed).
+  Insight correctness: 2 — Appropriately flags the missing imaging (renal ultrasound, CXR/echo) as clinically indicated but undocumented, without overstating what the images might contain.
+  Fabrication check: No — no lab value is invented; the data-gap framing is accurate and appropriately cautious.
+  Missed-data flag accuracy: 2 — Correctly identifies absence of imaging, absent haemoglobin value, absent eGFR/staging.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2 — Correctly identifies that "chronic kidney disease" is stated as a bare diagnosis line with no visible reasoning trail in the fetched text, and correctly notes the diagnosis was effectively pre-established via the dialysis history rather than derived fresh in this encounter.
+  Insight correctness: 2 — The "closure inherited from a prior undocumented work-up" framing is accurate and clinically astute.
+  Fabrication check: No.
+  Missed-data flag accuracy: N/A (none claimed at this node).
+
+BIAS AUDIT OVERLAY
+  Bias correctly identified: Yes — Anchoring, premature closure, framing, and omission bias are each tied to specific, verifiable textual facts (dialysis status disclosed early; back pain aetiology never revisited; no imaging/Hb documented). "Availability" appropriately left unflagged.
+
+===========================================================
+SUMMARY TABLE (format per Section 9.3)
+===========================================================
+Case ID | Node scores (5 nodes, 0-2 each) | Bias overlay correct | Fabrication flag | Composite score | One-line justification
+case_020 | N1=2, N2=2, N3=2, N4=2, N5=2 | Y | N | 10/10 | Fully grounded reconstruction; every finding, history detail, exam result, and investigation claim verified verbatim against the re-fetched primary source, with appropriately cautious handling of image-only lab data. Only issue is a minor completeness gap (source's "body pains" complaint not carried into Node 1/2) — not a fabrication.
+
+===========================================================
+NOTES FOR MASTER LOG / AGGREGATION
+===========================================================
+- No fabrication flag for this case.
+- Minor completeness note (not scored as an error): source HPI includes "Patient complains of body pains" as a distinct symptom not reflected anywhere in the DRM output. Worth tracking if the study wants a separate "completeness" metric alongside fabrication/accuracy, but does not affect this case's fabrication status.
+- No contamination signal (Section 3) — specificity of the output is proportionate to what's documented in the source.
+- Auditor and generator are the same model family (Claude); report as "Claude-rated," not an independent-model check, per Section 3a/8.

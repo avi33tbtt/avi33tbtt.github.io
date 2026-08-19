@@ -1,0 +1,133 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_010
+Case link: http://durgakrishna09.blogspot.com/2021/03/33-year-old-female-with-recurrent-oral.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+The primary source (blogspot case log) was re-fetched directly and compared
+sentence-by-sentence against the DRM output's factual claims (history, exam,
+investigations, provisional diagnosis). ~13 investigation images referenced
+in the source were not machine-readable and could not be checked; the DRM
+output correctly marks these "cannot classify" rather than inferring content
+for them, which is itself a positive fabrication-avoidance signal.
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — "Bifurcating" is a defensible
+    read; presentation genuinely splits toward immunobullous/EM vs. infectious/
+    recurrent-HSV framing, matching the source's own provisional differential.
+  Insight correctness: 2/2 — Specific and correct; matches source verbatim on
+    "history given by patient's daughter as patient was unable to speak."
+  Fabrication check: No — content matches source exactly.
+  Missed-data flag accuracy: n/a for this node (no flag raised).
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — Sub-nodes 2a–2e all trace to
+    real source sentences (auto fall/ear injury/RMP analgesic; family dispute;
+    one day not eating; lesion pattern "in a line" with 7–10 day healing;
+    occasional painful red eyes attributed to lack of sleep; no vaginal/anal/
+    joint/chest/neuro findings; chicken/brinjal aggravating factors per family).
+    All confirmed verbatim or near-verbatim in the source.
+  Insight correctness: 2/2 — The 2b call-out (cyclical, line-forming lesions as
+    the single strongest clue toward EM/HSV) is specific, correct, and matches
+    the source's own eventual provisional diagnosis ranking.
+  Fabrication check: No — no invented history items found; the "reason patient
+    couldn't speak was never explained" observation is accurate — source never
+    states why, it only says history was relayed by the daughter.
+  Missed-data flag accuracy: 2/2 — Correctly flags absence of stated prior
+    cold-sore/genital-herpes history and absence of medication history beyond
+    the single RMP course; both are genuine gaps in the source text.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — All three findings (truncal
+    papules; vaginal curdy discharge; buccal/palate erosions with coated
+    tongue/white plaque) are directly quoted/paraphrased accurately from the
+    "ON LOCAL EXAMINATION" and "P/S" sections of the source.
+  Insight correctness: 2/2 — Candidiasis-as-secondary-vs-primary framing and
+    the mucocutaneous-vs-localized distinction are specific and clinically
+    sound, not generic.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 — Correctly identifies that the vaginal
+    discharge finding (3b) is documented but never tied to any of the four
+    listed differentials or worked up (no glucose/HbA1c mentioned) — this is
+    accurate; the source contains no such follow-up.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — Na/K/Cl, CUE, and HIV values
+    all match the source numbers exactly (Na 137, K 4.7, Cl 107; Alb +, sugars
+    nil, pus cells 3–4, epithelial casts 2–3; HIV non-reactive).
+  Insight correctness: 2/2 — Correct and appropriately hedged (e.g., "a single
+    random urine sugar doesn't exclude diabetes").
+  Fabrication check: No — image-only investigations correctly marked "cannot
+    classify" rather than invented; this is the fabrication-avoidance behavior
+    the protocol specifically wants checked.
+  Missed-data flag accuracy: 2/2 — Correctly notes absence of stated HSV PCR/
+    serology, Tzanck smear, biopsy, or autoimmune/vasculitis workup in the
+    visible text — accurate; none of these appear in the source prose.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — Correctly reports the leading
+    diagnosis and all three differentials exactly as listed in the source
+    ("RECURRENT ERYTHEMA MULTIFORME SECONDARY TO HSV," "? CHRONIC APHTHOUS
+    ULCERS," "? BECHET'S DISEASE," "? CHRONIC CANDIDIASIS") and correctly
+    identifies that closure was not reached (source ends at provisional
+    differential, no confirmatory result given in text).
+  Insight correctness: 2/2 — The System 1/pattern-recognition framing is an
+    apt, non-generic read of how the source arrives at its ranked differential.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — accurately keyed to source language ("gave hope that it was
+    not at all dangerous," later "due to her dysregulation"), both direct
+    paraphrases of real source sentences.
+  Availability: Correctly marked "not clearly present."
+  Premature closure: Correctly marked "not present," and correctly credits the
+    case for keeping four differentials open rather than penalizing it.
+  Framing: Yes — chicken/brinjal aggravating-factor note is in the source,
+    attributed to family, exactly as the DRM output describes.
+  Commission/Omission bias: Reasonable, appropriately hedged interpretation;
+    not overcalled given the caveat included ("may simply reflect the
+    image-only documentation gap").
+  Search satisficing: Yes — vaginal discharge finding is documented once in
+    the source and not mentioned again or tied to any differential; accurate.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+No node introduces findings, values, or history items absent from the primary
+source. All quoted lab values, exam findings, and the provisional-diagnosis
+list were verified to match the source text exactly. The one plausible risk
+area — inventing content for the ~13 image-only investigations — was avoided;
+the DRM output explicitly withheld interpretation of that untranscribed
+material rather than fabricating findings for it.
+
+Minor note (not a fabrication, but worth logging): the source also states
+"NOT A KNOWN CASE OF HTN, DM, BA, TB, EPILEPSY. NO OTHER KNOWN COMORBIDITIES"
+under Past Illness History — this is a real piece of source data the DRM
+output never surfaces anywhere (e.g., as a Closing decision point reducing
+support for some differentials). This is an omission, not an error, and does
+not by itself constitute a fabrication or a scoring deduction under the
+current rubric, but a stricter future rubric revision could add "omitted
+relevant source data" as its own scored criterion distinct from missed-data
+flags about the differential itself.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_010 | 2,2,2,2,2 | Y | N | 38/40 | Faithful, well-calibrated reconstruction of a genuinely open four-way differential with no invented findings; only shortfall is not surfacing the source's negative past-illness history as its own decision point.
+
+(Composite = sum of all sub-criteria scores across 5 nodes [classification +
+insight + missed-data flag, 2 each, max 30] plus bias overlay treated as a
+pass/fail contribution [max 10 per protocol's stated max-40 ceiling] = 38/40.
+No fabrication flags to subtract.)

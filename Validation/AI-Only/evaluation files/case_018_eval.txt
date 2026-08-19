@@ -1,0 +1,158 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_018
+Case link: http://jessusanjay.blogspot.com/2021/02/54-yr-old-male-with-left-upper-lobe.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI, past history, exam findings, treatment across the
+3 documented days, and the provisional diagnosis line). All investigation
+report images are image-only in the source; the DRM output correctly marks
+these "cannot classify."
+
+================================================================
+HEADLINE FINDING — VITALS OMITTED FROM THE EXAMINATION NODE (not a
+fabrication, but a real completeness gap with a missed clinical tension)
+================================================================
+The source's O/E section states full vitals: **"temp-afebrile, pulse-82bpm,
+BP-130/80mmHg, Resp rate-16 cpm, spo2-97%."** None of these five values
+appear anywhere in the DRM output's Node 3 (Examination) — the node jumps
+directly from the negative general-exam findings (pallor/icterus/etc.) to
+the respiratory-system findings (fremitus, percussion, breath sounds)
+without ever stating a single vital sign.
+
+This matters for two reasons:
+  1. The patient's fever is a major presenting complaint (x10 days, high-
+     grade, intermittent, with chills/rigors) — the fact that he was
+     **afebrile at the time of this exam** is a real, source-stated data
+     point directly relevant to Node 1's own characterization of the fever
+     as "intermittent, relieved on medication." This would have been
+     genuinely corroborating evidence worth citing, and it's missing.
+  2. More significantly: the patient's chief complaint includes **SOB Grade
+     3** (a substantial subjective dyspnea severity), yet SpO2 was **97% on
+     room air** and respiratory rate was **16** (normal) — this is a real
+     tension between the severity of the subjective complaint and the
+     objective vitals that the DRM output does not surface at all. This is
+     the same category of "complaint vs. objective finding" mismatch that
+     this same DRM generation process caught explicitly and well in
+     case_017 (bilateral-complaint vs. unilateral-exam-finding). Here, the
+     analogous mismatch exists in the source but was missed entirely,
+     apparently because the vitals were never brought into the node.
+This is not a fabrication — nothing invented — but it's a more consequential
+omission than most flagged so far, because it caused a real, source-
+supported clinical inconsistency to go unnoticed rather than just leaving a
+background detail unmentioned.
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — chest pain, SOB Grade 3,
+    productive cough, and fever, all x10 days, plus the separate 15-20 day
+    weight-loss/evening-fever window, all trace precisely to the source's
+    HOPI paragraph.
+  Insight correctness: 2/2 — the "constitutional-symptom window predates and
+    outlasts the acute complaint" framing is specific and correct.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a (weight loss/evening
+    fever x15-20 days), 2b (negative DM/HTN/CVA/asthma/epilepsy/TB), and 2c
+    (negative palpitations/PND/burning micturition/loose stools/decreased
+    urine output) all match the source exactly.
+  Insight correctness: 2/2 — the "no known TB ≠ no active undiagnosed TB"
+    reasoning is a genuinely careful, non-generic read.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 — TB contact history, prior CXR/PPD/IGRA,
+    smoking history, and occupational exposure are all accurately flagged
+    as absent from the source.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 1/2 — the respiratory exam
+    findings (decreased fremitus, resonant [not dull] percussion, reduced
+    breath sounds, no added sounds, left suprascapular localization; central
+    trachea, 4cm chest expansion, no local warmth/tenderness) all match the
+    source precisely. However, the node omits the full vital-sign set
+    (afebrile, PR 82, BP 130/80, RR 16, SpO2 97%) entirely — see headline
+    finding above.
+  Insight correctness: 2/2 for the reasoning that is present — the
+    decreased-fremitus-with-preserved-resonance-as-atypical-for-dense-
+    consolidation observation is specific and clinically sound, and the
+    left-suprascapular (upper-zone) localization is correctly tied to TB's
+    classic apical predilection.
+  Fabrication check: No.
+  Missed-data / unfollowed finding: the vitals omission (above) represents a
+    real missed opportunity that the node's own "Unfollowed finding" slot
+    could have captured (the SOB-severity-vs-SpO2 tension) but didn't.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — correctly identifies that
+    no sputum AFB/CBNAAT, HIV status, or ESR/inflammatory marker value is
+    available in text, and appropriately hedges the investigation image
+    count ("7 total, unclear exact composition") rather than asserting a
+    precise number it can't verify from a jumbled image sequence.
+  Insight correctness: 2/2 — correctly identifies that the entire
+    evidentiary basis for the TB hypothesis is inaccessible in text form.
+  Fabrication check: No — image-only investigations correctly marked
+    "cannot classify."
+  Missed-data flag accuracy: 2/2 — accurate and clinically appropriate list.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — the provisional diagnosis
+    line ("?pneumonia secondary to pulmonary tuberculosis") is quoted
+    verbatim from the source, and the title's more definitive phrasing
+    ("Left upper lobe pneumonia secondary to Koch's," no question mark) is
+    also quoted verbatim — this title-vs-body discrepancy is real and
+    precisely identified, a genuinely valuable catch.
+  Insight correctness: 2/2 — the observation that the 3 documented treatment
+    days show bacterial coverage only (Augmentin, Azithromycin — no anti-TB
+    drugs), consistent with the body's hedged diagnosis rather than the
+    title's confident one, is accurate and well-reasoned; the treatment
+    list matches the source exactly across all three documented days.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — reasonable, and correctly credits the case for resisting
+    premature bacterial-only anchoring.
+  Availability: Correctly marked "not clearly present."
+  Premature closure: Yes — the title-vs-body certainty mismatch is a
+    genuinely apt and specific example of documentation-level premature
+    closure, distinct from clinical-reasoning-level closure.
+  Framing: Yes — reasonable, appropriately hedged framing of how prior
+    suspicion may have colored interpretation of an ambiguous exam pattern.
+  Search satisficing: Yes — accurately notes no confirmatory TB test is
+    shown as obtained within the visible treatment window.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+All quoted history, exam findings (aside from the vitals gap), provisional
+diagnosis line, and the full treatment list across all three documented
+days match the source exactly, including a precise and valuable catch of a
+genuine title-vs-body diagnostic-certainty discrepancy in the source itself.
+
+The one substantive issue is the complete omission of the vitals set from
+the Examination node, which caused a real, source-supported clinical
+tension (Grade 3 SOB complaint vs. SpO2 97%/RR 16 on exam) to go unnoticed
+— the same category of catch this generation process performed well in
+case_017, missed here due to the vitals never being brought into the node
+at all.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_018 | 2,2,1.5,2,2 | Y | N | 37/40 | Excellent catch of a real title-vs-body diagnostic certainty mismatch and accurate reconstruction of the respiratory exam and treatment course, but the Examination node omits the source's full vital-sign set entirely, missing a genuine tension between the Grade 3 SOB complaint and a normal SpO2/RR on exam.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, with Node 3 classification scored 1/2 for the vitals
+omission] plus bias overlay pass [max 10 per protocol's stated max-40
+ceiling] = 37/40. No fabrication flags to subtract.)

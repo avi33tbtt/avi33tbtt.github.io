@@ -1,0 +1,148 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_021
+Case link: http://mohithak.blogspot.com/2021/03/dr-mohitha-dr-supriya-dr-sanjay-dr.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI, past history, full exam including vitals, and the
+provisional diagnosis line). All 10 "Investigatios" images are image-only
+in the source; the DRM output correctly marks these "cannot classify" and
+gives a precisely correct image count.
+
+This DRM output is noticeably more epistemically cautious in style than
+most prior cases — it explicitly flags a textual ambiguity (3a, the
+"pallor,icterus" phrasing) rather than resolving it either way, and appends
+its own self-aware "Fabrication / Data-Gap Note" at the end. This caution is
+well-placed and verified below.
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — pedal edema, SOB, abdominal
+    distension, and decreased urine output, all x7 days on a background of
+    1-year on-and-off pedal edema, match the source's HOPI exactly.
+  Insight correctness: 2/2 — the cardiac/renal/hepatic three-way split for
+    a congestive tetrad is specific and clinically sound.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a (1-year relapsing edema,
+    progressed to thigh-level/grade III over 7 days), 2b (SOB grade I→II,
+    wheeze, no orthopnoea/PND/postural variation), 2c (oliguria + distension),
+    2d (negative ROS list), and 2e (negative DM/HTN/CVA/CAD/TB/asthma/
+    epilepsy) all trace to precisely quoted source sentences.
+  Insight correctness: 2/2 — the 2e observation (no documented CAD history,
+    yet the eventual diagnosis names CAD as the aetiology) is the single
+    best insight in this output — specific, correctly flagged as a gap
+    rather than resolved by assumption, and directly foreshadows the Node
+    4c/5 argument.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 — alcohol history, smoking history, and
+    medication history (diuretics, NSAIDs) are all accurately flagged as
+    absent from the source.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — the ambiguous "pallor,
+    icterus" phrasing (present without an explicit "no," unlike the
+    following "No cyanosis, clubbing, generalised lymphadenopathy") is
+    reproduced and flagged exactly as it appears in the source — this is a
+    genuinely precise textual observation, not an overreach in either
+    direction. Vitals (afebrile, BP 140/90, PR 96, RR 18, SpO2 94% RA) and
+    the systemic exam (CVS S1S2 no murmurs; RS B/L air entry, NVBS; P/A
+    soft non-tender, bowel sounds; CNS NAD) all match the source exactly —
+    notably, unlike case_018, the full vitals set is correctly included
+    here.
+  Insight correctness: 2/2 — the SpO2 94%/wheeze-supports-cardiopulmonary-
+    compromise-but-doesn't-localize reasoning, and the absence-of-murmur/
+    absence-of-ascites-signs reasoning, are both specific and accurate.
+  Fabrication check: No.
+  Missed-data / unfollowed finding: 2/2 — correctly and usefully flags that
+    the source never documents ascites-specific signs (shifting dullness,
+    fluid thrill) or JVP, despite abdominal distension being a chief
+    complaint and JVP being the key cardiac-vs-hepatic/renal discriminator.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — correctly identifies all 10
+    "Investigatios" image blocks as image-only, with a precisely correct
+    count (verified: exactly 10 images appear under that heading in the
+    source, distinct from the earlier general/systemic-exam images).
+  Insight correctness: 2/2 — the HFpEF-implies-an-echo-was-done reasoning is
+    appropriately hedged as inference, not asserted as confirmed; the CAD-
+    attribution critique (4c) is specific, well-supported, and correctly
+    identifies that no ECG/troponin/angiogram evidence is shown in text to
+    justify the aetiological claim.
+  Fabrication check: No — image-only investigations correctly marked
+    "cannot classify," and the ejection-fraction/echo-finding gap is
+    explicitly flagged as unconfirmed rather than invented.
+  Missed-data flag accuracy: 2/2 — accurate list (renal function trend,
+    liver function correlate for the icterus ambiguity, imaging findings).
+  Note: the source's treatment list (Aspirin 75mg, Atorvastatin 40mg,
+    Clopidogrel 75mg — i.e., dual antiplatelet + statin, a classic CAD
+    secondary-prevention regimen — plus fluid restriction) is never
+    mentioned anywhere in the DRM output. This is a real, source-available
+    piece of corroborating evidence for the Node 4c/5 argument: the
+    treating team's drug choice shows they clinically committed to the CAD
+    attribution, which would have strengthened (not undermined) the
+    output's own "premature closure" observation. Not a factual error, but
+    a missed opportunity to cite available supporting evidence for an
+    argument the output was already making well.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — "Heart Failure with
+    preserved ejection fraction secondary to CAD" is quoted verbatim from
+    the source's provisional diagnosis line.
+  Insight correctness: 2/2 — the "bordering on forced/premature closure"
+    characterization is well-supported and appropriately hedged ("from the
+    reader's perspective"), correctly distinguishing what the text shows
+    from what the unreadable images might separately support.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — reasonable and well-supported.
+  Availability: Correctly and honestly marked as insufficiently determinable
+    from the fetched text, rather than forcing a Yes/No call — good
+    calibration.
+  Premature closure: Yes — the CAD-attribution-without-supporting-history
+    argument is specific and accurate.
+  Framing: Yes — reasonable, appropriately hedged.
+  Search satisficing: Yes — accurately notes ascites-specific signs and JVP
+    are not documented despite being the standard next step.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+Every quoted history item, exam finding (including the full vitals set and
+the precisely-reproduced textual ambiguity around "pallor,icterus"), and
+the provisional diagnosis line match the source exactly, and the
+investigation image count (10) is exactly correct. This output is also
+notably well-calibrated in distinguishing confirmed source content from
+inference (e.g., explicitly not asserting the echo/ejection-fraction
+findings as confirmed, explicitly not resolving the pallor/icterus
+ambiguity in either direction) — this is the kind of hedging discipline the
+rubric's fabrication check is designed to reward.
+
+One minor missed-opportunity note: the source's treatment regimen (dual
+antiplatelet + statin) is never mentioned, even though it would have been
+useful corroborating evidence for the output's own CAD-attribution critique.
+This is an omission, not an error.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_021 | 2,2,2,2,2 | Y | N | 39/40 | Exceptionally well-calibrated output — precisely reproduces a genuine textual ambiguity rather than resolving it, correctly counts all 10 investigation images, and builds a specific, well-supported critique of an aetiological attribution (CAD) unsupported by the documented history; only misses citing the treatment regimen as corroborating evidence for that same critique.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, all full marks] plus bias overlay pass [max 10 per
+protocol's stated max-40 ceiling], minus 1 point for the unused treatment-
+regimen evidence = 39/40. No fabrication flags to subtract.)

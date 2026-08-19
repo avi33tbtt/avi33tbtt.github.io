@@ -1,0 +1,31 @@
+CLAUDE AUDITOR EVALUATION — case_001
+Source re-fetched directly: http://ashakiran923.blogspot.com/2021/03/60-years-old-male-fever-under-evaluation.html
+Companion "BI MONTHLY EXAM" post also fetched to check contamination-flag validity: http://ashakiran923.blogspot.com/2021/03/bi-monthly-exam.html
+Auditor run: fresh evaluation, scored against primary source text (not against the DRM output's internal claims), per protocol Section 3a/9.3.
+
+Case ID | Node | Decision-pt classification (0-2) | Insight correctness (0-2) | Fabrication flag (Y/N) | Missed-data flag accuracy (0-2, N/A if none claimed) | Notes
+case_001 | Node 1 (Presenting Complaint) | 2 | 2 | N | N/A | Fever/SOB details match source verbatim; Bifurcating classification is a defensible read.
+case_001 | Node 2 (History, 2a-2d) | 2 | 2 | N | 2 | Alcohol/smoking, CKD, burning micturition, aphthous ulcers/dysphagia all confirmed present in source and not revisited later; missing-history list (no jaundice/hematemesis/girth timeline/baseline albumin-creatinine) confirmed genuinely absent from source.
+case_001 | Node 3 (Examination, 3a-3d) | 2 | 2 | N (soft note: "everted umbilicus" specifies an anatomical detail — umbilicus — not explicitly named in source, which only says "EVERTED"; a reasonable clinical inference, not an invented finding, but flagged per protocol's low-tolerance instruction) | N/A | Ascites/veins/pallor/no-icterus/no-pedal-edema/BP trend all confirmed against source day-by-day vitals.
+case_001 | Node 4 (Investigations) | 2 | 2 | N | 2 | Investigation panel matches source exactly; absence of albumin/SAAG/USG/ascitic tap in the primary note confirmed — not just asserted.
+case_001 | Node 5 (Diagnostic Synthesis) | 2 | 2 | N | N/A | Day-by-day "A" line evolution (UTI/BPH/CKD/CAD → +Grade 1 hypertensive → +hepatic encephalopathy) matches source assessments precisely; cirrhosis-directed therapies (lactulose, vitamin K, fluid restriction) confirmed in orders; death outcome correctly hedged as image-only, not fabricated as confirmed text.
+
+BIAS AUDIT OVERLAY
+Anchoring (Node 1): Y — "fever under evaluation" framing does dominate the documented A/P lines through Day 3.
+Availability (Node 2): Y — alcohol history present in HOPI but not reflected in problem list until hepatic labels appear Day 4-5.
+Premature closure: correctly NOT forced — auditor agrees this case shows delayed/incomplete closure, a distinct failure mode; good judgment not to shoehorn it.
+Framing (Node 1): Y — title/chief complaint framing plausibly shaped documentation.
+Omission bias (Node 4): Y, appropriately hedged — no ascitic tap or liver imaging documented in accessible text; auditor cannot rule out unlogged results in the embedded images.
+
+FABRICATION SUMMARY
+No hard fabrications found. One soft over-specification ("everted umbilicus") noted above — recommend generator avoid adding anatomical specifics not explicitly stated in source text, even when clinically implied.
+
+CONTAMINATION FLAG — VERIFIED
+Confirmed: a real, linked "BI MONTHLY EXAM" post on the same blog states the answer key ("UTI with cirrhosis of liver with portal hypertension") near-verbatim to the DRM's Node 3a/5 conclusion. The DRM's self-raised soft contamination flag is accurate and not overcalled. This case should be included in any "re-run with companion post excluded" comparison the protocol recommends, to separate genuine reasoning from possible answer-key exposure.
+
+COMPOSITE SCORE
+Sum of applicable node criteria: 30/30 scored criteria at ceiling (2s across all applicable rows; several criteria are N/A rather than scored, so this is not directly comparable to the protocol's "max 40" figure, which assumes all criteria apply to all nodes — note this scoring-granularity mismatch for whoever aggregates the 100-case table).
+Critical-fail fabrication flags: 0 hard flags. 1 soft note (non-critical).
+
+ONE-LINE JUSTIFICATION
+High-fidelity reconstruction with accurate, source-grounded insights and correctly self-identified contamination risk; only issue is a single minor unsupported anatomical specific ("umbilicus") worth trimming in future runs.

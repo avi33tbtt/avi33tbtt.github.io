@@ -1,0 +1,112 @@
+EVALUATION — Case 006 DRM Output (42M, Alcoholic Liver Disease with Alcohol Dependence Syndrome)
+Evaluated: 2026-08-18
+Source: case_006_output.txt
+
+======================================================================
+1. FABRICATION / SOURCE-FIDELITY CHECK
+======================================================================
+PASS — consistent with Cases 004/005, and this run adds a useful precision
+not seen before.
+
+- Node 4 withholds all image-only investigation data (routine labs,
+  hemogram, referenced panels) exactly as in prior cases.
+- New and good: the CONTAMINATION/DATA-COMPLETENESS FLAG explicitly
+  distinguishes which numeric values it DID use (the two GRBS readings,
+  111 mg/dl and the prior 20 mg/dl) as plain narrative text, from
+  everything else that remains image-only and unscored. This is exactly
+  the clarification recommended in the Case 004 and Case 005 evaluations
+  — the vitals/labs-as-text-vs-image boundary is now stated explicitly
+  rather than left implicit. This should be treated as the template going
+  forward.
+- No fabricated values anywhere; missing-history and missing-investigation
+  lists are phrased as gaps ("not stated," "cannot be confirmed"), not
+  filled in with plausible-sounding placeholders.
+
+======================================================================
+2. STRUCTURAL COMPLETENESS
+======================================================================
+STRONG. All five nodes present, decision points typed, insights paired.
+Bias audit again spans six categories with two honestly marked
+unassessable (commission/omission) rather than force-fit, keeping the
+"leave unscored when unsupported" behavior consistent across all three
+cases evaluated so far.
+
+======================================================================
+3. REASONING QUALITY
+======================================================================
+- Node 1: correctly identifies that "irrelevant talk" + giddiness in a
+  chronic heavy drinker should open both a hypoglycemia branch and a
+  withdrawal/intoxication branch simultaneously — appropriately avoids
+  anchoring at the first node, mirroring the discipline shown in Cases
+  004/005's Node 1s.
+- Node 2: strong use of the prior admission (same presentation, confirmed
+  hypoglycemia one week earlier) to set pre-test probability — this is a
+  genuinely sophisticated Bayesian framing move, and the map flags it
+  explicitly as "most important history feature" rather than burying it.
+- Node 3: this is the best single node in the map. GRBS 111 (normal) vs.
+  the prior admission's GRBS 20 is identified as a decisive discordant
+  finding that must actively overturn the pre-test hypothesis raised in
+  Node 2 — explicitly framed as requiring System 2 reconciliation. This
+  is a stronger, cleaner example of the "one real clinical tension traced
+  through the whole map" pattern that made Case 005 effective, here
+  built on a genuinely interesting reasoning move (same syndrome label,
+  different acute mechanism) rather than a discordant-but-unexplained
+  exam finding.
+- Node 4: correctly notes the psychiatry referral as an observable action
+  documenting that the withdrawal branch was pursued, without inventing
+  its findings — a good example of using a text-visible action as
+  evidence without overreaching into its (unavailable) content.
+- Node 5: appropriately hedges closure type as "likely" pattern-driven
+  rather than asserting it outright, and correctly flags that the
+  gastritis/pancreatitis branch (raised by epigastric tenderness in Node
+  3d) was never shown to be closed — this open branch is carried
+  consistently into the bias audit's search-satisficing entry and stays
+  visible rather than quietly dropped.
+- HIGHEST-YIELD DECISION POINT: well-chosen and specific — correctly
+  identifies the GRBS discordance as the pivot point, and the "why"
+  explanation (same syndrome, different acute mechanism) is a genuinely
+  generalizable teaching point rather than a generic restatement of the
+  finding.
+
+======================================================================
+4. WEAKNESSES / RISKS
+======================================================================
+- Anchoring and Availability entries in the bias audit are both pinned to
+  Node 2b and substantially overlap in content (both about the prior
+  admission's salience). The map acknowledges this overlap itself
+  ("overlaps with anchoring here"), which is honest, but the two entries
+  add limited independent value as currently written — could be merged
+  or more clearly differentiated (e.g., anchoring = premature commitment
+  to the label; availability = the ease of retrieving the recent case
+  from memory as the reason it was retrieved at all).
+- The epigastric tenderness / possible gastritis-or-pancreatitis branch is
+  correctly flagged as unclosed in three separate places (3d, Node 5,
+  search satisficing) — appropriately persistent, but borders on
+  repetition; could be stated once and cross-referenced rather than
+  re-explained three times.
+- As with Cases 004/005, independent verification of the quoted numbers
+  (GRBS values, BP, alcohol quantities) against the live source URL was
+  not performed in this evaluation; the assessment here is of internal
+  consistency and protocol adherence, not ground-truth accuracy.
+
+======================================================================
+5. COMPARISON TO PRIOR CASES
+======================================================================
+Case 006 is the strongest of the three evaluated so far. It carries
+forward every strength of Case 005 (single coherent clinical tension
+threaded through all nodes, honest hedging on closure type, disciplined
+bias-audit non-assessment) and closes the one recurring gap flagged in
+both prior evaluations: the boundary between "text-extractable and
+scorable" (GRBS values) and "image-only and withheld" (everything else)
+is now stated explicitly rather than left for the reader to infer. This
+should be adopted as the standard template for the CONTAMINATION/
+DATA-COMPLETENESS FLAG in future case runs.
+
+======================================================================
+6. OVERALL VERDICT
+======================================================================
+Score: 9.5/10 — matches Case 005's rigor and improves on its main weakness
+(explicit text-vs-image boundary). Minor deductions only for redundancy
+(epigastric-tenderness branch repeated three times) and partial overlap
+between the anchoring and availability bias entries. No fabrication risk
+identified.

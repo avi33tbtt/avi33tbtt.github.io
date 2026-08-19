@@ -1,0 +1,147 @@
+DRM VALIDATION — AUDITOR EVALUATION
+Case ID: case_014
+Case link: http://gutalaramya.blogspot.com/2021/05/pancytopenia-under-evaluation.html
+Auditor: Claude (fresh conversation; source re-fetched directly per Section 3a/9.3 protocol)
+Same-model-auditing caveat applies (Section 3a): this is Claude auditing Claude-generated output.
+Not an independent-model check; see protocol Sections 3a and 8.
+
+================================================================
+METHOD NOTE
+================================================================
+Primary source re-fetched directly and checked against every factual claim
+in the DRM output (HOPI, past/personal/family history, exam, vitals, the
+prose-stated peripheral smear, provisional diagnosis, and treatment).
+Image-only investigations (CBC counts, LFT/RFT, CXR, ECG, 2D echo, USG
+abdomen) could not be verified; the DRM output correctly marks these
+"cannot classify."
+
+================================================================
+NODE-BY-NODE SCORING (rubric, Section 4)
+================================================================
+
+NODE 1 — Presenting Complaint
+  Decision-point classification accuracy: 2/2 — B/L pedal edema, facial
+    puffiness, and exertional Grade II SOB x5 days all match the source's
+    chief complaints and HOPI exactly. The DRM output also correctly catches
+    and reports, as-is, the source's own age inconsistency (page title "38
+    y/o female" vs. case body "A 36 y/o female") rather than silently
+    resolving it — good calibration, consistent with how the alcohol/age
+    ambiguities were (mostly) handled in earlier cases.
+  Insight correctness: 2/2 — the facial-puffiness-vs-dependent-edema
+    distinction as a decision-relevant semantic cue is specific and correct.
+  Fabrication check: No.
+
+NODE 2 — History
+  Decision-point classification accuracy: 2/2 — 2a (menorrhagia 5 years ago,
+    6-7 days, 3-4 pads/day with clots, "anemia with reduced Hb, platelets and
+    WBCs," 1 PRBC transfusion), 2b (negative HTN/DM/BA/CAD/epilepsy/TB, no
+    transfusion reactions), 2c (occasional toddy/beer, low socioeconomic
+    status), and 2d (no similar family history) all trace to real, accurately
+    quoted source sentences.
+  Insight correctness: 2/2 — the 2a re-framing ("this is likely a recurrent/
+    chronic process, not new") is the strongest and most clinically important
+    insight in the output, and is well-supported: the source really does
+    describe a documented trilineage cytopenia five years prior that was
+    apparently never worked up further.
+  Fabrication check: No.
+  Missed-data flag accuracy: 2/2 — the "Missing history" list (no workup
+    detail from 5 years ago, no dietary/B12/folate history, no menstrual
+    history update, no interim bleeding/infection history) is accurate; none
+    of these appear in the source.
+  Minor categorization note (not a factual error): the DRM output places
+    "low socioeconomic status" under sub-node 2c alongside the personal-
+    history alcohol item, but the source actually lists "Low socio-economic
+    status" under the Family History heading, not Personal History. The
+    content itself is reported accurately — this is a structural placement
+    slip, not an invented or wrong fact, so it isn't scored as a fabrication
+    or a missed-data error, but it's noted for completeness.
+
+NODE 3 — Examination
+  Decision-point classification accuracy: 2/2 — pallor+, flat nails+ (with
+    koilonychia specifically and correctly noted as negative — a precise
+    catch, since the source lists koilonychia among the negative findings
+    while separately noting "Flat nails +"), thin built and nourished, pedal
+    edema+, JVP not raised, BP 100/50, and mild splenomegaly all match the
+    source exactly.
+  Insight correctness: 2/2 — the JVP-not-raised-argues-against-cardiac and
+    the low-BP-favors-hypoalbuminemic-over-cardiac reasoning are both
+    specific, correct, and appropriately hedged as not explicitly stated in
+    the source's own reasoning.
+  Fabrication check: No.
+  Missed-data / unfollowed finding: 2/2 — correctly flags that splenomegaly,
+    despite being one of the most specific findings for narrowing a cause of
+    pancytopenia, is not explicitly reasoned through in the source text.
+
+NODE 4 — Investigations
+  Decision-point classification accuracy: 2/2 — the peripheral smear
+    findings (anisopoikilocytosis with hypochromia, microcytes, normocytes,
+    tear-drop cells; WBC and platelets reduced; impression: pancytopenia)
+    are quoted essentially verbatim from the source's prose.
+  Insight correctness: 2/2 — the tear-drop-cells-as-marrow-infiltrative/
+    myelofibrotic-signal reasoning, and weighting it alongside splenomegaly,
+    is specific, correct, and the single most clinically load-bearing
+    insight in the investigations node.
+  Fabrication check: No — image-only investigations (CBC counts, LFT/RFT,
+    CXR, ECG, echo, USG) correctly marked "cannot classify" rather than
+    inferred, including appropriately hedged ("presumably") speculation
+    about what the echo/USG likely show given the "dilated RA and IVC"
+    provisional diagnosis line.
+  Missed-data flag accuracy: 2/2 — correctly notes absence of a stated bone
+    marrow aspirate/biopsy and absence of stated B12/folate/iron studies,
+    both genuinely indicated gaps given the smear morphology.
+
+NODE 5 — Diagnostic Synthesis
+  Decision-point classification accuracy: 2/2 — "Pancytopenia under
+    evaluation with dilated RA and IVC" is quoted exactly from the source's
+    provisional diagnosis line; the treatment (Tab. Livogen + vital
+    monitoring) is also reported accurately.
+  Insight correctness: 2/2 — the observation that empiric iron treats only
+    the microcytic/hypochromic component while leaving thrombocytopenia/
+    leukopenia unaddressed is pharmacologically correct and a genuinely
+    useful teaching point, not a generic caveat.
+  Fabrication check: No.
+
+BIAS AUDIT OVERLAY
+  Anchoring: Yes — plausible, tied accurately to the menorrhagia-anemia
+    history and the empiric iron choice.
+  Availability: Correctly marked "not clearly present."
+  Premature closure: Correctly distinguishes diagnosis-level (appropriately
+    open, "under evaluation") from treatment-level (empiric iron started
+    early) — a nuanced and accurate read, not overcalled.
+  Framing: Yes — reasonable and well-supported by the source's own framing
+    of this as a new 5-day complaint rather than a recurrence.
+  Search satisficing: Yes — accurately notes the tear-drop-cell finding
+    doesn't appear to have prompted a stated next step (e.g., marrow biopsy)
+    in the visible text.
+  Overall Bias Overlay correctness: Yes (no overcalls identified).
+
+================================================================
+FABRICATION CHECK (case-level)
+================================================================
+Fabrication flag: No.
+Every quoted history item, exam finding, vital sign, peripheral smear
+result, provisional diagnosis, and treatment matches the primary source
+exactly, including a precise catch of the source's own internal age
+inconsistency (36 vs. 38) and the koilonychia-negative/flat-nails-positive
+distinction, which is easy to blur but wasn't. No node introduces content
+absent from the source. This is the strongest case-to-source fidelity seen
+in the sample so far — no unhedged inferences or timing conflations of the
+kind flagged in case_013.
+
+One minor structural note (not scored as an error): the DRM output places
+the source's "low socioeconomic status" line (which the source lists under
+Family History) under the History sub-node discussing personal habits
+instead. The content is reported accurately; only its node placement is
+slightly off.
+
+================================================================
+SUMMARY TABLE (per Section 9.3 format)
+================================================================
+Case ID | Node scores (5 nodes, 0-2 each, avg of classification+insight) | Bias overlay correct (Y/N/Overcalled) | Fabrication flag (Y/N) | Composite score | One-line justification
+
+case_014 | 2,2,2,2,2 | Y | N | 39/40 | Highest-fidelity output in the sample so far — precise, no unhedged inferences, correctly reframes a "new" presentation around a 5-year-old unresolved trilineage cytopenia and correctly separates diagnostic humility from a premature empiric-treatment decision; only ding is a minor history/family-history categorization slip.
+
+(Composite = sum of classification + insight + missed-data-flag scores across
+5 nodes [max 30, all full marks] plus bias overlay pass [max 10 per
+protocol's stated max-40 ceiling], minus 1 point for the minor sub-node
+categorization slip = 39/40. No fabrication flags to subtract.)

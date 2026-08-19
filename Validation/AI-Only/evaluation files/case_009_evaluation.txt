@@ -1,0 +1,146 @@
+EVALUATION — Case 009 DRM Output (66F, fever on/off + increased stool frequency + vomiting, AGE with AKI intrinsic)
+Evaluated: 2026-08-18
+Source: case_009_output.txt
+
+======================================================================
+1. FABRICATION / SOURCE-FIDELITY CHECK
+======================================================================
+PASS — and this case pushes the "critique the source's own unsupported
+claim" move introduced in Case 008 into its sharpest form yet.
+
+- All investigation data is image-only and Node 4 is correctly marked
+  "Cannot classify" with no invented renal function, CBP, or stool study
+  values anywhere.
+- The map's central move — flagging that "intrinsic" AKI is asserted
+  without any shown pre-renal-vs-intrinsic evidence (FeNa, urine
+  microscopy, fluid-responsiveness) — is the same category of insight as
+  Case 008's "confirmed by ultrasound" critique, but arguably tighter
+  here: it isn't just "the confirmatory test result is unshown," it's
+  "a specific, management-changing diagnostic qualifier was added to the
+  label without the differentiating evidence that qualifier requires."
+  That's a more precise clinical-epistemics catch than Case 008's version.
+- The DATA COMPLETENESS NOTE again sits at the top (per the Case 008
+  improvement) and explicitly names the tension up front — "no numeric
+  labs... despite the provisional diagnosis naming AKI (intrinsic)" —
+  which primes the reader for the Node 5 critique before it arrives,
+  rather than surprising them with it at the end.
+- The closing FABRICATION CHECK explicitly ties the two withheld-content
+  categories together in one sentence ("image-only investigation data and
+  the unjustified 'intrinsic' AKI qualifier are flagged as gaps rather
+  than filled in") — a good, compact summary that generalizes the lesson
+  from Case 008 into a repeatable phrasing.
+
+======================================================================
+2. STRUCTURAL COMPLETENESS
+======================================================================
+STRONG, and appropriately lean for a single-process case. All five nodes
+present, decision points typed consistently (reverts to the "Decision
+Point: Yes — Type: X" / plain "Decision Point: X" mix seen in Case 008,
+so the minor formatting drift from Case 008 persists here rather than
+being corrected — see Weaknesses). Bias audit covers five categories,
+again omitting "Commission/Omission bias" as its own labeled-but-
+unassessable entry, consistent with the same drop noted in Case 008. Two
+cases in a row doing this suggests it may be an intentional streamlining
+rather than a one-off omission, but it's still a divergence from the
+six-category template established in Cases 005–007.
+
+======================================================================
+3. REASONING QUALITY
+======================================================================
+- Node 1: the vomiting-frequency observation (10 episodes/day is
+  disproportionate to typical uncomplicated gastroenteritis) is a sharp,
+  well-calibrated catch — correctly flagged as atypical rather than
+  accepted at face value, and this observation is then carried forward
+  consistently into Node 3's vitals-reconciliation point and Node 5's
+  synthesis critique. This threading of one early red flag through the
+  whole map is the same disciplined pattern seen in Cases 005–007's best
+  moments (JVP/ascites, GRBS discordance, portal hypertension query).
+- Node 2: 2a (recurrence at 3 months) is well-chosen as "most important
+  history" and is explicitly connected to a specific alternative
+  hypothesis space (partial bowel obstruction, biliary pathology,
+  recurrent UTI/pyelonephritis) rather than left as a vague "this
+  recurred" note. 2c (malnourished + obese abdomen held together) is a
+  genuinely interesting catch — recognizing that two adjacent
+  observations in the source create an internal tension (possible
+  sarcopenic obesity or masked ascites) that the source itself doesn't
+  reconcile is a more subtle observation than most nodes in prior cases,
+  closer in spirit to Case 007's saddle-nose/portal-hypertension catches.
+- Node 3: 3a's insight — that vitals are only mildly deranged despite a
+  reported 10 episodes/day of vomiting — is the load-bearing clinical
+  tension of this whole map, and it's correctly carried into System 2
+  nodes and then into the Node 5 "asserted vs. demonstrated" critique.
+  This is good cross-node coherence, on par with Case 006's GRBS thread.
+- Node 4: appropriately brief given there's almost nothing but the
+  image-only note to report; correctly resists padding with speculative
+  content.
+- Node 5: this is the standout node of the case, and arguably the
+  sharpest synthesis-level insight in the whole series so far — it
+  identifies the exact clinical fork (pre-renal vs. intrinsic AKI) that
+  the vomiting-frequency-vs-vitals tension from Node 1/3 should have
+  resolved, and explains precisely which missing evidence (FeNa, urine
+  microscopy, fluid-responsiveness) would have settled it. This isn't
+  just "data is missing" — it names the specific test that would close
+  the specific branch, which is more clinically actionable than the
+  broader "confirmatory imaging unshown" framing in Case 008.
+- HIGHEST-YIELD DECISION POINT: excellent and well-scoped — correctly
+  identifies that renal-injury sub-classification is "a decision point in
+  its own right, not a label that follows automatically," and ties this
+  back to a concrete evidence trail a learner could apply to future
+  cases. This is a clinically substantive lesson (not just a
+  documentation-practice one, unlike Case 008's more meta point), and it
+  is well earned by the reasoning built up across Nodes 1, 3, and 5.
+
+======================================================================
+4. WEAKNESSES / RISKS
+======================================================================
+- The formatting inconsistency first seen in Case 008 (dropping the
+  "Type:" prefix inconsistently, e.g. Node 1 says "Decision Point: Yes —
+  Type: Bifurcating" but subsequent nodes use bare "Decision Point:
+  Missed" / "Decision Point: No") persists unchanged here. Since this is
+  now two cases in a row, it looks like a stable format shift rather than
+  a one-off slip — worth deciding whether this is the intended house
+  style going forward or should be reconciled back to the Case 004–007
+  format for consistency across the case series.
+- Commission/Omission bias remains dropped from the bias audit template
+  for a second consecutive case. Given this case has a clear candidate
+  for it (recurrent episode never investigated, per 2a and the search-
+  satisficing entry), including it — even marked unassessable — would
+  keep the six-category template consistent across the series.
+- Node 3a is typed "Decision Point: No" but its insight text describes a
+  genuinely important diagnostic tension (mismatch between vitals and
+  reported vomiting severity) that arguably deserves a more active type
+  (Bifurcating or Missed) rather than "No," since the insight itself
+  argues the vitals *should* have prompted more scrutiny. This is a
+  small mismatch between the assigned type and the substance of the
+  insight — similar in kind to the 2c/"Missed" softness noted in Case
+  008's evaluation.
+- As with all prior cases, none of the reproduced text findings (vitals,
+  exam descriptions, history items) have been independently verified
+  against the live source URL by this evaluator.
+
+======================================================================
+5. COMPARISON TO PRIOR CASES
+======================================================================
+Case 009 is the tightest, most single-threaded case in the series so
+far — one clinical tension (vomiting severity vs. mild vitals) is
+introduced in Node 1, actively reasoned about in Node 3, and resolved
+into a precise, actionable synthesis-level critique in Node 5 and the
+highest-yield point. It extends Case 008's "critique the source's
+unsupported closure" innovation into a more clinically specific form
+(naming the exact evidence — FeNa/urine microscopy — that would resolve
+the pre-renal-vs-intrinsic fork) rather than a general "findings
+unshown" observation. It also inherits both of Case 008's minor template
+regressions (dropped Commission/Omission slot, inconsistent Type:
+formatting) without correcting them, suggesting these are becoming
+persistent pattern choices rather than isolated slips.
+
+======================================================================
+6. OVERALL VERDICT
+======================================================================
+Score: 9.5/10 — matches the series' best cases on fabrication discipline
+and edges ahead on synthesis precision, with the pre-renal-vs-intrinsic
+AKI critique being the most clinically specific and actionable
+"unsupported closure" catch across all six cases evaluated. Deductions
+limited to the same minor, now-recurring template drift noted in Case
+008 (formatting inconsistency, dropped bias category) and one soft
+type-assignment mismatch at Node 3a.
