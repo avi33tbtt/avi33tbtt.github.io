@@ -130,7 +130,9 @@ Module reference: <a href="https://avi33tbtt.github.io/Prompts/Module-50-DRM-Dia
 </ol>
 
 <h3>Conclusion</h3>
-<p>The DRM generator is a high-fidelity, well-hedged reasoning system with a low true-fabrication rate (1 in 24 cases) and strong diagnostic-synthesis judgment, including the harder skill of not forcing false closure. Remaining error mass is narrow and tractable — concentrated in timing precision and completeness rather than invented clinical content.</p>
+<p>The DRM generator shows strong internal self-consistency: across 24 heterogeneous cases, reconstructions were near-ceiling on completeness (~79% ≥90% of maximum) and the same-model audit surfaced only one critical fabrication, with residual errors concentrated in temporal precision and completeness rather than invented clinical content. Notably, the generator also showed good epistemic discipline — resisting false diagnostic closure even where source cases were genuinely unresolved.</p>
+
+<p>However, because the generator, the auditor, and this summary were all produced by the same underlying model without an independent or cross-model check, these figures should be read as a measure of self-consistency and protocol adherence, not as an estimate of real-world fabrication rate or reliability. A shared blind spot between generator and auditor would not be caught by this design, and the "1 in 24" fabrication figure in particular should not be treated as a real-world reliability estimate until corroborated independently. The recurring weaknesses identified — timeline conflation, omission of source-stated facts, inconsistent self-flagging of inferences — are narrow and tractable, but confirming their true frequency (and confirming no larger blind spot exists) requires either human clinician review or audit by a differently-trained model on at least a subset of cases before this generator can be considered validated for real-world use.</p>
 
 </body>
 </html>
