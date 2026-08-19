@@ -1,0 +1,869 @@
+{
+  "meta": {
+    "description": "Synthetic FHIR-flavored patient corpus for the Person-Centered Clinical Analytics multi-disease demo pilot. All data fabricated - not real patient data.",
+    "generated": "2026-08-17",
+    "seed": 42,
+    "per_disease": 1,
+    "diseases_included": [
+      "t2d"
+    ],
+    "total_patients": 1,
+    "by_disease": {
+      "t2d": {
+        "label": "Type 2 Diabetes",
+        "short": "T2D",
+        "count": 1
+      }
+    }
+  },
+  "patients_by_disease": {
+    "t2d": [
+      {
+        "patient_id": "t2d-97da2849",
+        "condition_type": "T2D",
+        "condition_label": "Type 2 Diabetes",
+        "demographics": {
+          "gender": "female",
+          "birth_year": 1948,
+          "diagnosis_age": 65,
+          "years_since_diagnosis": 13
+        },
+        "tags": {
+          "facility_tier": "tertiary",
+          "resource_status": "plenty",
+          "key_event_count": 6,
+          "acute_event_count": 2,
+          "distinct_key_event_types": 6,
+          "pool_size": 8,
+          "event_type_counts": {
+            "Metformin + SGLT2 inhibitor": 1,
+            "Metformin + Sulfonylurea": 1,
+            "Lifestyle intervention (diet + exercise)": 1,
+            "Basal-bolus insulin regimen": 1,
+            "Hypoglycemic episode (medication-related)": 1,
+            "Hyperosmolar hyperglycemic state admission": 1
+          },
+          "comorbidity_count": 0,
+          "comorbidities": []
+        },
+        "fhir_bundle": {
+          "resourceType": "Bundle",
+          "type": "collection",
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "id": "t2d-97da2849",
+                "identifier": [
+                  {
+                    "system": "urn:demo:synthetic",
+                    "value": "t2d-97da2849"
+                  }
+                ],
+                "gender": "female",
+                "birthDate": "1948-04-01",
+                "meta": {
+                  "tag": [
+                    {
+                      "code": "synthetic-demo-data"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-38a907d0",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "44054006",
+                      "display": "Type 2 diabetes mellitus"
+                    }
+                  ],
+                  "text": "Type 2 diabetes mellitus"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "encounter-diagnosis"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2013-03-31"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-90402c80",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Routine screening - incidental hyperglycemia"
+                  }
+                ],
+                "period": {
+                  "start": "2013-03-31"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "tertiary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "diagnosed_asymptomatic"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-d7c57008",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "4548-4",
+                      "display": "HbA1c"
+                    }
+                  ],
+                  "text": "HbA1c"
+                },
+                "effectiveDateTime": "2013-03-31",
+                "valueQuantity": {
+                  "value": 7.1,
+                  "unit": "%"
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-1f6f2105",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "1373463",
+                      "display": "Metformin + SGLT2 inhibitor"
+                    }
+                  ],
+                  "text": "Metformin + SGLT2 inhibitor"
+                },
+                "authoredOn": "2015-05-14",
+                "dosageInstruction": [
+                  {
+                    "text": "Add empagliflozin 10mg PO daily"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-1be4b28d",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "4821",
+                      "display": "Metformin + Sulfonylurea"
+                    }
+                  ],
+                  "text": "Metformin + Sulfonylurea"
+                },
+                "authoredOn": "2017-01-17",
+                "dosageInstruction": [
+                  {
+                    "text": "Add glipizide 5mg PO daily"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-e69595b4",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Lifestyle intervention (diet + exercise)"
+                  }
+                ],
+                "period": {
+                  "start": "2018-07-18"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "quaternary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Lifestyle intervention (diet + exercise)"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-fe6841b5",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "5856",
+                      "display": "Basal-bolus insulin regimen"
+                    }
+                  ],
+                  "text": "Basal-bolus insulin regimen"
+                },
+                "authoredOn": "2020-10-31",
+                "dosageInstruction": [
+                  {
+                    "text": "Full basal-bolus regimen"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-2f2bb362",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "class": {
+                  "code": "EMER"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Hypoglycemic episode (medication-related)"
+                  }
+                ],
+                "period": {
+                  "start": "2023-02-17"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "quaternary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "constrained"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_no_deficit"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 5
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Hypoglycemic episode (medication-related)"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-53ae5c62",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "2339-0",
+                      "display": "Blood glucose"
+                    }
+                  ],
+                  "text": "Blood glucose"
+                },
+                "effectiveDateTime": "2023-02-17",
+                "valueQuantity": {
+                  "value": 55,
+                  "unit": "mg/dL"
+                },
+                "extension": [
+                  {
+                    "url": "demo/severity",
+                    "valueString": "acute"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-ee39720b",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "class": {
+                  "code": "EMER"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Hyperosmolar hyperglycemic state admission"
+                  }
+                ],
+                "period": {
+                  "start": "2025-02-16"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "secondary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_no_deficit"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 4
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Hyperosmolar hyperglycemic state admission"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-44503f9f",
+                "subject": {
+                  "reference": "Patient/t2d-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "2339-0",
+                      "display": "Blood glucose"
+                    }
+                  ],
+                  "text": "Blood glucose"
+                },
+                "effectiveDateTime": "2025-02-16",
+                "valueQuantity": {
+                  "value": 883,
+                  "unit": "mg/dL"
+                },
+                "extension": [
+                  {
+                    "url": "demo/severity",
+                    "valueString": "critical"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "all_patients": [
+    {
+      "patient_id": "t2d-97da2849",
+      "condition_type": "T2D",
+      "condition_label": "Type 2 Diabetes",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1948,
+        "diagnosis_age": 65,
+        "years_since_diagnosis": 13
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "key_event_count": 6,
+        "acute_event_count": 2,
+        "distinct_key_event_types": 6,
+        "pool_size": 8,
+        "event_type_counts": {
+          "Metformin + SGLT2 inhibitor": 1,
+          "Metformin + Sulfonylurea": 1,
+          "Lifestyle intervention (diet + exercise)": 1,
+          "Basal-bolus insulin regimen": 1,
+          "Hypoglycemic episode (medication-related)": 1,
+          "Hyperosmolar hyperglycemic state admission": 1
+        },
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "t2d-97da2849",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "t2d-97da2849"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1948-04-01",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-38a907d0",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "44054006",
+                    "display": "Type 2 diabetes mellitus"
+                  }
+                ],
+                "text": "Type 2 diabetes mellitus"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2013-03-31"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-90402c80",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - incidental hyperglycemia"
+                }
+              ],
+              "period": {
+                "start": "2013-03-31"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d7c57008",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "4548-4",
+                    "display": "HbA1c"
+                  }
+                ],
+                "text": "HbA1c"
+              },
+              "effectiveDateTime": "2013-03-31",
+              "valueQuantity": {
+                "value": 7.1,
+                "unit": "%"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-1f6f2105",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "1373463",
+                    "display": "Metformin + SGLT2 inhibitor"
+                  }
+                ],
+                "text": "Metformin + SGLT2 inhibitor"
+              },
+              "authoredOn": "2015-05-14",
+              "dosageInstruction": [
+                {
+                  "text": "Add empagliflozin 10mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-1be4b28d",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "4821",
+                    "display": "Metformin + Sulfonylurea"
+                  }
+                ],
+                "text": "Metformin + Sulfonylurea"
+              },
+              "authoredOn": "2017-01-17",
+              "dosageInstruction": [
+                {
+                  "text": "Add glipizide 5mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-e69595b4",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle intervention (diet + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2018-07-18"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Lifestyle intervention (diet + exercise)"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-fe6841b5",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5856",
+                    "display": "Basal-bolus insulin regimen"
+                  }
+                ],
+                "text": "Basal-bolus insulin regimen"
+              },
+              "authoredOn": "2020-10-31",
+              "dosageInstruction": [
+                {
+                  "text": "Full basal-bolus regimen"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-2f2bb362",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Hypoglycemic episode (medication-related)"
+                }
+              ],
+              "period": {
+                "start": "2023-02-17"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 5
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Hypoglycemic episode (medication-related)"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-53ae5c62",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2023-02-17",
+              "valueQuantity": {
+                "value": 55,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-ee39720b",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Hyperosmolar hyperglycemic state admission"
+                }
+              ],
+              "period": {
+                "start": "2025-02-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Hyperosmolar hyperglycemic state admission"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-44503f9f",
+              "subject": {
+                "reference": "Patient/t2d-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2339-0",
+                    "display": "Blood glucose"
+                  }
+                ],
+                "text": "Blood glucose"
+              },
+              "effectiveDateTime": "2025-02-16",
+              "valueQuantity": {
+                "value": 883,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

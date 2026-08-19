@@ -1,0 +1,284 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "nodes": [
+    {
+      "id": "t2d-97da2849",
+      "node_type": "PatientNode",
+      "patient_id": "t2d-97da2849",
+      "condition_type": "T2D",
+      "gender": "female",
+      "birth_year": 1948,
+      "diagnosis_age": 65,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "key_event_count": 6,
+      "acute_event_count": 2,
+      "distinct_key_event_types": 6,
+      "pool_size": 8,
+      "event_type_counts": {
+        "Metformin + SGLT2 inhibitor": 1,
+        "Metformin + Sulfonylurea": 1,
+        "Lifestyle intervention (diet + exercise)": 1,
+        "Basal-bolus insulin regimen": 1,
+        "Hypoglycemic episode (medication-related)": 1,
+        "Hyperosmolar hyperglycemic state admission": 1
+      },
+      "comorbidity_count": 0,
+      "comorbidities": []
+    },
+    {
+      "id": "t2d-97da2849::dx::cond-38a907d0",
+      "node_type": "DiagnosisNode",
+      "patient_id": "t2d-97da2849",
+      "term": "Type 2 diabetes mellitus",
+      "snomed_code": "44054006",
+      "confidence": "confirmed",
+      "role": "primary",
+      "onset": "2013-03-31"
+    },
+    {
+      "id": "t2d-97da2849::obs::obs-d7c57008",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-97da2849",
+      "label": "HbA1c",
+      "loinc_code": "4548-4",
+      "value": 7.1,
+      "unit": "%",
+      "severity": null,
+      "timestamp": "2013-03-31"
+    },
+    {
+      "id": "t2d-97da2849::obs::obs-53ae5c62",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 55,
+      "unit": "mg/dL",
+      "severity": "acute",
+      "timestamp": "2023-02-17"
+    },
+    {
+      "id": "t2d-97da2849::obs::obs-44503f9f",
+      "node_type": "ObservationNode",
+      "patient_id": "t2d-97da2849",
+      "label": "Blood glucose",
+      "loinc_code": "2339-0",
+      "value": 883,
+      "unit": "mg/dL",
+      "severity": "critical",
+      "timestamp": "2025-02-16"
+    },
+    {
+      "id": "t2d-97da2849::iv::medreq-1f6f2105",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-97da2849",
+      "action_type": "MedicationRequest",
+      "target": "Metformin + SGLT2 inhibitor",
+      "rxnorm_code": "1373463",
+      "parameters": "Add empagliflozin 10mg PO daily",
+      "authored_on": "2015-05-14"
+    },
+    {
+      "id": "t2d-97da2849::iv::medreq-1be4b28d",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-97da2849",
+      "action_type": "MedicationRequest",
+      "target": "Metformin + Sulfonylurea",
+      "rxnorm_code": "4821",
+      "parameters": "Add glipizide 5mg PO daily",
+      "authored_on": "2017-01-17"
+    },
+    {
+      "id": "t2d-97da2849::iv::medreq-fe6841b5",
+      "node_type": "InterventionNode",
+      "patient_id": "t2d-97da2849",
+      "action_type": "MedicationRequest",
+      "target": "Basal-bolus insulin regimen",
+      "rxnorm_code": "5856",
+      "parameters": "Full basal-bolus regimen",
+      "authored_on": "2020-10-31"
+    },
+    {
+      "id": "t2d-97da2849::oc::enc-90402c80",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-97da2849",
+      "status": "diagnosed_asymptomatic",
+      "reason": "Routine screening - incidental hyperglycemia",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "tertiary",
+      "resource_status": "plenty",
+      "start": "2013-03-31"
+    },
+    {
+      "id": "t2d-97da2849::oc::enc-e69595b4",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-97da2849",
+      "status": "routine",
+      "reason": "Lifestyle intervention (diet + exercise)",
+      "encounter_class": "AMB",
+      "length_of_stay_days": null,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "plenty",
+      "start": "2018-07-18"
+    },
+    {
+      "id": "t2d-97da2849::oc::enc-2f2bb362",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-97da2849",
+      "status": "stabilized_no_deficit",
+      "reason": "Hypoglycemic episode (medication-related)",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 5,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "quaternary",
+      "resource_status": "constrained",
+      "start": "2023-02-17"
+    },
+    {
+      "id": "t2d-97da2849::oc::enc-ee39720b",
+      "node_type": "OutcomeNode",
+      "patient_id": "t2d-97da2849",
+      "status": "stabilized_no_deficit",
+      "reason": "Hyperosmolar hyperglycemic state admission",
+      "encounter_class": "EMER",
+      "length_of_stay_days": 4,
+      "spike_event": null,
+      "time_to_er_hours": null,
+      "time_to_stabilization_hours": null,
+      "facility_tier": "secondary",
+      "resource_status": "plenty",
+      "start": "2025-02-16"
+    }
+  ],
+  "links": [
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::dx::cond-38a907d0",
+      "edge_type": "HAS_DIAGNOSIS",
+      "onset": "2013-03-31"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::obs::obs-d7c57008",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2013-03-31"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::obs::obs-53ae5c62",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2023-02-17"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::obs::obs-44503f9f",
+      "edge_type": "HAS_OBSERVATION",
+      "timestamp": "2025-02-16"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::iv::medreq-1f6f2105",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2015-05-14"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::iv::medreq-1be4b28d",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2017-01-17"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::iv::medreq-fe6841b5",
+      "edge_type": "RECEIVES_PLAN",
+      "atemporal_bundle": true,
+      "authored_on": "2020-10-31"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::oc::enc-90402c80",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 0,
+      "start": "2013-03-31"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::oc::enc-e69595b4",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 1935,
+      "start": "2018-07-18"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::oc::enc-2f2bb362",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 3610,
+      "start": "2023-02-17"
+    },
+    {
+      "source": "t2d-97da2849",
+      "target": "t2d-97da2849::oc::enc-ee39720b",
+      "edge_type": "RESULTS_IN",
+      "time_to_outcome_delta": 4340,
+      "start": "2025-02-16"
+    },
+    {
+      "source": "t2d-97da2849::obs::obs-d7c57008",
+      "target": "t2d-97da2849::dx::cond-38a907d0",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-97da2849::obs::obs-53ae5c62",
+      "target": "t2d-97da2849::dx::cond-38a907d0",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-97da2849::obs::obs-44503f9f",
+      "target": "t2d-97da2849::dx::cond-38a907d0",
+      "edge_type": "SUGGESTS"
+    },
+    {
+      "source": "t2d-97da2849::dx::cond-38a907d0",
+      "target": "t2d-97da2849::iv::medreq-1f6f2105",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-97da2849::dx::cond-38a907d0",
+      "target": "t2d-97da2849::iv::medreq-1be4b28d",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-97da2849::dx::cond-38a907d0",
+      "target": "t2d-97da2849::iv::medreq-fe6841b5",
+      "edge_type": "INDICATES_PLAN"
+    },
+    {
+      "source": "t2d-97da2849::iv::medreq-1f6f2105",
+      "target": "t2d-97da2849::oc::enc-e69595b4",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t2d-97da2849::iv::medreq-1be4b28d",
+      "target": "t2d-97da2849::oc::enc-e69595b4",
+      "edge_type": "PRODUCED_OUTCOME"
+    },
+    {
+      "source": "t2d-97da2849::iv::medreq-fe6841b5",
+      "target": "t2d-97da2849::oc::enc-2f2bb362",
+      "edge_type": "PRODUCED_OUTCOME"
+    }
+  ]
+}
