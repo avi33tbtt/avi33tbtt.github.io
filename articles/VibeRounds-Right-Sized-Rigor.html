@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeRounds — Right-Sized Rigor: Module Maturity &amp; Scope for Improvement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdfdfc; --panel:#f8f8f6; --panel2:#f1f1ee;
+    --ink:#1c1f1e; --ink-dim:#5f6663; --ink-faint:#8b918d; --line:#e2e2dd; --line-strong:#c8c9c2;
+    --accent:#1f6e5c; --accent-dim:#4d8272; --accent-bg:#e9f3ef;
+    --l5:#1f7a45; --l5bg:#e9f5ee;
+    --l4:#65791c; --l4bg:#f1f5e2;
+    --l3:#9c7112; --l3bg:#faf0d7;
+    --l2:#a2540f; --l2bg:#fbead6;
+    --l1:#ab2b3d; --l1bg:#fbe5e8;
+    --rule-w:1px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 32px 120px}
+  .topbar{height:6px; background:linear-gradient(90deg, var(--accent) 0%, var(--accent) 60%, var(--l3) 60%, var(--l3) 75%, var(--l1) 75%, var(--l1) 100%)}
+  .wrap{padding-top:56px}
+
+  /* ---- Masthead ---- */
+  .masthead{border-bottom:2px solid var(--ink); padding-bottom:28px; margin-bottom:8px}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin:0 0 16px;
+  }
+  h1{
+    font-family:'Source Serif 4',Georgia,serif; font-weight:600; font-style:normal;
+    font-size:2.35rem; margin:0 0 16px; color:var(--ink); line-height:1.18; letter-spacing:-0.01em;
+  }
+  .lede{color:var(--ink-dim); font-size:1.05rem; max-width:680px; margin:0}
+
+  /* ---- Section headings ---- */
+  h2{
+    font-family:'Source Serif 4',Georgia,serif; font-weight:600;
+    font-size:1.48rem; color:var(--accent); margin:58px 0 6px;
+    padding-top:26px; border-top:2px solid var(--accent);
+    display:flex; align-items:baseline; gap:12px;
+  }
+  h2:first-of-type{border-top:none; padding-top:0; margin-top:40px}
+  h3{font-family:'Inter',sans-serif; font-weight:700; font-size:1rem; color:var(--ink); margin:26px 0 8px; letter-spacing:-0.005em}
+  h4{
+    font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:600; letter-spacing:0.05em;
+    color:var(--accent); text-transform:uppercase; margin:30px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line);
+  }
+
+  p{color:var(--ink-dim); font-size:0.95rem; margin:0 0 14px}
+  p:last-child{margin-bottom:0}
+  p b, li b, td b{color:var(--ink); font-weight:600}
+  a{color:var(--accent); text-decoration-color:var(--line-strong); text-underline-offset:2px}
+  a:hover{text-decoration-color:var(--accent)}
+  ul, ol{color:var(--ink-dim); font-size:0.92rem}
+  li{margin-bottom:4px}
+
+  /* ---- Callouts ---- */
+  .callout{
+    background:var(--accent-bg); border:1px solid var(--accent); border-left:4px solid var(--accent);
+    border-radius:2px; padding:18px 22px; margin:20px 0;
+  }
+  .callout p:last-child{margin-bottom:0}
+
+  .summary{
+    background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:2px;
+    padding:24px 28px; margin:32px 0 40px;
+  }
+  .summary .kicker{margin-bottom:12px}
+  .summary p{margin:0 0 12px}
+  .summary p:last-child{margin-bottom:0}
+  .summary ul{margin:8px 0 14px; padding-left:20px}
+  .summary li{margin-bottom:8px}
+
+  .principle{
+    background:var(--accent); border:1px solid var(--accent); border-radius:2px;
+    padding:28px 30px; margin:28px 0 8px; position:relative;
+  }
+  .principle .kicker{color:#dff0ea; margin-bottom:10px}
+  .principle p{color:#fff; font-size:1rem; margin:0}
+
+  /* ---- Legend ---- */
+  .legend{display:flex; flex-wrap:wrap; gap:6px 22px; margin:18px 0 24px; font-size:0.82rem; color:var(--ink-dim)}
+  .chip{display:flex; align-items:center; gap:8px}
+  .dot{width:10px; height:10px; border-radius:2px; flex-shrink:0}
+
+  /* ---- Tables ---- */
+  table{width:100%; border-collapse:collapse; background:var(--bg); margin:14px 0 22px; font-size:0.88rem}
+  thead th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; font-weight:600;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--accent);
+    padding:0 13px 9px; border-bottom:1.5px solid var(--ink);
+  }
+  tbody td{padding:10px 13px; border-bottom:1px solid var(--line); color:var(--ink-dim); vertical-align:top}
+  tbody td:first-child{color:var(--ink); font-weight:600; white-space:nowrap}
+  tbody tr:last-child td{border-bottom:1.5px solid var(--ink)}
+  tbody tr:hover td{background:var(--panel)}
+  .num{font-family:'IBM Plex Mono',monospace; font-weight:500; color:var(--ink-faint); width:76px; white-space:nowrap}
+  .score{text-align:center; font-family:'IBM Plex Mono',monospace; font-weight:700; width:50px; border-radius:3px}
+  .l5{background:var(--l5bg); color:var(--l5)}
+  .l4{background:var(--l4bg); color:var(--l4)}
+  .l3{background:var(--l3bg); color:var(--l3)}
+  .l2{background:var(--l2bg); color:var(--l2)}
+  .l1{background:var(--l1bg); color:var(--l1)}
+  .section-row td{
+    background:var(--accent-bg); font-family:'IBM Plex Mono',monospace; font-size:0.68rem; font-weight:600;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); padding:7px 13px; border-bottom:1px solid var(--line-strong);
+  }
+
+  /* ---- Tier report blocks ---- */
+  .tier{border:1px solid var(--line); border-left:4px solid var(--ink-faint); border-radius:2px; padding:20px 24px; margin:16px 0; background:var(--bg)}
+  .tier h3{margin-top:0; display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:1.02rem}
+  .tier .badge{
+    font-family:'IBM Plex Mono',monospace; font-size:0.65rem; font-weight:600; padding:4px 10px;
+    border-radius:3px; letter-spacing:0.04em;
+  }
+  .tier ul{margin:12px 0 0; padding-left:20px}
+  .tier li{margin-bottom:6px}
+  .tier.ship-now{border-left-color:var(--l5); background:var(--l5bg)}
+  .tier.ship-now .badge{color:#fff; background:var(--l5)}
+  .tier.light-ground{border-left-color:var(--l3); background:var(--l3bg)}
+  .tier.light-ground .badge{color:#fff; background:var(--l3)}
+  .tier.real-infra{border-left-color:var(--accent); background:var(--accent-bg)}
+  .tier.real-infra .badge{color:#fff; background:var(--accent)}
+  .tier.discipline{border-left-color:var(--l2); background:var(--l2bg)}
+  .tier.discipline .badge{color:#fff; background:var(--l2)}
+  .tier.out-scope{border-left-color:var(--l1); background:var(--l1bg)}
+  .tier.out-scope .badge{color:#fff; background:var(--l1)}
+
+  .quote{
+    font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:1.1rem;
+    color:var(--ink); border-left:2px solid var(--accent); padding-left:20px; margin:18px 0;
+  }
+
+  /* ---- TOC ---- */
+  .toc{border:1px solid var(--line); border-radius:2px; padding:22px 28px; margin:32px 0 8px; background:var(--panel)}
+  .toc p{margin:0 0 10px; color:var(--ink-faint); font-size:0.72rem; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; font-weight:600}
+  .toc ol{margin:0; padding-left:0; list-style:none; counter-reset:toc}
+  .toc li{margin-bottom:7px; font-size:0.92rem; counter-increment:toc; display:flex; gap:10px}
+  .toc li::before{
+    content:counter(toc,decimal-leading-zero); font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem; color:var(--accent); font-weight:600; flex-shrink:0;
+  }
+  .toc a{color:var(--ink); text-decoration:none; font-weight:500}
+  .toc a:hover{color:var(--accent)}
+
+  .table-wrap{
+    overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0 22px;
+    border-bottom:1px solid transparent;
+  }
+  .table-wrap table{margin:0}
+
+  footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:0.8rem}
+
+  @media(max-width:640px){
+    body{font-size:15px}
+    .topbar{height:5px}
+    .wrap{padding:32px 16px 64px}
+    .masthead{padding-bottom:20px; margin-bottom:6px}
+    .kicker{font-size:0.64rem; letter-spacing:0.09em; margin-bottom:12px}
+    h1{font-size:1.5rem; margin-bottom:12px; letter-spacing:-0.005em}
+    .lede{font-size:0.94rem}
+    .summary{padding:18px 18px; margin:22px 0 28px}
+    .principle{padding:20px 18px}
+    h2{font-size:1.18rem; margin:40px 0 6px; padding-top:20px; gap:8px}
+    h2:first-of-type{margin-top:28px}
+    h3{font-size:0.94rem}
+    h4{font-size:0.68rem; margin:24px 0 8px}
+    p{font-size:0.9rem}
+    ul, ol{font-size:0.88rem; padding-left:18px}
+    .callout{padding:14px 16px; margin:16px 0}
+    .toc{padding:16px 18px; margin:24px 0 8px}
+    .toc li{font-size:0.86rem; gap:8px}
+
+    /* Tables: allow horizontal scroll, keep first column pinned-readable via nowrap */
+    table{font-size:0.78rem; min-width:520px}
+    thead th{padding:0 8px 8px; font-size:0.6rem}
+    tbody td{padding:8px 8px}
+    .num{width:auto; min-width:40px}
+    .score{width:38px}
+
+    .tier{padding:16px 16px; margin:12px 0}
+    .tier h3{font-size:0.92rem; gap:8px}
+    .tier .badge{font-size:0.58rem; padding:3px 7px}
+    .tier ul{padding-left:16px}
+
+    .legend{gap:6px 14px; font-size:0.74rem; margin:14px 0 20px}
+    .quote{font-size:0.98rem; padding-left:14px}
+  }
+
+  @media(max-width:400px){
+    h1{font-size:1.32rem}
+    table{min-width:460px}
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="wrap">
+
+  <div class="masthead">
+    <p class="kicker">VibeRounds · Module Governance Report</p>
+    <h1>Right-Sized Rigor: Where the Stack Earns Its Keep, and Where It Doesn't</h1>
+    <p class="lede">A complete view of module maturity, capability-fit, the heatmap behind it, and the scope for improvement it implies. The guiding idea throughout: build each module simply enough to be genuinely usable for learning today, while keeping a clear, honest scope for advancing the ones that are still low-maturity — never dressing up a weak module as finished, and letting the ones that are already decent for learning keep improving in accuracy and reliability as the underlying technology advances.</p>
+  </div>
+
+  <div class="summary">
+    <p class="kicker">In plain words</p>
+    <p><b>What this page is:</b> VibeRounds has 57 learning modules. Not all of them can be trusted to run in a single AI pass — some need a real student answer first, some need real patient facts, and some quietly make up numbers if you let them run unsupervised. This report sorts every module into what it can honestly claim to do, how mature it is, and what it would actually take to fix the weak ones.</p>
+    <p><b>How to read it:</b></p>
+    <ul>
+      <li><b>Section 1</b> explains the five categories a module can fall into — real analysis, a shortcut that skips learning, a guess that needs a human check, a fake exercise, and one that needs real facts fed in step by step.</li>
+      <li><b>Section 2</b> sorts all 57 modules into those five categories.</li>
+      <li><b>Section 3</b> zooms into the "real analysis" group and flags which of those are still fragile — sound reasoning, but specific facts or numbers that can't be trusted without a real source.</li>
+      <li><b>Section 4</b> is a single scorecard: every module, rated 1–5 for how much you can trust its output as-is.</li>
+      <li><b>Section 5</b> lists what it would take to fix each weak spot, cheapest fixes first.</li>
+      <li><b>Section 6</b> makes the closing case: keep things simple wherever possible, but never at the cost of quietly making things up.</li>
+    </ul>
+    <p><b>Bottom line:</b> most modules (28 of 57) are already sound as-is. The rest either need a small process fix (capture a real answer before generating the comparison), a data-grounding fix (pull from real sources instead of memory), or, for a handful, real infrastructure that doesn't exist yet. One category — genuinely noticing something unusual in a patient — can never be fully handed to AI, no matter how much is built.</p>
+  </div>
+
+  <div class="toc">
+    <p>On this page</p>
+    <ol>
+      <li><a href="#s1">The five-tag use-classification framework</a></li>
+      <li><a href="#s2">Full module classification, all five tags</a></li>
+      <li><a href="#s3">Capability-fit within Tag A</a></li>
+      <li><a href="#s4">Module maturity heatmap, full table</a></li>
+      <li><a href="#s5">Scope for improvement, grouped by build cost</a></li>
+      <li><a href="#s6">Why usability still wins the tie</a></li>
+    </ol>
+  </div>
+
+  <div class="principle">
+    <p class="kicker">The organizing principle</p>
+    <p>More architecture is not automatically better, and less architecture is not automatically safer. The right fix is sized to <b>why</b> a module is unreliable — a module that fabricates registry statistics needs a real data source, full stop; a module that's merely slow to word a guideline recommendation exactly right doesn't need a neuro-symbolic reasoner, it needs the guideline text in context. Matching the fix to the failure is the whole discipline. Skipping a needed fix in the name of simplicity reintroduces exactly the silent-fabrication risk this whole framework exists to catch.</p>
+  </div>
+
+  <h2 id="s1">1 · The five-tag use-classification framework</h2>
+  <p>Whether a module is safe to run single-pass isn't a yes/no question — different modules fail in very different ways. Some give a correct answer but the learner's brain never engages. Some produce output that looks like the exercise ran but the module's core mechanism structurally requires a real person and can't function without one. Some need real facts supplied incrementally, step by step, or the whole downstream output is hollow. Five tags describe <b>what claim the output is allowed to make about itself</b>.</p>
+
+  <div class="callout">
+    <p><b>Overall disclaimer, applies to every module, every mode:</b> all VibeRounds modules — Socratic, single-pass, or mixed — are learning and reflection tools only. No output from any module is a clinical decision, a diagnosis, a care recommendation, or a substitute for a real patient's or advocate's actual input. Nothing produced should enter a real patient record, guide real treatment, or replace a supervising clinician, without independent human verification at every step — even outputs that look complete, confident, or clinically fluent.</p>
+  </div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tag</th><th>Meaning</th><th>What you get</th><th>What you don't get</th></tr></thead>
+    <tbody>
+      <tr><td>A — Genuine AI Analysis</td><td>The task itself is analytical/synthetic by nature; single-pass is the correct way to do it</td><td>Real analytic value — this is what the module is for</td><td>Nothing missing — this is the intended mode</td></tr>
+      <tr><td>B — AI Reasoning Substitute</td><td>AI can derive a correct answer from case data, but the module's purpose was for the learner to reason it out</td><td>A correct answer, fast</td><td>The learner's own reasoning rep — no skill built, no error caught, no habit formed</td></tr>
+      <tr><td>C — AI Insight Approximation</td><td>AI produces a plausible, labeled inference about something with a real, person-specific true answer AI cannot verify</td><td>A reasonable starting hypothesis</td><td>Any guarantee it matches the real learner's mind, patient's situation, or team's knowledge — must be a prompt for reflection, not a finding</td></tr>
+      <tr><td>D — Illusion of Mechanism</td><td>The module needs two genuinely distinct real signals to compare; single-pass has nothing real on either side</td><td>Text with the shape/formatting of the exercise's output</td><td>The exercise itself — worse than B, a non-functional simulation of having done it</td></tr>
+      <tr><td>E — Sequential Real-Input Dependency</td><td>Real facts must be supplied incrementally because they don't exist anywhere else, or carry real care consequences if wrong</td><td>Nothing usable — any output is built on invented data</td><td>The entire task — fabrication of content that could be mistaken for a real clinical record</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="s2">2 · Full module classification</h2>
+
+  <h4>Tag A — Genuine AI Analysis (28 modules; single-pass is correct)</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th></tr></thead>
+    <tbody>
+      <tr><td class="num">5</td><td>Real-Time Case Review &amp; Data Audit</td></tr>
+      <tr><td class="num">6</td><td>Registry-Level Analytics</td></tr>
+      <tr><td class="num">7</td><td>Longitudinal &amp; Cross-Case Learning</td></tr>
+      <tr><td class="num">8</td><td>Socratic-Mode Design Specification</td></tr>
+      <tr><td class="num">10</td><td>Journal &amp; Article Reading</td></tr>
+      <tr><td class="num">11</td><td>Patient Education Query Intelligence</td></tr>
+      <tr><td class="num">19</td><td>Community &amp; Social Medicine Insights</td></tr>
+      <tr><td class="num">21</td><td>Evidence Frontier Search</td></tr>
+      <tr><td class="num">22</td><td>Nested Analysis</td></tr>
+      <tr><td class="num">23</td><td>Counterfactual Analysis (label output as hypothetical)</td></tr>
+      <tr><td class="num">24</td><td>Heuristic Analysis</td></tr>
+      <tr><td class="num">25</td><td>Thematic Analysis</td></tr>
+      <tr><td class="num">27</td><td>Time-Series &amp; Velocity Analyzer</td></tr>
+      <tr><td class="num">29</td><td>The Iatrogenic Domino Effect</td></tr>
+      <tr><td class="num">34</td><td>High-Value Care (HVC) Auditor</td></tr>
+      <tr><td class="num">38</td><td>Poly-Crisis &amp; Cascading Failure Simulator (label output as hypothetical)</td></tr>
+      <tr><td class="num">39</td><td>"Global Knowledge Network" Diagnostic Matrix</td></tr>
+      <tr><td class="num">40</td><td>Operational &amp; Throughput Strategist</td></tr>
+      <tr><td class="num">41</td><td>Clinical Workflow Implementation Science</td></tr>
+      <tr><td class="num">43</td><td>Health Economics &amp; Value-Based Care Alignment</td></tr>
+      <tr><td class="num">45</td><td>Shadow Module 44 — Genetics Adversarial Counterpart</td></tr>
+      <tr><td class="num">46</td><td>Evidence-Based Medicine Insights</td></tr>
+      <tr><td class="num">47</td><td>Shadow Module — EBM Adversarial Counterpart</td></tr>
+      <tr><td class="num">48</td><td>Treatment Comparative Analysis &amp; Prognosis Trajectory</td></tr>
+      <tr><td class="num">51</td><td>Systems-Based Clinical Analysis</td></tr>
+      <tr><td class="num">52</td><td>Clinical Pearls Distillation</td></tr>
+      <tr><td class="num">53</td><td>Clinical Guideline Intelligence Navigator</td></tr>
+      <tr><td class="num">2.4–2.7</td><td>SOAP note, completeness audit, sign-off, handover brief — once real facts are already captured</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Tag B — AI Reasoning Substitute (17 modules; correct answer, learner's brain bypassed)</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Socratic Clinical Reasoning</td></tr>
+      <tr><td class="num">4</td><td>Peer-Level Ward Round Preparation</td></tr>
+      <tr><td class="num">12</td><td>Differential Diagnosis Deepdive</td></tr>
+      <tr><td class="num">14</td><td>Resource-Constrained Clinical Reasoning</td></tr>
+      <tr><td class="num">15</td><td>Illness Script Acquisition</td></tr>
+      <tr><td class="num">16</td><td>Basic Science ↔ Clinical Integration</td></tr>
+      <tr><td class="num">17</td><td>Semantic Qualifiers &amp; Problem Representation</td></tr>
+      <tr><td class="num">18</td><td>Causal vs. Probabilistic (Network) Reasoning</td></tr>
+      <tr><td class="num">20</td><td>Naturalistic Decision Making</td></tr>
+      <tr><td class="num">28</td><td>Diagnostic Time-Out</td></tr>
+      <tr><td class="num">31</td><td>First-Principles Pathophysiology Mapping</td></tr>
+      <tr><td class="num">37</td><td>Red Herring / Signal-to-Noise Drill</td></tr>
+      <tr><td class="num">44</td><td>Clinical Genetics Reasoning</td></tr>
+      <tr><td class="num">50</td><td>Diagnostic Reasoning Map</td></tr>
+      <tr><td class="num">56</td><td>Hypothetico-Deductive Reasoning</td></tr>
+      <tr><td class="num">57</td><td>Clinical Cognition Deep Dive</td></tr>
+      <tr><td class="num">36</td><td>Bayesian Probability / Likelihood Ratio Engine — arithmetic step only, once a probability exists</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Tag C — AI Insight Approximation (6; plausible but unverifiable — flag as hypothesis)</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th><th>What's being approximated</th></tr></thead>
+    <tbody>
+      <tr><td class="num">26</td><td>Bias Auditing</td><td>A bias pattern inferred from written reasoning — may not match the learner's real bias</td></tr>
+      <tr><td class="num">30</td><td>"Diagnostic Anchor" Extractor</td><td>Same limitation — inferred, not confirmed</td></tr>
+      <tr><td class="num">33</td><td>"Why Now?" (Precipitant) Hunter</td><td>A plausible precipitant pattern-matched to the timeline — may not be the true trigger</td></tr>
+      <tr><td class="num">36</td><td>Bayesian Probability Engine — prior-probability step</td><td>Substitutes population prevalence for the learner's own contextual judgment</td></tr>
+      <tr><td class="num">42</td><td>Clinical Pre-Mortem</td><td>Generic failure scenarios — real personal/team blind spots may be missed</td></tr>
+      <tr><td class="num">49</td><td>FMEA Analysis</td><td>Literature-derived failure modes — institution-specific ones may be missing</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Tag D — Illusion of Mechanism (3; output looks complete, exercise didn't happen)</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th><th>Why the mechanism can't function single-pass</th></tr></thead>
+    <tbody>
+      <tr><td class="num">32</td><td>Clinical Cognition Loop</td><td>Reflects on a real reasoning process that, in single-pass, never occurred</td></tr>
+      <tr><td class="num">35</td><td>Epistemic Certainty Mapping &amp; Calibration</td><td>Calibration requires a real stated confidence vs. real accuracy; AI has no real confidence to report</td></tr>
+      <tr><td class="num">54</td><td>System 1 &amp; System 2 Thinking Question Generator</td><td>Requires two genuinely different real cognitive responses; AI generating both means the comparison is empty</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Tag E — Sequential Real-Input Dependency (5; single-pass fabricates content with no real basis)</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th><th>Step(s) affected</th></tr></thead>
+    <tbody>
+      <tr><td class="num">2</td><td>Patient-Advocate Case Documentation</td><td>Steps 2.1, 2.2, 2.3, 2.8 — symptom, exam, medication capture</td></tr>
+      <tr><td class="num">3</td><td>Extended Patient-Advocate Monitoring</td><td>Data-capture / monitoring-entry steps</td></tr>
+      <tr><td class="num">9</td><td>N-of-1 Case Research Protocol</td><td>Real patient data-entry steps</td></tr>
+      <tr><td class="num">13</td><td>Medication Reconciliation &amp; Polypharmacy Audit</td><td>Medication-list capture step</td></tr>
+      <tr><td class="num">55</td><td>Patient Needs Assessment</td><td>Full module — real-world care-decision stakes even though some inference is technically possible</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="s3">3 · Capability-fit within Tag A</h2>
+  <p>Being Tag A means the task itself is analytical — but that's a claim about design, not about whether a plain LLM can deliver it without fabricating specifics. A second axis matters: <b>is the module reasoning over knowledge/text it genuinely has, or structurally implying access to data it was never given?</b> Tag A splits into three tiers.</p>
+
+  <h4>Tier 1 — Solid: real text/knowledge reasoning, low fabrication risk</h4>
+  <p>Modules 8, 11, 19, 22, 23, 24, 25, 29, 34, 38, 41, 45, 47, 51, 52, and 2 (steps 2.4–2.7). The output is reasoning/prose applied to information already on the page — a case narrative, a set of facts. Nothing to fabricate, because there's no implied external dataset being consulted.</p>
+
+  <h4>Tier 2 — Fragile: the reasoning shape is legitimate, precise specifics are where it breaks</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th><th>Where it's fragile</th></tr></thead>
+    <tbody>
+      <tr><td class="num">10</td><td>Journal &amp; Article Reading</td><td>Fine if pasted in; if "recalled" from training, expect plausible-but-unverifiable details and stale coverage past the training cutoff</td></tr>
+      <tr><td class="num">46</td><td>Evidence-Based Medicine Insights</td><td>Concepts usually right; exact recommendation wording is where LLMs drift subtly wrong</td></tr>
+      <tr><td class="num">53</td><td>Clinical Guideline Intelligence Navigator</td><td>Guideline version and precise thresholds easy to get confidently wrong or out of date</td></tr>
+      <tr><td class="num">43</td><td>Health Economics &amp; Value-Based Care Alignment</td><td>Tradeoff reasoning fine; specific cost figures are illustrative, not sourced</td></tr>
+      <tr><td class="num">48</td><td>Treatment Comparative Analysis &amp; Prognosis Trajectory</td><td>Comparative reasoning fine; survival percentages not to be trusted as sourced facts</td></tr>
+      <tr><td class="num">39</td><td>"Global Knowledge Network" Diagnostic Matrix</td><td>Name overclaims — it's a differential from trained knowledge, not a live network query</td></tr>
+      <tr><td class="num">40</td><td>Operational &amp; Throughput Strategist</td><td>Strategic reasoning fine; specific throughput/efficiency numbers invented unless supplied</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Tier 3 — High-risk overclaim: the premise requires a capability a plain LLM structurally doesn't have</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Module</th><th>The overclaim</th></tr></thead>
+    <tbody>
+      <tr><td class="num">6</td><td>Registry-Level Analytics</td><td>"Analytics" implies aggregation across a real case registry. Without an actual dataset in context or a real query tool, any numbers, prevalences, or trends are fabricated statistics dressed up as findings. The clearest example on the list.</td></tr>
+      <tr><td class="num">7</td><td>Longitudinal &amp; Cross-Case Learning</td><td>"Cross-case" implies real multiple cases were compared. Without them supplied, it's a single generic narrative wearing a "learned-across-cases" label.</td></tr>
+      <tr><td class="num">21</td><td>Evidence Frontier Search</td><td>"Frontier" implies current literature awareness. Without a real search tool invoked, this is either stale or invented — dangerous because it reads exactly like a genuine literature review.</td></tr>
+      <tr><td class="num">27</td><td>Time-Series &amp; Velocity Analyzer</td><td>Different failure mode: not knowledge currency, but arithmetic reliability. LLMs are error-prone at precise rate/slope calculations token-by-token. Fine for a qualitative "trending up/down" read; not fine for exact rates without a calculator or code step.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <p><b>Practical rule:</b> treat Tier 2 and Tier 3 as needing one of — (a) real data or source text supplied in-context, (b) an actual tool/search call, or (c) explicit "illustrative, not sourced" labeling. Without one of these, a module in those tiers is Tag A in name only and behaves like an unlabeled Tag C: a plausible-sounding output standing in for a real finding.</p>
+  </div>
+
+  <h2 id="s4">4 · Module maturity heatmap, full table</h2>
+  <p>Both axes above combine into one score per module — how much an unmodified single-pass run can be trusted.</p>
+  <div class="legend">
+    <div class="chip"><span class="dot" style="background:var(--l5)"></span>5 — High maturity: reason over given/known material, trustworthy as-is</div>
+    <div class="chip"><span class="dot" style="background:var(--l4)"></span>4 — Reliable output, but bypasses the learner's own reasoning</div>
+    <div class="chip"><span class="dot" style="background:var(--l3)"></span>3 — Reasoning sound, precise specifics need verification</div>
+    <div class="chip"><span class="dot" style="background:var(--l2)"></span>2 — Plausible inference only, must be labeled a hypothesis</div>
+    <div class="chip"><span class="dot" style="background:var(--l1)"></span>1 — Structurally can't deliver unmodified</div>
+  </div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th class="num">#</th><th>Module</th><th>Use-Tag</th><th class="score">Maturity</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr class="section-row"><td colspan="5">Level 5 — High Maturity</td></tr>
+      <tr><td class="num">5</td><td>Real-Time Case Review &amp; Data Audit</td><td>A</td><td class="score l5">5</td><td>No external dataset implied</td></tr>
+      <tr><td class="num">8</td><td>Socratic-Mode Design Specification</td><td>A</td><td class="score l5">5</td><td>Design reasoning, no data claim</td></tr>
+      <tr><td class="num">11</td><td>Patient Education Query Intelligence</td><td>A</td><td class="score l5">5</td><td>Applied-knowledge prose</td></tr>
+      <tr><td class="num">19</td><td>Community &amp; Social Medicine Insights</td><td>A</td><td class="score l5">5</td><td>Advisory synthesis, no data claim</td></tr>
+      <tr><td class="num">22</td><td>Nested Analysis</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">23</td><td>Counterfactual Analysis</td><td>A</td><td class="score l5">5</td><td>Label as hypothetical, otherwise sound</td></tr>
+      <tr><td class="num">24</td><td>Heuristic Analysis</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">25</td><td>Thematic Analysis</td><td>A</td><td class="score l5">5</td><td>Reasoning over given text</td></tr>
+      <tr><td class="num">29</td><td>The Iatrogenic Domino Effect</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">2.4–2.7</td><td>SOAP note / audit / sign-off / handover</td><td>A</td><td class="score l5">5</td><td>Pure formatting/synthesis once facts captured</td></tr>
+      <tr><td class="num">34</td><td>High-Value Care (HVC) Auditor</td><td>A</td><td class="score l5">5</td><td>Applies known criteria to given text</td></tr>
+      <tr><td class="num">38</td><td>Poly-Crisis &amp; Cascading Failure Simulator</td><td>A</td><td class="score l5">5</td><td>Label as hypothetical, otherwise sound</td></tr>
+      <tr><td class="num">41</td><td>Clinical Workflow Implementation Science</td><td>A</td><td class="score l5">5</td><td>Advisory prose, no data claim</td></tr>
+      <tr><td class="num">45</td><td>Genetics Adversarial Counterpart</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">47</td><td>EBM Adversarial Counterpart</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">51</td><td>Systems-Based Clinical Analysis</td><td>A</td><td class="score l5">5</td><td>Reasoning over given case</td></tr>
+      <tr><td class="num">52</td><td>Clinical Pearls Distillation</td><td>A</td><td class="score l5">5</td><td>Synthesis of given material</td></tr>
+
+      <tr class="section-row"><td colspan="5">Level 4 — Reliable Output, Bypassed Learning</td></tr>
+      <tr><td class="num">1</td><td>Socratic Clinical Reasoning</td><td>B</td><td class="score l4">4</td><td>Correct answer, skips the reasoning rep</td></tr>
+      <tr><td class="num">4</td><td>Peer-Level Ward Round Preparation</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">12</td><td>Differential Diagnosis Deepdive</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">14</td><td>Resource-Constrained Clinical Reasoning</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">15</td><td>Illness Script Acquisition</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">16</td><td>Basic Science ↔ Clinical Integration</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">17</td><td>Semantic Qualifiers &amp; Problem Representation</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">18</td><td>Causal vs. Probabilistic (Network) Reasoning</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">20</td><td>Naturalistic Decision Making</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">28</td><td>Diagnostic Time-Out</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">31</td><td>First-Principles Pathophysiology Mapping</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">36 (LR math step)</td><td>Bayesian Probability / Likelihood Ratio Engine</td><td>B</td><td class="score l4">4</td><td>Arithmetic once a probability exists</td></tr>
+      <tr><td class="num">37</td><td>Red Herring / Signal-to-Noise Drill</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">44</td><td>Clinical Genetics Reasoning</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">50</td><td>Diagnostic Reasoning Map</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">56</td><td>Hypothetico-Deductive Reasoning</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+      <tr><td class="num">57</td><td>Clinical Cognition Deep Dive</td><td>B</td><td class="score l4">4</td><td>Same pattern</td></tr>
+
+      <tr class="section-row"><td colspan="5">Level 3 — Sound Reasoning, Fragile Specifics</td></tr>
+      <tr><td class="num">10</td><td>Journal &amp; Article Reading</td><td>A / Fragile</td><td class="score l3">3</td><td>Fine if pasted in; risky if "recalled"</td></tr>
+      <tr><td class="num">39</td><td>"Global Knowledge Network" Diagnostic Matrix</td><td>A / Fragile</td><td class="score l3">3</td><td>Name overclaims — trained-knowledge differential</td></tr>
+      <tr><td class="num">40</td><td>Operational &amp; Throughput Strategist</td><td>A / Fragile</td><td class="score l3">3</td><td>Strategy sound, specific numbers invented</td></tr>
+      <tr><td class="num">43</td><td>Health Economics &amp; Value-Based Care Alignment</td><td>A / Fragile</td><td class="score l3">3</td><td>Cost figures illustrative, not sourced</td></tr>
+      <tr><td class="num">46</td><td>Evidence-Based Medicine Insights</td><td>A / Fragile</td><td class="score l3">3</td><td>Exact recommendation wording drifts</td></tr>
+      <tr><td class="num">48</td><td>Treatment Comparative Analysis &amp; Prognosis Trajectory</td><td>A / Fragile</td><td class="score l3">3</td><td>Survival percentages not to be trusted</td></tr>
+      <tr><td class="num">53</td><td>Clinical Guideline Intelligence Navigator</td><td>A / Fragile</td><td class="score l3">3</td><td>Guideline version/thresholds drift</td></tr>
+
+      <tr class="section-row"><td colspan="5">Level 2 — Plausible Inference Only</td></tr>
+      <tr><td class="num">26</td><td>Bias Auditing</td><td>C</td><td class="score l2">2</td><td>Inferred bias, may not match learner's real bias</td></tr>
+      <tr><td class="num">30</td><td>"Diagnostic Anchor" Extractor</td><td>C</td><td class="score l2">2</td><td>Inferred, not confirmed</td></tr>
+      <tr><td class="num">33</td><td>"Why Now?" (Precipitant) Hunter</td><td>C</td><td class="score l2">2</td><td>Pattern-matched, may not be the true trigger</td></tr>
+      <tr><td class="num">36 (prior-prob step)</td><td>Bayesian Probability Engine</td><td>C</td><td class="score l2">2</td><td>Population prevalence ≠ contextual judgment</td></tr>
+      <tr><td class="num">42</td><td>Clinical Pre-Mortem</td><td>C</td><td class="score l2">2</td><td>Generic scenarios, real blind spots may be missed</td></tr>
+      <tr><td class="num">49</td><td>FMEA Analysis</td><td>C</td><td class="score l2">2</td><td>Literature-derived, institution-specific gaps missed</td></tr>
+
+      <tr class="section-row"><td colspan="5">Level 1 — Structurally Can't Deliver Unmodified</td></tr>
+      <tr><td class="num">6</td><td>Registry-Level Analytics</td><td>A / High-risk overclaim</td><td class="score l1">1</td><td>No real registry queried — numbers fabricated</td></tr>
+      <tr><td class="num">7</td><td>Longitudinal &amp; Cross-Case Learning</td><td>A / High-risk overclaim</td><td class="score l1">1</td><td>No real multi-case comparison happened</td></tr>
+      <tr><td class="num">21</td><td>Evidence Frontier Search</td><td>A / High-risk overclaim</td><td class="score l1">1</td><td>No real search — stale or invented, reads like a lit review</td></tr>
+      <tr><td class="num">27</td><td>Time-Series &amp; Velocity Analyzer</td><td>A / High-risk overclaim</td><td class="score l1">1</td><td>Precise rate math unreliable without a calculator/code step</td></tr>
+      <tr><td class="num">32</td><td>Clinical Cognition Loop</td><td>D</td><td class="score l1">1</td><td>Nothing real to reflect on in single-pass</td></tr>
+      <tr><td class="num">35</td><td>Epistemic Certainty Mapping &amp; Calibration</td><td>D</td><td class="score l1">1</td><td>No real confidence to compare against</td></tr>
+      <tr><td class="num">54</td><td>System 1 &amp; System 2 Question Generator</td><td>D</td><td class="score l1">1</td><td>Both "sides" AI-generated — comparison is empty</td></tr>
+      <tr><td class="num">2.1–2.3, 2.8</td><td>Patient-Advocate Case Documentation (data steps)</td><td>E</td><td class="score l1">1</td><td>Real symptom/exam/med facts have no substitute source</td></tr>
+      <tr><td class="num">3</td><td>Extended Patient-Advocate Monitoring</td><td>E</td><td class="score l1">1</td><td>Each entry is a real day's real observation</td></tr>
+      <tr><td class="num">9</td><td>N-of-1 Case Research Protocol</td><td>E</td><td class="score l1">1</td><td>Real patient data-entry steps</td></tr>
+      <tr><td class="num">13 (med-list step)</td><td>Medication Reconciliation &amp; Polypharmacy Audit</td><td>E</td><td class="score l1">1</td><td>Real medication list has no substitute source</td></tr>
+      <tr><td class="num">55</td><td>Patient Needs Assessment</td><td>E / special case</td><td class="score l1">1</td><td>Plausible guess risks being mistaken for real patient wishes</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="s5">5 · Scope for improvement, grouped by build cost</h2>
+  <p>Grouped by <b>what it actually costs to build</b> — because the usability argument only holds if the cheap fixes get shipped first and the expensive ones are reserved for where they're truly needed.</p>
+
+  <div class="tier ship-now">
+    <h3><span class="badge">SHIP FIRST — NO HEAVY INFRA</span> Elicitation-first fixes</h3>
+    <p>Not an architecture-stack problem at all — these need a real signal captured live, before generation, the same mandatory-descriptor mechanism proposed for a missed red-flag descriptor case. Cheapest, highest-integrity fix on the whole list.</p>
+    <ul>
+      <li><b>Modules 32, 35, 54 (Tag D)</b> — capture the learner's real reasoning trace, stated confidence, or fast System-1 answer <i>first</i>, as a required input, before the AI generates the comparison side. This converts D into a legitimate B/A once the real signal exists.</li>
+      <li><b>Modules 2 (data steps), 3, 9, 13 (med-list), 55 (Tag E)</b> — run genuinely Socratic, one real answer at a time; no single-pass alternative should exist for these steps. If only the output shape is wanted, offer a clearly-labeled placeholder-data template demo instead — never presented as real.</li>
+    </ul>
+  </div>
+
+  <div class="tier light-ground">
+    <h3><span class="badge">LIGHT GROUNDING</span> Pathway / knowledge-graph / RAG on already-sound modules</h3>
+    <p>Reasoning shape is already sound — this is pure specifics-drift, and it's exactly what pathway grounding, a knowledge graph, or RAG is built to fix: converting a hedge into a checkable, sourced claim.</p>
+    <ul>
+      <li><b>Modules 10, 46, 53</b> — RAG against the real article/guideline text instead of model memory.</li>
+      <li><b>Modules 43, 48</b> — knowledge-graph entries for specific cost/prognosis figures, or explicit "illustrative" labeling where no real source exists.</li>
+      <li><b>Module 39</b> — rescope the naming honestly, or back the "network" claim with a real knowledge graph.</li>
+      <li><b>Module 36 (prior-probability step)</b> — a prevalence knowledge graph makes the number sourced, not just plausible.</li>
+      <li><b>Module 40</b> — needs real operational data supplied in-context; closer to the next tier's pattern than a pure grounding-layer fix.</li>
+    </ul>
+  </div>
+
+  <div class="tier real-infra">
+    <h3><span class="badge">REAL INFRASTRUCTURE</span> Where the claim genuinely requires a data source</h3>
+    <p>These modules imply capabilities — a real registry, real cross-case history, live literature search — that no amount of clever prompting substitutes for. Worth building because the payoff is a full tag upgrade, not because it's the cheapest option.</p>
+    <ul>
+      <li><b>Module 6</b> — an actual structured registry, queried and cited, with the coverage flag surfaced rather than silently smoothed over.</li>
+      <li><b>Module 7</b> — a real case store with GraphRAG-style provenance on every cross-case claim.</li>
+      <li><b>Module 21</b> — RAG against a live literature index, not recall.</li>
+      <li><b>Module 27</b> — not a knowledge-stack fix — a code-execution step for the actual arithmetic, cleanest fix on the list.</li>
+      <li><b>Module 13, downstream of its med-list elicitation</b> — a real RxNorm-anchored interaction check, exactly the bounded, well-structured use case neuro-symbolic validation is best suited for.</li>
+    </ul>
+  </div>
+
+  <div class="tier discipline">
+    <h3><span class="badge">LABELING DISCIPLINE — DON'T OVER-BUILD</span> Modules 26, 30, 33, 42, 49</h3>
+    <p>Part of Tag C hits a hard ceiling directly: a bias, a diagnostic anchor, or a "why now" trigger is learner- or patient-specific information no reference material holds. A knowledge graph can make the <i>label</i> checkable; it can never confirm the label is <i>this learner's</i> real bias. Building heavier architecture here mistakes a category boundary for a reliability gap — don't. The correct, cheap fix is consistent "AI's best guess" labeling, every time, no exceptions. (42 and 49's institution-specific pieces are a partial exception — a real incident-report or failure-mode database is genuinely buildable there.)</p>
+  </div>
+
+  <div class="tier out-scope">
+    <h3><span class="badge">PERMANENTLY OUT OF SCOPE</span> The noticing gap</h3>
+    <p class="quote">"Knowledge management and reasoning tools can give you knowledge and reasoning — they cannot tell you what knowledge or reasoning you need."</p>
+    <p>No layer above — pathway, graph, RAG, GraphRAG, neuro-symbolic, or a well-built elicitation checklist — closes this. Every one of these tools operates on reasoning, text, patterns, or logical consistency; none of them operate on the patient. A checklist only catches the red flags someone thought to encode in advance; a presentation nobody anticipated still gets no question asked about it. This isn't a backlog item. It's the reason VibeRounds stays scoped to self-audit and learning, not decision support, regardless of how much of the above eventually gets built.</p>
+  </div>
+
+  <h2 id="s6">6 · Why usability still wins the tie</h2>
+  <p>Something small enough to actually use beats something comprehensive that nobody opens — a ten-minute loop wins over a heavier one people abandon. Nothing above contradicts that. The "ship first" and "labeling discipline" tiers are both usability-first moves: they cost little, ship fast, and are exactly where extra architecture would have been wasted effort anyway, since each additional layer's marginal value shrinks as the base model itself keeps improving. The one place usability <i>doesn't</i> get the final word is where a module is currently producing content that looks real but was fabricated — a registry statistic that was never queried, a cross-case pattern that never happened. There, the simple fix and the honest fix are the same fix: don't run it unmodified, full stop, until the real data source exists. Usability is a tiebreaker for how to build well. It's never a justification for shipping something that quietly manufactures false confidence.</p>
+
+
+</div>
+</body>
+</html>
