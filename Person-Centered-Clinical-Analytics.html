@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Person-Centered Clinical Analytics — Generator · Viewer · Pivot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root{
+  --paper:#0E1614;
+  --paper-raised:#151F1C;
+  --surface:#1B2723;
+  --ink:#E9F1ED;
+  --ink-soft:#8FA69E;
+  --line:#2B3A35;
+  --line-soft:#233029;
+  --hub:#E3A155;
+  --hub-soft:#3A2E1C;
+  --trajectory:#4FBFA6;
+  --trajectory-soft:#193530;
+  --divergence:#E37B58;
+  --divergence-soft:#3A2318;
+  --disp:'IBM Plex Sans', sans-serif;
+  --font-display:'Spectral', serif;
+  --font-mono:'IBM Plex Mono', monospace;
+  --shadow-color:0,0,0;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--disp); background-image:radial-gradient(ellipse 1200px 600px at 50% -10%, rgba(79,191,166,0.06), transparent);}
+::selection{background:var(--trajectory-soft); color:var(--trajectory);}
+
+header.top{
+  padding:28px 32px 18px;
+  border-bottom:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  background:linear-gradient(180deg, rgba(79,191,166,0.05), transparent);
+}
+.tag.live{border-color:var(--trajectory); color:var(--trajectory); background:var(--trajectory-soft);}
+.tag.live::before{content:"● "; }
+header.top h1{
+  font-family:var(--font-display); font-weight:700; font-size:1.5rem; margin:0;
+  letter-spacing:0.01em;
+}
+header.top h1 .accent{color:var(--trajectory); font-style:italic; font-weight:400;}
+header.top .tag{
+  font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-soft);
+  text-transform:uppercase; letter-spacing:0.08em;
+  border:1px solid var(--line); padding:4px 9px; border-radius:2px; background:var(--paper-raised);
+}
+
+nav.tabs{
+  display:flex; gap:2px; padding:0 32px; border-bottom:1px solid var(--line); background:var(--paper-raised);
+}
+nav.tabs button{
+  font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.03em;
+  background:none; border:none; padding:13px 18px; cursor:pointer; color:var(--ink-soft);
+  border-bottom:2px solid transparent; transition:color .15s, border-color .15s;
+}
+nav.tabs button:hover{color:var(--ink);}
+nav.tabs button.active{color:var(--ink); border-bottom-color:var(--hub); font-weight:600;}
+nav.tabs button .n{color:var(--hub); margin-right:6px;}
+
+main{padding:24px 32px 60px; max-width:1400px; margin:0 auto;}
+.panel{display:none;}
+.panel.active{display:block; animation:fade .25s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+.layout{display:grid; grid-template-columns:290px 1fr 280px; gap:20px; align-items:start;}
+@media (max-width:1100px){.layout{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--paper-raised); border:1px solid var(--line); border-radius:7px; padding:18px 18px 20px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.02); transition:box-shadow .18s ease, border-color .18s ease;
+}
+.card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03); border-color:var(--line-soft);}
+.card h3{
+  font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em;
+  color:var(--ink-soft); margin:0 0 14px; padding-bottom:9px; border-bottom:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between;
+}
+label{display:block; font-size:0.82rem; margin:12px 0 4px; color:var(--ink-soft);}
+label:first-child{margin-top:0;}
+input[type=range]{width:100%; accent-color:var(--trajectory); cursor:pointer;}
+input[type=number], input[type=text], select{
+  width:100%; font-family:var(--font-mono); font-size:0.82rem; padding:7px 9px;
+  border:1px solid var(--line); border-radius:3px; background:var(--surface); color:var(--ink);
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+input[type=number]:focus, input[type=text]:focus, select:focus{
+  outline:none; border-color:var(--trajectory); box-shadow:0 0 0 3px var(--trajectory-soft);
+}
+select{color-scheme:dark;}
+.rangeval{font-family:var(--font-mono); font-size:0.78rem; color:var(--trajectory); float:right;}
+.check-grid{display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; max-height:270px; overflow-y:auto; padding-right:4px;}
+.check-grid label{display:flex; align-items:center; gap:6px; font-size:0.76rem; margin:2px 0; color:var(--ink); cursor:pointer; padding:2px 4px; border-radius:3px; transition:background .12s;}
+.check-grid label:hover{background:var(--paper);}
+.check-grid input{accent-color:var(--trajectory);}
+button.primary{
+  width:100%; margin-top:16px; padding:11px 12px; background:var(--trajectory); color:#08120F;
+  border:none; border-radius:4px; font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.04em;
+  cursor:pointer; text-transform:uppercase; transition:background .15s, transform .1s, box-shadow .15s; font-weight:600;
+  box-shadow:0 2px 10px rgba(79,191,166,0.18);
+}
+button.primary:hover{background:#63D0B7; box-shadow:0 4px 16px rgba(79,191,166,0.3);}
+button.primary:active{transform:scale(0.98);}
+button.ghost{
+  width:100%; margin-top:8px; padding:8px 12px; background:none; color:var(--ink-soft);
+  border:1px solid var(--line); border-radius:4px; font-family:var(--font-mono); font-size:0.74rem;
+  cursor:pointer; transition:border-color .15s, color .15s, background .15s;
+}
+button.ghost:hover{border-color:var(--trajectory); color:var(--trajectory); background:var(--trajectory-soft);}
+
+/* --- searchable combobox --- */
+.combo{position:relative;}
+.combo-results{
+  position:absolute; top:calc(100% + 2px); left:0; right:0; z-index:20; max-height:220px; overflow-y:auto;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px; box-shadow:0 12px 28px rgba(0,0,0,0.5);
+  display:none;
+}
+.combo-results.open{display:block;}
+.combo-results div{
+  padding:7px 10px; font-size:0.78rem; font-family:var(--font-mono); cursor:pointer; border-bottom:1px solid var(--line-soft);
+}
+.combo-results div:last-child{border-bottom:none;}
+.combo-results div:hover, .combo-results div.active{background:var(--trajectory-soft); color:var(--trajectory);}
+.combo-results .empty{color:var(--ink-soft); cursor:default;}
+.combo-results .empty:hover{background:none; color:var(--ink-soft);}
+
+/* --- empty state --- */
+.empty-state{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  height:560px; border:1.5px dashed var(--line); border-radius:5px; background:var(--paper-raised); gap:10px; padding:20px;
+}
+.empty-state .glyph{font-family:var(--font-display); font-size:2.6rem; color:var(--ink-soft); font-style:italic; opacity:0.5;}
+.empty-state h4{margin:0; font-family:var(--font-display); font-size:1.15rem; font-weight:600;}
+.empty-state p{margin:0; max-width:340px; color:var(--ink-soft); font-size:0.85rem; line-height:1.5;}
+.empty-state button{width:auto; padding:10px 20px; margin-top:6px;}
+
+.banner{
+  font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-soft); background:var(--paper-raised);
+  border:1px dashed var(--line); padding:8px 14px; margin-bottom:18px; border-radius:2px;
+  display:flex; gap:8px; align-items:center;
+}
+.banner b{color:var(--divergence);}
+
+.stat-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;}
+.stat{
+  font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-soft); background:var(--paper-raised);
+  border:1px solid var(--line); padding:6px 10px; border-radius:2px;
+}
+.stat b{color:var(--ink); font-size:0.9rem; display:block;}
+
+.graph-wrap{position:relative;}
+svg.graph{width:100%; height:560px; background:radial-gradient(ellipse at 50% 45%, var(--surface), var(--paper-raised) 75%); border:1px solid var(--line); border-radius:6px; cursor:grab;}
+svg.graph:active{cursor:grabbing;}
+.node-hub circle.core{fill:var(--hub-soft); stroke:var(--hub); stroke-width:1.4px;}
+.node-out circle.core{fill:var(--surface); stroke:var(--divergence); stroke-width:1.2px; stroke-dasharray:2,2;}
+.node{cursor:pointer; transition:opacity .18s ease;}
+.node.dimmed{opacity:0.18;}
+.node.faded{opacity:0.35;}
+.node .core{transition:filter .15s ease, stroke-width .15s ease;}
+.node:hover .core, .node.selected .core{filter:drop-shadow(0 0 7px rgba(227,161,85,0.75)); stroke-width:2.4px;}
+.node-lbl{transition:opacity .15s ease;}
+.node-lbl.lbl-hidden{opacity:0 !important; pointer-events:none;}
+.node-lbl{font-family:var(--font-mono); font-size:9.5px; fill:var(--ink); pointer-events:none;}
+.node-count{font-family:var(--font-mono); font-size:9.5px; font-weight:600; fill:var(--ink); pointer-events:none;}
+.node-hub .node-count{fill:var(--hub);}
+.node-stage{font-family:var(--font-mono); font-size:8px; fill:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;}
+.edge{stroke:var(--line); stroke-width:1px; fill:none; transition:opacity .18s ease, stroke .18s ease;}
+.edge.highlight{stroke:var(--trajectory); stroke-width:2.4px;}
+.edge.dashed{stroke:var(--divergence); stroke-dasharray:3,3; stroke-width:1.4px;}
+.edge.dimmed{opacity:0.08;}
+
+.legend{display:flex; gap:16px; font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-soft); margin-top:10px; flex-wrap:wrap; align-items:center;}
+.legend span{display:inline-flex; align-items:center; gap:5px;}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+.graph-hint{margin-left:auto; font-style:italic; color:var(--ink-soft); opacity:0.75;}
+
+.tooltip{
+  position:fixed; z-index:1000; background:#08120F; color:var(--ink); padding:9px 12px; border-radius:5px;
+  font-family:var(--font-mono); font-size:0.72rem; line-height:1.5; max-width:260px; pointer-events:none;
+  opacity:0; transform:translateY(4px); transition:opacity .12s ease, transform .12s ease; box-shadow:0 10px 30px rgba(0,0,0,0.6); border:1px solid var(--line);
+}
+.tooltip.show{opacity:1; transform:none;}
+.tooltip b{color:var(--hub); display:block; margin-bottom:3px; font-size:0.74rem;}
+.tooltip .plist{color:var(--trajectory); font-size:0.68rem;}
+
+.detail-panel{
+  border-top:1px dashed var(--line); margin-top:14px; padding-top:12px; animation:fade .2s ease;
+}
+.detail-panel h5{margin:0 0 8px; font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--hub); display:flex; justify-content:space-between; align-items:center;}
+.detail-panel h5 .x{cursor:pointer; color:var(--ink-soft); font-family:var(--disp); font-size:0.9rem;}
+.detail-panel .plink{display:block; font-family:var(--font-mono); font-size:0.74rem; padding:5px 0; color:var(--ink); border-bottom:1px dotted var(--line); cursor:pointer;}
+.detail-panel .plink:hover{color:var(--trajectory);}
+.zoom-controls{position:absolute; top:10px; right:10px; display:flex; flex-direction:column; gap:3px; z-index:5;}
+.zoom-controls button{
+  width:28px; height:28px; border:1px solid var(--line); background:var(--surface); border-radius:4px; cursor:pointer;
+  font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-soft); line-height:1; padding:0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:border-color .15s, color .15s, background .15s;
+}
+.zoom-controls button:hover{border-color:var(--trajectory); color:var(--trajectory); background:var(--trajectory-soft);}
+.zoom-controls .zoomlevel{
+  font-family:var(--font-mono); font-size:0.62rem; color:var(--ink-soft); text-align:center; padding:2px 0;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px; user-select:none;
+}
+
+.traj-row{display:flex; align-items:center; gap:10px; padding:7px 4px; border-bottom:1px solid var(--line-soft); cursor:pointer; transition:background .12s;}
+.traj-row:hover{background:var(--paper);}
+.traj-row:last-child{border-bottom:none;}
+.traj-rank{font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-soft); width:18px; flex:none;}
+.traj-chain{flex:1; font-size:0.78rem; line-height:1.5; min-width:0;}
+.traj-chain .seg{color:var(--ink);}
+.traj-chain .arrow{color:var(--ink-soft); margin:0 3px;}
+.traj-count{font-family:var(--font-mono); font-size:0.78rem; color:var(--trajectory); flex:none; text-align:right; min-width:70px;}
+.traj-bar{height:4px; background:var(--trajectory-soft); border-radius:2px; margin-top:3px; overflow:hidden;}
+.traj-bar i{display:block; height:100%; background:var(--trajectory);}
+.dash-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start;}
+@media (max-width:1100px){.dash-grid{grid-template-columns:1fr;}}
+.bar-row{display:flex; align-items:center; gap:8px; padding:4px 0; font-size:0.76rem;}
+.bar-row .lbl{width:150px; flex:none; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.bar-row .track{flex:1; height:12px; background:var(--surface); border-radius:2px; overflow:hidden; position:relative;}
+.bar-row .fill{height:100%; background:var(--trajectory);}
+.bar-row .fill.esc{background:var(--divergence);}
+.bar-row .val{width:56px; flex:none; text-align:right; font-family:var(--font-mono); color:var(--ink-soft);}
+.confounders{list-style:none; margin:0; padding:0;}
+.confounders li{
+  font-size:0.8rem; padding:8px 0; border-bottom:1px dotted var(--line); color:var(--ink-soft);
+}
+.confounders li:last-child{border-bottom:none;}
+.confounders li b{color:var(--divergence); display:block; font-family:var(--font-mono); font-size:0.68rem; text-transform:uppercase; margin-bottom:2px;}
+
+.pctl{margin-bottom:14px;}
+.pctl .lbl{display:flex; justify-content:space-between; font-size:0.76rem; color:var(--ink-soft); margin-bottom:4px;}
+.pctl .bar{height:6px; background:var(--line); border-radius:3px; overflow:hidden;}
+.pctl .fill{height:100%; background:var(--trajectory);}
+
+select#patientSelect, select#pivotSelect{margin-bottom:6px;}
+.spacing-row{display:flex; align-items:center; gap:8px; margin:6px 0;}
+.spacing-lbl{font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-soft); width:64px; flex-shrink:0;}
+.spbtn{
+  width:26px; height:26px; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft);
+  border-radius:4px; cursor:pointer; font-family:var(--font-mono); font-size:0.9rem; line-height:1; padding:0;
+  transition:border-color .15s, color .15s, background .15s;
+}
+.spbtn:hover{border-color:var(--trajectory); color:var(--trajectory); background:var(--trajectory-soft);}
+.spacing-val{font-family:var(--font-mono); font-size:0.74rem; color:var(--ink); width:44px; text-align:center; flex-shrink:0;}
+.small-note{font-size:0.72rem; color:var(--ink-soft); line-height:1.5; margin-top:10px;}
+.clinical-out{font-size:0.86rem; line-height:1.6;}
+.clinical-out h4{font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin:16px 0 6px;}
+.clinical-out h4:first-child{margin-top:0;}
+.pill{display:inline-block; font-family:var(--font-mono); font-size:0.68rem; padding:2px 7px; border-radius:10px; background:var(--trajectory-soft); color:var(--trajectory); margin:2px 4px 2px 0;}
+.breakdown-table{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.76rem; margin-top:4px;}
+.breakdown-table th{text-align:left; font-size:0.66rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); padding:5px 6px; border-bottom:1px solid var(--line);}
+.breakdown-table td{padding:5px 6px; border-bottom:1px dotted var(--line-soft); color:var(--ink);}
+.breakdown-table tr:last-child td{border-bottom:none;}
+.pinned-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+.pinned-card{border:1px solid var(--line); border-radius:6px; padding:12px 14px; background:var(--surface); position:relative;}
+.pinned-card .x{position:absolute; top:8px; right:10px; cursor:pointer; color:var(--ink-soft); font-size:0.8rem;}
+.pinned-card .x:hover{color:var(--divergence);}
+.pinned-card h4{margin:0 6px 8px 0; font-size:0.86rem; font-family:var(--font-mono); color:var(--trajectory); padding-right:16px;}
+.pinned-card .meta{font-size:0.72rem; color:var(--ink-soft); margin-bottom:8px;}
+.strat-table{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.74rem;}
+.strat-table th{text-align:left; font-size:0.64rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); padding:5px 6px; border-bottom:1px solid var(--line);}
+.strat-table td{padding:5px 6px; border-bottom:1px dotted var(--line-soft); color:var(--ink);}
+.strat-table tr:last-child td{border-bottom:none;}
+.strat-table td.n-small{opacity:.55;}
+.narrative-p{font-family:var(--font-display); font-size:1rem; line-height:1.65; color:var(--ink); margin:0;}
+.narrative-p b{color:var(--trajectory); font-weight:600;}
+.comomatrix{border-collapse:collapse; font-family:var(--font-mono); font-size:0.6rem;}
+.comomatrix th{padding:2px; color:var(--ink-soft); font-weight:400; text-align:center; white-space:nowrap;}
+.comomatrix th.rowlbl{text-align:right; padding-right:6px; max-width:110px; overflow:hidden; text-overflow:ellipsis;}
+.comomatrix th.collbl{writing-mode:vertical-rl; transform:rotate(180deg); height:90px; vertical-align:bottom;}
+.comomatrix td{width:20px; height:20px; text-align:center; cursor:default; border:1px solid var(--paper);}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Person-Centered Clinical Analytics <span class="accent">— trajectories, not averages</span></h1>
+  <span class="tag" id="cohortTag">synthetic data · educational scaffold</span>
+</header>
+<div class="tooltip" id="tooltip"></div>
+
+<nav class="tabs">
+  <button class="active" data-tab="gen"><span class="n">01</span>Generator</button>
+  <button data-tab="view"><span class="n">02</span>Nested Viewer</button>
+  <button data-tab="pivot"><span class="n">03</span>Pivot Explorer</button>
+  <button data-tab="dash"><span class="n">04</span>Cohort Dashboard</button>
+</nav>
+
+<main>
+  <div class="banner">synthetic cohort only — <b>not clinical decision support</b>. Numbers, percentiles, and hub counts are generated for demonstration.</div>
+
+  <!-- ============ TAB 1: GENERATOR ============ -->
+  <section class="panel active" id="panel-gen">
+    <div class="layout">
+      <div class="card">
+        <h3>Cohort parameters</h3>
+        <label>Cohort size <span class="rangeval" id="sizeVal">300</span></label>
+        <input type="range" id="sizeInput" min="30" max="1000" step="10" value="300">
+
+        <label>Comorbidity rate <span class="rangeval" id="comoVal">28%</span></label>
+        <input type="range" id="comoInput" min="0" max="70" step="1" value="28">
+
+        <label>Age range</label>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="ageMin" value="4" min="0" max="100">
+          <input type="number" id="ageMax" value="88" min="0" max="100">
+        </div>
+
+        <label>Random seed</label>
+        <input type="number" id="seedInput" value="1729">
+
+        <button class="primary" id="genBtn">Generate cohort</button>
+        <button class="ghost" id="downloadBtn">Download cohort.json</button>
+        <button class="ghost" id="loadBtn">Load cohort.json…</button>
+        <input type="file" id="loadFile" accept="application/json" style="display:none;">
+        <p class="small-note">Generation runs entirely client-side. Same seed + parameters reproduce the same cohort. Loading a file replaces the in-memory cohort used by all three tabs.</p>
+      </div>
+
+      <div class="card">
+        <h3>Condition mix — 20 conditions, three families</h3>
+        <div id="conditionGrid" class="check-grid"></div>
+        <p class="small-note">Deselect a condition to exclude it from generation. Weights are equal among selected conditions; comorbidities are drawn from the same pool minus a patient's own primary condition.</p>
+      </div>
+
+      <div class="card">
+        <h3>Cohort summary</h3>
+        <div id="genSummary" class="stat-row"><div class="stat">no cohort generated yet</div></div>
+        <div id="genByCategory"></div>
+        <p class="small-note">Once generated, switch to <b>Nested Viewer</b> or <b>Pivot Explorer</b> — both read this same in-memory cohort.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2: VIEWER ============ -->
+  <section class="panel" id="panel-view">
+    <div class="card" id="viewEmpty" style="display:none;"></div>
+    <div class="layout" id="viewLayout">
+      <div class="card">
+        <h3>View controls</h3>
+        <label>Mode</label>
+        <select id="modeSelect">
+          <option value="A">A — Atemporal (gestalt clusters)</option>
+          <option value="B">B — Temporal (years since diagnosis)</option>
+        </select>
+
+        <label>Condition filter</label>
+        <select id="viewCondFilter"><option value="__all">All conditions</option></select>
+
+        <label>Overlay patient A</label>
+        <div class="combo">
+          <input type="text" id="patientSearch" placeholder="Search patient ID or condition…" autocomplete="off">
+          <div class="combo-results" id="patientResults"></div>
+        </div>
+        <button class="ghost" id="clearOverlay">Clear patient A</button>
+
+        <label>Compare patient B <span class="small-note" style="display:inline; margin:0;">(optional)</span></label>
+        <div class="combo">
+          <input type="text" id="patientSearchB" placeholder="Search patient ID or condition…" autocomplete="off">
+          <div class="combo-results" id="patientResultsB"></div>
+        </div>
+        <button class="ghost" id="clearOverlayB">Clear patient B</button>
+        <p class="small-note">Checkpoints: Diagnosis → Presentation → Initial plan → Escalation → Advanced/recurrent → Disposition. Node size = number of patients converging on that value. Dashed nodes = value not seen elsewhere in the loaded population. Patient A traces in teal/amber tones, patient B in blue/violet tones — use both to eyeball pairwise divergence.</p>
+
+        <label>Node spacing</label>
+        <div class="spacing-row">
+          <span class="spacing-lbl">Vertical</span>
+          <button class="spbtn" id="vSpaceDown" title="Decrease vertical spacing 50%">−</button>
+          <span class="spacing-val" id="vSpaceVal">100%</span>
+          <button class="spbtn" id="vSpaceUp" title="Increase vertical spacing 50%">+</button>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-lbl">Horizontal</span>
+          <button class="spbtn" id="hSpaceDown" title="Decrease horizontal spacing 50%">−</button>
+          <span class="spacing-val" id="hSpaceVal">100%</span>
+          <button class="spbtn" id="hSpaceUp" title="Increase horizontal spacing 50%">+</button>
+        </div>
+        <button class="ghost" id="spaceReset">Reset spacing</button>
+
+        <div class="detail-panel" id="viewDetail" style="display:none;"></div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <div class="graph-wrap">
+          <svg class="graph" id="viewerSvg"></svg>
+          <div class="zoom-controls">
+            <button id="viewZoomIn" title="Zoom in">+</button>
+            <div class="zoomlevel" id="viewZoomLevel">100%</div>
+            <button id="viewZoomOut" title="Zoom out">−</button>
+            <button id="viewZoomReset" title="Reset view">⤾</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--hub-soft); border:1.5px solid var(--hub);"></i>hub node (convergent)</span>
+          <span><i class="dot" style="background:var(--surface); border:1.5px dashed var(--divergence);"></i>outlier / not in population</span>
+          <span class="graph-hint">drag to pan · scroll to zoom · click a node for detail</span>
+        </div>
+        <div class="legend" id="overlayLegend" style="margin-top:4px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>Patient vs. population</h3>
+        <div id="pctlCards"><p class="small-note">Select a patient to overlay to see percentile placement.</p></div>
+      </div>
+
+      <div class="card" style="grid-column:1/-1;">
+        <h3>Top trajectories <span class="rangeval" id="trajCount" style="float:none;"></span></h3>
+        <div id="topTrajectories"><p class="small-note">Full diagnosis→disposition chains, ranked by patient count.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3: PIVOT ============ -->
+  <section class="panel" id="panel-pivot">
+    <div class="card" id="pivotEmpty" style="display:none;"></div>
+    <div id="pivotContent">
+    <div class="layout" id="pivotLayout">
+      <div class="card">
+        <h3>Pivot &amp; filters</h3>
+        <label>Pivot type</label>
+        <select id="pivotType">
+          <option value="dx">Diagnosis</option>
+          <option value="ix">Intervention</option>
+          <option value="combo">Diagnosis × Intervention</option>
+        </select>
+        <label>Pivot value</label>
+        <div class="combo">
+          <input type="text" id="pivotSearch" placeholder="Search…" autocomplete="off">
+          <div class="combo-results" id="pivotResults"></div>
+        </div>
+        <input type="hidden" id="pivotSelect">
+
+        <label>Age band</label>
+        <div style="display:flex; gap:8px;">
+          <input type="number" id="pfAgeMin" value="0">
+          <input type="number" id="pfAgeMax" value="120">
+        </div>
+
+        <label>Sex</label>
+        <select id="pfSex"><option value="__all">All</option><option value="F">F</option><option value="M">M</option></select>
+
+        <label>Escalation required</label>
+        <select id="pfEsc"><option value="__all">Any</option><option value="yes">Escalated</option><option value="no">Not escalated</option></select>
+
+        <button class="primary" id="pivotApply">Apply pivot</button>
+        <button class="ghost" id="pivotPin">Pin pivot for comparison</button>
+
+        <div class="detail-panel" id="pivotDetail" style="display:none;"></div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <div id="pivotStats" class="stat-row"></div>
+        <div class="graph-wrap">
+          <svg class="graph" id="pivotSvg"></svg>
+          <div class="zoom-controls">
+            <button id="pivotZoomIn" title="Zoom in">+</button>
+            <div class="zoomlevel" id="pivotZoomLevel">100%</div>
+            <button id="pivotZoomOut" title="Zoom out">−</button>
+            <button id="pivotZoomReset" title="Reset view">⤾</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--hub);"></i>pivot center</span>
+          <span><i class="dot" style="background:var(--trajectory-soft); border:1px solid var(--trajectory);"></i>matched subgroup</span>
+          <span><i class="dot" style="background:var(--divergence-soft); border:1px solid var(--divergence);"></i>divergent path</span>
+          <span class="graph-hint">drag to pan · scroll to zoom · click an outcome for detail</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Confounders</h3>
+        <ul class="confounders" id="confList"></ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3>Clinical output view</h3>
+      <div class="clinical-out" id="clinicalOut"></div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3>Age × sex stratified breakdown</h3>
+      <p class="small-note" style="margin-top:0;">Splits the matched subgroup by age band and sex instead of collapsing them to filters, to surface interaction effects a flat share can hide.</p>
+      <div id="stratBreakdown"></div>
+    </div>
+
+    <div class="card" style="margin-top:20px;" id="pinnedPivotsCard">
+      <h3>Pinned pivots <span class="rangeval" id="pinnedCount" style="float:none;"></span></h3>
+      <p class="small-note" style="margin-top:0;">Pin up to 3 pivots (e.g. Diagnosis=T1D vs Diagnosis=T2D) to compare their disposition breakdowns side by side, synced on the same outcome rows.</p>
+      <div id="pinnedPivots"><p class="small-note">No pivots pinned yet.</p></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 4: COHORT DASHBOARD ============ -->
+  <section class="panel" id="panel-dash">
+    <div class="card" id="dashEmpty" style="display:none;"></div>
+    <div id="dashContent">
+      <div class="card" style="margin-bottom:20px;">
+        <h3>Cohort synthesis</h3>
+        <p id="dashNarrative" class="narrative-p"></p>
+      </div>
+      <div class="stat-row" id="dashSummary" style="margin-bottom:20px;"></div>
+      <div class="dash-grid">
+        <div class="card">
+          <h3>Age distribution</h3>
+          <svg class="graph" id="dashAgeSvg" style="height:220px;"></svg>
+        </div>
+        <div class="card">
+          <h3>Sex mix</h3>
+          <svg class="graph" id="dashSexSvg" style="height:220px;"></svg>
+        </div>
+        <div class="card">
+          <h3>Condition prevalence — all 20 conditions</h3>
+          <div id="dashPrevalence"></div>
+        </div>
+        <div class="card">
+          <h3>Escalation-rate leaderboard</h3>
+          <div id="dashEscLeaderboard"></div>
+        </div>
+        <div class="card" style="grid-column:1/-1;">
+          <h3>Comorbidity co-occurrence <span class="rangeval" id="comoMatrixNote" style="float:none;"></span></h3>
+          <p class="small-note" style="margin-top:0;">Cell shade = observed co-occurring patients ÷ expected under chance (independence). Coral = pair clusters together more than chance; blue = less. Grey = too few observations to read much into.</p>
+          <div id="dashComorbidityMatrix" style="overflow-x:auto;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =========================================================================
+   1. DISEASE TEMPLATES — 20 conditions, 3 families (chronic/acute/infective)
+   No code branches on disease type: everything a disease "does" lives in
+   this parameter table, consumed by the same generic generator function.
+   ========================================================================= */
+const CONDITIONS = [
+  // ---- chronic ----
+  {id:"T1D", label:"Type 1 Diabetes", family:"chronic", ageRange:[4,35], escRate:0.55, shape:"spiky",
+   presentation:["polyuria/polydipsia, glucose 420, ketones+","fatigue, weight loss, glucose 380"],
+   plan:["IV insulin -> basal-bolus","insulin pump initiation"],
+   escalation:["DKA / ED visit","severe hypoglycemia episode"],
+   advanced:["missed dose, ketosis","recurrent nocturnal hypoglycemia"],
+   disposition:["resolved, adherence counseling","resolved, CGM added"]},
+  {id:"T2D", label:"Type 2 Diabetes", family:"chronic", ageRange:[35,80], escRate:0.22, shape:"smooth",
+   presentation:["incidental hyperglycemia, A1c 8.9","polyuria, A1c 9.4"],
+   plan:["metformin titration","metformin + GLP-1 added"],
+   escalation:["insulin initiation","hospitalization for hyperglycemia"],
+   advanced:["neuropathy screening positive","early nephropathy flagged"],
+   disposition:["stable on regimen","referred to endocrinology"]},
+  {id:"CKD", label:"Chronic Kidney Disease", family:"chronic", ageRange:[45,85], escRate:0.30, shape:"smooth",
+   presentation:["eGFR 42, proteinuria","eGFR 38, rising creatinine"],
+   plan:["ACE-inhibitor titration","dietary/phosphate management"],
+   escalation:["eGFR <20, dialysis planning","AKI-on-CKD admission"],
+   advanced:["fistula creation","dialysis initiated"],
+   disposition:["stable stage 3b","transitioned to dialysis"]},
+  {id:"COPD", label:"COPD", family:"chronic", ageRange:[50,88], escRate:0.40, shape:"spiky",
+   presentation:["dyspnea, FEV1 55%","productive cough, exertional dyspnea"],
+   plan:["LABA/LAMA inhaler start","pulmonary rehab referral"],
+   escalation:["acute exacerbation, ED visit","hospitalization for exacerbation"],
+   advanced:["home O2 initiated","recurrent exacerbation, 2nd admission"],
+   disposition:["stable on inhalers","discharged on home O2"]},
+  {id:"HTN", label:"Hypertension", family:"chronic", ageRange:[30,85], escRate:0.12, shape:"smooth",
+   presentation:["BP 158/98 on routine visit","BP 165/102, headache"],
+   plan:["ACE-inhibitor started","thiazide added"],
+   escalation:["hypertensive urgency, ED visit","medication non-adherence flagged"],
+   advanced:["second agent added","home BP monitoring started"],
+   disposition:["controlled on 2 agents","stable, routine follow-up"]},
+  {id:"CHF", label:"Congestive Heart Failure", family:"chronic", ageRange:[50,90], escRate:0.48, shape:"spiky",
+   presentation:["dyspnea, BNP 890, EF 35%","orthopnea, bilateral edema"],
+   plan:["diuretic + ACE-inhibitor","beta-blocker titration"],
+   escalation:["acute decompensation, admission","fluid overload, ED visit"],
+   advanced:["diuretic dose escalated","cardiology referral, device eval"],
+   disposition:["euvolemic, discharged","stable, outpatient titration"]},
+  {id:"OA", label:"Osteoarthritis", family:"chronic", ageRange:[45,88], escRate:0.10, shape:"smooth",
+   presentation:["knee pain, reduced ROM","hip pain on weight-bearing"],
+   plan:["NSAID + physical therapy","weight management counseling"],
+   escalation:["intra-articular injection","pain limiting mobility, referral"],
+   advanced:["ortho surgical consult","joint replacement scheduled"],
+   disposition:["managed conservatively","surgery planned"]},
+  {id:"DEP", label:"Major Depressive Disorder", family:"chronic", ageRange:[14,75], escRate:0.20, shape:"smooth",
+   presentation:["low mood, anhedonia, PHQ-9 18","sleep disruption, PHQ-9 15"],
+   plan:["SSRI initiated","therapy referral + SSRI"],
+   escalation:["safety concern, crisis eval","medication non-response, switch agent"],
+   advanced:["dose optimization","augmentation therapy added"],
+   disposition:["symptom improvement, PHQ-9 down","stable on regimen"]},
+  {id:"HYPOTHY", label:"Hypothyroidism", family:"chronic", ageRange:[20,80], escRate:0.06, shape:"smooth",
+   presentation:["fatigue, TSH 12","weight gain, cold intolerance, TSH 9"],
+   plan:["levothyroxine started","dose titration"],
+   escalation:["persistent symptoms, dose re-check","subclinical -> overt transition"],
+   advanced:["dose stabilized","annual monitoring established"],
+   disposition:["euthyroid on maintenance dose","stable, routine labs"]},
+  {id:"ASTHMA", label:"Asthma", family:"chronic", ageRange:[5,60], escRate:0.28, shape:"spiky",
+   presentation:["wheeze, nocturnal cough","exercise-induced dyspnea"],
+   plan:["ICS started","ICS/LABA combination"],
+   escalation:["acute exacerbation, ED visit","status asthmaticus, admission"],
+   advanced:["step-up therapy","allergen trigger identified"],
+   disposition:["well-controlled","stepped down to maintenance"]},
+  // ---- acute ----
+  {id:"MI", label:"Myocardial Infarction", family:"acute", ageRange:[38,88], escRate:0.62, shape:"spiky",
+   presentation:["chest pain, ST elevation","troponin rise, EKG changes"],
+   plan:["cath lab, PCI","thrombolysis initiated"],
+   escalation:["cardiogenic shock","recurrent ischemia"],
+   advanced:["CABG evaluation","mechanical support initiated"],
+   disposition:["stable, discharged on dual antiplatelet","stepped down to cardiac rehab"]},
+  {id:"STROKE", label:"Ischemic Stroke", family:"acute", ageRange:[40,90], escRate:0.50, shape:"spiky",
+   presentation:["sudden hemiparesis, NIHSS 12","facial droop, aphasia onset"],
+   plan:["tPA administered","thrombectomy performed"],
+   escalation:["hemorrhagic conversion","malignant edema"],
+   advanced:["decompressive craniectomy","ICU transfer"],
+   disposition:["discharged to rehab","residual deficit, outpatient therapy"]},
+  {id:"APPY", label:"Acute Appendicitis", family:"acute", ageRange:[6,45], escRate:0.18, shape:"spiky",
+   presentation:["RLQ pain, fever, elevated WBC","periumbilical pain migrating to RLQ"],
+   plan:["laparoscopic appendectomy","IV antibiotics + observation"],
+   escalation:["perforation found intraop","abscess formation"],
+   advanced:["drain placement","extended antibiotic course"],
+   disposition:["discharged POD1","discharged after drain removal"]},
+  {id:"FX", label:"Fragility Fracture", family:"acute", ageRange:[55,92], escRate:0.15, shape:"spiky",
+   presentation:["fall, hip pain, x-ray confirmed fracture","wrist deformity after fall"],
+   plan:["surgical fixation","closed reduction, casting"],
+   escalation:["post-op delirium","wound infection"],
+   advanced:["extended rehab stay","bone density workup initiated"],
+   disposition:["discharged to rehab facility","discharged home with PT"]},
+  {id:"ANAPH", label:"Anaphylaxis", family:"acute", ageRange:[2,70], escRate:0.20, shape:"spiky",
+   presentation:["urticaria, wheeze, hypotension post-exposure","facial angioedema, stridor"],
+   plan:["epinephrine IM, observation","epinephrine + antihistamine/steroid"],
+   escalation:["biphasic reaction","airway compromise, intubation"],
+   advanced:["ICU observation","allergy workup scheduled"],
+   disposition:["discharged with epi-pen, allergy referral","discharged after 6hr observation"]},
+  // ---- infective ----
+  {id:"PNA", label:"Community-Acquired Pneumonia", family:"infective", ageRange:[1,90], escRate:0.25, shape:"spiky",
+   presentation:["fever, productive cough, infiltrate on CXR","hypoxia, crackles, CRP elevated"],
+   plan:["oral antibiotics, outpatient","IV antibiotics, admission"],
+   escalation:["respiratory failure, ICU transfer","empyema, drainage needed"],
+   advanced:["antibiotic escalation","mechanical ventilation"],
+   disposition:["discharged, completed course","discharged, step-down antibiotics"]},
+  {id:"UTI", label:"Urinary Tract Infection", family:"infective", ageRange:[1,92], escRate:0.10, shape:"smooth",
+   presentation:["dysuria, urgency, positive urinalysis","fever, flank pain, pyuria"],
+   plan:["oral antibiotics","outpatient nitrofurantoin course"],
+   escalation:["pyelonephritis, admission","urosepsis"],
+   advanced:["IV antibiotic switch","imaging for obstruction"],
+   disposition:["resolved, outpatient","discharged after IV course"]},
+  {id:"CELL", label:"Cellulitis", family:"infective", ageRange:[5,90], escRate:0.14, shape:"smooth",
+   presentation:["erythema, warmth, leg swelling","spreading erythema, fever"],
+   plan:["oral antibiotics","IV antibiotics, admission"],
+   escalation:["abscess formation, drainage","necrotizing infection suspected"],
+   advanced:["surgical debridement","extended IV course"],
+   disposition:["resolved, outpatient follow-up","discharged, oral step-down"]},
+  {id:"SEPSIS", label:"Sepsis", family:"infective", ageRange:[1,92], escRate:0.58, shape:"spiky",
+   presentation:["fever, tachycardia, lactate 4.2","hypotension, altered mental status"],
+   plan:["fluid resuscitation + broad antibiotics","source control + vasopressors"],
+   escalation:["septic shock, ICU admission","multi-organ dysfunction"],
+   advanced:["renal replacement therapy","prolonged ICU course"],
+   disposition:["stepped down to floor","discharged after extended course"]},
+  {id:"TB", label:"Tuberculosis", family:"infective", ageRange:[10,80], escRate:0.16, shape:"smooth",
+   presentation:["chronic cough, weight loss, positive sputum AFB","night sweats, cavitary lesion on CXR"],
+   plan:["RIPE regimen initiated","directly observed therapy started"],
+   escalation:["drug resistance identified","treatment non-adherence"],
+   advanced:["regimen modification","contact tracing initiated"],
+   disposition:["completing therapy, outpatient","treatment completed, cleared"]}
+];
+const CONDITION_BY_ID = Object.fromEntries(CONDITIONS.map(c=>[c.id,c]));
+const CHECKPOINT_KEYS = ["diagnosis","presentation","initial_plan","escalation","advanced_recurrent","disposition"];
+const CHECKPOINT_LABELS = {diagnosis:"Diagnosis", presentation:"Presentation", initial_plan:"Initial plan", escalation:"Escalation", advanced_recurrent:"Advanced / recurrent", disposition:"Disposition"};
+
+/* =========================================================================
+   2. SEEDED RNG (mulberry32) — deterministic generation
+   ========================================================================= */
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function pick(rng, arr){ return arr[Math.floor(rng()*arr.length)]; }
+function randInt(rng, lo, hi){ return Math.floor(rng()*(hi-lo+1))+lo; }
+
+/* =========================================================================
+   3. GENERATOR — disease-agnostic. Same function builds a diagnosis row for
+   ANY condition; only the parameter table above changes the output.
+   ========================================================================= */
+let COHORT = null; // {patients:[...]}
+
+function buildDiagnosisRow(rng, cond, isPrimary){
+  const esc = rng() < cond.escRate;
+  const cp = {
+    diagnosis: cond.label + (isPrimary? ", primary":", comorbidity"),
+    presentation: pick(rng, cond.presentation),
+    initial_plan: pick(rng, cond.plan),
+    escalation: esc ? pick(rng, cond.escalation) : "No escalation recorded",
+    advanced_recurrent: esc ? pick(rng, cond.advanced) : "No recurrence recorded",
+    disposition: pick(rng, cond.disposition)
+  };
+  const timeline = [{t:0, event:"diagnosis", severity: cond.shape==="spiky"? 0.75+rng()*0.2 : 0.4+rng()*0.2}];
+  if(esc){
+    const spike = cond.shape==="spiky" ? (0.4+rng()*1.2) : (0.8+rng()*1.8);
+    timeline.push({t: Math.round(spike*100)/100, event:"escalation", severity: cond.shape==="spiky"? 0.8+rng()*0.2 : 0.5+rng()*0.3});
+  }
+  return {condition:cond.id, condition_label:cond.label, family:cond.family, is_primary:isPrimary, escalated:esc, checkpoints:cp, timeline};
+}
+
+function generateCohort(params){
+  const rng = mulberry32(params.seed);
+  const pool = params.conditions;
+  const patients = [];
+  for(let i=0;i<params.size;i++){
+    const primary = pick(rng, pool);
+    const age = clampAge(randInt(rng, primary.ageRange[0], primary.ageRange[1]), params.ageMin, params.ageMax);
+    const sex = rng() < 0.5 ? "F" : "M";
+    const rows = [buildDiagnosisRow(rng, primary, true)];
+    if(rng() < params.comoRate){
+      const comoPool = pool.filter(c=>c.id!==primary.id);
+      const nCom = rng()<0.75 ? 1 : 2;
+      const chosen = new Set();
+      for(let k=0;k<nCom && comoPool.length;k++){
+        let c = pick(rng, comoPool);
+        let guard=0;
+        while(chosen.has(c.id) && guard<10){ c=pick(rng,comoPool); guard++; }
+        chosen.add(c.id);
+        rows.push(buildDiagnosisRow(rng, c, false));
+      }
+    }
+    patients.push({
+      id:"P"+String(i+1).padStart(4,"0"),
+      age, sex,
+      primary_condition:primary.id,
+      comorbidities: rows.slice(1).map(r=>r.condition),
+      diagnosis_rows: rows
+    });
+  }
+  return {generated_at:new Date().toISOString(), synthetic:true, params, patients};
+}
+function clampAge(a, lo, hi){ return Math.max(lo, Math.min(hi, a)); }
+
+/* =========================================================================
+   4. TAB WIRING
+   ========================================================================= */
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-"+btn.dataset.tab).classList.add("active");
+    if(btn.dataset.tab==="view") refreshViewer();
+    if(btn.dataset.tab==="pivot") refreshPivotOptions();
+    if(btn.dataset.tab==="dash") refreshDashboard();
+  });
+});
+
+function updateCohortTag(){
+  const tag = document.getElementById("cohortTag");
+  if(COHORT){
+    tag.textContent = `${COHORT.patients.length} patients loaded`;
+    tag.classList.add("live");
+  } else {
+    tag.textContent = "synthetic data · educational scaffold";
+    tag.classList.remove("live");
+  }
+}
+
+function emptyStateHTML(msg){
+  return `<div class="empty-state">
+    <div class="glyph">∅</div>
+    <h4>No cohort loaded</h4>
+    <p>${msg}</p>
+    <button class="primary ghost" onclick="document.querySelector('nav.tabs button[data-tab=gen]').click()">Go to Generator</button>
+  </div>`;
+}
+
+/* ---- Generator UI ---- */
+const conditionGrid = document.getElementById("conditionGrid");
+CONDITIONS.forEach(c=>{
+  const lab = document.createElement("label");
+  lab.innerHTML = `<input type="checkbox" value="${c.id}" checked> ${c.label} <span style="color:var(--ink-soft); font-family:var(--font-mono); font-size:0.65rem;">[${c.family}]</span>`;
+  conditionGrid.appendChild(lab);
+});
+const sizeInput=document.getElementById("sizeInput"), sizeVal=document.getElementById("sizeVal");
+sizeInput.addEventListener("input", ()=> sizeVal.textContent = sizeInput.value);
+const comoInput=document.getElementById("comoInput"), comoVal=document.getElementById("comoVal");
+comoInput.addEventListener("input", ()=> comoVal.textContent = comoInput.value+"%");
+
+document.getElementById("genBtn").addEventListener("click", ()=>{
+  const selected = Array.from(conditionGrid.querySelectorAll("input:checked")).map(i=>CONDITION_BY_ID[i.value]);
+  if(selected.length===0){ alert("Select at least one condition."); return; }
+  const params = {
+    size: parseInt(sizeInput.value,10),
+    comoRate: parseInt(comoInput.value,10)/100,
+    ageMin: parseInt(document.getElementById("ageMin").value,10),
+    ageMax: parseInt(document.getElementById("ageMax").value,10),
+    seed: parseInt(document.getElementById("seedInput").value,10) || 1,
+    conditions: selected
+  };
+  COHORT = generateCohort(params);
+  pinnedPivots = []; currentPivot = null;
+  renderGenSummary();
+  populateViewCondFilter();
+  populatePatientSelect();
+  updateCohortTag();
+  refreshViewer();
+  refreshPivotOptions();
+});
+
+document.getElementById("downloadBtn").addEventListener("click", ()=>{
+  if(!COHORT){ alert("Generate a cohort first."); return; }
+  const blob = new Blob([JSON.stringify(COHORT,null,2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "cohort.json";
+  a.click();
+});
+
+document.getElementById("loadBtn").addEventListener("click", ()=> document.getElementById("loadFile").click());
+document.getElementById("loadFile").addEventListener("change", (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt)=>{
+    try{
+      const data = JSON.parse(evt.target.result);
+      if(!data.patients || !Array.isArray(data.patients)) throw new Error("missing patients[]");
+      COHORT = data;
+      pinnedPivots = []; currentPivot = null;
+      renderGenSummary();
+      populateViewCondFilter();
+      populatePatientSelect();
+      updateCohortTag();
+      refreshViewer();
+      refreshPivotOptions();
+      alert(`Loaded ${COHORT.patients.length} patients from ${file.name}.`);
+    }catch(err){
+      alert("Could not load file — not a valid cohort.json: "+err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+function renderGenSummary(){
+  const n = COHORT.patients.length;
+  const withComo = COHORT.patients.filter(p=>p.comorbidities.length>0).length;
+  const totalRows = COHORT.patients.reduce((s,p)=>s+p.diagnosis_rows.length,0);
+  const escRows = COHORT.patients.reduce((s,p)=>s+p.diagnosis_rows.filter(r=>r.escalated).length,0);
+  document.getElementById("genSummary").innerHTML = `
+    <div class="stat">Patients<b>${n}</b></div>
+    <div class="stat">Diagnosis rows<b>${totalRows}</b></div>
+    <div class="stat">With comorbidity<b>${withComo} (${Math.round(100*withComo/n)}%)</b></div>
+    <div class="stat">Escalated rows<b>${escRows} (${Math.round(100*escRows/totalRows)}%)</b></div>
+  `;
+  const byFam = {};
+  COHORT.patients.forEach(p=> p.diagnosis_rows.forEach(r=>{ byFam[r.family]=(byFam[r.family]||0)+1; }));
+  document.getElementById("genByCategory").innerHTML = "<h3 style='margin-top:18px;'>By family</h3>" +
+    Object.entries(byFam).map(([f,c])=>`<div class="stat" style="margin:4px 6px 4px 0; display:inline-block;">${f}<b>${c}</b></div>`).join("");
+}
+
+/* ---- shared selects ---- */
+function populateViewCondFilter(){
+  const sel = document.getElementById("viewCondFilter");
+  sel.innerHTML = `<option value="__all">All conditions</option>` +
+    [...new Set(COHORT.patients.flatMap(p=>p.diagnosis_rows.map(r=>r.condition)))]
+      .map(id=>`<option value="${id}">${CONDITION_BY_ID[id].label}</option>`).join("");
+}
+function populatePatientSelect(){ /* combobox now populated on demand — see wireCombo() */ }
+
+/* =========================================================================
+   TOOLTIP + generic searchable combobox helper
+   ========================================================================= */
+const tooltipEl = document.getElementById("tooltip");
+function showTooltip(html, evt){
+  tooltipEl.innerHTML = html;
+  tooltipEl.classList.add("show");
+  moveTooltip(evt);
+}
+function moveTooltip(evt){
+  const pad=16;
+  let x = evt.clientX+pad, y = evt.clientY+pad;
+  if(x + 260 > window.innerWidth) x = evt.clientX - 260 - pad;
+  if(y + 90 > window.innerHeight) y = evt.clientY - 90;
+  tooltipEl.style.left = x+"px"; tooltipEl.style.top = y+"px";
+}
+function hideTooltip(){ tooltipEl.classList.remove("show"); }
+
+function wireCombo(inputId, resultsId, getOptions, onPick){
+  const input = document.getElementById(inputId);
+  const results = document.getElementById(resultsId);
+  function render(filter){
+    const opts = getOptions().filter(o=> !filter || o.t.toLowerCase().includes(filter.toLowerCase()));
+    if(!opts.length){ results.innerHTML = `<div class="empty">no matches</div>`; }
+    else{
+      results.innerHTML = opts.slice(0,60).map(o=>`<div data-v="${encodeURIComponent(o.v)}">${o.t}</div>`).join("");
+    }
+    results.classList.add("open");
+  }
+  input.addEventListener("focus", ()=>{ input.select(); render(""); });
+  input.addEventListener("input", ()=> render(input.value));
+  input.addEventListener("blur", ()=> setTimeout(()=>results.classList.remove("open"), 150));
+  results.addEventListener("mousedown", (e)=>{
+    const t = e.target.closest("div[data-v]");
+    if(!t) return;
+    const v = decodeURIComponent(t.dataset.v);
+    onPick(v, t.textContent);
+    results.classList.remove("open");
+  });
+}
+
+/* =========================================================================
+   5. VIEWER — nested checkpoint graph, hub emergence, overlay, percentiles
+   ========================================================================= */
+let viewOverlayId = "";
+let viewOverlayIdB = "";
+let viewZoom = null;
+let viewVSpaceMult = 1;
+let viewHSpaceMult = 1;
+const SPACE_MIN = 0.25, SPACE_MAX = 6;
+
+function refreshViewer(){
+  const layout = document.getElementById("viewLayout");
+  const empty = document.getElementById("viewEmpty");
+  if(!COHORT){
+    layout.style.display = "none";
+    empty.style.display = "flex";
+    empty.innerHTML = emptyStateHTML("Generate a synthetic cohort on the Generator tab, then come back here to explore the nested checkpoint graph.");
+    return;
+  }
+  layout.style.display = "grid";
+  empty.style.display = "none";
+  wireCombo("patientSearch", "patientResults",
+    ()=> COHORT.patients.map(p=>({v:p.id, t:`${p.id} · ${CONDITION_BY_ID[p.primary_condition].label}, age ${p.age}`})),
+    (v,label)=>{ viewOverlayId = v; document.getElementById("patientSearch").value = label; drawViewerGraph(); }
+  );
+  wireCombo("patientSearchB", "patientResultsB",
+    ()=> COHORT.patients.map(p=>({v:p.id, t:`${p.id} · ${CONDITION_BY_ID[p.primary_condition].label}, age ${p.age}`})),
+    (v,label)=>{ viewOverlayIdB = v; document.getElementById("patientSearchB").value = label; drawViewerGraph(); }
+  );
+  drawViewerGraph();
+}
+document.getElementById("modeSelect").addEventListener("change", drawViewerGraph);
+document.getElementById("viewCondFilter").addEventListener("change", drawViewerGraph);
+document.getElementById("clearOverlay").addEventListener("click", ()=>{
+  viewOverlayId = ""; document.getElementById("patientSearch").value = "";
+  document.getElementById("viewDetail").style.display = "none";
+  drawViewerGraph();
+});
+document.getElementById("clearOverlayB").addEventListener("click", ()=>{
+  viewOverlayIdB = ""; document.getElementById("patientSearchB").value = "";
+  drawViewerGraph();
+});
+document.getElementById("viewZoomIn").addEventListener("click", ()=> zoomBy("#viewerSvg", viewZoom, 1.3));
+document.getElementById("viewZoomOut").addEventListener("click", ()=> zoomBy("#viewerSvg", viewZoom, 0.75));
+document.getElementById("viewZoomReset").addEventListener("click", ()=> resetZoom("#viewerSvg", viewZoom));
+
+function updateSpaceReadout(){
+  document.getElementById("vSpaceVal").textContent = Math.round(viewVSpaceMult*100)+"%";
+  document.getElementById("hSpaceVal").textContent = Math.round(viewHSpaceMult*100)+"%";
+}
+document.getElementById("vSpaceUp").addEventListener("click", ()=>{
+  viewVSpaceMult = Math.min(SPACE_MAX, viewVSpaceMult*1.5);
+  updateSpaceReadout(); drawViewerGraph();
+});
+document.getElementById("vSpaceDown").addEventListener("click", ()=>{
+  viewVSpaceMult = Math.max(SPACE_MIN, viewVSpaceMult/1.5);
+  updateSpaceReadout(); drawViewerGraph();
+});
+document.getElementById("hSpaceUp").addEventListener("click", ()=>{
+  viewHSpaceMult = Math.min(SPACE_MAX, viewHSpaceMult*1.5);
+  updateSpaceReadout(); drawViewerGraph();
+});
+document.getElementById("hSpaceDown").addEventListener("click", ()=>{
+  viewHSpaceMult = Math.max(SPACE_MIN, viewHSpaceMult/1.5);
+  updateSpaceReadout(); drawViewerGraph();
+});
+document.getElementById("spaceReset").addEventListener("click", ()=>{
+  viewVSpaceMult = 1; viewHSpaceMult = 1;
+  updateSpaceReadout(); drawViewerGraph();
+});
+
+function zoomBy(sel, zoomBehavior, factor){
+  if(!zoomBehavior) return;
+  d3.select(sel).transition().duration(200).call(zoomBehavior.scaleBy, factor);
+}
+function resetZoom(sel, zoomBehavior){
+  if(!zoomBehavior) return;
+  d3.select(sel).transition().duration(250).call(zoomBehavior.transform, d3.zoomIdentity);
+}
+
+/* --- dynamic label decluttering ---------------------------------------
+   Greedily hides overlapping labels (screen-space, priority-ordered) so
+   zooming/panning never leaves labels stacked or unreadable. Re-run after
+   every render and on every zoom/pan tick (rAF-throttled). Labels that are
+   hidden this way still fade back in the moment they have room. */
+const _declutterRAF = {};
+function declutterLabels(svgSel, labelSelector, key){
+  const k = key || labelSelector;
+  if(_declutterRAF[k]) cancelAnimationFrame(_declutterRAF[k]);
+  _declutterRAF[k] = requestAnimationFrame(()=>{
+    const svgNode = svgSel.node ? svgSel.node() : svgSel;
+    if(!svgNode) return;
+    const labels = Array.from(svgNode.querySelectorAll(labelSelector));
+    if(!labels.length) return;
+    labels.forEach(l=> l.classList.remove("lbl-hidden"));
+    const items = labels.map(l=>({el:l, rect:l.getBoundingClientRect(), pr:+l.dataset.pr || 0}))
+      .sort((a,b)=> b.pr - a.pr);
+    const placed = [];
+    const pad = 3;
+    items.forEach(item=>{
+      const r = item.rect;
+      if(r.width===0 && r.height===0) return;
+      const hit = placed.some(p=> !(r.right+pad < p.left || r.left-pad > p.right || r.bottom+pad < p.top || r.top-pad > p.bottom));
+      if(hit) item.el.classList.add("lbl-hidden");
+      else placed.push({left:r.left, right:r.right, top:r.top, bottom:r.bottom});
+    });
+  });
+}
+
+function filteredRows(){
+  const condF = document.getElementById("viewCondFilter").value;
+  let rows = [];
+  COHORT.patients.forEach(p=> p.diagnosis_rows.forEach(r=> rows.push({...r, patientId:p.id, age:p.age, sex:p.sex})));
+  if(condF!=="__all") rows = rows.filter(r=>r.condition===condF);
+  return rows;
+}
+
+function drawViewerGraph(){
+  if(!COHORT) return;
+  const rows = filteredRows();
+  const mode = document.getElementById("modeSelect").value;
+  const overlayId = viewOverlayId;
+
+  // Build nodes: one per (stage, value). Build edges: sequential per row.
+  const nodeMap = new Map(); // key "stage||value" -> {id,stage,value,count,patients:[]}
+  rows.forEach(r=>{
+    CHECKPOINT_KEYS.forEach(stage=>{
+      const val = r.checkpoints[stage];
+      const key = stage+"||"+val;
+      if(!nodeMap.has(key)) nodeMap.set(key, {id:key, stage, value:val, count:0, patients:new Set()});
+      const n = nodeMap.get(key);
+      n.count++; n.patients.add(r.patientId);
+    });
+  });
+  const nodes = Array.from(nodeMap.values());
+  const edgesSet = new Map();
+  rows.forEach(r=>{
+    for(let i=0;i<CHECKPOINT_KEYS.length-1;i++){
+      const a = CHECKPOINT_KEYS[i]+"||"+r.checkpoints[CHECKPOINT_KEYS[i]];
+      const b = CHECKPOINT_KEYS[i+1]+"||"+r.checkpoints[CHECKPOINT_KEYS[i+1]];
+      const key = a+">>"+b;
+      if(!edgesSet.has(key)) edgesSet.set(key, {source:a, target:b, count:0});
+      edgesSet.get(key).count++;
+    }
+  });
+  const edges = Array.from(edgesSet.values());
+
+  // column x per stage; column y packed so nodes never overlap regardless of count
+  const svg = d3.select("#viewerSvg");
+  svg.selectAll("*").remove();
+  const baseW = svg.node().clientWidth || 900, baseH = 560;
+  const baseColGap = (baseW-140)/(CHECKPOINT_KEYS.length-1);
+  const colGap = baseColGap * viewHSpaceMult;
+  const contentW = Math.max(baseW, 140 + colGap*(CHECKPOINT_KEYS.length-1));
+  const w = contentW;
+  const stageX = {};
+  CHECKPOINT_KEYS.forEach((s,i)=> stageX[s] = 70 + i*colGap);
+
+  const maxCount = d3.max(nodes, n=>n.count) || 1;
+  const rScale = d3.scaleSqrt().domain([1,maxCount]).range([6,28]);
+
+  const topPad = 46, bottomPad = 30, minGap = 22 * viewVSpaceMult;
+  const byStage = {};
+  CHECKPOINT_KEYS.forEach(s=> byStage[s] = nodes.filter(n=>n.stage===s).sort((a,b)=>b.count-a.count));
+  let contentH = baseH;
+  Object.values(byStage).forEach(list=>{
+    let cursor = topPad;
+    list.forEach(n=>{
+      const r = rScale(n.count);
+      cursor += r;
+      n.y = cursor;
+      cursor += r + minGap;
+    });
+    contentH = Math.max(contentH, cursor - minGap + bottomPad);
+  });
+  nodes.forEach(n=> n.x = stageX[n.stage]);
+  svg.attr("viewBox", `0 0 ${w} ${contentH}`);
+  const h = contentH;
+
+  CHECKPOINT_KEYS.forEach((s,i)=>{
+    svg.append("text").attr("class","node-stage").attr("x", stageX[s]).attr("y", 18).attr("text-anchor","middle").text(CHECKPOINT_LABELS[s]+`  ·  ${byStage[s].length}`);
+  });
+
+  // overlay patient path highlight — one traced path PER diagnosis row (primary + each
+  // comorbidity get their own line/colour), not just the primary condition.
+  // Patient A uses teal/amber tones; patient B (compare) uses blue/violet tones, so two
+  // overlaid patients stay visually distinguishable at a glance.
+  const OVERLAY_COLORS_A = ["var(--trajectory)","var(--hub)","#6FD9A0","#E3C158","#7FBF6F"];
+  const OVERLAY_COLORS_B = ["#4FA8D8","#8B7FD9","#D97FA8","#5FC8C0","#A88FE0"];
+  let overlayKeys = new Set();       // union, used for node ring highlight
+  let overlayRows = [];              // [{row, color, isPrimary, keys:[...], edgeKeySet:Set, who}]
+  let overlayPatient = null;
+  let overlayPatientB = null;
+  let notSeen = [];                  // [{stage, rowLabel, color}]
+
+  function buildOverlay(pid, palette, who){
+    const patient = COHORT.patients.find(p=>p.id===pid);
+    if(!patient) return null;
+    patient.diagnosis_rows.forEach((row,ri)=>{
+      const color = palette[ri % palette.length];
+      const keys = [];
+      const edgeKeySet = new Set();
+      CHECKPOINT_KEYS.forEach((stage,i)=>{
+        const val = row.checkpoints[stage];
+        const key = stage+"||"+val;
+        keys.push(key);
+        overlayKeys.add(key);
+        if(!nodeMap.has(key)) notSeen.push({stage, rowLabel: (who==="B"?"B · ":"")+(row.is_primary?"primary":row.condition_label), color});
+        if(i>0) edgeKeySet.add(keys[i-1]+">>"+key);
+      });
+      overlayRows.push({row, color, isPrimary: row.is_primary, keys, edgeKeySet, who});
+    });
+    return patient;
+  }
+  if(overlayId) overlayPatient = buildOverlay(overlayId, OVERLAY_COLORS_A, "A");
+  if(viewOverlayIdB) overlayPatientB = buildOverlay(viewOverlayIdB, OVERLAY_COLORS_B, "B");
+
+  const legendBox = document.getElementById("overlayLegend");
+  if(legendBox){
+    legendBox.innerHTML = overlayRows.length
+      ? overlayRows.map(r=> `<span><i class="dot" style="background:${r.color};"></i>${r.who? r.who+" · ":""}${r.row.condition_label}${r.isPrimary? " (primary)":" (comorbidity)"}</span>`).join("")
+      : `<span class="graph-hint">select overlay patients to trace their primary diagnosis and every comorbidity as separate coloured paths — add a second patient to compare divergence directly</span>`;
+  }
+
+  // zoomable root group
+  const root = svg.append("g").attr("class","zoom-root");
+  viewZoom = d3.zoom().scaleExtent([0.5,6]).on("zoom", (ev)=>{
+    root.attr("transform", ev.transform);
+    declutterLabels(svg, "text.node-lbl.declutter", "viewer");
+    const lvl = document.getElementById("viewZoomLevel"); if(lvl) lvl.textContent = Math.round(ev.transform.k*100)+"%";
+  });
+  svg.call(viewZoom);
+
+  // edges
+  const link = d3.linkHorizontal();
+  const edgeSel = root.append("g").selectAll("path.edge").data(edges).join("path")
+    .attr("class", d=>{
+      const key = d.source+">>"+d.target;
+      const hitRow = overlayRows.find(r=> r.edgeKeySet.has(key));
+      return "edge"+(hitRow?" highlight":"");
+    })
+    .attr("d", d=>{
+      const s = nodeMap.get(d.source), t = nodeMap.get(d.target);
+      if(!s || !t) return "";
+      return link({source:[s.x, s.y], target:[t.x, t.y]});
+    })
+    .style("stroke", d=>{
+      const key = d.source+">>"+d.target;
+      const hitRow = overlayRows.find(r=> r.edgeKeySet.has(key));
+      return hitRow ? hitRow.color : null;
+    })
+    .attr("stroke-width", d=> 0.6 + Math.sqrt(d.count));
+
+  // overlay dashed markers for stages a traced row didn't reach in this population
+  notSeen.forEach((ns,i)=>{
+    const gx = stageX[ns.stage], gy = h-24-(i%3)*20;
+    root.append("circle").attr("cx",gx).attr("cy",gy).attr("r",6).attr("class","node-out").attr("fill","var(--surface)").attr("stroke",ns.color);
+    root.append("path").attr("class","edge dashed").attr("d", `M${gx},${gy} L${gx},${gy-18}`).attr("stroke",ns.color);
+    root.append("text").attr("x",gx).attr("y",gy+14).attr("text-anchor","middle").attr("class","node-lbl").style("fill",ns.color).style("font-size","8px").text(`not seen · ${ns.rowLabel}`);
+  });
+
+  // adjacency for hover-highlight (which edges/nodes touch a given node)
+  const neighborsOf = (id)=> new Set(edges.filter(e=>e.source===id||e.target===id).flatMap(e=>[e.source,e.target]));
+
+  // nodes (draggable)
+  const drag = d3.drag()
+    .on("start", function(){ d3.select(this).raise(); })
+    .on("drag", function(ev,d){ d.x = ev.x; d.y = ev.y; d3.select(this).attr("transform", `translate(${d.x},${d.y})`); refreshEdgesFor(d); })
+    .on("end", ()=> declutterLabels(svg, "text.node-lbl.declutter", "viewer"));
+  function refreshEdgesFor(){
+    edgeSel.attr("d", d=>{
+      const s = nodeMap.get(d.source), t = nodeMap.get(d.target);
+      if(!s || !t) return "";
+      return link({source:[s.x, s.y], target:[t.x, t.y]});
+    });
+  }
+
+  const g = root.append("g").selectAll("g.node").data(nodes).join("g")
+    .attr("class", d=> "node "+(d.count>=3?"node-hub":"node-out"))
+    .attr("transform", d=>`translate(${d.x},${d.y})`)
+    .call(drag)
+    .on("mouseenter", function(ev,d){
+      const nb = neighborsOf(d.id);
+      g.classed("dimmed", n=> n.id!==d.id && !nb.has(n.id));
+      edgeSel.classed("dimmed", e=> e.source!==d.id && e.target!==d.id);
+      const sample = [...d.patients].slice(0,5).join(", ") + (d.patients.size>5? `, +${d.patients.size-5} more`:"");
+      showTooltip(`<b>${CHECKPOINT_LABELS[d.stage]}</b>${d.value}<div class="plist">${d.patients.size} patient(s): ${sample}</div>`, ev);
+    })
+    .on("mousemove", moveTooltip)
+    .on("mouseleave", ()=>{ g.classed("dimmed", false); edgeSel.classed("dimmed", false); hideTooltip(); })
+    .on("click", (ev,d)=> openViewDetail(d));
+  g.append("circle").attr("class","core").attr("r", d=>rScale(d.count));
+  g.filter(d=> (overlayId || viewOverlayIdB) && overlayKeys.has(d.id))
+    .each(function(d){
+      const hits = overlayRows.filter(r=> r.keys.includes(d.id));
+      const gsel = d3.select(this);
+      hits.forEach((r,i)=>{
+        gsel.append("circle").attr("r", rScale(d.count)+4+i*4).attr("fill","none").attr("stroke",r.color).attr("stroke-width",2.2);
+      });
+    });
+  // always-on count readout inside sufficiently large nodes (survives label decluttering)
+  g.filter(d=> rScale(d.count) >= 12)
+    .append("text").attr("class","node-count").attr("text-anchor","middle").attr("dy","3.5px")
+    .text(d=> d.count);
+  g.append("text").attr("class","node-lbl declutter").attr("x", d=> rScale(d.count)+6).attr("y",4)
+    .attr("data-pr", d=> d.count)
+    .text(d=> (d.value.length>28? d.value.slice(0,26)+"…": d.value) + "  ("+d.count+")");
+
+  // Mode B: draw a small temporal strip below for each overlay patient selected —
+  // two rows (A above B) when both are set, so escalation speed is directly comparable.
+  if(mode==="B" && (overlayPatient || overlayPatientB)){
+    const rowsY = overlayPatient && overlayPatientB ? [h-16, h-4] : [h-6];
+    const patientsToStrip = [];
+    if(overlayPatient) patientsToStrip.push({p:overlayPatient, y:rowsY[0], who:"A"});
+    if(overlayPatientB) patientsToStrip.push({p:overlayPatientB, y:rowsY[overlayPatient?1:0], who:"B"});
+    patientsToStrip.forEach(({p,y,who})=>{
+      root.append("line").attr("x1",50).attr("x2",w-50).attr("y1",y).attr("y2",y).attr("stroke","var(--line)");
+      p.diagnosis_rows.forEach(r=>{
+        r.timeline.forEach(pt=>{
+          const x = 50 + Math.min(pt.t/3,1)*(w-100);
+          root.append("circle").attr("cx",x).attr("cy",y).attr("r", 3+pt.severity*5).attr("fill", pt.event==="escalation"?"var(--divergence)":"var(--trajectory)").attr("opacity",0.8)
+            .on("mouseenter", (ev)=> showTooltip(`<b>${who} · ${pt.event}</b>t = ${pt.t}yr, severity ${(pt.severity*100|0)}%`, ev))
+            .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+        });
+      });
+    });
+  }
+
+  drawPercentileCards(overlayPatient, overlayPatientB);
+  declutterLabels(svg, "text.node-lbl.declutter", "viewer");
+  drawTopTrajectories(rows);
+}
+
+function drawTopTrajectories(rows){
+  const box = document.getElementById("topTrajectories");
+  const countEl = document.getElementById("trajCount");
+  if(!box) return;
+  const chainMap = new Map(); // full checkpoint chain -> {count, patients:Set}
+  rows.forEach(r=>{
+    const chain = CHECKPOINT_KEYS.map(k=>r.checkpoints[k]).join("  →  ");
+    if(!chainMap.has(chain)) chainMap.set(chain, {chain, count:0, patients:new Set()});
+    const e = chainMap.get(chain);
+    e.count++; e.patients.add(r.patientId);
+  });
+  const all = Array.from(chainMap.values()).sort((a,b)=>b.count-a.count);
+  const top = all.slice(0,10);
+  if(countEl) countEl.textContent = `${all.length} distinct chain${all.length===1?"":"s"} in current filter`;
+  if(!top.length){ box.innerHTML = `<p class="small-note">No rows in the current filter.</p>`; return; }
+  const maxCount = top[0].count;
+  box.innerHTML = top.map((t,i)=>{
+    const segs = t.chain.split("  →  ").map(s=> `<span class="seg">${s.length>34? s.slice(0,32)+"…": s}</span>`).join(`<span class="arrow">→</span>`);
+    const pct = Math.round((t.count/maxCount)*100);
+    return `<div class="traj-row" data-idx="${i}" title="click to overlay a patient on this chain">
+      <span class="traj-rank">${i+1}</span>
+      <div class="traj-chain">${segs}<div class="traj-bar"><i style="width:${pct}%"></i></div></div>
+      <span class="traj-count">${t.count} pt${t.count===1?"":"s"}</span>
+    </div>`;
+  }).join("");
+  box.querySelectorAll(".traj-row").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const t = top[+el.dataset.idx];
+      const pid = [...t.patients][0];
+      if(!pid) return;
+      viewOverlayId = pid;
+      const p = COHORT.patients.find(x=>x.id===pid);
+      document.getElementById("patientSearch").value = `${pid} · ${CONDITION_BY_ID[p.primary_condition].label}, age ${p.age}`;
+      drawViewerGraph();
+    });
+  });
+}
+
+function openViewDetail(node){
+  const panel = document.getElementById("viewDetail");
+  panel.style.display = "block";
+  const plist = [...node.patients].slice(0,25);
+  panel.innerHTML = `<h5>${CHECKPOINT_LABELS[node.stage]} <span class="x" onclick="document.getElementById('viewDetail').style.display='none'">✕</span></h5>
+    <p class="small-note" style="margin:0 0 8px;">${node.value}</p>
+    <p class="small-note" style="margin:0 0 6px;">${node.patients.size} patient(s)${node.patients.size>25? " — showing first 25":""}:</p>
+    ${plist.map(pid=>`<span class="plink" data-pid="${pid}">${pid}</span>`).join("")}`;
+  panel.querySelectorAll(".plink").forEach(el=> el.addEventListener("click", ()=>{
+    const pid = el.dataset.pid;
+    viewOverlayId = pid;
+    const p = COHORT.patients.find(x=>x.id===pid);
+    document.getElementById("patientSearch").value = `${pid} · ${CONDITION_BY_ID[p.primary_condition].label}, age ${p.age}`;
+    drawViewerGraph();
+  }));
+}
+
+function drawPercentileCards(patient, patientB){
+  const box = document.getElementById("pctlCards");
+  if(!patient && !patientB){ box.innerHTML = `<p class="small-note">Select a patient to overlay to see percentile placement. Add a second patient to compare pairwise.</p>`; return; }
+  const ages = COHORT.patients.map(p=>p.age).sort((a,b)=>a-b);
+  const counts = COHORT.patients.map(p=>p.diagnosis_rows.reduce((s,r)=>s+r.timeline.length,0)).sort((a,b)=>a-b);
+  const comos = COHORT.patients.map(p=>p.comorbidities.length).sort((a,b)=>a-b);
+  const pctl = (arr,val)=> Math.round(100* arr.filter(v=>v<=val).length / arr.length);
+  function block(p, who, color){
+    if(!p) return "";
+    const myEvents = p.diagnosis_rows.reduce((s,r)=>s+r.timeline.length,0);
+    const rows = [
+      ["Age", p.age, pctl(ages, p.age)],
+      ["Event count", myEvents, pctl(counts, myEvents)],
+      ["Comorbidity burden", p.comorbidities.length, pctl(comos, p.comorbidities.length)]
+    ];
+    return `<div style="margin-bottom:${who==='A'&&patientB?'14px':'0'}; ${who==='A'&&patientB?'padding-bottom:12px; border-bottom:1px solid var(--line-soft);':''}">
+      <p class="small-note"><b style="color:${color}; font-family:var(--font-mono);">${who? who+" · ":""}${p.id}</b> — ${CONDITION_BY_ID[p.primary_condition].label}${p.comorbidities.length? " + "+p.comorbidities.map(c=>CONDITION_BY_ID[c].label).join(", "):""}</p>
+      ${rows.map(([label,val,pc])=>`
+        <div class="pctl">
+          <div class="lbl"><span>${label}</span><span>${val} · p${pc}</span></div>
+          <div class="bar"><div class="fill" style="width:${pc}%; background:${color};"></div></div>
+        </div>`).join("")}
+    </div>`;
+  }
+  box.innerHTML = block(patient, patientB?"A":"", "var(--trajectory)") + block(patientB, "B", "#4FA8D8");
+}
+
+/* =========================================================================
+   6. PIVOT EXPLORER
+   ========================================================================= */
+document.getElementById("pivotType").addEventListener("change", ()=>{
+  document.getElementById("pivotSelect").value = "";
+  document.getElementById("pivotSearch").value = "";
+  refreshPivotOptions();
+});
+document.getElementById("pivotApply").addEventListener("click", drawPivot);
+document.getElementById("pivotZoomIn").addEventListener("click", ()=> zoomBy("#pivotSvg", pivotZoom, 1.3));
+document.getElementById("pivotZoomOut").addEventListener("click", ()=> zoomBy("#pivotSvg", pivotZoom, 0.75));
+document.getElementById("pivotZoomReset").addEventListener("click", ()=> resetZoom("#pivotSvg", pivotZoom));
+let pivotZoom = null;
+
+function pivotOptionList(){
+  const type = document.getElementById("pivotType").value;
+  if(type==="dx"){
+    return [...new Set(COHORT.patients.flatMap(p=>p.diagnosis_rows.map(r=>r.condition)))].map(id=>({v:id, t:CONDITION_BY_ID[id].label}));
+  } else if(type==="ix"){
+    return [...new Set(COHORT.patients.flatMap(p=>p.diagnosis_rows.map(r=>r.checkpoints.initial_plan)))].map(v=>({v, t:v}));
+  }
+  const combos = new Set();
+  COHORT.patients.forEach(p=>p.diagnosis_rows.forEach(r=> combos.add(r.condition+" :: "+r.checkpoints.initial_plan)));
+  return [...combos].map(v=>({v, t:v.replace(" :: "," × ")}));
+}
+
+function refreshPivotOptions(){
+  const layout = document.getElementById("pivotLayout");
+  const content = document.getElementById("pivotContent");
+  const empty = document.getElementById("pivotEmpty");
+  if(!COHORT){
+    content.style.display = "none";
+    empty.style.display = "flex";
+    empty.innerHTML = emptyStateHTML("Generate a synthetic cohort on the Generator tab, then come back here to pivot around a diagnosis or intervention.");
+    return;
+  }
+  content.style.display = "block";
+  empty.style.display = "none";
+  wireCombo("pivotSearch", "pivotResults", pivotOptionList, (v,label)=>{
+    document.getElementById("pivotSelect").value = v;
+    document.getElementById("pivotSearch").value = label;
+    drawPivot();
+  });
+  if(!document.getElementById("pivotSelect").value){
+    const opts = pivotOptionList();
+    if(opts.length){
+      document.getElementById("pivotSelect").value = opts[0].v;
+      document.getElementById("pivotSearch").value = opts[0].t;
+    }
+  }
+  drawPivot();
+}
+
+function pivotMatchRow(r, type, value){
+  if(type==="dx") return r.condition===value;
+  if(type==="ix") return r.checkpoints.initial_plan===value;
+  const [dx, ix] = value.split(" :: ");
+  return r.condition===dx && r.checkpoints.initial_plan===ix;
+}
+
+function drawPivot(){
+  if(!COHORT) return;
+  const type = document.getElementById("pivotType").value;
+  const value = document.getElementById("pivotSelect").value;
+  if(!value) return;
+  const ageMin = parseInt(document.getElementById("pfAgeMin").value,10)||0;
+  const ageMax = parseInt(document.getElementById("pfAgeMax").value,10)||120;
+  const sexF = document.getElementById("pfSex").value;
+  const escF = document.getElementById("pfEsc").value;
+
+  let matched = []; // {patient, row}
+  COHORT.patients.forEach(p=>{
+    if(p.age<ageMin || p.age>ageMax) return;
+    if(sexF!=="__all" && p.sex!==sexF) return;
+    p.diagnosis_rows.forEach(r=>{
+      if(!pivotMatchRow(r, type, value)) return;
+      if(escF==="yes" && !r.escalated) return;
+      if(escF==="no" && r.escalated) return;
+      matched.push({patient:p, row:r});
+    });
+  });
+
+  // full (unfiltered by comparator, but same pivot) set for divergence comparison
+  let allForPivot = [];
+  COHORT.patients.forEach(p=> p.diagnosis_rows.forEach(r=>{ if(pivotMatchRow(r,type,value)) allForPivot.push({patient:p,row:r}); }));
+
+  const svg = d3.select("#pivotSvg");
+  svg.selectAll("*").remove();
+  const w = svg.node().clientWidth || 900, h = 560, cx=w/2, cy=h/2;
+  svg.attr("viewBox", `0 0 ${w} ${h}`);
+
+  const centerLabel = type==="combo" ? value.split(" :: ")[1] : value;
+
+  // ---- build full downstream hierarchy: pivot -> escalation -> advanced/recurrent -> disposition ----
+  const ringStages = ["escalation","advanced_recurrent","disposition"];
+  const escMap = new Map();
+  matched.forEach(m=>{
+    const eK = m.row.checkpoints.escalation;
+    const aK = m.row.checkpoints.advanced_recurrent;
+    const dK = m.row.checkpoints.disposition;
+    if(!escMap.has(eK)) escMap.set(eK, new Map());
+    const advMap = escMap.get(eK);
+    if(!advMap.has(aK)) advMap.set(aK, new Map());
+    const dispMap = advMap.get(aK);
+    if(!dispMap.has(dK)) dispMap.set(dK, []);
+    dispMap.get(dK).push(m);
+  });
+  const children = [];
+  escMap.forEach((advMap, eK)=>{
+    const escChildren = [];
+    advMap.forEach((dispMap, aK)=>{
+      const advChildren = [];
+      dispMap.forEach((rows, dK)=> advChildren.push({name:dK, stage:"disposition", value:rows.length, rows}));
+      escChildren.push({name:aK, stage:"advanced_recurrent", children:advChildren});
+    });
+    children.push({name:eK, stage:"escalation", children:escChildren});
+  });
+  const hierData = {name:centerLabel, children};
+
+  const zoomRoot = svg.append("g").attr("class","zoom-root");
+  pivotZoom = d3.zoom().scaleExtent([0.5,6]).on("zoom", ev=>{
+    zoomRoot.attr("transform", ev.transform);
+    declutterLabels(svg, "text.arclbl", "pivot");
+    const lvl = document.getElementById("pivotZoomLevel"); if(lvl) lvl.textContent = Math.round(ev.transform.k*100)+"%";
+  });
+  svg.call(pivotZoom);
+
+  const outerRadius = Math.min(w,h)/2 - 54;
+  const hubR = 40;
+  const hData = d3.hierarchy(hierData).sum(d=>d.value||0).sort((a,b)=>b.value-a.value);
+  d3.partition().size([2*Math.PI, outerRadius-hubR])(hData);
+
+  const shareIn = (arr, key)=> arr.filter(m=>m.row.checkpoints.disposition===key).length / (arr.length||1);
+  const arc = d3.arc()
+    .startAngle(d=>d.x0).endAngle(d=>d.x1)
+    .padAngle(0.006).padRadius(hubR)
+    .innerRadius(d=> hubR + d.y0)
+    .outerRadius(d=> Math.max(hubR + d.y0, hubR + d.y1 - 1.5));
+
+  const ringColor = {escalation: "var(--trajectory-soft)", advanced_recurrent: "#DCE7DF", disposition: null};
+  const ringStroke = {escalation: "var(--trajectory)", advanced_recurrent: "var(--ink-soft)", disposition: null};
+
+  const leaves = hData.leaves();
+  const allDescendants = hData.descendants().filter(d=>d.depth>0);
+
+  // faint concentric guides at each ring boundary, drawn behind arcs
+  const outerRadius2 = outerRadius;
+  const ringBoundaries = [hubR, hubR+(outerRadius2-hubR)/3, hubR+2*(outerRadius2-hubR)/3, outerRadius2];
+  zoomRoot.append("g").attr("transform", `translate(${cx},${cy})`).selectAll("circle.ringguide")
+    .data(ringBoundaries).join("circle").attr("class","ringguide")
+    .attr("r", d=>d).attr("fill","none").attr("stroke","var(--line)").attr("stroke-width",0.6).attr("stroke-dasharray","2,4").attr("opacity",0.5);
+
+  const arcG = zoomRoot.append("g").attr("transform", `translate(${cx},${cy})`)
+    .selectAll("path.slice").data(allDescendants).join("path")
+    .attr("class","slice")
+    .attr("d", arc)
+    .style("cursor","pointer")
+    .attr("fill", d=>{
+      if(d.data.stage==="disposition"){
+        const shareMatched = shareIn(matched, d.data.name), shareAll = shareIn(allForPivot, d.data.name);
+        return Math.abs(shareMatched-shareAll) > 0.12 ? "var(--divergence-soft)" : "var(--trajectory-soft)";
+      }
+      return ringColor[d.data.stage];
+    })
+    .attr("stroke", d=>{
+      if(d.data.stage==="disposition"){
+        const shareMatched = shareIn(matched, d.data.name), shareAll = shareIn(allForPivot, d.data.name);
+        return Math.abs(shareMatched-shareAll) > 0.12 ? "var(--divergence)" : "var(--trajectory)";
+      }
+      return ringStroke[d.data.stage];
+    })
+    .attr("stroke-width",1)
+    .style("opacity", d=> d.depth ? 1 : 0)
+    .on("mouseenter", function(ev,d){
+      const chain = new Set(d.ancestors());
+      arcG.style("opacity", n=> chain.has(n) ? 1 : 0.18);
+      const crumbs = d.ancestors().reverse().slice(1).map(a=>a.data.name).join(" → ");
+      const pctParent = d.parent ? Math.round(100*d.value/(d.parent.value||1)) : 100;
+      const pctTotal = matched.length ? Math.round(100*d.value/matched.length) : 0;
+      showTooltip(`<b>${CHECKPOINT_LABELS[d.data.stage]}</b>${d.data.name}<div class="plist">${d.value} row(s) · ${pctParent}% of parent · ${pctTotal}% of pivot total${crumbs? "<br>"+crumbs:""}</div>`, ev);
+    })
+    .on("mousemove", moveTooltip)
+    .on("mouseleave", ()=>{ arcG.style("opacity", d=>d.depth?1:0); hideTooltip(); })
+    .on("click", (ev,d)=> openPivotDetail(d));
+
+  // ring labels: name + count + % of parent ring, shown wherever there's room, decluttered by overlap
+  zoomRoot.append("g").attr("transform", `translate(${cx},${cy})`)
+    .selectAll("text.arclbl").data(allDescendants.filter(d=> (d.x1-d.x0) > 0.05)).join("text")
+    .attr("class","node-lbl arclbl")
+    .attr("transform", d=>{
+      const angle = (d.x0+d.x1)/2;
+      const r = hubR + (d.y0+d.y1)/2;
+      const deg = angle*180/Math.PI - 90;
+      return `rotate(${deg}) translate(${r},0) rotate(${deg>90?180:0})`;
+    })
+    .attr("text-anchor","middle").attr("dy","3px")
+    .attr("data-pr", d=> (d.x1-d.x0)*1000 + (d.value||0))
+    .text(d=>{
+      const pct = d.parent ? Math.round(100*d.value/(d.parent.value||1)) : 100;
+      const name = d.data.name.length>20? d.data.name.slice(0,18)+"…" : d.data.name;
+      return `${name} · ${d.value} (${pct}%)`;
+    });
+
+  const centerG = zoomRoot.append("g").attr("transform",`translate(${cx},${cy})`).style("cursor","pointer")
+    .on("mouseenter", (ev)=>{ arcG.style("opacity",1); showTooltip(`<b>Pivot center</b>${matched.length} matched rows · ${new Set(matched.map(m=>m.patient.id)).size} patients`, ev); })
+    .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+  centerG.append("circle").attr("r",hubR).attr("fill","var(--hub)").attr("opacity",0.92);
+  centerG.append("text").attr("y",-3).attr("text-anchor","middle").attr("fill","#1A1006").attr("font-family","var(--font-mono)").attr("font-weight","700").attr("font-size","15px")
+    .text(matched.length);
+  centerG.append("text").attr("y",12).attr("text-anchor","middle").attr("fill","#1A1006").attr("font-family","var(--font-mono)").attr("font-size","7.5px").attr("opacity",0.85)
+    .text(centerLabel.length>16? centerLabel.slice(0,14)+"…":centerLabel);
+
+  document.getElementById("pivotDetail").style.display = "none";
+  const byDisp = d3.group(matched, m=>m.row.checkpoints.disposition);
+  const dispKeys = Array.from(byDisp.keys());
+  drawConfounders(matched);
+  drawPivotStats(matched, allForPivot, escMap);
+  drawClinicalOutput(type, value, matched, allForPivot, dispKeys, byDisp);
+  drawStratifiedBreakdown(matched, allForPivot);
+  declutterLabels(svg, "text.arclbl", "pivot");
+  currentPivot = {type, value, label: centerLabel, matched, allForPivot};
+}
+let currentPivot = null;
+let pinnedPivots = [];
+
+document.getElementById("pivotPin").addEventListener("click", ()=>{
+  if(!currentPivot || !currentPivot.matched.length){ alert("Apply a pivot with at least one matched row before pinning."); return; }
+  if(pinnedPivots.length>=3){ alert("Up to 3 pinned pivots at once — remove one first."); return; }
+  const fullLabel = currentPivot.type==="combo" ? currentPivot.value.replace(" :: "," × ") : currentPivot.label;
+  if(pinnedPivots.some(p=>p.key===currentPivot.type+"||"+currentPivot.value)) return;
+  pinnedPivots.push({
+    key: currentPivot.type+"||"+currentPivot.value,
+    label: fullLabel,
+    matched: currentPivot.matched,
+    allForPivot: currentPivot.allForPivot
+  });
+  renderPinnedPivots();
+});
+
+function renderPinnedPivots(){
+  const box = document.getElementById("pinnedPivots");
+  const countEl = document.getElementById("pinnedCount");
+  if(countEl) countEl.textContent = pinnedPivots.length ? `${pinnedPivots.length} / 3` : "";
+  if(!pinnedPivots.length){ box.innerHTML = `<p class="small-note">No pivots pinned yet.</p>`; return; }
+  // synchronize rows across all pinned pivots: union of disposition keys, sorted by total volume
+  const unionTotals = new Map();
+  pinnedPivots.forEach(pp=> pp.matched.forEach(m=>{
+    const k = m.row.checkpoints.disposition;
+    unionTotals.set(k, (unionTotals.get(k)||0)+1);
+  }));
+  const dispOrder = Array.from(unionTotals.entries()).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+  box.innerHTML = `<div class="pinned-grid">${pinnedPivots.map((pp,i)=>{
+    const n = pp.matched.length;
+    const patients = new Set(pp.matched.map(m=>m.patient.id)).size;
+    const escPct = n? Math.round(100*pp.matched.filter(m=>m.row.escalated).length/n) : 0;
+    const byDisp = d3.group(pp.matched, m=>m.row.checkpoints.disposition);
+    const rows = dispOrder.map(k=>{
+      const rowsForK = byDisp.get(k) || [];
+      const pct = n? Math.round(100*rowsForK.length/n) : 0;
+      return `<tr><td>${rowsForK.length? k : `<span style="opacity:.4">${k}</span>`}</td><td style="text-align:right">${rowsForK.length}</td><td style="text-align:right">${rowsForK.length? pct+"%":"—"}</td></tr>`;
+    }).join("");
+    return `<div class="pinned-card" data-key="${encodeURIComponent(pp.key)}">
+      <span class="x" data-remove="${encodeURIComponent(pp.key)}" title="Unpin">✕</span>
+      <h4>${pp.label}</h4>
+      <div class="meta">${n} rows · ${patients} patients · ${escPct}% escalated</div>
+      <table class="strat-table">
+        <thead><tr><th>Disposition</th><th style="text-align:right">Rows</th><th style="text-align:right">%</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join("")}</div>`;
+  box.querySelectorAll("[data-remove]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const key = decodeURIComponent(el.dataset.remove);
+      pinnedPivots = pinnedPivots.filter(p=>p.key!==key);
+      renderPinnedPivots();
+    });
+  });
+}
+
+function ageBandOf(age){
+  if(age<18) return "0–17";
+  if(age<40) return "18–39";
+  if(age<65) return "40–64";
+  return "65+";
+}
+
+function drawStratifiedBreakdown(matched, allForPivot){
+  const box = document.getElementById("stratBreakdown");
+  if(!box) return;
+  if(!matched.length){ box.innerHTML = `<p class="small-note">No matched rows to stratify.</p>`; return; }
+  const bandOrder = ["0–17","18–39","40–64","65+"];
+  const groups = new Map(); // "band||sex" -> rows
+  matched.forEach(m=>{
+    const key = ageBandOf(m.patient.age)+"||"+m.patient.sex;
+    if(!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(m);
+  });
+  const strata = [];
+  bandOrder.forEach(band=> ["F","M"].forEach(sex=>{
+    const key = band+"||"+sex;
+    if(groups.has(key)) strata.push({band, sex, rows: groups.get(key)});
+  }));
+  if(!strata.length){ box.innerHTML = `<p class="small-note">No strata with matched rows.</p>`; return; }
+  const overallEscPct = Math.round(100*matched.filter(m=>m.row.escalated).length/matched.length);
+  const rowsHtml = strata.map(s=>{
+    const n = s.rows.length;
+    const escN = s.rows.filter(m=>m.row.escalated).length;
+    const escPct = n? Math.round(100*escN/n) : 0;
+    const byDisp = d3.group(s.rows, m=>m.row.checkpoints.disposition);
+    const topDisp = Array.from(byDisp.entries()).sort((a,b)=>b[1].length-a[1].length)[0];
+    const topPct = topDisp ? Math.round(100*topDisp[1].length/n) : 0;
+    const notable = n>=3 && Math.abs(escPct-overallEscPct)>=15;
+    return `<tr${notable? ' style="color:var(--divergence)"':''}>
+      <td>${s.band}</td><td>${s.sex}</td>
+      <td class="${n<5?'n-small':''}" style="text-align:right">${n}</td>
+      <td style="text-align:right">${escPct}%${notable? ` <span title="Diverges 15+ pts from this pivot's overall escalation rate (${overallEscPct}%)">⚠</span>`:''}</td>
+      <td style="text-align:right">${topDisp? topDisp[0].slice(0,28)+(topDisp[0].length>28?"…":""):"n/a"} (${topPct}%)</td>
+    </tr>`;
+  }).join("");
+  box.innerHTML = `
+    <table class="strat-table">
+      <thead><tr><th>Age band</th><th>Sex</th><th style="text-align:right">N</th><th style="text-align:right">Escalated</th><th style="text-align:right">Top disposition</th></tr></thead>
+      <tbody>${rowsHtml}</tbody>
+    </table>
+    <p class="small-note">Overall escalation for this pivot: ${overallEscPct}%. Rows in coral diverge 15+ points from that overall rate — a signal age/sex may interact with outcome, distinct from the flat divergence threshold used in the sunburst. Strata below 5 rows are shown greyed — treat as noisy.</p>
+  `;
+}
+
+function openPivotDetail(node){
+  const panel = document.getElementById("pivotDetail");
+  panel.style.display = "block";
+  const rows = node.leaves().flatMap(l=>l.data.rows || []);
+  const crumbs = node.ancestors().reverse().slice(1).map(a=>a.data.name).join(" → ");
+  const plist = rows.slice(0,25);
+  panel.innerHTML = `<h5>${node.data.name.length>36?node.data.name.slice(0,34)+"…":node.data.name} <span class="x" onclick="document.getElementById('pivotDetail').style.display='none'">✕</span></h5>
+    <p class="small-note" style="margin:0 0 6px;">${crumbs}</p>
+    <p class="small-note" style="margin:0 0 6px;">${rows.length} matched row(s)${rows.length>25?" — showing first 25":""}:</p>
+    ${plist.map(m=>`<span class="plink">${m.patient.id} · ${CONDITION_BY_ID[m.row.condition].label}, age ${m.patient.age}</span>`).join("")}`;
+}
+
+function drawPivotStats(matched, allForPivot, escMap){
+  const box = document.getElementById("pivotStats");
+  if(!box) return;
+  const patients = new Set(matched.map(m=>m.patient.id)).size;
+  const escN = matched.filter(m=>m.row.escalated).length;
+  const escPct = matched.length? Math.round(100*escN/matched.length) : 0;
+  const byDisp = d3.group(matched, m=>m.row.checkpoints.disposition);
+  const dispKeys = Array.from(byDisp.keys()).sort((a,b)=> byDisp.get(b).length - byDisp.get(a).length);
+  const topDisp = dispKeys[0];
+  const topDispN = topDisp ? byDisp.get(topDisp).length : 0;
+  const topDispPct = matched.length && topDisp ? Math.round(100*topDispN/matched.length) : 0;
+  const pathN = (()=>{ let n=0; escMap.forEach(advMap=> advMap.forEach(dispMap=> n+=dispMap.size)); return n; })();
+  const baselinePct = allForPivot.length? Math.round(100*allForPivot.filter(m=>m.row.escalated).length/allForPivot.length) : 0;
+  box.innerHTML = `
+    <div class="stat"><b>${matched.length}</b>matched rows</div>
+    <div class="stat"><b>${patients}</b>unique patients</div>
+    <div class="stat"><b>${escPct}%</b>escalated <span style="opacity:.6">(cohort baseline ${baselinePct}%)</span></div>
+    <div class="stat"><b>${pathN}</b>distinct outcome paths</div>
+    <div class="stat"><b>${topDispPct}%</b>→ ${topDisp||"n/a"} (${topDispN})</div>
+  `;
+}
+
+function drawConfounders(matched){
+  const list = document.getElementById("confList");
+  const items = [];
+  const travelMiss = matched.filter(m=>/missed dose|non-adherence|travel/i.test(JSON.stringify(m.row.checkpoints)));
+  if(travelMiss.length) items.push(["Adherence / narrative factor", `${travelMiss.length} of ${matched.length} matched rows involve a missed-dose or non-adherence note — a behavioral factor the graph tags but does not weight.`]);
+  const smallN = matched.length < 15;
+  if(smallN) items.push(["Small sample", `Only ${matched.length} matched rows — subgroup shares shown may be unstable with this few observations.`]);
+  const sexSkew = (()=>{ const f=matched.filter(m=>m.patient.sex==="F").length; const ratio = matched.length? f/matched.length:0; return Math.abs(ratio-0.5) > 0.2; })();
+  if(sexSkew) items.push(["Sex distribution skew", `The matched subgroup is not sex-balanced; comparisons across sex are not adjusted here.`]);
+  items.push(["Design limits", `This is an associational snapshot of a synthetic cohort graph — divergence shown is descriptive, not causal, and comparator groups are not propensity-matched.`]);
+  list.innerHTML = items.map(([t,d])=>`<li><b>${t}</b>${d}</li>`).join("");
+}
+
+function drawClinicalOutput(type, value, matched, allForPivot, dispKeys, byDisp){
+  const box = document.getElementById("clinicalOut");
+  const label = type==="combo" ? value.replace(" :: "," × ") : value;
+  const escShare = matched.length ? Math.round(100*matched.filter(m=>m.row.escalated).length/matched.length) : 0;
+  const sortedDisp = dispKeys.slice().sort((a,b)=> byDisp.get(b).length-byDisp.get(a).length);
+  const topDisp = sortedDisp[0];
+  const baselineShareOf = key=>{ const n=allForPivot.filter(m=>m.row.checkpoints.disposition===key).length; return allForPivot.length? n/allForPivot.length : 0; };
+  const rows = sortedDisp.map(k=>{
+    const n = byDisp.get(k).length;
+    const pct = matched.length? Math.round(100*n/matched.length) : 0;
+    const basePct = Math.round(100*baselineShareOf(k));
+    const diverges = Math.abs(pct-basePct) > 12;
+    return `<tr${diverges? ' style="color:var(--divergence)"':''}>
+      <td>${k}</td><td style="text-align:right">${n}</td><td style="text-align:right">${pct}%</td><td style="text-align:right; opacity:.65">${basePct}%</td>
+    </tr>`;
+  }).join("");
+  box.innerHTML = `
+    <h4>Pivot</h4>
+    <p><span class="pill">${label}</span> — ${matched.length} matched diagnosis rows across ${new Set(matched.map(m=>m.patient.id)).size} patients.</p>
+    <h4>Evidence</h4>
+    <p>${escShare}% of matched rows escalated. The most common disposition in this subgroup is <b>${topDisp||"n/a"}</b> (${topDisp? byDisp.get(topDisp).length:0} rows).</p>
+    <h4>Disposition breakdown</h4>
+    <table class="breakdown-table">
+      <thead><tr><th>Disposition</th><th style="text-align:right">Rows</th><th style="text-align:right">% of pivot</th><th style="text-align:right">% cohort baseline</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4" style="opacity:.6">No matched rows.</td></tr>'}</tbody>
+    </table>
+    <p class="small-note">Rows in coral diverge from the pivot's full-cohort baseline by more than 12 percentage points.</p>
+    <h4>Confounders</h4>
+    <p>See panel at right — narrative/adherence factors and sample-size caveats are surfaced separately from the visual encoding, not folded into it.</p>
+  `;
+}
+
+/* =========================================================================
+   TAB 4: COHORT DASHBOARD — bird's-eye view before drilling into Viewer/Pivot
+   ========================================================================= */
+function refreshDashboard(){
+  const content = document.getElementById("dashContent");
+  const empty = document.getElementById("dashEmpty");
+  if(!COHORT){
+    content.style.display = "none";
+    empty.style.display = "flex";
+    empty.innerHTML = emptyStateHTML("Generate a synthetic cohort on the Generator tab, then come back here for a cohort-level overview.");
+    return;
+  }
+  content.style.display = "block";
+  empty.style.display = "none";
+
+  const patients = COHORT.patients;
+  const allRows = patients.flatMap(p=> p.diagnosis_rows.map(r=>({...r, age:p.age, sex:p.sex})));
+  const escRows = allRows.filter(r=>r.escalated).length;
+  const withComo = patients.filter(p=>p.comorbidities.length>0).length;
+
+  document.getElementById("dashSummary").innerHTML = `
+    <div class="stat">Patients<b>${patients.length}</b></div>
+    <div class="stat">Diagnosis rows<b>${allRows.length}</b></div>
+    <div class="stat">With comorbidity<b>${withComo} (${Math.round(100*withComo/patients.length)}%)</b></div>
+    <div class="stat">Cohort escalation rate<b>${Math.round(100*escRows/allRows.length)}%</b></div>
+    <div class="stat">Conditions represented<b>${new Set(allRows.map(r=>r.condition)).size} / ${CONDITIONS.length}</b></div>
+  `;
+
+  const comoStats = drawDashComorbidityMatrix(patients);
+  drawDashAgePyramid(patients);
+  drawDashSexMix(patients);
+  const prevStats = drawDashPrevalence(allRows);
+  const escStats = drawDashEscLeaderboard(allRows);
+  drawDashNarrative(patients, allRows, comoStats, prevStats, escStats, withComo);
+}
+
+function drawDashComorbidityMatrix(patients){
+  const box = document.getElementById("dashComorbidityMatrix");
+  const noteEl = document.getElementById("comoMatrixNote");
+  const N = patients.length;
+  // per-patient set of distinct conditions present (primary + comorbidities)
+  const patientConds = patients.map(p=> new Set([p.primary_condition, ...p.comorbidities]));
+  const presentIds = CONDITIONS.map(c=>c.id).filter(id=> patientConds.some(s=>s.has(id)));
+  const singleCounts = new Map(presentIds.map(id=>[id, patientConds.filter(s=>s.has(id)).length]));
+  const pairCounts = new Map(); // "A|B" sorted -> count
+  patientConds.forEach(s=>{
+    const arr = [...s];
+    for(let i=0;i<arr.length;i++) for(let j=i+1;j<arr.length;j++){
+      const key = [arr[i],arr[j]].sort().join("|");
+      pairCounts.set(key, (pairCounts.get(key)||0)+1);
+    }
+  });
+  if(noteEl) noteEl.textContent = `${presentIds.length} conditions present · ${pairCounts.size} co-occurring pairs`;
+
+  const colorScale = d3.scaleLinear().domain([0,1,3]).range(["#3E7CB8","#233029","#E37B58"]).clamp(true);
+  let topPair = null; // highest ratio with n>=3, for narrative
+
+  if(!presentIds.length){ box.innerHTML = `<p class="small-note">No comorbidity data.</p>`; return {topPair:null, pairCounts, singleCounts, presentIds}; }
+
+  let html = `<table class="comomatrix"><thead><tr><th></th>${presentIds.map(id=>`<th class="collbl">${CONDITION_BY_ID[id].label}</th>`).join("")}</tr></thead><tbody>`;
+  presentIds.forEach(rowId=>{
+    html += `<tr><th class="rowlbl">${CONDITION_BY_ID[rowId].label}</th>`;
+    presentIds.forEach(colId=>{
+      if(rowId===colId){ html += `<td style="background:var(--paper-raised);"></td>`; return; }
+      const key = [rowId,colId].sort().join("|");
+      const obs = pairCounts.get(key) || 0;
+      const expected = (singleCounts.get(rowId)*singleCounts.get(colId))/N;
+      const ratio = expected>0 ? obs/expected : 0;
+      const lowN = obs < 3;
+      const fill = lowN ? "var(--line)" : colorScale(ratio);
+      if(!lowN && obs>0 && (!topPair || ratio>topPair.ratio) && rowId<colId){
+        topPair = {a:rowId, b:colId, obs, ratio};
+      }
+      html += `<td style="background:${fill};" data-tt="<b>${CONDITION_BY_ID[rowId].label} × ${CONDITION_BY_ID[colId].label}</b>${obs} patient(s) co-occurring · ${ratio.toFixed(2)}× chance${lowN? ' <br><span style=&quot;opacity:.7&quot;>n too small to read</span>':''}"></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  box.innerHTML = html;
+  box.querySelectorAll("td[data-tt]").forEach(td=>{
+    td.addEventListener("mouseenter", (ev)=> showTooltip(td.dataset.tt, ev));
+    td.addEventListener("mousemove", moveTooltip);
+    td.addEventListener("mouseleave", hideTooltip);
+  });
+  return {topPair, pairCounts, singleCounts, presentIds};
+}
+
+function drawDashNarrative(patients, allRows, comoStats, prevStats, escStats, withComo){
+  const el = document.getElementById("dashNarrative");
+  if(!el) return;
+  const N = patients.length;
+  const ages = patients.map(p=>p.age).sort((a,b)=>a-b);
+  const medianAge = ages.length ? (ages.length%2 ? ages[(ages.length-1)/2] : Math.round((ages[ages.length/2-1]+ages[ages.length/2])/2)) : 0;
+  const sexCounts = d3.rollup(patients, v=>v.length, p=>p.sex);
+  const fPct = Math.round(100*(sexCounts.get("F")||0)/N);
+  const topCond = prevStats && prevStats[0];
+  const topEsc = escStats && escStats.filter(d=>d.total>=5)[0];
+  const cohortEscPct = Math.round(100*allRows.filter(r=>r.escalated).length/allRows.length);
+
+  const parts = [];
+  parts.push(`This synthetic cohort of <b>${N} patients</b> (median age ${medianAge}, ${fPct}% female) spans <b>${comoStats.presentIds.length} of ${CONDITIONS.length}</b> generated conditions, with <b>${withComo}</b> patients (${Math.round(100*withComo/N)}%) carrying at least one comorbidity.`);
+  if(topCond) parts.push(`<b>${topCond.label}</b> is the most prevalent diagnosis at ${topCond.count} row(s).`);
+  if(topEsc) parts.push(`<b>${topEsc.label}</b> has the highest escalation rate among conditions with adequate sample (≥5 rows) at ${Math.round(topEsc.rate*100)}%, versus a cohort-wide rate of ${cohortEscPct}%.`);
+  if(comoStats.topPair){
+    const {a,b,obs,ratio} = comoStats.topPair;
+    parts.push(`The strongest comorbidity clustering is <b>${CONDITION_BY_ID[a].label} + ${CONDITION_BY_ID[b].label}</b>, co-occurring in ${obs} patients — about ${ratio.toFixed(1)}× what independence would predict.`);
+  } else {
+    parts.push(`No comorbidity pair in this cohort shows notable clustering above chance with sufficient sample.`);
+  }
+  parts.push(`As with everything on this page: descriptive synthetic-data patterns, not inferential claims.`);
+  el.innerHTML = parts.join(" ");
+}
+
+function drawDashAgePyramid(patients){
+  const svg = d3.select("#dashAgeSvg");
+  svg.selectAll("*").remove();
+  const w = svg.node().clientWidth || 500, h = 220;
+  svg.attr("viewBox", `0 0 ${w} ${h}`);
+  const binSize = 10;
+  const maxAge = Math.max(10, d3.max(patients, p=>p.age)||90);
+  const bins = d3.range(0, maxAge+binSize, binSize).map(lo=>({lo, hi:lo+binSize, count:0}));
+  patients.forEach(p=>{
+    const idx = Math.min(bins.length-1, Math.floor(p.age/binSize));
+    bins[idx].count++;
+  });
+  const margin = {top:10,right:14,bottom:26,left:34};
+  const iw = w-margin.left-margin.right, ih = h-margin.top-margin.bottom;
+  const x = d3.scaleBand().domain(bins.map(b=>b.lo)).range([0,iw]).padding(0.18);
+  const y = d3.scaleLinear().domain([0, d3.max(bins,b=>b.count)||1]).range([ih,0]);
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  g.append("g").attr("transform",`translate(0,${ih})`).call(d3.axisBottom(x).tickFormat(d=>d)).selectAll("text").style("font-size","8px").style("fill","var(--ink-soft)");
+  g.selectAll(".domain,.tick line").style("stroke","var(--line)");
+  g.append("g").call(d3.axisLeft(y).ticks(4)).selectAll("text").style("font-size","8px").style("fill","var(--ink-soft)");
+  g.selectAll(".domain,.tick line").style("stroke","var(--line)");
+  g.selectAll("rect").data(bins).join("rect")
+    .attr("x", b=>x(b.lo)).attr("width", x.bandwidth())
+    .attr("y", b=>y(b.count)).attr("height", b=> ih-y(b.count))
+    .attr("fill","var(--trajectory)").attr("rx",2)
+    .on("mouseenter", (ev,b)=> showTooltip(`<b>ages ${b.lo}–${b.hi-1}</b>${b.count} patient(s)`, ev))
+    .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+}
+
+function drawDashSexMix(patients){
+  const svg = d3.select("#dashSexSvg");
+  svg.selectAll("*").remove();
+  const w = svg.node().clientWidth || 260, h = 220;
+  svg.attr("viewBox", `0 0 ${w} ${h}`);
+  const counts = d3.rollup(patients, v=>v.length, p=>p.sex);
+  const data = Array.from(counts, ([sex,count])=>({sex,count}));
+  const colors = {F:"var(--trajectory)", M:"var(--hub)"};
+  const radius = Math.min(w,h)/2 - 30;
+  const g = svg.append("g").attr("transform", `translate(${w/2},${h/2})`);
+  const pie = d3.pie().value(d=>d.count).sort(null);
+  const arc = d3.arc().innerRadius(radius*0.55).outerRadius(radius);
+  g.selectAll("path").data(pie(data)).join("path")
+    .attr("d", arc).attr("fill", d=>colors[d.data.sex]||"var(--line)").attr("stroke","var(--paper-raised)").attr("stroke-width",2)
+    .on("mouseenter", (ev,d)=> showTooltip(`<b>${d.data.sex}</b>${d.data.count} patient(s) (${Math.round(100*d.data.count/patients.length)}%)`, ev))
+    .on("mousemove", moveTooltip).on("mouseleave", hideTooltip);
+  g.selectAll("text").data(pie(data)).join("text")
+    .attr("transform", d=>`translate(${arc.centroid(d)})`).attr("text-anchor","middle")
+    .style("font-size","11px").style("font-family","var(--font-mono)").style("fill","var(--paper)")
+    .text(d=> `${d.data.sex} ${Math.round(100*d.data.count/patients.length)}%`);
+}
+
+function drawDashPrevalence(allRows){
+  const box = document.getElementById("dashPrevalence");
+  const counts = new Map();
+  CONDITIONS.forEach(c=> counts.set(c.id, {label:c.label, family:c.family, count:0}));
+  allRows.forEach(r=>{ if(counts.has(r.condition)) counts.get(r.condition).count++; });
+  const arr = Array.from(counts.values()).sort((a,b)=>b.count-a.count);
+  const maxCount = d3.max(arr, d=>d.count) || 1;
+  box.innerHTML = arr.map(d=>`
+    <div class="bar-row">
+      <span class="lbl" title="${d.label}">${d.label}</span>
+      <span class="track"><span class="fill" style="width:${Math.round(100*d.count/maxCount)}%"></span></span>
+      <span class="val">${d.count}</span>
+    </div>`).join("");
+  return arr;
+}
+
+function drawDashEscLeaderboard(allRows){
+  const box = document.getElementById("dashEscLeaderboard");
+  const counts = new Map();
+  CONDITIONS.forEach(c=> counts.set(c.id, {label:c.label, total:0, esc:0}));
+  allRows.forEach(r=>{
+    if(!counts.has(r.condition)) return;
+    const e = counts.get(r.condition);
+    e.total++; if(r.escalated) e.esc++;
+  });
+  const arr = Array.from(counts.values()).filter(d=>d.total>0).map(d=>({...d, rate: d.esc/d.total}));
+  arr.sort((a,b)=>b.rate-a.rate);
+  box.innerHTML = arr.map(d=>`
+    <div class="bar-row">
+      <span class="lbl" title="${d.label}">${d.label}</span>
+      <span class="track"><span class="fill esc" style="width:${Math.round(d.rate*100)}%"></span></span>
+      <span class="val">${Math.round(d.rate*100)}%</span>
+    </div>`).join("");
+  return arr;
+}
+</script>
+</body>
+</html>
