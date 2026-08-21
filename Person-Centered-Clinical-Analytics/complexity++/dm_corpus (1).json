@@ -1,0 +1,2267 @@
+{
+  "meta": {
+    "description": "Synthetic FHIR-flavored patient corpus for the Person-Centered Clinical Analytics multi-disease demo pilot. All data fabricated - not real patient data.",
+    "generated": "2026-08-17",
+    "seed": 42,
+    "per_disease": 1,
+    "diseases_included": [
+      "htn",
+      "ckd"
+    ],
+    "total_patients": 2,
+    "by_disease": {
+      "htn": {
+        "label": "Hypertension",
+        "short": "HTN",
+        "count": 1
+      },
+      "ckd": {
+        "label": "Chronic Kidney Disease",
+        "short": "CKD",
+        "count": 1
+      }
+    }
+  },
+  "patients_by_disease": {
+    "htn": [
+      {
+        "patient_id": "htn-97da2849",
+        "condition_type": "HTN",
+        "condition_label": "Hypertension",
+        "demographics": {
+          "gender": "female",
+          "birth_year": 1952,
+          "diagnosis_age": 61,
+          "years_since_diagnosis": 13
+        },
+        "tags": {
+          "facility_tier": "tertiary",
+          "resource_status": "plenty",
+          "key_event_count": 6,
+          "acute_event_count": 2,
+          "distinct_key_event_types": 6,
+          "pool_size": 8,
+          "event_type_counts": {
+            "Calcium channel blocker added": 1,
+            "Thiazide diuretic added": 1,
+            "Lifestyle counseling (sodium restriction + exercise)": 1,
+            "Hypertensive urgency ED visit": 1,
+            "Home BP monitoring initiated": 1,
+            "Hypertensive emergency (end-organ damage) admission": 1
+          },
+          "comorbidity_count": 0,
+          "comorbidities": []
+        },
+        "fhir_bundle": {
+          "resourceType": "Bundle",
+          "type": "collection",
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "id": "htn-97da2849",
+                "identifier": [
+                  {
+                    "system": "urn:demo:synthetic",
+                    "value": "htn-97da2849"
+                  }
+                ],
+                "gender": "female",
+                "birthDate": "1952-04-01",
+                "meta": {
+                  "tag": [
+                    {
+                      "code": "synthetic-demo-data"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-38a907d0",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "38341003",
+                      "display": "Essential hypertension"
+                    }
+                  ],
+                  "text": "Essential hypertension"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "encounter-diagnosis"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2013-03-31"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-90402c80",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Routine screening - elevated blood pressure"
+                  }
+                ],
+                "period": {
+                  "start": "2013-03-31"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "tertiary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "diagnosed_asymptomatic"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-d7c57008",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8480-6",
+                      "display": "Systolic BP"
+                    }
+                  ],
+                  "text": "Systolic BP"
+                },
+                "effectiveDateTime": "2013-03-31",
+                "valueQuantity": {
+                  "value": 146,
+                  "unit": "mmHg"
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-1f6f2105",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "17767",
+                      "display": "Calcium channel blocker added"
+                    }
+                  ],
+                  "text": "Calcium channel blocker added"
+                },
+                "authoredOn": "2015-05-14",
+                "dosageInstruction": [
+                  {
+                    "text": "Add amlodipine 5mg PO daily"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-1be4b28d",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "5487",
+                      "display": "Thiazide diuretic added"
+                    }
+                  ],
+                  "text": "Thiazide diuretic added"
+                },
+                "authoredOn": "2017-01-17",
+                "dosageInstruction": [
+                  {
+                    "text": "Add hydrochlorothiazide 25mg PO daily"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-e69595b4",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Lifestyle counseling (sodium restriction + exercise)"
+                  }
+                ],
+                "period": {
+                  "start": "2018-07-18"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "quaternary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Lifestyle counseling (sodium restriction + exercise)"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-6841b5ce",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "class": {
+                  "code": "EMER"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Hypertensive urgency ED visit"
+                  }
+                ],
+                "period": {
+                  "start": "2020-10-31"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "quaternary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_with_sequelae"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 5
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Hypertensive urgency ED visit"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-7d2f2bb3",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8480-6",
+                      "display": "Systolic BP"
+                    }
+                  ],
+                  "text": "Systolic BP"
+                },
+                "effectiveDateTime": "2020-10-31",
+                "valueQuantity": {
+                  "value": 183,
+                  "unit": "mmHg"
+                },
+                "extension": [
+                  {
+                    "url": "demo/severity",
+                    "valueString": "acute"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-53ae5c62",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Home BP monitoring initiated"
+                  }
+                ],
+                "period": {
+                  "start": "2022-09-13"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "primary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "constrained"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Home BP monitoring initiated"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-ee39720b",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "class": {
+                  "code": "IMP"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Hypertensive emergency (end-organ damage) admission"
+                  }
+                ],
+                "period": {
+                  "start": "2025-02-16"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "secondary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_no_deficit"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 4
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Hypertensive emergency (end-organ damage) admission"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-44503f9f",
+                "subject": {
+                  "reference": "Patient/htn-97da2849"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "8480-6",
+                      "display": "Systolic BP"
+                    }
+                  ],
+                  "text": "Systolic BP"
+                },
+                "effectiveDateTime": "2025-02-16",
+                "valueQuantity": {
+                  "value": 228,
+                  "unit": "mmHg"
+                },
+                "extension": [
+                  {
+                    "url": "demo/severity",
+                    "valueString": "critical"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "ckd": [
+      {
+        "patient_id": "ckd-284666a6",
+        "condition_type": "CKD",
+        "condition_label": "Chronic Kidney Disease",
+        "demographics": {
+          "gender": "male",
+          "birth_year": 1956,
+          "diagnosis_age": 51,
+          "years_since_diagnosis": 19
+        },
+        "tags": {
+          "facility_tier": "tertiary",
+          "resource_status": "plenty",
+          "key_event_count": 8,
+          "acute_event_count": 2,
+          "distinct_key_event_types": 8,
+          "pool_size": 8,
+          "event_type_counts": {
+            "Stage progression - eGFR decline documented": 1,
+            "ACE inhibitor / ARB initiated (renoprotection)": 1,
+            "Dialysis access placement (fistula/catheter)": 1,
+            "Hemodialysis initiation": 1,
+            "Acute kidney injury admission": 1,
+            "Transplant workup referral": 1,
+            "Nephrology referral": 1,
+            "SGLT2 inhibitor added (renal protection)": 1
+          },
+          "comorbidity_count": 4,
+          "comorbidities": [
+            {
+              "name": "Fluid overload",
+              "onset": "2020-04-18"
+            },
+            {
+              "name": "Metabolic acidosis",
+              "onset": "2023-07-07"
+            },
+            {
+              "name": "Anemia of chronic disease",
+              "onset": "2019-08-03"
+            },
+            {
+              "name": "Secondary hyperparathyroidism",
+              "onset": "2008-12-12"
+            }
+          ]
+        },
+        "fhir_bundle": {
+          "resourceType": "Bundle",
+          "type": "collection",
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "id": "ckd-284666a6",
+                "identifier": [
+                  {
+                    "system": "urn:demo:synthetic",
+                    "value": "ckd-284666a6"
+                  }
+                ],
+                "gender": "male",
+                "birthDate": "1956-04-29",
+                "meta": {
+                  "tag": [
+                    {
+                      "code": "synthetic-demo-data"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-93545a32",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "709044004",
+                      "display": "Chronic kidney disease"
+                    }
+                  ],
+                  "text": "Chronic kidney disease"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "encounter-diagnosis"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2007-04-28"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-b5150937",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Incidental finding - reduced eGFR on routine labs"
+                  }
+                ],
+                "period": {
+                  "start": "2007-04-28"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "tertiary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "diagnosed_asymptomatic"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-bec72d8d",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "48642-3",
+                      "display": "eGFR"
+                    }
+                  ],
+                  "text": "eGFR"
+                },
+                "effectiveDateTime": "2007-04-28",
+                "valueQuantity": {
+                  "value": 41,
+                  "unit": "mL/min/1.73m2"
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-cfdadd95",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Stage progression - eGFR decline documented"
+                  }
+                ],
+                "period": {
+                  "start": "2009-01-14"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "tertiary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Stage progression - eGFR decline documented"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-ea5fa5d2",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "48642-3",
+                      "display": "eGFR"
+                    }
+                  ],
+                  "text": "eGFR"
+                },
+                "effectiveDateTime": "2009-01-14",
+                "valueQuantity": {
+                  "value": 28,
+                  "unit": "mL/min/1.73m2"
+                }
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-abfe7b24",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "18867",
+                      "display": "ACE inhibitor / ARB initiated (renoprotection)"
+                    }
+                  ],
+                  "text": "ACE inhibitor / ARB initiated (renoprotection)"
+                },
+                "authoredOn": "2011-06-10",
+                "dosageInstruction": [
+                  {
+                    "text": "Lisinopril 5mg PO daily, titrate as tolerated"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-79bcc3a8",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Dialysis access placement (fistula/catheter)"
+                  }
+                ],
+                "period": {
+                  "start": "2013-04-16"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "primary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "constrained"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Dialysis access placement (fistula/catheter)"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-428488a6",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "IMP"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Hemodialysis initiation"
+                  }
+                ],
+                "period": {
+                  "start": "2015-10-29"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "secondary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "constrained"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_no_deficit"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 2
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Hemodialysis initiation"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-d681d053",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "EMER"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Acute kidney injury admission"
+                  }
+                ],
+                "period": {
+                  "start": "2017-07-29"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "primary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "stabilized_with_sequelae"
+                  },
+                  {
+                    "url": "demo/length_of_stay_days",
+                    "valueInteger": 1
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Acute kidney injury admission"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "id": "obs-91fcac8c",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://loinc.org",
+                      "code": "2160-0",
+                      "display": "Creatinine"
+                    }
+                  ],
+                  "text": "Creatinine"
+                },
+                "effectiveDateTime": "2017-07-29",
+                "valueQuantity": {
+                  "value": 5,
+                  "unit": "mg/dL"
+                },
+                "extension": [
+                  {
+                    "url": "demo/severity",
+                    "valueString": "acute"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-104aa8f0",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Transplant workup referral"
+                  }
+                ],
+                "period": {
+                  "start": "2020-03-23"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "primary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "plenty"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Transplant workup referral"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Encounter",
+                "id": "enc-d83ff48d",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "class": {
+                  "code": "AMB"
+                },
+                "reasonCode": [
+                  {
+                    "text": "Nephrology referral"
+                  }
+                ],
+                "period": {
+                  "start": "2022-03-14"
+                },
+                "extension": [
+                  {
+                    "url": "demo/facility_tier",
+                    "valueString": "secondary"
+                  },
+                  {
+                    "url": "demo/resource_status",
+                    "valueString": "constrained"
+                  },
+                  {
+                    "url": "demo/outcome_status",
+                    "valueString": "routine"
+                  },
+                  {
+                    "url": "demo/key_event",
+                    "valueString": "true"
+                  },
+                  {
+                    "url": "demo/key_event_type",
+                    "valueString": "Nephrology referral"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "medreq-c47c8a88",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "status": "active",
+                "medicationCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                      "code": "1373463",
+                      "display": "SGLT2 inhibitor added (renal protection)"
+                    }
+                  ],
+                  "text": "SGLT2 inhibitor added (renal protection)"
+                },
+                "authoredOn": "2025-01-15",
+                "dosageInstruction": [
+                  {
+                    "text": "Dapagliflozin 10mg PO daily"
+                  }
+                ]
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-d6e5e658",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "60046008",
+                      "display": "Fluid overload"
+                    }
+                  ],
+                  "text": "Fluid overload"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "problem-list-item"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2020-04-18"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-9db24f74",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "59455009",
+                      "display": "Metabolic acidosis"
+                    }
+                  ],
+                  "text": "Metabolic acidosis"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "problem-list-item"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2023-07-07"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-cbb2de87",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "271737000",
+                      "display": "Anemia of chronic disease"
+                    }
+                  ],
+                  "text": "Anemia of chronic disease"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "problem-list-item"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2019-08-03"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Condition",
+                "id": "cond-7ea679b8",
+                "subject": {
+                  "reference": "Patient/ckd-284666a6"
+                },
+                "code": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "70925003",
+                      "display": "Secondary hyperparathyroidism"
+                    }
+                  ],
+                  "text": "Secondary hyperparathyroidism"
+                },
+                "clinicalStatus": {
+                  "coding": [
+                    {
+                      "code": "active"
+                    }
+                  ]
+                },
+                "category": [
+                  {
+                    "coding": [
+                      {
+                        "code": "problem-list-item"
+                      }
+                    ]
+                  }
+                ],
+                "onsetDateTime": "2008-12-12"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "all_patients": [
+    {
+      "patient_id": "htn-97da2849",
+      "condition_type": "HTN",
+      "condition_label": "Hypertension",
+      "demographics": {
+        "gender": "female",
+        "birth_year": 1952,
+        "diagnosis_age": 61,
+        "years_since_diagnosis": 13
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "key_event_count": 6,
+        "acute_event_count": 2,
+        "distinct_key_event_types": 6,
+        "pool_size": 8,
+        "event_type_counts": {
+          "Calcium channel blocker added": 1,
+          "Thiazide diuretic added": 1,
+          "Lifestyle counseling (sodium restriction + exercise)": 1,
+          "Hypertensive urgency ED visit": 1,
+          "Home BP monitoring initiated": 1,
+          "Hypertensive emergency (end-organ damage) admission": 1
+        },
+        "comorbidity_count": 0,
+        "comorbidities": []
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "htn-97da2849",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "htn-97da2849"
+                }
+              ],
+              "gender": "female",
+              "birthDate": "1952-04-01",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-38a907d0",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "38341003",
+                    "display": "Essential hypertension"
+                  }
+                ],
+                "text": "Essential hypertension"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2013-03-31"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-90402c80",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Routine screening - elevated blood pressure"
+                }
+              ],
+              "period": {
+                "start": "2013-03-31"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-d7c57008",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "8480-6",
+                    "display": "Systolic BP"
+                  }
+                ],
+                "text": "Systolic BP"
+              },
+              "effectiveDateTime": "2013-03-31",
+              "valueQuantity": {
+                "value": 146,
+                "unit": "mmHg"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-1f6f2105",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "17767",
+                    "display": "Calcium channel blocker added"
+                  }
+                ],
+                "text": "Calcium channel blocker added"
+              },
+              "authoredOn": "2015-05-14",
+              "dosageInstruction": [
+                {
+                  "text": "Add amlodipine 5mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-1be4b28d",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "5487",
+                    "display": "Thiazide diuretic added"
+                  }
+                ],
+                "text": "Thiazide diuretic added"
+              },
+              "authoredOn": "2017-01-17",
+              "dosageInstruction": [
+                {
+                  "text": "Add hydrochlorothiazide 25mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-e69595b4",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Lifestyle counseling (sodium restriction + exercise)"
+                }
+              ],
+              "period": {
+                "start": "2018-07-18"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Lifestyle counseling (sodium restriction + exercise)"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-6841b5ce",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Hypertensive urgency ED visit"
+                }
+              ],
+              "period": {
+                "start": "2020-10-31"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "quaternary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 5
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Hypertensive urgency ED visit"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-7d2f2bb3",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "8480-6",
+                    "display": "Systolic BP"
+                  }
+                ],
+                "text": "Systolic BP"
+              },
+              "effectiveDateTime": "2020-10-31",
+              "valueQuantity": {
+                "value": 183,
+                "unit": "mmHg"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-53ae5c62",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Home BP monitoring initiated"
+                }
+              ],
+              "period": {
+                "start": "2022-09-13"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Home BP monitoring initiated"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-ee39720b",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "Hypertensive emergency (end-organ damage) admission"
+                }
+              ],
+              "period": {
+                "start": "2025-02-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 4
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Hypertensive emergency (end-organ damage) admission"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-44503f9f",
+              "subject": {
+                "reference": "Patient/htn-97da2849"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "8480-6",
+                    "display": "Systolic BP"
+                  }
+                ],
+                "text": "Systolic BP"
+              },
+              "effectiveDateTime": "2025-02-16",
+              "valueQuantity": {
+                "value": 228,
+                "unit": "mmHg"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "critical"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "patient_id": "ckd-284666a6",
+      "condition_type": "CKD",
+      "condition_label": "Chronic Kidney Disease",
+      "demographics": {
+        "gender": "male",
+        "birth_year": 1956,
+        "diagnosis_age": 51,
+        "years_since_diagnosis": 19
+      },
+      "tags": {
+        "facility_tier": "tertiary",
+        "resource_status": "plenty",
+        "key_event_count": 8,
+        "acute_event_count": 2,
+        "distinct_key_event_types": 8,
+        "pool_size": 8,
+        "event_type_counts": {
+          "Stage progression - eGFR decline documented": 1,
+          "ACE inhibitor / ARB initiated (renoprotection)": 1,
+          "Dialysis access placement (fistula/catheter)": 1,
+          "Hemodialysis initiation": 1,
+          "Acute kidney injury admission": 1,
+          "Transplant workup referral": 1,
+          "Nephrology referral": 1,
+          "SGLT2 inhibitor added (renal protection)": 1
+        },
+        "comorbidity_count": 4,
+        "comorbidities": [
+          {
+            "name": "Fluid overload",
+            "onset": "2020-04-18"
+          },
+          {
+            "name": "Metabolic acidosis",
+            "onset": "2023-07-07"
+          },
+          {
+            "name": "Anemia of chronic disease",
+            "onset": "2019-08-03"
+          },
+          {
+            "name": "Secondary hyperparathyroidism",
+            "onset": "2008-12-12"
+          }
+        ]
+      },
+      "fhir_bundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "resource": {
+              "resourceType": "Patient",
+              "id": "ckd-284666a6",
+              "identifier": [
+                {
+                  "system": "urn:demo:synthetic",
+                  "value": "ckd-284666a6"
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1956-04-29",
+              "meta": {
+                "tag": [
+                  {
+                    "code": "synthetic-demo-data"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-93545a32",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "709044004",
+                    "display": "Chronic kidney disease"
+                  }
+                ],
+                "text": "Chronic kidney disease"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "encounter-diagnosis"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2007-04-28"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-b5150937",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Incidental finding - reduced eGFR on routine labs"
+                }
+              ],
+              "period": {
+                "start": "2007-04-28"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "diagnosed_asymptomatic"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-bec72d8d",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "48642-3",
+                    "display": "eGFR"
+                  }
+                ],
+                "text": "eGFR"
+              },
+              "effectiveDateTime": "2007-04-28",
+              "valueQuantity": {
+                "value": 41,
+                "unit": "mL/min/1.73m2"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-cfdadd95",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Stage progression - eGFR decline documented"
+                }
+              ],
+              "period": {
+                "start": "2009-01-14"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "tertiary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Stage progression - eGFR decline documented"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-ea5fa5d2",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "48642-3",
+                    "display": "eGFR"
+                  }
+                ],
+                "text": "eGFR"
+              },
+              "effectiveDateTime": "2009-01-14",
+              "valueQuantity": {
+                "value": 28,
+                "unit": "mL/min/1.73m2"
+              }
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-abfe7b24",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "18867",
+                    "display": "ACE inhibitor / ARB initiated (renoprotection)"
+                  }
+                ],
+                "text": "ACE inhibitor / ARB initiated (renoprotection)"
+              },
+              "authoredOn": "2011-06-10",
+              "dosageInstruction": [
+                {
+                  "text": "Lisinopril 5mg PO daily, titrate as tolerated"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-79bcc3a8",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Dialysis access placement (fistula/catheter)"
+                }
+              ],
+              "period": {
+                "start": "2013-04-16"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Dialysis access placement (fistula/catheter)"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-428488a6",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "IMP"
+              },
+              "reasonCode": [
+                {
+                  "text": "Hemodialysis initiation"
+                }
+              ],
+              "period": {
+                "start": "2015-10-29"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_no_deficit"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 2
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Hemodialysis initiation"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-d681d053",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "EMER"
+              },
+              "reasonCode": [
+                {
+                  "text": "Acute kidney injury admission"
+                }
+              ],
+              "period": {
+                "start": "2017-07-29"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "stabilized_with_sequelae"
+                },
+                {
+                  "url": "demo/length_of_stay_days",
+                  "valueInteger": 1
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Acute kidney injury admission"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "obs-91fcac8c",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "2160-0",
+                    "display": "Creatinine"
+                  }
+                ],
+                "text": "Creatinine"
+              },
+              "effectiveDateTime": "2017-07-29",
+              "valueQuantity": {
+                "value": 5,
+                "unit": "mg/dL"
+              },
+              "extension": [
+                {
+                  "url": "demo/severity",
+                  "valueString": "acute"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-104aa8f0",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Transplant workup referral"
+                }
+              ],
+              "period": {
+                "start": "2020-03-23"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "primary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "plenty"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Transplant workup referral"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Encounter",
+              "id": "enc-d83ff48d",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "class": {
+                "code": "AMB"
+              },
+              "reasonCode": [
+                {
+                  "text": "Nephrology referral"
+                }
+              ],
+              "period": {
+                "start": "2022-03-14"
+              },
+              "extension": [
+                {
+                  "url": "demo/facility_tier",
+                  "valueString": "secondary"
+                },
+                {
+                  "url": "demo/resource_status",
+                  "valueString": "constrained"
+                },
+                {
+                  "url": "demo/outcome_status",
+                  "valueString": "routine"
+                },
+                {
+                  "url": "demo/key_event",
+                  "valueString": "true"
+                },
+                {
+                  "url": "demo/key_event_type",
+                  "valueString": "Nephrology referral"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "medreq-c47c8a88",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "status": "active",
+              "medicationCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                    "code": "1373463",
+                    "display": "SGLT2 inhibitor added (renal protection)"
+                  }
+                ],
+                "text": "SGLT2 inhibitor added (renal protection)"
+              },
+              "authoredOn": "2025-01-15",
+              "dosageInstruction": [
+                {
+                  "text": "Dapagliflozin 10mg PO daily"
+                }
+              ]
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-d6e5e658",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "60046008",
+                    "display": "Fluid overload"
+                  }
+                ],
+                "text": "Fluid overload"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2020-04-18"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-9db24f74",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "59455009",
+                    "display": "Metabolic acidosis"
+                  }
+                ],
+                "text": "Metabolic acidosis"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2023-07-07"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-cbb2de87",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "271737000",
+                    "display": "Anemia of chronic disease"
+                  }
+                ],
+                "text": "Anemia of chronic disease"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2019-08-03"
+            }
+          },
+          {
+            "resource": {
+              "resourceType": "Condition",
+              "id": "cond-7ea679b8",
+              "subject": {
+                "reference": "Patient/ckd-284666a6"
+              },
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "70925003",
+                    "display": "Secondary hyperparathyroidism"
+                  }
+                ],
+                "text": "Secondary hyperparathyroidism"
+              },
+              "clinicalStatus": {
+                "coding": [
+                  {
+                    "code": "active"
+                  }
+                ]
+              },
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "code": "problem-list-item"
+                    }
+                  ]
+                }
+              ],
+              "onsetDateTime": "2008-12-12"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
