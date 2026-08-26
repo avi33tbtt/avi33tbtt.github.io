@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FHIR + SNOMED CT Clinical Intelligence Pipeline — Project Plan</title>
+<style>
+  :root{
+    --ink:#0f2033;
+    --ink-soft:#3c5165;
+    --paper:#f6f4ee;
+    --panel:#ffffff;
+    --line:#d9d3c4;
+    --teal:#0d6e6e;
+    --teal-deep:#093f3f;
+    --clay:#b5502e;
+    --amber:#c98a1a;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --serif: "Source Serif 4", "Georgia", serif;
+    --sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); line-height:1.65; font-size:16px;
+  }
+  a{color:var(--teal-deep);}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* HERO */
+  header.hero{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(13,110,110,0.14), transparent 60%),
+      linear-gradient(180deg, #0f2033 0%, #0c1a2b 100%);
+    color:#eef2f0; padding:64px 0 52px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                       linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at 20% 20%, black, transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:var(--mono); letter-spacing:0.14em; text-transform:uppercase;
+    font-size:12.5px; color:#8fd3c9; margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:#8fd3c9; display:inline-block;}
+  h1{
+    font-family:var(--serif); font-weight:600; font-size:clamp(2rem, 4vw, 2.7rem);
+    margin:0 0 18px; letter-spacing:-0.01em; max-width:16ch; color:#fff;
+  }
+  .hero-sub{max-width:56ch; color:#c6d2ce; font-size:1.05rem; margin:0 0 26px;}
+  .hero-links{display:flex; flex-wrap:wrap; gap:10px;}
+  .pill{
+    font-family:var(--mono); font-size:12.5px; padding:7px 13px; border-radius:100px;
+    border:1px solid rgba(255,255,255,0.22); color:#dfe9e6; text-decoration:none;
+    background:rgba(255,255,255,0.04); transition:background .15s, border-color .15s;
+  }
+  .pill:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.4);}
+
+  /* NAV STRIP */
+  nav.toc{
+    background:var(--panel); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:10;
+  }
+  nav.toc .wrap{display:flex; gap:22px; overflow-x:auto; padding:12px 24px; scrollbar-width:none;}
+  nav.toc .wrap::-webkit-scrollbar{display:none;}
+  nav.toc a{
+    font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-soft); text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; padding-bottom:3px;
+  }
+  nav.toc a:hover{color:var(--teal-deep); border-color:var(--teal);}
+
+  main{padding:56px 0 90px;}
+  section{margin-bottom:64px;}
+  section h2{
+    font-family:var(--serif); font-size:1.55rem; color:var(--teal-deep); margin:0 0 8px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  section h2 .num{font-family:var(--mono); font-size:0.85rem; color:var(--clay); font-weight:600;}
+  .lede{color:var(--ink-soft); margin:0 0 26px; max-width:70ch;}
+  h3{font-family:var(--sans); font-size:1.05rem; color:var(--ink); margin:26px 0 10px;}
+
+  /* ARCHITECTURE DIAGRAM */
+  .arch{
+    background:var(--teal-deep); color:#eaf3f0; border-radius:10px; padding:26px 22px;
+    font-family:var(--mono); font-size:13px; overflow-x:auto; line-height:1.9;
+  }
+  .arch .stage{color:#9fe0d4;}
+  .arch .note{color:#7f9c96;}
+
+  /* PHASE CARDS */
+  .phase{
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--teal);
+    border-radius:8px; padding:20px 22px; margin-bottom:14px;
+  }
+  .phase-head{display:flex; align-items:center; gap:12px; margin-bottom:8px;}
+  .phase-tag{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:#fff;
+    background:var(--teal); padding:3px 9px; border-radius:4px; text-transform:uppercase;
+  }
+  .phase h4{margin:0; font-family:var(--sans); font-weight:600; font-size:1.02rem;}
+  .phase ul{margin:10px 0 0; padding-left:20px;}
+  .phase li{margin:5px 0; color:var(--ink-soft);}
+  .phase li::marker{color:var(--clay);}
+
+  table{border-collapse:collapse; width:100%; margin:18px 0; font-size:0.94rem;}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:#efe9db; font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.04em;}
+  tr:nth-child(even) td{background:#fbfaf6;}
+
+  code{
+    font-family:var(--mono); background:#efe9db; padding:2px 6px; border-radius:4px; font-size:0.88em;
+  }
+  .callout{
+    border:1px solid var(--line); border-left:3px solid var(--amber); background:#fdf7ea;
+    padding:16px 20px; border-radius:6px; margin:18px 0; font-size:0.95rem; color:#5a4419;
+  }
+  .callout strong{color:#3f2f0f;}
+  .risk{border-left-color:var(--clay); background:#fbeee7; color:#5a2c17;}
+  .risk strong{color:#3f1d0d;}
+
+  /* DEMO */
+  #demo{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:28px 26px; box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  .demo-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .demo-badge{
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--teal-deep); background:#e2f0ec; border:1px solid #bfe0d6; padding:4px 10px; border-radius:100px;
+  }
+  .demo-src{font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+  .concept-grid{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 20px;}
+  .concept-btn{
+    font-family:var(--sans); font-size:13.5px; background:#fff; border:1px solid var(--line);
+    color:var(--ink); padding:9px 14px; border-radius:8px; cursor:pointer; text-align:left;
+    transition:border-color .15s, transform .1s;
+  }
+  .concept-btn:hover{border-color:var(--teal); transform:translateY(-1px);}
+  .concept-btn .code{display:block; font-family:var(--mono); font-size:11px; color:var(--teal-deep); margin-top:3px;}
+  .concept-btn.active{border-color:var(--teal); background:#eef7f4; box-shadow:0 0 0 1px var(--teal) inset;}
+
+  .run-row{display:flex; align-items:center; gap:12px; margin-bottom:20px;}
+  #runBtn{
+    font-family:var(--mono); font-size:13px; letter-spacing:.03em; text-transform:uppercase;
+    background:var(--teal-deep); color:#fff; border:none; padding:11px 20px; border-radius:7px; cursor:pointer;
+  }
+  #runBtn:disabled{opacity:.55; cursor:progress;}
+  #runBtn:hover:not(:disabled){background:#062d2d;}
+  .status{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft);}
+
+  .results{border-top:1px dashed var(--line); padding-top:18px; margin-top:6px; min-height:40px;}
+  .result-row{
+    display:grid; grid-template-columns:1fr auto; gap:6px 16px; padding:12px 0;
+    border-bottom:1px solid #eee5d2;
+  }
+  .result-row:last-child{border-bottom:none;}
+  .patient-name{font-weight:600;}
+  .patient-meta{font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+  .empty, .err{font-family:var(--mono); font-size:13px; color:var(--ink-soft);}
+  .err{color:#a3401f;}
+
+  footer{
+    text-align:center; padding:34px 24px 50px; color:#8b8672; font-family:var(--mono); font-size:12px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Project plan · v2</p>
+    <h1>FHIR + SNOMED CT Clinical Intelligence Pipeline</h1>
+    <p class="hero-sub">
+      Turning a bedside question into a coded cohort query — grounded in the Avinash Principle,
+      built against real FHIR data and real SNOMED CT concepts.
+    </p>
+    <div class="hero-links">
+      <a class="pill" href="https://avi33tbtt.github.io/avinash-snomed-guided-tour.html" target="_blank" rel="noopener">↗ Reference: Guided Tour demo</a>
+      <a class="pill" href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-cohort-level.html" target="_blank" rel="noopener">↗ Cohort-Level Clinical Intelligence</a>
+      <a class="pill" href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-accelerating.html" target="_blank" rel="noopener">↗ Accelerating the Evidence Pyramid</a>
+      <a class="pill" href="https://r4.smarthealthit.org" target="_blank" rel="noopener">↗ Data source: r4.smarthealthit.org</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#idea">Idea</a>
+    <a href="#source">Data source</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#plan">Execution plan</a>
+    <a href="#demo">Live demo</a>
+    <a href="#risks">Risks</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="idea">
+    <h2><span class="num">01</span> The idea</h2>
+    <p class="lede">
+      Build a real, working system that takes a clinician's plain-language bedside question and turns it
+      into a coded, auditable cohort query — not a free-text guess.
+    </p>
+    <div class="phase">
+      <ul>
+        <li>Extract clinical concepts from the question and map them to canonical <strong>SNOMED CT</strong> codes.</li>
+        <li>Compose those concepts into a formal <strong>ECL</strong> (Expression Constraint Language) cohort query.</li>
+        <li>Run that query as a live lookup against real patient resources on a <strong>FHIR</strong> server.</li>
+        <li>Return a matched cohort with pre-computed structure — presentation clusters, hub/decision nodes, intervention timelines.</li>
+        <li>Render a standardized <strong>Clinical Intelligence Brief</strong> and <strong>Insight Report</strong> — template-filled from data, never generated prose for clinical facts.</li>
+        <li>Let the clinician explore an interactive <strong>cohort trajectory graph</strong>.</li>
+      </ul>
+    </div>
+    <p class="lede" style="margin-top:16px;">
+      This is a real-time, auditable front door onto existing evidence — not a replacement for RCTs or
+      systematic reviews. Concepts must be <em>coded, not just written</em>, so "hub node" and "cohort match"
+      mean the same thing on every run.
+    </p>
+  </section>
+
+  <section id="source">
+    <h2><span class="num">02</span> Data source: SMART Health IT public sandbox</h2>
+    <p class="lede">Decision locked in — no server setup required to start.</p>
+    <table>
+      <tr><th>Property</th><th>Value</th></tr>
+      <tr><td>Endpoint</td><td><code>https://r4.smarthealthit.org</code></td></tr>
+      <tr><td>FHIR version</td><td>R4</td></tr>
+      <tr><td>Auth</td><td>None needed for open reads — standard REST search</td></tr>
+      <tr><td>Data</td><td>Pre-loaded synthetic (Synthea-style) patients maintained by SMART Health IT</td></tr>
+      <tr><td>Search pattern</td><td><code>Condition?code=http://snomed.info/sct|&lt;conceptId&gt;</code></td></tr>
+    </table>
+    <div class="callout">
+      <strong>Trade-off accepted:</strong> we use their pool of synthetic patients rather than loading our own
+      1,000 Synthea bundles. That means zero infrastructure to stand up, at the cost of not controlling exactly
+      which conditions are represented or how many patients match a given concept. If cohort size becomes a
+      limiting factor later, the plan's Phase 1 can be revisited to self-host HAPI FHIR with our own bundles —
+      the rest of the pipeline (concept extraction → ECL → cohort analytics → briefs) is unaffected either way.
+    </div>
+  </section>
+
+  <section id="architecture">
+    <h2><span class="num">03</span> System architecture</h2>
+    <div class="arch">
+<span class="note">Clinician question (free text)</span>
+        │
+        ▼
+<span class="stage">[1] NL → SNOMED CT concept extraction</span>  <span class="note">(deterministic dictionary lookup, not generative)</span>
+        │
+        ▼
+<span class="stage">[2] Concepts → ECL query</span>  <span class="note">(SNOMED CT formal query language)</span>
+        │
+        ▼
+<span class="stage">[3] ECL query → FHIR search</span>  <span class="note">(Condition / Observation / Procedure, by SNOMED code, against r4.smarthealthit.org)</span>
+        │
+        ▼
+<span class="stage">[4] Matched patient set → cohort analytics</span>  <span class="note">(clusters, hub nodes, timelines — pre-computed, cached)</span>
+        │
+        ├──▶ <span class="stage">[5a] Clinical Intelligence Brief</span>  <span class="note">(fixed template, fields = data lookups)</span>
+        ├──▶ <span class="stage">[5b] Insight Report</span>  <span class="note">(Presentation / Intervention / Tracking)</span>
+        └──▶ <span class="stage">[5c] Cohort trajectory graph</span>  <span class="note">(interactive, hub-highlighted)</span>
+    </div>
+    <p class="lede" style="margin-top:16px;">
+      Design discipline carried over from the reference demo: LLMs are permitted only in the constrained
+      NL→concept extraction step — never to invent cohort stats, hub nodes, or outcomes.
+    </p>
+  </section>
+
+  <section id="plan">
+    <h2><span class="num">04</span> Step-wise execution plan</h2>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 1</span><h4>FHIR connectivity — done by decision</h4></div>
+      <ul>
+        <li>Point a thin FHIR client at <code>https://r4.smarthealthit.org</code>.</li>
+        <li>Build search wrappers for <code>Condition</code>, <code>Observation</code>, <code>Procedure</code>, <code>Patient</code>.</li>
+        <li>Confirm code-based filtering works: <code>code=http://snomed.info/sct|&lt;id&gt;</code>.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 2</span><h4>SNOMED CT layer</h4></div>
+      <ul>
+        <li>Start with a curated local concept dictionary (~50–100 concepts) covering the demo's clinical domains.</li>
+        <li>Validate ECL-style expansion (<code>&lt;&lt;</code> descendant-or-self) against the curated set before reaching for a full terminology server.</li>
+        <li>Build the deterministic NL→concept extractor as a phrase → concept-ID lookup table — auditable, not generative.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 3</span><h4>Query translation</h4></div>
+      <ul>
+        <li>Translate resolved concept IDs into FHIR search parameters.</li>
+        <li>Confirm the round trip: phrase → concepts → ECL → real matching patients from the sandbox.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 4</span><h4>Cohort analytics layer</h4></div>
+      <ul>
+        <li>Define the schema: presentation clusters, decision/hub nodes, intervention timelines, tracking correlations.</li>
+        <li>Batch-compute these offline and cache them, keyed by concept ID — not recomputed per query.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 5</span><h4>Output templates</h4></div>
+      <ul>
+        <li>Clinical Intelligence Brief: match %, active hub node, presentation metrics, intervention, predicted outcome — all direct lookups.</li>
+        <li>Insight Report: Presentation / Intervention / Tracking & Correlation — data reads, not generated prose.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 6</span><h4>Visualization</h4></div>
+      <ul>
+        <li>Single-patient case view: comorbidity → symptom → diagnosis → intervention → escalation → outcome, timed by day-offset.</li>
+        <li>Cohort trajectory graph: nodes sized by patient count, colored by outcome rate, hub node highlighted.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 7</span><h4>Integration &amp; polish</h4></div>
+      <ul>
+        <li>Wire the pipeline behind a single "Run query" action.</li>
+        <li>Add an "unresolved concept → say so" fallback instead of a silent guess.</li>
+        <li>Preload the two reference example queries as ready-run demos.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <strong>First milestone:</strong> connect to the sandbox, hard-code ~15 SNOMED concepts for one scenario,
+      turn a typed phrase into a filter, and show real matching patients. That's the slice below.
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2><span class="num">05</span> Live demo</h2>
+    <p class="lede">
+      This queries the real SMART Health IT sandbox from your browser, right now — Phase 1 through Phase 3
+      of the plan above, working end to end on a handful of hard-coded SNOMED concepts.
+    </p>
+    <div class="demo-head">
+      <span class="demo-badge">Live · runs in your browser</span>
+      <span class="demo-src">GET r4.smarthealthit.org/Condition?code=snomed|…</span>
+    </div>
+
+    <p style="color:var(--ink-soft); font-size:0.95rem; margin:14px 0 4px;">1. Pick a concept:</p>
+    <div class="concept-grid" id="conceptGrid"></div>
+
+    <div class="run-row">
+      <button id="runBtn">Run query</button>
+      <span class="status" id="status"></span>
+    </div>
+
+    <div class="results" id="results">
+      <p class="empty">Pick a concept above, then run the query to see real matching patients from the sandbox.</p>
+    </div>
+  </section>
+
+  <section id="risks">
+    <h2><span class="num">06</span> Open risks / things to watch</h2>
+    <div class="phase risk" style="border-left-color:var(--clay);">
+      <ul>
+        <li><strong>Shared sandbox data:</strong> the SMART Health IT pool isn't ours — cohort sizes for any given concept may be small or absent, and the dataset can change over time.</li>
+        <li><strong>SNOMED CT licensing:</strong> a full terminology + ECL server typically needs a UMLS Metathesaurus license (free for US-affiliated use, registration required).</li>
+        <li><strong>Deterministic NER accuracy:</strong> dictionary-based extraction is auditable but brittle on real phrasing — plan for an explicit "unresolved" path.</li>
+        <li><strong>Cohort analytics validity:</strong> "hub nodes" and correlations are only as good as cohort size and data quality — label outputs as illustrative until validated at scale.</li>
+        <li><strong>Clinical safety:</strong> this is a decision-support/aggregation tool, not a diagnostic system — any real deployment needs clear scope boundaries and clinical governance review.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>FHIR + SNOMED CT Clinical Intelligence Pipeline — project plan · data source: r4.smarthealthit.org</footer>
+
+<script>
+const CONCEPTS = [
+  { label: "Sepsis", code: "91302008", system: "SNOMED CT" },
+  { label: "Acute kidney injury", code: "14669001", system: "SNOMED CT" },
+  { label: "Fever", code: "386661006", system: "SNOMED CT" },
+  { label: "Hypertension", code: "38341003", system: "SNOMED CT" },
+  { label: "Type 2 diabetes", code: "44054006", system: "SNOMED CT" },
+  { label: "Pneumonia", code: "233604007", system: "SNOMED CT" },
+];
+
+const grid = document.getElementById('conceptGrid');
+let selected = null;
+
+CONCEPTS.forEach(c => {
+  const btn = document.createElement('button');
+  btn.className = 'concept-btn';
+  btn.innerHTML = c.label + '<span class="code">SCT ' + c.code + '</span>';
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.concept-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selected = c;
+  });
+  grid.appendChild(btn);
+});
+// preselect first
+grid.firstChild.classList.add('active');
+selected = CONCEPTS[0];
+
+const runBtn = document.getElementById('runBtn');
+const statusEl = document.getElementById('status');
+const resultsEl = document.getElementById('results');
+
+runBtn.addEventListener('click', async () => {
+  if (!selected) return;
+  runBtn.disabled = true;
+  statusEl.textContent = 'querying r4.smarthealthit.org …';
+  resultsEl.innerHTML = '';
+
+  const url = 'https://r4.smarthealthit.org/Condition?code=http://snomed.info/sct|' +
+              selected.code + '&_count=10&_include=Condition:patient';
+
+  try {
+    const res = await fetch(url, { headers: { 'Accept': 'application/fhir+json' } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const bundle = await res.json();
+
+    const conditions = (bundle.entry || [])
+      .filter(e => e.resource && e.resource.resourceType === 'Condition');
+    const patients = {};
+    (bundle.entry || []).forEach(e => {
+      if (e.resource && e.resource.resourceType === 'Patient') {
+        const name = (e.resource.name && e.resource.name[0]) || {};
+        const full = [ (name.given||[]).join(' '), name.family ].filter(Boolean).join(' ');
+        patients[e.resource.id] = full || ('Patient ' + e.resource.id);
+      }
+    });
+
+    statusEl.textContent = (bundle.total !== undefined ? bundle.total : conditions.length) +
+      ' condition match(es) · showing ' + conditions.length;
+
+    if (conditions.length === 0) {
+      resultsEl.innerHTML = '<p class="empty">No matches returned for this concept in the sandbox right now — try another.</p>';
+    } else {
+      conditions.forEach(c => {
+        const r = c.resource;
+        const ref = r.subject && r.subject.reference ? r.subject.reference.split('/')[1] : null;
+        const pname = ref && patients[ref] ? patients[ref] : (ref ? ('Patient ' + ref) : 'Unknown patient');
+        const onset = r.onsetDateTime || (r.recordedDate) || '—';
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML =
+          '<div><div class="patient-name">' + pname + '</div>' +
+          '<div class="patient-meta">' + (r.code && r.code.text ? r.code.text : selected.label) + '</div></div>' +
+          '<div class="patient-meta">onset: ' + onset + '</div>';
+        resultsEl.appendChild(row);
+      });
+    }
+  } catch (err) {
+    statusEl.textContent = 'request failed';
+    resultsEl.innerHTML = '<p class="err">Could not reach the sandbox from here (' + err.message +
+      '). The public server occasionally rate-limits or is briefly unavailable — try again in a moment.</p>';
+  } finally {
+    runBtn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>
