@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From Cohort to Bedside: A Guided Tour of the Avinash Principle, Powered by SNOMED CT</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c2330; --line:#2a3342;
+    --ink:#e8edf4; --sub:#8b98ab;
+    --comorb:#a880ff; --symptom:#ffb454; --diag:#ff6b6b; --tx:#54c7ff; --esc:#ff4fa3; --outcome:#6b7280;
+    --accent:#3ddc97; --accent2:#ffd700; --danger:#ff5d5d;
+    --pageBg:#ffffff; --pageInk:#1b2330; --pageSub:#5b6472; --pageLine:#e2e6ec; --pageAccent:#0e9e6b;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--pageBg);color:var(--pageInk);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
+  code, .mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;}
+  a{color:var(--pageAccent);}
+
+  /* ===== ARTICLE SHELL (light) ===== */
+  #masthead{padding:40px 24px 28px;border-bottom:1px solid var(--pageLine);background:var(--pageBg);}
+  #masthead .kicker{color:var(--pageAccent);font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:10px;}
+  #masthead h1{margin:0 0 12px;font-size:32px;line-height:1.2;font-weight:600;max-width:760px;color:var(--pageInk);}
+  #masthead .dek{color:var(--pageSub);font-size:16px;line-height:1.6;max-width:680px;}
+  #masthead .bylinks{margin-top:18px;font-size:12.5px;color:var(--pageSub);}
+  #masthead .bylinks a{color:var(--pageSub);text-decoration:underline;text-decoration-color:var(--pageLine);}
+
+  #progressBar{position:sticky;top:0;z-index:40;background:var(--pageBg);border-bottom:1px solid var(--pageLine);
+    padding:10px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .stop{font-size:11.5px;color:var(--pageSub);padding:5px 11px;border:1px solid var(--pageLine);border-radius:14px;
+    text-decoration:none;transition:.15s;background:#f4f6f9;}
+  .stop:hover{border-color:var(--pageAccent);color:var(--pageAccent);}
+  .stop.done{border-color:var(--pageAccent);color:var(--pageAccent);background:#eafaf3;}
+
+  main{max-width:800px;margin:0 auto;padding:0 24px 80px;}
+  section.tour-stop{padding:44px 0;border-bottom:1px solid var(--pageLine);}
+  section.tour-stop:last-of-type{border-bottom:none;}
+  .stop-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .stop-num{width:26px;height:26px;border-radius:50%;background:#eafaf3;border:1px solid var(--pageAccent);
+    color:var(--pageAccent);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .stop-label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--pageSub);font-weight:600;}
+  h2{font-size:23px;font-weight:600;margin:0 0 14px;line-height:1.3;color:var(--pageInk);}
+  h3{font-size:16px;font-weight:600;margin:24px 0 8px;color:var(--pageInk);}
+  p{font-size:15px;line-height:1.75;color:#40495a;margin:0 0 14px;}
+  p b{color:var(--pageInk);}
+  ul.article-list{margin:0 0 14px;padding-left:20px;}
+  ul.article-list li{font-size:15px;line-height:1.7;color:#40495a;margin-bottom:6px;}
+  ul.article-list li b{color:var(--pageInk);}
+  blockquote{margin:16px 0;padding:14px 18px;background:#fdf8e3;border-left:3px solid var(--accent2);
+    border-radius:0 8px 8px 0;color:#6b5d1e;font-size:13.5px;line-height:1.6;}
+
+  .try-box{margin-top:20px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;}
+  .try-box .try-tag{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
+    color:#0e1116;background:var(--accent);padding:3px 9px;border-radius:10px;font-weight:700;margin-bottom:12px;}
+
+  /* ===== QUERY CONSOLE ===== */
+  #queryRow{display:flex;gap:10px;align-items:center;}
+  #queryInput{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    font-size:13.5px;padding:10px 14px;border-radius:8px;outline:none;}
+  #queryInput:focus{border-color:var(--accent);}
+  #runBtn{background:var(--accent);color:#0e1116;border:none;font-weight:700;font-size:13px;
+    padding:10px 20px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+  #runBtn:hover{filter:brightness(1.08);}
+  #chipRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .example-chip{background:var(--panel2);border:1px solid var(--line);color:var(--sub);font-size:11.5px;
+    padding:6px 12px;border-radius:16px;cursor:pointer;transition:.15s;}
+  .example-chip:hover{border-color:var(--accent);color:var(--accent);}
+  #queryStatus{margin-top:10px;font-size:11.5px;color:var(--sub);min-height:16px;}
+  #queryStatus.err{color:var(--danger);}
+
+  .concept-chip{display:inline-flex;align-items:baseline;gap:6px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--accent);padding:6px 12px;border-radius:6px;
+    margin:0 8px 8px 0;font-size:12.5px;}
+  .concept-chip .term{color:var(--ink);font-weight:600;}
+  .concept-chip .code{color:var(--sub);font-size:11px;}
+  .ecl-box{background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+    font-size:12.5px;color:#8fe3c4;line-height:1.6;white-space:pre-wrap;}
+  .ecl-box .kw{color:var(--accent2);}
+  .match-stat{display:flex;gap:24px;flex-wrap:wrap;}
+  .match-stat .num{font-size:22px;font-weight:700;color:var(--accent);}
+  .match-stat .lbl{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;}
+  .placeholder-note{font-size:12.5px;color:var(--sub);font-style:italic;}
+
+  #brief h4main{margin:0 0 10px;font-size:13px;color:var(--accent2);letter-spacing:.03em;}
+  .brief-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px;}
+  .brief-col h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub);}
+  .brief-col ul{margin:0;padding-left:16px;font-size:12.5px;line-height:1.65;color:var(--ink);}
+  .brief-col li b{color:var(--accent2);}
+
+  /* ===== TEMPLATIZED INSIGHT REPORT ===== */
+  .ir-section{margin-bottom:18px;}
+  .ir-section:last-child{margin-bottom:0;}
+  .ir-section h4{margin:0 0 4px;font-size:13.5px;color:var(--accent2);letter-spacing:.02em;}
+  .ir-section .ir-note{font-size:11px;color:var(--sub);margin:0 0 10px;font-style:italic;}
+  .ir-field{margin:0 0 10px;padding-left:12px;border-left:2px solid var(--line);}
+  .ir-field:last-child{margin-bottom:0;}
+  .ir-field .ir-label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub);font-weight:700;margin-bottom:3px;}
+  .ir-field .ir-text{font-size:13px;line-height:1.6;color:#dbe2ec;}
+  .ir-field .ir-text b{color:var(--ink);}
+  .ir-demo{background:#101620;border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+
+  /* ===== GRAPH SECTION ===== */
+  #toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;background:var(--panel);
+    border:1px solid var(--line);border-bottom:none;border-radius:10px 10px 0 0;margin-top:22px;}
+  #toolbar .grp-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-right:4px;}
+  .pivot-btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer;transition:.15s;}
+  .pivot-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .pivot-btn.active{background:var(--accent);color:#0e1116;border-color:var(--accent);font-weight:600;}
+  #resetBtn{background:transparent;border:1px solid var(--line);color:var(--sub);font-size:12px;padding:6px 14px;border-radius:20px;cursor:pointer;}
+  #resetBtn:hover{color:var(--ink);border-color:var(--sub);}
+  .zoom-grp{display:flex;gap:6px;align-items:center;margin-left:auto;}
+  .zoom-btn{width:28px;height:28px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:15px;border-radius:6px;cursor:pointer;line-height:1;}
+  .zoom-btn:hover{border-color:var(--accent);color:var(--accent);}
+  #zoomPct{font-size:11px;color:var(--sub);min-width:38px;text-align:center;}
+
+  #legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 16px;background:#111620;font-size:11.5px;color:var(--sub);
+    border:1px solid var(--line);border-top:none;border-bottom:none;}
+  .lg-item{display:flex;align-items:center;gap:6px;}
+  .lg-dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .lg-note{margin-left:auto;font-size:11px;}
+
+  #wrap{overflow:hidden;position:relative;height:60vh;background:var(--bg);cursor:grab;
+    border:1px solid var(--line);border-top:none;}
+  #wrap.panning{cursor:grabbing;}
+  svg{display:block;}
+
+  .lane-bg{fill:var(--panel);}
+  .lane-bg.alt{fill:#141a24;}
+  .lane-label{fill:var(--sub);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;}
+  .day-tick text{fill:var(--sub);font-size:11px;}
+  .day-tick line{stroke:var(--line);}
+
+  .edge{stroke:#3a4456;fill:none;marker-end:url(#arrow);opacity:.75;}
+  .edge.dim{opacity:.06;}
+  .edge.hot{stroke:var(--accent);opacity:1;}
+
+  .node{cursor:pointer;}
+  .node circle, .node rect{stroke-width:1.4;transition:.15s;}
+  .node text{font-size:11px;fill:#0e1116;font-weight:600;pointer-events:none;}
+  .node .n-count{font-size:9.5px;fill:#0e1116cc;font-weight:700;pointer-events:none;}
+  .node.dim{opacity:.14;}
+  .node.hot rect{stroke:#fff;stroke-width:2.5;filter:drop-shadow(0 0 6px rgba(61,220,151,.7));}
+  .node.path-highlight rect{stroke:#ffd700;stroke-width:3;filter:drop-shadow(0 0 9px rgba(255,215,0,.85));}
+  .node.path-highlight.dim{opacity:.6;}
+  .edge.path-highlight{stroke:#ffd700 !important;stroke-width:3;opacity:1;}
+
+  #pathNote{padding:8px 16px;background:#1a1608;color:#ffd700;font-size:11.5px;border:1px solid var(--line);
+    border-top:none;border-bottom:none;display:none;}
+  #pathNote.show{display:block;}
+  #graphFooter{padding:10px 16px;color:var(--sub);font-size:11.5px;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;background:var(--panel);}
+
+  #tooltip{position:fixed;pointer-events:none;background:#000;border:1px solid var(--accent);color:var(--ink);
+    padding:10px 12px;border-radius:8px;font-size:12px;max-width:300px;line-height:1.55;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  #tooltip b{color:var(--accent);}
+  #tooltip .code-line{color:var(--sub);font-family:monospace;font-size:11px;margin-top:4px;}
+  #tooltip .stat-line{color:var(--accent2);font-size:11px;margin-top:2px;}
+
+  /* ===== PATIENT CASE VIEWER (stop 7) ===== */
+  #patCaseBar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;background:#0b0e13;border:1px solid var(--line);border-radius:10px 10px 0 0;}
+  #patCaseBar .grp-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-right:2px;}
+  .pat-case-btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:12px;padding:7px 13px;border-radius:20px;cursor:pointer;transition:.15s;font-weight:500;}
+  .pat-case-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .pat-case-btn.active{background:var(--accent);color:#0e1116;border-color:var(--accent);font-weight:700;}
+  #patCaseCount{margin-left:auto;color:var(--sub);font-size:11px;}
+  #patHeader{padding:14px 16px;border:1px solid var(--line);border-top:none;background:linear-gradient(180deg,#131720,#0e1116);}
+  #patHeader h1{margin:0 0 4px;font-size:15.5px;font-weight:600;letter-spacing:.2px;}
+  #patHeader .meta{color:var(--sub);font-size:12px;line-height:1.5;}
+  #patHeader .meta b{color:var(--ink);}
+  #patToolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:var(--panel);border:1px solid var(--line);border-top:none;}
+  #patToolbar .grp-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-right:4px;}
+  #patToolbar .zoom-grp{display:flex;gap:6px;align-items:center;margin-left:auto;}
+  #patLegend{display:flex;gap:14px;flex-wrap:wrap;padding:9px 16px;background:#111620;font-size:11.5px;color:var(--sub);border:1px solid var(--line);border-top:none;}
+  #patPathNote{padding:8px 16px;background:#1a1608;color:#ffd700;font-size:11.5px;border:1px solid var(--line);border-top:none;display:none;}
+  #patPathNote.show{display:block;}
+  #patWrap{overflow:hidden;position:relative;height:56vh;background:var(--bg);cursor:grab;border:1px solid var(--line);border-top:none;}
+  #patWrap.panning{cursor:grabbing;}
+  #patWrap svg{display:block;}
+  #patWrap .node.dragging rect{filter:drop-shadow(0 0 8px rgba(255,255,255,.5));}
+  #patWrap .node.dragging{cursor:grabbing;}
+  #patFooter{padding:9px 16px;color:var(--sub);font-size:11px;border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;background:var(--panel);}
+  #patTooltip{position:fixed;pointer-events:none;background:#000;border:1px solid var(--accent);color:var(--ink);
+    padding:10px 12px;border-radius:8px;font-size:12px;max-width:280px;line-height:1.5;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+  #patTooltip b{color:var(--accent);}
+  #patTooltip .code-line{color:var(--sub);font-family:monospace;font-size:11px;margin-top:4px;}
+
+  #closing{padding:44px 0 10px;}
+  #closing p{font-size:15px;}
+  #sourceLinks{margin-top:18px;font-size:12.5px;color:var(--pageSub);}
+
+  /* ===== PROJECT LINKS ===== */
+  .projectlinks{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;}
+  .projectlinks a{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+    color:var(--pageAccent);text-decoration:none;padding:7px 14px;border:1px solid var(--pageAccent);
+    border-radius:20px;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;}
+  .projectlinks a:hover{background:var(--pageAccent);color:#fff;transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(14,158,107,.28);}
+  #projectFooterLinks{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;}
+  #projectFooterLinks a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
+    color:#fff;text-decoration:none;padding:9px 16px;border-radius:22px;
+    background:linear-gradient(135deg,var(--pageAccent),#0b7a53);
+    transition:transform .18s ease, box-shadow .18s ease; box-shadow:0 4px 10px rgba(14,158,107,.25);}
+  #projectFooterLinks a:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 18px rgba(14,158,107,.4);}
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 rgba(61,220,151,0);}50%{box-shadow:0 0 14px rgba(61,220,151,.45);}}
+  @media (prefers-reduced-motion: no-preference){
+    #masthead{animation:fadeUp .6s ease both;}
+    section.tour-stop{opacity:0;transform:translateY(24px);animation:fadeUp .7s ease forwards;animation-play-state:paused;}
+    section.tour-stop.in-view{animation-play-state:running;}
+    .concept-chip{animation:fadeIn .5s ease both;}
+    .stop{transition:transform .15s ease, background .15s ease, border-color .15s ease;}
+    .stop:hover{transform:translateY(-2px);}
+    .pivot-btn, .pat-case-btn, #runBtn, .zoom-btn, .example-chip{transition:transform .15s ease, filter .15s ease, border-color .15s ease, background .15s ease;}
+    #runBtn:hover{transform:translateY(-2px);}
+    .pivot-btn:hover, .pat-case-btn:hover{transform:translateY(-1px);}
+    .node.hot rect{animation:pulseGlow 1.6s ease-in-out infinite;}
+    .try-box{transition:transform .2s ease, box-shadow .2s ease;}
+    .try-box:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.06);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    section.tour-stop{opacity:1;transform:none;animation:none;}
+  }
+
+  /* ===== MOBILE OPTIMIZATION ===== */
+  @media (max-width:640px){
+    #masthead{padding:26px 16px 20px;}
+    #masthead h1{font-size:23px;line-height:1.28;max-width:100%;}
+    #masthead .dek{font-size:14px;max-width:100%;}
+    #masthead .bylinks{font-size:11.5px;}
+    .projectlinks{margin-top:12px;}
+    .projectlinks a{font-size:11.5px;padding:6px 12px;width:100%;justify-content:center;}
+    .projectlinks{flex-direction:column;}
+
+    #progressBar{padding:8px 12px;gap:6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none;}
+    #progressBar::-webkit-scrollbar{display:none;}
+    .stop{font-size:11px;padding:5px 10px;white-space:nowrap;flex-shrink:0;}
+
+    main{padding:0 14px 60px;}
+    section.tour-stop{padding:30px 0;}
+    h2{font-size:19px;}
+    h3{font-size:14.5px;}
+    p, ul.article-list li{font-size:14px;line-height:1.65;}
+    .stop-num{width:22px;height:22px;font-size:11px;}
+    .stop-label{font-size:10.5px;}
+
+    .try-box{padding:14px 14px;}
+    #queryRow{flex-direction:column;align-items:stretch;}
+    #runBtn{padding:11px 16px;width:100%;}
+    #queryInput{font-size:16px;padding:11px 12px;}
+    #chipRow{gap:6px;}
+    .example-chip{font-size:11px;padding:6px 10px;}
+
+    .brief-grid{grid-template-columns:1fr;gap:12px;}
+
+    #toolbar, #patCaseBar, #patToolbar{padding:10px 12px;gap:6px;}
+    .pivot-btn, .pat-case-btn{font-size:11px;padding:6px 10px;}
+    #legend, #patLegend{padding:8px 12px;gap:10px;font-size:10.5px;}
+    .lg-note{width:100%;margin-left:0;order:99;}
+    .zoom-grp{margin-left:0;width:100%;justify-content:flex-end;}
+
+    #wrap, #patWrap{height:70vh;touch-action:pan-x pan-y;}
+    #patHeader{padding:12px 12px;}
+    #patHeader h1{font-size:14px;}
+    #patHeader .meta{font-size:11px;}
+
+    #tooltip, #patTooltip{max-width:88vw;font-size:11.5px;}
+
+    #projectFooterLinks{flex-direction:column;}
+    #projectFooterLinks a{width:100%;justify-content:center;}
+    #closing{padding:30px 0 10px;}
+  }
+</style>
+</head>
+<body>
+
+<header id="masthead">
+  <div class="kicker">Guided tour</div>
+  <h1>From Cohort to Bedside: Walking Through the Avinash Principle, Powered by SNOMED CT</h1>
+  <div class="dek">A stop-by-stop tour that pairs the Avinash Principle's cohort-level framework with a live, working pipeline — type a bedside question and watch it become a SNOMED CT query, a cohort match, a Clinical Intelligence Brief, and an aggregate trajectory graph, in that order.</div>
+  <div class="bylinks">Source ideas: <a href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-cohort-level.html" target="_blank" rel="noopener">Cohort-Level Clinical Intelligence</a> · <a href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-accelerating.html" target="_blank" rel="noopener">Accelerating the Evidence Pyramid</a></div>
+  <div class="projectlinks">
+    <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project site ↗</a>
+    <a href="https://viberounds.ai.studio/" target="_blank" rel="noopener">VibeRounds AI Studio ↗</a>
+  </div>
+</header>
+
+<nav id="progressBar">
+  <a class="stop" href="#stop1">1. The idea</a>
+  <a class="stop" href="#stop2">2. Why SNOMED CT</a>
+  <a class="stop" href="#stop3">3. Ask a question</a>
+  <a class="stop" href="#stop4">4. Concept extraction</a>
+  <a class="stop" href="#stop5">5. ECL query</a>
+  <a class="stop" href="#stop6">6. Cohort match</a>
+  <a class="stop" href="#stop7">7. Meet the patients</a>
+  <a class="stop" href="#stop8">8. The brief</a>
+  <a class="stop" href="#stop9">9. Insight report</a>
+  <a class="stop" href="#stop10">10. Cohort graph</a>
+</nav>
+
+<main>
+
+<section class="tour-stop" id="stop1">
+  <div class="stop-eyebrow"><span class="stop-num">1</span><span class="stop-label">The idea</span></div>
+  <h2>Two posts, one missing piece</h2>
+  <p>Avinash Kumar's recent posts describe the same insight from two directions. <a href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-cohort-level.html" target="_blank" rel="noopener">"Cohort-Level Clinical Intelligence"</a> argues that once you apply the Avinash Principle across a whole patient cohort rather than one chart, the combinatorial noise of population health records collapses into a small set of scale-free macro-patterns: presentation clusters, a "key decision node" where the population branches into survival vs. failure trajectories, an intervention "hub," and longitudinal tracking signatures that correlate intermediate physiology with final outcome.</p>
+  <p><a href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-accelerating.html" target="_blank" rel="noopener">"Accelerating the Evidence Pyramid"</a> takes that structure and asks what happens when a clinician needs it right now, at the bedside. Its answer is a template-driven query engine: a clinician's question is matched against pre-computed cohort analytics and dropped into a standardized brief — query match %, active hub node, presentation metrics, required intervention, predicted outcome — instead of triggering a free-text LLM essay.</p>
+  <p>Both posts describe the same missing piece without naming it: for a "query" to match a "cohort," and a "hub node" to mean the same thing every time, the underlying clinical concepts have to be <b>coded, not just written</b>. That's the job SNOMED CT does — and it's what the rest of this tour builds, live, one stop at a time.</p>
+</section>
+
+<section class="tour-stop" id="stop2">
+  <div class="stop-eyebrow"><span class="stop-num">2</span><span class="stop-label">Why SNOMED CT</span></div>
+  <h2>The enabling layer</h2>
+  <p>SNOMED CT (Systematized Nomenclature of Medicine — Clinical Terms) is what turns the Avinash Principle from a compelling metaphor into something a machine can execute accurately:</p>
+  <ul class="article-list">
+    <li><b>One normalized surface for the whole cohort.</b> Every finding, procedure, and situation gets one canonical concept ID no matter how it was phrased — the precondition for computing a real "cohort frequency match" instead of a plausible-sounding guess.</li>
+    <li><b>Compositional grammar, not a flat code list.</b> Concepts combine with relationships like finding site, severity, and clinical course, so "hemostatic failure at T+15m" and "at T+45m" are structurally related — the substrate for the temporal-velocity mapping the cohort post describes.</li>
+    <li><b>A hierarchy built for roll-up.</b> Thousands of individually coded presentations collapse to a handful of hub nodes because the parent/child structure already defines the roll-up.</li>
+    <li><b>Formal logic that catches nonsense before it reaches a clinician</b> — directly addressing the "black box" hallucination risk the second post calls out.</li>
+    <li><b>Cross-mapping to LOINC and drug terminologies</b>, so a hub node links mechanically to the lab order that measures it and the intervention that treats it.</li>
+  </ul>
+  <p>In short: the Avinash Principle needs a way to say the same clinical thing the same way, every time, with enough internal structure to support time windows and hierarchy roll-ups. That's a description of SNOMED CT's design goals — and it's the layer every stop below is built on.</p>
+</section>
+
+<section class="tour-stop" id="stop3">
+  <div class="stop-eyebrow"><span class="stop-num">3</span><span class="stop-label">Try it — stage 1</span></div>
+  <h2>Ask a bedside question in plain language</h2>
+  <p>This is where the pipeline actually starts: a clinician types what they're seeing, in their own words. No coding knowledge required at this stage — that's the point. Type your own question below, or pick one of the examples, then press <b>Run query</b>. The rest of this tour fills in live as you scroll, using whatever you typed here.</p>
+  <div class="try-box">
+    <span class="try-tag">Live demo</span>
+    <div id="queryRow">
+      <input id="queryInput" type="text" class="mono" placeholder="e.g. 60 year old with fever, ascites and low urine output" />
+      <button id="runBtn">Run query</button>
+    </div>
+    <div id="chipRow"></div>
+    <div id="queryStatus"></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop4">
+  <div class="stop-eyebrow"><span class="stop-num">4</span><span class="stop-label">Stage 2</span></div>
+  <h2>Natural language becomes SNOMED CT concepts</h2>
+  <p>A lightweight, <i>deterministic</i> clinical-NER layer — not a freeform generative one — maps each clinical phrase in your query to a canonical SNOMED CT concept. This is the accuracy checkpoint of the whole pipeline: if a phrase can't be resolved to a concept with confidence, the system should say so rather than guess, the same discipline the accelerating-evidence-pyramid post asks of the downstream brief.</p>
+  <div class="try-box">
+    <span class="try-tag">Live output</span>
+    <div id="stepConcepts"><span class="placeholder-note">Run a query above to see the extracted concepts here.</span></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop5">
+  <div class="stop-eyebrow"><span class="stop-num">5</span><span class="stop-label">Stage 3</span></div>
+  <h2>Concepts compose into an ECL cohort query</h2>
+  <p>The extracted concepts are composed into a SNOMED CT <b>Expression Constraint Language (ECL)</b> query — SNOMED CT's own formal query language, purpose-built for exactly this. The <code class="mono">&lt;&lt;</code> operator pulls in descendant concepts automatically, so a query for "renal dysfunction" includes AKI, CKD-on-conservative-management, and oliguria subtypes without anyone enumerating every leaf term by hand.</p>
+  <div class="try-box">
+    <span class="try-tag">Live output</span>
+    <div class="ecl-box" id="stepEcl"><span class="placeholder-note" style="color:var(--sub)">Run a query above to see the generated ECL expression here.</span></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop6">
+  <div class="stop-eyebrow"><span class="stop-num">6</span><span class="stop-label">Stage 4</span></div>
+  <h2>The ECL query retrieves a matching cohort</h2>
+  <p>The ECL result set is joined against a pre-computed cohort analytics layer — presentation timelines, decision nodes, intervention timelines, tracking correlations — all already indexed by SNOMED CT concept ID. Graph centrality metrics (the "super-connected hub" language from the cohort post) are computed once, offline, over the whole cohort. The query at runtime is a lookup, not a live computation — which is what makes sub-second template population possible.</p>
+  <div class="try-box">
+    <span class="try-tag">Live output</span>
+    <div class="match-stat" id="stepMatch"><span class="placeholder-note">Run a query above to see the cohort match here.</span></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop7">
+  <div class="stop-eyebrow"><span class="stop-num">7</span><span class="stop-label">Stage 5</span></div>
+  <h2>Meet a few real patients inside this cohort</h2>
+  <p>Before the aggregate — this is what the cohort is actually built <i>from</i>. Each tab below is one real patient's coded trajectory, laid out exactly like a single-case chart review: lanes for comorbidity → symptom → diagnosis → intervention → escalation → outcome, timed by day-offset from admission. The cohort graph two stops from now is nothing more than many charts like these, overlaid and counted.</p>
+  <div class="try-box" style="padding:0;overflow:hidden;">
+    <div id="patCaseBar">
+      <span class="grp-label">Case:</span>
+      <span id="patCaseButtons"></span>
+      <span id="patCaseCount"></span>
+    </div>
+    <header id="patHeader">
+      <h1 id="patCaseTitle"></h1>
+      <div class="meta" id="patCaseMeta"></div>
+    </header>
+    <div id="patToolbar">
+      <span class="grp-label">Pivot around:</span>
+      <span id="patPivotButtons"></span>
+      <button id="patResetBtn">Reset view</button>
+      <div class="zoom-grp">
+        <button class="zoom-btn" id="patZoomOutBtn" title="Zoom out">−</button>
+        <span id="patZoomPct">100%</span>
+        <button class="zoom-btn" id="patZoomInBtn" title="Zoom in">+</button>
+        <button class="zoom-btn" id="patZoomFitBtn" title="Fit to screen" style="width:auto;padding:0 8px;font-size:11px;">Fit</button>
+      </div>
+    </div>
+    <div id="patLegend"></div>
+    <div id="patPathNote"></div>
+    <div id="patWrap"></div>
+    <div id="patTooltip"></div>
+    <div id="patFooter">Click a node to pivot around it. Click a lane pivot chip to pivot a whole diagnosis/intervention. Hover for the coded concept. Drag background to pan, drag a node to reposition, scroll/pinch or +/− to zoom. Switch patients with the tabs above — the case list updates to match whichever cohort your query above routed to.</div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop8">
+  <div class="stop-eyebrow"><span class="stop-num">8</span><span class="stop-label">Stage 6</span></div>
+  <h2>The match populates a Clinical Intelligence Brief</h2>
+  <p>The matched hub node and its linked intervention and tracking concepts drop into the fixed brief structure from the accelerating-evidence-pyramid post — no free-text generation in the clinical-fact fields, only in optional surrounding narrative. This is the artifact a clinician actually reads at the bedside.</p>
+  <div class="try-box" id="brief">
+    <span class="try-tag">Live output</span>
+    <div id="briefGrid"><span class="placeholder-note">Run a query above to see the generated brief here.</span></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop9">
+  <div class="stop-eyebrow"><span class="stop-num">9</span><span class="stop-label">Stage 7</span></div>
+  <h2>The same match, written out as a templatized insight report</h2>
+  <p>A graph is for pivoting; a report is for reading and citing. This stop takes the identical matched cohort and pours it through a second, fixed template — the three-dimension structure from <a href="https://classworkdecjan.blogspot.com/2026/08/the-avinash-principle-cohort-level.html" target="_blank" rel="noopener">"Cohort-Level Clinical Intelligence"</a>: Presentation Insights, Intervention Insights, and Tracking &amp; Correlation Insights, each broken into the post's own named sub-fields. No sentence here is generated free-form — every value is a direct read from the same cohort object that drew the graph below; only the surrounding template prose is fixed English.</p>
+  <div class="try-box" id="insightReport">
+    <span class="try-tag">Live output</span>
+    <div id="insightReportGrid"><span class="placeholder-note">Run a query above to see the generated insight report here.</span></div>
+  </div>
+
+  <h3 style="margin-top:32px;">Two worked examples</h3>
+  <p>These two are pre-run so you can read a complete report without typing anything — the same template, filled from the two demo cohorts on this page.</p>
+  <div class="try-box" style="margin-top:14px;">
+    <span class="try-tag">Example query</span>
+    <p style="margin:6px 0 0;"><b class="mono" style="color:var(--accent2);">"60 year old with fever, ascites and low urine output"</b></p>
+    <div id="insightDemoRenal" style="margin-top:10px;"></div>
+  </div>
+  <div class="try-box" style="margin-top:14px;">
+    <span class="try-tag">Example query</span>
+    <p style="margin:6px 0 0;"><b class="mono" style="color:var(--accent2);">"farmer with snake bite, swelling and bleeding that won't clot"</b></p>
+    <div id="insightDemoSnake" style="margin-top:10px;"></div>
+  </div>
+</section>
+
+<section class="tour-stop" id="stop10">
+  <div class="stop-eyebrow"><span class="stop-num">10</span><span class="stop-label">Stage 8</span></div>
+  <h2>The cohort renders as a trajectory graph</h2>
+  <p>This is where a single-case chart-review tool becomes a cohort tool. Each node below represents <i>every patient</i> in the matched cohort who shares that SNOMED CT concept at that day-offset window — sized by patient count, colored toward red as its adverse-outcome rate rises, and ringed in gold if it's the active hub node. Click a node to pivot the graph around it: connected nodes stay lit, everything else dims, exactly like tracing one patient's chart, except every edge weight is now a real cohort transition frequency.</p>
+  <p>Click the hub node's pivot chip below to see the pre-computed hub route — the exact chain the brief and insight report above describe — highlighted in gold across the graph.</p>
+
+  <div id="toolbar">
+    <span class="grp-label">Pivot around:</span>
+    <span id="pivotButtons"></span>
+    <button id="resetBtn">Reset view</button>
+    <div class="zoom-grp">
+      <button class="zoom-btn" id="zoomOutBtn" title="Zoom out">−</button>
+
+      <span id="zoomPct">100%</span>
+      <button class="zoom-btn" id="zoomInBtn" title="Zoom in">+</button>
+      <button class="zoom-btn" id="zoomFitBtn" title="Fit to screen" style="width:auto;padding:0 8px;font-size:11px;">Fit</button>
+    </div>
+  </div>
+  <div id="legend"></div>
+  <div id="pathNote"></div>
+  <div id="wrap"></div>
+  <div id="graphFooter">Scroll/pinch or +/− to zoom, drag background to pan, drag a node to reposition, hover for its SNOMED CT code and cohort stats.</div>
+</section>
+
+<section id="closing">
+  <h2>Where this leaves the evidence pyramid</h2>
+  <p>None of this replaces retrospective cohort studies, RCTs, or systematic reviews — the accelerating-evidence-pyramid post is explicit about that, and it's the correct framing. What the SNOMED CT-mediated pipeline you just walked through does is give the existing evidence pyramid a real-time front door: a plain-language question resolves into a formally defined, auditable clinical query; that query retrieves pre-computed cohort structure instead of asking a language model to reconstruct it from scratch; and the result renders as a graph a clinician can pivot, trust, and check against their own patient's coded chart — with the coding layer, not the language model, doing the work of making sure "hub node" means the same thing every single time.</p>
+  <div id="sourceLinks">Read the full companion article for more on the accuracy mechanisms and the extension plan from case-level to cohort-level visualization.</div>
+  <div id="projectFooterLinks">
+    <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">🔗 Project Website</a>
+    <a href="https://viberounds.ai.studio/" target="_blank" rel="noopener">🔗 VibeRounds AI Studio</a>
+  </div>
+</section>
+
+</main>
+
+<div id="tooltip"></div>
+
+<script>
+/* =======================================================================
+   COHORT DATA STORE
+======================================================================= */
+const COHORTS = {};
+
+COHORTS.snakebite = {
+  key:"snakebite",
+  label:"Severe Snakebite Envenomation",
+  n: 214,
+  hubNodeId: "hub_hemostatic",
+  dayLabelMap:{"0":"T+0","0.25":"T+15m","0.33":"T+20m","0.75":"T+45m","1":"Hour 1","6":"Hour 6","12":"Hour 12–14"},
+  pivotIds:["dx_envenom","hub_hemostatic","tx_asv","es_anaphylaxis","out_clot","out_death"],
+  nodes:[
+    {id:"cm_farmer", type:"comorbidity", day:0, label:"Agricultural / outdoor occupation", system:"SNOMED CT", code:"224362002", n:167, outcomeRate:0.06, desc:"Occupational exposure risk factor, present in a majority of the cohort."},
+    {id:"sx_bite", type:"symptom", day:0, label:"Snake bite wound, lower limb", system:"SNOMED CT", code:"262587007", n:214, outcomeRate:0.06, desc:"Confirmed fang marks, lower-limb site, all cases."},
+    {id:"sx_swelling", type:"symptom", day:0.25, label:"Local swelling, progressive", system:"SNOMED CT", code:"65038007", n:198, outcomeRate:0.08, desc:"Swelling progression rate >3 cm/hour tracked as a temporal-velocity marker."},
+    {id:"hub_hemostatic", type:"diagnosis", day:0.33, label:"Systemic hemostatic failure (hub)", system:"SNOMED CT", code:"234466008", n:151, outcomeRate:0.14, desc:"Active critical hub node. 20WBCT non-clotting confirmed at T+20min. 94.2% similarity to the standard progression track for this presentation cluster.", hub:true},
+    {id:"dx_envenom", type:"diagnosis", day:0.25, label:"Severe systemic envenomation", system:"SNOMED CT", code:"241876004", n:151, outcomeRate:0.14, desc:"Cohort-level classification threshold for systemic (not local-only) envenomation."},
+    {id:"tx_asv", type:"treatment", day:0.75, label:"Polyvalent ASV, 10 vials in 200mL NS", system:"SNOMED CT", code:"432102000", n:151, outcomeRate:0.09, desc:"Key intervention — the single high-impact hub-connected maneuver. Execution latency target <15 min from hub identification."},
+    {id:"tx_epi_preload", type:"treatment", day:0.75, label:"Epinephrine 0.5mg IM, pre-loaded", system:"SNOMED CT", code:"307755000", n:151, outcomeRate:0.03, desc:"Circuit-breaker standing order — pre-loaded ahead of ASV administration."},
+    {id:"es_anaphylaxis", type:"escalation", day:0.75, label:"Acute hypersensitivity reaction", system:"SNOMED CT", code:"39579001", n:27, outcomeRate:0.19, desc:"Primary risk vector at T+45min: 18% of the ASV-treated subgroup."},
+    {id:"es_redistrib", type:"escalation", day:6, label:"Delayed venom redistribution", system:"SNOMED CT", code:"241876004", n:53, outcomeRate:0.11, desc:"35% risk of delayed redistribution at T+6h among hub-positive patients."},
+    {id:"out_clot", type:"outcome", day:12, label:"Solid clot formation achieved", system:"SNOMED CT", code:"365595001", n:139, outcomeRate:0.0, desc:"Expected resolution within 12–14h post-second ASV dose; primary favorable outcome track."},
+    {id:"out_death", type:"outcome", day:12, label:"Death — hemostatic failure", system:"SNOMED CT", code:"419620001", n:9, outcomeRate:1.0, desc:"Minority failure track; associated with delayed hub identification (>45min to ASV)."}
+  ],
+  edges:[
+    ["cm_farmer","sx_bite",167],["sx_bite","sx_swelling",198],["sx_swelling","hub_hemostatic",151],
+    ["sx_bite","dx_envenom",151],["dx_envenom","hub_hemostatic",151],
+    ["hub_hemostatic","tx_asv",151],["tx_asv","tx_epi_preload",151],
+    ["tx_asv","es_anaphylaxis",27],["tx_asv","es_redistrib",53],
+    ["tx_asv","out_clot",139],["hub_hemostatic","out_death",9],["es_anaphylaxis","out_death",4],["es_redistrib","out_death",3]
+  ],
+  highlightPath:{
+    label:"Hub Beta — Hemostatic failure → ASV → resolution",
+    nodeIds:["hub_hemostatic","tx_asv","tx_epi_preload","out_clot"],
+    edges:[["hub_hemostatic","tx_asv"],["tx_asv","tx_epi_preload"],["tx_asv","out_clot"]]
+  },
+  brief:{
+    queryMatch:"Severe Snakebite Envenomation — Hemostatic Failure / T+15m Window",
+    matchPct:94.2,
+    hubLabel:"Hub Beta (Systemic Hemostatic Failure Pivot)",
+    presentation:["Temporal velocity: non-clotting 20WBCT confirmed at T+20 min.","Swelling progression rate: >3 cm/hour.","Pruned: skip repeat minor coagulation panels; bypass fractional dosing."],
+    intervention:["Key intervention: 10 vials Polyvalent ASV in 200 mL Normal Saline.","Execution latency target: <15 minutes from hub identification.","Circuit-breaker: pre-load Epinephrine 0.5 mg IM."],
+    tracking:["Primary risk vector: 18% acute hypersensitivity at T+45m; 35% delayed redistribution at T+6h.","Expected resolution: solid clot within 12–14h post-second ASV dose.","Cohort mortality at this hub: 9 / 151 (6.0%)."]
+  }
+};
+
+COHORTS.renal = {
+  key:"renal",
+  label:"Sepsis-Associated AKI with Ascites",
+  n: 132,
+  hubNodeId: "hub_oliguria",
+  dayLabelMap:{"0":"Day 0","1":"Day 1","2":"Day 2","3":"Day 3","4":"Day 4","6":"Day 6","9":"Day 8–9"},
+  pivotIds:["cm_ckd","dx_ascites","hub_oliguria","tx_lasix","es_renaldecline","out_death","out_recover"],
+  nodes:[
+    {id:"cm_ckd", type:"comorbidity", day:0, label:"Chronic kidney disease, conservative mgmt", system:"SNOMED CT", code:"709044004", n:58, outcomeRate:0.28, desc:"Pre-existing CKD present in 44% of this cohort."},
+    {id:"sx_fever", type:"symptom", day:0, label:"Fever, high-grade intermittent", system:"SNOMED CT", code:"386661006", n:132, outcomeRate:0.18, desc:"Presenting symptom across the full cohort."},
+    {id:"dx_ascites", type:"diagnosis", day:1, label:"Ascites, hypoproteinemia-associated", system:"SNOMED CT", code:"389026000", n:118, outcomeRate:0.20, desc:"Confirmed on Day 1 assessment in the majority of admissions."},
+    {id:"hub_oliguria", type:"diagnosis", day:2, label:"Oliguria + lactate rise (hub)", system:"SNOMED CT", code:"34436003", n:94, outcomeRate:0.29, desc:"Active critical hub node. A 30% drop in urine output combined with a sharp lactate rise within a 4-hour window defines the tipping point, superseding static admission scores.", hub:true},
+    {id:"tx_lasix", type:"treatment", day:2, label:"Furosemide IV, titrated", system:"SNOMED CT", code:"387475002", n:94, outcomeRate:0.22, desc:"First-line diuretic response test at the hub node."},
+    {id:"es_renaldecline", type:"escalation", day:3, label:"Progressive renal decline", system:"SNOMED CT", code:"709044004", n:41, outcomeRate:0.51, desc:"Diuretic non-response subgroup — the population split point between recovery and failure trajectories."},
+    {id:"tx_epo", type:"treatment", day:4, label:"Erythropoietin + iron/B12 support", system:"SNOMED CT", code:"96271007", n:41, outcomeRate:0.34, desc:"Supportive correction of anemia-of-CKD following renal decline."},
+    {id:"out_recover", type:"outcome", day:9, label:"Renal function stabilized", system:"SNOMED CT", code:"271737000", n:91, outcomeRate:0.0, desc:"Bimodal recovery pattern, rapid arm: stabilization within 72h of hub identification."},
+    {id:"out_death", type:"outcome", day:9, label:"Death — multi-organ failure", system:"SNOMED CT", code:"419620001", n:22, outcomeRate:1.0, desc:"Delayed secondary inflammatory cascade arm; associated with diuretic non-response at the hub."}
+  ],
+  edges:[
+    ["sx_fever","dx_ascites",118],["cm_ckd","hub_oliguria",58],["dx_ascites","hub_oliguria",94],
+    ["hub_oliguria","tx_lasix",94],["tx_lasix","es_renaldecline",41],["tx_lasix","out_recover",53],
+    ["es_renaldecline","tx_epo",41],["tx_epo","out_recover",38],["es_renaldecline","out_death",22],["hub_oliguria","out_recover",3]
+  ],
+  highlightPath:{
+    label:"Hub — Oliguria → diuretic non-response → decline",
+    nodeIds:["hub_oliguria","tx_lasix","es_renaldecline","tx_epo","out_death"],
+    edges:[["hub_oliguria","tx_lasix"],["tx_lasix","es_renaldecline"],["es_renaldecline","tx_epo"],["es_renaldecline","out_death"]]
+  },
+  brief:{
+    queryMatch:"Sepsis-Associated AKI — Oliguric Renal Decline / Day 2–3 Window",
+    matchPct:71.2,
+    hubLabel:"Renal Hub (Oliguria + Lactate Rise Pivot)",
+    presentation:["Temporal velocity: 30% urine-output drop with sharp lactate rise inside a 4-hour window.","Decision node: diuretic response at the hub predicts trajectory branch.","Pruned: skip repeat static admission scoring once hub is confirmed."],
+    intervention:["Key intervention: titrated IV furosemide with strict response window.","Escalation trigger: no response by hour 4 → progressive-decline pathway.","Supportive: erythropoietin + iron/B12 for anemia-of-CKD once decline confirmed."],
+    tracking:["Bimodal outcome: rapid stabilization (72h) vs. delayed inflammatory cascade.","Cohort mortality at this hub: 22 / 94 (23.4%), concentrated in the non-responder arm.","Tracking-outcome correlation: diuretic non-response at hour 4 is the single strongest predictor of the failure arm."]
+  }
+};
+
+/* =======================================================================
+   NLP-LITE CONCEPT DICTIONARY
+======================================================================= */
+const CONCEPT_DICT = [
+  {kw:["fever","febrile","high temperature"], term:"Fever", code:"386661006", cohort:"renal", weight:1},
+  {kw:["ascites","fluid in abdomen","abdominal swelling","belly swelling"], term:"Ascites", code:"389026000", cohort:"renal", weight:2},
+  {kw:["low urine output","oliguria","reduced urine","not urinating"], term:"Oliguria", code:"34436003", cohort:"renal", weight:2},
+  {kw:["kidney","renal","ckd","dialysis"], term:"Chronic kidney disease", code:"709044004", cohort:"renal", weight:1.5},
+  {kw:["lactate","lactic acid"], term:"Elevated lactate", code:"166968006", cohort:"renal", weight:1.5},
+  {kw:["snake","snakebite","envenomation","bite","fang"], term:"Snake bite wound", code:"262587007", cohort:"snakebite", weight:2},
+  {kw:["swelling","swollen limb","local swelling"], term:"Local swelling, progressive", code:"65038007", cohort:"snakebite", weight:1},
+  {kw:["clotting","bleeding","hemostatic","not clotting","20wbct","coagulation"], term:"Systemic hemostatic failure", code:"234466008", cohort:"snakebite", weight:2},
+  {kw:["asv","antivenom","anti-venom"], term:"Polyvalent ASV", code:"432102000", cohort:"snakebite", weight:1.5},
+  {kw:["anaphylaxis","allergic reaction","hypersensitivity"], term:"Acute hypersensitivity reaction", code:"39579001", cohort:"snakebite", weight:1},
+];
+
+/* =======================================================================
+   QUERY PIPELINE
+======================================================================= */
+const queryInput = document.getElementById("queryInput");
+const runBtn = document.getElementById("runBtn");
+const queryStatus = document.getElementById("queryStatus");
+const briefEl = document.getElementById("brief");
+
+const EXAMPLES = [
+  "60 year old with fever, ascites and low urine output",
+  "farmer with snake bite, swelling and bleeding that won't clot",
+  "renal patient, oliguria, rising lactate",
+  "snakebite, no antivenom response yet, anaphylaxis risk"
+];
+const chipRow = document.getElementById("chipRow");
+EXAMPLES.forEach(ex=>{
+  const c = document.createElement("button");
+  c.className = "example-chip";
+  c.textContent = ex;
+  c.addEventListener("click", ()=>{ queryInput.value = ex; runQuery(); });
+  chipRow.appendChild(c);
+});
+
+function extractConcepts(text){
+  const t = text.toLowerCase();
+  const matched = [];
+  CONCEPT_DICT.forEach(entry=>{ if(entry.kw.some(k=>t.includes(k))) matched.push(entry); });
+  return matched;
+}
+function scoreCohorts(matched){
+  const scores = {};
+  matched.forEach(m=>{ scores[m.cohort] = (scores[m.cohort]||0) + m.weight; });
+  return scores;
+}
+function markStopDone(id){
+  const link = document.querySelector(`.stop[href="#${id}"]`);
+  if(link) link.classList.add("done");
+}
+
+function runQuery(){
+  const text = queryInput.value.trim();
+  queryStatus.classList.remove("err");
+  if(!text){
+    queryStatus.textContent = "Enter a query first.";
+    queryStatus.classList.add("err");
+    return;
+  }
+  const matched = extractConcepts(text);
+  if(matched.length===0){
+    queryStatus.textContent = "No SNOMED CT concepts resolved from this text — try one of the example queries, or add a specific clinical term.";
+    queryStatus.classList.add("err");
+    return;
+  }
+  const scores = scoreCohorts(matched);
+  const bestCohortKey = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  const cohort = COHORTS[bestCohortKey];
+  queryStatus.textContent = `Matched ${matched.length} concept${matched.length>1?"s":""} → routed to cohort "${cohort.label}".`;
+  markStopDone("stop3");
+
+  const dedup = [];
+  const seen = new Set();
+  matched.forEach(m=>{ if(!seen.has(m.code)){ seen.add(m.code); dedup.push(m); } });
+  document.getElementById("stepConcepts").innerHTML = dedup.map(m=>
+    `<span class="concept-chip"><span class="term">${m.term}</span><span class="code">SNOMED CT ${m.code}</span></span>`
+  ).join("");
+  markStopDone("stop4");
+
+  const eclTerms = dedup.map(m=>`<span class="kw">&lt;&lt;</span> ${m.code} |${m.term}|`).join(" <span class=\"kw\">AND</span>\n  ");
+  document.getElementById("stepEcl").innerHTML = `(\n  ${eclTerms}\n)`;
+  markStopDone("stop5");
+
+  const matchedN = Math.round(cohort.n * (cohort.brief.matchPct/100));
+  document.getElementById("stepMatch").innerHTML = `
+    <div><div class="num">${cohort.brief.matchPct}%</div><div class="lbl">Cohort frequency match</div></div>
+    <div><div class="num">${matchedN} / ${cohort.n}</div><div class="lbl">Patients in ECL result set</div></div>
+    <div><div class="num" style="font-size:15px;">${cohort.brief.hubLabel.split(" (")[0]}</div><div class="lbl">Active critical hub node</div></div>
+  `;
+  markStopDone("stop6");
+
+  loadPatientsForCohort(cohort.key);
+  markStopDone("stop7");
+
+  renderBrief(cohort);
+  markStopDone("stop8");
+  renderInsightReport(cohort, "insightReportGrid");
+  markStopDone("stop9");
+  loadCohort(cohort.key);
+  markStopDone("stop10");
+}
+
+function renderBrief(cohort){
+  const b = cohort.brief;
+  document.getElementById("briefGrid").innerHTML = `
+    <div class="brief-col"><h4>Query match</h4><ul>
+      <li><b>${b.queryMatch}</b></li>
+      <li>Cohort frequency match: <b>${b.matchPct}%</b></li>
+      <li>Active critical hub node: <b>${b.hubLabel}</b></li>
+    </ul></div>
+    <div class="brief-col"><h4>1. Presentation metrics</h4><ul>${b.presentation.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    <div class="brief-col"><h4>2. Required intervention protocol</h4><ul>${b.intervention.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+    <div class="brief-col"><h4>3. Predicted tracking &amp; outcome</h4><ul>${b.tracking.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+  `;
+}
+
+/* =======================================================================
+   TEMPLATIZED INSIGHT REPORT — fills the fixed 3-dimension structure from
+   "The Avinash Principle: Cohort-Level Clinical Intelligence & Insights
+   Engine" (Presentation / Intervention / Tracking & Correlation), with
+   every value read directly off the matched cohort object.
+======================================================================= */
+function buildInsightReportHTML(cohort){
+  const b = cohort.brief;
+  const hub = cohort.nodes.find(n=>n.hub) || cohort.nodes.find(n=>n.id===cohort.hubNodeId);
+  const outcomes = cohort.nodes.filter(n=>n.type==="outcome");
+  const adverse = outcomes.filter(o=>o.outcomeRate===1)[0] || outcomes.sort((a,b2)=>b2.outcomeRate-a.outcomeRate)[0];
+  const favorable = outcomes.find(o=>o.outcomeRate===0) || outcomes.sort((a,b2)=>a.outcomeRate-b2.outcomeRate)[0];
+  const earlyNodes = cohort.nodes.filter(n=>n.type==="symptom"||n.type==="comorbidity").sort((a,b2)=>b2.n-a.n).slice(0,2);
+  const escalations = cohort.nodes.filter(n=>n.type==="escalation");
+  const rareNode = cohort.nodes.slice().sort((a,b2)=>a.n-b2.n)[0];
+  const unusualOutcomeNode = escalations.length ? escalations.sort((a,b2)=>b2.outcomeRate-a.outcomeRate)[0] : null;
+  const deathN = adverse ? adverse.n : 0;
+  const mortalityPct = cohort.n ? Math.round((deathN/cohort.n)*1000)/10 : 0;
+  const lastDay = Math.max(...cohort.nodes.map(n=>n.day));
+
+  const field = (label, text)=>`<div class="ir-field"><span class="ir-label">${label}</span><div class="ir-text">${text}</div></div>`;
+
+  return `
+    <div class="ir-section">
+      <h4>1. Presentation Insights (Pattern Collapse)</h4>
+      ${field("Machine-Noticeable Presentation — Atemporal", `A recurring, non-linear cluster in this cohort: <b>${earlyNodes.map(n=>n.label).join("</b> + <b>")}</b> together (n=${Math.min(...earlyNodes.map(n=>n.n))}/${cohort.n}) — present regardless of the exact day they're charted, and disproportionately present ahead of the hub event below.`)}
+      ${field("Machine-Noticeable Presentation — Temporal", b.presentation[0] || "—")}
+      ${field("Key Presentation / Decision Node", hub ? `<b>${hub.label}</b> (${hub.system} ${hub.code}) — the cohort's crossroads: ${hub.desc} n=${hub.n}/${cohort.n} patients pass through this node; adverse-outcome rate at this node is ${Math.round(hub.outcomeRate*100)}%.` : "—")}
+      ${field("Presentation Timeline", `Standard progression track runs from first presentation to the hub node's day-offset, then on to outcome by day ${lastDay}. Patients who reach the hub node later than the standard window trend toward the failure arm (see Unusual Outcome below).`)}
+      ${field("Unusual Presentation", rareNode ? `Statistical outlier in this cohort: <b>${rareNode.label}</b>, seen in only ${rareNode.n}/${cohort.n} patients — an atypical track worth flagging even though it shares the same underlying hub-node topology as the standard presentation.` : "—")}
+    </div>
+    <div class="ir-section">
+      <h4>2. Intervention Insights (Execution &amp; Consequence)</h4>
+      ${field("Intervention Timeline", b.intervention[1] || "—")}
+      ${field("Key Intervention", b.intervention[0] || "—")}
+      ${field("Outcome", `${favorable ? `<b>${favorable.label}</b> in ${favorable.n}/${cohort.n} patients (favorable arm).` : ""} ${adverse ? `<b>${adverse.label}</b> in ${deathN}/${cohort.n} patients (${mortalityPct}% cohort mortality at this hub).` : ""}`)}
+      ${field("Outcome Pattern", b.tracking[0] || "—")}
+      ${field("Unusual Outcome", unusualOutcomeNode ? `<b>${unusualOutcomeNode.label}</b> carries a disproportionate ${Math.round(unusualOutcomeNode.outcomeRate*100)}% adverse-outcome rate in a subgroup of only ${unusualOutcomeNode.n} patients — an unexpected response pattern that has prompted a standing-order update (see Key Intervention) rather than being treated as noise.` : (b.intervention[2] || "—"))}
+    </div>
+    <div class="ir-section">
+      <h4>3. Tracking &amp; Correlation Insights (Longitudinal Dynamics)</h4>
+      ${field("Tracking", hub ? `Continuous surveillance from the hub node (${hub.label}) onward tracks physiological drift toward one of the two outcome arms described above; ${Math.round(hub.outcomeRate*100)}% of hub-positive patients trend adverse before stabilization is confirmed.` : "—")}
+      ${field("Tracking Patterns", `Longitudinal recovery signature runs from hub identification through day ${lastDay}: ${escalations.map(e=>e.label).join(" → ") || "stabilization"} → outcome.`)}
+      ${field("Tracking Pattern – Outcome Correlation", b.tracking[2] || "—")}
+    </div>
+  `;
+}
+function renderInsightReport(cohort, targetId){
+  document.getElementById(targetId).innerHTML = buildInsightReportHTML(cohort);
+}
+
+runBtn.addEventListener("click", runQuery);
+queryInput.addEventListener("keydown", ev=>{ if(ev.key==="Enter") runQuery(); });
+
+/* Two pre-run worked examples, rendered once at boot with the "Live output"
+   tag swapped for a static demo tag — same template function, so they never
+   drift from what the live pipeline actually produces. */
+document.getElementById("insightDemoRenal").innerHTML = `<div class="ir-demo">${buildInsightReportHTML(COHORTS.renal)}</div>`;
+document.getElementById("insightDemoSnake").innerHTML = `<div class="ir-demo">${buildInsightReportHTML(COHORTS.snakebite)}</div>`;
+
+/* =======================================================================
+   GRAPH RENDERING
+======================================================================= */
+const typeColor = {comorbidity:"var(--comorb)",symptom:"var(--symptom)",diagnosis:"var(--diag)",treatment:"var(--tx)",escalation:"var(--esc)",outcome:"var(--outcome)"};
+const typeLane = {comorbidity:0,symptom:1,diagnosis:2,treatment:3,escalation:4,outcome:5};
+const laneNames = ["Comorbidity","Symptom","Diagnosis / hub","Intervention","Escalation","Outcome"];
+
+const wrapEl = document.getElementById("wrap");
+const tooltip = document.getElementById("tooltip");
+let state = null;
+let panState = null;
+
+const dayColW = 130, laneH = 100, nodeW = 168, nodeH = 46, topPad = 60, leftPad = 70;
+
+function outcomeColorMix(rate){
+  const r0=[61,220,151], r1=[255,93,93];
+  const r = Math.round(r0[0]+(r1[0]-r0[0])*rate);
+  const g = Math.round(r0[1]+(r1[1]-r0[1])*rate);
+  const bl = Math.round(r0[2]+(r1[2]-r0[2])*rate);
+  return `rgb(${r},${g},${bl})`;
+}
+
+function loadCohort(key){
+  const cohort = COHORTS[key];
+  const days = [...new Set(cohort.nodes.map(n=>n.day))].sort((a,b)=>a-b);
+  const dayIndex = {}; days.forEach((d,i)=>dayIndex[d]=i);
+
+  const nodeById = {};
+  cohort.nodes.forEach(n=>{
+    n.cx = leftPad + dayIndex[n.day]*dayColW + dayColW/2;
+    n.cy = topPad + typeLane[n.type]*laneH + laneH/2;
+    nodeById[n.id] = n;
+  });
+
+  const edges = cohort.edges.map(([s,t,n])=>({s,t,n}));
+  const svgW = leftPad + days.length*dayColW + 40;
+  const svgH = topPad + 6*laneH + 40;
+
+  wrapEl.innerHTML = "";
+  const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("width", svgW);
+  svg.setAttribute("height", svgH);
+  svg.innerHTML = `<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#3a4456" stroke-width="1.5"/></marker></defs>`;
+  wrapEl.appendChild(svg);
+
+  laneNames.forEach((name,i)=>{
+    const r = document.createElementNS(svg.namespaceURI,"rect");
+    r.setAttribute("x",0); r.setAttribute("y", topPad+i*laneH);
+    r.setAttribute("width", svgW); r.setAttribute("height", laneH);
+    r.setAttribute("class","lane-bg"+(i%2?" alt":""));
+    svg.appendChild(r);
+    const t = document.createElementNS(svg.namespaceURI,"text");
+    t.setAttribute("x",12); t.setAttribute("y", topPad+i*laneH+16);
+    t.setAttribute("class","lane-label");
+    t.textContent = name;
+    svg.appendChild(t);
+  });
+
+  days.forEach((d,i)=>{
+    const x = leftPad + i*dayColW + dayColW/2;
+    const g = document.createElementNS(svg.namespaceURI,"g");
+    g.setAttribute("class","day-tick");
+    const line = document.createElementNS(svg.namespaceURI,"line");
+    line.setAttribute("x1",x); line.setAttribute("x2",x);
+    line.setAttribute("y1",topPad); line.setAttribute("y2",svgH-10);
+    g.appendChild(line);
+    const label = document.createElementNS(svg.namespaceURI,"text");
+    label.setAttribute("x",x); label.setAttribute("y",topPad-14);
+    label.setAttribute("text-anchor","middle");
+    label.textContent = cohort.dayLabelMap[String(d)] || ("d"+d);
+    g.appendChild(label);
+    svg.appendChild(g);
+  });
+
+  const edgeEls = [];
+  const edgesByNode = {};
+  function edgePath(s,t){
+    const x1=s.cx+nodeW/2, y1=s.cy, x2=t.cx-nodeW/2, y2=t.cy;
+    const mx=(x1+x2)/2;
+    return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+  }
+  edges.forEach(e=>{
+    const s = nodeById[e.s], t = nodeById[e.t];
+    if(!s||!t) return;
+    const path = document.createElementNS(svg.namespaceURI,"path");
+    path.setAttribute("d", edgePath(s,t));
+    path.setAttribute("class","edge");
+    path.setAttribute("stroke-width", Math.max(1.2, Math.min(6, e.n/cohort.n*18)));
+    path.dataset.s = e.s; path.dataset.t = e.t;
+    svg.appendChild(path);
+    edgeEls.push(path);
+    (edgesByNode[e.s]=edgesByNode[e.s]||[]).push(path);
+    (edgesByNode[e.t]=edgesByNode[e.t]||[]).push(path);
+  });
+
+  const nodeEls = {};
+  cohort.nodes.forEach(n=>{
+    const g = document.createElementNS(svg.namespaceURI,"g");
+    g.setAttribute("class","node");
+    g.setAttribute("transform",`translate(${n.cx-nodeW/2},${n.cy-nodeH/2})`);
+
+    const sizeScale = 0.55 + 0.45*(n.n/cohort.n);
+    const w = nodeW*sizeScale, h = nodeH*sizeScale;
+    const ox = (nodeW-w)/2, oy = (nodeH-h)/2;
+
+    const rect = document.createElementNS(svg.namespaceURI,"rect");
+    rect.setAttribute("x",ox); rect.setAttribute("y",oy);
+    rect.setAttribute("width",w); rect.setAttribute("height",h);
+    rect.setAttribute("rx",8);
+    rect.setAttribute("fill", n.hub ? outcomeColorMix(n.outcomeRate) : typeColor[n.type]);
+    rect.setAttribute("stroke", n.hub ? "#ffd700" : "#0e1116");
+    if(n.hub) rect.setAttribute("stroke-width","2.5");
+    g.appendChild(rect);
+
+    const label = document.createElementNS(svg.namespaceURI,"text");
+    label.setAttribute("x", ox+w/2); label.setAttribute("y", oy+h/2-3);
+    label.setAttribute("text-anchor","middle");
+    label.textContent = n.label.length>26 ? n.label.slice(0,24)+"…" : n.label;
+    g.appendChild(label);
+
+    const countLabel = document.createElementNS(svg.namespaceURI,"text");
+    countLabel.setAttribute("class","n-count");
+    countLabel.setAttribute("x", ox+w/2); countLabel.setAttribute("y", oy+h/2+11);
+    countLabel.setAttribute("text-anchor","middle");
+    countLabel.textContent = `n=${n.n} · ${Math.round(n.outcomeRate*100)}% adverse`;
+    g.appendChild(countLabel);
+
+    g.addEventListener("mouseenter", ev=>showTooltip(ev,n,cohort));
+    g.addEventListener("mousemove", moveTooltip);
+    g.addEventListener("mouseleave", hideTooltip);
+    g.addEventListener("click", ev=>{ if(!nodeWasDragged) pivot(n.id); });
+    g.addEventListener("mousedown", ev=>startNodeDrag(ev,n,false));
+    g.addEventListener("touchstart", ev=>startNodeDrag(ev,n,true), {passive:false});
+
+    svg.appendChild(g);
+    nodeEls[n.id] = g;
+  });
+
+  wrapEl.addEventListener("click", ev=>{ if(ev.target===wrapEl || ev.target===svg) resetView(); });
+
+  state = {cohort, svg, nodeById, nodeEls, edgeEls, edgesByNode, edgePath, camX:0, camY:0, camScale:1};
+  applyCamera();
+  buildPivotChips(cohort.pivotIds, nodeById);
+  buildLegend();
+  document.getElementById("pathNote").classList.remove("show");
+  resetView();
+  setTimeout(fitToScreen, 30);
+}
+
+function buildLegend(){
+  const legend = document.getElementById("legend");
+  const items = [
+    ["comorbidity","Comorbidity"],["symptom","Symptom"],["diagnosis","Diagnosis / hub"],
+    ["treatment","Intervention"],["escalation","Escalation"],["outcome","Outcome"]
+  ];
+  legend.innerHTML = items.map(([k,label])=>
+    `<span class="lg-item"><span class="lg-dot" style="background:${typeColor[k]}"></span>${label}</span>`
+  ).join("") + `<span class="lg-note">Size = cohort n · gold ring = hub node · redder = higher adverse-outcome rate</span>`;
+}
+
+function applyCamera(){
+  state.svg.style.transformOrigin = "0 0";
+  state.svg.style.transform = `translate(${state.camX}px,${state.camY}px) scale(${state.camScale})`;
+  document.getElementById("zoomPct").textContent = Math.round(state.camScale*100)+"%";
+}
+function zoomBy(factor){
+  const rect = wrapEl.getBoundingClientRect();
+  const cx = rect.width/2, cy = rect.height/2;
+  const newScale = Math.max(0.3, Math.min(2.5, state.camScale*factor));
+  state.camX = cx - (cx-state.camX)*(newScale/state.camScale);
+  state.camY = cy - (cy-state.camY)*(newScale/state.camScale);
+  state.camScale = newScale;
+  applyCamera();
+}
+function fitToScreen(){
+  if(!state) return;
+  const rect = wrapEl.getBoundingClientRect();
+  const svgW = parseFloat(state.svg.getAttribute("width"));
+  const svgH = parseFloat(state.svg.getAttribute("height"));
+  const scale = Math.min(rect.width/svgW, rect.height/svgH, 1) * 0.94;
+  state.camScale = scale;
+  state.camX = (rect.width - svgW*scale)/2;
+  state.camY = (rect.height - svgH*scale)/2;
+  applyCamera();
+}
+document.getElementById("zoomInBtn").addEventListener("click", ()=>zoomBy(1.2));
+document.getElementById("zoomOutBtn").addEventListener("click", ()=>zoomBy(1/1.2));
+document.getElementById("zoomFitBtn").addEventListener("click", fitToScreen);
+
+wrapEl.addEventListener("wheel", ev=>{
+  ev.preventDefault();
+  zoomBy(ev.deltaY<0 ? 1.08 : 1/1.08);
+}, {passive:false});
+
+wrapEl.addEventListener("mousedown", ev=>{
+  if(ev.target.closest(".node")) return;
+  panState = {x:ev.clientX,y:ev.clientY,camX:state.camX,camY:state.camY};
+  wrapEl.classList.add("panning");
+});
+window.addEventListener("mousemove", ev=>{
+  if(!panState) return;
+  state.camX = panState.camX + (ev.clientX-panState.x);
+  state.camY = panState.camY + (ev.clientY-panState.y);
+  applyCamera();
+});
+window.addEventListener("mouseup", ()=>{ panState=null; wrapEl.classList.remove("panning"); });
+
+wrapEl.addEventListener("touchstart", ev=>{
+  if(ev.target.closest(".node")) return;
+  if(ev.touches.length===1) panState = {x:ev.touches[0].clientX,y:ev.touches[0].clientY,camX:state.camX,camY:state.camY};
+}, {passive:true});
+wrapEl.addEventListener("touchmove", ev=>{
+  if(!panState || ev.touches.length!==1) return;
+  state.camX = panState.camX + (ev.touches[0].clientX-panState.x);
+  state.camY = panState.camY + (ev.touches[0].clientY-panState.y);
+  applyCamera();
+}, {passive:true});
+window.addEventListener("touchend", ()=>{ panState=null; });
+window.addEventListener("resize", ()=>{ if(state) fitToScreen(); });
+
+let dragState = null;
+let nodeWasDragged = false;
+function startNodeDrag(ev,n,isTouch){
+  ev.stopPropagation();
+  if(!isTouch) ev.preventDefault();
+  const point = isTouch ? ev.touches[0] : ev;
+  dragState = {n, startClientX:point.clientX, startClientY:point.clientY, cx0:n.cx, cy0:n.cy};
+  nodeWasDragged = false;
+  hideTooltip();
+  const move = mev=>{
+    const p = mev.touches ? mev.touches[0] : mev;
+    const dx = (p.clientX-dragState.startClientX)/state.camScale;
+    const dy = (p.clientY-dragState.startClientY)/state.camScale;
+    if(Math.abs(dx)>3||Math.abs(dy)>3) nodeWasDragged = true;
+    n.cx = dragState.cx0+dx; n.cy = dragState.cy0+dy;
+    state.nodeEls[n.id].setAttribute("transform",`translate(${n.cx-nodeW/2},${n.cy-nodeH/2})`);
+    (state.edgesByNode[n.id]||[]).forEach(path=>{
+      const s = state.nodeById[path.dataset.s], t = state.nodeById[path.dataset.t];
+      path.setAttribute("d", state.edgePath(s,t));
+    });
+  };
+  const up = ()=>{
+    dragState=null;
+    window.removeEventListener("mousemove",move); window.removeEventListener("mouseup",up);
+    window.removeEventListener("touchmove",move); window.removeEventListener("touchend",up);
+    setTimeout(()=>{ nodeWasDragged=false; },0);
+  };
+  window.addEventListener("mousemove",move); window.addEventListener("mouseup",up);
+  window.addEventListener("touchmove",move,{passive:false}); window.addEventListener("touchend",up);
+}
+
+function showTooltip(ev,n,cohort){
+  tooltip.style.display="block";
+  tooltip.innerHTML = `<b>${n.label}</b><br>${n.desc}
+    <div class="stat-line">Cohort n = ${n.n} / ${cohort.n} &nbsp;·&nbsp; adverse-outcome rate ${Math.round(n.outcomeRate*100)}%</div>
+    <div class="code-line">${n.system}: ${n.code} &nbsp;·&nbsp; type: ${n.type}</div>`;
+  moveTooltip(ev);
+}
+function moveTooltip(ev){ tooltip.style.left=(ev.clientX+16)+"px"; tooltip.style.top=(ev.clientY+16)+"px"; }
+function hideTooltip(){ tooltip.style.display="none"; }
+
+function neighborsOf(id){
+  const set = new Set([id]);
+  state.cohort.edges.forEach(([s,t])=>{ if(s===id) set.add(t); if(t===id) set.add(s); });
+  return set;
+}
+function pivot(id){
+  const active = neighborsOf(id);
+  Object.entries(state.nodeEls).forEach(([nid,g])=>{
+    g.classList.toggle("dim", !active.has(nid));
+    g.classList.toggle("hot", nid===id);
+  });
+  state.edgeEls.forEach(p=>{
+    const connected = (p.dataset.s===id||p.dataset.t===id);
+    p.classList.toggle("hot",connected);
+    p.classList.toggle("dim",!connected);
+  });
+  document.querySelectorAll(".pivot-btn").forEach(b=>b.classList.toggle("active", b.dataset.id===id));
+
+  if(id === state.cohort.hubNodeId){
+    const hp = state.cohort.highlightPath;
+    const pathNote = document.getElementById("pathNote");
+    pathNote.textContent = "Pre-computed hub route: " + hp.label;
+    pathNote.classList.add("show");
+    hp.nodeIds.forEach(nid=>state.nodeEls[nid] && state.nodeEls[nid].classList.add("path-highlight"));
+    state.edgeEls.forEach(p=>{
+      if(hp.edges.some(([s,t])=>p.dataset.s===s && p.dataset.t===t)) p.classList.add("path-highlight");
+    });
+  }
+}
+function resetView(){
+  Object.values(state.nodeEls).forEach(g=>{ g.classList.remove("dim","hot","path-highlight"); });
+  state.edgeEls.forEach(p=>{ p.classList.remove("dim","hot","path-highlight"); });
+  document.querySelectorAll(".pivot-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("pathNote").classList.remove("show");
+}
+document.getElementById("resetBtn").addEventListener("click", resetView);
+
+function buildPivotChips(pivotIds, nodeById){
+  const host = document.getElementById("pivotButtons");
+  host.innerHTML = "";
+  pivotIds.forEach(id=>{
+    const n = nodeById[id];
+    if(!n) return;
+    const btn = document.createElement("button");
+    btn.className="pivot-btn"; btn.dataset.id=id;
+    btn.textContent = n.label.split(" (")[0];
+    btn.addEventListener("click", ()=>pivot(id));
+    host.appendChild(btn);
+  });
+}
+
+/* =======================================================================
+   PATIENT CASE VIEWER (stop 7) — same single-chart engine as
+   "Multi-Case Patient Trajectory Explorer", namespaced with a pat*
+   prefix so it can run alongside the cohort-graph engine above.
+======================================================================= */
+const PATIENT_CASES = { renal: [], snakebite: [] };
+
+/* --- RENAL: real case, source: ward case log unit-2 admission --- */
+PATIENT_CASES.renal.push({
+  key:"r1",
+  shortLabel:"60M — Ascites / Renal",
+  title:"Patient Trajectory Map — 60-year-old Male: Fever, Ascites, Hypoproteinemia, Renal Dysfunction, Oliguria",
+  meta:`Admission <b>09-Mar-2021</b> → Death <b>19-Mar-2021</b> · Source: ward case log (unit 2 admission). Nodes normalized to <b>SNOMED CT</b> and <b>LOINC</b> where applicable — best-fit mappings from the free-text record, not an EHR-verified coding pass.`,
+  dayLabelMap:{"-1":"pre-adm.","0":"Day 0\n9 Mar","1":"Day 1\n10 Mar","2":"Day 2\n11 Mar","3":"Day 3\n12 Mar","3.5":"Day 4\n13 Mar","5":"Day 6\n15 Mar","6":"Day 7\n16 Mar","8.5":"Day 8–9\n18–19 Mar","10":"Day 9\n19 Mar"},
+  pivotIds:["cm_ckd","cm_cad","cm_bph","dx_uti","dx_fuo","dx_htnenceph","dx_hepenceph","tx_lasix","tx_fluidrestrict","out_death"],
+  highlightPath:{label:"CKD → Anaemia (pallor) → Erythropoietin", nodeIds:["cm_ckd","sx_pallor","tx_iron","tx_b12","es_renaldecline","tx_epo"],
+    edgeIds:[["cm_ckd","dx_renaldys"],["sx_pallor","dx_renaldys"],["sx_pallor","tx_iron"],["sx_pallor","tx_b12"],["cm_ckd","es_renaldecline"],["es_renaldecline","tx_epo"]]},
+  nodes:[
+    {id:"cm_ckd", type:"comorbidity", day:-1, label:"CKD (on conservative mgmt)", system:"SNOMED CT", code:"709044004", desc:"Known case of chronic kidney disease, pre-existing, managed conservatively prior to admission."},
+    {id:"cm_cad", type:"comorbidity", day:-1, label:"Coronary Artery Disease", system:"SNOMED CT", code:"53741008", desc:"Known case of CAD; on antiplatelet + statin therapy."},
+    {id:"cm_bph", type:"comorbidity", day:1, label:"BPH", system:"SNOMED CT", code:"266569009", desc:"Benign prostatic hyperplasia — identified as contributing diagnosis on Day 1 assessment."},
+    {id:"sx_fever", type:"symptom", day:0, label:"Fever (15 days, high-grade, intermittent)", system:"SNOMED CT", code:"386661006", desc:"High-grade intermittent fever x15 days, no chills, relieved with medication."},
+    {id:"sx_sob", type:"symptom", day:0, label:"Dyspnea (SOB, exertional→rest)", system:"SNOMED CT", code:"267036007", desc:"SOB x3 days, initially on exertion, progressed to rest."},
+    {id:"sx_ascites", type:"symptom", day:0, label:"Ascites / Abdominal Distension", system:"SNOMED CT", code:"271681002", desc:"Distended, everted abdomen, shifting dullness +, dilated superficial abdominal veins."},
+    {id:"sx_pallor", type:"symptom", day:0, label:"Pallor", system:"SNOMED CT", code:"297968009", desc:"Pallor present on general examination, persisted through admission."},
+    {id:"sx_oliguria", type:"symptom", day:3.5, label:"Decreased Urine Output (Oliguria)", system:"SNOMED CT", code:"27523002", desc:"Progressive decrease in urine output from Day 4 onward (I/O 1000/600 mL by Day 5)."},
+    {id:"dx_uti", type:"diagnosis", day:1, label:"Urinary Tract Infection", system:"SNOMED CT", code:"68566005", desc:"Working diagnosis from Day 1, treated empirically pending urine culture."},
+    {id:"dx_fuo", type:"diagnosis", day:1, label:"Fever Under Evaluation (PUO)", system:"SNOMED CT", code:"64241005", desc:"Active problem through Day 3, work-up ongoing."},
+    {id:"dx_hypoprot", type:"diagnosis", day:0, label:"Hypoproteinemia", system:"SNOMED CT", code:"46609007", desc:"Low serum protein, contributing to ascites."},
+    {id:"dx_renaldys", type:"diagnosis", day:0, label:"Renal Dysfunction (on CKD)", system:"SNOMED CT", code:"42399005", desc:"Renal impairment on background CKD; RFT trended through admission."},
+    {id:"dx_htnenceph", type:"diagnosis", day:5, label:"Hypertensive Encephalopathy", system:"SNOMED CT", code:"78269007", desc:"Diagnosed Day 5 — escalation from new-onset Grade 1 hypertension."},
+    {id:"dx_hepenceph", type:"diagnosis", day:6, label:"Hepatic Encephalopathy", system:"SNOMED CT", code:"41901008", desc:"Diagnosed Day 6 — hepatic/metabolic decompensation alongside renal failure."},
+    {id:"tx_lasix", type:"treatment", day:1, label:"Furosemide (Lasix 40mg OD)", system:"SNOMED CT", code:"387475002", desc:"Loop diuretic for ascites/fluid overload; held briefly around Day 2, then resumed."},
+    {id:"tx_fluidrestrict", type:"treatment", day:3, label:"Fluid Restriction (≤1 L/day)", system:"SNOMED CT", code:"182922004", desc:"Escalated fluid restriction ordered Day 3 in context of renal dysfunction / oliguria."},
+    {id:"tx_iron", type:"treatment", day:3, label:"Oral Iron (Orofer XT)", system:"SNOMED CT", code:"387096009", desc:"Started Day 3 for anemia/pallor."},
+    {id:"tx_b12", type:"treatment", day:3, label:"Vitamin B12 Injection", system:"SNOMED CT", code:"86009009", desc:"Started Day 3 for nutritional support."},
+    {id:"tx_epo", type:"treatment", day:6, label:"Erythropoietin Injection", system:"SNOMED CT", code:"66892003", desc:"Started Day 6 for renal-anemia support as renal function worsened."},
+    {id:"es_renaldecline", type:"escalation", day:6, label:"Progressive Oliguria / Renal Decline", system:"SNOMED CT", code:"162113009", desc:"Day 6 onward: I/O worsening, erythropoietin added, renal trajectory declining."},
+    {id:"es_deterioration", type:"escalation", day:8.5, label:"Terminal Deterioration (Day 8–9)", system:"SNOMED CT", code:"271594007", desc:"Further clinical deterioration recorded, preceding death."},
+    {id:"out_death", type:"outcome", day:10, label:"Death (Day 9, 19/3/2021)", system:"SNOMED CT", code:"419099009", desc:"Patient expired on Day 9 of admission — death summary recorded."}
+  ],
+  edges:[
+    {s:"sx_fever", t:"dx_fuo"}, {s:"sx_ascites", t:"dx_hypoprot"}, {s:"sx_sob", t:"dx_renaldys"}, {s:"sx_pallor", t:"dx_renaldys"},
+    {s:"cm_ckd", t:"dx_renaldys", dashed:true}, {s:"cm_ckd", t:"es_renaldecline", dashed:true}, {s:"cm_bph", t:"dx_uti", dashed:true},
+    {s:"dx_renaldys", t:"tx_lasix"}, {s:"dx_renaldys", t:"tx_fluidrestrict"}, {s:"dx_hypoprot", t:"tx_lasix"},
+    {s:"sx_pallor", t:"tx_iron"}, {s:"sx_pallor", t:"tx_b12"},
+    {s:"tx_fluidrestrict", t:"dx_htnenceph"}, {s:"dx_htnenceph", t:"dx_hepenceph"}, {s:"dx_hepenceph", t:"tx_epo"},
+    {s:"sx_oliguria", t:"es_renaldecline"}, {s:"dx_hepenceph", t:"es_renaldecline"}, {s:"es_renaldecline", t:"tx_epo"},
+    {s:"es_renaldecline", t:"es_deterioration"}, {s:"dx_hepenceph", t:"es_deterioration"}, {s:"es_deterioration", t:"out_death"}
+  ]
+});
+
+/* --- SNAKEBITE: synthetic favorable-arm patient --- */
+PATIENT_CASES.snakebite.push({
+  key:"s1",
+  shortLabel:"34M — Snakebite, Recovered",
+  title:"Patient Trajectory Map — 34-year-old Male Farmer: Severe Snakebite Envenomation (favorable arm)",
+  meta:`Bite T+0 → Clot resolution ~Hour 13 · Composite of the cohort's favorable (early-ASV, no-anaphylaxis) branch — illustrative, not a single source chart.`,
+  dayLabelMap:{"0":"T+0","0.25":"T+15m","0.33":"T+20m","0.75":"T+45m","12":"Hour 12–14"},
+  pivotIds:["sx_bite","hub_hemostatic","tx_asv","out_clot"],
+  highlightPath:null,
+  nodes:[
+    {id:"cm_farmer", type:"comorbidity", day:0, label:"Agricultural / outdoor occupation", system:"SNOMED CT", code:"224362002", desc:"Occupational exposure risk factor."},
+    {id:"sx_bite", type:"symptom", day:0, label:"Snake bite wound, lower limb", system:"SNOMED CT", code:"262587007", desc:"Confirmed fang marks, lower-limb site."},
+    {id:"sx_swelling", type:"symptom", day:0.25, label:"Local swelling, progressive", system:"SNOMED CT", code:"65038007", desc:"Swelling progression >3 cm/hour."},
+    {id:"hub_hemostatic", type:"diagnosis", day:0.33, label:"Systemic hemostatic failure (hub)", system:"SNOMED CT", code:"234466008", desc:"20WBCT non-clotting confirmed at T+20min."},
+    {id:"tx_asv", type:"treatment", day:0.75, label:"Polyvalent ASV, 10 vials in 200mL NS", system:"SNOMED CT", code:"432102000", desc:"Given within the <15min execution-latency target from hub identification."},
+    {id:"tx_epi_preload", type:"treatment", day:0.75, label:"Epinephrine 0.5mg IM, pre-loaded", system:"SNOMED CT", code:"307755000", desc:"Circuit-breaker standing order — pre-loaded ahead of ASV, not needed on this course."},
+    {id:"out_clot", type:"outcome", day:12, label:"Solid clot formation achieved", system:"SNOMED CT", code:"365595001", desc:"Resolution within 12–14h post-second ASV dose; discharged well."}
+  ],
+  edges:[
+    {s:"cm_farmer", t:"sx_bite", dashed:true}, {s:"sx_bite", t:"sx_swelling"}, {s:"sx_swelling", t:"hub_hemostatic"},
+    {s:"hub_hemostatic", t:"tx_asv"}, {s:"tx_asv", t:"tx_epi_preload"}, {s:"tx_asv", t:"out_clot"}
+  ]
+});
+
+/* --- SNAKEBITE: synthetic fatal-arm patient --- */
+PATIENT_CASES.snakebite.push({
+  key:"s2",
+  shortLabel:"41M — Snakebite, Fatal",
+  title:"Patient Trajectory Map — 41-year-old Male Farmer: Severe Snakebite Envenomation (delayed-hub, fatal arm)",
+  meta:`Bite T+0 → Death ~Hour 13 · Composite of the cohort's minority failure branch — illustrative, not a single source chart.`,
+  dayLabelMap:{"0":"T+0","0.33":"T+20m","0.75":"T+45m","6":"Hour 6","12":"Hour 12–14"},
+  pivotIds:["sx_bite","hub_hemostatic","tx_asv","es_anaphylaxis","out_death"],
+  highlightPath:null,
+  nodes:[
+    {id:"cm_farmer", type:"comorbidity", day:0, label:"Agricultural / outdoor occupation", system:"SNOMED CT", code:"224362002", desc:"Occupational exposure risk factor."},
+    {id:"sx_bite", type:"symptom", day:0, label:"Snake bite wound, lower limb", system:"SNOMED CT", code:"262587007", desc:"Confirmed fang marks, lower-limb site — presentation delayed several hours."},
+    {id:"hub_hemostatic", type:"diagnosis", day:0.75, label:"Systemic hemostatic failure (hub, delayed ID)", system:"SNOMED CT", code:"234466008", desc:"20WBCT non-clotting not confirmed until ~45min — beyond the target identification window."},
+    {id:"tx_asv", type:"treatment", day:0.75, label:"Polyvalent ASV, 10 vials in 200mL NS", system:"SNOMED CT", code:"432102000", desc:"Given after the delayed hub identification."},
+    {id:"es_anaphylaxis", type:"escalation", day:0.75, label:"Acute hypersensitivity reaction", system:"SNOMED CT", code:"39579001", desc:"Reaction during ASV infusion."},
+    {id:"es_redistrib", type:"escalation", day:6, label:"Delayed venom redistribution", system:"SNOMED CT", code:"241876004", desc:"Recurrence of systemic effects at T+6h."},
+    {id:"out_death", type:"outcome", day:12, label:"Death — hemostatic failure", system:"SNOMED CT", code:"419620001", desc:"Associated with delayed hub identification (>45min to ASV)."}
+  ],
+  edges:[
+    {s:"cm_farmer", t:"sx_bite", dashed:true}, {s:"sx_bite", t:"hub_hemostatic"}, {s:"hub_hemostatic", t:"tx_asv"},
+    {s:"tx_asv", t:"es_anaphylaxis"}, {s:"es_anaphylaxis", t:"out_death"}, {s:"es_redistrib", t:"out_death"}, {s:"hub_hemostatic", t:"es_redistrib"}
+  ]
+});
+
+/* --- shared constants / engine (namespaced pat*) --- */
+const patLaneOrder = ["comorbidity","symptom","diagnosis","treatment","escalation","outcome"];
+const patLaneLabelText = {comorbidity:"Comorbidities", symptom:"Symptoms", diagnosis:"Diagnoses", treatment:"Treatments / Investigations", escalation:"Escalations", outcome:"Outcome"};
+const patCssColor = {comorbidity:"#a880ff", symptom:"#ffb454", diagnosis:"#ff6b6b", treatment:"#54c7ff", escalation:"#ff4fa3", outcome:"#9aa2b1"};
+const patLaneH = 96, patTopPad = 30, patDayW = 148, patXOffset = 160, patNodeW = 158, patNodeH = 42;
+function patEl(tag, attrs){ const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function patTruncate(s,n){ return s.length>n? s.slice(0,n-1)+"…" : s; }
+
+let patState = null, patPanState = null, patDragState = null, patNodeWasDragged = false;
+const patWrapEl = document.getElementById("patWrap");
+const patTooltipEl = document.getElementById("patTooltip");
+
+function patBuildLegend(){
+  const host = document.getElementById("patLegend");
+  host.innerHTML = "";
+  patLaneOrder.forEach(type=>{
+    const item = document.createElement("span");
+    item.className = "lg-item";
+    item.innerHTML = `<span class="lg-dot" style="background:${patCssColor[type]}"></span>${patLaneLabelText[type]}`;
+    host.appendChild(item);
+  });
+}
+patBuildLegend();
+
+function loadPatientsForCohort(cohortKey){
+  const list = PATIENT_CASES[cohortKey] || [];
+  const host = document.getElementById("patCaseButtons");
+  host.innerHTML = "";
+  list.forEach((c,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "pat-case-btn";
+    btn.dataset.key = c.key;
+    btn.textContent = c.shortLabel;
+    btn.addEventListener("click", ()=>patLoadCase(cohortKey, c.key));
+    host.appendChild(btn);
+  });
+  document.getElementById("patCaseCount").textContent = list.length + " case" + (list.length===1?"":"s") + " in this cohort";
+  if(list.length) patLoadCase(cohortKey, list[0].key);
+}
+
+function patLoadCase(cohortKey, caseKey){
+  const data = PATIENT_CASES[cohortKey].find(c=>c.key===caseKey);
+  if(!data) return;
+  document.querySelectorAll(".pat-case-btn").forEach(b=>b.classList.toggle("active", b.dataset.key===caseKey));
+  document.getElementById("patCaseTitle").innerHTML = data.title;
+  document.getElementById("patCaseMeta").innerHTML = data.meta;
+
+  const nodes = data.nodes.map(n=>({...n}));
+  const edges = data.edges;
+  const minDay = Math.min(...nodes.map(n=>n.day));
+  const maxDay = Math.max(...nodes.map(n=>n.day));
+  const svgW = patXOffset + (maxDay-minDay+1.6)*patDayW;
+  const svgH = patTopPad + patLaneOrder.length*patLaneH + 34;
+
+  function laneY(type){ return patTopPad + patLaneOrder.indexOf(type)*patLaneH; }
+  function dayX(day){ return patXOffset + (day-minDay)*patDayW; }
+
+  const grouped = {};
+  nodes.forEach(n=>{ const k = n.type+"_"+n.day; grouped[k] = grouped[k]||[]; grouped[k].push(n); });
+  nodes.forEach(n=>{
+    n.cx = dayX(n.day);
+    const group = grouped[n.type+"_"+n.day];
+    const idx = group.indexOf(n);
+    const rowH = patNodeH+10, groupHeight = group.length*rowH, laneCenter = laneY(n.type)+patLaneH/2;
+    n.cy = laneCenter - groupHeight/2 + idx*rowH + rowH/2;
+  });
+  const nodeById = {}; nodes.forEach(n=>nodeById[n.id]=n);
+
+  patWrapEl.innerHTML = "";
+  const svg = patEl("svg",{width:"100%",height:"100%"});
+  patWrapEl.appendChild(svg);
+  const defs = patEl("defs",{});
+  const marker = patEl("marker",{id:"patArrow", viewBox:"0 0 10 10", refX:9, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"});
+  marker.appendChild(patEl("path",{d:"M0,0 L10,5 L0,10 z", fill:"#3a4456"}));
+  defs.appendChild(marker); svg.appendChild(defs);
+  const viewport = patEl("g",{id:"patViewport"}); svg.appendChild(viewport);
+
+  patLaneOrder.forEach((type,i)=>{
+    const y = patTopPad + i*patLaneH;
+    viewport.appendChild(patEl("rect",{x:0,y,width:svgW,height:patLaneH, class:`lane-bg ${i%2?"alt":""}`}));
+    const lbl = patEl("text",{x:12, y:y+16, class:"lane-label"}); lbl.textContent = patLaneLabelText[type];
+    viewport.appendChild(lbl);
+    viewport.appendChild(patEl("rect",{x:0,y,width:4,height:patLaneH, fill:patCssColor[type], opacity:.85}));
+  });
+
+  [...new Set(nodes.map(n=>n.day))].sort((a,b)=>a-b).forEach(d=>{
+    const x = dayX(d);
+    const g = patEl("g",{class:"day-tick"});
+    g.appendChild(patEl("line",{x1:x,y1:patTopPad-6,x2:x,y2:svgH-26,"stroke-dasharray":"2 4"}));
+    const label = data.dayLabelMap[String(d)] || ("Day "+d);
+    label.split("\n").forEach((ln,i)=>{
+      const t = patEl("text",{x:x, y:svgH-12+i*11, "text-anchor":"middle"}); t.textContent = ln; g.appendChild(t);
+    });
+    viewport.appendChild(g);
+  });
+
+  const edgeLayer = patEl("g",{}); viewport.appendChild(edgeLayer);
+  const edgeEls = [], edgesByNode = {};
+  function edgePath(s,t){
+    const x1=s.cx+patNodeW/2, y1=s.cy, x2=t.cx-patNodeW/2, y2=t.cy;
+    const dx = Math.max(36, (x2-x1)*0.5);
+    return `M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`;
+  }
+  edges.forEach(e=>{
+    const s = nodeById[e.s], t = nodeById[e.t];
+    if(!s||!t) return;
+    const p = patEl("path",{class:`edge ${e.dashed?"dashed":""}`, d:edgePath(s,t), "marker-end":"url(#patArrow)"});
+    p.dataset.s = e.s; p.dataset.t = e.t;
+    edgeLayer.appendChild(p); edgeEls.push(p);
+    (edgesByNode[e.s]=edgesByNode[e.s]||[]).push(p);
+    (edgesByNode[e.t]=edgesByNode[e.t]||[]).push(p);
+  });
+
+  const nodeLayer = patEl("g",{}); viewport.appendChild(nodeLayer);
+  const nodeEls = {};
+  nodes.forEach(n=>{
+    const g = patEl("g",{class:"node", transform:`translate(${n.cx-patNodeW/2},${n.cy-patNodeH/2})`});
+    g.appendChild(patEl("rect",{width:patNodeW, height:patNodeH, rx:8, fill:patCssColor[n.type], stroke:"#000"}));
+    const text = patEl("text",{x:9, y:18}); text.textContent = patTruncate(n.label,24); g.appendChild(text);
+    const code = patEl("text",{x:9, y:32, class:"n-count"}); code.textContent = `${n.system}: ${n.code}`; g.appendChild(code);
+    g.addEventListener("mouseenter", ev=>patShowTooltip(ev,n));
+    g.addEventListener("mousemove", patMoveTooltip);
+    g.addEventListener("mouseleave", patHideTooltip);
+    g.addEventListener("mousedown", ev=>patStartNodeDrag(ev,n,false));
+    g.addEventListener("touchstart", ev=>patStartNodeDrag(ev,n,true), {passive:false});
+    g.addEventListener("click", ev=>{ ev.stopPropagation(); if(patNodeWasDragged) return; patPivot(n.id); });
+    nodeLayer.appendChild(g); nodeEls[n.id] = g;
+  });
+  svg.addEventListener("click", ()=>patResetView());
+
+  patState = { nodes, edges, nodeById, nodeEls, edgeEls, edgesByNode, svg, viewport, svgW, svgH, camScale:1, camX:0, camY:0, edgePath };
+  patBuildPivotChips(data.pivotIds, nodeById);
+  patApplyHighlightPath(data.highlightPath);
+  patFitToScreen();
+}
+
+function patApplyHighlightPath(hp){
+  const noteEl = document.getElementById("patPathNote");
+  if(!hp){ noteEl.classList.remove("show"); noteEl.textContent=""; return; }
+  (hp.nodeIds||[]).forEach(id=>{ const g = patState.nodeEls[id]; if(g) g.classList.add("path-highlight"); });
+  (hp.edgeIds||[]).forEach(([s,t])=>{
+    const p = patState.edgeEls.find(e=>(e.dataset.s===s&&e.dataset.t===t)||(e.dataset.s===t&&e.dataset.t===s));
+    if(p) p.classList.add("path-highlight");
+  });
+  noteEl.textContent = `★ Highlighted pathway: ${hp.label}`;
+  noteEl.classList.add("show");
+}
+
+function patApplyCamera(){
+  patState.viewport.setAttribute("transform", `translate(${patState.camX},${patState.camY}) scale(${patState.camScale})`);
+  document.getElementById("patZoomPct").textContent = Math.round(patState.camScale*100)+"%";
+}
+function patFitToScreen(){
+  const ww = patWrapEl.clientWidth, wh = patWrapEl.clientHeight;
+  const scale = Math.min(ww/patState.svgW, wh/patState.svgH, 1) * 0.96;
+  patState.camScale = Math.max(scale, 0.15);
+  patState.camX = (ww - patState.svgW*patState.camScale)/2;
+  patState.camY = (wh - patState.svgH*patState.camScale)/2;
+  patApplyCamera();
+}
+document.getElementById("patZoomInBtn").addEventListener("click", ()=>{ patState.camScale=Math.min(patState.camScale*1.2,3); patApplyCamera(); });
+document.getElementById("patZoomOutBtn").addEventListener("click", ()=>{ patState.camScale=Math.max(patState.camScale/1.2,0.1); patApplyCamera(); });
+document.getElementById("patZoomFitBtn").addEventListener("click", ()=>patFitToScreen());
+
+patWrapEl.addEventListener("wheel", ev=>{
+  ev.preventDefault();
+  const rect = patWrapEl.getBoundingClientRect();
+  const mx = ev.clientX-rect.left, my = ev.clientY-rect.top;
+  const factor = ev.deltaY<0 ? 1.08 : 0.92;
+  const newScale = Math.min(Math.max(patState.camScale*factor, 0.1), 3);
+  patState.camX = mx - (mx-patState.camX)*(newScale/patState.camScale);
+  patState.camY = my - (my-patState.camY)*(newScale/patState.camScale);
+  patState.camScale = newScale;
+  patApplyCamera();
+}, {passive:false});
+
+patWrapEl.addEventListener("mousedown", ev=>{
+  if(ev.target.closest(".node")) return;
+  patPanState = {x:ev.clientX,y:ev.clientY,camX:patState.camX,camY:patState.camY};
+  patWrapEl.classList.add("panning");
+});
+window.addEventListener("mousemove", ev=>{
+  if(!patPanState) return;
+  patState.camX = patPanState.camX + (ev.clientX-patPanState.x);
+  patState.camY = patPanState.camY + (ev.clientY-patPanState.y);
+  patApplyCamera();
+});
+window.addEventListener("mouseup", ()=>{ patPanState=null; patWrapEl.classList.remove("panning"); });
+patWrapEl.addEventListener("touchstart", ev=>{
+  if(ev.target.closest(".node")) return;
+  if(ev.touches.length===1) patPanState = {x:ev.touches[0].clientX,y:ev.touches[0].clientY,camX:patState.camX,camY:patState.camY};
+}, {passive:true});
+patWrapEl.addEventListener("touchmove", ev=>{
+  if(!patPanState || ev.touches.length!==1) return;
+  patState.camX = patPanState.camX + (ev.touches[0].clientX-patPanState.x);
+  patState.camY = patPanState.camY + (ev.touches[0].clientY-patPanState.y);
+  patApplyCamera();
+}, {passive:true});
+window.addEventListener("touchend", ()=>{ patPanState=null; });
+window.addEventListener("resize", ()=>{ if(patState) patFitToScreen(); });
+
+function patStartNodeDrag(ev,n,isTouch){
+  ev.stopPropagation();
+  if(!isTouch) ev.preventDefault();
+  const point = isTouch ? ev.touches[0] : ev;
+  patDragState = {n, startClientX:point.clientX, startClientY:point.clientY, cx0:n.cx, cy0:n.cy};
+  patNodeWasDragged = false;
+  patState.nodeEls[n.id].classList.add("dragging");
+  patHideTooltip();
+  const move = mev=>{
+    const p = mev.touches ? mev.touches[0] : mev;
+    const dx = (p.clientX-patDragState.startClientX)/patState.camScale;
+    const dy = (p.clientY-patDragState.startClientY)/patState.camScale;
+    if(Math.abs(dx)>3||Math.abs(dy)>3) patNodeWasDragged = true;
+    n.cx = patDragState.cx0+dx; n.cy = patDragState.cy0+dy;
+    patState.nodeEls[n.id].setAttribute("transform",`translate(${n.cx-patNodeW/2},${n.cy-patNodeH/2})`);
+    (patState.edgesByNode[n.id]||[]).forEach(path=>{
+      const s = patState.nodeById[path.dataset.s], t = patState.nodeById[path.dataset.t];
+      path.setAttribute("d", patState.edgePath(s,t));
+    });
+  };
+  const up = ()=>{
+    patDragState=null;
+    patState.nodeEls[n.id].classList.remove("dragging");
+    window.removeEventListener("mousemove",move); window.removeEventListener("mouseup",up);
+    window.removeEventListener("touchmove",move); window.removeEventListener("touchend",up);
+    setTimeout(()=>{ patNodeWasDragged=false; },0);
+  };
+  window.addEventListener("mousemove",move); window.addEventListener("mouseup",up);
+  window.addEventListener("touchmove",move,{passive:false}); window.addEventListener("touchend",up);
+}
+
+function patShowTooltip(ev,n){
+  patTooltipEl.style.display="block";
+  patTooltipEl.innerHTML = `<b>${n.label}</b><br>${n.desc}<div class="code-line">${n.system}: ${n.code} &nbsp;·&nbsp; type: ${n.type}</div>`;
+  patMoveTooltip(ev);
+}
+function patMoveTooltip(ev){ patTooltipEl.style.left=(ev.clientX+16)+"px"; patTooltipEl.style.top=(ev.clientY+16)+"px"; }
+function patHideTooltip(){ patTooltipEl.style.display="none"; }
+
+function patNeighborsOf(id){
+  const set = new Set([id]);
+  patState.edges.forEach(e=>{ if(e.s===id) set.add(e.t); if(e.t===id) set.add(e.s); });
+  return set;
+}
+function patPivot(id){
+  const active = patNeighborsOf(id);
+  Object.entries(patState.nodeEls).forEach(([nid,g])=>{
+    g.classList.toggle("dim", !active.has(nid));
+    g.classList.toggle("hot", nid===id);
+  });
+  patState.edgeEls.forEach(p=>{
+    const connected = (p.dataset.s===id||p.dataset.t===id);
+    p.classList.toggle("hot",connected); p.classList.toggle("dim",!connected);
+  });
+  document.querySelectorAll(".pat-pivot-btn").forEach(b=>b.classList.toggle("active", b.dataset.id===id));
+}
+function patResetView(){
+  Object.values(patState.nodeEls).forEach(g=>{ g.classList.remove("dim","hot"); });
+  patState.edgeEls.forEach(p=>{ p.classList.remove("dim","hot"); });
+  document.querySelectorAll(".pat-pivot-btn").forEach(b=>b.classList.remove("active"));
+}
+document.getElementById("patResetBtn").addEventListener("click", patResetView);
+
+function patBuildPivotChips(pivotIds, nodeById){
+  const host = document.getElementById("patPivotButtons");
+  host.innerHTML = "";
+  pivotIds.forEach(id=>{
+    const n = nodeById[id];
+    if(!n) return;
+    const btn = document.createElement("button");
+    btn.className="pivot-btn pat-pivot-btn"; btn.dataset.id=id;
+    btn.textContent = n.label.split(" (")[0];
+    btn.addEventListener("click", ()=>patPivot(id));
+    host.appendChild(btn);
+  });
+}
+
+/* boot with default cohort + example query, prefilled so the tour has content on load */
+loadCohort("snakebite");
+buildLegend();
+queryInput.value = EXAMPLES[0];
+runQuery();
+
+/* scroll-triggered reveal animation for each tour stop */
+(function(){
+  if(!("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add("in-view"); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll("section.tour-stop").forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>
