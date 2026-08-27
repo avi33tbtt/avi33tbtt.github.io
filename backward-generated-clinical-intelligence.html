@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backward-Generated Case &amp; Cohort Intelligence — Rethinking Clinical Audits and Research</title>
+<style>
+  :root{
+    --ink:#0f2033;
+    --ink-soft:#3c5165;
+    --paper:#ffffff;
+    --panel:#ffffff;
+    --line:#d9d3c4;
+    --teal:#0d6e6e;
+    --teal-deep:#093f3f;
+    --clay:#b5502e;
+    --amber:#c98a1a;
+    --violet:#5b4b8a;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --serif: "Source Serif 4", "Georgia", serif;
+    --sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px;}
+  a{color:var(--teal-deep);}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* HERO */
+  header.hero{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(91,75,138,0.18), transparent 60%),
+      linear-gradient(180deg, #0f2033 0%, #0c1a2b 100%);
+    color:#eef2f0; padding:64px 0 52px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                       linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at 20% 20%, black, transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:var(--mono); letter-spacing:0.14em; text-transform:uppercase;
+    font-size:12.5px; color:#c6b8f0; margin:0 0 18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:#c6b8f0; display:inline-block;}
+  h1{
+    font-family:var(--serif); font-weight:600; font-size:clamp(2rem, 4vw, 2.7rem);
+    margin:0 0 18px; letter-spacing:-0.01em; max-width:19ch; color:#fff;
+  }
+  .hero-sub{max-width:60ch; color:#c6d2ce; font-size:1.05rem; margin:0 0 26px;}
+  .hero-links{display:flex; flex-wrap:wrap; gap:10px;}
+  .pill{
+    font-family:var(--mono); font-size:12.5px; padding:7px 13px; border-radius:100px;
+    border:1px solid rgba(255,255,255,0.22); color:#dfe9e6; text-decoration:none;
+    background:rgba(255,255,255,0.04); transition:background .15s, border-color .15s;
+  }
+  .pill:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.4);}
+
+  /* NAV STRIP */
+  nav.toc{background:var(--panel); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10;}
+  nav.toc .wrap{display:flex; gap:22px; overflow-x:auto; padding:12px 24px; scrollbar-width:none;}
+  nav.toc .wrap::-webkit-scrollbar{display:none;}
+  nav.toc a{
+    font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-soft); text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; padding-bottom:3px;
+  }
+  nav.toc a:hover{color:var(--teal-deep); border-color:var(--teal);}
+
+  main{padding:56px 0 90px;}
+  section{margin-bottom:64px;}
+  section h2{
+    font-family:var(--serif); font-size:1.55rem; color:var(--teal-deep); margin:0 0 8px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  section h2 .num{font-family:var(--mono); font-size:0.85rem; color:var(--clay); font-weight:600;}
+  .lede{color:var(--ink-soft); margin:0 0 26px; max-width:70ch;}
+  h3{font-family:var(--sans); font-size:1.05rem; color:var(--ink); margin:26px 0 10px;}
+  p{max-width:74ch;}
+  ul.article-list{margin:0 0 16px; padding-left:20px; max-width:72ch;}
+  ul.article-list li{margin:6px 0; color:var(--ink-soft);}
+  ul.article-list li::marker{color:var(--clay);}
+
+  /* DIRECTION STRIP: forward vs backward */
+  .direction{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0;}
+  @media (max-width:640px){.direction{grid-template-columns:1fr;}}
+  .dcard{border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .dcard.forward{background:#fbfaf6;}
+  .dcard.backward{background:#f4f1fa; border-color:#ddd5f0;}
+  .dcard .dtag{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em;}
+  .dcard.forward .dtag{color:var(--ink-soft);}
+  .dcard.backward .dtag{color:var(--violet);}
+  .dcard .dflow{font-family:var(--mono); font-size:13px; margin:10px 0; color:var(--ink);}
+  .dcard p{margin:8px 0 0; font-size:0.94rem; color:var(--ink-soft);}
+
+  /* ARCHITECTURE DIAGRAM */
+  .arch{background:var(--teal-deep); color:#eaf3f0; border-radius:10px; padding:26px 24px; font-family:var(--mono); font-size:13px;}
+  .arch-step{display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:10px 0;}
+  .arch-step.branch{padding-left:28px; position:relative;}
+  .arch-step.branch::before{content:"└"; position:absolute; left:6px; color:#5c8079;}
+  .arch .stage{color:#9fe0d4; font-weight:600;}
+  .arch .note{color:#9fb8b2; font-size:12px;}
+  .arch-arrow{color:#5c8079; padding-left:2px; font-size:13px;}
+  .arch-branches{display:flex; flex-direction:column; margin-top:2px;}
+
+  /* PHASE / MODULE CARDS */
+  .phase{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--teal); border-radius:8px; padding:20px 22px; margin-bottom:14px;}
+  .phase-head{display:flex; align-items:center; gap:12px; margin-bottom:8px; flex-wrap:wrap;}
+  .phase-tag{font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:#fff; background:var(--teal); padding:3px 9px; border-radius:4px; text-transform:uppercase;}
+  .phase.violet{border-left-color:var(--violet);}
+  .phase.violet .phase-tag{background:var(--violet);}
+  .phase h4{margin:0; font-family:var(--sans); font-weight:600; font-size:1.02rem;}
+  .phase ul{margin:10px 0 0; padding-left:20px;}
+  .phase li{margin:5px 0; color:var(--ink-soft);}
+  .phase li::marker{color:var(--clay);}
+
+  table{border-collapse:collapse; width:100%; margin:18px 0; font-size:0.94rem;}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:#efe9db; font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.04em;}
+  tr:nth-child(even) td{background:#fbfaf6;}
+
+  code{font-family:var(--mono); background:#efe9db; padding:2px 6px; border-radius:4px; font-size:0.88em;}
+  .callout{border:1px solid var(--line); border-left:3px solid var(--amber); background:#fdf7ea; padding:16px 20px; border-radius:6px; margin:18px 0; font-size:0.95rem; color:#5a4419; max-width:72ch;}
+  .callout strong{color:#3f2f0f;}
+  .risk{border-left-color:var(--clay); background:#fbeee7; color:#5a2c17;}
+  .risk strong{color:#3f1d0d;}
+
+  /* WORKED EXAMPLE PANEL */
+  .worked{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px 24px;}
+  .worked .wk-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+  .wk-badge{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--teal-deep); background:#e2f0ec; border:1px solid #bfe0d6; padding:4px 10px; border-radius:100px;}
+  .trace{border-left:2px solid var(--line); margin:10px 0 0 6px; padding-left:20px;}
+  .trace-step{position:relative; padding:10px 0;}
+  .trace-step::before{content:""; position:absolute; left:-25px; top:16px; width:9px; height:9px; border-radius:50%; background:var(--teal);}
+  .trace-step.origin::before{background:var(--clay);}
+  .trace-step .ts-label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
+  .trace-step .ts-body{font-size:0.95rem; margin-top:3px;}
+  .trace-step .ts-q{font-size:0.88rem; color:var(--violet); margin-top:4px; font-style:italic;}
+
+  footer{border-top:1px solid var(--line); padding:34px 0; font-size:0.85rem; color:var(--ink-soft);}
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Case &amp; Cohort Intelligence · Concept Paper</p>
+    <h1>Backward-Generated Case &amp; Cohort Intelligence for Clinical Audits and Research</h1>
+    <p class="hero-sub">Instead of asking clinicians to specify what to look for, start from the outcome that already happened — an escalation, a readmission, a flagged claim — and let the pipeline walk backward through the coded timeline and the cohort to generate the questions, the comparisons, and the evidence trail an auditor or researcher would otherwise have to build by hand.</p>
+    <div class="hero-links">
+      <a class="pill" href="#idea">The idea</a>
+      <a class="pill" href="#architecture">Architecture</a>
+      <a class="pill" href="#case">Case-level trace</a>
+      <a class="pill" href="#cohort">Cohort-level lift</a>
+      <a class="pill" href="#applications">Audit &amp; research use</a>
+      <a class="pill" href="#guardrails">Guardrails</a>
+    </div>
+    <div class="hero-links" style="margin-top:10px;">
+      <a class="pill" href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html" target="_blank" rel="noopener">↗ FHIR + SNOMED CT Pipeline (project plan)</a>
+      <a class="pill" href="https://avi33tbtt.github.io/avinash-snomed-guided-tour.html" target="_blank" rel="noopener">↗ Guided Tour of the Avinash Principle</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#idea">01 Idea</a>
+    <a href="#architecture">02 Architecture</a>
+    <a href="#case">03 Case</a>
+    <a href="#cohort">04 Cohort</a>
+    <a href="#applications">05 Applications</a>
+    <a href="#roadmap">06 Roadmap</a>
+    <a href="#guardrails">07 Guardrails</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="idea">
+    <h2><span class="num">01</span> Forward audits ask questions. Backward generation finds them.</h2>
+    <p class="lede">Most clinical audit and research tooling is forward-directed: someone decides what to check for — a guideline, a hypothesis, a compliance rule — and the system queries records to confirm or deny it. That works well when the reviewer already knows what to suspect. It works poorly when the interesting signal is exactly the thing nobody thought to ask about.</p>
+    <div class="direction">
+      <div class="dcard forward">
+        <span class="dtag">Forward (status quo)</span>
+        <div class="dflow">Hypothesis → Query → Records → Confirm/deny</div>
+        <p>An auditor picks a rule ("was antibiotic X given within 4 hours?") and the system checks compliance one chart at a time. Coverage is limited to rules someone already wrote.</p>
+      </div>
+      <div class="dcard backward">
+        <span class="dtag">Backward generation</span>
+        <div class="dflow">Outcome → Timeline replay → Candidate causes → Cohort test → Question</div>
+        <p>The system starts from an outcome that already occurred, replays the coded timeline leading into it, and surfaces the comorbidities, delays, and interventions that precede it most often — then asks whether that pattern holds across the cohort.</p>
+      </div>
+    </div>
+    <p>The mechanism is deliberately unglamorous: no free-text generation stands between the outcome and the finding. Every candidate cause is a SNOMED CT / FHIR-coded item that already sits on the patient's or the cohort's timeline; the pipeline's job is ordering, filtering, and comparing those items against a baseline, not inventing explanations.</p>
+    <div class="callout"><strong>Working definition —</strong> Backward-generated intelligence takes a realized outcome as the seed, reconstructs the coded events that preceded it (case-level), and repeats that reconstruction across every patient who shares the outcome to see what recurs more than chance would predict (cohort-level). The output is a ranked set of candidate audit questions or research hypotheses, each traceable to an auto-generated query.</div>
+  </section>
+
+  <section id="architecture">
+    <h2><span class="num">02</span> Architecture: outcome-in, evidence-trail-out</h2>
+    <p class="lede">The pipeline sits downstream of a standard FHIR + SNOMED CT store. It doesn't replace forward querying — it adds a second entry point that starts at the end of the timeline instead of the beginning.</p>
+    <div class="arch">
+      <div class="arch-step"><span class="stage">1 · SEED OUTCOME</span><span class="note">escalation, readmission, mortality flag, denied claim, adverse event report</span></div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-step"><span class="stage">2 · TIMELINE REPLAY (per case)</span><span class="note">pull all coded Conditions, MedicationRequests, Procedures, Observations in a bounded lookback window</span></div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-branches">
+        <div class="arch-step branch"><span class="stage">3a · CASE TRACE</span><span class="note">order the window into a reverse chronology; tag comorbidity / symptom / intervention / escalation lanes</span></div>
+        <div class="arch-step branch"><span class="stage">3b · COHORT ROLL-UP</span><span class="note">repeat the replay for every patient sharing the seed outcome; pool coded items into frequency tables</span></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-step"><span class="stage">4 · BASELINE COMPARISON</span><span class="note">compute outcome rate in the general population or a matched control window; compute lift for each recurring item</span></div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-step"><span class="stage">5 · AUDIT / RESEARCH ARTIFACT</span><span class="note">ranked findings, each with its auto-generated SQL/ECL query, ready for reviewer sign-off — not a conclusion, a lead</span></div>
+    </div>
+    <p style="margin-top:16px;">Because every stage stays inside coded data, the artifact produced at step 5 is auditable in the literal sense: a reviewer can re-run the attached query against the source records and get the same table back.</p>
+  </section>
+
+  <section id="case">
+    <h2><span class="num">03</span> Case-level: replaying one patient backward from the event</h2>
+    <p class="lede">At the single-patient level, backward generation looks like a reverse chart review that a human would normally do by scrolling up through the record. The difference is that the pipeline does the scrolling, tags each item by clinical lane, and proposes the question a reviewer would eventually ask anyway.</p>
+    <div class="worked">
+      <div class="wk-head">
+        <h4 style="margin:0;font-family:var(--sans);font-size:1.02rem;">Worked trace — ICU escalation, day 0</h4>
+        <span class="wk-badge">Illustrative, not a real patient</span>
+      </div>
+      <div class="trace">
+        <div class="trace-step origin">
+          <div class="ts-label">Day 0 · Seed outcome</div>
+          <div class="ts-body">Escalation to ICU coded on the timeline.</div>
+        </div>
+        <div class="trace-step">
+          <div class="ts-label">Day −1 to −2</div>
+          <div class="ts-body">Two coded vital-sign Observations trending toward the escalation threshold; no coded intervention logged in between.</div>
+          <div class="ts-q">Candidate question: was the trend acted on, or only recorded?</div>
+        </div>
+        <div class="trace-step">
+          <div class="ts-label">Day −5</div>
+          <div class="ts-body">MedicationRequest for a antibiotic changed to a second-line agent.</div>
+          <div class="ts-q">Candidate question: did the switch correlate with a culture result, or precede one?</div>
+        </div>
+        <div class="trace-step">
+          <div class="ts-label">Day −14</div>
+          <div class="ts-body">Pre-existing Condition (comorbidity) already on the problem list before this admission.</div>
+          <div class="ts-q">Candidate question: does this comorbidity recur across other patients who escalated?</div>
+        </div>
+      </div>
+    </div>
+    <h3>What makes this "generated" rather than manual</h3>
+    <ul class="article-list">
+      <li>The lookback window, lane tagging, and ordering are computed once per outcome type and reused — a human doesn't re-decide "how far back should I look" for every chart.</li>
+      <li>Each trace step ships with the query that produced it, so the case-level narrative is a rendering of data already pulled, not a separate write-up a reviewer has to trust blind.</li>
+      <li>The candidate questions are templated from the pattern found (a gap, a switch, a pre-existing condition), not composed freely — the same gap type always produces the same question shape.</li>
+    </ul>
+  </section>
+
+  <section id="cohort">
+    <h2><span class="num">04</span> Cohort-level: turning recurring traces into lift</h2>
+    <p class="lede">A single backward trace is an anecdote. Running the same replay across every patient who shares the seed outcome turns it into a comparison: does this comorbidity, this delay, this medication pattern show up more often among patients who escalated than among the baseline?</p>
+    <table>
+      <thead><tr><th>Comorbidity present</th><th>Patients</th><th>Escalation rate within group</th><th>vs. cohort baseline</th></tr></thead>
+      <tbody>
+        <tr><td>Chronic kidney disease</td><td>18</td><td>61%</td><td>2.4×</td></tr>
+        <tr><td>Type 2 diabetes</td><td>26</td><td>46%</td><td>1.8×</td></tr>
+        <tr><td>COPD</td><td>11</td><td>39%</td><td>1.5×</td></tr>
+        <tr><td>No flagged comorbidity</td><td>34</td><td>25%</td><td>1.0× (baseline)</td></tr>
+      </tbody>
+    </table>
+    <p>This is the same arithmetic an epidemiologist runs by hand for a case-control study — baseline rate, subgroup rate, ratio — just triggered automatically by the seed outcome instead of a pre-registered hypothesis. It doesn't replace a designed study; it tells a reviewer or a researcher <em>where a designed study might be worth running.</em></p>
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Audit framing</span><h4>Which finding would a quality committee want first?</h4></div>
+      <ul><li>Rank by lift, then by cohort size, so rare-but-huge-lift artifacts don't crowd out common, actionable patterns.</li>
+      <li>Surface the counterfactual too — patients with the same comorbidity who did <em>not</em> escalate — so the finding reads as a lead, not a verdict.</li></ul>
+    </div>
+    <div class="phase violet">
+      <div class="phase-head"><span class="phase-tag">Research framing</span><h4>Which pattern is worth a pre-registered hypothesis?</h4></div>
+      <ul><li>Treat the ranked list as hypothesis-generation output, explicitly separate from any confirmatory analysis.</li>
+      <li>Attach the exact cohort-selection query so a second team can reproduce the same pool before designing a real study on top of it.</li></ul>
+    </div>
+  </section>
+
+  <section id="applications">
+    <h2><span class="num">05</span> Where this fits in audits and research</h2>
+    <table>
+      <thead><tr><th>Use case</th><th>Seed outcome</th><th>What backward generation adds</th></tr></thead>
+      <tbody>
+        <tr><td>Retrospective quality review</td><td>Adverse event, code blue, unplanned ICU transfer</td><td>Auto-drafts the "what led up to this" section reviewers currently assemble manually from scrolling charts.</td></tr>
+        <tr><td>Claims / billing audit</td><td>Denied or flagged claim</td><td>Traces the coded justification chain backward to see whether the denial pattern clusters around a specific documentation gap.</td></tr>
+        <tr><td>Readmission root-cause</td><td>30-day readmission</td><td>Compares discharge-window coded events across readmitted vs. non-readmitted patients with the same index diagnosis.</td></tr>
+        <tr><td>Hypothesis generation for research</td><td>Any outcome of interest in a registry</td><td>Produces a ranked, reproducible shortlist of candidate exposures before committing study design and funding to one.</td></tr>
+        <tr><td>Signal detection for pharmacovigilance</td><td>Reported adverse drug event</td><td>Surfaces which pre-event medication changes or comorbidities recur across reports at a rate above baseline.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="roadmap">
+    <h2><span class="num">06</span> Build order</h2>
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 1</span><h4>Single-case backward trace</h4></div>
+      <ul><li>Fixed lookback window per outcome type; lane-tag coded items (comorbidity, symptom, intervention, escalation).</li>
+      <li>Render the trace with the query attached to every step — no narrative generation yet.</li></ul>
+    </div>
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 2</span><h4>Cohort roll-up and baseline comparison</h4></div>
+      <ul><li>Repeat Phase 1 across all patients sharing the seed outcome; pool into frequency tables.</li>
+      <li>Compute baseline outcome rate and per-item lift; require a minimum group size before surfacing a lift figure.</li></ul>
+    </div>
+    <div class="phase">
+      <div class="phase-head"><span class="phase-tag">Phase 3</span><h4>Templated audit / research artifacts</h4></div>
+      <ul><li>Turn ranked findings into a standard brief format (presentation → intervention → tracking) built entirely from computed fields.</li>
+      <li>Attach a reproducibility footer: exact query, cohort size, and whether the result came from cache or a fresh run.</li></ul>
+    </div>
+    <div class="phase violet">
+      <div class="phase-head"><span class="phase-tag">Phase 4</span><h4>Reviewer sign-off loop</h4></div>
+      <ul><li>Every generated question routes to a human reviewer before it becomes an audit finding or a study hypothesis.</li>
+      <li>Log accept/reject decisions to see which finding types are actually useful, and prune the templates that never survive review.</li></ul>
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <h2><span class="num">07</span> What this deliberately does not claim</h2>
+    <div class="callout risk"><strong>Correlation, not causation.</strong> Lift computed against a baseline is a screening signal. It tells a reviewer where to look, not what caused what — confounding by indication is expected and undisclosed confounders are not ruled out.</div>
+    <div class="callout risk"><strong>Not a predictive model.</strong> The pipeline surfaces observed historical rates, not a validated risk score. Treat any outcome-prediction framing as illustrative until a real model is built, calibrated, and reviewed on held-out data.</div>
+    <div class="callout"><strong>Coded data only.</strong> If a contributing factor was never coded — a hallway conversation, an unlogged clinical judgment call — it cannot appear in a backward trace. The absence of a finding is not evidence of absence.</div>
+    <div class="callout"><strong>Human-in-the-loop by design.</strong> Every artifact is a candidate question for a reviewer, not a finding a committee should act on unread. The templates exist to standardize how a lead is presented, not to replace the judgment of whoever decides what to do with it.</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Concept paper — backward-generated case &amp; cohort intelligence on FHIR + SNOMED CT</span>
+    <span>Companion to <a href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html" target="_blank" rel="noopener">the forward pipeline</a> and <a href="https://avi33tbtt.github.io/avinash-snomed-guided-tour.html" target="_blank" rel="noopener">the cohort-tour</a> references</span>
+  </div>
+</footer>
+
+</body>
+</html>
