@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vibe Rounds — 55M, fever 20d, cough, DM2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a1210;
+    --bg-panel:#0f1a17;
+    --bg-card:#122019;
+    --line:#22342d;
+    --ink:#d9e8e0;
+    --ink-dim:#7fa093;
+    --ink-faint:#4d6b60;
+    --mon-green:#4fe3a0;
+    --amber:#e8a23d;
+    --red:#e2626b;
+    --violet:#9d8ce8;
+    --exam-blue:#7fb8e8;
+    --rx-coral:#e88c6b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Mono',monospace;}
+  ::selection{background:var(--mon-green);color:#0a1210;}
+
+  /* ---------- header / monitor strip ---------- */
+  .topbar{border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--mon-green);box-shadow:0 0 8px var(--mon-green);animation:pulse 1.8s ease-in-out infinite;}
+  @media (prefers-reduced-motion: reduce){.dot{animation:none;}}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);}
+  .vitals-ticker{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--ink-dim);}
+  .vitals-ticker b{color:var(--ink);font-weight:600;}
+
+  .hero{position:relative;padding:34px 24px 22px;border-bottom:1px solid var(--line);overflow:hidden;}
+  .hero svg.ecg{position:absolute;top:0;left:0;width:60%;height:100%;opacity:.25;mask-image:linear-gradient(to right, black 0%, transparent 85%);-webkit-mask-image:linear-gradient(to right, black 0%, transparent 85%);}
+  .hero h1{font-family:'IBM Plex Serif',serif;font-weight:600;font-size:26px;margin:0 0 8px;position:relative;max-width:820px;}
+  .hero p.sub{position:relative;color:var(--ink-dim);font-size:13px;max-width:720px;line-height:1.6;margin:0;}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:10px;height:10px;border-radius:2px;display:inline-block;}
+  .sw.gap{border:1px dashed var(--red);background:transparent;}
+
+  /* ---------- graph ---------- */
+  .graph-wrap{overflow-x:auto;padding:26px 24px 10px;}
+  .graph{position:relative;min-width:1360px;height:760px;}
+  svg.edges{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+  .edges path{fill:none;stroke:var(--line);stroke-width:1.4;transition:stroke .15s, opacity .15s;}
+  .edges path.gap-edge{stroke:var(--red);stroke-dasharray:3 3;opacity:.55;}
+  .edges path.hl{stroke:var(--mon-green);opacity:1;stroke-width:2;}
+  .edges path.dim{opacity:.08;}
+
+  .lane{position:absolute;top:0;width:196px;}
+  .lane-title{font-family:'IBM Plex Serif',serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);text-align:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:8px;}
+  .lane-title.gap-title{color:var(--red);}
+
+  .node{position:absolute;width:180px;background:var(--bg-card);border:1px solid var(--line);border-left:3px solid var(--ink-faint);border-radius:4px;padding:8px 10px;font-size:11.5px;line-height:1.35;cursor:pointer;transition:transform .12s, box-shadow .12s, opacity .15s;}
+  .node:hover{transform:translateY(-2px);}
+  .node .lbl{color:var(--ink);font-weight:600;}
+  .node .sub{color:var(--ink-faint);font-size:10.5px;margin-top:2px;}
+  .node.dim{opacity:.18;}
+  .node.hl{box-shadow:0 0 0 1px var(--mon-green);}
+
+  .node.symptom{border-left-color:var(--amber);}
+  .node.exam{border-left-color:var(--exam-blue);}
+  .node.invx{border-left-color:var(--violet);}
+  .node.dx{border-left-color:var(--mon-green);}
+  .node.rx{border-left-color:var(--rx-coral);}
+  .node.gap{border:1px dashed var(--red);border-left:1px dashed var(--red);background:rgba(226,98,107,0.06);color:var(--red);font-style:italic;}
+  .node.gap .lbl{color:var(--red);}
+  .node.gap .lbl::before{content:"⚠ ";}
+
+  /* ---------- detail panel ---------- */
+  .panel{position:fixed;top:0;right:0;height:100%;width:340px;background:var(--bg-panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .2s ease;padding:20px;overflow-y:auto;z-index:20;}
+  .panel.open{transform:translateX(0);}
+  .panel .close{cursor:pointer;color:var(--ink-faint);font-size:12px;float:right;}
+  .panel h3{font-family:'IBM Plex Serif',serif;margin:8px 0 4px;font-size:16px;}
+  .panel .type-tag{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);}
+  .panel p{font-size:12.5px;line-height:1.6;color:var(--ink-dim);}
+  .panel .rel-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-top:18px;margin-bottom:8px;border-top:1px solid var(--line);padding-top:12px;}
+  .rel-item{background:var(--bg-card);border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-size:11.5px;margin-bottom:6px;}
+
+  /* ---------- disclaimer ---------- */
+  .disclaimer{margin:20px 24px;padding:14px 16px;border:1px dashed var(--red);border-radius:4px;color:var(--ink-dim);font-size:11.5px;line-height:1.6;background:rgba(226,98,107,0.04);}
+  .disclaimer b{color:var(--red);}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:18px 24px 32px;font-size:11px;color:var(--ink-faint);line-height:1.8;}
+  footer a{color:var(--ink-dim);}
+
+  @media (max-width: 720px){
+    .hero h1{font-size:20px;}
+    .panel{width:88%;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <span class="eyebrow">Vibe Rounds · Knowledge graph view</span>
+  </div>
+  <div class="vitals-ticker">
+    <span><b>55M</b> · daily-wage labourer</span>
+    <span>Fever <b>20 d</b>, cough <b>20 d</b>, loose stools <b>2 d</b></span>
+    <span>BP <b>100/70</b> · PR <b>79</b> · SpO₂ <b>94%</b> · GRBS <b>271</b></span>
+    <span>Outcome: <b>Admitted, under evaluation</b></span>
+  </div>
+</div>
+
+<div class="hero">
+  <svg class="ecg" viewBox="0 0 800 200" preserveAspectRatio="none">
+    <polyline points="0,100 60,100 80,60 100,140 120,20 140,160 160,100 260,100 280,90 300,110 320,100 420,100 440,60 460,140 480,20 500,160 520,100 620,100 640,90 660,110 680,100 800,100"
+      fill="none" stroke="#4fe3a0" stroke-width="2"/>
+  </svg>
+  <h1>55 yo male — fever ×20d, cough, new-onset diarrhea, poorly controlled DM2</h1>
+  <p class="sub">Restructured as a queryable knowledge graph: documented findings run left→right in clinical logic order, with a reasoning-gap layer (red, dashed) inserted between investigations and diagnoses — the step a thorough workup would normally chase, but that isn\'t charted here. Click any node to trace its links.</p>
+</div>
+
+<div class="legend">
+  <span><span class="sw" style="background:var(--amber)"></span> Symptom / History</span>
+  <span><span class="sw" style="background:var(--exam-blue)"></span> Exam</span>
+  <span><span class="sw" style="background:var(--violet)"></span> Investigation</span>
+  <span><span class="sw gap"></span> Reasoning gap (not in chart)</span>
+  <span><span class="sw" style="background:var(--mon-green)"></span> Diagnosis</span>
+  <span><span class="sw" style="background:var(--rx-coral)"></span> Treatment</span>
+</div>
+
+<div class="graph-wrap">
+  <div class="graph" id="graph">
+    <svg class="edges" id="edgeSvg"></svg>
+
+    <div class="lane" id="lane-symptom" style="left:0px;">
+      <div class="lane-title">Symptoms / History</div>
+    </div>
+    <div class="lane" id="lane-exam" style="left:212px;">
+      <div class="lane-title">Exam</div>
+    </div>
+    <div class="lane" id="lane-invx" style="left:424px;">
+      <div class="lane-title">Investigations</div>
+    </div>
+    <div class="lane" id="lane-gap" style="left:636px;">
+      <div class="lane-title gap-title">Reasoning Gaps ⚠</div>
+    </div>
+    <div class="lane" id="lane-dx" style="left:848px;">
+      <div class="lane-title">Diagnoses</div>
+    </div>
+    <div class="lane" id="lane-rx" style="left:1060px;">
+      <div class="lane-title">Treatment</div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <b>Reasoning-gap layer notice:</b> the red, dashed, ⚠-prefixed nodes are synthesized from general clinical
+  knowledge and standard-of-care reasoning — not a verified expert review of this specific case, and not a
+  critique of the treating team. Real-world workups involve pending tests, resource limits, and decisions never
+  reflected in a write-up. Treat these nodes as a learning prompt for "what would this finding normally lead a
+  clinician to chase next," not as an assessment of care quality.
+</div>
+
+<footer>
+  Source case: <a href="https://ashakiran923.blogspot.com/2021/02/unit-2-admission.html" target="_blank" rel="noopener">"UNIT 2 ADMISSION"</a>,
+  Asha Kiran blog, posted Feb 24, 2021 (documented by the Unit 2 intern/PG team).<br>
+  Restructured by Vibe Rounds — a case-based learning tool. Reasoning-gap nodes are synthesized from general
+  clinical knowledge, not a verified expert review. Not a clinical reference.
+</footer>
+
+<div class="panel" id="panel">
+  <span class="close" id="panelClose">✕ close</span>
+  <div class="type-tag" id="panelType"></div>
+  <h3 id="panelLabel"></h3>
+  <p id="panelDesc"></p>
+  <div class="rel-title">This led to</div>
+  <div id="panelOut"></div>
+  <div class="rel-title">Led to this</div>
+  <div id="panelIn"></div>
+</div>
+
+<script>
+const nodes = [
+  // SYMPTOMS / HISTORY
+  {id:'s1', type:'symptom', label:'Fever ×20d', sub:'insidious, low-grade, continuous', desc:'Prolonged low-grade fever without headache, vomiting, dysuria, or ear symptoms — points away from a simple UTI or ENT source and toward a subacute/chronic process.'},
+  {id:'s2', type:'symptom', label:'Cough + expectoration', sub:'whitish, small qty, continuous ×20d', desc:'Productive cough for the same duration as the fever, without weight loss or night sweats documented — the duration alone (weeks, not days) is the detail that should drive the workup.'},
+  {id:'s3', type:'symptom', label:'Chest & abdominal distension', sub:'associated with cough', desc:'Distension noted alongside the respiratory complaint but never explored further in the exam findings below.'},
+  {id:'s4', type:'symptom', label:'Loose stools ×2d', sub:'5 episodes/day, watery, no blood/pain', desc:'New diarrheal illness superimposed on the fever/cough picture — a second problem that needs its own workup, not just attribution to the primary complaint.'},
+  {id:'s5', type:'symptom', label:'K/C/O DM2', sub:'20 years, on medication', desc:'Two-decade diabetic — raises baseline susceptibility to infection and reactivation of latent TB, and reframes "fever under evaluation" against a background of likely suboptimal glycemic control.'},
+  {id:'s6', type:'symptom', label:'Chronic alcohol use', sub:'90 mL/day, stopped 3 months back', desc:'Long-standing alcohol use, recently stopped — relevant to nutritional status, hepatic reserve, and (in combination with DM2) further raises TB risk in this population.'},
+  {id:'s7', type:'symptom', label:'Occupation: daily-wage labourer', sub:'', desc:'Socioeconomic and exposure context — relevant to TB risk stratification and to how aggressively an endemic differential should be pursued.'},
+
+  // EXAM
+  {id:'e1', type:'exam', label:'Afebrile at presentation', sub:'despite 20d history of fever', desc:'No fever spike captured at the time of exam — doesn\'t rule out the history, but means the workup can\'t rely on catching a fever pattern today.'},
+  {id:'e2', type:'exam', label:'SpO₂ 94%', sub:'room air', desc:'Mildly low saturation in a patient with a 20-day productive cough — a soft but real respiratory signal.'},
+  {id:'e3', type:'exam', label:'GRBS 271 mg%', sub:'random glucose', desc:'Significant hyperglycemia in a known 20-year diabetic — confirms poor control and is itself a plausible contributor to a smoldering infection.'},
+  {id:'e4', type:'exam', label:'B/L air entry, no added sounds', sub:'respiratory exam', desc:'A clinically unremarkable chest exam despite 20 days of productive cough — a mismatch between symptom burden and exam findings that usually prompts imaging.'},
+  {id:'e5', type:'exam', label:'No pallor, icterus, clubbing, lymphadenopathy, pedal edema', sub:'general exam', desc:'Reassuring negatives that argue somewhat against advanced chronic TB or malignancy, though they don\'t exclude early disease.'},
+  {id:'e6', type:'exam', label:'CNS grossly normal', sub:'higher functions, cranial nerves, no neck stiffness, reflexes ++', desc:'No localizing neurological findings — meningoencephalitis is effectively excluded on exam.'},
+
+  // INVESTIGATIONS
+  {id:'i1', type:'invx', label:'Sputum for AFB, C/S, Gram stain', sub:'', desc:'Directly targets the 20-day cough — appropriate given the differential of pulmonary TB or bacterial pneumonia.'},
+  {id:'i2', type:'invx', label:'Blood culture', sub:'', desc:'Standard for fever of unclear source, to catch bacteremia driving the 20-day fever.'},
+  {id:'i3', type:'invx', label:'Urine culture + CUE', sub:'', desc:'Screens for an occult urinary source despite the absence of dysuria on history.'},
+  {id:'i4', type:'invx', label:'MP strip test', sub:'malaria', desc:'Appropriate given prolonged fever in an endemic region.'},
+  {id:'i5', type:'invx', label:'Rapid dengue', sub:'', desc:'Reasonable given fever, though the clinical picture (20d, productive cough) fits dengue poorly — likely a rule-out rather than a lead diagnosis.'},
+  {id:'i6', type:'invx', label:'FBS, PLBS, HbA1c', sub:'', desc:'Characterizes the degree and chronicity of glycemic control given the GRBS of 271.'},
+  {id:'i7', type:'invx', label:'LFT', sub:'', desc:'Baseline liver function given the alcohol history and as part of a general fever work-up.'},
+
+  // REASONING GAPS
+  {id:'g1', type:'gap', label:'Chest X-ray / imaging', sub:'anchored to: 20d productive cough + SpO₂ 94% + normal auscultation', desc:'A cough this long with a mismatched-normal chest exam is the classic trigger for imaging — a CXR (or HRCT if CXR is equivocal) would look for infiltrate, cavitation, or effusion that auscultation alone can miss.'},
+  {id:'g2', type:'gap', label:'CBNAAT / GeneXpert MTB-RIF', sub:'anchored to: sputum AFB ordered, 20d cough, DM2, endemic setting', desc:'Sputum smear AFB has limited sensitivity; a nucleic-acid amplification test is the modern standard when TB is genuinely on the differential, especially in a diabetic in an endemic region.'},
+  {id:'g3', type:'gap', label:'Explicit pulmonary TB work-up', sub:'anchored to: chronic cough + DM2 + alcohol use + endemic epidemiology', desc:'The epidemiology (endemic region, diabetic, prior heavy alcohol use, daily-wage labourer) stacks several independent TB risk factors, yet TB isn\'t named as a working differential despite AFB testing being ordered.'},
+  {id:'g4', type:'gap', label:'Abdominal examination findings', sub:'anchored to: "chest and abdominal distension" as a presenting complaint', desc:'Distension is listed as a complaint but no abdominal exam findings (organomegaly, fluid thrill, bowel sounds) appear in the documented exam — this is the finding that\'s named but never followed through on paper.'},
+  {id:'g5', type:'gap', label:'Stool routine / microscopy or culture', sub:'anchored to: 5 episodes/day watery diarrhea ×2d', desc:'A new diarrheal illness with 5 watery stools/day is a distinct presenting problem; a stool work-up (routine microscopy ± culture) is the standard next step and doesn\'t appear alongside the urine and blood cultures ordered.'},
+  {id:'g6', type:'gap', label:'Ketone screen (urine/serum)', sub:'anchored to: GRBS 271 in a 20-year diabetic with acute illness', desc:'Significant hyperglycemia during an acute febrile illness in a long-standing diabetic warrants a ketone check to exclude an evolving DKA/HHS picture, particularly before committing to a slow "fever under evaluation" work-up timeline.'},
+  {id:'g7', type:'gap', label:'HIV testing', sub:'anchored to: prolonged fever + cough + TB-differential', desc:'When TB and prolonged fever of unclear source are both on the table, an HIV test is routine — it materially changes both the differential and the urgency of the work-up, and isn\'t listed among the investigations ordered.'},
+  {id:'g8', type:'gap', label:'ABG or hypoxia trend', sub:'anchored to: SpO₂ 94% on room air, unexplained on exam', desc:'A mildly low saturation with a clean lung exam is easy to under-read; trending it (repeat SpO₂, or an ABG if it drifts lower) would clarify whether this is early respiratory compromise worth escalating.'},
+  {id:'g9', type:'gap', label:'Culture-guided antibiotic review', sub:'anchored to: empiric Augmentin started before culture results', desc:'Starting broad-spectrum antibiotics empirically is reasonable while awaiting cultures, but the documented plan doesn\'t include a stated review point once blood/urine/sputum cultures return — de-escalation or escalation should be planned, not left implicit.'},
+  {id:'g10', type:'gap', label:'Nutritional / alcohol-history follow-up', sub:'anchored to: chronic alcohol use, stopped only 3 months ago', desc:'Recently-stopped heavy alcohol use raises questions about nutritional reserve and hepatic function that a single LFT doesn\'t fully answer — a fuller nutritional assessment would normally accompany a prolonged-fever work-up in this context.'},
+
+  // DIAGNOSES
+  {id:'d1', type:'dx', label:'Fever under evaluation', sub:'provisional, Day 1', desc:'The stated working diagnosis — deliberately non-committal pending the results of the broad panel ordered, appropriate for a first-day presentation of an undifferentiated prolonged fever.'},
+
+  // TREATMENT
+  {id:'r1', type:'rx', label:'Inj. Pantoprazole 40mg IV OD', sub:'', desc:'Gastric acid suppression / stress-ulcer prophylaxis alongside IV antibiotics.'},
+  {id:'r2', type:'rx', label:'Inj. Augmentin 1.2g IV TID', sub:'empiric, I-I-I', desc:'Empiric broad-spectrum antibiotic covering likely bacterial sources while cultures are pending.'},
+  {id:'r3', type:'rx', label:'Tab PCM 500mg TID', sub:'', desc:'Symptomatic antipyretic/analgesic cover.'},
+  {id:'r4', type:'rx', label:'IVF: 1 unit NS @ 75 mL/hr', sub:'', desc:'Maintenance/replacement fluids, relevant given the recent diarrheal losses.'},
+];
+
+const edges = [
+  ['s1','i1'], ['s1','i2'], ['s1','i4'], ['s1','i5'], ['s1','d1'],
+  ['s2','i1'], ['s2','e4'], ['s2','g1'], ['s2','g2'], ['s2','g3'],
+  ['s3','g4'],
+  ['s4','g5'], ['s4','r4'],
+  ['s5','e3'], ['s5','i6'], ['s5','g6'], ['s5','g3'],
+  ['s6','i7'], ['s6','g10'], ['s6','g3'],
+  ['s7','g3'], ['s7','g7'],
+  ['e2','g8'], ['e2','g1'],
+  ['e4','g1'],
+  ['e3','g6'],
+  ['i1','g2'], ['i1','g3'],
+  ['i2','g9'], ['i3','g9'],
+  ['g1','d1'], ['g2','d1'], ['g3','d1'], ['g4','d1'], ['g5','d1'],
+  ['g6','d1'], ['g7','d1'], ['g8','d1'], ['g9','d1'], ['g10','d1'],
+  ['d1','r1'], ['d1','r2'], ['d1','r3'], ['d1','r4'],
+];
+
+const laneOf = {symptom:'lane-symptom', exam:'lane-exam', invx:'lane-invx', gap:'lane-gap', dx:'lane-dx', rx:'lane-rx'};
+const byLane = {};
+nodes.forEach(n=>{ (byLane[n.type] = byLane[n.type]||[]).push(n); });
+
+const NODE_H = 78; // vertical pitch
+Object.keys(byLane).forEach(type=>{
+  const laneEl = document.getElementById(laneOf[type]);
+  byLane[type].forEach((n, idx)=>{
+    const el = document.createElement('div');
+    el.className = 'node ' + type;
+    el.id = 'node-' + n.id;
+    el.style.top = (44 + idx*NODE_H) + 'px';
+    el.innerHTML = '<div class="lbl">'+n.label+'</div>' + (n.sub ? '<div class="sub">'+n.sub+'</div>' : '');
+    el.addEventListener('click', ()=>selectNode(n.id));
+    laneEl.appendChild(el);
+  });
+  // size the graph container to fit tallest lane
+  const h = 44 + byLane[type].length*NODE_H + 40;
+  const graph = document.getElementById('graph');
+  if (h > graph.offsetHeight) graph.style.height = h + 'px';
+});
+
+const svg = document.getElementById('edgeSvg');
+const graphEl = document.getElementById('graph');
+
+function centerOf(id){
+  const el = document.getElementById('node-'+id);
+  const gRect = graphEl.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  return {
+    left: r.left - gRect.left,
+    right: r.right - gRect.left,
+    top: r.top - gRect.top,
+    midY: r.top - gRect.top + r.height/2
+  };
+}
+
+function drawEdges(){
+  svg.innerHTML = '';
+  svg.setAttribute('width', graphEl.scrollWidth);
+  svg.setAttribute('height', graphEl.scrollHeight);
+  edges.forEach(([a,b])=>{
+    const A = centerOf(a), B = centerOf(b);
+    const isGap = a.startsWith('g') || b.startsWith('g');
+    const x1 = A.right, y1 = A.midY, x2 = B.left, y2 = B.midY;
+    const mx = (x1+x2)/2;
+    const d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('data-a', a);
+    path.setAttribute('data-b', b);
+    if (isGap) path.classList.add('gap-edge');
+    svg.appendChild(path);
+  });
+}
+drawEdges();
+window.addEventListener('resize', drawEdges);
+
+const byId = {};
+nodes.forEach(n=>byId[n.id]=n);
+
+function neighborsOf(id){
+  const out = edges.filter(([a,b])=>a===id).map(([a,b])=>b);
+  const inn = edges.filter(([a,b])=>b===id).map(([a,b])=>a);
+  return {out, inn};
+}
+
+const typeLabels = {symptom:'Symptom / History', exam:'Exam finding', invx:'Investigation', gap:'Reasoning gap (synthesized)', dx:'Diagnosis', rx:'Treatment'};
+
+function selectNode(id){
+  const {out, inn} = neighborsOf(id);
+  const connected = new Set([id, ...out, ...inn]);
+
+  document.querySelectorAll('.node').forEach(el=>{
+    const nid = el.id.replace('node-','');
+    el.classList.toggle('dim', !connected.has(nid));
+    el.classList.toggle('hl', nid===id);
+  });
+  document.querySelectorAll('.edges path').forEach(p=>{
+    const a = p.getAttribute('data-a'), b = p.getAttribute('data-b');
+    const touches = (a===id || b===id);
+    p.classList.toggle('hl', touches);
+    p.classList.toggle('dim', !touches);
+  });
+
+  const n = byId[id];
+  document.getElementById('panelType').textContent = typeLabels[n.type];
+  document.getElementById('panelLabel').textContent = n.label;
+  document.getElementById('panelDesc').textContent = n.desc;
+  const outEl = document.getElementById('panelOut');
+  const inEl = document.getElementById('panelIn');
+  outEl.innerHTML = out.length ? out.map(o=>'<div class="rel-item">'+byId[o].label+'</div>').join('') : '<div class="rel-item" style="color:var(--ink-faint)">— none —</div>';
+  inEl.innerHTML = inn.length ? inn.map(o=>'<div class="rel-item">'+byId[o].label+'</div>').join('') : '<div class="rel-item" style="color:var(--ink-faint)">— none —</div>';
+  document.getElementById('panel').classList.add('open');
+}
+
+document.getElementById('panelClose').addEventListener('click', ()=>{
+  document.getElementById('panel').classList.remove('open');
+  document.querySelectorAll('.node').forEach(el=>{el.classList.remove('dim');el.classList.remove('hl');});
+  document.querySelectorAll('.edges path').forEach(p=>{p.classList.remove('hl');p.classList.remove('dim');});
+});
+</script>
+</body>
+</html>
