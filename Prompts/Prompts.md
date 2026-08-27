@@ -198,6 +198,7 @@ Each module is a process with a lifecycle. Every module follows a consistent str
 | -- | [Module ARC — Adversarial Case Record Audit](Module-ARC-Adversarial-Case-Record-Audit.md) | Module ARC — Adversarial Case Record Audit |
 | -- | [Module CC-UG — Uncertainty & Evidence Gap Mapper](Module-CC-UG-Uncertainty-Evidence-Gap-Mapper.md) | Module CC-UG — Uncertainty & Evidence Gap Mapper |
 | -- | [Clinical Case Learning Loop — What / Where / Do](clinical-case-what-where-do.md) | Clinical Case Learning Loop — What / Where / Do |
+| -- | [Case Reasoning Knowledge Graph](case-reasoning-knowledge-graph.md) | Case Reasoning Knowledge Graph |
 
 
 
