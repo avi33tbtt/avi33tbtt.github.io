@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Closed Loop — Automated Hypothesis Generation Across FHIR + SNOMED CT Pipelines</title>
+<style>
+  :root{
+    --paper:#ffffff;
+    --ink:#1b1e1c;
+    --ink-soft:#4a4f4a;
+    --line:#e2e0d8;
+    --forward:#2f5d50;   /* deep spruce — forward pipeline */
+    --backward:#8a4b2f;  /* clay rust — backward pipeline */
+    --loop:#2c4a7c;      /* loop / orchestration blue */
+    --flag:#b23b3b;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: "Iowan Old Style","Palatino Linotype",Georgia,serif;
+    line-height:1.6;
+    font-size:17px;
+    overflow-x:hidden;
+  }
+  a{color:var(--loop);}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px;}
+  img,table{max-width:100%;}
+
+  header.masthead{
+    border-bottom:1px solid var(--line);
+    padding:28px 0 22px;
+  }
+  .kicker{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  h1.title{
+    font-family:"Iowan Old Style",Georgia,serif;
+    font-weight:700;
+    font-size:clamp(28px,5vw,44px);
+    line-height:1.08;
+    margin:.3em 0 .2em;
+    letter-spacing:-.01em;
+  }
+  .dek{
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:62ch;
+  }
+  nav.toc{
+    font-family:var(--mono);
+    font-size:12.5px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 16px;
+    margin-top:18px;
+  }
+  nav.toc a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dotted var(--line);}
+  nav.toc a:hover{color:var(--loop);}
+  .refs{font-family:var(--mono);font-size:12.5px;margin-top:10px;color:var(--ink-soft);}
+  .refs a{text-decoration:none;border-bottom:1px dotted var(--line);}
+
+  section{padding:36px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+
+  .num{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+    letter-spacing:.08em;
+  }
+  h2{
+    font-size:26px;
+    margin:.2em 0 .5em;
+    letter-spacing:-.005em;
+  }
+  h3{font-size:19px;margin:1.4em 0 .4em;}
+  p{margin:0 0 1em;}
+  .lede{font-size:19px;color:var(--ink-soft);}
+
+  /* the loop diagram */
+  .loop-diagram{
+    font-family:var(--mono);
+    font-size:13.5px;
+    border:1px solid var(--line);
+    background:#fafaf8;
+    border-radius:3px;
+    overflow:hidden;
+    margin:26px 0;
+  }
+  .loop-row{
+    display:flex;
+    align-items:stretch;
+    border-bottom:1px solid var(--line);
+  }
+  .loop-row:last-child{border-bottom:none;}
+  .loop-tag{
+    width:34px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    color:#fff;
+    font-size:11px;
+  }
+  .loop-tag.b{background:var(--backward);}
+  .loop-tag.h{background:var(--flag);}
+  .loop-tag.f{background:var(--forward);}
+  .loop-tag.l{background:var(--loop);}
+  .loop-body{padding:12px 16px;flex:1;}
+  .loop-body b{color:var(--ink);}
+  .who{
+    display:inline-block;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:1px 6px;
+    border-radius:2px;
+    margin-right:8px;
+    color:#fff;
+    vertical-align:middle;
+  }
+  .who.auto{background:var(--loop);}
+  .who.human{background:var(--flag);}
+  .arrow-down{
+    text-align:center;
+    font-family:var(--mono);
+    color:var(--ink-soft);
+    padding:4px 0;
+    font-size:13px;
+  }
+  .loop-back{
+    text-align:center;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:10px 16px;
+    border-top:1px dashed var(--line);
+    background:#f5f4f0;
+  }
+
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;}
+  th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
+  th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);}
+  td.num-cell{font-family:var(--mono);}
+
+  .callout{
+    border-left:3px solid var(--loop);
+    background:#f4f6f2;
+    padding:14px 18px;
+    margin:20px 0;
+    font-size:15.5px;
+  }
+  .callout.warn{border-left-color:var(--flag);}
+  .callout.warn .label{color:var(--flag);}
+  .callout .label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--loop);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  ul.tight li{margin-bottom:.5em;}
+
+  .value-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:20px 0;
+  }
+  @media(max-width:640px){.value-grid{grid-template-columns:1fr;}}
+  .value-card{
+    border:1px solid var(--line);
+    padding:16px 18px;
+    background:#fafaf8;
+    border-radius:3px;
+  }
+  .value-card h4{
+    margin:0 0 8px;
+    font-size:15px;
+    font-family:var(--mono);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink);
+  }
+  .value-card p{font-size:14.5px;margin:0;color:var(--ink-soft);}
+  .value-card.no{border-color:#e0c9c0;}
+  .value-card.no h4{color:var(--flag);}
+
+  footer{
+    padding:30px 0 60px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  code{font-family:var(--mono);font-size:.92em;background:#eeece3;padding:1px 5px;border-radius:2px;word-break:break-word;}
+
+  /* LIVE DEMO */
+  .demo-panel{border:1px solid var(--line);border-radius:4px;overflow:hidden;margin:20px 0;background:#fff;}
+  .demo-step{padding:22px 22px;border-bottom:1px solid var(--line);transition:opacity .2s;}
+  .demo-step:last-of-type{border-bottom:none;}
+  .demo-step.locked{opacity:0.42;}
+  .demo-step-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+  .demo-step-num{
+    font-family:var(--mono);font-size:12.5px;font-weight:700;color:#fff;background:var(--loop);
+    width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .demo-step.locked .demo-step-num{background:#a8a8a0;}
+  .demo-step h3{margin:0;font-size:17px;}
+  .demo-step p{color:var(--ink-soft);font-size:15px;margin:0 0 12px;}
+
+  .who.pending{background:#8a6414;}
+  .badge-inline{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    padding:2px 8px;border-radius:100px;display:inline-block;
+  }
+  .badge-confirmed{background:#e2ede8;color:var(--forward);border:1px solid #bcd8ca;}
+  .badge-weak{background:#fbeee1;color:#8a5a1a;border:1px solid #edd0a8;}
+  .badge-rejected{background:#f6e2df;color:var(--flag);border:1px solid #e3bcb5;}
+  .badge-approved{background:#e2ede8;color:var(--forward);border:1px solid #bcd8ca;}
+
+  .btn{
+    font-family:"Iowan Old Style",Georgia,serif;font-size:15px;font-weight:600;padding:9px 18px;
+    border-radius:4px;border:1px solid transparent;cursor:pointer;transition:background .15s,opacity .15s;
+  }
+  .btn-primary{background:var(--loop);color:#fff;}
+  .btn-primary:hover:not(:disabled){background:#203a63;}
+  .btn-primary:disabled{background:#c7c8c4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border-color:var(--line);}
+  .btn-ghost:hover:not(:disabled){border-color:var(--ink-soft);color:var(--ink);}
+  .btn-pattern{
+    font-family:var(--mono);font-size:12.5px;padding:9px 12px;border-radius:3px;border:1px solid var(--line);
+    background:#fafaf8;color:var(--ink);cursor:pointer;text-align:left;display:block;width:100%;margin-bottom:7px;
+  }
+  .btn-pattern:hover{border-color:var(--loop);}
+  .btn-pattern.picked{border-color:var(--loop);background:#eef1f7;}
+  .demo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+
+  #dqText{
+    width:100%;font-family:var(--mono);font-size:13.5px;padding:10px 12px;border:1px solid var(--line);
+    border-radius:4px;resize:vertical;color:var(--ink);background:#fafaf8;margin-bottom:10px;
+  }
+  .demo-panel table{margin:10px 0 2px;}
+  .demo-panel .hi-row td{background:#eef1f7 !important;font-weight:600;}
+  .compare-bars{display:flex;flex-direction:column;gap:9px;margin:14px 0;}
+  .compare-row{display:flex;align-items:center;gap:10px;}
+  .compare-label{font-family:var(--mono);font-size:11.5px;width:100px;flex-shrink:0;color:var(--ink-soft);}
+  .compare-track{flex:1;background:#eeece3;border-radius:3px;height:18px;position:relative;overflow:hidden;}
+  .compare-fill{height:100%;border-radius:3px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+  .compare-fill.a{background:var(--backward);}
+  .compare-fill.b{background:var(--forward);}
+  .compare-fill span{font-family:var(--mono);font-size:10.5px;color:#fff;font-weight:700;}
+  .verdict-box{border-radius:4px;padding:14px 16px;font-size:14.5px;margin-top:8px;}
+  .verdict-box.confirmed{background:#e2ede8;border:1px solid #bcd8ca;color:#173a2e;}
+  .verdict-box.weak{background:#fbeee1;border:1px solid #edd0a8;color:#5c3c0d;}
+  .verdict-box.discard{background:#f6e2df;border:1px solid #e3bcb5;color:#6b2a1f;}
+  .verdict-box strong{display:block;font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-bottom:5px;}
+  .repro-footer{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
+
+  .lane-tag{
+    font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;display:inline-block;color:#fff;
+  }
+  .lane-tag.comorbidity{background:var(--backward);}
+  .lane-tag.symptom{background:var(--loop);}
+  .lane-tag.intervention{background:var(--forward);}
+  .no-signal-row td{color:var(--ink-soft);font-style:italic;}
+
+  /* visual flow diagram */
+  .flow-diagram{margin:26px 0 30px;}
+  .flow-diagram svg{width:100%;height:auto;display:block;}
+  .flow-legend{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+  .flow-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .flow-legend i{width:11px;height:11px;border-radius:2px;display:inline-block;}
+
+  /* inactive analytics chips */
+  .analytics-strip{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px;}
+  .analytics-chip{
+    font-family:var(--mono);font-size:11px;padding:6px 10px;border-radius:3px;
+    border:1px dashed #cfcdc3;background:#f2f1ec;color:#9a988e;display:flex;flex-direction:column;gap:2px;min-width:110px;
+  }
+  .analytics-chip .a-label{text-transform:uppercase;letter-spacing:.05em;font-size:9.5px;color:#a8a69c;}
+  .analytics-chip .a-value{font-size:13px;color:#b5b3a8;}
+  .analytics-note{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:6px;font-style:italic;}
+
+  .clinical-tag{
+    font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;
+    padding:3px 8px;border-radius:100px;display:inline-block;border:1px solid transparent;white-space:nowrap;
+  }
+  .clinical-tag.known{background:#e2ede8;color:var(--forward);border-color:#bcd8ca;}
+  .clinical-tag.study{background:#eef1f7;color:var(--loop);border-color:#c9d3e6;}
+  .clinical-tag.uncertain{background:#f6e2df;color:var(--flag);border-color:#e3bcb5;}
+  #insights table td.num-cell{font-family:var(--mono);}
+
+  .lb-card{border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin:12px 0;background:#fbfaf7;}
+  .lb-card h4{margin:0 0 6px;font-size:15px;}
+  .lb-card .lb-stats{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:4px 0 10px;}
+  .lb-card pre{background:#1f2430;color:#dfe6ee;font-family:var(--mono);font-size:12px;padding:12px 14px;border-radius:5px;overflow-x:auto;white-space:pre-wrap;word-break:break-word;margin:8px 0 12px;}
+  .lb-card .demo-actions{margin-top:4px;}
+  .lb-verdict{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding:5px 10px;border-radius:3px;display:inline-block;margin-left:8px;}
+  .lb-verdict.approved{background:#e2ede8;color:var(--forward);border:1px solid #bcd8ca;}
+  .lb-verdict.rejected{background:#f6e2df;color:var(--flag);border:1px solid #e3bcb5;}
+  .lane-filter{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;}
+  .lane-chip{
+    font-family:var(--mono);font-size:11.5px;padding:5px 11px;border-radius:100px;border:1px solid var(--line);
+    background:#fff;color:var(--ink-soft);cursor:pointer;
+  }
+  .lane-chip.active{background:var(--loop);color:#fff;border-color:var(--loop);}
+
+  @media(max-width:640px){
+    body{font-size:16px;}
+    .wrap{padding:0 16px;}
+    header.masthead{padding:20px 0 18px;}
+    h1.title{font-size:26px;}
+    .dek{font-size:16px;}
+    nav.toc{gap:4px 12px;font-size:12px;}
+    section{padding:26px 0;}
+    h2{font-size:22px;}
+    h3{font-size:17px;}
+    .lede{font-size:17px;}
+    .loop-row{flex-direction:column;}
+    .loop-tag{
+      width:100%;
+      padding:4px 0;
+      justify-content:flex-start;
+      padding-left:16px;
+    }
+    .loop-body{padding:10px 16px 14px;}
+    table{font-size:13.5px;}
+    th,td{padding:7px 6px;}
+    .value-grid{grid-template-columns:1fr;gap:12px;}
+    .callout{padding:12px 14px;font-size:14.5px;}
+    .demo-step{padding:16px 16px;}
+    .compare-label{width:76px;font-size:10.5px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="kicker">Concept note · companion to the pipeline pair</div>
+    <h1 class="title">The Closed Loop — Automating Hypothesis Generation Between Forward and Backward Clinical Pipelines</h1>
+    <p class="dek">What happens when the backward pipeline's findings become the forward pipeline's next query, on repeat — and what the resulting "new knowledge" is actually worth.</p>
+    <nav class="toc">
+      <a href="#summary">Summary</a>
+      <a href="#idea">01 The loop</a>
+      <a href="#diagram">02 Wiring</a>
+      <a href="#roles">03 Who does what</a>
+      <a href="#example">04 Worked round</a>
+      <a href="#value">05 Value of the output</a>
+      <a href="#not">06 What it is not</a>
+      <a href="#groundtruth">07 Ground truth, two paths</a>
+      <a href="#demo">08 Live demo</a>
+      <a href="#guardrails">09 Guardrails</a>
+      <a href="#livebackward">10 Live SMART sandbox</a>
+    </nav>
+    <div class="refs">
+      ↗ <a href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html">Forward pipeline: FHIR + SNOMED CT Clinical Intelligence</a>
+      &nbsp;·&nbsp;
+      ↗ <a href="https://avi33tbtt.github.io/backward-generated-clinical-intelligence.html">Backward pipeline: Backward-Generated Case & Cohort Intelligence</a>
+    </div>
+  </header>
+
+  <section id="summary">
+    <div class="callout" style="border-left-color:var(--loop);">
+      <span class="label" style="color:var(--loop);">Narrative summary</span>
+      Two pipelines already exist: a <b>forward</b> one that turns a plain-language question into a coded FHIR cohort, and a <b>backward</b> one that starts from an outcome and walks a cohort's timeline back to find what correlates with it. This note wires them into a loop — the backward pipeline's top finding becomes the forward pipeline's next query, run on a different dataset, whose outcome data feeds the backward pipeline again. Two human checkpoints keep this from running away: a reviewer approves each drafted query before it's run (section 03, section 08), and a reviewer validates each replicated result before it's treated as confirmed (section 07). Nothing in the loop invents a number — every lift, rate, and cohort count is a direct read off computed data (section 03); the LLM only ever proposes the next question and decides when to stop.
+    </div>
+    <p>
+      What comes out the other end is not a discovery and not a predictive model (section 06) — it's a <b>replicated, human-approved correlational lead</b> (section 05). But once a pattern clears both checkpoints, it doesn't just sit in a log: it re-enters as the next seed outcome, so the loop keeps building on its own prior confirmed findings (section 02, section 07). Framed plainly, that makes a validated loop pattern the same <em>category</em> of fact a textbook or clinical guideline already is — a confirmed clinical association — just reached by a different, machine-assisted route rather than trials or expert consensus, and logged with the same rigor (cohort, dataset, lift, reviewer) so it can be cited and built on the same way (section 07).
+    </p>
+    <p>
+      section 08 and section 10 make this concrete: section 08 is a fully live, in-browser demo of one loop round on an illustrative Pneumonia cohort, and section 10 goes further — it calls the real, public <a href="https://r4.smarthealthit.org" target="_blank" rel="noopener">SMART Health IT R4 sandbox</a> live, pulls up to 100 real patients for any of ten SNOMED CT-coded seed diseases, scans all three lanes (comorbidity, symptom, intervention) exhaustively, ranks the candidates by lift, and drafts a query card for each — every one awaiting a human's approve or reject, exactly as the loop's design requires.
+    </p>
+  </section>
+
+  <section id="idea">
+    <div class="num">01</div>
+    <h2>Two one-directional pipelines, wired into a loop</h2>
+    <p class="lede">The forward pipeline turns a question into a cohort. The backward pipeline turns an outcome into candidate questions. Run one after the other, on repeat, and the system stops needing a human to supply the next question at all — until it needs a human to check that the question is sensible.</p>
+    <p>Neither pipeline was built to run alone forever. The forward system resolves a clinician's phrase to SNOMED CT concepts and returns a coded cohort with analytics attached. The backward system starts from an outcome already sitting in that cohort — an escalation, a readmission — and walks the coded timeline backward to find what recurs more than baseline. Put the backward system's output back into the forward system's input slot, and each round of the loop replaces a step a human used to do by hand: deciding what to ask next.</p>
+    <div class="callout">
+      <span class="label">The loop in one line</span>
+      backward finding → phrased as a query → forward pipeline runs it on a <em>different</em> dataset → new outcome data → backward pipeline runs again on that → next finding.
+    </div>
+  </section>
+
+  <section id="diagram">
+    <div class="num">02</div>
+    <h2>Wiring: automated stages vs. the two checkpoints</h2>
+    <p>Everything below the two red bars runs without a person present. The red bars are where a person reads what the loop produced and decides whether it's allowed to continue.</p>
+
+    <div class="flow-diagram">
+      <svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loop diagram: Dataset A feeds a backward pass and pattern analysis, a human verifies the drafted query, a forward pass and outcome analytics run on Dataset B, a human validates the outcome, and a confirmed pattern loops back as the next seed outcome.">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"></path>
+          </marker>
+        </defs>
+        <!-- Dataset A -->
+        <rect x="10" y="120" width="90" height="56" rx="4" fill="none" stroke="var(--ink-soft)" stroke-dasharray="3 2"></rect>
+        <text x="55" y="144" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="var(--ink-soft)">Dataset A</text>
+        <text x="55" y="159" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="var(--ink-soft)">(original)</text>
+
+        <!-- Backward pass -->
+        <rect x="130" y="112" width="120" height="72" rx="4" fill="var(--backward)"></rect>
+        <text x="190" y="140" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">Backward pass</text>
+        <text x="190" y="155" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="#f3e3d8">+ pattern analysis</text>
+        <text x="190" y="170" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="#f3e3d8">ranks findings by lift</text>
+
+        <!-- Human checkpoint 1 -->
+        <rect x="278" y="104" width="110" height="88" rx="4" fill="var(--flag)"></rect>
+        <text x="333" y="132" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">Query</text>
+        <text x="333" y="146" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">verification</text>
+        <text x="333" y="164" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="#f5dcd7">human checkpoint</text>
+        <text x="333" y="177" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="#f5dcd7">approve / reject</text>
+
+        <!-- Forward pass -->
+        <rect x="416" y="112" width="120" height="72" rx="4" fill="var(--forward)"></rect>
+        <text x="476" y="140" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">Forward pass</text>
+        <text x="476" y="155" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="#dcece5">+ outcome analytics</text>
+        <text x="476" y="170" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="#dcece5">on Dataset B</text>
+
+        <!-- Dataset B -->
+        <rect x="564" y="120" width="90" height="56" rx="4" fill="none" stroke="var(--ink-soft)" stroke-dasharray="3 2"></rect>
+        <text x="609" y="144" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="var(--ink-soft)">Dataset B</text>
+        <text x="609" y="159" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="var(--ink-soft)">(replication)</text>
+
+        <!-- Human checkpoint 2 -->
+        <rect x="684" y="104" width="120" height="88" rx="4" fill="var(--flag)"></rect>
+        <text x="744" y="132" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">Outcome</text>
+        <text x="744" y="146" text-anchor="middle" font-family="var(--mono)" font-size="11" font-weight="700" fill="#fff">validation</text>
+        <text x="744" y="164" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="#f5dcd7">human checkpoint</text>
+        <text x="744" y="177" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="#f5dcd7">confirm / discard</text>
+
+        <!-- forward arrows -->
+        <line x1="100" y1="148" x2="128" y2="148" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"></line>
+        <line x1="250" y1="148" x2="276" y2="148" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"></line>
+        <line x1="388" y1="148" x2="414" y2="148" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"></line>
+        <line x1="536" y1="148" x2="562" y2="148" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"></line>
+        <line x1="654" y1="148" x2="682" y2="148" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#arrow)"></line>
+
+        <!-- loop-back arrow: from human checkpoint 2, under everything, back to Backward pass as next seed -->
+        <path d="M744,192 L744,250 L190,250 L190,186" fill="none" stroke="var(--loop)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#arrow)"></path>
+        <text x="467" y="268" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="var(--loop)">if validated: confirmed pattern re-enters as the next seed outcome</text>
+
+        <!-- legend row already below in HTML -->
+      </svg>
+      <div class="flow-legend">
+        <span><i style="background:var(--backward)"></i>automated — backward pipeline</span>
+        <span><i style="background:var(--forward)"></i>automated — forward pipeline</span>
+        <span><i style="background:var(--flag)"></i>human checkpoint</span>
+        <span><i style="background:var(--loop)"></i>loop-back path</span>
+      </div>
+    </div>
+
+    <div class="loop-diagram">
+      <div class="loop-row">
+        <div class="loop-tag b">B</div>
+        <div class="loop-body"><span class="who auto">automated</span><b>Backward pass</b> on Dataset A — replay coded timelines back from a seed outcome, pool into frequency tables, compute lift vs. baseline.</div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag b">B</div>
+        <div class="loop-body"><span class="who auto">automated</span><b>Pattern analysis</b> — rank recurring items by lift × cohort size; attach the exact query that reproduces each one.</div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag b">B</div>
+        <div class="loop-body"><span class="who auto">automated</span><b>Pattern insight</b> — orchestrating LLM reads the ranked table, drops findings below a lift/size threshold, and drafts the next natural-language query from the top surviving pattern.</div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag h">H</div>
+        <div class="loop-body"><span class="who human">human checkpoint</span><b>Query verification</b> — a reviewer reads the drafted query, confirms it's a sensible thing to ask (not a leading question, not underpowered, not already answered), and approves or edits it before it runs anywhere.</div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag f">F</div>
+        <div class="loop-body"><span class="who auto">automated</span><b>Forward pass</b> on Dataset B (a different sandbox, site, or time window) — deterministic phrase→concept lookup resolves the approved query to SNOMED tokens, runs it as a live FHIR search, returns a coded cohort.</div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag f">F</div>
+        <div class="loop-body">
+          <span class="who auto">automated</span><b>Outcome analytics</b> — cohort analytics layer computes match rate, hub nodes, and the same outcome measured on the new dataset.
+          <div class="analytics-strip">
+            <div class="analytics-chip"><span class="a-label">Match rate</span><span class="a-value">— no data</span></div>
+            <div class="analytics-chip"><span class="a-label">Hub nodes</span><span class="a-value">— no data</span></div>
+            <div class="analytics-chip"><span class="a-label">Outcome</span><span class="a-value">— no data</span></div>
+          </div>
+          <div class="analytics-note">Illustrative only — this concept note doesn't wire up the full analytics layer; see the live demo below for the one outcome metric (escalation lift) that is actually computed.</div>
+        </div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-tag h">H</div>
+        <div class="loop-body"><span class="who human">human checkpoint</span><b>Outcome validation</b> — a reviewer compares the replicated result to the original finding: did the pattern hold, at what lift, in a population it wasn't discovered in? This is the only place the loop's output becomes a "validated" lead rather than a candidate.</div>
+      </div>
+      <div class="arrow-down">↻ if validated, the confirmed pattern re-enters as a new seed outcome for the next backward pass</div>
+      <div class="loop-back">Loop repeats · each round replicates on a further dataset or narrows the cohort · orchestrating LLM only ever proposes the next query, never the finding itself</div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="num">03</div>
+    <h2>What the orchestrating LLM is actually allowed to touch</h2>
+    <p>Both source pipelines share one non-negotiable design rule: generative AI never invents a cohort statistic, a hub node, or an outcome — those are always direct reads from computed data. The loop inherits that rule exactly. The LLM's job is entirely in the seams between the two deterministic engines, not inside either one.</p>
+    <div class="value-grid">
+      <div class="value-card">
+        <h4>LLM does</h4>
+        <p>Reads the ranked lift table. Chooses which finding clears the threshold to act on. Phrases that finding as the next plain-language query. Decides when to stop iterating (diminishing lift, budget of rounds, or a finding a human should see now).</p>
+      </div>
+      <div class="value-card no">
+        <h4>LLM never does</h4>
+        <p>Computes a lift ratio. Decides a cohort matches a concept. Writes an outcome rate. Fabricates a comorbidity link. Every number in the loop still comes from the phrase→concept lookup table and the analytics layer — never from a model's completion.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="example">
+    <div class="num">04</div>
+    <h2>One worked round</h2>
+    <table>
+      <tr><th>Step</th><th>Output</th></tr>
+      <tr><td class="num-cell">B</td><td>Backward pass on the Pneumonia cohort, seed outcome = ICU escalation. Top finding: chronic kidney disease present → 2.4× escalation lift, n=18.</td></tr>
+      <tr><td class="num-cell">B</td><td>LLM drafts next query: <code>"pneumonia patients with chronic kidney disease"</code></td></tr>
+      <tr><td class="num-cell">H</td><td>Reviewer approves — cohort size looks adequate, the comorbidity is clinically plausible, not already a known guideline trigger.</td></tr>
+      <tr><td class="num-cell">F</td><td>Forward pipeline resolves the phrase deterministically, runs it against a second FHIR endpoint (a different sandbox slice), returns 22 matched patients.</td></tr>
+      <tr><td class="num-cell">F</td><td>Analytics on the new cohort: escalation rate 58% — close to the original 61%.</td></tr>
+      <tr><td class="num-cell">H</td><td>Reviewer validates: pattern replicated within a reasonable band on an independent pull. Logged as a confirmed lead, not a clinical rule.</td></tr>
+    </table>
+  </section>
+
+  <section id="value">
+    <div class="num">05</div>
+    <h2>So what is the new scientific knowledge worth?</h2>
+    <p>Automating everything except the two human checkpoints changes <em>throughput</em>, not the epistemic category of what comes out the other end. Two full loop passes on independent datasets produce a <em>replicated correlational lead</em> — that is a real and useful thing, but it is a specific rung on the evidence ladder, not a discovery.</p>
+    <div class="value-grid">
+      <div class="value-card">
+        <h4>What's actually new</h4>
+        <p>Not the medical fact itself — CKD raising escalation risk is not a surprise to clinicians. What's new is that the pattern was found without a human deciding to look for it, is fully reproducible (the exact query is attached to every finding), and has already been checked against a second, independent dataset before any person spent real time on it.</p>
+      </div>
+      <div class="value-card">
+        <h4>Where the value actually sits</h4>
+        <p>In collapsing months of manual chart-review and hypothesis-drafting into two review checkpoints. The humans spend their attention curating from a pre-filtered, pre-replicated candidate pool instead of generating candidates from a blank page. That's a throughput and coverage gain, not a truth gain.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="label">The honest claim</span>
+      The loop's output is worth exactly what "a well-formed, cross-dataset-replicated, human-approved lead" is worth. That is real scientific value — it is the input to a study's hypothesis section — but it stops there.
+    </div>
+  </section>
+
+  <section id="not">
+    <div class="num">06</div>
+    <h2>What no amount of looping produces</h2>
+    <ul class="tight">
+      <li><b>Causation.</b> Lift against a baseline is a screening signal at every iteration of the loop, no matter how many datasets it replicates on. Confounding by indication doesn't go away because the check ran twice.</li>
+      <li><b>A predictive model.</b> The loop reports observed historical rates, round after round — it never fits, calibrates, or validates a risk model on held-out data.</li>
+      <li><b>Coverage of what was never coded.</b> A hallway conversation or an unlogged clinical judgment can't enter a backward trace in round one, and running round fifty doesn't recover it. Absence of a finding is never evidence of absence.</li>
+      <li><b>License to skip the checkpoints.</b> The two human steps aren't friction to engineer away — they're the only place the loop's correlational output is checked against clinical plausibility and independent replication before it's treated as a lead at all.</li>
+    </ul>
+  </section>
+
+  <section id="groundtruth">
+    <div class="num">07</div>
+    <h2>What a validated pattern actually becomes: a second path to the same kind of ground truth</h2>
+    <p class="lede">The loop-back arrow in the diagram above (section 02) is doing more work than it looks like. Once outcome validation (human checkpoint 2) passes, the confirmed pattern doesn't just get filed away as a one-off result — it re-enters the system as the <strong>next seed outcome</strong> for another backward pass. That's the mechanism worth naming plainly.</p>
+    <div class="value-grid">
+      <div class="value-card">
+        <h4>Textbooks and guidelines: ground truth built one way</h4>
+        <p>Clinical guidelines encode "known associations" — CKD raises escalation risk in pneumonia, hypoxia predicts deterioration, and so on — arrived at through trials, registries, expert consensus, and years of accumulated chart review. That corpus is the ground truth clinicians already carry into every encounter.</p>
+      </div>
+      <div class="value-card">
+        <h4>A validated loop pattern: the same kind of fact, a different route there</h4>
+        <p>A pattern that has cleared both checkpoints — drafted from a real backward scan, replicated on an independent dataset, and signed off by a reviewer — is the same <em>category</em> of fact: a machine-surfaced, human-confirmed clinical association. It didn't come from a trial or a guideline committee, but it was found, tested against new data, and checked by a person before being logged. That is a second, mechanized path to the same destination — not a shortcut around it.</p>
+      </div>
+    </div>
+    <p>This is exactly why the feedback step matters: every validated pattern is <strong>logged and mapped</strong> the same way a guideline citation would be — with its cohort, its lift, the dataset it replicated on, and the reviewer who signed off — so it can be treated as a durable reference point, not just a transient chat answer. Once logged, it can legitimately seed the next backward pass, the same way an existing guideline fact would prompt a clinician's next question. Round over round, this is how the loop accumulates its own small, audit-trailed body of machine-generated clinical patterns — sitting alongside textbook knowledge, not replacing it.</p>
+    <div class="callout">
+      <span class="label">Same evidence tier, not a shortcut</span>
+      A validated loop pattern still sits at the "replicated correlational lead" rung described in section 05 — it is not a randomized trial and it does not outrank a guideline that contradicts it. What changes is that it is now <em>logged as ground truth for this pipeline's own purposes</em>: a stable, citable fact the next backward pass — human or machine-initiated — can build on, exactly the way a clinician builds on a guideline they already trust.
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="num">08</div>
+    <h2>Live demo — run one round of the loop</h2>
+    <p class="lede">This runs live in your browser, scanning <strong>all three lanes</strong> the backward pipeline tags — comorbidity, symptom, and intervention — across 8 candidate factors on the same Pneumonia cohort, not just the 3 comorbidities used in the worked round above. Every ranked finding, drafted query, and lift figure is computed by the script on this page as you click — nothing is precomputed.</p>
+    <div class="callout">
+      <span class="label">What's real vs. illustrative</span>
+      The patient-level counts are synthetic, built to match the CKD/T2D/COPD figures used earlier plus five additional candidate factors (obesity, asthma, three symptom/intervention flags) drawn from the same illustrative Pneumonia cohort. The ranking math, query drafting, forward replication, and pass/fail validation are the genuine computation the loop describes — not staged numbers. One factor (asthma) is included deliberately as a <em>negative</em> result, so the demo shows what "doesn't replicate" looks like too, not just hits.
+    </div>
+
+    <div class="demo-panel" id="demoPanel">
+
+      <div class="demo-step" id="lstep1">
+        <div class="demo-step-head">
+          <span class="demo-step-num">1</span>
+          <h3>Backward pass on Dataset A <span class="who auto">automated</span></h3>
+        </div>
+        <p>Seed outcome: ICU escalation. Rank all 8 candidate factors — across comorbidity, symptom, and intervention lanes — by escalation lift over the no-flag baseline.</p>
+        <button class="btn btn-primary" id="lRunBackward">Run backward analysis</button>
+        <div id="lBackwardResults" style="display:none;margin-top:14px;">
+          <div class="lane-filter" id="lLaneFilter">
+            <button class="lane-chip active" data-lane="all">All lanes</button>
+            <button class="lane-chip" data-lane="comorbidity">Comorbidity</button>
+            <button class="lane-chip" data-lane="symptom">Symptom</button>
+            <button class="lane-chip" data-lane="intervention">Intervention</button>
+          </div>
+          <div id="lRankedWrap"></div>
+          <p style="margin:12px 0 6px;font-size:14px;color:var(--ink-soft);">Pick a finding to push through the loop:</p>
+          <div id="lPatternPicks"></div>
+        </div>
+      </div>
+
+      <div class="demo-step locked" id="lstep2">
+        <div class="demo-step-head">
+          <span class="demo-step-num">2</span>
+          <h3>Query verification <span class="who human">human checkpoint</span></h3>
+        </div>
+        <p>Edit the drafted query if you want, then approve or reject it before it reaches Dataset B.</p>
+        <div id="lDraftBox" style="display:none;">
+          <textarea id="dqText" rows="2"></textarea>
+          <div class="demo-actions">
+            <button class="btn btn-primary" id="lApprove">Approve query</button>
+            <button class="btn btn-ghost" id="lReject">Reject</button>
+          </div>
+          <div id="lQueryVerdict"></div>
+        </div>
+      </div>
+
+      <div class="demo-step locked" id="lstep3">
+        <div class="demo-step-head">
+          <span class="demo-step-num">3</span>
+          <h3>Forward pass on Dataset B <span class="who auto">automated</span></h3>
+        </div>
+        <p>Runs the approved query against a second, independent cohort — the replication test.</p>
+        <div class="analytics-strip">
+          <div class="analytics-chip"><span class="a-label">Match rate</span><span class="a-value">— no data</span></div>
+          <div class="analytics-chip"><span class="a-label">Hub nodes</span><span class="a-value">— no data</span></div>
+          <div class="analytics-chip"><span class="a-label">Outcome</span><span class="a-value">— no data</span></div>
+        </div>
+        <div class="analytics-note">Match rate and hub nodes aren't computed in this demo. Escalation lift below is the one outcome measure that's live.</div>
+        <button class="btn btn-primary" id="lRunForward" disabled>Run forward query on Dataset B</button>
+        <div id="lForwardResults" style="display:none;margin-top:14px;"></div>
+      </div>
+
+      <div class="demo-step locked" id="lstep4">
+        <div class="demo-step-head">
+          <span class="demo-step-num">4</span>
+          <h3>Outcome validation <span class="who human">human checkpoint</span></h3>
+        </div>
+        <p>Compare Dataset A's finding to Dataset B's replication and decide whether it clears the bar for a confirmed lead.</p>
+        <button class="btn btn-primary" id="lValidate" disabled>Validate replication</button>
+        <div id="lValidationResult" style="display:none;margin-top:14px;"></div>
+      </div>
+
+      <div style="padding:16px 22px;">
+        <button class="btn btn-ghost" id="lReset">↺ Reset demo</button>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <div class="num">09</div>
+    <h2>Guardrails carried over from both source pipelines</h2>
+    <div class="callout warn">
+      <span class="label">Human-in-the-loop by design</span>
+      Every finding the loop produces is a candidate question for a reviewer, never a finding a committee should act on unread. Automating the rounds between the two checkpoints is meant to give humans more, better-triaged rounds to review — not fewer humans in the process.
+    </div>
+    <p>Practically, that means: a query-verification step that can reject a drafted query outright (underpowered, leading, already settled), a hard floor on minimum cohort size before any lift number is allowed to surface, and a log of every accept/reject decision so the templates that never survive review get pruned rather than repeated indefinitely.</p>
+  </section>
+
+  <section id="livebackward">
+    <div class="num">10</div>
+    <h2>Live backward query generator — real SMART Health IT sandbox data</h2>
+    <p class="lede">Everything above this line is illustrative. This section is not: it calls the public <a href="https://r4.smarthealthit.org" target="_blank" rel="noopener">SMART Health IT R4 sandbox</a> live, in your browser, for whichever seed disease you pick below (the same ten concepts used in the forward pipeline's demo). In one run it pulls up to 100 matching patients from a single <code>Condition</code> search, then walks each patient's full record — <code>Condition</code>, <code>Observation</code>, <code>Procedure</code>, and <code>MedicationRequest</code> — and drafts every qualifying backward candidate across all three lanes the forward pipeline tags: comorbidity, symptom, and intervention. Nothing is auto-run against the data further: every card below is a <strong>draft for a human to verify or reject</strong>, with the exact query and lane shown next to the numbers that produced it.</p>
+
+    <div class="callout warn">
+      <span class="label">Shared public sandbox</span>
+      This is the same free, shared SMART Health IT test server the forward pipeline uses — synthetic (Synthea-style) patients, not real people, and the pool can be small, uneven, or change over time. Treat every card as a hypothesis, not a result.
+    </div>
+
+    <div class="demo-panel" id="lbPanel">
+      <div class="demo-step" id="lbStep1">
+        <div class="demo-step-head">
+          <span class="demo-step-num">1</span>
+          <h3>Pick a seed disease</h3>
+        </div>
+        <p>Same ten SNOMED CT concepts tagged in the forward pipeline's demo.</p>
+        <select id="lbConceptSelect" style="font-family:var(--mono);font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:4px;min-width:280px;">
+          <option value="38341003">Hypertension</option>
+          <option value="44054006">Type 2 diabetes</option>
+          <option value="233604007" selected>Pneumonia</option>
+          <option value="195967001">Asthma</option>
+          <option value="22298006">Myocardial infarction</option>
+          <option value="230690007">Stroke</option>
+          <option value="49436004">Atrial fibrillation</option>
+          <option value="55822004">Hyperlipidemia</option>
+          <option value="370143000">Major depressive disorder</option>
+          <option value="84757009">Seizure disorder</option>
+        </select>
+        <div class="demo-actions">
+          <button class="btn btn-primary" id="lbRun">Fetch cohort &amp; run backward scan</button>
+        </div>
+        <div id="lbStatus" style="font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:10px;"></div>
+        <div id="lbResults" style="display:none;margin-top:16px;">
+          <div class="lane-filter" id="lbLaneFilter">
+            <button class="lane-chip active" data-lane="all">All lanes</button>
+            <button class="lane-chip" data-lane="comorbidity">Comorbidity</button>
+            <button class="lane-chip" data-lane="symptom">Symptom</button>
+            <button class="lane-chip" data-lane="intervention">Intervention</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin:2px 0 4px;font-family:var(--mono);font-size:12px;color:var(--ink-soft);">
+            <label for="lbSort">Rank by:</label>
+            <select id="lbSort" style="font-family:var(--mono);font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:4px;">
+              <option value="lift" selected>Lift (vs. baseline) — recommended</option>
+              <option value="rate">Raw escalation rate within group</option>
+              <option value="n">Cohort size (n) — most evidence first</option>
+            </select>
+          </div>
+          <div id="lbCardsWrap"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    The Closed Loop — concept note on automating hypothesis generation between forward and backward FHIR + SNOMED CT pipelines.<br>
+    Companion to <a href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html">the forward pipeline</a> and <a href="https://avi33tbtt.github.io/backward-generated-clinical-intelligence.html">the backward pipeline</a>.
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Exhaustive backward scan: 8 candidate factors across the three lanes the
+  // backward pipeline tags (comorbidity, symptom, intervention), all on the
+  // same illustrative Pneumonia cohort, seed outcome = ICU escalation.
+  var datasetA = {
+    label: "Dataset A — original cohort",
+    groups: [
+      { name: "Chronic kidney disease",              lane: "comorbidity", n: 18, esc: 11, q: "pneumonia patients with chronic kidney disease" },
+      { name: "Type 2 diabetes",                      lane: "comorbidity", n: 26, esc: 12, q: "pneumonia patients with type 2 diabetes" },
+      { name: "COPD",                                 lane: "comorbidity", n: 11, esc: 4,  q: "pneumonia patients with COPD" },
+      { name: "Obesity",                               lane: "comorbidity", n: 15, esc: 6,  q: "pneumonia patients with obesity" },
+      { name: "Asthma",                                lane: "comorbidity", n: 9,  esc: 2,  q: "pneumonia patients with asthma" },
+      { name: "Hypoxia at presentation",               lane: "symptom",     n: 20, esc: 14, q: "pneumonia patients presenting with hypoxia (SpO2 < 90%)" },
+      { name: "Tachypnea at presentation",             lane: "symptom",     n: 24, esc: 10, q: "pneumonia patients presenting with tachypnea" },
+      { name: "Altered mental status",                 lane: "symptom",     n: 7,  esc: 5,  q: "pneumonia patients presenting with altered mental status" },
+      { name: "Antibiotic delay > 4h",                 lane: "intervention",n: 13, esc: 9,  q: "pneumonia patients whose antibiotics were delayed more than 4 hours" },
+      { name: "Second-line antibiotic switch",         lane: "intervention",n: 10, esc: 6,  q: "pneumonia patients switched to a second-line antibiotic" },
+      { name: "Worsening vitals not escalated <2h",    lane: "intervention",n: 12, esc: 8,  q: "pneumonia patients whose worsening vitals were not escalated within 2 hours" }
+    ],
+    baseline: { name: "No flagged factor", n: 34, esc: 8 }
+  };
+  var datasetB = {
+    label: "Dataset B — independent replication cohort",
+    groups: [
+      { name: "Chronic kidney disease",              lane: "comorbidity", n: 22, esc: 13 },
+      { name: "Type 2 diabetes",                      lane: "comorbidity", n: 19, esc: 7  },
+      { name: "COPD",                                 lane: "comorbidity", n: 9,  esc: 3  },
+      { name: "Obesity",                               lane: "comorbidity", n: 17, esc: 6  },
+      { name: "Asthma",                                lane: "comorbidity", n: 11, esc: 2  },
+      { name: "Hypoxia at presentation",               lane: "symptom",     n: 16, esc: 11 },
+      { name: "Tachypnea at presentation",             lane: "symptom",     n: 20, esc: 8  },
+      { name: "Altered mental status",                 lane: "symptom",     n: 6,  esc: 4  },
+      { name: "Antibiotic delay > 4h",                 lane: "intervention",n: 11, esc: 7  },
+      { name: "Second-line antibiotic switch",         lane: "intervention",n: 8,  esc: 5  },
+      { name: "Worsening vitals not escalated <2h",    lane: "intervention",n: 10, esc: 6  }
+    ],
+    baseline: { name: "No flagged factor", n: 25, esc: 6 }
+  };
+
+  function pct(x){ return (x*100).toFixed(1) + "%"; }
+  function liftFmt(x){ return x.toFixed(2) + "×"; }
+  function laneLabel(l){ return l.charAt(0).toUpperCase() + l.slice(1); }
+
+  function computeLift(dataset){
+    var baseRate = dataset.baseline.esc / dataset.baseline.n;
+    var rows = dataset.groups.map(function(g){
+      var rate = g.esc / g.n;
+      return { name: g.name, lane: g.lane, q: g.q, n: g.n, esc: g.esc, rate: rate, lift: rate / baseRate };
+    });
+    rows.sort(function(a,b){ return b.lift - a.lift; });
+    return { rows: rows, baseRate: baseRate, baseline: dataset.baseline };
+  }
+
+  var resultA = computeLift(datasetA);
+  var picked = null;
+  var approvedQuery = null;
+  var currentFilter = 'all';
+
+  function renderRankedTable(container, result, label, filter){
+    var rows = result.rows.filter(function(r){ return filter === 'all' || r.lane === filter; });
+    var html = '<table><thead><tr><th>Candidate factor</th><th>Lane</th><th>Patients</th>' +
+      '<th>Escalation rate</th><th>vs. baseline</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      var noSignal = r.lift < 1.05 ? ' no-signal-row' : '';
+      html += '<tr class="' + noSignal.trim() + '"><td>' + r.name + '</td><td><span class="lane-tag ' + r.lane + '">' +
+        laneLabel(r.lane) + '</span></td><td>' + r.n + '</td><td>' +
+        pct(r.rate) + '</td><td>' + liftFmt(r.lift) + (r.lift < 1.05 ? ' (no signal)' : '') + '</td></tr>';
+    });
+    html += '<tr><td>' + result.baseline.name + '</td><td><span class="lane-tag" style="background:var(--ink-soft);">Baseline</span></td><td>' +
+      result.baseline.n + '</td><td>' + pct(result.baseRate) + '</td><td>1.00× (baseline)</td></tr>';
+    html += '</tbody></table><p style="font-size:13px;color:var(--ink-soft);margin-top:2px;">' +
+      label + ' · ' + rows.length + ' of ' + result.rows.length + ' candidate factors shown · ranked by lift over baseline · recomputed live.</p>';
+    container.innerHTML = html;
+  }
+
+  function renderPicks(result, filter){
+    var rows = result.rows.filter(function(r){ return filter === 'all' || r.lane === filter; });
+    var html = '';
+    rows.forEach(function(r){
+      var globalIdx = result.rows.indexOf(r);
+      html += '<button class="btn-pattern" data-idx="' + globalIdx + '">' +
+        '[' + laneLabel(r.lane) + '] ' + r.name + '  ·  lift ' + liftFmt(r.lift) + '  ·  n=' + r.n + '</button>';
+    });
+    document.getElementById('lPatternPicks').innerHTML = html;
+    document.querySelectorAll('#lPatternPicks .btn-pattern').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('#lPatternPicks .btn-pattern').forEach(function(b){ b.classList.remove('picked'); });
+        btn.classList.add('picked');
+        var idx = parseInt(btn.getAttribute('data-idx'), 10);
+        picked = resultA.rows[idx];
+        draftQuery(picked);
+      });
+    });
+  }
+
+  document.getElementById('lRunBackward').addEventListener('click', function(){
+    renderRankedTable(document.getElementById('lRankedWrap'), resultA, datasetA.label, currentFilter);
+    renderPicks(resultA, currentFilter);
+    document.getElementById('lBackwardResults').style.display = 'block';
+    this.disabled = true;
+    this.textContent = 'Backward analysis complete';
+  });
+
+  document.querySelectorAll('#lLaneFilter .lane-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('#lLaneFilter .lane-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentFilter = chip.getAttribute('data-lane');
+      if (document.getElementById('lBackwardResults').style.display === 'block'){
+        renderRankedTable(document.getElementById('lRankedWrap'), resultA, datasetA.label, currentFilter);
+        renderPicks(resultA, currentFilter);
+      }
+    });
+  });
+
+  function draftQuery(pattern){
+    document.getElementById('lstep2').classList.remove('locked');
+    document.getElementById('lDraftBox').style.display = 'block';
+    document.getElementById('lQueryVerdict').innerHTML = '';
+    document.getElementById('dqText').value = pattern.q;
+    document.getElementById('lApprove').disabled = false;
+    document.getElementById('lReject').disabled = false;
+
+    document.getElementById('lstep3').classList.add('locked');
+    document.getElementById('lRunForward').disabled = true;
+    document.getElementById('lRunForward').textContent = 'Run forward query on Dataset B';
+    document.getElementById('lForwardResults').style.display = 'none';
+    document.getElementById('lForwardResults').innerHTML = '';
+
+    document.getElementById('lstep4').classList.add('locked');
+    document.getElementById('lValidate').disabled = true;
+    document.getElementById('lValidate').textContent = 'Validate replication';
+    document.getElementById('lValidationResult').style.display = 'none';
+    document.getElementById('lValidationResult').innerHTML = '';
+  }
+
+  document.getElementById('lApprove').addEventListener('click', function(){
+    approvedQuery = document.getElementById('dqText').value;
+    document.getElementById('lQueryVerdict').innerHTML =
+      '<span class="badge-inline badge-approved">Approved</span> <span style="font-size:13.5px;color:var(--ink-soft);"> — cleared to run on Dataset B.</span>';
+    document.getElementById('lstep3').classList.remove('locked');
+    document.getElementById('lRunForward').disabled = false;
+    this.disabled = true;
+    document.getElementById('lReject').disabled = true;
+  });
+
+  document.getElementById('lReject').addEventListener('click', function(){
+    document.getElementById('lQueryVerdict').innerHTML =
+      '<span class="badge-inline badge-rejected">Rejected</span> <span style="font-size:13.5px;color:var(--ink-soft);"> — loop halts here. Pick a different finding above to try again.</span>';
+    document.getElementById('lApprove').disabled = true;
+    this.disabled = true;
+  });
+
+  document.getElementById('lRunForward').addEventListener('click', function(){
+    var resultB = computeLift(datasetB);
+    var matchB = resultB.rows.filter(function(r){ return r.name === picked.name; })[0];
+    document.getElementById('lForwardResults').innerHTML = renderCompare(picked, matchB);
+    document.getElementById('lForwardResults').style.display = 'block';
+    this.disabled = true;
+    this.textContent = 'Forward pass complete';
+
+    document.getElementById('lstep4').classList.remove('locked');
+    document.getElementById('lValidate').disabled = false;
+    document.getElementById('lValidate').dataset.liftA = picked.lift;
+    document.getElementById('lValidate').dataset.liftB = matchB.lift;
+    document.getElementById('lValidate').dataset.name = picked.name;
+  });
+
+  function renderCompare(a, b){
+    var maxLift = Math.max(a.lift, b.lift, 1) * 1.15;
+    function bar(cls, label, val){
+      var w = Math.min(100, (val / maxLift) * 100);
+      return '<div class="compare-row"><div class="compare-label">' + label + '</div>' +
+        '<div class="compare-track"><div class="compare-fill ' + cls + '" style="width:' + w + '%;">' +
+        '<span>' + liftFmt(val) + '</span></div></div></div>';
+    }
+    var html = '<h3 style="margin:0 0 8px;font-size:16px;">' + a.name +
+      ' <span class="lane-tag ' + a.lane + '" style="vertical-align:middle;">' + laneLabel(a.lane) +
+      '</span> — lift, Dataset A vs. Dataset B</h3>';
+    html += '<div class="compare-bars">' + bar('a','Dataset A', a.lift) + bar('b','Dataset B', b.lift) + '</div>';
+    html += '<table><thead><tr><th>Dataset</th><th>Patients</th><th>Escalation rate</th><th>Lift</th></tr></thead><tbody>' +
+      '<tr><td>A (original)</td><td>' + a.n + '</td><td>' + pct(a.rate) + '</td><td>' + liftFmt(a.lift) + '</td></tr>' +
+      '<tr><td>B (replication)</td><td>' + b.n + '</td><td>' + pct(b.rate) + '</td><td>' + liftFmt(b.lift) + '</td></tr>' +
+      '</tbody></table>';
+    html += '<div class="repro-footer">Query: <code>' + (approvedQuery || '') + '</code> · cohort B n=' + b.n + ' · fresh run, not cached</div>';
+    return html;
+  }
+
+  document.getElementById('lValidate').addEventListener('click', function(){
+    var liftA = parseFloat(this.dataset.liftA);
+    var liftB = parseFloat(this.dataset.liftB);
+    var name = this.dataset.name;
+    var relDiff = Math.abs(liftB - liftA) / liftA;
+    var cls, headline, verdict;
+
+    if (liftB < 1.05){
+      cls = 'discard';
+      headline = 'No signal in either dataset';
+      verdict = name + ' shows no meaningful elevation over baseline in Dataset B (' + liftFmt(liftB) +
+        '), consistent with the weak or absent signal already seen in Dataset A (' + liftFmt(liftA) +
+        '). Correctly excluded from further hypotheses — not every candidate factor is a lead.';
+    } else if (liftB >= 1.3 && relDiff <= 0.35){
+      cls = 'confirmed';
+      headline = 'Replicated — confirmed lead';
+      verdict = name + ' shows elevated escalation risk in both Dataset A (' + liftFmt(liftA) +
+        ') and independent Dataset B (' + liftFmt(liftB) + '), within ' + pct(relDiff) +
+        ' relative difference. Correlational, and a candidate for a designed study — not a causal claim.';
+    } else if (liftB >= 1.3){
+      cls = 'weak';
+      headline = 'Directionally replicated — weaker effect';
+      verdict = name + ' still shows elevated risk in Dataset B (' + liftFmt(liftB) +
+        ') but diverges from Dataset A (' + liftFmt(liftA) + ') by ' + pct(relDiff) +
+        '. Log as a weaker/uncertain replication, not a confirmed lead.';
+    } else {
+      cls = 'discard';
+      headline = 'Not replicated — discard as a lead';
+      verdict = name + ' does not show meaningfully elevated risk in Dataset B (' + liftFmt(liftB) +
+        '), despite ' + liftFmt(liftA) + ' in Dataset A. Likely dataset-specific — discard rather than carry forward.';
+    }
+
+    document.getElementById('lValidationResult').innerHTML =
+      '<div class="verdict-box ' + cls + '"><strong>' + headline + '</strong>' + verdict + '</div>';
+    document.getElementById('lValidationResult').style.display = 'block';
+    this.disabled = true;
+    this.textContent = 'Validation logged';
+  });
+
+  document.getElementById('lReset').addEventListener('click', function(){
+    picked = null; approvedQuery = null; currentFilter = 'all';
+    document.querySelectorAll('#lLaneFilter .lane-chip').forEach(function(c){ c.classList.remove('active'); });
+    document.querySelector('#lLaneFilter .lane-chip[data-lane="all"]').classList.add('active');
+
+    document.getElementById('lRunBackward').disabled = false;
+    document.getElementById('lRunBackward').textContent = 'Run backward analysis';
+    document.getElementById('lBackwardResults').style.display = 'none';
+    document.getElementById('lRankedWrap').innerHTML = '';
+    document.getElementById('lPatternPicks').innerHTML = '';
+
+    document.getElementById('lstep2').classList.add('locked');
+    document.getElementById('lDraftBox').style.display = 'none';
+    document.getElementById('lQueryVerdict').innerHTML = '';
+    document.getElementById('lApprove').disabled = false;
+    document.getElementById('lReject').disabled = false;
+
+    document.getElementById('lstep3').classList.add('locked');
+    document.getElementById('lRunForward').disabled = true;
+    document.getElementById('lRunForward').textContent = 'Run forward query on Dataset B';
+    document.getElementById('lForwardResults').style.display = 'none';
+    document.getElementById('lForwardResults').innerHTML = '';
+
+    document.getElementById('lstep4').classList.add('locked');
+    document.getElementById('lValidate').disabled = true;
+    document.getElementById('lValidate').textContent = 'Validate replication';
+    document.getElementById('lValidationResult').style.display = 'none';
+    document.getElementById('lValidationResult').innerHTML = '';
+  });
+})();
+
+// --- Section 09: live backward query generator against the real SMART Health IT sandbox ---
+(function(){
+  var SMART_BASE = 'https://r4.smarthealthit.org';
+  var CONCEPTS = {
+    '38341003':  'Hypertension',
+    '44054006':  'Type 2 diabetes',
+    '233604007': 'Pneumonia',
+    '195967001': 'Asthma',
+    '22298006':  'Myocardial infarction',
+    '230690007': 'Stroke',
+    '49436004':  'Atrial fibrillation',
+    '55822004':  'Hyperlipidemia',
+    '370143000': 'Major depressive disorder',
+    '84757009':  'Seizure disorder'
+  };
+
+  var runBtn = document.getElementById('lbRun');
+  var select = document.getElementById('lbConceptSelect');
+  var statusEl = document.getElementById('lbStatus');
+  var resultsEl = document.getElementById('lbResults');
+  var cardsWrap = document.getElementById('lbCardsWrap');
+  var laneFilterEl = document.getElementById('lbLaneFilter');
+  var sortEl = document.getElementById('lbSort');
+  if (!runBtn) return;
+
+  var lastCandidates = [];
+  var lastMeta = null;
+  var currentLane = 'all';
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  async function fhirGet(path){
+    var res = await fetch(SMART_BASE + path, { headers: { 'Accept': 'application/fhir+json' } });
+    if (!res.ok) throw new Error('FHIR request failed: ' + path + ' (' + res.status + ')');
+    return res.json();
+  }
+
+  function isEscalation(enc){
+    var cls = (enc.class && (enc.class.code || enc.class)) || '';
+    return String(cls).toUpperCase() === 'EMER' || String(cls).toUpperCase() === 'IMP';
+  }
+
+  function codingLabel(codeableConcept){
+    var coding = codeableConcept && codeableConcept.coding && codeableConcept.coding[0];
+    if (coding && (coding.display || coding.code)) return coding.display || coding.code;
+    return codeableConcept && codeableConcept.text ? codeableConcept.text : null;
+  }
+
+  runBtn.addEventListener('click', async function(){
+    var code = select.value;
+    var seedLabel = CONCEPTS[code] || code;
+    runBtn.disabled = true;
+    runBtn.textContent = 'Fetching from SMART sandbox…';
+    resultsEl.style.display = 'none';
+    cardsWrap.innerHTML = '';
+    currentLane = 'all';
+    laneFilterEl.querySelectorAll('.lane-chip').forEach(function(c){ c.classList.remove('active'); });
+    laneFilterEl.querySelector('[data-lane="all"]').classList.add('active');
+    statusEl.textContent = 'Query: GET /Condition?code=' + code + '&_count=100 …';
+
+    try {
+      // Step 1 — seed cohort: patients coded with the seed concept (up to 100 in one pull)
+      var bundle = await fhirGet('/Condition?code=' + encodeURIComponent(code) + '&_count=100');
+      var seedEntries = (bundle.entry || []).map(function(e){ return e.resource; }).filter(Boolean);
+      var patientIds = Array.from(new Set(seedEntries.map(function(c){
+        return c.subject && c.subject.reference ? c.subject.reference.replace('Patient/', '') : null;
+      }).filter(Boolean)));
+
+      if (!patientIds.length) {
+        statusEl.textContent = 'No patients found coded with this concept in the sandbox right now — try another seed disease.';
+        runBtn.disabled = false;
+        runBtn.textContent = 'Fetch cohort & run backward scan';
+        return;
+      }
+      patientIds = patientIds.slice(0, 100); // one live pull, up to 100 patients
+
+      statusEl.textContent = 'Found ' + patientIds.length + ' patient(s). Pulling each patient\'s Condition, Encounter, Observation, Procedure &amp; MedicationRequest history…';
+
+      var perPatient = [];
+      for (var i = 0; i < patientIds.length; i++) {
+        var pid = patientIds[i];
+        statusEl.textContent = 'Pulling patient ' + (i+1) + '/' + patientIds.length + ' (' + pid.slice(0,8) + '…) — Condition/Encounter/Observation/Procedure/MedicationRequest';
+
+        var condBundle, encBundle, obsBundle, procBundle, medBundle;
+        try { condBundle = await fhirGet('/Condition?patient=' + pid + '&_count=50'); } catch (e) { condBundle = { entry: [] }; }
+        try { encBundle  = await fhirGet('/Encounter?patient=' + pid + '&_count=50'); } catch (e) { encBundle  = { entry: [] }; }
+        try { obsBundle  = await fhirGet('/Observation?patient=' + pid + '&_count=50'); } catch (e) { obsBundle  = { entry: [] }; }
+        try { procBundle = await fhirGet('/Procedure?patient=' + pid + '&_count=50'); } catch (e) { procBundle = { entry: [] }; }
+        try { medBundle  = await fhirGet('/MedicationRequest?patient=' + pid + '&_count=50'); } catch (e) { medBundle  = { entry: [] }; }
+
+        var conditions   = (condBundle.entry || []).map(function(e){ return e.resource; }).filter(Boolean);
+        var encounters   = (encBundle.entry  || []).map(function(e){ return e.resource; }).filter(Boolean);
+        var observations = (obsBundle.entry  || []).map(function(e){ return e.resource; }).filter(Boolean);
+        var procedures   = (procBundle.entry || []).map(function(e){ return e.resource; }).filter(Boolean);
+        var medications  = (medBundle.entry  || []).map(function(e){ return e.resource; }).filter(Boolean);
+        var escalated = encounters.some(isEscalation);
+
+        // Lane: comorbidity — every coded Condition that isn't the seed concept itself
+        var comorbidities = conditions
+          .filter(function(c){ return !(c.code && c.code.coding && c.code.coding.some(function(cd){ return cd.code === code; })); })
+          .map(function(c){ return codingLabel(c.code); })
+          .filter(Boolean);
+
+        // Lane: symptom — coded Observations (component/value-bearing findings, e.g. vitals/labs)
+        var symptoms = observations
+          .map(function(o){ return codingLabel(o.code); })
+          .filter(Boolean);
+
+        // Lane: intervention — Procedures and MedicationRequests
+        var interventions = procedures
+          .map(function(p){ return codingLabel(p.code); })
+          .filter(Boolean)
+          .concat(medications
+            .map(function(m){ return codingLabel(m.medicationCodeableConcept); })
+            .filter(Boolean)
+            .map(function(l){ return 'Rx: ' + l; })
+          );
+
+        perPatient.push({
+          id: pid,
+          escalated: escalated,
+          comorbidities: Array.from(new Set(comorbidities)),
+          symptoms: Array.from(new Set(symptoms)),
+          interventions: Array.from(new Set(interventions))
+        });
+      }
+
+      // Step 2 — exhaustive backward scan across all three lanes: cohort baseline
+      // escalation rate, then per-factor lift for every factor seen in 2+ patients.
+      var baselineEsc = perPatient.filter(function(p){ return p.escalated; }).length;
+      var baselineRate = perPatient.length ? baselineEsc / perPatient.length : 0;
+
+      var byLabel = {}; // label -> { total, escalated, lane }
+      function tally(list, lane){
+        perPatient.forEach(function(p){
+          p[list].forEach(function(label){
+            var key = lane + '::' + label;
+            if (!byLabel[key]) byLabel[key] = { label: label, lane: lane, total: 0, escalated: 0 };
+            byLabel[key].total++;
+            if (p.escalated) byLabel[key].escalated++;
+          });
+        });
+      }
+      tally('comorbidities', 'comorbidity');
+      tally('symptoms', 'symptom');
+      tally('interventions', 'intervention');
+
+      var candidates = Object.values(byLabel)
+        .filter(function(s){ return s.total >= 2; })
+        .map(function(s){
+          var rate = s.escalated / s.total;
+          var lift = baselineRate > 0 ? rate / baselineRate : null;
+          return { label: s.label, lane: s.lane, n: s.total, escalated: s.escalated, rate: rate, lift: lift };
+        })
+        .sort(function(a, b){ return b.lift - a.lift; }); // default order before first render; renderCards() re-sorts per the active control
+      // exhaustive: every qualifying factor across all three lanes, not just a top-N slice
+
+      lastCandidates = candidates;
+      lastMeta = { code: code, seedLabel: seedLabel, patientCount: perPatient.length, baselineRate: baselineRate };
+
+      statusEl.textContent = 'Done. Cohort n=' + perPatient.length + ' (from a single ' + patientIds.length + '-patient pull), baseline escalation rate ' + Math.round(baselineRate*100) + '%. ' + candidates.length + ' candidate factor(s) drafted across comorbidity/symptom/intervention lanes for review.';
+
+      renderCards();
+      resultsEl.style.display = 'block';
+
+    } catch (err) {
+      statusEl.textContent = 'Live fetch failed: ' + err.message + '. The public sandbox can rate-limit or hiccup — try again in a moment.';
+    }
+
+    runBtn.disabled = false;
+    runBtn.textContent = 'Fetch cohort & run backward scan';
+  });
+
+  function laneTagHtml(lane){
+    return '<span class="lane-tag ' + lane + '">' + lane.charAt(0).toUpperCase() + lane.slice(1) + '</span>';
+  }
+
+  function renderCards(){
+    if (!lastMeta) return;
+    var candidates = currentLane === 'all' ? lastCandidates.slice() : lastCandidates.filter(function(c){ return c.lane === currentLane; });
+
+    var sortMode = sortEl ? sortEl.value : 'lift';
+    candidates.sort(function(a, b){
+      if (sortMode === 'rate') return b.rate - a.rate;
+      if (sortMode === 'n') return b.n - a.n;
+      // default: lift, with n as a tiebreaker so two equal-lift factors show the more-evidenced one first
+      var la = a.lift === null ? -Infinity : a.lift;
+      var lb = b.lift === null ? -Infinity : b.lift;
+      if (lb !== la) return lb - la;
+      return b.n - a.n;
+    });
+
+    var sortNote = sortMode === 'lift'
+      ? 'ranked by lift over baseline (n shown alongside so you can weigh confidence)'
+      : (sortMode === 'rate' ? 'ranked by raw escalation rate within group — watch for low-n factors near the top' : 'ranked by cohort size (n) — most-evidenced factors first, regardless of lift');
+    var summary = '<p style="font-size:13px;color:var(--ink-soft);margin:0 0 6px;">Seed concept: <strong>' + esc(lastMeta.seedLabel) + '</strong> (SCT ' + esc(lastMeta.code) + ') · live pull from ' + esc(SMART_BASE) + ' · ' + lastMeta.patientCount + ' patient(s) sampled just now · showing ' + candidates.length + ' of ' + lastCandidates.length + ' candidate factor(s), ' + sortNote + '.</p>';
+
+    var cardsHtml = '';
+    if (!candidates.length) {
+      cardsHtml = '<p style="color:var(--ink-soft);">No factor in this lane appeared in 2+ patients in this live pull, so no lift-based candidate could be drafted. This is expected on a small shared sandbox — try re-running, picking a more common seed disease, or the "All lanes" filter.</p>';
+    } else {
+      candidates.forEach(function(c, idx){
+        var liftTxt = c.lift === null ? '—' : c.lift.toFixed(2) + '×';
+        var cid = 'lbcard_' + idx + '_' + Date.now();
+        var tableName = c.lane === 'comorbidity' ? 'conditions' : (c.lane === 'symptom' ? 'observations' : 'procedures_and_medications');
+        var query =
+          'Auto-generated query (draft — not yet run against anything further):\n' +
+          'SELECT patient_id, escalated\n' +
+          'FROM ' + tableName + ' f\n' +
+          "JOIN cohort p ON p.patient_id = f.patient_id AND p.seed_code = '" + lastMeta.code + "'\n" +
+          "WHERE f.display = '" + c.label.replace(/'/g, "''") + "'\n" +
+          'GROUP BY f.display;\n' +
+          '-- lane: ' + c.lane + '\n' +
+          '-- candidate: patients with seed concept "' + lastMeta.seedLabel + '" (SCT ' + lastMeta.code + ') AND ' + c.lane + ' "' + c.label + '"\n' +
+          '-- compare escalation rate within this group vs. cohort baseline (' + Math.round(lastMeta.baselineRate*100) + '%)';
+
+        cardsHtml +=
+          '<div class="lb-card" data-cardid="' + cid + '">' +
+            '<h4>' + laneTagHtml(c.lane) + ' Candidate: "' + esc(c.label) + '" correlated with escalation encounter</h4>' +
+            '<div class="lb-stats">n=' + c.n + ' patient(s) with this factor · escalation rate within group ' + Math.round(c.rate*100) + '% · cohort baseline ' + Math.round(lastMeta.baselineRate*100) + '% · lift ' + liftTxt + '</div>' +
+            '<pre>' + esc(query) + '</pre>' +
+            '<div class="demo-actions">' +
+              '<button class="btn btn-primary lb-approve">Approve as worth studying</button>' +
+              '<button class="btn btn-ghost lb-reject">Reject</button>' +
+              '<span class="lb-verdict-slot"></span>' +
+            '</div>' +
+          '</div>';
+      });
+    }
+
+    cardsWrap.innerHTML = summary + cardsHtml;
+
+    cardsWrap.querySelectorAll('.lb-approve').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var card = btn.closest('.lb-card');
+        card.querySelector('.lb-verdict-slot').innerHTML = '<span class="lb-verdict approved">Approved for follow-up</span>';
+        card.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
+      });
+    });
+    cardsWrap.querySelectorAll('.lb-reject').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var card = btn.closest('.lb-card');
+        card.querySelector('.lb-verdict-slot').innerHTML = '<span class="lb-verdict rejected">Rejected</span>';
+        card.querySelectorAll('button').forEach(function(b){ b.disabled = true; });
+      });
+    });
+  }
+
+  laneFilterEl.querySelectorAll('.lane-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      laneFilterEl.querySelectorAll('.lane-chip').forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      currentLane = chip.getAttribute('data-lane');
+      renderCards();
+    });
+  });
+
+  if (sortEl) {
+    sortEl.addEventListener('change', function(){ renderCards(); });
+  }
+})();
+</script>
+</body>
+</html>
