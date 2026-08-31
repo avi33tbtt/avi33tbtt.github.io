@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#12262b">
+<title>From Person to Pipeline — Project Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink:#101a17;
+    --paper:#f4f1e9;
+    --panel:#ffffff;
+    --navy:#12262b;
+    --teal:#1c6e64;
+    --teal-soft:#e4efe9;
+    --amber:#c98a2e;
+    --coral:#b3543f;
+    --line:#c9c2af;
+    --muted:#5b6560;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:'Newsreader', serif;
+    font-weight:600;
+    color:var(--navy);
+    margin:0 0 .4em 0;
+  }
+  a{color:var(--teal);}
+  p{max-width:70ch;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+
+  /* HERO */
+  .hero{
+    background:
+      radial-gradient(circle at 18% 30%, rgba(28,110,100,.18), transparent 45%),
+      radial-gradient(circle at 82% 70%, rgba(201,138,46,.14), transparent 40%),
+      var(--navy);
+    color:#eef4f1;
+    padding:96px 0 80px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{position:relative;z-index:2;}
+  .hero .kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.8rem;
+    letter-spacing:.03em;
+    color:#8fc3b6;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    color:#fdfbf5;
+    font-size:clamp(2.2rem,4.4vw,3.4rem);
+    max-width:16ch;
+    line-height:1.08;
+  }
+  .hero .sub{
+    color:#c7d6d1;
+    max-width:62ch;
+    font-size:1.08rem;
+    margin-top:18px;
+  }
+  .hero-graph{
+    position:absolute; right:-60px; top:-40px; width:520px; height:520px;
+    opacity:.5; z-index:1;
+  }
+  .hero-graph svg{width:100%;height:100%;}
+
+  /* QUICK NAV — appears once the hero scrolls out of view */
+  .quicknav{
+    position:fixed; top:0; left:0; right:0;
+    background:var(--navy);
+    border-bottom:1px solid rgba(255,255,255,.14);
+    z-index:50;
+    transform:translateY(-100%);
+    transition:transform .25s ease;
+  }
+  .quicknav.visible{transform:translateY(0);}
+  .qn-inner{
+    display:flex; align-items:center; gap:20px;
+    padding:13px 32px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.75rem;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .qn-inner::-webkit-scrollbar{display:none;}
+  .qn-inner a{color:#c7d6d1;text-decoration:none;flex:0 0 auto;}
+  .qn-inner a:hover,.qn-inner a:focus-visible{color:#fff;}
+  .qn-top{margin-left:auto;color:#8fc3b6 !important;padding-left:20px;}
+
+  /* anchor targets shouldn't hide under the fixed quick nav */
+  section[id],.hero{scroll-margin-top:52px;}
+
+  /* tables scroll sideways instead of crushing on narrow screens */
+  .table-wrap{overflow-x:auto;margin-top:20px;-webkit-overflow-scrolling:touch;}
+  .table-wrap table{margin-top:0;min-width:480px;}
+
+  .scope{
+    margin-top:36px;
+    display:inline-block;
+    border:1px solid rgba(255,255,255,.25);
+    padding:10px 16px;
+    font-size:.85rem;
+    color:#dbe7e2;
+    border-radius:2px;
+    background:rgba(255,255,255,.03);
+  }
+
+  /* SECTION SHELLS */
+  section{padding:64px 0;}
+  section.alt{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.75rem;
+    color:var(--teal);
+    margin-bottom:10px;
+  }
+  .lede{font-size:1.15rem;color:#33403b;max-width:66ch;}
+
+  /* TIMELINE / SPINE */
+  .spine{
+    position:relative;
+    margin-top:56px;
+    padding-left:40px;
+    border-left:2px solid var(--line);
+  }
+  .stage{
+    position:relative;
+    padding-bottom:56px;
+  }
+  .stage:last-child{padding-bottom:0;}
+  .stage::before{
+    content:"";
+    position:absolute;
+    left:-46px; top:4px;
+    width:14px;height:14px;
+    border-radius:50%;
+    background:var(--teal);
+    border:3px solid var(--paper);
+    box-shadow:0 0 0 2px var(--teal);
+  }
+  .stage.hub::before{
+    background:var(--amber);
+    box-shadow:0 0 0 2px var(--amber);
+    width:18px;height:18px;left:-48px;top:2px;
+  }
+  .stage h3{font-size:1.5rem;}
+  .stage .tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.7rem;
+    color:var(--teal);
+    background:var(--teal-soft);
+    padding:2px 8px;
+    border-radius:2px;
+    margin-bottom:10px;
+  }
+  .links{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;}
+  .links a{
+    font-size:.85rem;
+    text-decoration:none;
+    border:1px solid var(--teal);
+    color:var(--teal);
+    padding:6px 12px;
+    border-radius:2px;
+    transition:.15s;
+  }
+  .links a:hover{background:var(--teal);color:#fff;}
+  .links a.video{border-color:var(--coral);color:var(--coral);}
+  .links a.video:hover{background:var(--coral);color:#fff;}
+
+  /* GRID / CARDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:32px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:32px;}
+  @media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:24px;
+    border-radius:2px;
+  }
+  .card h4{font-size:1.05rem;margin-bottom:8px;}
+  .card p{font-size:.94rem;color:#3d4844;margin:0;}
+  .card p + p{margin-top:12px;}
+
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.92rem;}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);}
+  th{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.02em;color:var(--muted);font-weight:500;}
+
+  .flow{
+    display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+    margin:28px 0;font-family:'IBM Plex Mono',monospace;font-size:.82rem;
+  }
+  .flow .node{
+    background:var(--navy);color:#eef4f1;padding:8px 14px;border-radius:2px;
+  }
+  .flow .arrow{color:var(--muted);}
+
+  .quote{
+    border-left:3px solid var(--amber);
+    padding:6px 0 6px 20px;
+    margin:24px 0;
+    font-family:'Newsreader',serif;
+    font-size:1.15rem;
+    color:var(--navy);
+    max-width:64ch;
+  }
+
+  .callout{
+    background:var(--teal-soft);
+    border:1px solid #bcd6cc;
+    padding:20px 24px;
+    margin-top:24px;
+    border-radius:2px;
+    font-size:.94rem;
+  }
+  .callout.warn{background:#f6ece2;border-color:#e3c79c;}
+
+  footer{
+    padding:56px 0 80px;
+    text-align:center;
+    color:var(--muted);
+    font-size:.85rem;
+  }
+  .toc{
+    display:flex;flex-wrap:wrap;gap:6px 18px;
+    margin-top:28px;
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;
+  }
+  .toc a{color:#c7d6d1;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.3);}
+  .toc a:hover{color:#fff;}
+
+  .section-title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .section-title .n{font-family:'IBM Plex Mono',monospace;color:var(--line);font-size:1.4rem;}
+
+  /* MOBILE */
+  @media (max-width:760px){
+    .hero-graph{width:280px;height:280px;right:-90px;top:-30px;opacity:.35;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 20px;}
+    .hero{padding:72px 0 52px;}
+    section{padding:44px 0;}
+    .qn-inner{padding:12px 20px;gap:14px;}
+    .spine{padding-left:26px;}
+    .stage{padding-bottom:44px;}
+    .stage::before{left:-32px;width:12px;height:12px;}
+    .stage.hub::before{left:-34px;width:16px;height:16px;}
+    .stage h3{font-size:1.25rem;}
+    .flow{gap:6px;font-size:.72rem;}
+    .flow .node{padding:7px 11px;}
+    th,td{padding:9px 10px;font-size:.85rem;}
+    .quote{font-size:1.02rem;padding-left:16px;}
+    .card{padding:18px;}
+    .toc{gap:6px 14px;font-size:.75rem;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="quicknav" id="quicknav" aria-label="Section navigation">
+  <div class="qn-inner">
+    <a href="#demo-summary">Demo</a>
+    <a href="#readme">Summaries</a>
+    <a href="#map">Map</a>
+    <a href="#phase1">01 Person</a>
+    <a href="#phase2">02 FHIR</a>
+    <a href="#phase3">03 Backward</a>
+    <a href="#phase4">04 Loop</a>
+    <a href="#phase5">05 Full Run</a>
+    <a href="#sources">Sources</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#catalog">Analytics Catalog</a>
+    <a href="#fullpicture">Full Picture</a>
+    <a href="#top" class="qn-top">↑ Top</a>
+  </div>
+</nav>
+
+<div class="hero" id="top">
+  <div class="hero-graph">
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <g stroke="#4a7c72" stroke-width="1" opacity="0.6">
+        <line x1="60" y1="80" x2="180" y2="150"/>
+        <line x1="180" y1="150" x2="320" y2="90"/>
+        <line x1="180" y1="150" x2="150" y2="270"/>
+        <line x1="150" y1="270" x2="280" y2="320"/>
+        <line x1="150" y1="270" x2="60" y2="340"/>
+        <line x1="320" y1="90" x2="360" y2="200"/>
+        <line x1="360" y1="200" x2="280" y2="320"/>
+      </g>
+      <circle cx="60" cy="80" r="6" fill="#8fc3b6"/>
+      <circle cx="180" cy="150" r="12" fill="#c98a2e"/>
+      <circle cx="320" cy="90" r="6" fill="#8fc3b6"/>
+      <circle cx="150" cy="270" r="10" fill="#c98a2e"/>
+      <circle cx="280" cy="320" r="6" fill="#8fc3b6"/>
+      <circle cx="60" cy="340" r="5" fill="#4a7c72"/>
+      <circle cx="360" cy="200" r="5" fill="#4a7c72"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="kicker">PROJECT REPORT</div>
+    <h1>From one patient's trajectory to a self-directing clinical intelligence loop</h1>
+    <p class="sub">A record of how this project moved from an idea — modeling a patient as a graph instead of a diagnosis — through a working, coded FHIR + SNOMED CT pipeline, to a backward-reasoning engine and, finally, a closed loop that drafts its own next research question.</p>
+    <div class="scope">Synthetic and sandbox data throughout · not clinical decision support · every source page linked and traceable below</div>
+    <div class="toc">
+      <a href="#readme">Summaries</a>
+      <a href="#map">Map</a>
+      <a href="#phase1">Phase 1 — Person-Centered Analytics</a>
+      <a href="#phase2">Phase 2 — FHIR + SNOMED CT</a>
+      <a href="#phase3">Phase 3 — Backward Intelligence</a>
+      <a href="#phase4">Phase 4 — The Closed Loop</a>
+      <a href="#phase5">Phase 5 — Full Analytics Run</a>
+      <a href="#sources">All sources</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#catalog">Analytics catalog</a>
+      <a href="#fullpicture">The full picture</a>
+    </div>
+  </div>
+</div>
+
+<section id="demo-summary">
+  <div class="wrap">
+    <div class="eyebrow">In one paragraph</div>
+    <div class="section-title"><h2>This project is an LLM-based analytics loop, demonstrated end to end</h2></div>
+    <p class="lede">Skip everything below if you only need the headline: this project builds a pipeline where deterministic code — not a language model — computes every clinical statistic (cohort counts, comorbidity lift, escalation rates, hub nodes), and an LLM sits in a narrow, clearly bounded role on top of it: turning a plain-language question into a coded query, reading the ranked results, deciding what's worth a reviewer's attention, and — in the final "closed loop" phase — proposing the next question to ask based on what it just found. A human always has to sign off before any finding is treated as real. That loop — code computes, LLM interprets and re-directs, human approves — is what the four project phases below build up to and what the worked example demonstrates concretely.</p>
+    <div class="flow" style="margin-top:18px;">
+      <div class="node">Plain-language question</div><span class="arrow">→</span>
+      <div class="node">Coded FHIR/SNOMED query</div><span class="arrow">→</span>
+      <div class="node">Deterministic analytics</div><span class="arrow">→</span>
+      <div class="node" style="background:var(--amber);color:#241a02;">LLM: interpret + flag</div><span class="arrow">→</span>
+      <div class="node">Human checkpoint</div><span class="arrow">→</span>
+      <div class="node">LLM drafts next question</div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="readme">
+  <div class="wrap">
+    <div class="eyebrow">Before you read on</div>
+    <div class="section-title"><h2>Two summaries, two audiences</h2></div>
+    <p class="lede">The full report below runs long. If you only need the headline for your role, start here — everything else is the detail behind these two paragraphs.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="tag">For clinicians</div>
+        <p>This is a research and audit tool, not a diagnostic or treatment aid. Ask a plain-language question about a group of patients — or start instead from something that already happened, like a readmission — and the pipeline returns a coded, traceable cohort report: who matched, what recurred before the outcome, and how much more often than baseline. Every number is a direct read from coded data, never a generated guess, and every finding is a correlation flagged for a human to check, not a directive to act on. Two mandatory human checkpoints sit inside the automated loop; nothing re-enters the system as a confirmed pattern without a reviewer's sign-off. Built and tested on synthetic and public sandbox data only — a working proof of concept, not a validated clinical system.</p>
+        <p><strong>In practice today:</strong> nothing to install or log into — every phase links to a click-through browser demo with a query box and preloaded examples, results in a few seconds. But it isn't wired into any real EHR, order set, or workflow yet, so this is something to explore and stress-test, not something you'd open at the bedside.</p>
+        <p><strong>On real data, at real scale:</strong> the pipeline is the easy part — real charts are the hard part. Comorbidities live in free-text notes as often as problem lists, symptoms get under-coded, and "no finding" can mean "never happened" or just "never coded." A real hospital's history would also generate far more candidate patterns than one person can triage by hand, so the two checkpoints shown here would need to sit inside a real governance process — a committee or protocol deciding which leads even reach a reviewer. And before any finding could touch real care, it would need what any decision-support tool needs: a validation study, IRB oversight, and a defined role in the workflow — not just working software. Once those pieces are in place, though, the payoff is real: what today takes a specialist days of manual chart review — tracing a handful of readmissions back to a shared cause by hand — becomes something a quality or research team can run continuously across an entire population, with every candidate traced to the specific coded records behind it, ready to accept or dismiss in minutes instead of reconstructing from scratch.</p>
+      </div>
+      <div class="card">
+        <div class="tag">For health IT builders</div>
+        <p>Runs client-side against the open SMART Health IT R4 sandbox (no auth, no backend of its own): a plain-language phrase resolves through a curated ~50–100-concept SNOMED CT dictionary with ECL-style descendant expansion, translates to a coded FHIR search, and returns pre-computed cohort analytics via fixed output templates. Generative AI is scoped to exactly one deterministic step (phrase → concept, currently a lookup table, not a model call), plus — in the closed-loop phase — choosing which ranked finding clears a threshold and drafting the next query; it never computes a lift ratio, matches a cohort, or writes an outcome rate itself. Known gaps: negated or compound queries are aggregated post-fetch rather than encoded in the FHIR search, ready-made templates only run against the bundled offline Pneumonia cohort, and a full ECL server would need a UMLS Metathesaurus license. Architecture and worked examples are below.</p>
+        <p><strong>In practice today:</strong> every phase is static client-side HTML/JS — no server to stand up, forkable and deployable as-is on something like GitHub Pages, so it's cheap to clone and poke at. Pointing it at a real health system would mean swapping the open sandbox for an authenticated FHIR endpoint, growing the concept dictionary past its current ~50–100 terms, and adding the access control and audit logging a demo doesn't need.</p>
+        <p><strong>On real data, at real scale:</strong> production FHIR servers are messier than the sandbox — partial SNOMED adoption, mixed ICD-10/SNOMED coding, non-conformant resources — so the dictionary and query translation need real mapping and validation, not just more entries. A live deployment also needs everything a demo skips: an authenticated, HIPAA-compliant endpoint behind the institution's firewall, PHI-aware access control and audit logging, monitoring for concept or coding-practice drift over time, and a plan for keeping lookup-table coverage honest as it scales past a few hundred concepts. None of that is exotic, but it's a second build's worth of work, not a config change. Once that infrastructure exists, though, it scales well: adding a new use case is mostly a matter of expanding the concept dictionary and cohort templates rather than re-architecting the pipeline, and because every output traces back to a coded FHIR resource, the system stays auditable even as it's asked more questions.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:48px;">Worked example: diabetes intervention analytics</h3>
+    <p>A concrete run of the pattern the two summaries describe, using an illustrative, synthetic Type 2 diabetes cohort — not a real result.</p>
+
+    <div class="flow" style="font-size:.78rem;">
+      <div class="node">Problem statement</div><span class="arrow">→</span>
+      <div class="node">T2D cohort</div><span class="arrow">→</span>
+      <div class="node">Intervention sets</div><span class="arrow">→</span>
+      <div class="node">Outcome sets</div><span class="arrow">→</span>
+      <div class="node" style="background:var(--amber);color:#241a02;">Correlation ranking</div>
+    </div>
+
+    <p><strong>Problem statement:</strong> among coded Type 2 diabetes patients, which treatment combination correlates with the strongest glycemic response — and at what safety cost?</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Intervention sets tested</h4>
+        <p>Metformin alone; metformin + GLP-1 agonist; metformin + SGLT2 inhibitor; basal insulin initiation; metformin + structured lifestyle program — each a coded medication/procedure combination pulled straight from the cohort, not a hand-picked comparison.</p>
+      </div>
+      <div class="card">
+        <h4>Outcome sets measured</h4>
+        <p>HbA1c reduction ≥1.0 point at 6 months (primary); hypoglycemic event within 90 days; weight change at 6 months; ED visit for hyperglycemia within 6 months — one primary outcome, three safety/secondary outcomes tracked alongside it.</p>
+      </div>
+    </div>
+
+    <h4>Each intervention set against the primary outcome</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Intervention set</th><th>Patients</th><th>HbA1c response rate</th><th>vs. baseline</th><th>Hypoglycemia (90d)</th></tr>
+      <tr><td>Metformin + GLP-1 agonist</td><td>142</td><td>68%</td><td>2.1×</td><td>3%</td></tr>
+      <tr><td>Metformin + SGLT2 inhibitor</td><td>118</td><td>61%</td><td>1.9×</td><td>2%</td></tr>
+      <tr><td>Basal insulin initiation</td><td>96</td><td>57%</td><td>1.8×</td><td>14%</td></tr>
+      <tr><td>Metformin + structured lifestyle program</td><td>87</td><td>49%</td><td>1.5×</td><td>1%</td></tr>
+      <tr><td>Metformin monotherapy</td><td>210</td><td>32%</td><td>1.0× (baseline)</td><td>2%</td></tr>
+    </table>
+    </div>
+
+    <div class="quote">The highest response rate and the safest response rate don't have to land on the same row — which is exactly the trade-off a correlation table is built to surface, not resolve.</div>
+
+    <div class="callout warn">
+      <strong>Best-response candidate, flagged not concluded:</strong> metformin + GLP-1 agonist shows the strongest glycemic response with a comparatively low hypoglycemia rate — but at n=142 in one cohort, that's a screening signal for a reviewer to weigh against basal insulin's much higher hypoglycemia burden and each patient's individual risk profile, not a ranked recommendation. Same rule as everywhere else in this report: correlation, not causation; coded data only; a human decides before it becomes a protocol change.
+    </div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="wrap">
+    <div class="eyebrow">Overview</div>
+    <div class="section-title"><span class="n">00</span><h2>The arc of the project</h2></div>
+    <p class="lede">The project moved through four distinct but connected builds. Each one kept a discipline the last one established, then added a new capability on top of it.</p>
+
+    <div class="flow">
+      <div class="node">Person-centered graph</div><span class="arrow">→</span>
+      <div class="node">Coded FHIR + SNOMED CT pipeline</div><span class="arrow">→</span>
+      <div class="node">Backward-generated intelligence</div><span class="arrow">→</span>
+      <div class="node">Closed loop (self-directing)</div>
+    </div>
+
+    <p>The throughline is a single design rule that survives every stage: <strong>generative AI is never allowed to invent a clinical fact.</strong> It can help turn a plain-language phrase into a coded concept, and it can propose the next question to ask — but every cohort count, hub node, lift figure, and outcome rate is a direct read from computed or coded data. What starts as a modeling idea about representing a person as a graph ends, four builds later, as a pipeline that can find its own next hypothesis and hand it to a human for a decision.</p>
+  </div>
+</section>
+
+<!-- PHASE 1 -->
+<section class="alt" id="phase1">
+  <div class="wrap">
+    <div class="eyebrow">Foundational model</div>
+    <div class="section-title"><span class="n">01</span><h2>Person-Centered Clinical Analytics</h2></div>
+    <p class="lede">The foundational idea: stop modeling "the diagnosis" and model the person instead. Every patient, whatever disease they have, is represented as the same four-stage graph — so comparing across diseases becomes a matter of re-slicing one dataset rather than building a new dashboard each time.</p>
+
+    <div class="flow">
+      <div class="node">Observations</div><span class="arrow">→</span>
+      <div class="node">Diagnosis</div><span class="arrow">→</span>
+      <div class="node">Interventions / Plan</div><span class="arrow">→</span>
+      <div class="node">Outcomes</div>
+    </div>
+
+    <h3>Where it started: the Avinash Principle</h3>
+    <p>The analytics model is a direct application of an earlier idea, the <strong>Avinash Principle</strong>: a real clinical journey modeled as a full decision tree explodes into hundreds of millions of theoretical paths (a snakebite case alone comes out to roughly 244 million), yet clinicians never calculate any of that.</p>
+    <div class="quote">Expert clinical cognition isn't a pathfinding engine, it's a pruning engine — it identifies the small number of nodes, usually well under 1% of the theoretical total, that actually carry a case's "gravity."</div>
+    <p>Two refinements matter here: nodes are either <em>explainable</em> (grounded in known pathophysiology) or <em>experiencable</em> (narrative/behavioral — a missed dose, a financial stressor — observed repeatedly without a clean mechanistic story), and every high-leverage node is a <strong>bifurcation point</strong> — the same lever that saves a patient can also harm them, so identifying a hub node isn't enough; it needs an expected outcome, a red-flag failure mode, and a pre-positioned safety response.</p>
+
+    <h3>The graph schema</h3>
+    <p>Five node types, five relational edges, and — critically — time modeled as a property on the edges rather than a rigid sequence, which is what makes the atemporal/temporal toggle possible without duplicating the data.</p>
+    <div class="table-wrap"><table>
+      <tr><th>Node</th><th>Carries</th></tr>
+      <tr><td><code>PatientNode</code></td><td>Anonymized ID, baseline demographics, immutable context</td></tr>
+      <tr><td><code>ObservationNode</code></td><td>Raw text / SNOMED–LOINC code, severity, timestamp</td></tr>
+      <tr><td><code>DiagnosisNode</code></td><td>Term/phrase, confidence, primary vs. comorbidity</td></tr>
+      <tr><td><code>InterventionNode</code></td><td>Action type, target, dose/frequency</td></tr>
+      <tr><td><code>OutcomeNode</code></td><td>Status, response to plan, adverse events, discharge state</td></tr>
+    </table></div>
+    <p style="margin-top:14px;font-size:.9rem;color:var(--muted);">Edges: <code>SUGGESTS</code> · <code>INDICATES_PLAN</code> · <code>PRODUCED_OUTCOME</code> · <code>MODULATES</code> (comorbidity → intervention) · <code>CONSTRAINS</code> (observation → intervention)</p>
+
+    <div class="table-wrap" style="overflow-x:auto;">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:620px;margin-top:24px;" role="img" aria-label="Diagram of the four-node patient graph schema with comorbidity modulation and observation constraint edges">
+      <defs>
+        <marker id="p1-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8fa39c"/>
+        </marker>
+      </defs>
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <rect x="30" y="110" width="150" height="64" rx="4" fill="#ffffff" stroke="#1c6e64" stroke-width="2"/>
+        <text x="105" y="136" font-size="13" font-weight="600" fill="#101a17">Observation</text>
+        <text x="105" y="155" font-size="10.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">code · severity · time</text>
+
+        <rect x="270" y="110" width="150" height="64" rx="4" fill="#ffffff" stroke="#1c6e64" stroke-width="2"/>
+        <text x="345" y="136" font-size="13" font-weight="600" fill="#101a17">Diagnosis</text>
+        <text x="345" y="155" font-size="10.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">term · confidence</text>
+
+        <rect x="510" y="110" width="180" height="64" rx="4" fill="#ffffff" stroke="#1c6e64" stroke-width="2"/>
+        <text x="600" y="136" font-size="13" font-weight="600" fill="#101a17">Intervention / Plan</text>
+        <text x="600" y="155" font-size="10.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">action · dose · target</text>
+
+        <rect x="740" y="110" width="140" height="64" rx="4" fill="#ffffff" stroke="#1c6e64" stroke-width="2"/>
+        <text x="810" y="136" font-size="13" font-weight="600" fill="#101a17">Outcome</text>
+        <text x="810" y="155" font-size="10.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">status · adverse ev.</text>
+      </g>
+      <g stroke="#8fa39c" stroke-width="2" fill="none">
+        <line x1="180" y1="142" x2="266" y2="142" marker-end="url(#p1-arrow)"/>
+        <line x1="420" y1="142" x2="506" y2="142" marker-end="url(#p1-arrow)"/>
+        <line x1="690" y1="142" x2="736" y2="142" marker-end="url(#p1-arrow)"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#1c6e64" text-anchor="middle">
+        <text x="223" y="132">SUGGESTS</text>
+        <text x="463" y="132">INDICATES_PLAN</text>
+        <text x="713" y="132">PRODUCED_OUTCOME</text>
+      </g>
+
+      <!-- comorbidity node modulating intervention -->
+      <rect x="510" y="20" width="180" height="52" rx="4" fill="#f6ece2" stroke="#c98a2e" stroke-width="2"/>
+      <text x="600" y="41" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#241a02">Comorbidity</text>
+      <text x="600" y="58" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#7a4d05">(second DiagnosisNode)</text>
+      <path d="M600,72 L600,106" stroke="#c98a2e" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#p1-arrow)" fill="none"/>
+      <text x="638" y="94" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#c98a2e">MODULATES</text>
+
+      <!-- observation constraining intervention -->
+      <path d="M105,174 C105,235 480,235 596,178" stroke="#b3543f" stroke-width="2" stroke-dasharray="4 3" fill="none" marker-end="url(#p1-arrow)"/>
+      <text x="300" y="250" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#b3543f">CONSTRAINS (e.g. renal function limits dose)</text>
+
+      <text x="450" y="280" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#5b6560">Time is a property on every edge above, not a fixed sequence — which is what lets the same graph render atemporally or as a timeline.</text>
+    </svg>
+    </div>
+
+    <h3>The stress test: Type 1 vs. Type 2 diabetes</h3>
+    <p>T1D and T2D are both "diabetes" colloquially, but as data-generating processes they look almost nothing alike — which is exactly why they were chosen to test whether one schema and one set of rendering functions could honestly represent both without special-casing either.</p>
+    <div class="grid2">
+      <div class="card">
+        <h4>Type 1 — acute, spike-driven</h4>
+        <p>Irregular, acute glycemic-spike events, insulin-dependent from diagnosis. The clinically interesting question is delivery device: pump vs. injection.</p>
+      </div>
+      <div class="card">
+        <h4>Type 2 — slow, staged regimen</h4>
+        <p>Smooth, branching regimen progression — diet → oral agents → insulin — escalated over years. The interesting question is timing: early vs. delayed insulin initiation.</p>
+      </div>
+    </div>
+    <p>The idea's very first pilot, notably, was not diabetes at all: it was sketched against <strong>ASV (anti-snake-venom) treatment for envenomation</strong> — a single-encounter, acute-care scenario where the comparator question was dosing timing (a "golden hour" administration within 2 hours vs. a delayed one past 6). T1D/T2D was deliberately picked second because chronic, decades-long regimen management stresses the same schema in the opposite direction from a bounded acute decision window.</p>
+
+    <h3>Seven build steps, one pipeline</h3>
+    <p>Each step is a self-contained, client-side HTML/JS page — no server, no upload — and downloads a JSON file the next step loads.</p>
+    <div class="table-wrap"><table>
+      <tr><th>Step</th><th>Question</th><th>Produces</th></tr>
+      <tr><td>1 · Corpus generator</td><td>Where does the data come from?</td><td><code>dm_corpus.json</code> (9 T1D + 9 T2D synthetic FHIR bundles)</td></tr>
+      <tr><td>2 · Graph builder</td><td>How does raw data become a graph?</td><td><code>cohort_graph.json</code></td></tr>
+      <tr><td>3 · Dashboard</td><td>What does the graph look like per patient/cohort?</td><td>Atemporal (Mode A) / Temporal (Mode B) toggle</td></tr>
+      <tr><td>4 · Pivot lens</td><td>Re-center on a diagnosis or intervention instead of a patient?</td><td>Disease / Intervention / Combo anchor</td></tr>
+      <tr><td>5 · Comparator filter</td><td>How do I compare matched subgroups?</td><td>Population × timing × outcome/facility/resource matrix</td></tr>
+      <tr><td>6 · Clinical output view</td><td>How is this shown to a clinician, plainly?</td><td>Evidence cards, variation table, sticky <strong>Confounders</strong> banner</td></tr>
+      <tr><td>7 · Generalization check</td><td>Does the code actually generalize across diseases?</td><td>A written audit of the Step 2–6 source</td></tr>
+    </table></div>
+
+    <div class="callout">
+      <strong>Step 7's verdict — mostly confirmed, two flagged exceptions.</strong> <code>patientHasPumpEvidence()</code> infers pump-vs-injection from free text meaningful only for T1D (flagged in-UI as an amber assumption). Step 5's timing filter intentionally branches on <code>condition_type</code> because device choice and initiation delay are genuinely different clinical questions — an honest, disease-appropriate exception rather than a hidden gap.
+    </div>
+
+    <h3>A bonus eighth tool: the Nested Analysis View</h3>
+    <p>Steps 3–6 each show one lens at a time. The Nested Analysis View goes further: every patient — T1D and T2D — is walked through the same six generic checkpoints, and where two or more patients land on the same value, their lines converge onto <strong>one shared node</strong> instead of drawing in parallel, so hub nodes emerge automatically rather than being asserted.</p>
+    <div class="flow">
+      <div class="node">Diagnosis</div><span class="arrow">→</span>
+      <div class="node">Presentation</div><span class="arrow">→</span>
+      <div class="node">Initial plan</div><span class="arrow">→</span>
+      <div class="node">Escalation</div><span class="arrow">→</span>
+      <div class="node">Advanced / recurrent</div><span class="arrow">→</span>
+      <div class="node">Disposition</div>
+    </div>
+    <p>At larger scale (a 4,000-patient example — 1,500 T1D + 2,500 T2D) the tool also demonstrated a real confounder worth flagging on its own: T1D populates "Escalation" and "Advanced/recurrent" far more densely than T2D, simply because the synthetic corpus gives T1D more recurring event density — a genuine data-density difference, not a rendering artifact.</p>
+
+    <h3>Worked example: one T1D patient through every lens</h3>
+    <p>A 16-year-old presents with polyuria, polydipsia, and weight loss; glucose 420 mg/dL, ketones positive; admitted, stabilized on insulin, discharged — then eight months later returns in DKA after a missed dose on a school trip. Traced through the model: the atemporal view flattens this to one gestalt ("new-onset T1D, one DKA recurrence"); the temporal view shows two distinct spikes at month 0 and month 8 — T1D's characteristic shape; the pivot lens re-centers on "insulin therapy" to show who else shares that intervention; the comparator filter checks this patient's DKA recovery time against a matched under-18 subgroup; and the nested checkpoint view shows this patient's line converging with other T1D patients at Escalation — which is what makes Escalation a hub rather than an assertion.</p>
+
+    <h3>Try the tools</h3>
+    <div class="links">
+      <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html" target="_blank" rel="noopener noreferrer">Guided tour</a>
+      <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/index.html" target="_blank" rel="noopener noreferrer">Concept (Part 1)</a>
+      <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/build.html" target="_blank" rel="noopener noreferrer">Build log (Part 2)</a>
+      <a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics.html" target="_blank" rel="noopener noreferrer">Generator · Viewer · Pivot app</a>
+      <a href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics-blog.html" target="_blank" rel="noopener noreferrer">Walkthrough write-up</a>
+      <a href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics.html" target="_blank" rel="noopener noreferrer">Concept article + 2 live demos</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 2 -->
+<section id="phase2">
+  <div class="wrap">
+    <div class="eyebrow">Coded pipeline</div>
+    <div class="section-title"><span class="n">02</span><h2>FHIR + SNOMED CT Clinical Intelligence Pipeline</h2></div>
+    <p class="lede">The synthetic-cohort demo becomes a real, coded pipeline: a clinician's plain-language phrase resolves to SNOMED CT concepts, runs as a live query against real FHIR patient data, and returns pre-computed cohort analytics — with no backend server of its own.</p>
+
+    <p><strong>Why SNOMED CT is the enabling layer:</strong> for a "query" to match a "cohort" and a "hub node" to mean the same thing every time, clinical concepts have to be coded, not just written. SNOMED CT gives one canonical concept ID regardless of phrasing, a compositional grammar (not a flat code list), a hierarchy built for roll-up, formal logic that catches nonsense before it reaches a clinician, and cross-mapping to LOINC and drug terminologies.</p>
+
+    <h3>The pipeline, stage by stage</h3>
+    <div class="flow" style="font-size:.76rem;">
+      <div class="node">Bedside question (free text)</div><span class="arrow">→</span>
+      <div class="node">NL → SNOMED CT concept</div><span class="arrow">→</span>
+      <div class="node">ECL cohort query</div><span class="arrow">→</span>
+      <div class="node">FHIR search</div><span class="arrow">→</span>
+      <div class="node">Cohort analytics</div><span class="arrow">→</span>
+      <div class="node">Brief + Report + Graph</div>
+    </div>
+
+    <div class="callout">
+      <strong>The one non-negotiable design rule:</strong> generative AI is scoped to a single, currently-deterministic step — phrase → concept — implemented today as a lookup table, not a model call. Everything downstream (cohort counts, hub nodes, timelines, brief and report content) is a direct read from computed data, which is what makes two people running the same query get the same, traceable answer.
+    </div>
+
+    <div class="table-wrap" style="overflow-x:auto;">
+    <svg viewBox="0 0 940 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:680px;margin-top:24px;" role="img" aria-label="Diagram of the six-stage FHIR and SNOMED CT pipeline showing where AI is used and where deterministic computation takes over">
+      <defs>
+        <marker id="p2-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8fa39c"/>
+        </marker>
+      </defs>
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <rect x="10" y="60" width="130" height="70" rx="4" fill="#ffffff" stroke="#c9c2af" stroke-width="1.5"/>
+        <text x="75" y="90" font-size="11.5" font-weight="600" fill="#101a17">Bedside</text>
+        <text x="75" y="105" font-size="11.5" font-weight="600" fill="#101a17">question</text>
+        <text x="75" y="122" font-size="9.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">free text</text>
+
+        <rect x="170" y="55" width="140" height="80" rx="4" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/>
+        <text x="240" y="82" font-size="11.5" font-weight="600" fill="#101a17">NL → SNOMED</text>
+        <text x="240" y="97" font-size="11.5" font-weight="600" fill="#101a17">concept</text>
+        <text x="240" y="118" font-size="9.5" fill="#1c6e64" font-family="IBM Plex Mono, monospace">lookup table</text>
+
+        <rect x="340" y="60" width="130" height="70" rx="4" fill="#ffffff" stroke="#c9c2af" stroke-width="1.5"/>
+        <text x="405" y="90" font-size="11.5" font-weight="600" fill="#101a17">ECL cohort</text>
+        <text x="405" y="105" font-size="11.5" font-weight="600" fill="#101a17">query</text>
+        <text x="405" y="122" font-size="9.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">&lt;&lt; descendants</text>
+
+        <rect x="500" y="60" width="130" height="70" rx="4" fill="#ffffff" stroke="#c9c2af" stroke-width="1.5"/>
+        <text x="565" y="90" font-size="11.5" font-weight="600" fill="#101a17">FHIR</text>
+        <text x="565" y="105" font-size="11.5" font-weight="600" fill="#101a17">search</text>
+        <text x="565" y="122" font-size="9.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">r4.smarthealthit.org</text>
+
+        <rect x="660" y="60" width="130" height="70" rx="4" fill="#ffffff" stroke="#c9c2af" stroke-width="1.5"/>
+        <text x="725" y="90" font-size="11.5" font-weight="600" fill="#101a17">Cohort</text>
+        <text x="725" y="105" font-size="11.5" font-weight="600" fill="#101a17">analytics</text>
+        <text x="725" y="122" font-size="9.5" fill="#5b6560" font-family="IBM Plex Mono, monospace">cached by concept</text>
+
+        <rect x="820" y="55" width="115" height="80" rx="4" fill="#ffffff" stroke="#c9c2af" stroke-width="1.5"/>
+        <text x="877" y="80" font-size="11" font-weight="600" fill="#101a17">Brief +</text>
+        <text x="877" y="95" font-size="11" font-weight="600" fill="#101a17">Report +</text>
+        <text x="877" y="110" font-size="11" font-weight="600" fill="#101a17">Graph</text>
+      </g>
+      <g stroke="#8fa39c" stroke-width="2" fill="none">
+        <line x1="140" y1="95" x2="166" y2="95" marker-end="url(#p2-arrow)"/>
+        <line x1="310" y1="95" x2="336" y2="95" marker-end="url(#p2-arrow)"/>
+        <line x1="470" y1="95" x2="496" y2="95" marker-end="url(#p2-arrow)"/>
+        <line x1="630" y1="95" x2="656" y2="95" marker-end="url(#p2-arrow)"/>
+        <line x1="790" y1="95" x2="816" y2="95" marker-end="url(#p2-arrow)"/>
+      </g>
+
+      <rect x="170" y="150" width="140" height="30" rx="2" fill="#c98a2e"/>
+      <text x="240" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#241a02" font-weight="600">only AI-touched step</text>
+      <path d="M240,148 L240,138" stroke="#c98a2e" stroke-width="1.5"/>
+
+      <rect x="340" y="150" width="450" height="30" rx="2" fill="#1c6e64"/>
+      <text x="565" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#ffffff" font-weight="600">deterministic from here on — direct reads from computed / cached data</text>
+      <path d="M405,148 L405,138 M725,148 L725,138" stroke="#1c6e64" stroke-width="1.5" fill="none"/>
+
+      <text x="470" y="215" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#3d4844">Same query, run twice, hits the same cache — so two clinicians asking the same question always get the same cohort and the same numbers.</text>
+    </svg>
+    </div>
+
+    <h3>Seven build phases</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Phase</th><th>What it does</th></tr>
+      <tr><td>1 — FHIR connectivity</td><td>Shared client, retry-with-backoff, typed search wrappers for Condition/Encounter/Procedure/MedicationRequest/Observation/Patient</td></tr>
+      <tr><td>2 — SNOMED CT layer</td><td>Curated concept dictionary (~50–100 concepts), ECL-style descendant (<code>&lt;&lt;</code>) expansion, deterministic phrase→concept lookup</td></tr>
+      <tr><td>3 — Query translation</td><td>Concepts → <code>http://snomed.info/sct|&lt;id&gt;</code> tokens → real FHIR search URL with pagination</td></tr>
+      <tr><td>4 — Cohort analytics</td><td>Presentation clusters, decision/hub nodes, intervention timelines, tracking correlations — batch-computed, cached by concept ID</td></tr>
+      <tr><td>5 — Output templates</td><td>Clinical Intelligence Brief + Insight Report — fixed templates, fields are data lookups, never generated prose</td></tr>
+      <tr><td>6 — Visualization</td><td>Single-patient trajectory view + cohort radial graph with trend-over-time toggle</td></tr>
+      <tr><td>7 — Integration</td><td>One "Run query" action, explicit "unresolved concept" fallback, preloaded example queries</td></tr>
+    </table></div>
+
+    <h3>What it actually enables</h3>
+    <div class="grid3">
+      <div class="card"><h4>Cohort discovery by code</h4><p>Plain-language question → SNOMED concepts (with descendant expansion) → real matching patients, live from a FHIR server.</p></div>
+      <div class="card"><h4>Hub-node identification</h4><p>Clinical junctions a meaningful share of the cohort passes through, highlighted in the trajectory graph.</p></div>
+      <div class="card"><h4>Advanced analytics</h4><p>Comorbidity co-occurrence, time-to-escalation, polypharmacy burden, symptom-to-diagnosis proximity, composite risk scoring.</p></div>
+    </div>
+    <p style="margin-top:18px;">It also ships an offline bundled Pneumonia cohort (6 exported patient trajectories, seed concept SCT 233604007) so the whole pipeline can be explored even if the shared public sandbox is slow or unreachable, and it includes a first "backward" query mode — scanning the raw timeline data first and synthesizing the query statement that would reproduce a finding — flagged with a distinct badge everywhere it appears, as an early version of Phase 3 below.</p>
+
+    <h3>Data source</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Property</th><th>Value</th></tr>
+      <tr><td>Endpoint</td><td><code>https://r4.smarthealthit.org</code></td></tr>
+      <tr><td>FHIR version</td><td>R4</td></tr>
+      <tr><td>Auth</td><td>None — open reads, standard REST search</td></tr>
+      <tr><td>Data</td><td>Pre-loaded synthetic (Synthea-style) patients maintained by SMART Health IT</td></tr>
+    </table></div>
+
+    <h3>Known gaps, stated plainly</h3>
+    <p>Query translation today only encodes <code>Condition.code</code> into the FHIR search itself — compound or negated phrases (e.g. "pneumonia without diabetes") are handled by aggregating after the fetch, not by the query. The readymade query templates currently only run against the bundled offline Pneumonia dataset, not any concept fetched live. A full terminology + ECL server would need a UMLS Metathesaurus license. Dictionary-based NL extraction is auditable but brittle on real phrasing.</p>
+
+    <h3>Try the tools</h3>
+    <div class="links">
+      <a href="https://avi33tbtt.github.io/avinash-snomed-guided-tour.html" target="_blank" rel="noopener noreferrer">Guided tour: cohort to bedside</a>
+      <a href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">Project plan + live demo</a>
+      <a class="video" href="https://youtu.be/di3yMxIAJH4" target="_blank" rel="noopener noreferrer">Video walkthrough ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 3 -->
+<section class="alt" id="phase3">
+  <div class="wrap">
+    <div class="eyebrow">Backward reasoning</div>
+    <div class="section-title"><span class="n">03</span><h2>Backward-Generated Case & Cohort Intelligence</h2></div>
+    <p class="lede">Instead of a clinician specifying what to look for, start from an outcome that already happened — an escalation, a readmission, a flagged claim — and let the pipeline walk backward through the coded timeline to generate the questions a human would otherwise have to build by hand.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Forward (status quo)</h4>
+        <p><strong>Hypothesis → Query → Records → Confirm/deny.</strong> An auditor picks a rule and the system checks compliance one chart at a time. Coverage is limited to rules someone already wrote.</p>
+      </div>
+      <div class="card">
+        <h4>Backward generation</h4>
+        <p><strong>Outcome → Timeline replay → Candidate causes → Cohort test → Question.</strong> The system replays the coded timeline into an outcome and surfaces what precedes it most often, then tests the pattern cohort-wide.</p>
+      </div>
+    </div>
+
+    <div class="quote">Backward-generated intelligence takes a realized outcome as the seed, reconstructs the coded events that preceded it, and repeats that reconstruction across every patient who shares the outcome to see what recurs more than chance would predict.</div>
+
+    <div class="table-wrap" style="overflow-x:auto;">
+    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:640px;margin-top:8px;margin-bottom:8px;" role="img" aria-label="Diagram contrasting forward hypothesis-driven auditing with backward outcome-first pattern generation">
+      <defs>
+        <marker id="p3-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8fa39c"/>
+        </marker>
+      </defs>
+      <text x="10" y="24" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5b6560">FORWARD (status quo)</text>
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle" font-size="11.5">
+        <rect x="10" y="34" width="150" height="46" rx="3" fill="#ffffff" stroke="#c9c2af"/><text x="85" y="61" fill="#101a17">Hypothesis</text>
+        <rect x="200" y="34" width="150" height="46" rx="3" fill="#ffffff" stroke="#c9c2af"/><text x="275" y="61" fill="#101a17">Query</text>
+        <rect x="390" y="34" width="150" height="46" rx="3" fill="#ffffff" stroke="#c9c2af"/><text x="465" y="61" fill="#101a17">Records</text>
+        <rect x="580" y="34" width="180" height="46" rx="3" fill="#ffffff" stroke="#c9c2af"/><text x="670" y="61" fill="#101a17">Confirm / deny</text>
+      </g>
+      <g stroke="#8fa39c" stroke-width="2" fill="none">
+        <line x1="160" y1="57" x2="196" y2="57" marker-end="url(#p3-arrow)"/>
+        <line x1="350" y1="57" x2="386" y2="57" marker-end="url(#p3-arrow)"/>
+        <line x1="540" y1="57" x2="576" y2="57" marker-end="url(#p3-arrow)"/>
+      </g>
+
+      <text x="10" y="118" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1c6e64">BACKWARD GENERATION</text>
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle" font-size="11.5">
+        <rect x="10" y="128" width="150" height="46" rx="3" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/><text x="85" y="155" fill="#101a17">Outcome</text>
+        <rect x="200" y="128" width="150" height="46" rx="3" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/><text x="275" y="150" fill="#101a17">Timeline</text><text x="275" y="163" fill="#101a17">replay</text>
+        <rect x="390" y="128" width="150" height="46" rx="3" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/><text x="465" y="150" fill="#101a17">Candidate</text><text x="465" y="163" fill="#101a17">causes</text>
+        <rect x="580" y="128" width="150" height="46" rx="3" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/><text x="655" y="150" fill="#101a17">Cohort</text><text x="655" y="163" fill="#101a17">test (lift)</text>
+        <rect x="770" y="128" width="120" height="46" rx="3" fill="#c98a2e"/><text x="830" y="155" fill="#241a02" font-weight="600">Question</text>
+      </g>
+      <g stroke="#1c6e64" stroke-width="2" fill="none">
+        <line x1="160" y1="151" x2="196" y2="151" marker-end="url(#p3-arrow)"/>
+        <line x1="350" y1="151" x2="386" y2="151" marker-end="url(#p3-arrow)"/>
+        <line x1="540" y1="151" x2="576" y2="151" marker-end="url(#p3-arrow)"/>
+        <line x1="730" y1="151" x2="766" y2="151" marker-end="url(#p3-arrow)"/>
+      </g>
+      <text x="450" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#5b6560">The backward pass starts where the forward pass ends, and hands a reviewer a ready-made question instead of requiring them to author one.</text>
+    </svg>
+    </div>
+
+    <h3>Case-level: a worked trace</h3>
+    <p>Illustrative, not a real patient — an ICU escalation coded at day 0. Working backward: two coded vital-sign observations trending toward the threshold two days prior with no logged intervention in between ("was the trend acted on, or only recorded?"); an antibiotic switched to a second-line agent five days prior ("did the switch correlate with a culture result, or precede one?"); a pre-existing comorbidity already on the problem list two weeks prior ("does this comorbidity recur across other patients who escalated?"). Every trace step ships with the query that produced it.</p>
+
+    <h3>Cohort-level: turning traces into lift</h3>
+    <p>Running the same replay across every patient who shares the outcome turns an anecdote into a comparison — the same arithmetic an epidemiologist runs by hand for a case-control study, just triggered automatically by the seed outcome.</p>
+    <div class="table-wrap"><table>
+      <tr><th>Comorbidity present</th><th>Patients</th><th>Escalation rate</th><th>vs. baseline</th></tr>
+      <tr><td>Chronic kidney disease</td><td>18</td><td>61%</td><td>2.4×</td></tr>
+      <tr><td>Type 2 diabetes</td><td>26</td><td>46%</td><td>1.8×</td></tr>
+      <tr><td>COPD</td><td>11</td><td>39%</td><td>1.5×</td></tr>
+      <tr><td>No flagged comorbidity</td><td>34</td><td>25%</td><td>1.0× (baseline)</td></tr>
+    </table></div>
+
+    <h3>Where this applies</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Use case</th><th>Seed outcome</th></tr>
+      <tr><td>Retrospective quality review</td><td>Adverse event, code blue, unplanned ICU transfer</td></tr>
+      <tr><td>Claims / billing audit</td><td>Denied or flagged claim</td></tr>
+      <tr><td>Readmission root-cause</td><td>30-day readmission</td></tr>
+      <tr><td>Research hypothesis generation</td><td>Any outcome of interest in a registry</td></tr>
+      <tr><td>Pharmacovigilance signal detection</td><td>Reported adverse drug event</td></tr>
+    </table></div>
+
+    <div class="callout warn">
+      <strong>What this deliberately does not claim:</strong> correlation, not causation — lift is a screening signal, not a cause. Not a predictive model. Coded data only — if a factor was never coded, it cannot appear in a backward trace, and absence of a finding is not evidence of absence. Human-in-the-loop by design — every artifact is a candidate question for a reviewer, never a finding to act on unread.
+    </div>
+
+    <h3>Read the concept paper</h3>
+    <div class="links">
+      <a href="https://avi33tbtt.github.io/backward-generated-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">Backward-Generated Case & Cohort Intelligence</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 4 -->
+<section id="phase4">
+  <div class="wrap">
+    <div class="eyebrow">Self-directing loop</div>
+    <div class="section-title"><span class="n">04</span><h2>The Closed Loop</h2></div>
+    <p class="lede">What happens when the backward pipeline's top finding becomes the forward pipeline's next query, run on a different dataset, whose new outcome data feeds the backward pipeline again — with two human checkpoints keeping it from running away.</p>
+
+    <div class="flow" style="font-size:.76rem;">
+      <div class="node">Backward pass (Dataset A)</div><span class="arrow">→</span>
+      <div class="node">Pattern &amp; lift ranking</div><span class="arrow">→</span>
+      <div class="node" style="background:var(--amber);color:#241a02;">Human: query verification</div><span class="arrow">→</span>
+      <div class="node">Forward pass (Dataset B)</div><span class="arrow">→</span>
+      <div class="node">Outcome analytics</div><span class="arrow">→</span>
+      <div class="node" style="background:var(--amber);color:#241a02;">Human: outcome validation</div><span class="arrow">→</span>
+      <div class="node">↻ confirmed pattern re-seeds the loop</div>
+    </div>
+
+    <p>Everything except the two red checkpoints runs without a person present. An orchestrating LLM reads the ranked lift table, drops findings below a threshold, and drafts the next plain-language query from the strongest surviving pattern — but never computes a lift ratio, decides a cohort match, or fabricates a comorbidity link.</p>
+
+    <div class="table-wrap" style="overflow-x:auto;">
+    <svg viewBox="0 0 620 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:380px;max-width:520px;margin:24px auto;display:block;" role="img" aria-label="Circular diagram of the closed loop showing the backward pass, human verification, forward pass, and human validation feeding back into the loop">
+      <defs>
+        <marker id="p4-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8fa39c"/>
+        </marker>
+      </defs>
+      <path d="M310,70 A170,170 0 1 1 309,70" fill="none" stroke="#c9c2af" stroke-width="2" marker-end="url(#p4-arrow)"/>
+
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <circle cx="310" cy="70" r="58" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/>
+        <text x="310" y="63" font-size="12" font-weight="600" fill="#101a17">Backward pass</text>
+        <text x="310" y="79" font-size="12" font-weight="600" fill="#101a17">(Dataset A)</text>
+        <text x="310" y="97" font-size="9.5" fill="#1c6e64" font-family="IBM Plex Mono, monospace">pattern &amp; lift ranking</text>
+
+        <circle cx="530" cy="240" r="58" fill="#f6ece2" stroke="#c98a2e" stroke-width="2"/>
+        <text x="530" y="233" font-size="12" font-weight="600" fill="#241a02">Human:</text>
+        <text x="530" y="249" font-size="12" font-weight="600" fill="#241a02">query check</text>
+        <text x="530" y="267" font-size="9.5" fill="#7a4d05" font-family="IBM Plex Mono, monospace">checkpoint 1</text>
+
+        <circle cx="310" cy="410" r="58" fill="#e4efe9" stroke="#1c6e64" stroke-width="2"/>
+        <text x="310" y="403" font-size="12" font-weight="600" fill="#101a17">Forward pass</text>
+        <text x="310" y="419" font-size="12" font-weight="600" fill="#101a17">(Dataset B)</text>
+        <text x="310" y="437" font-size="9.5" fill="#1c6e64" font-family="IBM Plex Mono, monospace">outcome analytics</text>
+
+        <circle cx="90" cy="240" r="58" fill="#f6ece2" stroke="#c98a2e" stroke-width="2"/>
+        <text x="90" y="233" font-size="12" font-weight="600" fill="#241a02">Human:</text>
+        <text x="90" y="249" font-size="12" font-weight="600" fill="#241a02">outcome check</text>
+        <text x="90" y="267" font-size="9.5" fill="#7a4d05" font-family="IBM Plex Mono, monospace">checkpoint 2</text>
+      </g>
+
+      <circle cx="310" cy="240" r="3" fill="#5b6560"/>
+      <text x="310" y="245" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5b6560">confirmed pattern re-seeds the loop</text>
+    </svg>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>What the LLM does</h4>
+        <p>Reads the ranked lift table. Chooses which finding clears the threshold. Phrases the next plain-language query. Decides when to stop iterating.</p>
+      </div>
+      <div class="card">
+        <h4>What the LLM never does</h4>
+        <p>Compute a lift ratio. Decide a cohort matches a concept. Write an outcome rate. Fabricate a comorbidity link.</p>
+      </div>
+    </div>
+
+    <h3>One worked round</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Step</th><th>Output</th></tr>
+      <tr><td>Backward pass</td><td>Pneumonia cohort, seed = ICU escalation. Top finding: CKD → 2.4× lift, n=18.</td></tr>
+      <tr><td>Query drafted</td><td>"pneumonia patients with chronic kidney disease"</td></tr>
+      <tr><td>Reviewer approves</td><td>Adequate cohort size, clinically plausible, not already a known trigger</td></tr>
+      <tr><td>Forward pass</td><td>Second FHIR endpoint, 22 matched patients</td></tr>
+      <tr><td>New outcome</td><td>Escalation rate 58% — close to the original 61%</td></tr>
+      <tr><td>Reviewer validates</td><td>Pattern replicated within a reasonable band → logged as a confirmed lead, not a clinical rule</td></tr>
+    </table></div>
+
+    <div class="quote">Automating everything except the two human checkpoints changes throughput, not the epistemic category of what comes out the other end.</div>
+
+    <h3>What a validated pattern becomes</h3>
+    <p>A pattern that clears both checkpoints doesn't just get filed away — it re-enters the system as the next seed outcome. That makes it the same <em>category</em> of fact as a textbook or guideline association (found through trials, registries, and expert consensus), just reached by a different, machine-assisted route: logged with its cohort, its lift, the dataset it replicated on, and the reviewer who signed off, so it can be cited and built on the same way — while still sitting at the "replicated correlational lead" rung, not outranking a guideline that contradicts it.</p>
+
+    <h3>What no amount of looping produces</h3>
+    <p>Causation — lift against a baseline stays a screening signal no matter how many datasets it replicates on. A predictive model — the loop reports observed historical rates, never fits or calibrates a risk model. Coverage of what was never coded — a hallway conversation can't enter round one, and round fifty doesn't recover it. And no license to skip the checkpoints — they're the only place the loop's output is checked against clinical plausibility and independent replication.</p>
+
+    <h3>Two live demos on the page</h3>
+    <p>An in-browser illustrative demo scans all three tagged lanes (comorbidity, symptom, intervention) across 8 candidate factors on a Pneumonia cohort, computing the ranking, query drafting, forward replication, and pass/fail validation live as you click. A second section goes further and calls the real, public SMART Health IT R4 sandbox live — pulling up to 100 real patients for any of ten SNOMED CT-coded seed diseases, scanning all three lanes exhaustively, and drafting a query card for every candidate, each awaiting a human's approve or reject.</p>
+
+    <h3>Read the concept note</h3>
+    <div class="links">
+      <a href="https://avi33tbtt.github.io/orchestrating-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">The Closed Loop — live demo</a>
+      <a class="video" href="https://youtu.be/a9eu-Ezdam8?si=2SS_F9uqpAuGbvgC" target="_blank" rel="noopener noreferrer">Video walkthrough ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 5 -->
+<section class="alt" id="phase5">
+  <div class="wrap">
+    <div class="eyebrow">Full run, on dummy data</div>
+    <div class="section-title"><span class="n">05</span><h2>FHIR Cohort Pipeline — Full Analytics Run</h2></div>
+    <p class="lede">The other four phases each demo one mechanism at a time. This run instead builds a single synthetic 500-patient cohort — 14 SNOMED-coded diagnosis categories, each case carrying age, sex, comorbidities, symptoms, medications, length of stay, and escalation outcome — and pushes it through twelve independent statistical passes end to end, entirely on dummy data, with an LLM reading the output of each pass rather than computing any of it.</p>
+
+    <div class="callout">
+      <strong>Same design rule as everywhere else in this report:</strong> every analytic number — comorbidity lift, co-occurrence, polypharmacy burden, time-to-escalation, risk calibration, readmission drivers, equity splits, hub-network weights, ambiguity zones, high-utilizer flags, drift deltas — comes straight out of deterministic code (pandas/numpy), never a model. The LLM's role, repeated the same way across all twelve passes, is to read each ranked table afterward and write the "so what": which row deserves a reviewer's attention, and why. It never invents or overrides a result.
+    </div>
+
+    <h3>Twelve analytic passes, one cohort</h3>
+    <div class="grid3">
+      <div class="card"><h4>Backward lift + closed loop</h4><p>The original backward-generated findings ranked by lift, then re-run through a second, independent pull to see which patterns replicate.</p></div>
+      <div class="card"><h4>Eight extended analytics</h4><p>Comorbidity co-occurrence matrix, polypharmacy burden, time-to-escalation, symptom→diagnosis proximity, composite risk scoring (with calibration), 30-day readmission drivers, a subgroup equity check, and a hub-node comorbidity network.</p></div>
+      <div class="card"><h4>Three later additions</h4><p>Diagnostic ambiguity zones, a high-utilizer cohort (top decile by 90-day encounters), and a Dataset A vs. B drift check — each flagged by the LLM as worth adding after reviewing the first nine passes.</p></div>
+    </div>
+
+    <p style="margin-top:18px;">Every pass is followed immediately by a short note distinguishing what was an LLM judgment call from what was deterministic arithmetic, and the page ends with a per-case explorer over all 500 synthetic patients plus the actual FHIR-fetch code, runnable wherever network access allows it.</p>
+
+    <div class="callout warn">
+      <strong>Scope, stated plainly:</strong> the cohort, cases, and every number on this page are synthetic dummy data, generated to exercise all twelve analytic passes at once — not a real patient population, and not a validation study. It demonstrates the same "code computes, LLM interprets, human reviews" pattern as Phases 2–4, run across a much wider set of analytic types in a single pass.</p>
+    </div>
+
+    <h3>Open the full run</h3>
+    <div class="links">
+      <a href="https://avi33tbtt.github.io/fhir_full_analytics.html" target="_blank" rel="noopener noreferrer">FHIR Cohort Pipeline — Full Analytics Run ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="eyebrow">Reference</div>
+    <div class="section-title"><span class="n">06</span><h2>All sources, in the order they arrived</h2></div>
+    <div class="spine">
+
+      <div class="stage">
+        <div class="tag">Blog</div>
+        <h3>Person-Centered Clinical Analytics — Walkthrough for Medical Learners and Analysts</h3>
+        <p>The full write-up: the four-stage schema, the T1D-vs-T2D stress test, all seven build steps, and the Nested Analysis View.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics-blog.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Guided tour</div>
+        <h3>Person-Centered Clinical Analytics: Guided Tour</h3>
+        <p>The tour sitting between the concept article and the build log, with direct links into every one of the seven live tools.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics/tutorial.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Concept article</div>
+        <h3>Person-Centered Clinical Analytics — From One Patient to a Whole Cohort</h3>
+        <p>The concept explainer tracing the model back to the Avinash Principle, plus two embedded live demos: the Nested Cohort Trajectory Map and the Comorbidity &amp; Intervention Pivot explorer.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/articles/person-centered-clinical-analytics.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage hub">
+        <div class="tag">Video</div>
+        <h3>Project video (1)</h3>
+        <p>Video walkthrough of the person-centered analytics work.</p>
+        <div class="links"><a class="video" href="https://youtu.be/di3yMxIAJH4" target="_blank" rel="noopener noreferrer">Watch ↗</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">App</div>
+        <h3>Generator · Viewer · Pivot</h3>
+        <p>The interactive cohort generator, nested trajectory viewer, pivot explorer, and cohort dashboard, all running client-side against a synthetic 300-patient cohort with 20 conditions.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/Person-Centered-Clinical-Analytics.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Guided tour</div>
+        <h3>From Cohort to Bedside — Guided Tour of the Avinash Principle, Powered by SNOMED CT</h3>
+        <p>A stop-by-stop live pipeline: bedside question → concept extraction → ECL query → cohort match → patient cases → brief → insight report → cohort graph.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/avinash-snomed-guided-tour.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Project plan</div>
+        <h3>FHIR + SNOMED CT Clinical Intelligence Pipeline</h3>
+        <p>The full v2 project plan and live demo: seven build phases, the SMART Health IT R4 data source, a bundled offline Pneumonia cohort, and the open risks list.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/fhir-snomed-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Concept paper</div>
+        <h3>Backward-Generated Case & Cohort Intelligence</h3>
+        <p>Starting from an outcome instead of a question: case-level backward traces, cohort-level lift tables, audit and research applications, and a four-phase build order.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/backward-generated-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage hub">
+        <div class="tag">Concept note</div>
+        <h3>The Closed Loop — Orchestrating Clinical Intelligence</h3>
+        <p>Wiring the forward and backward pipelines together with two human checkpoints, plus two live demos — an illustrative in-browser loop and a real SMART Health IT sandbox query generator.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/orchestrating-clinical-intelligence.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+      <div class="stage hub">
+        <div class="tag">Video</div>
+        <h3>Project video (2)</h3>
+        <p>Video walkthrough of the closed-loop / orchestration work.</p>
+        <div class="links"><a class="video" href="https://youtu.be/a9eu-Ezdam8?si=2SS_F9uqpAuGbvgC" target="_blank" rel="noopener noreferrer">Watch ↗</a></div>
+      </div>
+
+      <div class="stage">
+        <div class="tag">Full run</div>
+        <h3>FHIR Cohort Pipeline — Full Analytics Run (500 cases, 14 categories, 12 analytic types)</h3>
+        <p>All prior mechanisms combined against one synthetic cohort: backward lift, closed-loop replication, and nine further analytic passes — comorbidity co-occurrence, polypharmacy, time-to-escalation, symptom proximity, risk scoring, readmission drivers, equity check, hub network, diagnostic ambiguity, high-utilizer cohort, and an A vs. B drift check — every number computed deterministically, with an LLM reading and interpreting each pass on synthetic dummy data.</p>
+        <div class="links"><a href="https://avi33tbtt.github.io/fhir_full_analytics.html" target="_blank" rel="noopener noreferrer">Open →</a></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="eyebrow">Roadmap</div>
+    <div class="section-title"><span class="n">07</span><h2>What's left, assuming the EMR already speaks FHIR and SNOMED CT</h2></div>
+    <p class="lede">Everything above was built and tested against an open sandbox. A real health system starts from a stronger baseline — its EMR already exposes FHIR and codes to SNOMED CT — which removes the biggest interoperability barrier but not the rest of the work. What remains splits into two tracks.</p>
+
+    <h3>Technical advancements</h3>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Advancement</th><th>Why it's needed here</th></tr>
+      <tr><td>Full terminology service integration</td><td>Move from a curated ~50–100-concept dictionary to the EMR's own terminology server (or a licensed UMLS-backed ECL engine), so coverage matches what the system actually codes, not a hand-picked subset.</td></tr>
+      <tr><td>Negation &amp; compound query support</td><td>Encode "without," "excluding," and multi-condition logic directly into the FHIR search itself instead of aggregating after the fetch, so accuracy holds as questions get more specific.</td></tr>
+      <tr><td>SMART on FHIR / CDS Hooks launch</td><td>Launch in-context from the clinician's existing EMR session rather than a standalone page, inheriting the user's identity, role, and patient/encounter context automatically.</td></tr>
+      <tr><td>Production backend &amp; PHI-aware storage</td><td>Replace the client-side, no-backend architecture with a proper service layer: encrypted storage, role-based access control, and audit logging on every query and every finding a reviewer sees.</td></tr>
+      <tr><td>Scale-tested analytics compute</td><td>Move cohort analytics from live, on-demand FHIR search to a pre-aggregated data mart (an OMOP CDM-style layer, for instance) so lift tables return quickly across a real population, not a sandbox-sized cohort.</td></tr>
+      <tr><td>Concept &amp; coding-drift monitoring</td><td>Re-validate the phrase→concept lookup against each new SNOMED CT release and actual local coding patterns — a stale dictionary degrades query accuracy silently.</td></tr>
+      <tr><td>Coverage-confidence scoring</td><td>Flag, per finding, how completely the relevant fields are actually coded in that population, so a sparse comorbidity list doesn't quietly read as "no comorbidity."</td></tr>
+      <tr><td>Automated regression testing</td><td>Given the deterministic-answer promise, a test suite proving the same query returns the same answer across EMR versions, terminology updates, and code changes.</td></tr>
+      <tr><td>High-speed evidence analytics &amp; generation (LLM-assisted)</td><td>Once a pattern clears both human checkpoints, an LLM can cross-reference it against published guidelines and trial evidence, draft the reviewer-facing explanation, and generate audit-ready documentation in minutes — the same "generate fast, ground in real sources" pattern used to compile, cross-reference, and format this report itself.</td></tr>
+    </table>
+    </div>
+
+    <h3 style="margin-top:40px;">Clinical advancements</h3>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Advancement</th><th>Why it's needed here</th></tr>
+      <tr><td>Formal validation protocol</td><td>A retrospective study comparing the pipeline's flagged patterns against known, guideline-confirmed associations, before any finding is trusted operationally.</td></tr>
+      <tr><td>Governance charter</td><td>A defined committee, review cadence, and escalation path deciding which findings get reviewed, by whom, and what happens once a pattern is confirmed.</td></tr>
+      <tr><td>Clinically meaningful thresholds</td><td>Agreed-upon lift, sample-size, and confidence cutoffs for what counts as "worth a reviewer's time," replacing the illustrative thresholds used in this report.</td></tr>
+      <tr><td>Equity &amp; bias review</td><td>Check whether cohort definitions and findings hold consistently across age, sex, race, and insurance-status subgroups, so the pipeline doesn't quietly encode existing disparities as "patterns."</td></tr>
+      <tr><td>Clinician training &amp; explainability materials</td><td>Teach reviewers what a lift table can and can't say, so "correlation, not causation" survives contact with a busy clinical shift.</td></tr>
+      <tr><td>Regulatory classification review</td><td>Determine early, with legal and compliance, whether specific uses cross into FDA software-as-a-medical-device territory as the tool's scope grows.</td></tr>
+      <tr><td>Narrow-scope pilot before broad rollout</td><td>Start on a small number of high-volume, well-coded conditions — readmissions, sepsis escalation — before generalizing to the full concept dictionary.</td></tr>
+      <tr><td>Outcome feedback loop</td><td>Track what happens after a confirmed pattern changes practice, closing a third, slower loop around the two checkpoints already in the design: did acting on it actually help?</td></tr>
+    </table>
+    </div>
+
+    <div class="quote">Interoperability gets the data into the room. Governance, validation, and training are what let anyone act on what the room finds.</div>
+
+    <div class="callout">
+      <strong>This report is itself an example:</strong> compiling, cross-referencing, and formatting a project spanning four builds and ten-plus source pages was done with LLM assistance — the same generate-fast, ground-in-real-sources pattern the pipeline is built on. The same rule applies here as everywhere above: every technical claim in this report traces back to the actual project pages linked in the sources section — the LLM drafted the prose, not the facts.
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="catalog">
+  <div class="wrap">
+    <div class="eyebrow">Extensibility</div>
+    <div class="section-title"><span class="n">08</span><h2>The exhaustive-ish list: what else this pattern can compute</h2></div>
+    <p class="lede">None of the four phases or the full analytics run change the pipeline's shape — coded query in, deterministic computation, LLM interprets, human signs off. What changes per use case is only which statistic gets computed and which cohort it's computed over. The lists below are the range of clinical, public-health, patient-centered, and evidence-based-medicine analytics that shape supports without any new architecture — just a new query, a new grouping variable, or a new outcome column.</p>
+
+    <h3>Clinical / diagnostic analytics</h3>
+    <div class="grid3">
+      <div class="card"><h4>Comorbidity &amp; co-occurrence</h4><p>Which conditions cluster together; conditional probability of B given A; comorbidity networks and hub nodes.</p></div>
+      <div class="card"><h4>Diagnostic pathway &amp; delay</h4><p>Symptom-to-diagnosis time, diagnostic odyssey length for rare conditions, misdiagnosis / diagnostic-ambiguity zones.</p></div>
+      <div class="card"><h4>Treatment pattern analysis</h4><p>First-line vs. second-line therapy rates, time-to-treatment, treatment switching and escalation sequences.</p></div>
+      <div class="card"><h4>Polypharmacy &amp; medication burden</h4><p>Drug counts per patient, interaction-risk flags, deprescribing candidates by age or renal function band.</p></div>
+      <div class="card"><h4>Complication &amp; escalation prediction</h4><p>Time-to-escalation curves, early-warning-score drift, ICU transfer and code-blue precursor patterns.</p></div>
+      <div class="card"><h4>Lab &amp; vital-sign trajectory</h4><p>Trend-before-event analysis (the "was it acted on, or only recorded" question), threshold-crossing detection.</p></div>
+      <div class="card"><h4>Length-of-stay &amp; disposition</h4><p>LOS distribution by diagnosis and comorbidity load, discharge-disposition mix, delayed-discharge drivers.</p></div>
+      <div class="card"><h4>Diagnostic test utilization</h4><p>Test-ordering patterns relative to guideline indication, repeat-test rates, low-yield test flagging.</p></div>
+      <div class="card"><h4>Composite risk scoring</h4><p>Multi-factor risk indices built from coded variables, with calibration checked against observed outcome rates.</p></div>
+    </div>
+
+    <h3>Public health / population analytics</h3>
+    <div class="grid3">
+      <div class="card"><h4>Disease surveillance</h4><p>Incidence and prevalence trends by concept, geography, or time window; outbreak or cluster detection.</p></div>
+      <div class="card"><h4>Subgroup &amp; equity analysis</h4><p>Outcome and access differences across age, sex, race, and insurance-status strata — flagging disparities rather than asserting cause.</p></div>
+      <div class="card"><h4>Social &amp; environmental determinants</h4><p>Outcome correlation with coded SDOH factors (housing, food access, insurance gaps) where the EMR captures them.</p></div>
+      <div class="card"><h4>Screening &amp; preventive-care coverage</h4><p>Guideline-adherence rates for screening intervals, vaccination coverage, gap-in-care identification.</p></div>
+      <div class="card"><h4>Pharmacovigilance &amp; safety signals</h4><p>Adverse-drug-event rate by medication and comorbidity combination, backward-traced from the event to plausible triggers.</p></div>
+      <div class="card"><h4>High-utilizer / cost-driver cohorts</h4><p>Top-decile utilization identification for care-management targeting, drivers of repeat encounters.</p></div>
+      <div class="card"><h4>Readmission &amp; recurrence drivers</h4><p>30/90-day readmission rate by cause, comorbidity, and prior utilization pattern.</p></div>
+      <div class="card"><h4>Population risk stratification</h4><p>Registry-wide tiering for outreach or case-management prioritization, using the same composite-risk logic as a single cohort.</p></div>
+      <div class="card"><h4>Outbreak / seasonal pattern detection</h4><p>Time-series decomposition of coded diagnoses to separate seasonal signal from genuine anomaly.</p></div>
+    </div>
+
+    <h3>Patient-centered analytics</h3>
+    <div class="grid3">
+      <div class="card"><h4>Individual trajectory mapping</h4><p>One patient's coded timeline as a graph — diagnosis, presentation, plan, escalation, disposition — nested against peers who share checkpoints.</p></div>
+      <div class="card"><h4>Comparator-cohort matching</h4><p>How this patient's course compares to a matched subgroup on age, diagnosis, and comorbidity load.</p></div>
+      <div class="card"><h4>Shared-decision support material</h4><p>Coded, traceable "patients like you" statistics — not a recommendation, a transparent base rate.</p></div>
+      <div class="card"><h4>Care-gap &amp; adherence tracking</h4><p>Missed follow-ups, medication-refill gaps, and screening intervals overdue for a specific patient.</p></div>
+      <div class="card"><h4>Symptom-burden &amp; quality-of-life proxies</h4><p>Coded symptom frequency and overlap across visits as a rough burden proxy where PROMs aren't captured.</p></div>
+      <div class="card"><h4>Longitudinal outcome tracking</h4><p>Multi-year view of a chronic condition's escalations, remissions, and intervention changes for one patient.</p></div>
+    </div>
+
+    <h3>Evidence-based medicine / research analytics</h3>
+    <div class="grid3">
+      <div class="card"><h4>Hypothesis generation</h4><p>Backward-generated candidate causes for an outcome, cohort-tested for lift before a human ever writes a hypothesis by hand.</p></div>
+      <div class="card"><h4>Guideline-adherence auditing</h4><p>Rate of coded care matching a specific guideline's recommended pathway, with deviations flagged for review.</p></div>
+      <div class="card"><h4>Replication &amp; drift checking</h4><p>Re-running a finding against an independent dataset or a later time window to see whether the pattern holds (Dataset A vs. B drift).</p></div>
+      <div class="card"><h4>Real-world evidence generation</h4><p>Observed-rate tables (not trial data) usable as a screening signal ahead of, or alongside, a formal study.</p></div>
+      <div class="card"><h4>Case-control style comparison</h4><p>Outcome rate in an exposed vs. unexposed coded cohort, computed the way an epidemiologist would by hand, just automatically triggered.</p></div>
+      <div class="card"><h4>Registry &amp; audit-ready documentation</h4><p>Every finding traceable to the coded records and query that produced it — built for chart audit or IRB review, not just a chart.</p></div>
+    </div>
+
+    <div class="quote">The pipeline doesn't know or care whether the question is "which comorbidity predicts escalation" or "which zip code has a vaccination gap" — both are the same shape: coded cohort in, deterministic statistic out, LLM flags what's worth a look.</div>
+
+    <h3>Advantages of this approach</h3>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Advantage</th><th>Why it matters here</th></tr>
+      <tr><td>Deterministic, reproducible numbers</td><td>Every statistic is a direct read from coded data via fixed arithmetic — two people running the same query get the same answer, and the answer doesn't drift with model version or prompt wording.</td></tr>
+      <tr><td>Full traceability / auditability</td><td>Every finding carries the query, the cohort, and the coded records behind it, so a reviewer, auditor, or IRB can walk back from conclusion to source without re-deriving anything.</td></tr>
+      <tr><td>LLM scoped to a narrow, checkable role</td><td>The model interprets and prioritizes; it never computes a rate or fabricates a link — which keeps hallucination out of the one place (the numbers) where it would be most costly.</td></tr>
+      <tr><td>Speed at scale</td><td>What takes a specialist days of manual chart review — tracing readmissions back to a shared cause by hand — runs continuously across a whole population in minutes.</td></tr>
+      <tr><td>One architecture, many questions</td><td>Clinical, public-health, patient-centered, and research questions all reduce to the same coded-cohort-in / statistic-out shape, so adding a use case is a new query and grouping variable, not a rewrite.</td></tr>
+      <tr><td>Coded-terminology consistency</td><td>SNOMED CT concepts (not free text) mean "pneumonia" means the same thing in every query, every cohort, and every comparison, regardless of how a clinician phrased it.</td></tr>
+      <tr><td>Human checkpoints built in, not bolted on</td><td>Findings can't silently re-enter the system as "confirmed" — a reviewer signs off before a pattern is treated as real, keeping correlation from quietly becoming a clinical rule.</td></tr>
+      <tr><td>Cheap to extend and deploy</td><td>Static client-side demos are forkable and deployable as-is; a new analytic pass is a new statistical function against the same cohort structure, not new infrastructure.</td></tr>
+      <tr><td>Equity and bias visibility</td><td>Because subgroup splits are just another grouping variable, disparities across age, sex, race, or insurance status surface as a normal analytic output instead of requiring a separate special-purpose audit.</td></tr>
+      <tr><td>Bridges research and bedside timeframes</td><td>The same backward-lift logic that generates a research hypothesis can, once validated, feed a patient-facing comparator statistic — one pipeline serving both the population and the individual view.</td></tr>
+    </table>
+    </div>
+
+    <div class="callout warn">
+      <strong>The advantages assume the same guardrails hold everywhere they're applied:</strong> coded data only (uncoded factors stay invisible), correlation flagged as correlation, and a human checkpoint before anything is acted on — the pattern scales the computation, not the license to skip validation.
+    </div>
+  </div>
+</section>
+
+<section id="fullpicture">
+  <div class="wrap">
+    <div class="eyebrow">Zooming out</div>
+    <div class="section-title"><span class="n">09</span><h2>The whole pipeline, in one picture</h2></div>
+    <p class="lede">Five builds, one shape. The top row is the project's actual chronology; everything it can compute today fans out underneath it, all passing through the same two checkpoints before anything counts as a finding.</p>
+
+    <div class="table-wrap" style="overflow-x:auto;">
+    <svg viewBox="-30 0 1070 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:760px;margin-top:24px;" role="img" aria-label="Detailed diagram of the five project phases, what each contributes, feeding four analytics categories through a shared human checkpoint that re-seeds the loop">
+      <defs>
+        <marker id="fp-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8fa39c"/>
+        </marker>
+      </defs>
+
+      <!-- pipeline connectors -->
+      <g stroke="#c9c2af" stroke-width="2">
+        <line x1="102" y1="52" x2="278" y2="52" marker-end="url(#fp-arrow)"/>
+        <line x1="322" y1="52" x2="498" y2="52" marker-end="url(#fp-arrow)"/>
+        <line x1="542" y1="52" x2="718" y2="52" marker-end="url(#fp-arrow)"/>
+        <line x1="762" y1="52" x2="938" y2="52" marker-end="url(#fp-arrow)"/>
+      </g>
+
+      <!-- pipeline nodes -->
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <circle cx="80" cy="52" r="22" fill="#1c6e64"/>
+        <text x="80" y="52" dy=".32em" fill="#fff" font-size="12" font-weight="600">01</text>
+        <text x="80" y="94" font-size="12.5" fill="#101a17" font-weight="600">Person-Centered</text>
+
+        <circle cx="300" cy="52" r="22" fill="#1c6e64"/>
+        <text x="300" y="52" dy=".32em" fill="#fff" font-size="12" font-weight="600">02</text>
+        <text x="300" y="94" font-size="12.5" fill="#101a17" font-weight="600">FHIR + SNOMED CT</text>
+
+        <circle cx="520" cy="52" r="22" fill="#1c6e64"/>
+        <text x="520" y="52" dy=".32em" fill="#fff" font-size="12" font-weight="600">03</text>
+        <text x="520" y="94" font-size="12.5" fill="#101a17" font-weight="600">Backward Intelligence</text>
+
+        <circle cx="740" cy="52" r="22" fill="#1c6e64"/>
+        <text x="740" y="52" dy=".32em" fill="#fff" font-size="12" font-weight="600">04</text>
+        <text x="740" y="94" font-size="12.5" fill="#101a17" font-weight="600">Closed Loop</text>
+
+        <circle cx="960" cy="52" r="26" fill="#c98a2e"/>
+        <text x="960" y="52" dy=".32em" fill="#241a02" font-size="12" font-weight="600">05</text>
+        <text x="960" y="94" font-size="12.5" fill="#101a17" font-weight="600">Full Analytics Run</text>
+        <text x="960" y="110" font-size="11" fill="#5b6560" font-family="IBM Plex Mono, monospace">12 passes · 1 cohort</text>
+      </g>
+
+      <!-- what-each-phase-contributes strip -->
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <rect x="14" y="128" width="132" height="66" rx="3" fill="#ffffff" stroke="#e3ded0"/>
+        <text x="80" y="148" font-size="9.5" fill="#3d4844">Defines the</text>
+        <text x="80" y="161" font-size="9.5" fill="#3d4844">4-node graph</text>
+        <text x="80" y="174" font-size="9.5" fill="#3d4844">every patient</text>
+        <text x="80" y="187" font-size="9.5" fill="#3d4844">maps onto</text>
+
+        <rect x="234" y="128" width="132" height="66" rx="3" fill="#ffffff" stroke="#e3ded0"/>
+        <text x="300" y="148" font-size="9.5" fill="#3d4844">Makes the graph</text>
+        <text x="300" y="161" font-size="9.5" fill="#3d4844">coded &amp; queryable</text>
+        <text x="300" y="174" font-size="9.5" fill="#3d4844">against live</text>
+        <text x="300" y="187" font-size="9.5" fill="#3d4844">FHIR data</text>
+
+        <rect x="454" y="128" width="132" height="66" rx="3" fill="#ffffff" stroke="#e3ded0"/>
+        <text x="520" y="148" font-size="9.5" fill="#3d4844">Generates the</text>
+        <text x="520" y="161" font-size="9.5" fill="#3d4844">question from an</text>
+        <text x="520" y="174" font-size="9.5" fill="#3d4844">outcome, instead</text>
+        <text x="520" y="187" font-size="9.5" fill="#3d4844">of a person</text>
+
+        <rect x="674" y="128" width="132" height="66" rx="3" fill="#ffffff" stroke="#e3ded0"/>
+        <text x="740" y="148" font-size="9.5" fill="#3d4844">Automates the</text>
+        <text x="740" y="161" font-size="9.5" fill="#3d4844">iterate-and-</text>
+        <text x="740" y="174" font-size="9.5" fill="#3d4844">replicate cycle</text>
+        <text x="740" y="187" font-size="9.5" fill="#3d4844">between checks</text>
+
+        <rect x="894" y="128" width="132" height="66" rx="3" fill="#fdf7ee" stroke="#e3c79c"/>
+        <text x="960" y="148" font-size="9.5" fill="#3d4844">Runs every</text>
+        <text x="960" y="161" font-size="9.5" fill="#3d4844">analytic type</text>
+        <text x="960" y="174" font-size="9.5" fill="#3d4844">below at once,</text>
+        <text x="960" y="187" font-size="9.5" fill="#3d4844">on one cohort</text>
+      </g>
+      <g stroke="#e3ded0" stroke-width="1.5">
+        <line x1="80" y1="106" x2="80" y2="124"/>
+        <line x1="300" y1="106" x2="300" y2="124"/>
+        <line x1="520" y1="106" x2="520" y2="124"/>
+        <line x1="740" y1="106" x2="740" y2="124"/>
+        <line x1="960" y1="106" x2="960" y2="124"/>
+      </g>
+
+      <!-- drop from hub node down to fan-out spine -->
+      <path d="M960,194 L960,230 L520,230 L520,250" fill="none" stroke="#c9c2af" stroke-width="2" marker-end="url(#fp-arrow)"/>
+      <text x="960" y="212" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5b6560">every analytic type fans out below</text>
+
+      <!-- category boxes -->
+      <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle">
+        <line x1="140" y1="250" x2="140" y2="275" stroke="#c9c2af" stroke-width="2" marker-end="url(#fp-arrow)"/>
+        <line x1="393" y1="250" x2="393" y2="275" stroke="#c9c2af" stroke-width="2" marker-end="url(#fp-arrow)"/>
+        <line x1="647" y1="250" x2="647" y2="275" stroke="#c9c2af" stroke-width="2" marker-end="url(#fp-arrow)"/>
+        <line x1="900" y1="250" x2="900" y2="275" stroke="#c9c2af" stroke-width="2" marker-end="url(#fp-arrow)"/>
+
+        <rect x="40" y="278" width="200" height="104" rx="3" fill="#ffffff" stroke="#c9c2af"/>
+        <text x="140" y="304" font-size="13" font-weight="600" fill="#101a17">Clinical /</text>
+        <text x="140" y="321" font-size="13" font-weight="600" fill="#101a17">diagnostic</text>
+        <text x="140" y="342" font-size="10" fill="#5b6560">e.g. comorbidity</text>
+        <text x="140" y="356" font-size="10" fill="#5b6560">co-occurrence</text>
+        <text x="140" y="373" font-size="11" fill="#1c6e64" font-family="IBM Plex Mono, monospace">9 analytic types</text>
+
+        <rect x="293" y="278" width="200" height="104" rx="3" fill="#ffffff" stroke="#c9c2af"/>
+        <text x="393" y="304" font-size="13" font-weight="600" fill="#101a17">Public health /</text>
+        <text x="393" y="321" font-size="13" font-weight="600" fill="#101a17">population</text>
+        <text x="393" y="342" font-size="10" fill="#5b6560">e.g. subgroup</text>
+        <text x="393" y="356" font-size="10" fill="#5b6560">disparity checks</text>
+        <text x="393" y="373" font-size="11" fill="#1c6e64" font-family="IBM Plex Mono, monospace">9 analytic types</text>
+
+        <rect x="547" y="278" width="200" height="104" rx="3" fill="#ffffff" stroke="#c9c2af"/>
+        <text x="647" y="304" font-size="13" font-weight="600" fill="#101a17">Patient-</text>
+        <text x="647" y="321" font-size="13" font-weight="600" fill="#101a17">centered</text>
+        <text x="647" y="342" font-size="10" fill="#5b6560">e.g. comparator</text>
+        <text x="647" y="356" font-size="10" fill="#5b6560">statistics</text>
+        <text x="647" y="373" font-size="11" fill="#1c6e64" font-family="IBM Plex Mono, monospace">6 analytic types</text>
+
+        <rect x="800" y="278" width="200" height="104" rx="3" fill="#ffffff" stroke="#c9c2af"/>
+        <text x="900" y="304" font-size="13" font-weight="600" fill="#101a17">Evidence-based /</text>
+        <text x="900" y="321" font-size="13" font-weight="600" fill="#101a17">research</text>
+        <text x="900" y="342" font-size="10" fill="#5b6560">e.g. hypothesis</text>
+        <text x="900" y="356" font-size="10" fill="#5b6560">generation</text>
+        <text x="900" y="373" font-size="11" fill="#1c6e64" font-family="IBM Plex Mono, monospace">6 analytic types</text>
+      </g>
+
+      <!-- converge to checkpoint -->
+      <g stroke="#c9c2af" stroke-width="2" fill="none">
+        <line x1="140" y1="382" x2="140" y2="410"/>
+        <line x1="393" y1="382" x2="393" y2="410"/>
+        <line x1="647" y1="382" x2="647" y2="410"/>
+        <line x1="900" y1="382" x2="900" y2="410"/>
+        <path d="M140,410 L140,428 L900,428 L900,410"/>
+        <line x1="520" y1="428" x2="520" y2="446" marker-end="url(#fp-arrow)"/>
+      </g>
+
+      <!-- checkpoint bar -->
+      <rect x="140" y="448" width="760" height="72" rx="3" fill="#c98a2e"/>
+      <text x="520" y="474" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#241a02">Human checkpoint</text>
+      <text x="520" y="493" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#3a2a05">every finding signed off before it's treated as real</text>
+      <text x="520" y="510" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#3a2a05">correlation stays labeled correlation until a reviewer says otherwise</text>
+
+      <!-- feedback loop back into phase 4 -->
+      <path d="M140,484 C40,484 40,52 58,52" fill="none" stroke="#8fa39c" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#fp-arrow)"/>
+      <text x="-10" y="280" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5b6560" transform="rotate(-90 -10 280)">confirmed pattern re-seeds phase 04</text>
+
+      <!-- progress ticks along the pipeline -->
+      <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#5b6560" text-anchor="middle">
+        <text x="80" y="556">built</text>
+        <text x="300" y="556">built</text>
+        <text x="520" y="556">built</text>
+        <text x="740" y="556">built</text>
+        <text x="960" y="556">built</text>
+      </g>
+      <g fill="#1c6e64">
+        <circle cx="80" cy="576" r="4"/>
+        <circle cx="300" cy="576" r="4"/>
+        <circle cx="520" cy="576" r="4"/>
+        <circle cx="740" cy="576" r="4"/>
+        <circle cx="960" cy="576" r="4"/>
+      </g>
+      <line x1="80" y1="576" x2="960" y2="576" stroke="#1c6e64" stroke-width="2"/>
+
+      <text x="520" y="610" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#3d4844">Read top to bottom: five phases (top) build the machinery; that machinery fans out into 30+ analytic types (middle), which all converge on one checkpoint (bottom) before anything counts as a finding.</text>
+    </svg>
+    </div>
+
+    <div class="quote">Same shape end to end: coded query in, deterministic statistic out, LLM flags what's worth a look, a human decides — the only thing that changes across all thirty-plus analytic types above is which query and which cohort.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="max-width:none;">Compiled report · synthetic and public-sandbox data throughout · not clinical decision support, not a validated system · every link above points to the live, original page.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hero = document.getElementById('top');
+  var nav = document.getElementById('quicknav');
+  if(!hero || !nav || !('IntersectionObserver' in window)){ return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      nav.classList.toggle('visible', !entry.isIntersecting);
+    });
+  }, {threshold: 0});
+  io.observe(hero);
+})();
+</script>
+
+</body>
+</html>
