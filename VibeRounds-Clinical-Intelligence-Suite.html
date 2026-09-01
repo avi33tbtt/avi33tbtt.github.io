@@ -5759,7 +5759,7 @@ async function renderAll(cases, valRows){
   sve.appendChild(renderLiveHypothesisPanel("Screening-overdue vs. downstream escalation", sveRows));
   app.appendChild(sve);
 
-  // 39 phenotype clusters
+  // 40 phenotype clusters
   await pipeStepEnter('Phenotype clustering');
   const phn = section("phenotype","Analytic 40","Comorbidity cluster / phenotype detection",
     "K-means over each patient's comorbidity list (read as a multi-hot vector across the tracked comorbidity set) to find natural patient \u201ctypes\u201d that cut across the single primary-diagnosis category \u2014 a phenotype here is a co-occurring bundle of conditions, not a diagnosis label.", Q.phenotype);
