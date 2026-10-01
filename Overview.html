@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VibeRounds — Overview</title>
+<style>
+:root{--bg:#f7fafb;--card:#fff;--tx:#12262d;--mu:#55707a;--ac:#0891b2;--ac2:#0e7490;--bd:#d8e6ea;--warn:#fff4dc;--wt:#7a5400;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1a1f;--card:#14262d;--tx:#e6f1f4;--mu:#9bb4bc;--ac:#36c2de;--ac2:#7fd8ec;--bd:#25404a;--warn:#33280e;--wt:#f1cf84}}
+:root[data-theme="dark"]{--bg:#0d1a1f;--card:#14262d;--tx:#e6f1f4;--mu:#9bb4bc;--ac:#36c2de;--ac2:#7fd8ec;--bd:#25404a;--warn:#33280e;--wt:#f1cf84}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1000px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--bd);z-index:5;overflow-x:auto;white-space:nowrap}
+nav a{display:inline-block;padding:11px 12px;color:var(--mu);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--ac)}
+header{padding:48px 0 28px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:.2em 0}
+h1 em{color:var(--ac);font-style:normal}
+h2{font-size:26px;margin:0 0 6px}
+h3{font-size:17px;margin:0 0 6px;color:var(--ac2)}
+section{padding:34px 0;border-top:1px solid var(--bd)}
+.lead{color:var(--mu);font-size:18px;max-width:760px}
+.tag{display:inline-block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ac);font-weight:600}
+.g{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:16px 0}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.c p{margin:0;color:var(--mu);font-size:15px}
+.c a{color:var(--ac2)}
+.n{font-size:30px;font-weight:700;color:var(--ac)}
+.q{border-left:4px solid var(--ac);padding:6px 16px;margin:16px 0;font-size:19px;font-style:italic}
+.warn{background:var(--warn);color:var(--wt);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:15px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+th{color:var(--ac2)}
+code{background:var(--card);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:13.5px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+.flow span{background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 14px;font-size:14px}
+.flow i{color:var(--ac);font-style:normal}
+ol.s{padding-left:20px}ol.s li{margin:6px 0}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--mu);margin:8px 0 2px;font-size:15px}
+footer{padding:26px 0 40px;color:var(--mu);font-size:14px;border-top:1px solid var(--bd)}
+</style></head><body>
+<nav><div class="w"><a href="#home">Overview</a><a href="#philosophy">Philosophy</a><a href="#spectrum">Spectrum</a><a href="#constraints">Constraints</a><a href="#stack">Learning Stack</a><a href="#tools">Tools</a><a href="#cis">Clinical Intelligence Suite</a><a href="#caveats">Caveats</a></div></nav>
+<div class="w">
+<header id="home">
+<span class="tag">Dr. Avinash Kumar Gupta · coined June 2026</span>
+<h1>Vibe <em>Rounds</em> — AI that questions, not answers</h1>
+<p class="lead">An overview of three linked sites: the main <b>VibeRounds hub</b> (Socratic learning, guided discovery, research), the <b>Prompts library</b> (the module architecture), and the <b>Clinical Intelligence Suite</b> (cohort analytics for researchers).</p>
+<div class="g">
+<div class="c"><h3>1 · Hub</h3><p>Tutorial, tools, courses, demos and preprints. Defines the paradigm. <a href="https://avi33tbtt.github.io/">avi33tbtt.github.io</a></p></div>
+<div class="c"><h3>2 · Prompts library</h3><p>57+ modules, 4 frameworks, a three-phase lifecycle. <a href="https://avi33tbtt.github.io/Prompts/">/Prompts/</a></p></div>
+<div class="c"><h3>3 · Clinical Intelligence Suite</h3><p>100+ deterministic analytics over FHIR cohorts, with an LLM-and-human-gate workflow. <a href="https://avi33tbtt.github.io/viberounds-cis.html">/viberounds-cis.html</a></p></div>
+</div>
+<div class="g"><div class="c"><div class="n">57+</div><p>reasoning modules</p></div><div class="c"><div class="n">4</div><p>pedagogical frameworks</p></div><div class="c"><div class="n">200+</div><p>clinical pipelines</p></div><div class="c"><div class="n">100+</div><p>cohort analytics (V1/V2/V3)</p></div></div>
+</header>
+
+<section id="philosophy">
+<span class="tag">Site 1 · Hub</span><h2>The idea</h2>
+<p>Just as vibe coding lets developers build software through natural language, Vibe Rounds applies the same paradigm to clinical reasoning. It is defined as a Socratic AI paradigm for students, clinicians, researchers and scientists that augments reasoning through structured questioning, guided discovery and reflective dialogue rather than direct answers.</p>
+<div class="q">“AI that questions, not answers.”</div>
+<p>The clinician stays the decision-maker. The AI plays the attending: it challenges assumptions, surfaces relevant biases, offers a second opinion and flags what was oversimplified. It is a learning tool, not a diagnostic one.</p>
+<div class="warn"><b>Bring your own key.</b> The learner tools run in the browser; the API key lives in local storage and goes straight to your chosen provider. Not for real patient care.</div>
+</section>
+
+<section id="spectrum">
+<h2>The pedagogical spectrum</h2>
+<p>Five stages move from instructor-centred to learner-centred. Vibe Rounds claims stages 3–5.</p>
+<div class="g">
+<div class="c"><h3>1 Lecture</h3><p>Foundation: shared vocabulary and framing.</p></div>
+<div class="c"><h3>2 Dyadic</h3><p>Peers explain to each other, forcing encoding.</p></div>
+<div class="c"><h3>3 Socratic ★</h3><p>Stress-test understanding with “Why?” and “What if?”. Home base of Vibe Rounds.</p></div>
+<div class="c"><h3>4 Guided discovery ★</h3><p>Scaffolded problems; tiered hints build the environment on demand.</p></div>
+<div class="c"><h3>5 Research ★</h3><p>N-of-1 protocols, case analytics, evidence mapping.</p></div>
+</div>
+<p>The progression is justified by Cognitive Load Theory: starting at research overwhelms novices, and staying at lecture never builds independent thought.</p>
+</section>
+
+<section id="constraints">
+<h2>Ten constraints that keep the AI Socratic</h2>
+<p>Appended to any <code>#VibeRounds</code> persona (Supportive Intern, Junior Resident, Socratic Attending), they stop a helpful model from simply filling the silence when a learner types “idk”.</p>
+<div class="g">
+<div class="c"><p><b>1 Forced commitment</b> before any hint.</p></div>
+<div class="c"><p><b>2 Minimum effort</b>: “idk” gets a redirect, not help.</p></div>
+<div class="c"><p><b>3 Delayed rescue</b> (the 10-second rule).</p></div>
+<div class="c"><p><b>4 Tiered hints</b>: framework → direction → partial → summary.</p></div>
+<div class="c"><p><b>5 Effort-weighted</b> depth of help.</p></div>
+<div class="c"><p><b>6 Grade reasoning</b>, not only correctness.</p></div>
+<div class="c"><p><b>7 Adaptive difficulty.</b></p></div>
+<div class="c"><p><b>8 Role-calibrated</b> rigor.</p></div>
+<div class="c"><p><b>9 Reflect before reveal</b>: “What could kill the patient?”</p></div>
+<div class="c"><p><b>10 Answer-withholding</b> until attempt, revision or explicit surrender.</p></div>
+</div>
+<p><b>Example:</b> given a 54F with dyspnea and pleuritic pain after a 14-hour flight, the AI won’t accept “PE” at face value. It asks why PE ranked first, what you’d expect if it’s wrong, and what chest X-ray finding would make you regret anticoagulating (aortic dissection).</p>
+<p>The hub also documents a prompt evolution from simple persona (L1) to OSCE-style examination mode (L6), and a “What / Where / Do” template for capturing initial reasoning.</p>
+</section>
+
+<section id="stack">
+<span class="tag">Site 2 · Prompts library</span><h2>The Learning Stack</h2>
+<p>Not a flat prompt list but layers: frameworks shape <i>how</i> a prompt teaches, modules define <i>what</i> and <i>when</i>, and a lifecycle gives every session the same shape: <b>Initiation → Execution → Closure</b>.</p>
+<h3>Four frameworks (woven into modules)</h3>
+<div class="tw"><table><tr><th>Framework</th><th>Role</th></tr>
+<tr><td>A · Humanistic Persona</td><td>Builds confidence alongside competence; specific affirmation before challenge.</td></tr>
+<tr><td>B · Fink’s taxonomy (FLINK)</td><td>Six non-hierarchical dimensions, from foundational knowledge to learning-how-to-learn.</td></tr>
+<tr><td>C · Bloom’s revised</td><td>Remember → Create, mapped to clinical tasks; calibrates difficulty.</td></tr>
+<tr><td>D · Critical Awareness</td><td>Names the biases of the framework itself (automation, anchoring, hallucination).</td></tr></table></div>
+<h3 style="margin-top:18px">Module coverage</h3>
+<p>Coverage is organised by a learner’s <i>moments</i>, not by organ system: M01 Socratic reasoning; M04 ward practice (rounds, admissions, pre-op, polypharmacy, triage); M09 seven-stage N-of-1 research protocol; M10 journal reading; M25 Bloom-stratified question bank; M42 Clinical Pre-Mortem. Start at <b>Module 0</b> (cold-start orientation). The library’s own review calls maturity uneven: some parts are mature, others explicitly experimental.</p>
+<h3>Guided Discovery: “an MRI for clinical thinking”</h3>
+<p>Instead of asking “what is the diagnosis?”, it asks how thinking moves from uncertainty to understanding. Three building blocks: <b>modules</b> (single lenses), <b>agents</b> (orchestrated multi-framework runs) and <b>pipelines</b> (e.g. 1 → 12 → 9 → 21 → 35).</p>
+<div class="flow"><span>Observation</span><i>→</i><span>Pattern recognition</span><i>→</i><span>Hypotheses</span><i>→</i><span>Decision architecture</span><i>→</i><span>Bias detection</span><i>→</i><span>Metacognition</span></div>
+<h3>CCOS: six cognitive layers</h3>
+<ol class="s"><li>Clinical reasoning (illness scripts, differentials, Bayesian)</li><li>Workflow engine (sequencing, pipelines)</li><li>Metacognitive monitoring (bias, assumptions, uncertainty)</li><li><b>Epistemic trust</b>: calibrated numbers, risk-based claim verification, decision spectrum (conservative → maximal), multi-domain confidence</li><li>Decision architecture</li><li>Learning and documentation</li></ol>
+<div class="warn">CCOS is a structured <i>prompt architecture</i>, not software with persistent state. The trust layer is prompt-level uncertainty framing, not automated verification.</div>
+</section>
+
+<section id="tools">
+<h2>Tools, courses and demos</h2>
+<div class="g">
+<div class="c"><h3>Learner tools (21)</h3><p>Clinical Learning Suite (flagship), Case Bench, Case Simulator, Clinical Practice, Clinical Polemos (debate), Case Lens, SDM Lens, EBM Query Generator, CCOS Builder, Case Analytics, Case Reading, Hub-Node Navigation, Complex Flow Builder, CQM Router, Question Bank, Lesson Bench.</p></div>
+<div class="c"><h3>Courses</h3><p>Courseware (19 subjects, 190 chapters), an EBM course, and a Clinical Cognition course.</p></div>
+<div class="c"><h3>Demos</h3><p>Dashboards on microcytic anemia, Decision Lab, CAT Bank (30 appraised topics), Phronesis, System 3, Illness Velocity, multi-agent cross-examination, and a self-auditing 22-stage “Shadow Module” run.</p></div>
+<div class="c"><h3>Research</h3><p>Preprints on ResearchGate. The flagship is an ASV (snake antivenom) evidence map: mortality signal sits in case reports, not RCTs. Limits are named: partial sampling, single LLM-assisted extractor, no pre-registration.</p></div>
+<div class="c"><h3>Maturity (June 2026)</h3><p>Education: <b>high</b>. Guided discovery research: <b>medium</b>. Bedside decision support: <b>early</b> (no EMR/FHIR integration yet).</p></div>
+<div class="c"><h3>Training</h3><p>Online Zoom sessions and on-site departmental training, plus a builder community of educators and researchers.</p></div>
+</div>
+</section>
+
+<section id="cis">
+<span class="tag">Site 3 · Research</span><h2>Clinical Intelligence Suite</h2>
+<p>A tool for building a cohort and running <b>deterministic, auditable</b> analytics. Its stated purpose is prototyping: surface patterns worth pursuing, then take them to a proper platform (OHDSI ATLAS, TriNetX) and a designed study. It is not clinical decision support.</p>
+<div class="tw"><table><tr><th></th><th>V1 · text</th><th>V2 · coded</th><th>V3 · temporal</th></tr>
+<tr><td>Matches</td><td>Words in any field</td><td>SNOMED CT, RxNorm, LOINC hierarchy</td><td>Concept hierarchy over event stream</td></tr>
+<tr><td>Needs</td><td>Any data</td><td>Coded fields</td><td>Coded, timestamped events</td></tr>
+<tr><td>Unlocks</td><td>Core analytics, data quality</td><td>Knowledge graph, Cox, FP-Growth</td><td>Process mining, medication timelines, temporal signals</td></tr>
+<tr><td>Buttons</td><td>44</td><td>56</td><td>52</td></tr></table></div>
+<h3 style="margin-top:18px">Workflow: ask → define → appraise → explore → test → review → record</h3>
+<div class="flow"><span>Discover (backward lift)</span><i>→</i><span>Interpret (LLM, optional)</span><i>→</i><span>Test (forward / closed loop)</span><i>→</i><span>Decide (human gate)</span></div>
+<p>The LLM only drafts text and proposes a test query. Every number comes from deterministic code, and a person approves or rejects before anything counts as a finding candidate. In the worked example, an older Neuro/MSK hypothesis gave escalation 92.3% vs 86.7% (lift 1.07, n=65): small, unadjusted, and best rejected or retested.</p>
+<h3>Analytics grouped by question</h3>
+<details><summary>Describe · Associate · Compare</summary><p>Cohort overview, data quality, patient segments; backward lift, co-occurrence, phenotype clusters, knowledge graph; forward hypothesis, PICO/PECO, Cox, closed loop (re-tests findings with lift ≥1.35 on a fresh cohort).</p></details>
+<details><summary>Time to event · Safety</summary><p>Kaplan–Meier escalation-free survival, transition matrix, checkpoint paths; pharmacovigilance, signal detection (incl. temporal), polypharmacy, medication changes.</p></details>
+<details><summary>Quality · Equity</summary><p>Guideline adherence, care gaps, screening, refill gaps; equity check, SDOH, payer mix, high-utilisers.</p></details>
+<details><summary>Pathways · Surveillance</summary><p>Patient journey map (swimlanes, multi-patient, day-0 axis), pathway discovery, trajectory clusters and outliers, association rules; seasonal patterns, A vs B drift, calendar heatmap.</p></details>
+<details><summary>Disease modules</summary><p>Hypertension, Type 2 diabetes and COPD each have 15 passes and 4 decision analytics (e.g. resistant hypertension flag, white-coat pattern, intensification candidates).</p></details>
+<h3 style="margin-top:18px">Architecture and tech</h3>
+<p>Monorepo: React/Vite web app, Fastify API, and three analytics registries (V1 113, V2 119, V3 49) over one shared core (<code>@viberounds/core</code>). Data sources are FHIR R4, CSV/NDJSON import, a synthetic generator or PostgreSQL (100k–1M+ patients via SQL aggregation). The LLM layer supports OpenRouter, Claude, OpenAI and Gemini, receives summaries only, and every run and decision goes to an audit log.</p>
+<p><b>Intended “code goes to the data” design:</b> multicentre queries run inside each site’s reviewed analytics library, with small-count suppression and query logging, so only aggregates leave. This is a design, not a shipped feature, as is the open community-analytics idea (Experimental → Tested → Validated maturity levels).</p>
+<p><b>Status:</b> done: 100+ analytics, disease modules, journey map, DB mode, generate-and-test loop. Deferred: auth and multi-tenancy, scheduling, CI/deployment, SQL versions of non-hypertension modules.</p>
+</section>
+
+<section id="caveats">
+<h2>Good practice and caveats</h2>
+<ul>
+<li>Treat every output as a draft to verify; the default cohort is <b>synthetic</b>, so results show workflow, not clinical truth.</li>
+<li>Comparisons are unadjusted, many analytics run at once (chance findings), and V3 outcomes are modelled at import, so stratifying them is circular.</li>
+<li>Learning tools are not diagnostic. The hub and CIS both state that all output needs independent clinical verification.</li>
+<li>A browser AI assistant sees on-screen data and sits outside the app’s guardrails; check policy before using one with real data.</li>
+</ul>
+</section>
+<footer>Summary compiled from avi33tbtt.github.io, /Prompts/ and /viberounds-cis.html. Concept by Dr. Avinash Kumar Gupta (CC BY 4.0 per the hub). This overview is an independent summary.</footer>
+</div></body></html>
