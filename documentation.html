@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds — Master Documentation</title>
+<style>
+  :root{
+    --bg:#f4f7f5; --card:#ffffff; --ink:#16211c; --ink2:#2c3a33; --muted:#5b6b63;
+    --line:#dde5e1; --line2:#c9d4cd; --brand:#0d6b50; --brand2:#1a7a54; --brand-l:#e7f3ee;
+    --accent:#0e7490; --accent2:#0891b2; --warn:#fff4dc; --warn2:#7a5400;
+    --danger:#b42318; --radius:12px; --shadow:0 1px 2px rgba(22,33,28,.05),0 8px 24px rgba(22,33,28,.06);
+    --font:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--font)}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:12.5px var(--mono);color:var(--brand2)}
+  pre{background:#10211b;color:#d8efe4;border-radius:10px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 var(--mono);margin:10px 0}
+  pre code{background:none;border:none;color:inherit;padding:0;font:inherit}
+  h1,h2,h3,h4{color:var(--ink)}
+  h2{font-size:27px;margin:44px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line);scroll-margin-top:80px}
+  h3{font-size:20px;margin:34px 0 8px;color:var(--brand2);scroll-margin-top:80px}
+  h4{font-size:16.5px;margin:24px 0 6px}
+  p{max-width:88ch}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(244,247,245,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:1500px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+  .logo{width:34px;height:34px;border-radius:9px;background:var(--brand);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:17px}
+  .logo svg{width:20px;height:20px}
+  .topbar .t{font-weight:700;font-size:16px}
+  .topbar .s{font-size:12px;color:var(--muted)}
+  .sp{flex:1}
+  .topbtn{font:13px var(--font);font-weight:600;color:var(--brand);border:1px solid var(--line2);background:#fff;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .topbtn:hover{background:var(--brand-l)}
+  /* Layout */
+  .layout{display:grid;grid-template-columns:272px minmax(0,1fr);gap:0;max-width:1500px;margin:0 auto}
+  aside.toc{position:sticky;top:61px;align-self:start;height:calc(100vh - 61px);overflow:auto;padding:26px 16px;border-right:1px solid var(--line);background:var(--card)}
+  aside.toc .co{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:18px 10px 6px;font-weight:700}
+  aside.toc a{display:block;padding:5px 10px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none;font-size:13.5px;line-height:1.4}
+  aside.toc a:hover{color:var(--ink);border-left-color:var(--brand)}
+  aside.toc a.active{color:var(--brand);border-left-color:var(--brand);font-weight:600}
+  main.content{padding:26px 34px 80px;min-width:0}
+  /* Hero */
+  .hero{border-radius:18px;background:linear-gradient(135deg,#0d6b50 0%,#14532d 60%,#0e7490 130%);color:#fff;padding:44px 40px;position:relative;overflow:hidden}
+  .hero::after{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::before{content:'';position:absolute;right:90px;bottom:-120px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.05)}
+  .hero .tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:999px;font-weight:600}
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.08;margin:14px 0 8px;color:#fff}
+  .hero h1 em{font-style:normal;color:#a7f3d0}
+  .hero p.lead{font-size:17px;max-width:80ch;color:#d9efe6;margin:0}
+  .hero .who{font-size:13.5px;color:#c4e8d8;margin-top:16px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;position:relative;z-index:1}
+  .badge{font:12px var(--font);font-weight:600;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);padding:5px 11px;border-radius:999px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:26px 0 6px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:26px;font-weight:700;color:var(--brand)}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  /* Sections */
+  section{scroll-margin-top:80px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);margin:14px 0}
+  .card h3{margin-top:0}
+  .grid{display:grid;gap:14px;margin:14px 0}
+  .grid.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+  .grid.c3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .grid.c4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .gcard h3{margin:0 0 6px;font-size:16px;color:var(--brand2)}
+  .gcard p{margin:0;color:var(--muted);font-size:14px}
+  .gcard .idx{font:12px var(--font);font-weight:700;color:var(--brand);letter-spacing:.06em}
+  .lead{color:var(--ink2);font-size:17px}
+  .muted{color:var(--muted)}
+  .q{border-left:4px solid var(--brand);background:var(--brand-l);padding:12px 16px;margin:16px 0;border-radius:0 10px 10px 0;font-size:16.5px;font-style:italic}
+  .warn{background:var(--warn);color:var(--warn2);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:15px}
+  .danger{background:#fdecea;color:#8f1c12;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:15px}
+  .sub-section{background:#eef5f2;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:16px 0}
+  .sub-section h3{margin-top:2px}
+  /* Tables */
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px;background:var(--card)}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--brand-l);color:var(--brand2);font-weight:600;border-bottom:2px solid var(--line2)}
+  tr:last-child td{border-bottom:none}
+  .tw{overflow-x:auto}
+  /* Flow */
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .flow .box{background:var(--card);border:1px solid var(--line2);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:600}
+  .flow .box.hot{border-color:var(--brand);background:var(--brand-l);color:var(--brand2)}
+  .flow .arr{color:var(--brand);font-weight:700}
+  /* Lists */
+  ul.tight{list-style:none;padding:0;margin:10px 0}
+  ul.tight>li{position:relative;padding:3px 0 3px 22px;border-bottom:1px dashed var(--line)}
+  ul.tight>li:last-child{border:none}
+  ul.tight>li::before{content:'▸';position:absolute;left:2px;color:var(--brand)}
+  ol.steps{padding-left:22px}
+  ol.steps li{margin:8px 0}
+  /* Code */
+  .codeblock{background:#10211b;color:#d8efe4;border-radius:10px;padding:14px 16px;overflow-x:auto;font:12.5px/1.6 var(--mono);margin:10px 0}
+  /* Hero quick nav */
+  .quicknav{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;position:relative;z-index:1}
+  .quicknav a{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600}
+  .quicknav a:hover{background:rgba(255,255,255,.25);text-decoration:none}
+  /* Figures */
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px 10px;margin:16px 0;box-shadow:var(--shadow);overflow-x:auto}
+  .fig svg{display:block;width:100%;min-width:680px;height:auto;font-family:var(--font)}
+  .fig figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+  .fig .bx{fill:var(--card);stroke:var(--line2);stroke-width:1.4}
+  .fig .bx.hot{fill:var(--brand-l);stroke:var(--brand);stroke-width:1.8}
+  .fig .bx.cy{fill:#e3f3f7;stroke:var(--accent);stroke-width:1.6}
+  .fig .bx.wn{fill:var(--warn);stroke:#d9a441;stroke-width:1.4}
+  .fig .t1{font-size:14px;font-weight:700;fill:var(--ink)}
+  .fig .t2{font-size:11.5px;fill:var(--muted)}
+  .fig .t3{font-size:11px;font-weight:700;letter-spacing:.07em;fill:var(--brand)}
+  .fig .ln{stroke:var(--muted);stroke-width:1.6;fill:none}
+  .fig .ln.d{stroke-dasharray:5 4}
+  /* Story summary + motion */
+  .story{margin:26px 0 8px}
+  .story .kick{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--brand)}
+  .story h2{margin:6px 0 6px;border:none;padding:0;font-size:clamp(24px,5.2vw,30px)}
+  .story h2,.st h3{line-height:1.25}
+  .topbar .t{white-space:nowrap}
+  .topbar-in>div:nth-child(2){flex:0 0 auto}
+  .story .sub{color:var(--muted);margin:0 0 18px;font-size:16px}
+  .story-steps{position:relative;padding-left:52px;margin:0}
+  .story-steps::before{content:'';position:absolute;left:19px;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(var(--brand),var(--accent2));transform-origin:top;transform:scaleY(1)}
+  .st{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px 15px;margin:0 0 14px;box-shadow:var(--shadow)}
+  .st .dot{position:absolute;left:-52px;top:10px;width:40px;height:40px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;border:4px solid var(--bg)}
+  .st .tag{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+  .st h3{margin:2px 0 4px;font-size:18px;color:var(--ink)}
+  .st p{margin:0;font-size:15.5px;color:var(--ink2);line-height:1.6}
+  .st a.go{display:inline-block;margin-top:8px;font-weight:600;font-size:14.5px;padding:6px 0}
+  .paths{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 4px}
+  .path{display:block;background:var(--brand-l);border:1px solid var(--line2);border-radius:14px;padding:14px 16px;color:var(--ink);text-decoration:none;min-height:56px;transition:transform .2s,box-shadow .2s}
+  .path:hover{text-decoration:none;transform:translateY(-2px);box-shadow:var(--shadow)}
+  .path b{display:block;color:var(--brand);font-size:15.5px}
+  .path span{font-size:13.5px;color:var(--muted)}
+  .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;transition-delay:var(--d,0s)}
+  .js .reveal.in{opacity:1;transform:none}
+  .js .story-steps::before{transform:scaleY(0);transition:transform 1.4s ease .2s}
+  .js .story-steps.in::before{transform:scaleY(1)}
+  .js .st .dot{transform:scale(.4);transition:transform .5s cubic-bezier(.2,1.6,.4,1) var(--d,0s)}
+  .js .st.in .dot{transform:scale(1)}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(13,107,80,.45)}100%{box-shadow:0 0 0 14px rgba(13,107,80,0)}}
+  .st.in .dot{animation:pulse 1.6s ease-out .5s 2}
+  @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero::after{animation:drift 9s ease-in-out infinite}
+  .hero::before{animation:drift 12s ease-in-out infinite reverse}
+  @media(prefers-reduced-motion:reduce){
+    .js .reveal,.js .st .dot,.js .story-steps::before{transition:none;opacity:1;transform:none}
+    .hero::after,.hero::before,.st.in .dot{animation:none}
+  }
+  /* Mobile */
+  @media(max-width:720px){
+    body{font-size:16px}
+    .topbar-in{padding:9px 14px;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .topbar-in::-webkit-scrollbar{display:none}
+    .topbar .s,.sp{display:none}
+    .topbtn{white-space:nowrap;flex:0 0 auto;padding:9px 13px}
+    main.content{padding:18px 16px 60px}
+    .hero{padding:28px 20px;border-radius:16px}
+    .hero p.lead{font-size:16px}
+    .quicknav a{padding:9px 13px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    h2{font-size:23px;margin-top:34px}
+    .story-steps{padding-left:46px}
+    .st .dot{left:-46px;width:36px;height:36px;font-size:15px}
+    .story-steps::before{left:16px}
+    .paths{grid-template-columns:1fr}
+    .grid.c2,.grid.c3,.grid.c4{grid-template-columns:1fr}
+  }
+  /* Mobile diagram fallbacks */
+  .fig-m{display:none}
+  .mb{border:1.6px solid var(--line2);background:var(--card);border-radius:12px;padding:11px 14px;text-align:center}
+  .mb.hot{background:var(--brand-l);border-color:var(--brand)}
+  .mb.cy{background:#e3f3f7;border-color:var(--accent)}
+  .mb.wn{background:var(--warn);border-color:#d9a441}
+  .mb .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--brand)}
+  .mb b{display:block;font-size:15.5px;color:var(--ink)}
+  .mb span{display:block;font-size:13.5px;color:var(--muted);line-height:1.45}
+  .ma{text-align:center;color:var(--muted);font-size:20px;line-height:1.1;padding:3px 0}
+  .mrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:720px){
+    .fig svg{display:none}
+    .fig-m{display:block}
+    .fig{overflow:visible;padding:14px}
+  }
+  /* Side menu: sticky sidebar on desktop, slide-in drawer on narrow screens */
+  .menubtn{display:none;font:600 14px var(--font);color:var(--brand);border:1px solid var(--line2);background:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;flex:0 0 auto;min-height:40px}
+  .scrim{display:none}
+  @media(max-width:1020px){
+    .menubtn{display:inline-flex;align-items:center;gap:6px}
+    aside.toc{position:fixed;top:0;left:0;bottom:0;height:100%;width:min(300px,84vw);z-index:90;transform:translateX(-100%);transition:transform .28s ease;box-shadow:none;padding:70px 16px 28px;overflow-y:auto;border-right:1px solid var(--line)}
+    body.menu-open aside.toc{transform:none;box-shadow:6px 0 30px rgba(22,33,28,.25)}
+    aside.toc a{padding:11px 12px;font-size:15px}
+    .scrim{position:fixed;inset:0;background:rgba(16,33,27,.45);z-index:80;opacity:0;pointer-events:none;transition:opacity .25s;display:block}
+    body.menu-open .scrim{opacity:1;pointer-events:auto}
+    body.menu-open{overflow:hidden}
+    .topbar{z-index:100}
+  }
+  @media(prefers-reduced-motion:reduce){aside.toc,.scrim{transition:none}}
+  /* Footer */
+  footer{border-top:1px solid var(--line);margin-top:60px;padding:30px 0 60px;color:var(--muted);font-size:13.5px}
+  /* Responsive */
+  @media(max-width:1020px){
+    .layout{grid-template-columns:1fr}
+    main.content{padding:22px 20px 70px}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <button class="menubtn" id="menubtn" aria-label="Open contents menu" aria-expanded="false" aria-controls="toc">☰ Menu</button>
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17h6l3-7 5 13 3-6h7"/></svg>
+    </div>
+    <div>
+      <div class="t">Vibe Rounds</div>
+      <div class="s">Master Documentation</div>
+    </div>
+    <div class="sp"></div>
+    <a class="topbtn" href="https://github.com/avi33tbtt/avi33tbtt.github.io" target="_blank" rel="noopener">Main Repo ↗</a>
+    <a class="topbtn" href="https://github.com/avi33tbtt/VibeRounds-Clinical-Analytics-App" target="_blank" rel="noopener">Analytics App ↗</a>
+    <a class="topbtn" href="https://viberounds.ai.studio/" target="_blank" rel="noopener">Vibe Rounds Studio ↗</a>
+    <a class="topbtn" href="https://avi33tbtt.github.io/Auditable%20Clinical%20Narrative%20Analytics.html" target="_blank" rel="noopener">Auditable Narrative Analytics ↗</a>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="toc" id="toc">
+    <div class="co">On this page</div>
+    <a href="#top">Top level overview</a>
+    <a href="#story">Story in 60 seconds</a>
+    <a href="#paradigm">01 · The paradigm</a>
+    <a href="#tools">02 · Socratic toolset (learning)</a>
+    <a href="#ccos">03 · Guided discovery — CCOS</a>
+    <a href="#research">04 · Research (Stage 5)</a>
+    <a href="#glossary">05 · Glossary</a>
+    <a href="#references">06 · Citation, related work &amp; references</a>
+  </aside>
+
+  <main class="content" id="content">
+
+    <!-- ================= HERO ================= -->
+    <section id="top">
+      <div class="hero">
+        <span class="tag">Paradigm · not a product · coined June 2026 · CC BY 4.0</span>
+        <h1>Vibe <em>Rounds</em><br>AI that questions, not answers</h1>
+        <p class="lead">A Socratic AI paradigm for clinical education — and a research-grade clinical analytics engine — built by Dr. Avinash Kumar Gupta.</p>
+        <p class="who">One repository holds the whole idea. Another holds the large research component: the Clinical Intelligence Suite (the Clinical Analytics App).</p>
+        <div class="badges">
+          <span class="badge">“AI that questions, not answers”</span>
+          <span class="badge">Socratic mentor</span>
+          <span class="badge">Guided discovery</span>
+          <span class="badge">CDSS layer</span>
+          <span class="badge">LLM + deterministic analytics</span>
+        </div>
+        <div class="quicknav">
+          <a href="#paradigm">Start: the paradigm</a>
+          <a href="#tools">Socratic toolset</a>
+          <a href="#ccos">Guided discovery</a>
+          <a href="#research">Research</a>
+          <a href="#courses">Courses</a>
+        </div>
+      </div>
+      <div class="story" id="story">
+        <div class="kick reveal">The story in 60 seconds</div>
+        <h2 class="reveal" style="--d:.05s">From “give me the answer” to “help me think”</h2>
+        <p class="sub reveal" style="--d:.1s">One idea, three connected layers — read the steps, then jump to the part you need.</p>
+        <div class="story-steps" id="storySteps">
+          <div class="st reveal" style="--d:.05s"><div class="dot">1</div><div class="tag">The problem</div><h3>AI usually hands over answers</h3><p>Ask a chatbot a clinical question and it simply answers. Learners can stop reasoning — the very skill medicine depends on.</p></div>
+          <div class="st reveal" style="--d:.1s"><div class="dot">2</div><div class="tag">The idea</div><h3>AI that questions, not answers</h3><p><b>Vibe Rounds</b> (coined June 2026 by Dr. Avinash Kumar Gupta) turns the AI into a Socratic attending. It challenges assumptions and surfaces bias, while the clinician stays the decision-maker.</p><a class="go" href="#paradigm">Read the paradigm →</a></div>
+          <div class="st reveal" style="--d:.1s"><div class="dot">3</div><div class="tag">Learn</div><h3>Commit first, then get hints</h3><p>The Socratic toolset makes you commit to an answer before any hint, then releases help in tiers under ten constraints. Hands-on tools plus EBM and Clinical Cognition courses.</p><a class="go" href="#tools">Explore the tools →</a></div>
+          <div class="st reveal" style="--d:.1s"><div class="dot">4</div><div class="tag">Reason deeper</div><h3>CCOS: modules into pipelines</h3><p>57+ reasoning modules chain into pipelines run on a case, passing through six cognitive layers — including a layer that frames uncertainty explicitly.</p><a class="go" href="#ccos">See guided discovery →</a></div>
+          <div class="st reveal" style="--d:.1s"><div class="dot">5</div><div class="tag">Research</div><h3>Evidence, narratives and FHIR data</h3><p>Three research components: an evidence map of published literature, auditable analytics from case narratives, and the Clinical Intelligence Suite — FHIR import with deterministic analytics. Every result traces to its source; a human verifies it.</p><a class="go" href="#research">Open the research layer →</a></div>
+          <div class="st reveal" style="--d:.1s"><div class="dot">6</div><div class="tag">The boundary</div><h3>A learning aid, not a diagnostic tool</h3><p>Everything here is for education and research. Outputs are drafts that need independent clinical verification.</p></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">57+</div><div class="l">reasoning modules</div></div>
+        <div class="stat"><div class="n">14</div><div class="l">analytics in the app</div></div>
+      </div>
+    </section>
+
+    <!-- ================= SECTION 1: PARADIGM ================= -->
+    <section id="paradigm">
+      <h2>01 · The paradigm</h2>
+      <p class="lead">Vibe Rounds is a <b>paradigm</b>, not a product. Just as “vibe coding” lets developers build software through natural language, Vibe Rounds applies that same paradigm to clinical reasoning: an AI mentor that <b>questions</b>, not one that answers.</p>
+      <div class="q">“AI that questions, not answers.”</div>
+      <p>The clinician / learner stays the decision-maker. The AI plays the <b>attending</b>: it challenges assumptions, surfaces biases, offers a second opinion, flags oversimplification, and guides via structured questioning. It is a <b>learning tool, not a diagnostic tool</b>.</p>
+
+      <h3>The three linked sites</h3>
+      <div class="grid c3">
+        <div class="gcard"><div class="idx">SITE 1 · HUB</div><h3>VibeRounds Hub</h3><p>Tutorial, tools, courses, demos and preprints. Defines the paradigm itself.</p></div>
+        <div class="gcard"><div class="idx">SITE 2 · PROMPTS</div><h3>Prompts Library</h3><p>57+ reasoning modules, 4 pedagogical frameworks, 3-phase lifecycle (Initiation → Execution → Closure).</p></div>
+        <div class="gcard"><div class="idx">SITE 3 · RESEARCH</div><h3>Clinical Intelligence Suite</h3><p>The Clinical Analytics App: FHIR discovery — import FHIR data, run deterministic analytics, with an LLM assistant and a human analyst in the loop. <a href="https://github.com/avi33tbtt/VibeRounds-Clinical-Analytics-App" target="_blank" rel="noopener">GitHub ↗</a></p></div>
+      </div>
+
+      <h3>The pedagogical spectrum</h3>
+      <div class="tw"><table>
+        <tr><th>Stage</th><th>Centring</th><th>What Vibe Rounds claims</th></tr>
+        <tr><td>1 · Lecture</td><td>Instructor</td><td>Foundation: shared vocabulary and framing.</td></tr>
+        <tr><td>2 · Dyadic</td><td>Peer</td><td>Peers explain to each other, forcing encoding.</td></tr>
+        <tr><td>3 · Socratic ★</td><td>Self</td><td><b>Home base of Vibe Rounds</b> — stress-test understanding with “Why?” and “What if?”</td></tr>
+        <tr><td>4 · Guided discovery ★</td><td>Self (scaffolded)</td><td>Tiered hints build the environment on demand.</td></tr>
+        <tr><td>5 · Research ★</td><td>Self / researcher</td><td>N-of-1 protocols, case analytics, evidence mapping.</td></tr>
+      </table></div>
+      <p class="muted"><b>Mapping to sites:</b> Stage 3 = Site 1 (Hub), Stage 4 = Site 2 (Prompts Library), Stage 5 = Site 3 (Clinical Intelligence Suite).</p>
+      <p class="muted">The progression is a <b>design hypothesis</b> informed by Cognitive Load Theory<sup><a href="#ref1">[1]</a></sup> and the expertise-reversal effect<sup><a href="#ref2">[2]</a></sup>: heavy open-ended work can overload novices, while guidance that helps novices can become redundant for experts. Scaffolded, fading support<sup><a href="#ref3">[3]</a></sup> motivates the tiered hints. Committing to an answer before help draws on the generation effect<sup><a href="#ref4">[4]</a></sup> and “desirable difficulties”<sup><a href="#ref5">[5]</a></sup>; the bias-surfacing prompts draw on work on cognitive errors in diagnosis<sup><a href="#ref6">[6]</a></sup>. These sources support the design rationale; <b>this page does not report a learner outcome study of Vibe Rounds itself.</b></p>
+
+      <h3>Ten constraints that keep the AI Socratic</h3>
+      <div class="grid c2">
+        <div class="gcard"><h3>C1 · Forced commitment</h3><p>Before any hint.</p></div>
+        <div class="gcard"><h3>C2 · Minimum effort</h3><p>“idk” gets a redirect, not help.</p></div>
+        <div class="gcard"><h3>C3 · Delayed rescue</h3><p>The 10-second rule.</p></div>
+        <div class="gcard"><h3>C4 · Tiered hints</h3><p>Framework → direction → partial → summary.</p></div>
+        <div class="gcard"><h3>C5 · Effort-weighted</h3><p>Depth of help scales with effort.</p></div>
+        <div class="gcard"><h3>C6 · Grade reasoning</h3><p>Grade reasoning, not only correctness.</p></div>
+        <div class="gcard"><h3>C7 · Adaptive difficulty</h3><p></p></div>
+        <div class="gcard"><h3>C8 · Role-calibrated rigor</h3><p></p></div>
+        <div class="gcard"><h3>C9 · Reflect before reveal</h3><p>“What could kill the patient?”</p></div>
+        <div class="gcard"><h3>C10 · Answer-withholding</h3><p>Until attempt, revision or explicit surrender.</p></div>
+      </div>
+
+      <div class="sub-section">
+        <h3>Component map — three layers</h3>
+        <div class="flow">
+          <span class="box hot">Socratic toolset (learning)</span><span class="arr">→</span>
+          <span class="box">Guided discovery — CCOS</span><span class="arr">→</span>
+          <span class="box">Research section</span>
+        </div>
+        <div class="muted" style="margin-top:10px">LLM asks questions → structured prompts on case data → deterministic research analytics over FHIR data.</div>
+      </div>
+      <figure class="fig"><svg viewBox="0 0 900 290" role="img" aria-label="Three-site architecture of Vibe Rounds"><defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs><rect class="bx hot" x="10" y="50" width="260" height="150" rx="12"/><text class="t3" x="140.0" y="72" text-anchor="middle">SITE 1 · HUB · STAGE 3</text><text class="t1" x="140.0" y="92" text-anchor="middle">Socratic learning</text><text class="t2" x="140.0" y="109" text-anchor="middle">Learner tools, courses, demos,</text><text class="t2" x="140.0" y="126" text-anchor="middle">preprints. LLM asks questions,</text><text class="t2" x="140.0" y="143" text-anchor="middle">you commit before any hint.</text><rect class="bx cy" x="320" y="50" width="260" height="150" rx="12"/><text class="t3" x="450.0" y="72" text-anchor="middle">SITE 2 · PROMPTS · STAGE 4</text><text class="t1" x="450.0" y="92" text-anchor="middle">Guided discovery — CCOS</text><text class="t2" x="450.0" y="109" text-anchor="middle">57+ reasoning modules, 4 frameworks,</text><text class="t2" x="450.0" y="126" text-anchor="middle">pipelines (e.g. 1→12→9→21→35)</text><text class="t2" x="450.0" y="143" text-anchor="middle">run on a case.</text><rect class="bx " x="630" y="50" width="260" height="150" rx="12"/><text class="t3" x="760.0" y="72" text-anchor="middle">SITE 3 · APP · STAGE 5</text><text class="t1" x="760.0" y="92" text-anchor="middle">Clinical Intelligence Suite</text><text class="t2" x="760.0" y="109" text-anchor="middle">FHIR import → deterministic</text><text class="t2" x="760.0" y="126" text-anchor="middle">analytics (V1/V3/V4) with an LLM</text><text class="t2" x="760.0" y="143" text-anchor="middle">assistant and human gate.</text><path class="ln" d="M272 125L318 125" marker-end="url(#ar1)"/><path class="ln" d="M582 125L628 125" marker-end="url(#ar1)"/><text class="t3" x="450" y="30" text-anchor="middle">LEARNING → STRUCTURED CASE REASONING → RESEARCH ANALYTICS</text><rect class="bx wn" x="10" y="226" width="880" height="44" rx="10"/><text class="t1" x="450" y="253" text-anchor="middle" style="font-size:13.5px">The clinician stays the decision-maker · a learning aid, not a diagnostic tool</text></svg><div class="fig-m"><div class="mb hot"><div class="k">Site 1 · Hub · Stage 3</div><b>Socratic learning</b><span>Learner tools, courses, demos. You commit before any hint.</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb cy"><div class="k">Site 2 · Prompts · Stage 4</div><b>Guided discovery — CCOS</b><span>57+ modules, 4 frameworks, pipelines run on a case.</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb "><div class="k">Site 3 · App · Stage 5</div><b>Clinical Intelligence Suite</b><span>FHIR import → deterministic analytics, LLM assistant + human gate.</span></div><div style="height:10px"></div><div class="mb wn"><b>The clinician stays the decision-maker</b><span>A learning aid, not a diagnostic tool.</span></div></div><figcaption>Figure 1 · Architecture at a glance: three linked sites, mapped to stages 3–5 of the pedagogical spectrum.</figcaption></figure>
+
+    </section>
+
+    <!-- ================= SECTION 2: SOCRATIC TOOLSET ================= -->
+    <section id="tools">
+      <h2>02 · Socratic toolset (learning)</h2>
+      <p class="lead">The main repository carries the learner-facing tool layer of Vibe Rounds — these are the hands-on pages a student or clinician opens to practise clinical reasoning, case work, and evidence appraisal. The LLM asks questions rather than giving answers.</p>
+
+      <div class="sub-section">
+        <h3>2.1 · The learner tools (17 listed)</h3>
+        <div class="grid c3">
+          <div class="gcard"><div class="idx">Reasoning / decision</div><h3>Case Bench · Case Simulator · Clinical Practice · Clinical Polemos (debate)</h3><p>Diagnostic reasoning trainers, case simulation, and structured debate bench for clinical cases.</p></div>
+          <div class="gcard"><div class="idx">Appraisal lenses</div><h3>Case Lens · SDM Lens · EBM Query Generator</h3><p>8-lens critical-thinking audit, shared-decision-making query generator, and case→critical-appraisal queries.</p></div>
+          <div class="gcard"><div class="idx">Navigation &amp; flow</div><h3>CCOS Builder · Hub-Node Navigation · Complex Flow Builder · CQM Router</h3><p>Module-order builder, comorbidity/hub-node network, multi-patient journey flows, and competency-mapping queries.</p></div>
+          <div class="gcard"><div class="idx">Question &amp; practice</div><h3>Question Bank · Lesson Bench · Case Analytics · Case Reading</h3><p>Bloom-stratified question bank, topic &amp; case lessons, case analytics reader, and case-reading trainer.</p></div>
+          <div class="gcard"><div class="idx">Supporting</div><h3>Dx Dojo · Case-based learning reader</h3><p>Diagnostic reasoning trainer and case-based reader pages in <code>demo/</code>.</p></div>
+        </div>
+      </div>
+
+      <div class="sub-section" id="courses">
+        <h3>2.2 · Courses</h3>
+        <p>Beyond the hands-on tools, the hub carries a <b>Courses</b> group (separate from the tools above) for structured, self-paced study. Each opens as its own site.</p>
+        <div class="grid c2">
+          <div class="gcard"><div class="idx">Course · EBM</div><h3><a href="https://avi33tbtt.github.io/ebm/" target="_blank" rel="noopener">EBM Course ↗</a></h3><p>A course on evidence-based medicine — critically appraising and applying clinical evidence, from PICO question to appraisal.</p></div>
+          <div class="gcard"><div class="idx">Course · CLINICAL COGNITION</div><h3><a href="https://avi33tbtt.github.io/cc/" target="_blank" rel="noopener">Clinical Cognition Course ↗</a></h3><p>Course content on critical care reasoning and decision-making — the reasoning theory behind the CCOS module stack.</p></div>
+        </div>
+        <p class="muted">Not to be confused with the <b>EBM Query Generator</b> (tool 7), which is a tool page rather than a course.</p>
+      </div>
+
+      <div class="warn"><b>Scope note:</b> these tools are Socratic learning / reasoning aids. They run in the browser with <b>bring-your-own API key</b> stored in localStorage. None of them are diagnostic devices, and none replace clinical judgement.</div>
+      <div class="danger"><b>De-identified data only:</b> use these tools only with fictional, synthetic or fully de-identified cases. Do not enter identifiable patient information. Text you enter is sent to the LLM provider whose API key you supply, and keys in browser localStorage are readable by scripts on the same origin.</div>
+    </section>
+
+    <!-- ================= SECTION 3: GUIDED DISCOVERY — CCOS ================= -->
+    <section id="ccos">
+      <h2>03 · Guided discovery — CCOS</h2>
+      <p class="lead">CCOS is a <b>prompt-pipeline framework</b> — the structured prompt architecture behind Vibe Rounds. It is not software or an operating system with persistent state, but an orchestrated pipeline of prompt modules that run in a defined order on a case. Structured prompts based on clinical cognitive models to analyze case data using LLM.</p>
+
+      <div class="sub-section">
+        <h3>3.1 · What CCOS is</h3>
+        <ul class="tight">
+          <li><b>Six cognitive layers:</b> (1) clinical reasoning — illness scripts, differentials, Bayesian; (2) workflow engine — sequencing, pipelines; (3) metacognitive monitoring — bias, assumptions, uncertainty; (4) uncertainty framing — prompts that elicit explicit uncertainty statements, risk-based claim-verification prompts for the human to act on, decision spectrum (conservative→maximal); (5) decision architecture; (6) learning &amp; documentation.</li>
+          <li><b>Not persistent state.</b> CCOS is a prompt-level uncertainty-framing architecture — not automated verification, and confidence an LLM states is not a calibrated probability.</li>
+        </ul>
+      </div>
+
+      <figure class="fig"><svg viewBox="0 0 900 205" role="img" aria-label="CCOS end-to-end information flow"><defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs><rect class="bx " x="10" y="40" width="128" height="84" rx="12"/><text class="t1" x="74.0" y="62" text-anchor="middle">Patient case</text><text class="t2" x="74.0" y="79" text-anchor="middle">History &amp; exam</text><path class="ln" d="M140 82L158 82" marker-end="url(#ar2)"/><rect class="bx cy" x="160" y="40" width="128" height="84" rx="12"/><text class="t1" x="224.0" y="62" text-anchor="middle">Reasoning</text><text class="t2" x="224.0" y="79" text-anchor="middle">Illness scripts, DDx</text><path class="ln" d="M290 82L308 82" marker-end="url(#ar2)"/><rect class="bx cy" x="310" y="40" width="128" height="84" rx="12"/><text class="t1" x="374.0" y="62" text-anchor="middle">Metacognition</text><text class="t2" x="374.0" y="79" text-anchor="middle">Bias &amp; gaps</text><path class="ln" d="M440 82L458 82" marker-end="url(#ar2)"/><rect class="bx wn" x="460" y="40" width="128" height="84" rx="12"/><text class="t1" x="524.0" y="62" text-anchor="middle">Uncertainty framing</text><text class="t2" x="524.0" y="79" text-anchor="middle">Prompt-level</text><path class="ln" d="M590 82L608 82" marker-end="url(#ar2)"/><rect class="bx cy" x="610" y="40" width="128" height="84" rx="12"/><text class="t1" x="674.0" y="62" text-anchor="middle">Decision</text><text class="t2" x="674.0" y="79" text-anchor="middle">Spectrum of options</text><path class="ln" d="M740 82L758 82" marker-end="url(#ar2)"/><rect class="bx hot" x="760" y="40" width="128" height="84" rx="12"/><text class="t1" x="824.0" y="62" text-anchor="middle">Clinician</text><text class="t2" x="824.0" y="79" text-anchor="middle">Final judgment</text><path class="ln d" d="M834 126 L834 190 L74 190 L74 126" marker-end="url(#ar2)"/><text class="t3" x="454" y="184" text-anchor="middle">LEARNING — longitudinal growth feeds the next session</text><text class="t2" x="454" y="22" text-anchor="middle">Prompt-level uncertainty framing — not automated verification</text></svg><div class="fig-m"><div class="mb wn" style="margin-bottom:8px"><span>Prompt-level uncertainty framing — not automated verification</span></div><div class="mb "><b>Patient case</b><span>History &amp; exam</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb cy"><b>Reasoning</b><span>Illness scripts, DDx</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb cy"><b>Metacognition</b><span>Bias &amp; gaps</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb wn"><b>Uncertainty framing</b><span>Prompt-level</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb cy"><b>Decision</b><span>Spectrum of options</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb hot"><b>Clinician</b><span>Final judgment</span></div><div class="ma" aria-hidden="true">↺</div><div class="mb hot"><span><b style="display:inline">Learning</b> — longitudinal growth feeds the next session</span></div></div><figcaption>Figure 2 · CCOS information flow: how a case moves through the cognitive layers back to the clinician.</figcaption></figure>
+
+      <div class="sub-section">
+        <h3>3.2 · CCOS Builder</h3>
+        <p>The <code>ccos-builder.html</code> page lets you <b>tick clinical-reasoning prompt modules in the order you'd run them on a case</b> and get a plain-language read on the likely analytic yield of that pipeline:</p>
+        <div class="flow">
+          <span class="box hot">① Case Under Review</span><span class="arr">→</span>
+          <span class="box">② Chosen Pipeline</span><span class="arr">→</span>
+          <span class="box">③ Pick Modules, In Order</span>
+        </div>
+        <ul class="tight">
+          <li>Modules are colour-coded by category (e.g. clinical reasoning cyan, advocacy amber, analytics violet, safety red, education emerald, operations bronze, meta slate).</li>
+          <li>You build an ordered pipeline, get a "likely analytic yield" readout, and can <b>Clear chain</b> or <b>Copy pipeline</b>.</li>
+          <li>This is how you compose the 57+ modules into a case-appropriate sequence rather than running them ad hoc.</li>
+        </ul>
+      </div>
+
+      <div class="sub-section">
+        <h3>3.3 · CCOS modules</h3>
+        <p>The library has 57+ modules (numbering runs up to M59). They are organised by a learner's <i>moments</i>, not by organ system. Examples:</p>
+        <div class="grid c4">
+          <div class="gcard"><h3>M01</h3><p>Cold-start orientation (entry point).</p></div>
+          <div class="gcard"><h3>M04</h3><p>Ward practice — rounds, admissions, pre-op, polypharmacy, triage.</p></div>
+          <div class="gcard"><h3>M09</h3><p>Seven-stage N-of-1 research protocol.</p></div>
+          <div class="gcard"><h3>M10</h3><p>Journal-article reading.</p></div>
+          <div class="gcard"><h3>M25</h3><p>Bloom-stratified question bank.</p></div>
+          <div class="gcard"><h3>M42</h3><p>Clinical pre-mortem ("what could kill the patient?").</p></div>
+          <div class="gcard"><h3>M59</h3><p>Adaptive question routing / pipeline orchestration.</p></div>
+          <div class="gcard"><h3>Prefixed variants</h3><p>e.g. <code>Module-AP-Avinash-Principle</code>, <code>Module-ARC-Adversarial-Case-Record-Audit</code>, <code>Module-CC-Clinical-Cognition-Deep-Dive</code>.</p></div>
+          <div class="gcard"><h3>Shadow Modules</h3><p>Self-auditing adversarial counterparts (e.g. <code>Shadow-Module-44-Clinical-Genetics-Adversarial-Counterpart</code>.</p></div>
+          <div class="gcard"><h3>Pipelines</h3><p>Orchestrated multi-framework runs, e.g. <b>1 → 12 → 9 → 21 → 35</b>.</p></div>
+        </div>
+        <p class="muted">The library's own review calls maturity uneven — some parts are mature, others explicitly experimental. Start at <b>Module 0</b> (cold-start orientation).</p>
+      </div>
+    </section>
+
+    <!-- ================= SECTION 4: RESEARCH ================= -->
+    <section id="research">
+      <h2>04 · Research (Stage 5)</h2>
+      <p class="lead">Research is Stage 5 of the pedagogical spectrum: generating or testing something that could hold true beyond the one patient in front of you. It has <b>three components</b> that share one principle — every output traces back to a source, and a human verifies it.</p>
+      <div class="grid c3">
+        <a class="gcard" href="#r-evidence" style="color:inherit;text-decoration:none"><div class="idx">4.A · EVIDENCE</div><h3>Structured evidence summary</h3><p>Evidence-tier mapping of published literature. Flagship: the ASV (anti-snake-venom) mortality map.</p></a>
+        <a class="gcard" href="#r-narrative" style="color:inherit;text-decoration:none"><div class="idx">4.B · NARRATIVES</div><h3>Auditable narrative analytics</h3><p>Case narratives and care chats turned into checked, structured data — every result linked to the source sentence.</p></a>
+        <a class="gcard" href="#r-fhir" style="color:inherit;text-decoration:none"><div class="idx">4.C · FHIR · SITE 3</div><h3>Clinical Intelligence Suite</h3><p>The app: import FHIR data and run deterministic analytics with an LLM assistant and a human gate.</p></a>
+      </div>
+
+      <!-- 4.A Structured evidence summary -->
+      <div class="sub-section" id="r-evidence">
+        <h3>4.A · Structured evidence summary</h3>
+        <p>The flagship is an <b>ASV (anti-snake-venom) evidence map</b>: a full evidence-tier synthesis on ASV mortality benefit, built from PubMed primary literature rather than a single case. Every case report, systematic review, meta-analysis and RCT from a documented, filtered search was extracted one paper at a time into a running trajectory map, keeping each evidence tier separate instead of pooling incompatible units.</p>
+        <div class="grid c2">
+          <div class="gcard"><div class="idx">What it found</div><h3>The signal sits in case reports</h3><p>RCTs and meta-analyses don’t establish an ASV mortality benefit — they weren’t designed or powered to. The signal lives in case reports and observational data. An RCT withholding antivenom would be unethical, so that trial will likely never exist.</p></div>
+          <div class="gcard"><div class="idx">What kind of research</div><h3>Scoping / evidence-mapping review</h3><p>A recognised secondary-research genre, one rung below a formal systematic review. Every claim traces to a specific source; nothing is pooled that shouldn’t be.</p></div>
+        </div>
+        <ul class="tight">
+          <li><b>Named limitations:</b> partial sampling (started at 12 of 78 available case reports, being expanded with an exclusion log); single LLM-assisted extractor with no independent second reviewer yet; no pre-registered protocol (e.g. PROSPERO); RCT/meta-analysis and case-report tiers still separate passes.</li>
+          <li><b>What it isn’t:</b> a substitute for a registered systematic review, a statistical meta-analysis, or peer review. Outputs are drafts to verify against primary literature.</li>
+          <li><b>Demo:</b> <a href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html" target="_blank" rel="noopener">ASV Full — the complete hub-node network ↗</a></li>
+        </ul>
+        <p>Supporting material lives in <code>articles/</code>: clinical AI best-of-both-worlds, trivial-vs-deep reasoning, human-vs-LLM energy efficiency, thinking process.</p>
+      </div>
+
+      <!-- 4.B Auditable case record / narrative analytics -->
+      <div class="sub-section" id="r-narrative">
+        <h3>4.B · Auditable case record / narrative analytics</h3>
+        <p>A research plan titled <b>“Turning case narratives and chats into auditable clinical analytics”</b> — a project plan for extracting structured features from narrative patient records and daily care chats with LLMs, validating them, and analyzing them deterministically or with a second LLM pass. One extraction layer feeds teaching, reasoning review, and research. <a href="https://avi33tbtt.github.io/Auditable%20Clinical%20Narrative%20Analytics.html" target="_blank" rel="noopener">Read the full plan ↗</a></p>
+        <div class="grid c3">
+          <div class="gcard"><div class="idx">Pilot</div><h3>Diabetes + kidney disease</h3><p>Reads diabetes and kidney disease records, turns them into checked structured data, and analyzes that data with code or a second LLM pass. Every result links back to the original words.</p></div>
+          <div class="gcard"><div class="idx">Structure</div><h3>Six phases + gates</h3><p>Raw notes → checked result in six steps; do them in order and stop at any step whose check fails. Each phase ends with a gate.</p></div>
+          <div class="gcard"><div class="idx">Two data sources</div><h3>Case narratives + daily care chats</h3><p>Narratives give the clinical picture at admission; chats give the day-by-day course, the team’s reasoning, and life at home. A case index links nearly a thousand public medical e-log posts.</p></div>
+        </div>
+        <ul class="tight">
+          <li><b>Variable dictionary first, then prompts</b> — one prompt per extraction unit, each returning strict JSON with a source span and certainty on every item, allowing “not stated”, all versioned.</li>
+          <li><b>Extract with LLM, derive with code</b> — anything derived is calculated by tested code, so the same input always gives the same output. Derived values are computed by code rather than generated by the LLM; errors can still arise upstream (LLM extraction, query building), which is why extraction is validated and outputs are human-reviewed.</li>
+          <li><b>Validation (planned — no results reported on this page):</b> clinician labels development and held-out splits; measure precision, recall, and kappa; fix prompts at version 1.0 and log model IDs/parameters on every call.</li>
+          <li><b>Two analysis engines:</b> deterministic (rule-based, reproducible) or LLM-based (nuance/interpretation/critique); each task specifies its recommended approach.</li>
+          <li><b>Template for other diseases:</b> diabetes/CKD is the worked pilot; the same structure can regenerate the plan, dictionary, prompts, and analysis modules for heart failure, COPD, tuberculosis, stroke, sepsis, etc.</li>
+          <li><b>Outputs:</b> case report, cohort dashboard, exportable datasets for R/SPSS/Stata; every output traceable to an extracted feature and every feature to a sentence in source text.</li>
+        </ul>
+        <div class="warn"><b>Scope:</b> For research and medical education, not clinical advice. All outputs require independent clinical verification. Adapted versions for other diseases should state what changed and keep the disclaimer.</div>
+      </div>
+
+      <!-- 4.C FHIR Discovery (Clinical Intelligence Suite) -->
+      <div class="sub-section" id="r-fhir">
+        <h3>4.C · FHIR discovery — import FHIR data, run deterministic analytics</h3>
+        <p class="lead">This is the <b>Clinical Intelligence Suite</b> (repository <a href="https://github.com/avi33tbtt/VibeRounds-Clinical-Analytics-App" target="_blank" rel="noopener"><code>VibeRounds-Clinical-Analytics-App</code></a>), a standalone Node/Express + PostgreSQL + FHIR R4 application. You import FHIR data, run deterministic analytics (e.g. mortality rate), and use an LLM as assistant to the human to interpret and explore data — automating the process where <b>the human is the analyst</b>, <b>the LLM is the assistant that plans the analysis</b>, and <b>all analysis runs are deterministic</b> (or deterministic presets such as mortality rate). Analyses that would otherwise need a manual query-and-extract cycle can be run interactively; no timing benchmark is reported on this page.</p>
+
+        <figure class="fig"><svg viewBox="0 0 900 275" role="img" aria-label="Clinical Intelligence Suite workflow"><defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs><rect class="bx " x="10" y="20" width="150" height="92" rx="12"/><text class="t3" x="85.0" y="42" text-anchor="middle">1 · BRING DATA</text><text class="t1" x="85.0" y="62" text-anchor="middle">FHIR sources</text><text class="t2" x="85.0" y="79" text-anchor="middle">Your files · HAPI</text><text class="t2" x="85.0" y="96" text-anchor="middle">test server · synthetic</text><rect class="bx " x="200" y="20" width="150" height="92" rx="12"/><text class="t3" x="275.0" y="42" text-anchor="middle">2 · IMPORT</text><text class="t1" x="275.0" y="62" text-anchor="middle">Normalize</text><text class="t2" x="275.0" y="79" text-anchor="middle">Batches of 5,000 →</text><text class="t2" x="275.0" y="96" text-anchor="middle">PostgreSQL</text><rect class="bx cy" x="390" y="20" width="150" height="92" rx="12"/><text class="t3" x="465.0" y="42" text-anchor="middle">3 · SCOPE</text><text class="t1" x="465.0" y="62" text-anchor="middle">Cohort</text><text class="t2" x="465.0" y="79" text-anchor="middle">batch / group · SNOMED</text><text class="t2" x="465.0" y="96" text-anchor="middle">query builder</text><rect class="bx hot" x="580" y="20" width="150" height="92" rx="12"/><text class="t3" x="655.0" y="42" text-anchor="middle">4 · ANALYZE</text><text class="t1" x="655.0" y="62" text-anchor="middle">Analytics engine</text><text class="t2" x="655.0" y="79" text-anchor="middle">14 analytics ×</text><text class="t2" x="655.0" y="96" text-anchor="middle">V1 · V3 · V4 methods</text><rect class="bx " x="770" y="20" width="120" height="92" rx="12"/><text class="t3" x="830.0" y="42" text-anchor="middle">5 · VIEW</text><text class="t1" x="830.0" y="62" text-anchor="middle">Dashboard</text><text class="t2" x="830.0" y="79" text-anchor="middle">Notebook · KG</text><path class="ln" d="M162 66L198 66" marker-end="url(#ar3)"/><path class="ln" d="M352 66L388 66" marker-end="url(#ar3)"/><path class="ln" d="M542 66L578 66" marker-end="url(#ar3)"/><path class="ln" d="M732 66L768 66" marker-end="url(#ar3)"/><rect class="bx wn" x="260" y="170" width="380" height="86" rx="12"/><text class="t3" x="450.0" y="192" text-anchor="middle">LLM ASSISTANT</text><text class="t1" x="450.0" y="212" text-anchor="middle">Reads results, flags findings</text><text class="t2" x="450.0" y="229" text-anchor="middle">Fills PICO forms · proposes next analytics</text><text class="t2" x="450.0" y="246" text-anchor="middle">Writes read-only SELECT · audit-logged</text><rect class="bx hot" x="690" y="170" width="200" height="86" rx="12"/><text class="t3" x="790.0" y="192" text-anchor="middle">HUMAN ANALYST</text><text class="t1" x="790.0" y="212" text-anchor="middle">Steers every round</text><text class="t2" x="790.0" y="229" text-anchor="middle">Run · skip · dismiss · review</text><path class="ln d" d="M655 113 L655 140 L450 140 L450 168" marker-end="url(#ar3)"/><path class="ln d" d="M642 213L688 213" marker-end="url(#ar3)"/><path class="ln d" d="M790 168 L790 142 L742 142 L742 114" marker-end="url(#ar3)"/><text class="t2" x="10" y="200" >Derived values come from tested code,</text><text class="t2" x="10" y="217">never from the LLM — the human is the</text><text class="t2" x="10" y="234">analyst, the LLM is the assistant.</text></svg><div class="fig-m"><div class="mb "><div class="k">1 · Bring data</div><b>FHIR sources</b><span>Your files · HAPI test server · synthetic</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb "><div class="k">2 · Import</div><b>Normalize</b><span>Batches of 5,000 → PostgreSQL</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb cy"><div class="k">3 · Scope</div><b>Cohort</b><span>batch / group · SNOMED query builder</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb hot"><div class="k">4 · Analyze</div><b>Analytics engine</b><span>14 analytics × V1 · V3 · V4 methods</span></div><div class="ma" aria-hidden="true">↓</div><div class="mb "><div class="k">5 · View</div><b>Dashboard</b><span>Notebook · knowledge graph</span></div><div style="height:12px"></div><div class="mrow"><div class="mb wn"><div class="k">LLM assistant</div><b>Reads &amp; suggests</b><span>Flags findings, fills PICO forms, proposes next analytics</span></div><div class="mb hot"><div class="k">Human analyst</div><b>Steers every round</b><span>Run · skip · dismiss · review</span></div></div><p class="muted" style="font-size:13.5px;margin:10px 0 0;max-width:none">Derived values come from tested code, never from the LLM — the human is the analyst, the LLM is the assistant.</p></div><figcaption>Figure 3 · Clinical Intelligence Suite: data flow from FHIR import to analytics, with the LLM assistant and human gate in the loop.</figcaption></figure>
+
+        <h4>4.C.1 · Purpose</h4>
+        <p>You bring FHIR patient data (your own files, the public HAPI test server, or a deterministic synthetic generator), load it into PostgreSQL, define cohorts, run a catalog of clinical analytics (prevalence, medication use, labs, readmissions, care gaps, safety, data quality) in three reading methods (narrative text / codes / codes+time), and let the AI assistant read results, flag findings, propose next analyses — with every number coming from a tested analytic or a human-reviewed query.</p>
+
+        <h4>4.C.2 · The tab structure</h4>
+        <div class="tw"><table>
+          <tr><th>Tab</th><th>What it does</th></tr>
+          <tr><td><b>Database</b></td><td>Start/Initialize DB; Fetch Message from Database; Show Database Connection Details.</td></tr>
+          <tr><td><b>Import data</b> (Preprocessing)</td><td>Choose FHIR files (JSON Bundle/NDJSON/CSV) → Extract &amp; Normalize (count by resource type, up to 1000 samples) → Patient Data Explorer → Download results/summary JSON → Import to Database (batch name; chunks of 5,000; batches sharing base name = group).</td></tr>
+          <tr><td><b>Analytics</b></td><td>Synthetic data generator; Population/Batch selection; Cohort Management; Clinical Analytics catalog; Review suggestions; Knowledge graph; AI settings; dashboard shortcut.</td></tr>
+          <tr><td><b>Dashboard</b></td><td>Runs every analytic for the active cohort and shows results as one page.</td></tr>
+          <tr><td><b>Notebook</b></td><td>Hidden unless <code>ENABLE_NOTEBOOK=true</code>; generates a Python/Jupyter notebook from the current scope + recipes (cohort binding, SNOMED builder query, recipes: encounter volume/ED/LOS, lab trend, comorbidity network, Kaplan-Meier log-rank, 30-day readmission).</td></tr>
+          <tr><td>Guide tabs</td><td>Architecture, Capabilities, About.</td></tr>
+        </table></div>
+
+        <h4>4.C.3 · End-to-end workflow</h4>
+        <ol class="steps">
+          <li><b>Bring data and check it.</b> Import your own FHIR files, fetch from HAPI FHIR test server (<code>https://hapi.fhir.org/baseR4</code>), or generate a synthetic batch. Run <b>Analytics readiness</b> to see how much of the data is coded, dated and narrative, and which analytics can run in which method.</li>
+          <li><b>Ask, get ideas, or define.</b> Plain-English question → assistant fills PICO/PECO study form → run it. Or <b>Suggest a few studies</b>. Or build a cohort; <b>Build SNOMED CT Query</b> writes criteria SQL for you.</li>
+          <li><b>Run an analytic.</b> Pick from the catalog, or run the dashboard to cover everything for the cohort.</li>
+          <li><b>Get a read.</b> Ask for insights on one run or all runs; flagged findings &amp; proposed next steps; results can be explained in plain words.</li>
+          <li><b>Steer.</b> Run, skip, mark important or dismiss. Or start the <b>AI researcher</b> to chain rounds automatically.</li>
+          <li><b>Go deeper.</b> Browse individual patients (Patient data explorer) and the cohort knowledge graph.</li>
+        </ol>
+
+        <h4>4.C.4 · The three analytic methods</h4>
+        <div class="tw"><table>
+          <tr><th>Method</th><th>Uses</th><th>Does not use</th></tr>
+          <tr><td><b>V1 · Text</b></td><td>Narratives (<code>text.div</code>), display text, synonyms/abbreviations, simple negation (“denies”, “no history of”).</td><td>Codes, dates.</td></tr>
+          <tr><td><b>V3 · Codes</b></td><td>SNOMED CT / LOINC / RxNorm identifiers.</td><td>Dates.</td></tr>
+          <tr><td><b>V4 · Codes + time</b></td><td>Codes plus onset / effective / prescribed / performed / encounter dates.</td><td>—</td></tr>
+        </table></div>
+
+        <h4>4.C.5 · The 14-analytics catalog</h4>
+        <div class="tw"><table>
+          <tr><th>#</th><th>Analytic</th><th>What it does</th></tr>
+          <tr><td>1</td><td>Demographic distributions</td><td>Gender, age, race, ethnicity — by text term / condition code / new cases in a date window; age at index date.</td></tr>
+          <tr><td>2</td><td>Condition prevalence &amp; incidence</td><td>Patients per condition named in text / per code; new cases per year, cumulative prevalence, first/last onset.</td></tr>
+          <tr><td>3</td><td>Medication utilization</td><td>Drugs in medication text / patients &amp; prescriptions per RxNorm code; prescriptions, patients, new starts per year; exposure span.</td></tr>
+          <tr><td>4</td><td>Lab and vital summary</td><td>Test found by name in text / by LOINC; mean, median, IQR, % abnormal; V4: yearly trend; per-patient first-vs-last change &amp; % improved.</td></tr>
+          <tr><td>5</td><td>Comorbidity patterns</td><td>Condition pairs co-mentioned (lift) / code pairs (lift); V4: ordered pairs B within N days after A, median gap.</td></tr>
+          <tr><td>6</td><td>Treatment patterns</td><td>% with condition on first-line drug named in text / % on first-line codes; V4: time diagnosis→first prescription, % within 30/90/365 d, treated-before-diagnosis.</td></tr>
+          <tr><td>7</td><td>Encounter utilization</td><td>Visit type / reasons from text; encounters, patients, LOS by class; V4: yearly volume, ED per 1,000, 30-day readmission rate.</td></tr>
+          <tr><td>8</td><td>Chronic disease control</td><td>Mean result per patient (text / coded); V4: latest result in last 12 months, control rate by year, testing interval.</td></tr>
+          <tr><td>9</td><td>Preventive screening / care gaps</td><td>Eligible patients with procedure in text / ever screened coded; V4: screened in recommended interval, overdue, never screened.</td></tr>
+          <tr><td>10</td><td>Polypharmacy &amp; risky pairs</td><td>Distinct drugs per patient from text / distinct codes; risky pairs ever; V4: rolling 12-month windows; pairs within 90 days.</td></tr>
+          <tr><td>11</td><td>Allergy profile &amp; conflicts</td><td>Allergens in text / allergen codes, severity, reactions, conflicts (no dates); V4: new allergies per year; amoxicillin after allergy recorded.</td></tr>
+          <tr><td>12</td><td>Procedure volume</td><td>Procedures in text / per code; V4: yearly volume, median age at procedure.</td></tr>
+          <tr><td>13</td><td>Multimorbidity burden</td><td>Chronic conditions per patient from text / distinct chronic codes; V4: accrual by year; time from 1st to 2nd chronic diagnosis.</td></tr>
+          <tr><td>14</td><td>Data quality &amp; completeness</td><td>Narrative coverage / coding coverage, unrecognised code systems; V4: date completeness, impossible dates, records per year.</td></tr>
+        </table></div>
+
+        <h4>4.C.6 · Key deep modules</h4>
+        <div class="grid c2">
+          <div class="gcard"><h3>Inpatient trajectory (V4)</h3><p>Generator option <code>inpatient</code>; follows each stay through nine stages: Comorbidities, Diagnosis, Presentation, Initial plan, Medications, Procedures, Escalation, Advanced/recurrent, Disposition. Sections: scope, nodes, ribbons, stage_check, trace.</p></div>
+          <div class="gcard"><h3>Disease module (V4)</h3><p><code>disease</code>: type 2 diabetes or hypertension; controlled = latest control result in 12 months below goal (HbA1c 7 / SBP 140); untested = care gap. Passes per age band, sex, burden, regimen, testing frequency, concordance, payer, income, social needs, adherence tier, CKD stage.</p></div>
+          <div class="gcard"><h3>Cohort knowledge graph</h3><p><code>GET /api/kg/cohort</code> builds graph from data of scope: nodes (conditions/drugs/labs/procedures) with patients/prevalence/% abnormal; links with lift, z, Jaccard, P(b|a), P(a|b), order/median gap; curated tags; reference-only links n=0.</p></div>
+          <div class="gcard"><h3>AI researcher</h3><p>Optional LLM loop: 1–20 rounds; start from analytic or plain-English question; each round runs analytic, asks insight, asks next steps, writes summary, runs top suggestion; pause-to-review default on for start; audit logged.</p></div>
+          <div class="gcard"><h3>Analytics readiness</h3><p><code>POST /api/readiness/profile</code>, <code>POST /api/readiness/check</code>, <code>GET /api/readiness/jobs/:id</code>; labels Runnable / No rows / Needs a choice / Error / Too slow; insights; Download JSON.</p></div>
+          <div class="gcard"><h3>Custom analytic (plain English)</h3><p><code>POST /api/analytics/custom/*</code>; LLM writes one read-only <code>SELECT</code> over scoped views (<code>p, dx, ob, rx, pr, en, al, im, ref</code>); mode enforced (V1 text-only, V3 codes-no-dates, V4 codes+dates); refused query repaired once; READ ONLY txn, 60s, 1000-row cap; only the question is sent to the model (audit <code>ai.request</code>).</p></div>
+        </div>
+      </div>
+
+      <div class="warn"><b>Research, not clinical support:</b> outputs are descriptive for exploration and education; unadjusted comparisons; V3 outcomes are modelled at import so stratifying them is circular. Not a medical device, not for real patient care.</div>
+      <div class="danger"><b>De-identified records only:</b> the Clinical Intelligence Suite and the narrative-analytics work must be used only with synthetic or properly de-identified records, never with identifiable patient data. <b>Validation status:</b> this page does not report validation of the 14 analytics against reference datasets or independent checks of the narrative-extraction pipeline.</div>
+    </section>
+
+    <!-- ================= SECTION: GLOSSARY ================= -->
+    <section id="glossary">
+      <h2>05 · Glossary — key terms</h2>
+      <div class="tw"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><b>Vibe Rounds</b></td><td>AI paradigm where AI questions rather than answers (Socratic mentor).</td></tr>
+        <tr><td><b>Hub</b></td><td>Main learning site (tools, courses, demos, preprints).</td></tr>
+        <tr><td><b>Prompts library</b></td><td>Modules + frameworks + lifecycle that encode how AI should teach / research.</td></tr>
+        <tr><td><b>Clinical Intelligence Suite</b></td><td>The Clinical Analytics App (FHIR discovery): standalone Node/Express + PostgreSQL + FHIR R4 app that imports FHIR data and runs deterministic cohort analytics, with an LLM assistant and human-gate workflow.</td></tr>
+        <tr><td><b>Socratic toolset</b></td><td>Learner-facing tools where the LLM asks questions rather than giving answers.</td></tr>
+        <tr><td><b>CCOS</b></td><td>Clinical Cognition Operating System — a prompt-pipeline framework (not software or an operating system) for guided discovery.</td></tr>
+        <tr><td><b>Population / Batch / Group</b></td><td>Population keys <code>batch:&lt;suffix&gt;</code> / <code>group:&lt;base&gt;</code>; which batches a cohort covers.</td></tr>
+        <tr><td><b>Cohort</b></td><td>Saved set of patients (criteria SQL / SNOMED builder) bound to one population; one active at a time.</td></tr>
+        <tr><td><b>V1 / V3 / V4</b></td><td>Analytic methods: text-only; codes; codes+time.</td></tr>
+        <tr><td><b>Lift</b></td><td>Association strength beyond chance (co-occurrence vs expected).</td></tr>
+        <tr><td><b>Jaccard</b></td><td>Set-overlap similarity between two concept sets.</td></tr>
+        <tr><td><b>P(b\|a)</b></td><td>Likelihood of B given A; used in graph links.</td></tr>
+        <tr><td><b>OpenRouter</b></td><td>LLM provider used by AI assistant/researcher (OpenRouter, Claude, OpenAI, Gemini supported in suite).</td></tr>
+        <tr><td><b>Audit log</b></td><td>Append-only, SHA-256 chained log of writes, patient-data reads and AI sends.</td></tr>
+      </table></div>
+    </section>
+
+
+    <section id="references">
+      <h2>06 · Citation, related work &amp; references</h2>
+      <div class="card">
+        <h3>How to cite</h3>
+        <p>Gupta AK. <i>Vibe Rounds — Master Documentation</i> (version 1.1, 25 October 2026). Paradigm coined June 2026. CC BY 4.0.</p>
+        <h4>Changelog</h4>
+        <ul class="tight">
+          <li><b>v1.1 · 25 Oct 2026</b> — added references and design-hypothesis framing; softened derived-value and speed claims; marked validation as planned; de-identified-data notices; CCOS described as a prompt-pipeline framework; tool/stage numbering clarified.</li>
+          <li><b>v1.0 · June 2026</b> — first consolidated documentation.</li>
+        </ul>
+      </div>
+      <h3>Related work</h3>
+      <p>Vibe Rounds sits between educational and analytic work. Its approach to bias and cognitive error follows the diagnostic-reasoning literature<sup><a href="#ref6">[6]</a></sup>. The Clinical Intelligence Suite overlaps in purpose with established cohort-discovery and observational-data platforms such as i2b2<sup><a href="#ref7">[7]</a></sup> and OHDSI/OMOP<sup><a href="#ref8">[8]</a></sup>. Those are mature, community-validated platforms; the Suite differs by adding an LLM assistant and human-gate workflow over FHIR data, and it is not presented as a replacement for them.</p>
+      <h3>References</h3>
+      <ol class="steps">
+        <li id="ref1">Sweller J. Cognitive load during problem solving: effects on learning. <i>Cognitive Science</i>. 1988;12(2):257–285.</li>
+        <li id="ref2">Kalyuga S, Ayres P, Chandler P, Sweller J. The expertise reversal effect. <i>Educational Psychologist</i>. 2003;38(1):23–31.</li>
+        <li id="ref3">Wood D, Bruner JS, Ross G. The role of tutoring in problem solving. <i>Journal of Child Psychology and Psychiatry</i>. 1976;17(2):89–100.</li>
+        <li id="ref4">Slamecka NJ, Graf P. The generation effect: delineation of a phenomenon. <i>Journal of Experimental Psychology: Human Learning and Memory</i>. 1978;4(6):592–604.</li>
+        <li id="ref5">Bjork RA. Memory and metamemory considerations in the training of human beings. In: Metcalfe J, Shimamura A, eds. <i>Metacognition: Knowing about Knowing</i>. MIT Press; 1994:185–205.</li>
+        <li id="ref6">Croskerry P. The importance of cognitive errors in diagnosis and strategies to minimize them. <i>Academic Medicine</i>. 2003;78(8):775–780.</li>
+        <li id="ref7">Murphy SN, Weber G, Mendis M, et al. Serving the enterprise and beyond with informatics for integrating biology and the bedside (i2b2). <i>JAMIA</i>. 2010;17(2):124–130.</li>
+        <li id="ref8">Hripcsak G, Duke JD, Shah NH, et al. Observational Health Data Sciences and Informatics (OHDSI): opportunities for observational researchers. <i>Studies in Health Technology and Informatics</i>. 2015;216:574–578.</li>
+      </ol>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><b>Vibe Rounds — Master Documentation</b> · “AI that questions, not answers.” This single page synthesises the two cloned repositories:
+    <a href="https://github.com/avi33tbtt/avi33tbtt.github.io" target="_blank" rel="noopener">avi33tbtt.github.io</a> (main project) and
+    <a href="https://github.com/avi33tbtt/VibeRounds-Clinical-Analytics-App" target="_blank" rel="noopener">VibeRounds-Clinical-Analytics-App</a> (clinical analytics research component).</p>
+    <p class="muted">Coined by Dr. Avinash Kumar Gupta · June 2026 · Version 1.1 (25 Oct 2026) · CC BY 4.0 per the hub. Outputs are descriptive for exploration and education, not clinical decision support.</p>
+  </div>
+</footer>
+
+<script>
+  // Scrollspy for TOC
+  const links = Array.from(document.querySelectorAll('aside.toc a'));
+  const sections = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) {
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+    }});
+  }, {rootMargin: '-20% 0px -70% 0px'});
+  sections.forEach(s => obs.observe(s));
+
+  // Motion: reveal on scroll + stat count-up
+  (function(){
+    document.documentElement.classList.add('js');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('.reveal, .story-steps');
+    if(reduce || !('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('in')); return; }
+    const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(e=>io.observe(e));
+    document.querySelectorAll('.stat .n').forEach(n=>{
+      const m = n.textContent.match(/^(\d+)(.*)$/); if(!m) return;
+      const end=+m[1], suf=m[2]; let started=false;
+      new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting && !started){ started=true; const t0=performance.now();
+        (function f(t){ const p=Math.min((t-t0)/900,1); n.textContent=Math.round(end*p)+suf; if(p<1) requestAnimationFrame(f); })(t0); o.disconnect(); } },{threshold:.6}).observe(n);
+    });
+  })();
+
+  // Side menu drawer (narrow screens)
+  (function(){
+    const b=document.body, btn=document.getElementById('menubtn'), sc=document.getElementById('scrim');
+    function set(o){ b.classList.toggle('menu-open',o); btn.setAttribute('aria-expanded',o); }
+    btn.addEventListener('click',()=>set(!b.classList.contains('menu-open')));
+    sc.addEventListener('click',()=>set(false));
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') set(false); });
+    document.querySelectorAll('aside.toc a').forEach(a=>a.addEventListener('click',()=>set(false)));
+    window.matchMedia('(min-width:1021px)').addEventListener('change',e=>{ if(e.matches) set(false); });
+  })();
+</script>
+</body>
+</html>
