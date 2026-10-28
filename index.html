@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>VibeRounds — AI that questions, not answers</title>
+<meta name="description" content="Vibe Rounds: Socratic AI for clinical reasoning, coined by Dr. Avinash Kumar Gupta, June 2026. Practice cases, sharpen your reasoning, and go deeper when you're ready." />
+<meta name="author" content="Dr. Avinash Kumar Gupta" />
+<meta name="keywords" content="Vibe Rounds, healthcare AI, Socratic AI, clinical reasoning, medical education, Dr Avinash Kumar Gupta" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#0891B2" />
+<meta name="google-site-verification" content="z_nkjb-StSqdMztfDr3gOW2kVew5CrE6jHzO4w_tatY" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://avi33tbtt.github.io/" />
+<meta property="og:site_name" content="VibeRounds" />
+<meta property="og:title" content="Vibe Rounds — AI that questions, not answers" />
+<meta property="og:description" content="Vibe coding changed software. Vibe Rounds brings the same revolution to medicine." />
+<meta property="og:image" content="https://avi33tbtt.github.io/assets/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://avi33tbtt.github.io/" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230891B2'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Georgia,serif' fill='%23ffffff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"Vibe Rounds: AI-Augmented Clinical Reasoning","author":{"@type":"Person","name":"Dr. Avinash Kumar Gupta"},"datePublished":"2026-06","description":"Vibe Rounds is a concept for AI-augmented clinical reasoning.","url":"https://avi33tbtt.github.io/","sameAs":["https://archive.org/details/vibe-rounds-concept-document","https://zenodo.org/records/20622693"]}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFBFC;--surface:#fff;--alt:#F3F6F8;--border:#E2E8F0;
+  --ink:#0F172A;--soft:#475569;--mute:#64748B;
+  --teal:#0891B2;--deep:#0E7490;--pale:#ECFEFF;--amber:#D97706;--amber-pale:#FFFBEB;
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top));-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden;overflow-wrap:break-word;-webkit-tap-highlight-color:transparent;background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.65}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left)) 0 max(20px,env(safe-area-inset-right))}
+section{padding:64px 0}
+h1,h2,h3{letter-spacing:-.01em;line-height:1.2}
+h2{font-size:28px;font-weight:700;margin-bottom:8px}
+.lead{color:var(--soft);max-width:60ch;margin-bottom:28px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);font-weight:500;margin-bottom:10px}
+
+/* NAV */
+nav{padding-top:env(safe-area-inset-top);position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:58px}
+.brand{font-family:'DM Mono',monospace;font-weight:500;font-size:17px;text-decoration:none;white-space:nowrap}
+.brand span{color:var(--teal)}
+.links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.links::-webkit-scrollbar{display:none}
+.links a{text-decoration:none;font-size:14px;font-weight:500;color:var(--soft);padding:8px 12px;border-radius:8px;white-space:nowrap}
+.links a:hover{background:var(--alt);color:var(--deep)}
+.links a.cta{background:var(--teal);color:#fff}
+.links a.cta:hover{background:var(--deep);color:#fff}
+
+/* HERO */
+.hero{padding:64px 0 40px;background:linear-gradient(160deg,#EFF6FF 0%,#F0FDFA 65%);border-bottom:1px solid var(--border)}
+.hero h1{font-size:clamp(32px,5.5vw,52px);font-weight:700;max-width:16ch;margin-bottom:16px}
+.hero h1 em{font-family:'DM Serif Display',serif;font-weight:400;color:var(--deep)}
+.hero p.sub{font-size:18px;color:var(--soft);max-width:54ch;margin-bottom:28px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:600;font-size:15px;padding:12px 22px;border-radius:9px;border:1px solid var(--teal);transition:.15s;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--teal);color:#fff}
+.btn.primary:hover{background:var(--deep)}
+.btn.ghost{background:#fff;color:var(--deep)}
+.btn.ghost:hover{background:var(--pale)}
+.notice{margin-top:28px;font-size:13.5px;color:var(--soft);background:#fff;border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;padding:12px 16px;max-width:70ch}
+
+/* PATHS */
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.path{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;text-decoration:none;display:flex;flex-direction:column;gap:8px;transition:.15s}
+.path:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 8px 24px -12px rgba(8,145,178,.35)}
+.path .n{font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:var(--teal)}
+.path h3{font-size:18px}
+.path p{font-size:14px;color:var(--soft);flex:1}
+.path .go{font-size:13px;font-weight:600;color:var(--deep)}
+
+/* PROMPTS */
+.prompt-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{font-family:inherit;font-size:14px;font-weight:500;padding:9px 14px;border-radius:999px;border:1px solid var(--border);background:var(--alt);color:var(--soft);cursor:pointer}
+.chip:hover{border-color:var(--teal);color:var(--deep)}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.prompt-out{overflow-wrap:anywhere;background:#0F172A;color:#E2E8F0;border-radius:10px;padding:18px;font-size:14px;line-height:1.7;min-height:120px}
+.prompt-actions{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.hint{font-size:13px;color:var(--soft)}
+
+/* TOOLS */
+.group{margin-top:32px}
+.group h3{font-size:14px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--deep);font-weight:500;margin-bottom:4px}
+.group .gd{font-size:14px;color:var(--soft);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;transition:.15s;display:block}
+.card:hover{border-color:var(--teal);transform:translateY(-2px)}
+.card b{display:block;font-size:15px;margin-bottom:3px}
+.card span{font-size:13px;color:var(--soft);line-height:1.5;display:block}
+.card .mt{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--deep);background:var(--pale);border:1px solid rgba(8,145,178,.3);border-radius:5px;padding:1px 7px;margin-bottom:6px}
+.card.fl{border:1.5px solid var(--teal);background:linear-gradient(135deg,rgba(8,145,178,.08),#fff)}
+.flagship{display:block;text-decoration:none;background:linear-gradient(135deg,rgba(8,145,178,.14),rgba(8,145,178,.04));border:1.5px solid var(--teal);border-radius:14px;padding:22px 24px;margin-top:8px}
+.flagship:hover{box-shadow:0 8px 24px -12px rgba(8,145,178,.5)}
+.flagship .tag{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--teal);color:#fff;border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle}
+.flagship b{font-size:19px}
+.flagship p{font-size:14px;color:var(--soft);margin-top:4px}
+
+/* DEEPER */
+.deeper{background:var(--alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+details{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:22px;color:var(--teal);font-weight:400;flex-shrink:0}
+details[open] summary::after{content:'–'}
+summary small{display:block;font-weight:400;font-size:13px;color:var(--soft);margin-top:2px}
+.d-body{padding:0 22px 22px;color:var(--soft);font-size:15px}
+.d-body p{margin-bottom:12px}
+.d-body ul{padding-left:20px;margin-bottom:12px}
+.d-body li{margin-bottom:6px}
+.d-body a.lnk{color:var(--deep);font-weight:600;text-decoration:none}
+.d-body a.lnk:hover{text-decoration:underline}
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:14px 0 4px}
+.mini a{background:var(--alt);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-decoration:none;font-size:14px;font-weight:600;color:var(--ink)}
+.mini a:hover{border-color:var(--teal);color:var(--deep)}
+.mini a small{display:block;font-weight:400;font-size:12.5px;color:var(--soft);margin-top:2px}
+.quote{border-left:3px solid var(--teal);background:transparent;padding:4px 0 4px 18px;font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--ink);margin:12px 0}
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.stage{background:var(--alt);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;font-size:13px}
+.stage b{display:block;font-family:'DM Serif Display',serif;font-style:italic;font-size:20px;color:var(--teal)}
+.stage.hl{background:var(--pale);border-color:var(--teal)}
+
+/* TRAINING / FOOTER */
+.train{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center}
+.train p{color:var(--soft);margin-bottom:10px;font-size:15px}
+footer{padding:36px 0 48px;font-size:13px;color:var(--soft);text-align:center}
+footer p{max-width:70ch;margin:0 auto 8px}
+footer a{color:var(--deep)}
+
+@media(max-width:760px){
+  section{padding:44px 0}
+  h2{font-size:24px}
+  .paths{grid-template-columns:1fr}
+  .stages{grid-template-columns:1fr 1fr}
+  .train{grid-template-columns:1fr;padding:20px;gap:18px}
+  .brand{font-size:15px}
+  .nav-in{gap:8px}
+  .links{flex:1;justify-content:flex-start;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:16px}
+  .links a{padding:10px 11px;font-size:14px}
+  .hero{padding:40px 0 32px}
+  .hero p.sub{font-size:16.5px}
+  .btns{flex-direction:column}
+  .btns .btn{width:100%;text-align:center;padding:14px 20px}
+  .prompt-box{padding:18px}
+  .prompt-actions .btn{width:100%;text-align:center;padding:14px 20px}
+  .chip{padding:10px 14px}
+  .grid,.mini{grid-template-columns:1fr}
+  .card,.mini a{padding:14px 16px}
+  .flagship{padding:18px}
+  .flagship .tag{display:inline-block;margin:4px 0 0 8px}
+  summary{padding:16px 16px}
+  .d-body{padding:0 16px 18px}
+  .quote{font-size:16.5px}
+  .path{padding:20px}
+  .card:hover,.path:hover{transform:none}
+}
+@media(max-width:380px){
+  .wrap{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .stages{grid-template-columns:1fr}
+  .hero h1{font-size:30px}
+}
+@media(hover:none){
+  .card:hover,.path:hover{transform:none}
+}
+/* MATURITY MAP */
+.mat{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.mat-row{background:var(--alt);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.mat-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.mat-h b{color:var(--ink);font-size:15px}
+.mat-pill{font-style:normal;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;border-radius:999px;padding:3px 10px;border:1px solid transparent}
+.mat-pill{background:var(--pale);color:var(--deep);border-color:rgba(8,145,178,.3)}
+.mat-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mat-bar i{height:10px;border-radius:99px;background:#fff;border:1px solid var(--border)}
+.mat-bar.lv3 i,.mat-bar.lv2 i:nth-child(-n+2),.mat-bar.lv1 i:first-child{background:var(--deep);border-color:var(--deep)}
+.mat-row p{margin:0;font-size:14px;color:var(--soft)}
+.mat-scale{display:block}
+.mat-scale div{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 16px}
+.mat-scale i{font-style:normal;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-align:center}
+
+/* FOCUS, SKIP LINK, NEW BLOCKS */
+.skip{position:absolute;left:-9999px;top:8px;z-index:300;background:var(--deep);color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none}
+.skip:focus{left:12px}
+main:focus{outline:none}
+a:focus-visible,button:focus-visible,summary:focus-visible,.chip:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+.btn.primary:focus-visible,.links a.cta:focus-visible{outline-color:var(--ink)}
+.coined{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.04em;color:var(--deep);background:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 14px;margin-bottom:18px}
+.coined b{font-weight:500}
+.what-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}
+.quote cite{display:block;margin-top:10px;font-family:'DM Mono',monospace;font-style:normal;font-size:12px;letter-spacing:.04em;color:var(--soft)}
+.chat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.who{margin-top:36px}
+.who .card b{color:var(--deep)}
+@media(max-width:760px){
+  .what-grid{grid-template-columns:1fr;gap:22px}
+  .who{margin-top:28px}
+}
+
+/* COOKIE NOTICE */
+.consent{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:90;max-width:720px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 16px 40px -20px rgba(15,23,42,.35);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.consent[hidden]{display:none}
+.consent p{flex:1 1 260px;margin:0;font-size:14px;line-height:1.5;color:var(--soft)}
+.consent .cbtns{display:flex;gap:8px;flex:0 0 auto}
+.consent .btn{padding:10px 18px;font-size:14px}
+.lnkbtn{font:inherit;background:none;border:0;padding:0;color:var(--deep);text-decoration:underline;cursor:pointer}
+@media(max-width:760px){
+  .consent .cbtns{width:100%}
+  .consent .cbtns .btn{flex:1;text-align:center;padding:12px}
+}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== CLINICAL COGNITION JOURNEY ===== */
+body.j-lock{overflow:hidden}
+#journey{position:fixed;inset:0;height:100vh;height:100dvh;z-index:100;display:none;flex-direction:column;background:linear-gradient(160deg,#EFF6FF 0%,#F0FDFA 70%)}
+#journey.open{display:flex;animation:jFade .3s ease}
+@keyframes jFade{from{opacity:0}to{opacity:1}}
+@keyframes jUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes jGrow{to{width:var(--w)}}
+@keyframes jPulse{0%,100%{box-shadow:0 0 0 0 rgba(8,145,178,.35)}50%{box-shadow:0 0 0 10px rgba(8,145,178,0)}}
+.a{opacity:0;animation:jUp .55s ease var(--d,0s) forwards}
+.j-top{display:flex;align-items:center;gap:16px;padding:max(14px,env(safe-area-inset-top)) 20px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.7)}
+.j-top .brand{font-size:15px}
+.j-track{flex:1;display:flex;align-items:center;gap:6px;justify-content:center}
+.j-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--border);background:#fff;cursor:pointer;padding:0;transition:.25s}
+.j-dot.done{background:var(--teal);border-color:var(--teal)}
+.j-dot.now{background:var(--teal);border-color:var(--teal);transform:scale(1.35);animation:jPulse 1.8s infinite}
+.j-close{font:inherit;font-size:14px;font-weight:600;color:var(--soft);background:none;border:1px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer}
+.j-close:hover{border-color:var(--teal);color:var(--deep)}
+.j-bar{height:3px;background:var(--border)}
+.j-bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .5s ease}
+.j-main{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1040px;width:100%;margin:0 auto;padding:32px 20px}
+.j-text .kick{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);margin-bottom:10px}
+.j-text h2{font-size:clamp(26px,4vw,38px);margin-bottom:14px}
+.j-text p{color:var(--soft);font-size:17px;margin-bottom:20px;max-width:46ch}
+.j-links{display:flex;flex-wrap:wrap;gap:10px}
+.j-links a{font-size:14px;font-weight:600;text-decoration:none;color:var(--deep);background:#fff;border:1px solid var(--teal);border-radius:999px;padding:8px 14px}
+.j-links a:hover{background:var(--teal);color:#fff}
+.j-vis{background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px;min-height:340px;display:flex;flex-direction:column;justify-content:center;gap:12px;box-shadow:0 16px 40px -24px rgba(15,23,42,.25);overflow:hidden}
+.j-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--border);background:rgba(255,255,255,.7)}
+.j-foot small{color:var(--mute);font-size:12px;text-align:center;flex:1}
+.j-foot .btn[disabled]{opacity:.35;cursor:default}
+/* visual bits */
+.jtag{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:var(--pale);color:var(--deep);border-radius:6px;padding:3px 9px;width:fit-content}
+.vit{display:flex;flex-wrap:wrap;gap:8px}
+.vit span{background:var(--alt);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:13px;font-family:'DM Mono',monospace}
+.bub{max-width:88%;padding:11px 15px;border-radius:14px;font-size:14.5px;line-height:1.5}
+.bub.ai{background:var(--alt);border:1px solid var(--border);border-bottom-left-radius:4px}
+.bub.me{background:var(--teal);color:#fff;border-bottom-right-radius:4px;margin-left:auto}
+.lockrow{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--soft)}
+.dots3 span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mute);margin-right:3px;animation:jPulse 1.2s infinite}
+.ladder{display:flex;flex-direction:column;gap:10px}
+.rung{display:flex;align-items:center;gap:12px;font-size:14px}
+.rung b{width:110px;flex-shrink:0;font-weight:600}
+.meter{flex:1;height:12px;background:var(--alt);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal),#22D3EE);animation:jGrow 1s ease var(--d,0s) forwards}
+.lens{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lens span{background:var(--pale);border:1px solid rgba(8,145,178,.3);color:var(--deep);border-radius:10px;padding:14px 6px;text-align:center;font-size:13px;font-weight:600}
+.core{text-align:center;font-weight:700;color:#fff;background:var(--teal);border-radius:12px;padding:12px;animation:jPulse 2s infinite}
+.vs{display:flex;gap:10px;align-items:center;justify-content:center}
+.vs .bub{max-width:46%}
+.flag{background:var(--amber-pale);border:1px solid #F5D78F;color:#8a5a00;border-radius:10px;padding:10px 14px;font-size:13.5px}
+.loop{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+.loop span.step{background:var(--pale);border:1px solid rgba(8,145,178,.3);border-radius:999px;padding:9px 16px;font-weight:600;color:var(--deep);font-size:14px}
+.loop i{color:var(--teal);font-style:normal}
+.illus{font-size:11.5px;color:var(--mute);font-style:italic}
+@media(max-width:760px){
+  .j-main{grid-template-columns:1fr;gap:20px;align-items:start;padding:20px 16px}
+  .j-vis{min-height:240px;padding:16px}
+  .j-top{gap:10px;padding-left:14px;padding-right:14px}
+  .j-top .brand{display:none}
+  .j-track{gap:4px;flex-wrap:wrap}
+  .j-dot{width:14px;height:14px}
+  .j-foot{padding-left:14px;padding-right:14px}
+  .j-foot small{display:none}
+  .j-foot .btn{flex:1;text-align:center;padding:13px 12px}
+  .j-close{padding:10px 14px}
+  .j-text p{font-size:16px}
+  .j-links a{padding:10px 14px}
+  .bub{max-width:94%}
+  .vs{flex-direction:column;align-items:stretch}
+  .vs .bub{max-width:100%}
+  .rung b{width:84px;font-size:13px}
+  .lens{gap:8px}
+  .loop span.step{padding:8px 12px;font-size:13px}
+}
+@media(max-width:380px){
+  .lens{grid-template-columns:1fr 1fr}
+  .rung b{width:70px}
+}
+@media(prefers-reduced-motion:reduce){
+  .a{opacity:1;animation:none}
+  .meter i{animation:none;width:var(--w)}
+  .j-dot.now,.core,.dots3 span{animation:none}
+  #journey.open{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><span>Vibe</span>Rounds</a>
+    <div class="links">
+      <a href="#what">About</a>
+      <a href="#start">Start</a>
+      <a href="#" data-journey>Journey</a>
+      <a href="#tools">Tools</a>
+      <a href="#courses">Courses</a>
+      <a href="#deeper">Go deeper</a>
+      <a href="#training" class="cta">Training</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="coined">Coined by <b>Dr. Avinash Kumar Gupta</b> · June 2026</div>
+    <div class="eyebrow">Socratic AI for clinical reasoning</div>
+    <h1>AI that <em>questions</em>, not answers.</h1>
+    <p class="sub">Practice cases with an AI that challenges your thinking instead of handing you a diagnosis. Free, runs in your browser, works with any AI you already use.</p>
+    <div class="btns">
+      <button class="btn primary" type="button" data-journey>▶ Take the guided journey</button>
+      <a class="btn ghost" href="#start">Try it in 60 seconds</a>
+      <a class="btn ghost" href="#tools">Browse tools</a>
+    </div>
+    <p class="notice"><b>Learning tool, not a clinical tool.</b> The apps run on your own API key, stored only in your browser. Get a free key from <a href="https://openrouter.ai/" target="_blank" rel="noopener">OpenRouter</a> or any LLM provider and use the apps for free. Nothing is sent to our servers. Not for real patient care.</p>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<section id="what" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="eyebrow">The idea</div>
+    <h2>What is Vibe Rounds?</h2>
+    <div class="what-grid">
+      <div>
+        <div class="quote">Vibe Rounds is a Socratic AI paradigm for medical students, clinicians, researchers and scientists: it augments clinical reasoning through structured questioning, guided discovery and reflective dialogue rather than direct answers.<cite>Coined by Dr. Avinash Kumar Gupta, June 2026</cite></div>
+        <p class="lead" style="margin:16px 0 12px">Just as vibe coding lets developers build software through natural language, Vibe Rounds applies the same spirit to clinical thinking. The learner stays in charge of the reasoning. The AI acts like a good attending: it challenges assumptions, flags reasoning biases and asks "why?" instead of supplying the conclusion.</p>
+        <p style="font-weight:700;max-width:60ch">Not AI replacing doctors. AI that sharpens how you think: it asks the questions that help you practice reasoning, spot your own biases and justify your decisions. Built for learning and clinical thinking, not for diagnosing or managing patients.</p>
+      </div>
+      <div class="chat" role="group" aria-label="Example exchange">
+        <div class="jtag">Example exchange</div>
+        <div class="bub ai">What is your leading diagnosis, and which finding would most change your mind?</div>
+        <div class="bub me">Acute coronary syndrome. A tearing back pain would make me doubt it.</div>
+        <div class="bub ai">Good, you've committed. What does tearing back pain point toward instead, and how would you rule it in or out?</div>
+        <div class="lockrow">🔓 Committed. Hints are now unlocked.</div>
+        <div class="illus">Illustrative example, not a real patient.</div>
+      </div>
+    </div>
+
+    <div class="who">
+      <div class="eyebrow">Who it's for</div>
+      <div class="grid">
+        <a class="card" href="#prompt"><b>I'm a student</b><span>Practice your reasoning on cases with a Socratic AI mentor.</span></a>
+        <a class="card" href="#training"><b>I'm an educator</b><span>Bring case-based Socratic teaching to your learners, or join a live session.</span></a>
+        <a class="card" href="#tools"><b>I'm a researcher</b><span>Explore FHIR data with Clinical Analytics and build flows with the Complex Flow Builder.</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <div class="eyebrow">Start here</div>
+    <h2>Pick the path that fits you</h2>
+    <p class="lead">Not sure where to begin? Choose what you want to do today.</p>
+    <div class="paths">
+      <a class="path" href="#prompt">
+        <div class="n">1</div>
+        <h3>Chat with a Socratic mentor</h3>
+        <p>Copy one prompt into ChatGPT, Claude or Gemini. No sign-up, no setup.</p>
+        <span class="go">Get a prompt ↓</span>
+      </a>
+      <a class="path" href="#tools">
+        <div class="n">2</div>
+        <h3>Practice a case</h3>
+        <p>Use ready-made tools: simulated patients, MCQs, debates and drills.</p>
+        <span class="go">See the tools ↓</span>
+      </a>
+      <a class="path" href="#courses">
+        <div class="n">3</div>
+        <h3>Learn the method</h3>
+        <p>Structured courses on clinical cognition and evidence-based medicine.</p>
+        <span class="go">See courses ↓</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="prompt" style="padding-top:0">
+  <div class="wrap">
+    <div class="prompt-box">
+      <div class="eyebrow">Quick start · 3 steps</div>
+      <h2 style="font-size:22px">Get your prompt</h2>
+      <p class="lead" style="margin-bottom:16px"><b>1.</b> Pick your level. <b>2.</b> Copy the prompt. <b>3.</b> Paste it as your first message in any AI chat, then describe a case.</p>
+      <div class="chips" id="chips" role="group" aria-label="Choose your level"></div>
+      <div class="prompt-out" id="promptOut" aria-live="polite"></div>
+      <div class="prompt-actions">
+        <button class="btn primary" id="copyBtn" type="button">Copy prompt</button>
+        <span class="hint">Tip: the AI withholds answers on purpose. Commit to your own answer first.</span>
+      </div>
+    </div>
+
+    <div class="prompt-box" style="margin-top:16px">
+      <div class="eyebrow">Try it now</div>
+      <h2 style="font-size:22px">Query to run</h2>
+      <p class="lead" style="margin-bottom:16px">Paste this into an AI chat that can open links. It runs the Clinical Pre-Mortem module on a real case.</p>
+      <div class="prompt-out" id="queryOut" style="min-height:0">for case - https://classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html?m=1 run module https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html</div>
+      <div class="prompt-actions">
+        <button class="btn primary" id="copyQuery" type="button">Copy query</button>
+        <span class="hint"><a class="lnk" style="color:var(--deep);font-weight:600" href="https://classworkdecjan.blogspot.com/2019/05/42-f-with-severe-regular-edema-with_17.html?m=1" target="_blank" rel="noopener">Open the case</a> · <a class="lnk" style="color:var(--deep);font-weight:600" href="https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html" target="_blank" rel="noopener">Open the module</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools" style="padding-top:24px">
+  <div class="wrap">
+    <div class="eyebrow">Tools</div>
+    <h2>Everything you can use</h2>
+    <p class="lead">Grouped by what you want to do. Each opens in its own page. Cards tagged <b>Prompt module</b> are ready-made prompts: open one, then run it on your case in any AI chat.</p>
+
+    <a class="flagship" href="https://viberounds.ai.studio/" target="_blank" rel="noopener">
+      <b>Clinical Learning Suite</b><span class="tag">Flagship</span>
+      <p>All the main tools for medical students for case-based learning in one workspace. If you only try one thing, try this.</p>
+    </a>
+    <div class="grid" style="margin-top:12px">
+      <a class="card fl" href="https://viberounds-clinical-analytics-app.onrender.com/about" target="_blank" rel="noopener"><span class="mt">Flagship</span><b>Vibe Rounds Clinical Analytics</b><span>AI research assistant for FHIR data that shows its working. Compares text, codes and dates side by side. Synthetic or de-identified data only. May take a moment to load on your first visit.</span></a>
+      <a class="card fl" href="https://avi33tbtt.github.io/complex-flow-builder.html" target="_blank" rel="noopener"><span class="mt">Flagship</span><b>Complex Flow Builder</b><span>Describe your use case, chain together modules from the 57+ prompt library, and get a complete multi-step flow to run in any LLM and practice clinical reasoning on a case.</span></a>
+      <a class="card fl" href="https://avi33tbtt.github.io/demo/cases/VibeRounds-Dashboard-14M-MicrocyticAnemia-UrinaryObstruction.html" target="_blank" rel="noopener"><b>Worked demo: Analytics dashboard</b><span>Anonymized pediatric case, worked through with a printable report.</span></a>
+      <a class="card fl" href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html" target="_blank" rel="noopener"><b>Worked example: ASV evidence map</b><span>Demo of the workflow output: anti-snake-venom mortality benefit, mapped across evidence tiers.</span></a>
+    </div>
+
+    <div class="group">
+      <h3>Practice cases</h3>
+      <div class="gd">Work through a case and get questioned on it.</div>
+      <div class="grid">
+        <a class="card" href="https://avi33tbtt.github.io/bench.html" target="_blank" rel="noopener"><b>Case Bench</b><span>Case-based Socratic learning, MCQs and reasoning analytics.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/case-simulator.html" target="_blank" rel="noopener"><b>Case Simulator</b><span>Interview a simulated patient.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/case-practice.html" target="_blank" rel="noopener"><b>Clinical Practice</b><span>Focused drills on clinical cases.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/clinical-polemos.html" target="_blank" rel="noopener"><b>Clinical Polemos</b><span>Debate-style reasoning exercise.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/case-question-bank.html" target="_blank" rel="noopener"><b>Case Question Bank</b><span>Case questions for practice and review.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/lesson_bench.html" target="_blank" rel="noopener"><b>Lesson Bench</b><span>Get a structured lesson, then keep the conversation going.</span></a>        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-52-CP-Clinical-Pearls.html" target="_blank" rel="noopener"><span class="mt">Prompt module 52</span><b>Clinical Pearls</b><span>Distill a finished case into transferable teaching pearls.</span></a>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Analyze a case</h3>
+      <div class="gd">Look at a case from more angles.</div>
+      <div class="grid">
+        <a class="card" href="https://avi33tbtt.github.io/case-lens.html" target="_blank" rel="noopener"><b>Case Lens</b><span>Critical thinking from multiple analytical angles.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/sdm-lens.html" target="_blank" rel="noopener"><b>SDM Lens</b><span>Shared decision-making scenarios.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/case-analytics.html" target="_blank" rel="noopener"><b>Case Analytics</b><span>Review your clinical reasoning performance.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/case-reading.html" target="_blank" rel="noopener"><b>Case Reading</b><span>Guided reading and analysis of cases.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/critical-hub-node-navigation.html" target="_blank" rel="noopener"><b>Critical Hub-Node Navigation</b><span>Find the few nodes that decide the outcome.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/complex-flow-builder.html" target="_blank" rel="noopener"><b>Complex Flow Builder</b><span>Describe your use case, chain together modules from the 57+ prompt library, and get a complete multi-step flow to run in any LLM and practice clinical reasoning on a case.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html" target="_blank" rel="noopener"><span class="mt">Prompt module 12</span><b>Differential Diagnosis Deepdive</b><span>Systematically expand and prune your differential.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-28-Diagnostic-Time-Out.html" target="_blank" rel="noopener"><span class="mt">Prompt module 28</span><b>Diagnostic Time-Out</b><span>A structured pause to re-check a working diagnosis.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html" target="_blank" rel="noopener"><span class="mt">Prompt module 26</span><b>Bias Auditing</b><span>Screen your reasoning for cognitive and systemic bias.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html" target="_blank" rel="noopener"><span class="mt">Prompt module 42</span><b>Clinical Pre-Mortem</b><span>Imagine the plan failed, and find out why before it does.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/Prompts/Module-50-DRM-Diagnostic-Reasoning-Map.html" target="_blank" rel="noopener"><span class="mt">Prompt module 50</span><b>Diagnostic Reasoning Map</b><span>Map the diagnostic pathway you took, step by step.</span></a>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3>Evidence and research</h3>
+      <div class="gd">For evidence questions, research and data exploration.</div>
+      <div class="grid">
+        <a class="card" href="https://avi33tbtt.github.io/ebm.html" target="_blank" rel="noopener"><b>EBM Query Generator</b><span>Structured critical-appraisal queries.</span></a>
+        <a class="card" href="https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html" target="_blank" rel="noopener"><b>Worked example: ASV evidence map</b><span>Demo of the workflow output: anti-snake-venom mortality benefit, mapped across evidence tiers.</span></a>
+        <a class="card" href="https://viberounds-clinical-analytics-app.onrender.com/about" target="_blank" rel="noopener"><b>Vibe Rounds Clinical Analytics</b><span>AI research assistant for FHIR data that shows its working. Compares text, codes and dates side by side. Synthetic or de-identified data only. May take a moment to load on your first visit.</span></a>      </div>
+    </div>
+  </div>
+</section>
+
+<section id="courses" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow">Courses</div>
+    <h2>Learn at your own pace</h2>
+    <p class="lead">Structured material when you want more than a quick session.</p>
+    <div class="grid">
+      <a class="card" href="https://avi33tbtt.github.io/ebm/" target="_blank" rel="noopener"><b>EBM Course</b><span>From PICO question to critical appraisal.</span></a>
+      <a class="card" href="https://avi33tbtt.github.io/cc/" target="_blank" rel="noopener"><b>Clinical Cognition Course</b><span>The reasoning theory behind the method.</span></a>
+      <a class="card" href="https://avi33tbtt.github.io/article.html" target="_blank" rel="noopener"><b>Article</b><span>Promption and provocation cognitive modes.</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="deeper" id="deeper">
+  <div class="wrap">
+    <div class="eyebrow">Optional</div>
+    <h2>Go deeper</h2>
+    <p class="lead">You don't need any of this to use the tools. Open a section when you're curious about the thinking behind Vibe Rounds.</p>
+
+    <details>
+      <summary><span>Where it fits in teaching<small>The five-stage pedagogical spectrum</small></span></summary>
+      <div class="d-body">
+        <p>Learning moves from instructor-centered to learner-centered. Vibe Rounds is built for stages 3 and 4, and reaches into 5.</p>
+        <div class="stages">
+          <div class="stage"><b>1</b>Lecture</div>
+          <div class="stage"><b>2</b>Dyadic</div>
+          <div class="stage hl"><b>3</b>Socratic</div>
+          <div class="stage hl"><b>4</b>Guided discovery</div>
+          <div class="stage hl"><b>5</b>Research</div>
+        </div>
+        <p>Start at "Research" and learners drown in ambiguity; stay at "Lecture" and they never build independent thought. Highlighted stages are where Vibe Rounds works.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary><span>The module library<small>57+ reasoning modules, 4 teaching frameworks, 200+ pipelines</small></span></summary>
+      <div class="d-body">
+        <p>Under the hood, Vibe Rounds is a library of composable prompts ("modules") you can run on a case alone or chain into pipelines, for example <code>1 → 12 → 9 → 21 → 35</code>. It is a prompt architecture, not software with automated checks. All outputs need independent clinical verification.</p>
+        <div class="mini">
+          <a href="https://avi33tbtt.github.io/Prompts/Module-00-Cold-Start-Orientation.html" target="_blank" rel="noopener">Module 0 · Cold-Start<small>New? Start here</small></a>
+          <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" rel="noopener">Full prompt library<small>All modules and documentation</small></a>
+        </div>
+        <p style="margin-top:14px"><b>Four teaching frameworks used throughout:</b></p>
+        <div class="mini">
+          <a href="https://avi33tbtt.github.io/Prompts/Framework-A-Humanistic-Persona.html" target="_blank" rel="noopener">A · Humanistic persona<small>Affirm before you challenge</small></a>
+          <a href="https://avi33tbtt.github.io/Prompts/Framework-B-Finks-FLINK-Taxonomy.html" target="_blank" rel="noopener">B · Fink's taxonomy<small>Durable, transferable learning</small></a>
+          <a href="https://avi33tbtt.github.io/Prompts/Framework-C-Blooms-Taxonomy.html" target="_blank" rel="noopener">C · Bloom's taxonomy<small>Calibrating difficulty</small></a>
+          <a href="https://avi33tbtt.github.io/Prompts/Framework-D-Critical-Awareness-Framework.html" target="_blank" rel="noopener">D · Critical awareness<small>The protocol auditing itself</small></a>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary><span>Where each part stands<small>An honest maturity map</small></span></summary>
+      <div class="d-body">
+        <div class="mat" role="list">
+          <div class="mat-scale" aria-hidden="true"><span></span><div><i>Early</i><i>Medium</i><i>High</i></div></div>
+          <div class="mat-row" role="listitem">
+            <div class="mat-h"><b>AI-augmented clinical education</b><em class="mat-pill hi">High</em></div>
+            <div class="mat-bar lv3" role="img" aria-label="High maturity: 3 of 3"><i></i><i></i><i></i></div>
+          </div>
+          <div class="mat-row" role="listitem">
+            <div class="mat-h"><b>Guided discovery research</b><em class="mat-pill md">Medium</em></div>
+            <div class="mat-bar lv2" role="img" aria-label="Medium maturity: 2 of 3"><i></i><i></i><i></i></div>
+          </div>
+          <div class="mat-row" role="listitem">
+            <div class="mat-h"><b>Bedside decision support</b><em class="mat-pill lo">Early stage</em></div>
+            <div class="mat-bar lv1" role="img" aria-label="Early stage: 1 of 3"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2>Common questions</h2>
+    <p class="lead">Quick answers before you start.</p>
+
+    <details>
+      <summary><span>Is it free?</span></summary>
+      <div class="d-body"><p>Yes to start. The prompts are free to copy into any AI chat. The apps run on your own API key, and you can get a free key from OpenRouter or any LLM provider and use the apps for free. Live training is separate: email to ask about it.</p></div>
+    </details>
+    <details>
+      <summary><span>Which AI does it work with?</span></summary>
+      <div class="d-body"><p>Any of them. Paste a prompt into ChatGPT, Claude or Gemini, or connect the apps to a model through OpenRouter or another LLM provider using your own API key.</p></div>
+    </details>
+    <details>
+      <summary><span>Does it give diagnoses?</span></summary>
+      <div class="d-body"><p>No. It is a learning tool for clinical thinking, not for diagnosing or managing patients, and not for real patient care. The AI is built to ask questions and hold back answers until you have committed to your own reasoning. All AI outputs need independent verification.</p></div>
+    </details>
+    <details>
+      <summary><span>Who can see my data?</span></summary>
+      <div class="d-body"><p>Your API key is stored only in your browser and is not sent to our servers. What you type goes to the AI provider you choose, so use synthetic or de-identified cases only, never anything that identifies a patient. If you accept the cookie notice, this page uses Google Analytics to count visits.</p></div>
+    </details>
+  </div>
+</section>
+
+<section id="training">
+  <div class="wrap">
+    <div class="train">
+      <div>
+        <div class="eyebrow">Training</div>
+        <h2 style="font-size:24px">Learn it live with Dr. Avinash</h2>
+        <p>Reading gets you the "what." A live session gets you the "how": running a real (deidentified) case with a group asking the same questions you are.</p>
+        <p><b>Online</b> small-group Zoom sessions, or <b>on-site</b> for a department or school. Seats include access to a working group of educators and clinicians building on the framework.</p>
+      </div>
+      <div>
+        <a class="btn primary" style="display:block;text-align:center" href="mailto:avi33tbtt@gmail.com?subject=Training%20enquiry">avi33tbtt@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Vibe Rounds</b> was coined by Dr. Avinash Kumar Gupta in June 2026.</p>
+    <p>For medical education, not clinical advice. All AI outputs require independent verification.</p>
+    <p>With your consent, this page uses Google Analytics to count visits. The tools use your own API key, stored only in your browser. <button type="button" class="lnkbtn" id="cookieSettings">Cookie settings</button></p>
+    <p><a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.youtube.com/@geeky_dr" target="_blank" rel="noopener">YouTube</a> · <a href="https://avi33tbtt.github.io/Prompts/" target="_blank" rel="noopener">Documentation</a></p>
+  </div>
+</footer>
+
+<div class="consent" id="consent" role="region" aria-label="Cookie notice" hidden>
+  <p>This page can use Google Analytics to count visits. It is optional and only runs if you accept.</p>
+  <div class="cbtns">
+    <button class="btn ghost" type="button" id="consentNo">Decline</button>
+    <button class="btn primary" type="button" id="consentYes">Accept</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GA='G-B0YJEMM0LJ',KEY='vr-consent',box=document.getElementById('consent');
+  function get(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+  function set(v){try{localStorage.setItem(KEY,v)}catch(e){}}
+  function loadGA(){
+    if(window.__gaLoaded)return;window.__gaLoaded=true;
+    window['ga-disable-'+GA]=false;
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){dataLayer.push(arguments)};
+    gtag('js',new Date());gtag('config',GA);
+    var t=document.createElement('script');t.async=true;
+    t.src='https://www.googletagmanager.com/gtag/js?id='+GA;
+    document.head.appendChild(t);
+  }
+  function show(){box.hidden=false}
+  function hide(){box.hidden=true}
+  var c=get();
+  if(c==='granted')loadGA();else if(c!=='denied')show();
+  document.getElementById('consentYes').addEventListener('click',function(){set('granted');hide();loadGA()});
+  document.getElementById('consentNo').addEventListener('click',function(){set('denied');hide();window['ga-disable-'+GA]=true});
+  var cs=document.getElementById('cookieSettings');
+  if(cs)cs.addEventListener('click',show);
+})();
+</script>
+
+<div id="journey" role="dialog" aria-modal="true" aria-labelledby="jTitle" aria-hidden="true">
+  <div class="j-top">
+    <span class="brand"><span style="color:var(--teal)">Vibe</span>Rounds</span>
+    <div class="j-track" id="jTrack" role="tablist" aria-label="Journey steps"></div>
+    <button class="j-close" id="jClose" type="button">Close ✕</button>
+  </div>
+  <div class="j-bar"><i id="jBar"></i></div>
+  <div class="j-main">
+    <div class="j-text">
+      <div class="kick" id="jKick"></div>
+      <h2 id="jTitle"></h2>
+      <p id="jBody"></p>
+      <div class="j-links" id="jLinks"></div>
+    </div>
+    <div class="j-vis" id="jVis" aria-live="polite"></div>
+  </div>
+  <div class="j-foot">
+    <button class="btn ghost" id="jBack" type="button">← Back</button>
+    <small>Use ← → keys · Esc to close · Learning journey, not clinical advice</small>
+    <button class="btn primary" id="jNext" type="button">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var S=[
+   {k:"Welcome",t:"Clinical thinking, one step at a time",
+    p:"A 2-minute animated walk through how Vibe Rounds trains clinical reasoning: from meeting a case to testing your bias, checking evidence and zooming out to data. Every step links to a tool you can open.",
+    links:[{l:"Clinical Learning Suite (all-in-one)",h:"https://viberounds.ai.studio/"}],
+    v:'<div class="jtag a">Your journey</div><div class="loop a" style="--d:.2s"><span class="step">Case</span><i>→</i><span class="step">Commit</span><i>→</i><span class="step">Question</span><i>→</i><span class="step">Angles</span><i>→</i><span class="step">Evidence</span><i>→</i><span class="step">Data</span></div><p class="a illus" style="--d:.6s;text-align:center">Eight short steps. Press Next to begin.</p>'},
+   {k:"Step 1 · Meet a case",t:"Start with a real-feeling patient",
+    p:"Every session begins with a case. You read it carefully before any AI speaks, so the thinking starts with you.",
+    links:[{l:"Case Bench",h:"https://avi33tbtt.github.io/bench.html"}],
+    v:'<div class="jtag a">Dummy teaching case</div><b class="a" style="--d:.2s;font-size:19px">Mr. R, 58</b><p class="a" style="--d:.4s;font-size:14.5px;color:var(--soft)">3 hours of central chest tightness on climbing stairs, radiating to the left jaw, with sweating and nausea. Type 2 diabetes, 30 pack-year smoker.</p><div class="vit"><span class="a" style="--d:.7s">HR 96</span><span class="a" style="--d:.85s">BP 148/92</span><span class="a" style="--d:1s">RR 18</span><span class="a" style="--d:1.15s">SpO₂ 97%</span></div>'},
+   {k:"Step 2 · Commit first",t:"You answer before the AI helps",
+    p:"The core rule: no hints until you commit to a leading diagnosis. Committing is what turns a chat into learning.",
+    links:[{l:"Get a Socratic prompt",h:"#prompt"}],
+    v:'<div class="bub ai a">What is your leading diagnosis, and which finding would most change your mind?</div><div class="bub me a" style="--d:1s">Acute coronary syndrome. A tearing back pain would make me doubt it.</div><div class="lockrow a" style="--d:2s">🔓 Committed. Hints are now unlocked.</div>'},
+   {k:"Step 3 · Be questioned",t:"Hints arrive in tiers, never the full answer",
+    p:"A Socratic attending nudges you step by step: a framework first, then a narrower direction, then a partial answer, and only then a teaching summary.",
+    links:[{l:"Case Simulator",h:"https://avi33tbtt.github.io/case-simulator.html"},{l:"Clinical Practice",h:"https://avi33tbtt.github.io/case-practice.html"},{l:"Module 12 · Differential Deepdive",h:"https://avi33tbtt.github.io/Prompts/Module-12-Differential-Diagnosis-Deepdive.html"}],
+    v:'<div class="ladder"><div class="rung a"><b>1 · Framework</b><div class="meter"><i style="--w:25%;--d:.3s"></i></div></div><div class="rung a" style="--d:.5s"><b>2 · Direction</b><div class="meter"><i style="--w:50%;--d:.8s"></i></div></div><div class="rung a" style="--d:1s"><b>3 · Partial</b><div class="meter"><i style="--w:75%;--d:1.3s"></i></div></div><div class="rung a" style="--d:1.5s"><b>4 · Summary</b><div class="meter"><i style="--w:100%;--d:1.8s"></i></div></div></div>'},
+   {k:"Step 4 · Many angles",t:"Look at the same case through different lenses",
+    p:"Once you have a view, stress-test it: safety, evidence, bias, the patient's voice, the system and cost each reveal something different.",
+    links:[{l:"Case Lens",h:"https://avi33tbtt.github.io/case-lens.html"},{l:"SDM Lens",h:"https://avi33tbtt.github.io/sdm-lens.html"},{l:"Hub-Node Navigation",h:"https://avi33tbtt.github.io/critical-hub-node-navigation.html"},{l:"Complex Flow Builder",h:"https://avi33tbtt.github.io/complex-flow-builder.html"},{l:"Module 50 · Reasoning Map",h:"https://avi33tbtt.github.io/Prompts/Module-50-DRM-Diagnostic-Reasoning-Map.html"}],
+    v:'<div class="core a">The case</div><div class="lens"><span class="a" style="--d:.3s">Safety</span><span class="a" style="--d:.45s">Evidence</span><span class="a" style="--d:.6s">Bias</span><span class="a" style="--d:.75s">Patient voice</span><span class="a" style="--d:.9s">Systems</span><span class="a" style="--d:1.05s">Cost</span></div>'},
+   {k:"Step 5 · Test your bias",t:"Argue against yourself",
+    p:"Anchoring and premature closure hide in confident reasoning. A structured debate forces you to defend, then attack, your own diagnosis.",
+    links:[{l:"Clinical Polemos",h:"https://avi33tbtt.github.io/clinical-polemos.html"},{l:"Module 26 · Bias Auditing",h:"https://avi33tbtt.github.io/Prompts/Module-26-Bias-Auditing.html"},{l:"Module 42 · Pre-Mortem",h:"https://avi33tbtt.github.io/Prompts/Module-42-Clinical-Pre-Mortem.html"}],
+    v:'<div class="vs"><div class="bub ai a">It is a classic ACS. The risk factors fit.</div><div class="bub me a" style="--d:.8s">But what if it is a dissection? You never checked.</div></div><div class="flag a" style="--d:1.6s">⚠ Possible anchoring: the first idea shaped every later step.</div>'},
+   {k:"Step 6 · Ask the evidence",t:"Turn a doubt into a searchable question",
+    p:"Good reasoning needs evidence. Build structured appraisal queries, and see how evidence maps look across case reports, observational data, reviews and trials.",
+    links:[{l:"EBM Query Generator",h:"https://avi33tbtt.github.io/ebm.html"},{l:"ASV evidence map",h:"https://avi33tbtt.github.io/demo/critical-hub-node-navigation/asv-full.html"}],
+    v:'<div class="ladder"><div class="rung a"><b>Case reports</b><div class="meter"><i style="--w:90%;--d:.3s"></i></div></div><div class="rung a" style="--d:.3s"><b>Observational</b><div class="meter"><i style="--w:70%;--d:.6s"></i></div></div><div class="rung a" style="--d:.6s"><b>Reviews</b><div class="meter"><i style="--w:45%;--d:.9s"></i></div></div><div class="rung a" style="--d:.9s"><b>RCTs</b><div class="meter"><i style="--w:20%;--d:1.2s"></i></div></div></div><p class="illus a" style="--d:1.6s">Illustrative shape only. Each tier is kept separate, never pooled.</p>'},
+   {k:"Step 7 · Zoom out to data",t:"Same patients, different answers",
+    p:"Beyond one case, how you read the record changes the count. Compare notes, codes and dates side by side, and see how far to trust each number.",
+    links:[{l:"Clinical Analytics app",h:"https://viberounds-clinical-analytics-app.onrender.com/about"}],
+    v:'<div class="ladder"><div class="rung a"><b>V1 · Notes</b><div class="meter"><i style="--w:82%;--d:.3s"></i></div></div><div class="rung a" style="--d:.3s"><b>V2 · Codes</b><div class="meter"><i style="--w:66%;--d:.6s"></i></div></div><div class="rung a" style="--d:.6s"><b>V4 · Codes + dates</b><div class="meter"><i style="--w:54%;--d:.9s"></i></div></div></div><p class="illus a" style="--d:1.5s">Illustrative. Real counts depend on your data. Synthetic or de-identified data only.</p>'},
+   {k:"Step 8 · Reflect and repeat",t:"Close the loop, then go again",
+    p:"Review how you reasoned, not just whether you were right. Then keep building the habit with courses, analytics on your own performance, or a live session.",
+    links:[{l:"Case Analytics",h:"https://avi33tbtt.github.io/case-analytics.html"},{l:"Module 52 · Clinical Pearls",h:"https://avi33tbtt.github.io/Prompts/Module-52-CP-Clinical-Pearls.html"},{l:"Courses",h:"#courses"},{l:"Live training",h:"#training"}],
+    v:'<div class="loop"><span class="step a">Commit</span><i class="a" style="--d:.2s">→</i><span class="step a" style="--d:.3s">Question</span><i class="a" style="--d:.5s">→</i><span class="step a" style="--d:.6s">Reflect</span><i class="a" style="--d:.8s">↻</i><span class="step a" style="--d:.9s">Repeat</span></div><p class="a" style="--d:1.3s;text-align:center;color:var(--soft)">AI that questions, not answers.</p>'}
+  ];
+  var el=function(id){return document.getElementById(id)};
+  var root=el('journey'),track=el('jTrack'),bar=el('jBar'),back=el('jBack'),next=el('jNext');
+  var i=0,opener=null;
+  S.forEach(function(_,n){
+    var d=document.createElement('button');
+    d.type='button';d.className='j-dot';d.setAttribute('aria-label','Go to step '+(n+1));
+    d.addEventListener('click',function(){go(n)});
+    track.appendChild(d);
+  });
+  function go(n){
+    i=Math.max(0,Math.min(S.length-1,n));
+    var s=S[i];
+    el('jKick').textContent=s.k;
+    el('jTitle').textContent=s.t;
+    el('jBody').textContent=s.p;
+    el('jVis').innerHTML=s.v;
+    var L=el('jLinks');L.innerHTML='';
+    s.links.forEach(function(x){
+      var a=document.createElement('a');a.href=x.h;a.textContent=x.l+(x.h.charAt(0)==='#'?' ↓':' ↗');
+      if(x.h.charAt(0)!=='#'){a.target='_blank';a.rel='noopener'}
+      else a.addEventListener('click',function(e){e.preventDefault();close();var t=document.querySelector(x.h);if(t)t.scrollIntoView({behavior:'smooth'})});
+      L.appendChild(a);
+    });
+    [].forEach.call(track.children,function(d,k){
+      d.className='j-dot'+(k<i?' done':'')+(k===i?' now':'');
+    });
+    bar.style.width=(i/(S.length-1)*100)+'%';
+    back.disabled=i===0;
+    next.textContent=i===S.length-1?'Finish ✓':(i===0?'Begin →':'Next →');
+    el('jTitle').closest('.j-main').scrollTop=0;
+  }
+  function open(e){
+    if(e)e.preventDefault();
+    opener=document.activeElement;
+    root.classList.add('open');root.setAttribute('aria-hidden','false');
+    document.body.classList.add('j-lock');
+    go(0);next.focus();
+  }
+  function close(){
+    root.classList.remove('open');root.setAttribute('aria-hidden','true');
+    document.body.classList.remove('j-lock');
+    if(opener&&opener.focus)opener.focus();
+  }
+  back.addEventListener('click',function(){go(i-1)});
+  next.addEventListener('click',function(){i===S.length-1?close():go(i+1)});
+  el('jClose').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){
+    if(!root.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    else if(e.key==='ArrowRight')next.click();
+    else if(e.key==='ArrowLeft'&&!back.disabled)back.click();
+  });
+  [].forEach.call(document.querySelectorAll('[data-journey]'),function(b){b.addEventListener('click',open)});
+})();
+</script>
+
+<script>
+const PERSONAS=[
+ {t:"1st-year student",p:"#VibeRounds Act as a friendly senior medical student tutoring me through my first year. I'm still building foundational knowledge. When I ask you something, first ask me what I already know, then fill in the gaps using simple analogies and real-world examples. Never just hand me the answer — guide me to it. If I use the wrong terminology, gently correct me and ask me to rephrase it correctly."},
+ {t:"2nd-year student",p:"#VibeRounds Act as a Socratic study partner helping me master pathophysiology and pharmacology. For every disease or drug I bring up, ask me these questions one at a time: What is the underlying mechanism? What would I expect to see clinically? What are the red flags I must not miss? What does the treatment target? Guide me to the answers through questions — only confirm or correct after I've attempted a response."},
+ {t:"Clerkship student",p:"#VibeRounds Act as a supportive intern standing with me on the ward. I am a clerkship student seeing real patients for the first time. After I present a patient to you, ask me exactly one pointed question about something I may have missed, assumed, or under-weighted in my reasoning. Don't correct me outright — help me find the gap myself. Keep your questions focused on what a safe, competent junior doctor needs to notice."},
+ {t:"Intern / house officer",p:"#VibeRounds Act as a senior resident standing beside me in a busy ward. I'll describe an acute patient situation. First, help me identify the single most time-critical action I need to take right now. Then ask me: what's my backup plan if that fails? What am I monitoring to know it's working? Push me to think one step ahead at all times, but keep responses concise — I don't have time for lectures."},
+ {t:"Junior resident",p:"#VibeRounds Act as a Socratic attending on teaching rounds. When I present a case, do not accept my differential at face value. Ask me: Why did I rank it in that order? What would I expect to find if my top diagnosis is wrong? Where might I be anchoring on a feature that's actually non-specific? What am I most likely to be missing given the demographics and context? Your job is to expose the soft spots in my reasoning, not to lecture me."}
+];
+const chips=document.getElementById('chips'),out=document.getElementById('promptOut'),btn=document.getElementById('copyBtn');
+let cur=0;
+function show(i){
+  cur=i;
+  out.textContent=PERSONAS[i].p;
+  [...chips.children].forEach((c,j)=>{c.classList.toggle('on',j===i);c.setAttribute('aria-pressed',j===i?'true':'false')});
+}
+PERSONAS.forEach((p,i)=>{
+  const b=document.createElement('button');
+  b.type='button';b.className='chip';b.textContent=p.t;
+  b.addEventListener('click',()=>show(i));
+  chips.appendChild(b);
+});
+show(0);
+btn.addEventListener('click',()=>{
+  const done=()=>{btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy prompt',1800)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(PERSONAS[cur].p).then(done).catch(()=>{});
+  }
+});
+
+(function(){
+  var b=document.getElementById('copyQuery'),o=document.getElementById('queryOut');
+  if(!b||!o)return;
+  b.addEventListener('click',function(){
+    var t=o.textContent.trim();
+    var done=function(){b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy query'},1800)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done).catch(function(){})}
+  });
+})();
+</script>
+</body>
+</html>
