@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Rounds - Image Bench — Clinical Image Reasoning Aid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Google Analytics (GA4) — replace G-XXXXXXXXXX with your own Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-541054383"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-541054383');
+  // Safe wrapper so the app never breaks if GA hasn't loaded (e.g. ad-blockers)
+  function trackEvent(name, params){
+    try{ if(typeof gtag === 'function') gtag('event', name, params || {}); }catch(e){}
+  }
+</script>
+
+<!-- File-upload text extraction: pdf.js (PDF) and mammoth.js (Word .docx) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+<style>
+  :root{
+    --paper:#F7FAFB;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --line:#DCE7EA;
+    --line-soft:#E9F1F3;
+    --accent:#0891B2;
+    --accent-dark:#0A6E85;
+    --accent-soft:#E3F4F8;
+    --alert:#C2410C;
+    --alert-soft:#FCE9DD;
+    --muted:#5B7480;
+    --tab-inactive:#EEF4F6;
+    --radius:10px;
+    --body-font:'Inter',sans-serif;
+  }
+
+  /* Theme: Minimalist — grayscale, no color pop */
+  html[data-theme="minimalist"]{
+    --paper:#FFFFFF;
+    --card:#FFFFFF;
+    --ink:#161616;
+    --line:#E4E4E4;
+    --line-soft:#F0F0F0;
+    --accent:#161616;
+    --accent-dark:#000000;
+    --accent-soft:#F2F2F2;
+    --alert:#B3261E;
+    --alert-soft:#F8E7E6;
+    --muted:#757575;
+    --tab-inactive:#F2F2F2;
+    --radius:3px;
+    --body-font:'Inter',sans-serif;
+  }
+
+  /* Theme: Terminal — Bloomberg-style dark/amber monospace */
+  html[data-theme="terminal"]{
+    --paper:#000000;
+    --card:#0A0A0A;
+    --ink:#FFB238;
+    --line:#3A2A00;
+    --line-soft:#231A00;
+    --accent:#FFB238;
+    --accent-dark:#FFCB6B;
+    --accent-soft:#1C1400;
+    --alert:#FF4D3D;
+    --alert-soft:#2B0C08;
+    --muted:#9C7A32;
+    --tab-inactive:#141414;
+    --radius:2px;
+    --body-font:'IBM Plex Mono',monospace;
+  }
+  html[data-theme="terminal"] .msg.user .bubble,
+  html[data-theme="terminal"] header.top .rx{color:#000;}
+  html[data-theme="terminal"] .banner strong{color:#FFCB6B;}
+  html[data-theme="terminal"] .card,
+  html[data-theme="terminal"] .transcript,
+  html[data-theme="terminal"] .msg.assistant .bubble{border-color:var(--line);}
+
+  html{transition:background .15s ease;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body-font);
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background .15s ease,color .15s ease,font-family .1s ease;
+  }
+  ::selection{background:var(--accent-soft);}
+  a{color:var(--accent-dark);}
+
+  .wrap{max-width:960px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* header */
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:18px;margin-bottom:28px;
+    flex-wrap:wrap;gap:10px;
+  }
+  header.top .brand{display:flex;align-items:center;gap:10px;}
+  header.top h1{
+    font-family:var(--body-font);font-weight:800;
+    font-size:24px;margin:0;letter-spacing:-0.02em;color:var(--ink);
+  }
+  header.top .rx{
+    font-family:var(--body-font);font-weight:600;font-size:11.5px;color:#fff;
+    background:var(--accent);border-radius:20px;padding:4px 11px;
+    letter-spacing:.01em;
+  }
+  header.top .tagline{font-size:12.5px;color:var(--muted);font-family:var(--body-font);font-weight:500;}
+
+  header.top .top-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .theme-select{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--tab-inactive);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--body-font);font-weight:600;font-size:12px;
+    border-radius:999px;padding:6px 30px 6px 12px;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%235B7480' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;background-size:10px;
+  }
+  .theme-select:hover{border-color:var(--accent);}
+  .top-links{display:flex;gap:8px;font-family:var(--body-font);}
+  .top-links a{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12.5px;font-weight:700;color:var(--accent-dark);
+    background:var(--accent-soft);border:1px solid var(--line);
+    border-radius:999px;padding:6px 13px;text-decoration:none;
+  }
+  .top-links a:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  html[data-theme="terminal"] .top-links a:hover{color:#000;}
+
+  /* section labels — merged "block" look, collapsed by default */
+  .step{margin-bottom:20px;}
+  .step-label{
+    font-family:var(--body-font);font-size:12.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink);font-weight:700;
+    display:flex;align-items:center;gap:10px;margin-bottom:0;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius) var(--radius) 0 0;
+    padding:14px 20px;transition:box-shadow .15s ease,border-color .15s ease,color .15s ease;
+  }
+  .step-label.collapsed{border-radius:var(--radius);}
+  .step-label .num{
+    width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:700;
+  }
+  .step-label.done .num{background:var(--accent-dark);}
+  .step-label.collapsible{cursor:pointer;user-select:none;}
+  .step-label.collapsible:hover{color:var(--accent-dark);box-shadow:0 6px 16px -10px rgba(11,37,48,.3);}
+  .collapse-arrow{font-size:11px;margin-left:auto;transition:transform .15s ease;color:var(--muted);padding-left:8px;}
+  .step-label.collapsed .collapse-arrow{transform:rotate(-90deg);}
+  .card.collapsed{display:none;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);border-top:none;
+    border-radius:0 0 var(--radius) var(--radius);
+    padding:22px 22px 20px;
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+  }
+
+  textarea, input[type=text], input[type=password], select{
+    width:100%;
+    font-family:var(--body-font);
+    font-size:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:9px 11px;
+    color:var(--ink);
+  }
+  textarea:focus, input:focus, select:focus, button:focus-visible{
+    outline:2px solid var(--accent);outline-offset:1px;
+  }
+  textarea{resize:vertical;min-height:90px;line-height:1.5;}
+  label{font-size:12.5px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;}
+
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  .upload-row{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+  .upload-row label{margin-bottom:6px;}
+  .upload-row input[type=file]{
+    width:100%;font-family:var(--body-font);font-size:12.5px;color:var(--muted);
+    border:1px dashed var(--line);border-radius:var(--radius);padding:8px 10px;background:var(--paper);
+  }
+  .upload-row input[type=file]::file-selector-button{
+    font-family:var(--body-font);font-weight:600;font-size:12px;color:#fff;
+    background:var(--accent);border:none;border-radius:999px;padding:6px 13px;margin-right:10px;cursor:pointer;
+  }
+  #uploadStatus.ok{color:var(--accent-dark);}
+  #uploadStatus.err{color:var(--alert);}
+
+  /* provider tabs — segmented pill control */
+  .tabrow{display:flex;gap:4px;background:var(--tab-inactive);padding:4px;border-radius:999px;margin-bottom:16px;width:fit-content;}
+  .tabrow .tab{
+    font-family:var(--body-font);font-weight:600;font-size:12.5px;
+    padding:7px 16px;
+    background:transparent;
+    border:none;border-radius:999px;
+    cursor:pointer;color:var(--muted);
+    transition:background .12s,color .12s;
+  }
+  .tabrow .tab.active{
+    background:var(--accent);color:#fff;
+  }
+  .providerpane{padding:0;background:transparent;}
+  .providerpane .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  @media(max-width:600px){.providerpane .row{grid-template-columns:1fr;}}
+  .key-status{font-size:12px;font-family:var(--body-font);font-weight:500;margin-top:8px;}
+  .key-status.ok{color:var(--accent-dark);}
+  .key-status.empty{color:var(--muted);}
+
+  details.settings summary{
+    cursor:pointer;font-size:12.5px;color:var(--accent-dark);font-weight:600;
+    list-style:none;display:flex;align-items:center;gap:6px;
+  }
+  details.settings summary::-webkit-details-marker{display:none;}
+  details.settings summary::before{content:"▸";font-size:10px;}
+  details.settings[open] summary::before{content:"▾";}
+  details.settings{margin-top:10px;}
+
+  .mode-hint{font-size:12.5px;color:var(--muted);margin:10px 0 12px;}
+  .mode-pane{margin-top:2px;}
+
+  .activity.pipeline-tile{position:relative;}
+  .order-badge{
+    position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#fff;font-family:var(--body-font);font-weight:700;font-size:11px;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(11,37,48,.2);
+  }
+  .pipeline-order{
+    margin-top:14px;font-size:12.5px;color:var(--muted);
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  }
+  .pipeline-order .chip{
+    background:var(--tab-inactive);color:var(--ink);font-weight:600;font-size:12px;
+    padding:4px 10px;border-radius:999px;
+  }
+  .pipeline-order .arrow{color:var(--muted);}
+  .pipeline-order .chip-remove{color:var(--muted);text-decoration:none;margin-left:5px;font-weight:700;}
+  .pipeline-order .chip-remove:hover{color:var(--alert);}
+
+  /* activity cards */
+  .activities{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  @media(max-width:760px){.activities{grid-template-columns:repeat(2,1fr);}}
+  .activity{
+    background:var(--card);border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    padding:15px 14px;cursor:pointer;transition:border-color .12s, box-shadow .12s, transform .06s;
+    text-align:left;font-family:var(--body-font);
+    box-shadow:0 1px 2px rgba(11,37,48,.04);
+  }
+  .activity:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 6px 16px -8px rgba(8,145,178,.35);}
+  .activity.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 6px 16px -8px rgba(8,145,178,.35);}
+  .activity .aname{font-weight:700;font-size:13.5px;margin-bottom:4px;color:var(--ink);}
+  .activity .adesc{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+  /* workspace */
+  #workspace{margin-top:30px;display:none;}
+  #workspace.visible{display:block;}
+  .ws-header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-bottom:12px;margin-bottom:14px;
+  }
+  .ws-header .wtitle{font-family:var(--body-font);font-size:18px;font-weight:800;color:var(--ink);}
+  .ws-header .wsub{font-size:12px;color:var(--muted);font-family:var(--body-font);font-weight:500;}
+  .ws-actions button{margin-left:8px;}
+  .ws-progress{margin-top:8px;display:flex;align-items:center;gap:8px;}
+  .ws-progress-bar{width:140px;height:6px;border-radius:999px;background:var(--tab-inactive);overflow:hidden;flex-shrink:0;}
+  .ws-progress-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .25s ease;width:0%;}
+  .ws-progress-label{font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap;}
+
+  @media(max-width:600px){
+    header.top h1{font-size:20px;}
+    .ws-header{flex-direction:column;align-items:flex-start;gap:10px;}
+    .ws-actions{display:flex;flex-wrap:wrap;gap:8px;}
+    .ws-actions button{margin-left:0;}
+    .pipeline-picker > div{flex-direction:column;}
+    .pipeline-picker select{width:100%;}
+    .composer{flex-direction:column;align-items:stretch;}
+    .msg{max-width:100%;}
+  }
+
+  .transcript{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--card);
+    box-shadow:0 1px 2px rgba(11,37,48,.04), 0 8px 24px -16px rgba(11,37,48,.08);
+    min-height:120px;max-height:520px;overflow-y:auto;
+    padding:16px;margin-bottom:12px;
+  }
+  .msg{margin-bottom:16px;max-width:88%;}
+  .msg.user{margin-left:auto;}
+  .msg .who{font-family:var(--body-font);font-size:10.5px;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--muted);margin-bottom:4px;}
+  .msg.user .who{text-align:right;}
+
+  /* text-to-speech control on assistant answers */
+  .who-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .who-row .who{margin-bottom:0;}
+  .tts-btn{
+    display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+    width:20px;height:20px;padding:0;
+    background:transparent;color:var(--muted);
+    border:1px solid transparent;border-radius:50%;
+    cursor:pointer;transition:background .12s ease,color .12s ease;
+  }
+  .tts-btn:hover{background:var(--accent-soft);color:var(--accent-dark);}
+  .tts-btn svg{width:12px;height:12px;display:block;}
+  .tts-btn.speaking{background:var(--accent-soft);color:var(--accent-dark);border-color:var(--line);}
+  .tts-btn.speaking .tts-wave-1{animation:ttsPulse 1s ease-in-out infinite;}
+  .tts-btn.speaking .tts-wave-2{animation:ttsPulse 1s ease-in-out infinite .18s;}
+  @keyframes ttsPulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+  @media(prefers-reduced-motion:reduce){
+    .tts-btn.speaking .tts-wave-1,.tts-btn.speaking .tts-wave-2{animation:none;opacity:1;}
+  }
+
+  .msg .bubble{
+    padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.55;white-space:pre-wrap;
+  }
+  .msg.assistant .bubble{background:var(--accent-soft);border:1px solid #cdeaf0;border-top-left-radius:4px;}
+  .msg.user .bubble{background:var(--accent);color:#fff;border-top-right-radius:4px;}
+  .msg.system .bubble{background:transparent;border:1px dashed var(--line);color:var(--muted);font-style:italic;font-size:12.5px;border-radius:8px;}
+
+  .composer{display:flex;gap:8px;align-items:flex-end;}
+  .composer textarea{min-height:56px;flex:1;}
+
+  button{
+    font-family:var(--body-font);font-weight:700;font-size:13px;
+    background:var(--accent);color:#fff;border:none;
+    border-radius:999px;padding:10px 18px;cursor:pointer;
+    transition:background .12s, transform .06s;
+  }
+  button:hover{background:var(--accent-dark);}
+  button.secondary{background:transparent;color:var(--muted);border:1.5px solid var(--line);}
+  button.secondary:hover{background:var(--tab-inactive);color:var(--ink);border-color:var(--line);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  .banner{
+    font-size:12.5px;color:var(--ink);border:1px solid var(--line-soft);
+    background:var(--accent-soft);padding:11px 14px;border-radius:var(--radius);margin-bottom:24px;
+  }
+  .banner strong{color:var(--accent-dark);}
+
+  .error-note{font-size:12.5px;color:var(--alert);background:var(--alert-soft);border:1px solid #f0c8ac;border-radius:var(--radius);padding:9px 12px;margin-bottom:10px;display:none;}
+  .error-note.show{display:block;}
+
+  .typing{font-family:var(--body-font);font-size:12px;color:var(--muted);font-weight:500;}
+  .typing::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';}}
+
+  footer{margin-top:50px;font-size:11.5px;color:var(--muted);text-align:center;font-family:var(--body-font);font-weight:500;}
+
+  .contact-card{
+    margin-top:36px;
+    border:1px solid var(--line);
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    text-align:center;
+    box-shadow:0 1px 2px rgba(11,37,48,.04);
+  }
+  .contact-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6;}
+  .contact-card a{color:var(--accent-dark);font-weight:600;text-decoration:none;}
+  .contact-card a:hover{text-decoration:underline;}
+
+  .legal-note{
+    margin-top:16px;
+    font-size:11.5px;color:var(--muted);text-align:center;
+    line-height:1.6;font-family:var(--body-font);
+  }
+  .legal-note em{font-style:italic;}
+  .legal-note a{color:var(--muted);text-decoration:underline;}
+  .legal-note a:hover{color:var(--accent-dark);}
+
+  .contribute-card{
+    margin-top:16px;
+    border:1px dashed var(--line);
+    background:var(--accent-soft);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    text-align:center;
+  }
+  .contribute-card h3{
+    margin:0 0 6px;font-size:13.5px;font-weight:700;color:var(--ink);
+    font-family:var(--body-font);
+  }
+  .contribute-card p{
+    margin:0 0 12px;font-size:12.5px;color:var(--muted);
+    line-height:1.6;font-family:var(--body-font);max-width:560px;
+    margin-left:auto;margin-right:auto;
+  }
+  .contribute-card label.consent{
+    display:flex;align-items:flex-start;gap:7px;justify-content:center;
+    font-size:12px;color:var(--muted);margin:0 0 12px;text-align:left;
+    max-width:520px;margin-left:auto;margin-right:auto;font-weight:500;
+  }
+  .contribute-card label.consent input{margin-top:2px;flex-shrink:0;}
+  .contribute-btn{
+    font-family:var(--body-font);font-weight:700;font-size:13px;
+    background:var(--accent);color:#fff;border:none;border-radius:999px;
+    padding:9px 22px;cursor:pointer;transition:background .12s;
+  }
+  .contribute-btn:hover:not(:disabled){background:var(--accent-dark);}
+  .contribute-btn:disabled{opacity:.6;cursor:default;}
+  .contribute-status{
+    font-size:12px;font-weight:600;margin-top:10px;font-family:var(--body-font);min-height:16px;
+  }
+  .contribute-status.ok{color:var(--accent-dark);}
+  .contribute-status.err{color:var(--alert);}
+</style>
+<!-- ===== VibeRounds Suite Bar ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  .vr-suitebar{
+    background: linear-gradient(160deg, #EFF6FF 0%, #F0FDFA 65%);
+    border-bottom: 1px solid #E2E8F0;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 16px;
+  }
+  .vr-suitebar .vr-brand{
+    font-family: 'DM Mono','IBM Plex Mono',monospace;
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: #0F172A; text-decoration: none; display:flex; align-items:center; gap:0;
+  }
+  .vr-suitebar .vr-brand span{ color: #0891B2; }
+  .vr-suitebar .vr-nav{ display:flex; gap:6px; flex-wrap:wrap; }
+  .vr-suitebar .vr-nav a{
+    font-family:'DM Mono','IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    color:#475569; text-decoration:none; padding:6px 10px; border-radius:999px;
+    border:1px solid #E2E8F0; background:#FFFFFF; transition:.15s ease;
+  }
+  .vr-suitebar .vr-nav a:hover{ color:#fff; background:#0891B2; border-color:#0891B2; }
+  .vr-suitebar .vr-nav a.active{ color:#fff; background:#0E7490; border-color:#0E7490; }
+  @media (max-width:640px){
+    .vr-suitebar{ padding:10px 14px; }
+    .vr-suitebar .vr-nav a{ padding:5px 8px; font-size:10px; }
+  }
+</style>
+<style>
+  .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:8px 0}
+  .img-grid img{width:100%;height:100px;object-fit:cover;border-radius:var(--radius);border:3px solid var(--line);cursor:pointer;background:var(--accent-soft)}
+  .img-grid img.sel{border-color:var(--accent)}
+  .case-pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+  .case-pick>input{flex:1;min-width:140px}.case-pick>select{flex:2;min-width:200px}
+  .case-pick>button{flex:none}
+  .composer{flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header class="vr-suitebar">
+  <a class="vr-brand" href="https://avi33tbtt.github.io/">Vibe<span>Rounds</span></a>
+  <nav class="vr-nav">
+    <a href="https://avi33tbtt.github.io/home.html">Home</a>
+    <a href="https://avi33tbtt.github.io/bench.html">Case Bench</a>
+    <a href="https://avi33tbtt.github.io/image-bench.html" class="active">Image Bench</a>
+    <a href="https://avi33tbtt.github.io/bench_lite.html">Bench Lite</a>
+    <a href="https://avi33tbtt.github.io/case-simulator.html">Case Simulator</a>
+    <a href="https://avi33tbtt.github.io/case-practice.html">Clinical Practice</a>
+    <a href="https://avi33tbtt.github.io/clinical-polemos.html">Clinical Polemos</a>
+    <a href="https://avi33tbtt.github.io/case-lens.html">Case Lens</a>
+    <a href="https://avi33tbtt.github.io/sdm-lens.html">SDM Lens</a>
+    <a href="https://avi33tbtt.github.io/Prompts/ebm-case-query-generator.html">EBM Query Generator</a>
+    <a href="https://avi33tbtt.github.io/ccos-builder.html">CCOS Builder</a>
+  </nav>
+</header>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <h1>Vibe Rounds - Image Bench</h1>
+      <span class="rx">Rx: reasoning, not answers</span>
+    </div>
+    <div class="top-right">
+      <select id="themeSelect" class="theme-select" aria-label="Theme">
+        <option value="simple">Simple</option>
+        <option value="minimalist">Minimalist</option>
+        <option value="terminal">Terminal</option>
+      </select>
+      <div class="tagline">clinical reasoning aid · not for patient care</div>
+      <div class="top-links">
+        <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Project website</a>
+        <a href="https://www.linkedin.com/in/dravinashkumargupta/" target="_blank" rel="noopener">Dr. Avinash — LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner"><strong>Educational use only.</strong> Not a diagnostic tool. This is a working implementation of the <a href="https://avi33tbtt.github.io/" target="_blank" rel="noopener">Vibe Rounds</a> paradigm for clinical case reasoning. Your API key is stored only in this browser's local storage and sent directly from your browser to your chosen provider — never through any server of ours.</div>
+
+  <!-- STEP 1: MODEL -->
+  <div class="step">
+    <div class="step-label collapsible" id="label-model"><span class="num">1</span>Model<span class="collapse-arrow" id="arrow-model">&#9662;</span></div>
+    <div class="card" id="card-model">
+      <div class="tabrow" id="providerTabs">
+        <div class="tab active" data-provider="claude">Claude</div>
+        <div class="tab" data-provider="gemini">Gemini</div>
+        <div class="tab" data-provider="openai">ChatGPT</div>
+        <div class="tab" data-provider="other">Other</div>
+      </div>
+      <div class="providerpane">
+        <div class="row" id="endpointRow" style="display:none;">
+          <div style="grid-column:1/-1;">
+            <label for="apiEndpoint">API endpoint (OpenAI-compatible chat/completions URL)</label>
+            <input type="text" id="apiEndpoint" placeholder="https://api.groq.com/openai/v1/chat/completions">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label id="apiKeyLabel" for="apiKey">Claude API key</label>
+            <input type="password" id="apiKey" placeholder="sk-ant-...">
+          </div>
+          <div>
+            <label for="modelName">Model name</label>
+            <input type="text" id="modelName" placeholder="claude-sonnet-4-6">
+          </div>
+        </div>
+        <div class="key-status empty" id="keyStatus">No key saved for this provider yet.</div>
+        <details class="settings">
+          <summary>Where do I get a key?</summary>
+          <div class="hint" style="margin-top:8px;" id="keyHelp"></div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: CASE -->
+  <div class="step">
+    <div class="step-label collapsible" id="label-case"><span class="num">2</span>Case<span class="collapse-arrow" id="arrow-case">&#9662;</span></div>
+    <div class="card" id="card-case">
+      <div class="tabrow" id="srcTabs">
+        <div class="tab active" data-src="library">Case library</div>
+        <div class="tab" data-src="lit">Literature (PubMed Central)</div>
+        <div class="tab" data-src="commons">Wikimedia Commons</div>
+      </div>
+
+      <div id="srcLibrary">
+        <label for="caseSearch">Pick a case from the VibeRounds case library</label>
+        <div class="case-pick">
+          <input type="text" id="caseSearch" placeholder="Filter: case no. or words in link">
+          <select id="caseSelect"></select>
+          <button class="secondary" id="randomCaseBtn" type="button">Random</button>
+          <button id="loadCaseBtn" type="button">Load case</button>
+        </div>
+        <div class="hint" id="caseStatus">Loading case list…</div>
+      </div>
+
+      <div id="srcLit" style="display:none;">
+        <label for="litTopic">Topic (e.g. erythema nodosum, pneumothorax) — or leave blank and press Random</label>
+        <div class="case-pick">
+          <input type="text" id="litTopic" placeholder="Topic or sign">
+          <button id="litSearchBtn" type="button">Search</button>
+          <button class="secondary" id="litRandomBtn" type="button">Random</button>
+        </div>
+        <div class="case-pick">
+          <select id="litSelect"></select>
+          <button id="litLoadBtn" type="button">Load case</button>
+        </div>
+        <div class="hint" id="litStatus">Open-access case reports with figures (Europe PMC). Title, abstract and figure legend are hidden as an answer key until you reveal them.</div>
+      </div>
+
+      <div id="srcCommons" style="display:none;">
+        <label for="comTopic">Topic (e.g. psoriasis, chest x-ray pneumothorax) — or leave blank and press Random</label>
+        <div class="case-pick">
+          <input type="text" id="comTopic" placeholder="Topic or sign">
+          <button id="comSearchBtn" type="button">Search</button>
+          <button class="secondary" id="comRandomBtn" type="button">Random</button>
+        </div>
+        <div class="hint" id="comStatus">Free-licensed images from Wikimedia Commons. These usually have no vignette, so it is an image-only session unless you add case text below.</div>
+      </div>
+
+      <label for="caseText" style="margin-top:12px;">Case text — the context the mentor sees (editable; you can also paste your own)</label>
+      <textarea id="caseText" placeholder="Load a case above, or paste your own case text…"></textarea>
+
+      <label style="margin-top:12px;">Image to discuss (click to select)</label>
+      <div class="img-grid" id="imgGrid"></div>
+      <div class="upload-row">
+        <label for="imgFile">Or upload your own image — JPG / PNG / WebP</label>
+        <input type="file" id="imgFile" accept="image/*">
+        <div class="hint" id="imgStatus">No image selected yet.</div>
+      </div>
+      <details id="spoiler" style="display:none;margin-top:10px;">
+        <summary>Reveal source &amp; answer key (spoiler)</summary>
+        <div class="hint" id="spoilerBody" style="white-space:pre-wrap;margin-top:6px;"></div>
+      </details>
+    </div>
+  </div>
+
+  <!-- STEP 3: ACTIVITY -->
+  <div class="step">
+    <div class="step-label" id="label-activity"><span class="num">3</span>Activity</div>
+    <div id="modeDialogue" class="mode-pane">
+      <div class="mode-hint">A Socratic session on the image. You describe first, the mentor questions, hints unlock once you commit, and you can discuss freely.</div>
+      <label for="levelSelect" style="margin-bottom:4px;">Learner level</label>
+      <select id="levelSelect" style="margin-bottom:12px;">
+        <option>student / early learner</option>
+        <option selected>intern / junior resident</option>
+        <option>senior resident</option>
+        <option>attending / expert</option>
+      </select>
+      <div class="activities" id="activities"></div>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div id="workspace">
+    <div class="ws-header">
+      <div>
+        <div class="wtitle" id="wsTitle"></div>
+        <div class="wsub" id="wsSub"></div>
+        <div class="ws-progress" id="wsProgress" style="display:none;">
+          <div class="ws-progress-bar"><div class="ws-progress-fill" id="wsProgressFill"></div></div>
+          <div class="ws-progress-label" id="wsProgressLabel"></div>
+        </div>
+      </div>
+      <div class="ws-actions">
+        <button class="secondary" id="copyTranscriptBtn">Copy transcript</button>
+        <button class="secondary" id="downloadTranscriptBtn">Download .txt</button>
+        <button class="secondary" id="resetBtn">Reset run</button>
+      </div>
+    </div>
+    <div class="error-note" id="errorNote"></div>
+    <div class="transcript" id="transcript"></div>
+    <div class="composer">
+      <textarea id="composerInput" placeholder="Your response..."></textarea>
+      <button id="sendBtn">Send</button>
+      <button class="secondary" id="hintBtn" disabled title="Unlocks after you commit to an answer">&#128274; Hint</button>
+      <button class="secondary" id="debriefBtn" disabled title="Unlocks after two answers">Debrief</button>
+    </div>
+  </div>
+
+  <div class="legal-note">
+    <em>"To be used on personal responsibility and only for learning. Not to be used for clinical purpose."</em>
+  </div>
+
+  <footer>Vibe Rounds - Image Bench · runs entirely in your browser · bring your own key</footer>
+</div>
+
+<script>
+/* ---------- config: providers ---------- */
+const PROVIDERS = {
+  claude: {
+    label: 'Claude',
+    keyPlaceholder: 'sk-ant-...',
+    modelPlaceholder: 'claude-sonnet-4-6',
+    help: 'Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>. Paste the model name exactly as shown there — model names change over time, so if a call fails, double check the current model string.'
+  },
+  gemini: {
+    label: 'Gemini',
+    keyPlaceholder: 'AIza...',
+    modelPlaceholder: 'gemini-2.5-flash',
+    help: 'Create a key at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a>. Check the current model name in Google AI Studio if a call fails.'
+  },
+  openai: {
+    label: 'ChatGPT',
+    keyPlaceholder: 'sk-...',
+    modelPlaceholder: 'gpt-4o-mini',
+    help: 'Create a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>. Check the current model name in the OpenAI docs if a call fails.'
+  },
+  other: {
+    label: 'Other',
+    keyPlaceholder: 'API key (leave blank if none)',
+    modelPlaceholder: 'model-name-as-required-by-provider',
+    needsEndpoint: true,
+    help: 'Works with any provider that exposes an OpenAI-compatible <code>/chat/completions</code> endpoint — this covers most of the LLM ecosystem beyond the big three: Groq, Together AI, Mistral, DeepSeek, xAI (Grok), Perplexity, OpenRouter (which itself proxies dozens more models), Fireworks, local servers like Ollama or LM Studio, and more. Paste the full endpoint URL, the key that provider gave you, and the exact model name it expects. If a call fails, check that provider\'s docs — the request/response shape is standardized, but model names and auth details vary.'
+  }
+};
+
+const BASE_RULES = (c, level, focus) => `#VibeRounds You are a warm, encouraging Socratic clinical-reasoning mentor. Affirm what is reasonable before you challenge. AI that questions, not answers. Educational use only; never give a definitive diagnosis or management advice.
+You are shown ONE clinical image plus the text of the case it came from:
+
+"""
+${c}
+"""
+
+Learner level: ${level}. Calibrate depth (Bloom): early learners -> observe, describe, recognise; juniors -> interpret and compare; seniors/experts -> appraise, weigh evidence, challenge biases.
+Session focus: ${focus}
+${state.answerKey ? `
+HIDDEN ANSWER KEY (source metadata, for your eyes only):
+"""
+${state.answerKey}
+"""
+Use it only to keep your questions accurate and to check the learner's reasoning. NEVER state or paraphrase it, and do not let hints name the diagnosis, until the learner has committed and then asked for a debrief. The key may be wrong or incomplete; if it conflicts with what is visible, say so honestly.
+` : ''}
+
+RULES
+1. Ask ONE focused question at a time (two short ones at most). Keep replies under ~150 words, plain prose, minimal formatting.
+2. OPENING: say in one sentence that you have looked at the image and the case, then ask the learner what THEY observe in the image before any interpretation. Do NOT describe or interpret the image yourself yet.
+3. After the learner commits: ask what supports it, what argues against it, what single finding would change their mind, and how it ties to the history/exam/labs in the case.
+4. Observation vs inference: if the learner states something not actually visible, gently ask what in the image supports it. Never invent findings; if the image is ambiguous or low quality, say so plainly.
+5. Name reasoning biases (anchoring, premature closure, confirmation bias) as questions, not accusations.
+6. Do not give the diagnosis or your own interpretation unprompted. Withhold answers until the learner has committed to their own reasoning.
+7. A message starting "[HINT level N]" is a hint request. Only allowed after the learner has committed to at least one answer; otherwise kindly ask them to commit first. Levels: 1 = nudge where to look; 2 = name a feature or category to think about; 3 = near-explicit pointer, final inference still left to the learner. End every hint with a question.
+8. A message starting "[DEBRIEF]" asks for a wrap-up. Only do it if the learner has committed at least twice; otherwise ask them to continue. Debrief: what they got right, gaps, biases noticed, what the image shows in relation to the case (uncertainty stated), 2-3 teaching pearls, one reflective closing question.
+9. Free discussion is welcome. If the learner asks questions, disagrees or explores tangents, engage in depth. Be honest, correct errors respectfully, and push back with reasons rather than agreeing to please. Prefer guiding questions to lectures; if they are truly stuck after hints you may explain a concept (not the final answer) directly.`;
+
+const ACTIVITIES = {
+  socratic: {
+    name: 'Socratic Image Rounds',
+    desc: 'Describe first, then interpret. One question at a time; hints unlock after you commit.',
+    subtitle: 'Observe before you infer — commit before you get hints.',
+    systemPrompt: (c) => BASE_RULES(c, $('levelSelect').value, 'Open-ended Socratic reading of the image in the context of the case.')
+  },
+  differential: {
+    name: 'Image Differential Challenge',
+    desc: 'Rank differentials using the image + case. The weakest link gets probed first.',
+    subtitle: 'Submit a ranked differential — the weakest one gets probed first.',
+    systemPrompt: (c) => BASE_RULES(c, $('levelSelect').value, 'After the learner describes what they see, ask them to give a ranked differential (with one line of justification each) that integrates the image with the case. Probe the weakest-supported item first, then ask what image or case finding would separate their top two.')
+  }
+};
+
+/* ---------- state ---------- */
+let state = {
+  provider: 'claude',
+  activity: null,
+  mode: 'dialogue',
+  analyticsModule: null,
+  pipelineSelection: [], // ordered array of module keys
+  messages: [], // {role:'user'|'assistant', content:string, auto?:boolean}
+  running: false,
+  runKind: null, // 'dialogue' | 'analytics' | 'pipeline'
+  quizPattern: null,
+  image: null, // {b64,mime} or {url}
+  answerKey: null // hidden ground truth from literature / Commons sources
+};
+
+const $ = (id) => document.getElementById(id);
+
+/* ---------- localStorage helpers ---------- */
+function loadKeys(){
+  try{ return JSON.parse(localStorage.getItem('casebench_keys')||'{}'); }catch(e){ return {}; }
+}
+function saveKeys(k){ localStorage.setItem('casebench_keys', JSON.stringify(k)); }
+function loadModels(){
+  try{ return JSON.parse(localStorage.getItem('casebench_models')||'{}'); }catch(e){ return {}; }
+}
+function saveModels(m){ localStorage.setItem('casebench_models', JSON.stringify(m)); }
+function loadEndpoints(){
+  try{ return JSON.parse(localStorage.getItem('casebench_endpoints')||'{}'); }catch(e){ return {}; }
+}
+function saveEndpoints(e){ localStorage.setItem('casebench_endpoints', JSON.stringify(e)); }
+function loadCaseText(){
+  try{ return localStorage.getItem('casebench_case') || ''; }catch(e){ return ''; }
+}
+function saveCaseText(t){ try{ localStorage.setItem('casebench_case', t); }catch(e){} }
+function loadCollapseState(){
+  try{ return JSON.parse(localStorage.getItem('casebench_collapse')||'{}'); }catch(e){ return {}; }
+}
+function saveCollapseState(c){ localStorage.setItem('casebench_collapse', JSON.stringify(c)); }
+
+/* ---------- theme selector (Simple / Book / Minimalist / Terminal) ---------- */
+const VALID_THEMES = ['simple', 'minimalist', 'terminal'];
+function applyTheme(theme){
+  if(!VALID_THEMES.includes(theme)) theme = 'simple';
+  document.documentElement.setAttribute('data-theme', theme);
+  if($('themeSelect')) $('themeSelect').value = theme;
+}
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('casebench_theme'); }catch(e){}
+  applyTheme(saved || 'simple');
+}
+initTheme();
+$('themeSelect') && $('themeSelect').addEventListener('change', (e)=>{
+  const next = e.target.value;
+  applyTheme(next);
+  try{ localStorage.setItem('casebench_theme', next); }catch(e){}
+  trackEvent('change_theme', {theme: next});
+});
+
+/* ---------- render: provider tabs ---------- */
+function renderProviderPane(){
+  const p = PROVIDERS[state.provider];
+  $('apiKeyLabel').textContent = p.label + ' API key';
+  $('apiKey').placeholder = p.keyPlaceholder;
+  $('modelName').placeholder = p.modelPlaceholder;
+  $('keyHelp').innerHTML = p.help;
+
+  const keys = loadKeys();
+  const models = loadModels();
+  $('apiKey').value = keys[state.provider] || '';
+  $('modelName').value = models[state.provider] || '';
+
+  $('endpointRow').style.display = p.needsEndpoint ? '' : 'none';
+  if(p.needsEndpoint){
+    const endpoints = loadEndpoints();
+    $('apiEndpoint').value = endpoints[state.provider] || '';
+  }
+
+  updateKeyStatus();
+}
+function updateKeyStatus(){
+  const keys = loadKeys();
+  const el = $('keyStatus');
+  if(keys[state.provider]){
+    el.textContent = 'Key saved locally for ' + PROVIDERS[state.provider].label + '.';
+    el.className = 'key-status ok';
+  } else {
+    el.textContent = 'No key saved for this provider yet.';
+    el.className = 'key-status empty';
+  }
+}
+document.querySelectorAll('#providerTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    const targetProvider = tab.dataset.provider;
+    if(state.messages.length > 0 && targetProvider !== state.provider){
+      const ok = confirm(
+        'You have an active conversation with ' + PROVIDERS[state.provider].label + '. ' +
+        'Switching models mid-run can produce inconsistent results since context formatting ' +
+        'differs between providers. Switch to ' + PROVIDERS[targetProvider].label + ' anyway?'
+      );
+      if(!ok) return;
+    }
+    document.querySelectorAll('#providerTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.provider = targetProvider;
+    renderProviderPane();
+  });
+});
+$('apiKey').addEventListener('input', ()=>{
+  const keys = loadKeys();
+  const hadKeyBefore = !!keys[state.provider];
+  keys[state.provider] = $('apiKey').value.trim();
+  saveKeys(keys);
+  updateKeyStatus();
+  // Auto-collapse Model once a key is first saved, unless the user has already
+  // made an explicit choice about this section's collapsed state.
+  const saved = loadCollapseState();
+  if(!hadKeyBefore && keys[state.provider] && !saved.hasOwnProperty('model')){
+    applyCollapsed('model', true);
+  }
+});
+$('modelName').addEventListener('input', ()=>{
+  const models = loadModels();
+  models[state.provider] = $('modelName').value.trim();
+  saveModels(models);
+});
+$('apiEndpoint').addEventListener('input', ()=>{
+  const endpoints = loadEndpoints();
+  endpoints[state.provider] = $('apiEndpoint').value.trim();
+  saveEndpoints(endpoints);
+});
+
+/* ---------- shared preflight check ---------- */
+function preflightOk(){
+  const caseText = $('caseText').value.trim();
+  if(!caseText){
+    applyCollapsed('case', false);
+    alert('Paste a case first — Step 2.');
+    return false;
+  }
+  if(!state.image){
+    applyCollapsed('case', false);
+    alert('Select or upload an image first — Step 2.');
+    return false;
+  }
+  const keys = loadKeys();
+  if(!keys[state.provider] && !PROVIDERS[state.provider].needsEndpoint){
+    applyCollapsed('model', false);
+    alert('Add an API key for ' + PROVIDERS[state.provider].label + ' in Step 1 first.');
+    return false;
+  }
+  if(PROVIDERS[state.provider].needsEndpoint){
+    const endpoints = loadEndpoints();
+    if(!endpoints[state.provider]){
+      applyCollapsed('model', false);
+      alert('Add an API endpoint URL in Step 1 first.');
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ---------- render: dialogue activities ---------- */
+function renderActivities(){
+  const wrap = $('activities');
+  wrap.innerHTML = '';
+  Object.entries(ACTIVITIES).forEach(([key, a])=>{
+    const div = document.createElement('div');
+    div.className = 'activity' + (state.activity===key ? ' selected':'');
+    div.innerHTML = `<div class="aname">${a.name}</div><div class="adesc">${a.desc}</div>`;
+    div.addEventListener('click', ()=>{
+      state.activity = key;
+      renderActivities();
+      startDialogueRun();
+    });
+    wrap.appendChild(div);
+  });
+}
+
+renderActivities();
+renderProviderPane();
+
+/* ---------- case text persistence ---------- */
+$('caseText').value = loadCaseText();
+$('caseText').addEventListener('input', ()=>{
+  saveCaseText($('caseText').value);
+});
+
+/* ---------- collapsible sections: init + persistence ---------- */
+initCollapsibleSections();
+
+/* ---------- run lifecycle: dialogue ---------- */
+function startDialogueRun(){
+  if(!preflightOk()){ state.activity=null; renderActivities(); return; }
+  const caseText = $('caseText').value.trim();
+  const a = ACTIVITIES[state.activity];
+  state.messages = [];
+  state.runKind = 'dialogue';
+  state.systemPrompt = a.systemPrompt(caseText);
+
+  const sub = a.subtitle;
+  openWorkspace(a.name, sub);
+  appendMsg('system', 'Session started — ' + a.name + '.');
+  trackEvent('start_dialogue', {activity: state.activity, provider: state.provider});
+  callModel([]); // system prompt instructs model to begin
+}
+
+/* ---------- shared workspace open ---------- */
+function openWorkspace(title, sub){
+  stopSpeaking();
+  $('wsTitle').textContent = title;
+  $('wsSub').textContent = sub;
+  $('transcript').innerHTML = '';
+  $('errorNote').classList.remove('show');
+  $('wsProgress').style.display = 'none';
+  $('workspace').classList.add('visible');
+  $('workspace').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function resetRun(){
+  stopSpeaking();
+  state.activity = null;
+  state.messages = [];
+  state.runKind = null;
+  $('workspace').classList.remove('visible');
+  renderActivities();
+  updateGates();
+}
+$('resetBtn').addEventListener('click', resetRun);
+
+/* ---------- text-to-speech ---------- */
+const TTS_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/><path class="tts-wave tts-wave-1" d="M15.3 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="tts-wave tts-wave-2" d="M18.2 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+const ttsSupported = 'speechSynthesis' in window;
+let ttsActiveBtn = null;
+
+function setBtnSpeaking(btn, speaking){
+  btn.classList.toggle('speaking', speaking);
+  btn.title = speaking ? 'Stop reading' : 'Read aloud';
+  btn.setAttribute('aria-label', speaking ? 'Stop reading answer aloud' : 'Read answer aloud');
+}
+function cleanTextForSpeech(raw){
+  // Pipeline replies are stored as "[Stage Name]\n\n<content>" — that label is
+  // already shown visually, so skip it here rather than reading it aloud.
+  const staged = raw.match(/^\[[^\]]+\]\n+([\s\S]*)$/);
+  const body = staged ? staged[1] : raw;
+  return body
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/\n{2,}/g, '. ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function stopSpeaking(){
+  if(!ttsSupported) return;
+  window.speechSynthesis.cancel();
+  if(ttsActiveBtn) setBtnSpeaking(ttsActiveBtn, false);
+  ttsActiveBtn = null;
+}
+function toggleSpeak(btn, rawText){
+  const wasThisOne = (ttsActiveBtn === btn);
+  stopSpeaking();
+  if(wasThisOne) return; // clicking the already-speaking button just stops it
+  const spoken = cleanTextForSpeech(rawText);
+  if(!spoken) return;
+  const utter = new SpeechSynthesisUtterance(spoken);
+  const reset = ()=>{ if(ttsActiveBtn===btn) ttsActiveBtn=null; setBtnSpeaking(btn, false); };
+  utter.onend = reset;
+  utter.onerror = reset;
+  setBtnSpeaking(btn, true);
+  ttsActiveBtn = btn;
+  trackEvent('tts_play', {runKind: state.runKind, provider: state.provider});
+  window.speechSynthesis.speak(utter);
+}
+
+/* ---------- transcript rendering ---------- */
+function appendMsg(role, text){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const who = role==='user' ? 'You' : role==='assistant' ? PROVIDERS[state.provider].label : 'System';
+  if(role === 'assistant'){
+    div.innerHTML = `<div class="who-row"><div class="who">${who}</div><button type="button" class="tts-btn" aria-label="Read answer aloud" title="Read aloud">${TTS_ICON}</button></div><div class="bubble"></div>`;
+    div.querySelector('.bubble').textContent = text;
+    const ttsBtn = div.querySelector('.tts-btn');
+    if(ttsSupported){
+      ttsBtn.addEventListener('click', ()=> toggleSpeak(ttsBtn, text));
+    } else {
+      ttsBtn.disabled = true;
+      ttsBtn.title = "This browser doesn't support text-to-speech";
+      ttsBtn.setAttribute('aria-label', "Text-to-speech isn't supported in this browser");
+    }
+  } else {
+    div.innerHTML = `<div class="who">${who}</div><div class="bubble"></div>`;
+    div.querySelector('.bubble').textContent = text;
+  }
+  t.appendChild(div);
+  t.scrollTop = t.scrollHeight;
+  return div;
+}
+function appendTyping(){
+  const t = $('transcript');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'typingIndicator';
+  div.innerHTML = `<div class="who">${PROVIDERS[state.provider].label}</div><div class="bubble typing">thinking</div>`;
+  t.appendChild(div);
+  t.scrollTop = t.scrollHeight;
+}
+function removeTyping(){
+  const el = $('typingIndicator');
+  if(el) el.remove();
+}
+
+/* ---------- collapsible sections: persisted state + smart default ---------- */
+function applyCollapsed(sectionId, collapsed){
+  const label = $('label-' + sectionId);
+  const card = $('card-' + sectionId);
+  if(!label || !card) return;
+  label.classList.toggle('collapsed', collapsed);
+  card.classList.toggle('collapsed', collapsed);
+}
+function setupCollapsible(sectionId){
+  const label = $('label-' + sectionId);
+  const card = $('card-' + sectionId);
+  if(!label || !card) return;
+  label.addEventListener('click', ()=>{
+    const collapsed = !card.classList.contains('collapsed');
+    applyCollapsed(sectionId, collapsed);
+    const saved = loadCollapseState();
+    saved[sectionId] = collapsed;
+    saveCollapseState(saved);
+  });
+}
+function initCollapsibleSections(){
+  const saved = loadCollapseState();
+  // Smart default: if the user hasn't explicitly chosen, auto-collapse Model once a key
+  // is already saved for the current provider (nothing to fill in, so get it out of the way).
+  applyCollapsed('model', saved.hasOwnProperty('model') ? saved.model : true);
+  applyCollapsed('case', saved.hasOwnProperty('case') ? saved.case : true);
+  setupCollapsible('model');
+  setupCollapsible('case');
+}
+
+/* ---------- transcript export ---------- */
+function buildTranscriptText(){
+  const title = $('wsTitle') ? $('wsTitle').textContent.trim() : 'Vibe Rounds - Case Bench';
+  const sub = $('wsSub') ? $('wsSub').textContent.trim() : '';
+  const isReport = state.runKind === 'analytics' || state.runKind === 'pipeline';
+  const lines = [];
+  lines.push(isReport ? '# ' + title : title);
+  if(sub) lines.push(sub);
+  lines.push('Exported: ' + new Date().toLocaleString());
+  lines.push('----------------------------------------');
+  lines.push('');
+  state.messages.forEach(m=>{
+    if(m.auto) return; // skip internal module/stage prompts — not useful in an export
+    if(isReport && m.role === 'assistant'){
+      // Pipeline replies are stored as "[Stage Name]\n\n<content>" — surface the stage
+      // name as a markdown header instead of a chat bubble label.
+      const staged = m.content.match(/^\[(.+?)\]\n\n([\s\S]*)$/);
+      if(staged){
+        lines.push('## ' + staged[1]);
+        lines.push(staged[2]);
+      } else {
+        lines.push(m.content);
+      }
+      lines.push('');
+    } else {
+      const who = m.role === 'user' ? 'You' : (PROVIDERS[state.provider] ? PROVIDERS[state.provider].label : 'Assistant');
+      lines.push(who + ':');
+      lines.push(m.content);
+      lines.push('');
+    }
+  });
+  return lines.join('\n');
+}
+function flashBtn(btn, msg){
+  const original = btn.textContent;
+  btn.textContent = msg;
+  btn.disabled = true;
+  setTimeout(()=>{ btn.textContent = original; btn.disabled = false; }, 1400);
+}
+$('copyTranscriptBtn').addEventListener('click', async ()=>{
+  const text = buildTranscriptText();
+  const btn = $('copyTranscriptBtn');
+  try{
+    await navigator.clipboard.writeText(text);
+    trackEvent('copy_transcript', {runKind: state.runKind});
+    flashBtn(btn, 'Copied!');
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); flashBtn(btn, 'Copied!'); }
+    catch(e){ flashBtn(btn, 'Copy failed'); }
+    document.body.removeChild(ta);
+  }
+});
+$('downloadTranscriptBtn').addEventListener('click', ()=>{
+  const text = window.vrBrandText ? window.vrBrandText(buildTranscriptText()) : buildTranscriptText();
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = 'image-bench-transcript-' + stamp + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  trackEvent('download_transcript', {runKind: state.runKind});
+  flashBtn($('downloadTranscriptBtn'), 'Downloaded!');
+});
+
+/* ---------- composer ---------- */
+$('sendBtn').addEventListener('click', sendComposer);
+$('composerInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendComposer();
+  }
+});
+function sendComposer(){
+  const val = $('composerInput').value.trim();
+  if(!val || state.running) return;
+  $('composerInput').value = '';
+  appendMsg('user', val);
+  state.messages.push({role:'user', content: val});
+  trackEvent('send_message', {runKind: state.runKind, provider: state.provider});
+  updateGates();
+  callModel(state.messages);
+}
+
+/* ---------- model dispatch ---------- */
+async function callModel(messagesSoFar){
+  state.running = true;
+  $('sendBtn').disabled = true;
+  $('errorNote').classList.remove('show');
+  appendTyping();
+
+  const keys = loadKeys();
+  const models = loadModels();
+  const apiKey = keys[state.provider];
+  const model = models[state.provider] || PROVIDERS[state.provider].modelPlaceholder;
+
+  try{
+    let reply;
+    if(state.provider === 'claude'){
+      reply = await callClaude(apiKey, model, state.systemPrompt, messagesSoFar);
+    } else if(state.provider === 'gemini'){
+      reply = await callGemini(apiKey, model, state.systemPrompt, messagesSoFar);
+    } else if(state.provider === 'other'){
+      const endpoints = loadEndpoints();
+      reply = await callCustom(endpoints['other'], apiKey, model, state.systemPrompt, messagesSoFar);
+    } else {
+      reply = await callOpenAI(apiKey, model, state.systemPrompt, messagesSoFar);
+    }
+    removeTyping();
+    appendMsg('assistant', reply);
+    state.messages.push({role:'assistant', content: reply});
+  } catch(err){
+    removeTyping();
+    $('errorNote').textContent = 'Request failed: ' + err.message + ' — check your API key, model name, and that the provider allows browser requests.';
+    $('errorNote').classList.add('show');
+  } finally {
+    state.running = false;
+    $('sendBtn').disabled = false;
+    updateGates();
+  }
+}
+
+/* ---------- provider API calls (image attached to the first user turn on every call) ---------- */
+function withImage(msgs){
+  const out = msgs.map(m=>({role:m.role, content:m.content}));
+  if(!out.length || out[0].role !== 'user') out.unshift({role:'user', content:'Begin the session.'});
+  if(state.image) out[0].image = state.image;
+  return out;
+}
+async function okOrThrow(res){
+  if(!res.ok){ const t = await res.text(); throw new Error(res.status + ' ' + t.slice(0,200)); }
+  return res.json();
+}
+async function callClaude(apiKey, model, system, msgs){
+  const messages = withImage(msgs).map(m=>{
+    if(!m.image) return {role:m.role, content:m.content};
+    const img = m.image.b64
+      ? {type:'image', source:{type:'base64', media_type:m.image.mime, data:m.image.b64}}
+      : {type:'image', source:{type:'url', url:m.image.url}};
+    return {role:m.role, content:[img, {type:'text', text:m.content}]};
+  });
+  const data = await okOrThrow(await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({model, max_tokens:4096, system, messages})
+  }));
+  return (data.content||[]).map(b=>b.text||'').join('\n').trim();
+}
+async function callGemini(apiKey, model, system, msgs){
+  const contents = withImage(msgs).map(m=>{
+    const parts = [];
+    if(m.image){
+      if(!m.image.b64) throw new Error('Gemini needs the image file itself, and this image host blocked the browser from downloading it. Please upload the image manually (Step 2).');
+      parts.push({inlineData:{mimeType:m.image.mime, data:m.image.b64}});
+    }
+    parts.push({text:m.content});
+    return {role: m.role==='assistant' ? 'model' : 'user', parts};
+  });
+  const data = await okOrThrow(await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({systemInstruction:{parts:[{text:system}]}, contents})
+  }));
+  const cand = data.candidates && data.candidates[0];
+  return ((cand && cand.content && cand.content.parts) || []).map(p=>p.text||'').join('\n').trim();
+}
+function oaiMessages(system, msgs){
+  return [{role:'system', content:system}].concat(withImage(msgs).map(m=>{
+    if(!m.image) return {role:m.role, content:m.content};
+    const url = m.image.b64 ? `data:${m.image.mime};base64,${m.image.b64}` : m.image.url;
+    return {role:m.role, content:[{type:'text', text:m.content}, {type:'image_url', image_url:{url}}]};
+  }));
+}
+async function callCustom(endpoint, apiKey, model, system, msgs){
+  if(!endpoint) throw new Error('No API endpoint set for this provider.');
+  const headers = {'Content-Type':'application/json'};
+  if(apiKey) headers['Authorization'] = 'Bearer ' + apiKey;
+  const data = await okOrThrow(await fetch(endpoint, {method:'POST', headers, body: JSON.stringify({model, messages:oaiMessages(system, msgs), max_tokens:4096})}));
+  if(data.choices && data.choices[0] && data.choices[0].message) return (data.choices[0].message.content||'').trim();
+  if(data.message && data.message.content) return data.message.content.trim();
+  if(typeof data.content === 'string') return data.content.trim();
+  return JSON.stringify(data).slice(0,500);
+}
+async function callOpenAI(apiKey, model, system, msgs){
+  const data = await okOrThrow(await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+    body: JSON.stringify({model, messages:oaiMessages(system, msgs), max_tokens:4096})
+  }));
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content || '').trim();
+}
+
+/* ---------- hint / debrief gates ---------- */
+let hintLevel = 0;
+function learnerTurns(){ return state.messages.filter(m=>m.role==='user').length; }
+function updateGates(){
+  const n = learnerTurns(), live = state.runKind==='dialogue' && !state.running;
+  $('hintBtn').disabled = !(live && n>=1 && hintLevel<3);
+  $('hintBtn').innerHTML = (n>=1 ? '&#128275; ' : '&#128274; ') + 'Hint' + (hintLevel ? ` (${hintLevel}/3)` : '');
+  $('debriefBtn').disabled = !(live && n>=2);
+}
+function sendControl(content, label){
+  if(state.running) return;
+  appendMsg('user', label);
+  state.messages.push({role:'user', content});
+  updateGates();
+  callModel(state.messages);
+}
+$('hintBtn').addEventListener('click', ()=>{ hintLevel = Math.min(3, hintLevel+1); sendControl(`[HINT level ${hintLevel}] I'd like a hint.`, `Hint (level ${hintLevel})`); });
+$('debriefBtn').addEventListener('click', ()=> sendControl('[DEBRIEF] I would like to wrap up and get a debrief.', 'Debrief please'));
+
+/* ---------- case library (no server): case list from GitHub Pages, posts via Blogger feeds ---------- */
+const LINKS_URL = 'https://avi33tbtt.github.io/cases/case_links.html';
+let caseLinks = [];
+const BLOG_RE = /https?:\/\/[a-z0-9.-]+\.blogspot\.[a-z.]+\/\d{4}\/\d{2}\/[^\s"'<>)\]]+?\.html/gi;
+function fillCaseSelect(list){
+  $('caseSelect').innerHTML = list.map(c=>`<option value="${c.url}">#${c.no} — ${c.url.replace(/^https?:\/\//,'').slice(0,70)}</option>`).join('');
+}
+async function loadCaseLinks(){
+  try{
+    const html = await (await fetch(LINKS_URL)).text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    let urls = [...doc.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).filter(u=>/blogspot\./i.test(u));
+    if(!urls.length){ urls = (html.match(BLOG_RE) || []).filter((u,i,a)=>u!==a[i-1]); }
+    caseLinks = urls.map((url,i)=>({no:i+1, url}));
+    fillCaseSelect(caseLinks);
+    $('caseStatus').textContent = caseLinks.length + ' cases available.';
+  }catch(e){
+    $('caseStatus').textContent = 'Could not load the case list (' + e.message + '). You can still paste case text and upload an image.';
+  }
+}
+$('caseSearch').addEventListener('input', ()=>{
+  const s = $('caseSearch').value.trim().toLowerCase();
+  fillCaseSelect(caseLinks.filter(c=>String(c.no)===s || c.url.toLowerCase().includes(s)));
+});
+$('randomCaseBtn').addEventListener('click', ()=>{
+  const o = $('caseSelect').options;
+  if(!o.length) return;
+  $('caseSelect').selectedIndex = Math.floor(Math.random()*o.length);
+  $('loadCaseBtn').click();
+});
+function jsonp(url){
+  return new Promise((resolve, reject)=>{
+    const cb = 'vrcb' + Date.now();
+    const s = document.createElement('script');
+    const t = setTimeout(()=>{ cleanup(); reject(new Error('timeout')); }, 15000);
+    function cleanup(){ clearTimeout(t); delete window[cb]; s.remove(); }
+    window[cb] = (d)=>{ cleanup(); resolve(d); };
+    s.onerror = ()=>{ cleanup(); reject(new Error('blocked')); };
+    s.src = url + '&callback=' + cb;
+    document.head.appendChild(s);
+  });
+}
+async function fetchPost(pageUrl){
+  const u = new URL(pageUrl);
+  const feed = `https://${u.host}/feeds/posts/default?alt=%ALT%&path=${encodeURIComponent(u.pathname)}`;
+  let data;
+  try{
+    const r = await fetch(feed.replace('%ALT%','json'));
+    if(!r.ok) throw new Error(r.status);
+    data = await r.json();
+  }catch(e){
+    data = await jsonp(feed.replace('%ALT%','json-in-script'));   // Blogger feeds support JSONP (no CORS needed)
+  }
+  const entry = data && data.feed && data.feed.entry && data.feed.entry[0];
+  if(!entry) throw new Error('Post not found in the Blogger feed.');
+  return {title: entry.title.$t, html: (entry.content && entry.content.$t) || ''};
+}
+const bigger = (s)=> s.replace(/\/(s\d+|w\d+-h\d+)(-[a-z]+)*\//, '/s1024/').replace(/=(s|w)\d+(-h\d+)?(-[a-z]+)*$/, '=s1024');
+function extractPost(html){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const images = [];
+  doc.querySelectorAll('img').forEach(img=>{
+    const a = img.closest('a');
+    let src = (a && /\.(jpe?g|png|webp|gif)/i.test(a.getAttribute('href')||'')) ? a.getAttribute('href') : img.getAttribute('src');
+    if(!src) return;
+    if(src.startsWith('//')) src = 'https:' + src;
+    const full = bigger(src);
+    if(!images.some(i=>i.full===full)) images.push({thumb: img.getAttribute('src') || full, full});
+  });
+  doc.querySelectorAll('script,style,img').forEach(n=>n.remove());
+  doc.querySelectorAll('br').forEach(b=>b.replaceWith('\n'));
+  doc.querySelectorAll('p,div,li,tr,h1,h2,h3,h4').forEach(n=>n.append('\n'));
+  const text = doc.body.textContent.replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n\n').trim();
+  return {text, images};
+}
+$('loadCaseBtn').addEventListener('click', async ()=>{
+  const url = $('caseSelect').value;
+  if(!url) return;
+  $('caseStatus').textContent = 'Loading case…';
+  $('imgGrid').innerHTML = '';
+  try{
+    const post = await fetchPost(url);
+    const {text, images} = extractPost(post.html);
+    const full = post.title + '\n\n' + text;
+    $('caseText').value = full.slice(0, 20000);
+    saveCaseText($('caseText').value);
+    $('caseStatus').textContent = `${post.title} — ${text.length} characters, ${images.length} image${images.length===1?'':'s'}.`;
+    renderGrid(images.map(im=>({srcs:[im.thumb], full:im.full})));
+    state.image = null; setKey(null); autoFill($('caseText').value);
+    $('imgStatus').textContent = images.length ? 'Select an image above.' : 'No images in this case — upload your own below.';
+    if(images.length) selectImage($('imgGrid').querySelector('img'));
+  }catch(e){
+    $('caseStatus').textContent = 'Could not load that case: ' + e.message + ' — paste the text and upload the image instead.';
+  }
+});
+
+/* ---------- images: downscale to <=1024px JPEG so every provider accepts it ---------- */
+async function blobToPayload(blob){
+  const bmp = await createImageBitmap(blob);
+  const scale = Math.min(1, 1024 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(bmp.width*scale); c.height = Math.round(bmp.height*scale);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return {mime:'image/jpeg', b64: c.toDataURL('image/jpeg', 0.85).split(',')[1]};
+}
+function confirmRestart(){
+  if(state.runKind && !confirm('Changing the image restarts the session. Continue?')) return false;
+  if(state.runKind) resetRun();
+  hintLevel = 0;
+  return true;
+}
+async function selectImage(el, key){
+  if(!confirmRestart()) return;
+  setKey(key);
+  $('imgGrid').querySelectorAll('img').forEach(i=>i.classList.remove('sel'));
+  el.classList.add('sel');
+  $('imgStatus').textContent = 'Preparing image…';
+  const url = el.dataset.full;
+  try{
+    const r = await fetch(url);
+    if(!r.ok) throw new Error(r.status);
+    state.image = await blobToPayload(await r.blob());
+    $('imgStatus').textContent = 'Image ready.';
+  }catch(e){
+    state.image = {url};   // CORS blocked: Claude / ChatGPT / Other can still take the URL; Gemini will ask for an upload
+    $('imgStatus').textContent = 'Browser could not download this image, so its link will be sent instead (Gemini needs an upload).';
+  }
+}
+$('imgFile').addEventListener('change', async (e)=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  if(!confirmRestart()) { e.target.value=''; return; }
+  setKey(null);
+  $('imgGrid').querySelectorAll('img').forEach(i=>i.classList.remove('sel'));
+  try{
+    state.image = await blobToPayload(f);
+    $('imgStatus').textContent = 'Uploaded: ' + f.name;
+  }catch(err){ $('imgStatus').textContent = 'Could not read that image: ' + err.message; }
+  e.target.value = '';
+});
+
+/* ---------- shared helpers for image sources ---------- */
+const rand = (a)=> a[Math.floor(Math.random()*a.length)];
+let autoFilled = '';
+function autoFill(text){ autoFilled = text; }
+$('caseText').addEventListener('input', ()=>{ saveCaseText($('caseText').value); });
+function setKey(key){
+  state.answerKey = key || null;
+  $('spoiler').style.display = key ? '' : 'none';
+  $('spoiler').open = false;
+  $('spoilerBody').textContent = key || '';
+}
+function renderGrid(items){
+  const g = $('imgGrid');
+  g.innerHTML = '';
+  items.forEach((it,i)=>{
+    const img = document.createElement('img');
+    img.alt = 'image ' + (i+1);
+    img.referrerPolicy = 'no-referrer';
+    img.loading = 'lazy';
+    if(it.key) img.dataset.key = it.key;
+    let n = 0;
+    const apply = ()=>{ img.src = it.srcs[n]; img.dataset.full = it.full || it.srcs[n]; };
+    img.addEventListener('error', ()=>{ if(n < it.srcs.length-1){ n++; apply(); } else img.style.opacity = '.25'; });
+    apply();
+    img.addEventListener('click', ()=> selectImage(img, img.dataset.key));
+    g.appendChild(img);
+  });
+}
+document.querySelectorAll('#srcTabs .tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('#srcTabs .tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    ['library','lit','commons'].forEach(k=>{ $('src' + k[0].toUpperCase() + k.slice(1)).style.display = tab.dataset.src===k ? '' : 'none'; });
+  });
+});
+const strip = (s)=> (s||'').replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
+
+/* ---------- Literature: Europe PMC open-access case reports ---------- */
+const EPMC = 'https://www.ebi.ac.uk/europepmc/webservices/rest';
+const LIT_TOPICS = ['erythema nodosum','herpes zoster','psoriasis','pneumothorax','pleural effusion','pulmonary tuberculosis','cellulitis','clubbing','goiter','Stevens-Johnson syndrome','leprosy','vitiligo','dermatomyositis','aortic dissection','acute pancreatitis','ischemic stroke','tinea','scabies','pemphigus','Graves ophthalmopathy','Kaposi sarcoma','osteomyelitis','pericardial effusion','hydronephrosis','ascites'];
+let litHits = [];
+async function litSearch(topic){
+  $('litStatus').textContent = 'Searching Europe PMC…';
+  const q = `(${topic}) AND OPEN_ACCESS:y AND HAS_FT:y AND PUB_TYPE:"case reports"`;
+  const r = await fetch(`${EPMC}/search?query=${encodeURIComponent(q)}&format=json&resultType=core&pageSize=40`);
+  if(!r.ok) throw new Error('Europe PMC ' + r.status);
+  const d = await r.json();
+  litHits = ((d.resultList && d.resultList.result) || [])
+    .filter(x=>x.pmcid && /^cc/i.test(x.license||''))
+    .map(x=>({pmcid:x.pmcid, journal:x.journalTitle||'', year:x.pubYear||'', title:x.title||'', abstract:strip(x.abstractText), license:x.license, doi:x.doi||'', authors:x.authorString||''}));
+  $('litSelect').innerHTML = litHits.map((x,i)=>`<option value="${i}">#${i+1} — ${x.pmcid} · ${x.journal.slice(0,30)} · ${x.year}</option>`).join('');
+  $('litStatus').textContent = litHits.length ? `${litHits.length} openly licensed case reports for "${topic}" (titles hidden to avoid spoilers).` : `No openly licensed case reports with full text found for "${topic}".`;
+  return litHits.length;
+}
+function secTitle(s){ const t = s.querySelector('title'); return t ? t.textContent : ''; }
+function nodeText(n){
+  const c = n.cloneNode(true);
+  c.querySelectorAll('fig,table-wrap,ref-list,label').forEach(x=>x.remove());
+  c.querySelectorAll('p,title').forEach(x=>x.append('\n'));
+  return c.textContent.replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n\n').trim();
+}
+async function litLoad(hit){
+  $('litStatus').textContent = 'Loading case report…';
+  const r = await fetch(`${EPMC}/${hit.pmcid}/fullTextXML`);
+  if(!r.ok) throw new Error('Full text ' + r.status);
+  const doc = new DOMParser().parseFromString(await r.text(), 'text/xml');
+  const bad = /intro|discussion|conclusion|background|literature|review|ethic|consent|conflict|acknowledg|funding|abbreviation/i;
+  const good = /case|present|history|patient|clinical|examination|investigation|finding|report|description/i;
+  const secs = [...doc.querySelectorAll('body > sec')];
+  let chosen = secs.filter(s=>good.test(secTitle(s)) && !bad.test(secTitle(s)));
+  if(!chosen.length) chosen = secs.filter(s=>!bad.test(secTitle(s))).slice(0,2);
+  let text = chosen.map(nodeText).join('\n\n').trim();
+  if(!text){ const b = doc.querySelector('body'); text = b ? nodeText(b).slice(0,4000) : ''; }
+  const figs = [];
+  doc.querySelectorAll('fig').forEach(f=>{
+    const g = f.querySelector('graphic');
+    const href = g && (g.getAttribute('xlink:href') || g.getAttributeNS('http://www.w3.org/1999/xlink','href'));
+    if(!href) return;
+    const label = (f.querySelector('label')||{}).textContent || 'Figure';
+    const cap = ((f.querySelector('caption')||{}).textContent || '').replace(/\s+/g,' ').trim();
+    const base = `https://europepmc.org/articles/${hit.pmcid}/bin/${href}`;
+    const key = `Source: ${hit.authors}. "${hit.title}". ${hit.journal} ${hit.year}. doi:${hit.doi} · ${hit.pmcid} · licence: ${hit.license}\n${label} legend: ${cap}\nAbstract: ${hit.abstract}`;
+    figs.push({srcs:[base+'.jpg', base+'.png', base+'.gif'], key});
+  });
+  if(!figs.length) return false;
+  const body = 'Case presentation (from a published open-access case report; title, abstract and figure legends withheld):\n\n' + text.slice(0, 7000);
+  $('caseText').value = body; autoFill(body); saveCaseText(body);
+  state.image = null; setKey(null);
+  renderGrid(figs);
+  $('litStatus').textContent = `Case loaded — ${figs.length} figure${figs.length===1?'':'s'}. Note: details in the case text can still hint at the diagnosis.`;
+  $('imgStatus').textContent = 'Select an image above.';
+  selectImage($('imgGrid').querySelector('img'), figs[0].key);
+  return true;
+}
+$('litSearchBtn').addEventListener('click', async ()=>{
+  const t = $('litTopic').value.trim();
+  if(!t) return alert('Enter a topic, or press Random.');
+  try{ await litSearch(t); }catch(e){ $('litStatus').textContent = 'Search failed: ' + e.message; }
+});
+$('litLoadBtn').addEventListener('click', async ()=>{
+  const hit = litHits[+$('litSelect').value];
+  if(!hit) return;
+  try{ if(!(await litLoad(hit))) $('litStatus').textContent = 'That report has no usable figures — try another.'; }
+  catch(e){ $('litStatus').textContent = 'Could not load that report: ' + e.message; }
+});
+$('litRandomBtn').addEventListener('click', async ()=>{
+  const topic = $('litTopic').value.trim() || rand(LIT_TOPICS);
+  try{
+    if(!(await litSearch(topic))) return;
+    const order = litHits.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,6);
+    for(const i of order){
+      $('litSelect').value = String(i);
+      try{ if(await litLoad(litHits[i])) return; }catch(e){}
+    }
+    $('litStatus').textContent = 'Tried several reports without usable figures — press Random again.';
+  }catch(e){ $('litStatus').textContent = 'Random failed: ' + e.message; }
+});
+
+/* ---------- Wikimedia Commons ---------- */
+const COM_TOPICS = ['dermatology clinical photograph','chest radiograph pneumothorax','ECG myocardial infarction','CT brain hemorrhage','fundus photograph retinopathy','skin rash','abdominal radiograph obstruction','MRI knee','echocardiogram','blood smear','tongue lesion','hand deformity arthritis','goitre','fracture x-ray','pneumonia chest x-ray'];
+let comItems = [];
+async function comSearch(topic){
+  $('comStatus').textContent = 'Searching Wikimedia Commons…';
+  const u = 'https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrlimit=30&gsrsearch=' +
+    encodeURIComponent(topic + ' filetype:bitmap') + '&prop=imageinfo&iiprop=url|extmetadata|mime&iiurlwidth=1024&format=json&formatversion=2&origin=*';
+  const r = await fetch(u);
+  if(!r.ok) throw new Error('Commons ' + r.status);
+  const d = await r.json();
+  const pages = (d.query && d.query.pages) || [];
+  comItems = pages.map(p=>{
+    const ii = p.imageinfo && p.imageinfo[0];
+    if(!ii || !/^image\/(jpeg|png)$/.test(ii.mime||'')) return null;
+    const m = ii.extmetadata || {}, v = k => strip(m[k] && m[k].value);
+    return {thumb: ii.thumburl || ii.url, key: `Source: Wikimedia Commons file "${(p.title||'').replace(/^File:/,'')}" — ${ii.descriptionurl}\nAuthor: ${v('Artist')} · licence: ${v('LicenseShortName')}\nDescription: ${v('ImageDescription')}`};
+  }).filter(Boolean);
+  renderGrid(comItems.map(x=>({srcs:[x.thumb], key:x.key})));
+  $('comStatus').textContent = comItems.length ? `${comItems.length} images for "${topic}". Click one to select (descriptions are hidden as an answer key).` : `No images found for "${topic}".`;
+  return comItems.length;
+}
+const IMAGE_ONLY = '(No clinical vignette for this image — image-only session. The learner should describe what is visible and reason about possible clinical contexts. They may add history below.)';
+function comNote(){
+  if(!$('caseText').value.trim() || $('caseText').value === autoFilled){ $('caseText').value = IMAGE_ONLY; autoFill(IMAGE_ONLY); }
+}
+// Commons clicks: add the image-only note when there is no vignette yet
+$('imgGrid').addEventListener('click', (e)=>{ if(e.target.tagName==='IMG' && document.querySelector('#srcTabs .tab.active').dataset.src==='commons') comNote(); });
+$('comSearchBtn').addEventListener('click', async ()=>{
+  const t = $('comTopic').value.trim();
+  if(!t) return alert('Enter a topic, or press Random.');
+  state.image = null; setKey(null);
+  try{ await comSearch(t); }catch(e){ $('comStatus').textContent = 'Search failed: ' + e.message; }
+});
+$('comRandomBtn').addEventListener('click', async ()=>{
+  const topic = $('comTopic').value.trim() || rand(COM_TOPICS);
+  state.image = null; setKey(null);
+  try{
+    if(!(await comSearch(topic))) return;
+    const imgs = [...$('imgGrid').querySelectorAll('img')];
+    const el = rand(imgs);
+    comNote();
+    selectImage(el, el.dataset.key);
+  }catch(e){ $('comStatus').textContent = 'Random failed: ' + e.message; }
+});
+
+loadCaseLinks();
+</script>
+
+
+</body>
+</html>
