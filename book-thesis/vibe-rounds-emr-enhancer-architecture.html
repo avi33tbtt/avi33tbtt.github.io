@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Repository-grounded architecture documentation for Vibe Rounds EMR Enhancer, its clinical data model, reusable knowledge, pathways, interoperability and CCIS integration.">
+<title>Vibe Rounds EMR Enhancer — System Architecture</title>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({startOnLoad:true, theme:'neutral', securityLevel:'strict',
+    flowchart:{htmlLabels:true, curve:'basis'}, er:{layoutDirection:'TB', useMaxWidth:true},
+    sequence:{useMaxWidth:true}});
+</script>
+<style>
+:root{--ink:#172536;--muted:#596b7d;--line:#d9e1e8;--paper:#fff;--wash:#f3f6f9;--blue:#245a83;--teal:#27766f;--gold:#946b24;--purple:#69528b;--red:#9a4d4d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#edf1f5;color:var(--ink);font:16px/1.62 system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{max-width:1180px;margin:auto;background:var(--paper);box-shadow:0 8px 36px #20304012}
+header{padding:64px 7% 48px;background:linear-gradient(135deg,#102b43,#234f6c);color:#fff}
+.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.76rem;font-weight:700;color:#b9d7e8}
+h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.08;margin:.6rem 0 1rem;max-width:900px}
+header p{font-size:1.12rem;color:#e0edf4;max-width:850px}
+.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.meta span{border:1px solid #ffffff50;border-radius:99px;padding:5px 12px;font-size:.82rem}
+main{padding:32px 7% 70px}.intro{font-size:1.08rem;color:#34495b;max-width:950px}
+nav{background:var(--wash);padding:22px 26px;border:1px solid var(--line);border-radius:12px;margin:28px 0 42px}
+nav strong{display:block;margin-bottom:8px}nav ul{columns:2;margin:0;padding-left:20px}nav a{color:var(--blue);text-decoration:none}nav a:hover{text-decoration:underline}
+section{margin:48px 0;scroll-margin-top:20px}h2{font-size:1.75rem;line-height:1.2;border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+h3{font-size:1.2rem;margin:28px 0 10px;color:#203f58}h4{margin:18px 0 6px}
+p{margin:10px 0 14px}.lead{font-size:1.05rem;color:#34495b}
+.callout{border-left:4px solid var(--teal);background:#eef7f5;padding:16px 20px;border-radius:0 9px 9px 0;margin:20px 0}
+.caution{border-left-color:var(--gold);background:#fbf6e9}.critical{border-left-color:var(--red);background:#fbefef}
+.diagram{overflow-x:auto;background:#fbfcfd;border:1px solid var(--line);border-radius:12px;padding:22px 14px;margin:20px 0}
+.mermaid{min-width:650px;text-align:center}.diagram-note{font-size:.88rem;color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:20px 0}
+.tile{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fff}.tile b{display:block;color:#214d6b;margin-bottom:5px}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.94rem}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}th{background:#f0f4f7;color:#233e53}
+code{background:#f0f3f6;padding:2px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--blue)}.status{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.77rem;font-weight:700;white-space:nowrap}
+.built{background:#e5f3eb;color:#21613d}.partial{background:#fff2d8;color:#805b12}.planned{background:#e9edf3;color:#526273}.unknown{background:#f8e8e8;color:#914747}
+ul,ol{padding-left:24px}li{margin:5px 0}
+.refs li{margin:9px 0}.small{font-size:.88rem;color:var(--muted)}
+footer{background:#f1f4f7;padding:28px 7%;color:var(--muted);font-size:.88rem}
+@media(max-width:700px){main{padding:24px 5% 50px}header{padding:44px 5% 36px}nav ul{columns:1}.diagram{padding:12px 6px}}
+@media print{body{background:#fff}.shell{box-shadow:none;max-width:none}header{background:#173a55!important;print-color-adjust:exact}nav{break-inside:avoid}.diagram{break-inside:avoid}.mermaid{min-width:0}a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="eyebrow">Vibe Rounds · Technical Architecture</div>
+  <h1>EMR Enhancer<br>System Architecture</h1>
+  <p>A repository-grounded account of the clinical data model, reusable clinical knowledge, pathway composition, contextual documentation, standards-based interoperability and the EMR–CCIS exchange boundary.</p>
+  <div class="meta"><span>Architecture reference</span><span>25 November 2026</span><span>Implementation-aware</span><span>Standalone HTML</span></div>
+</header>
+<main>
+<p class="intro">The Vibe Rounds EMR Enhancer is best understood as a clinical information platform with a governed knowledge layer and a controlled intelligence-exchange boundary. It is not simply a collection of dynamic forms. Its central architectural move is to keep patient-specific clinical records separate from reusable, versioned clinical definitions, then connect them through explicit case applications and traceable data exchange.</p>
+
+<div class="callout"><b>Architecture thesis.</b> Patient records describe what happened to a particular patient. Element sets and pathways describe reusable clinical knowledge. Case-level pins record exactly which version of that knowledge was applied. The contextual export boundary packages a controlled view of the case for CCIS without giving the analytics engine unrestricted write access to the source clinical record.</div>
+
+<nav><strong>Contents</strong><ul>
+<li><a href="#overview">1. System overview</a></li><li><a href="#database">2. Database and entity model</a></li>
+<li><a href="#knowledge">3. Reusable knowledge lifecycle</a></li><li><a href="#clinical">4. Clinical documentation lifecycle</a></li>
+<li><a href="#context">5. Contextual elements</a></li><li><a href="#interop">6. Interoperability architecture</a></li>
+<li><a href="#exchange">7. EMR–CCIS exchange lifecycle</a></li><li><a href="#governance">8. Security and governance</a></li>
+<li><a href="#status">9. Implementation status and limitations</a></li><li><a href="#contribution">10. Architectural contribution</a></li>
+<li><a href="#references">11. Repository references</a></li>
+</ul></nav>
+
+<section id="overview">
+<h2>1. Overall system architecture</h2>
+<p>The application can be viewed as five cooperating areas: user interaction, server-side application services, persistent clinical and knowledge data, standards-based interoperability, and the separate CCIS intelligence application. Authentication, permissions, validation and audit are cross-cutting controls.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TB
+ U["Clinical users<br/>Administrator · Doctor · Nurse · Viewer"]
+ UI["EMR Enhancer interface<br/>Patients · Cases · Library · Pathways · Notes"]
+ subgraph APP["Application and API layer — Node.js / Express"]
+  AUTH["Authentication and sessions"]
+  RBAC["Server-side permissions"]
+  CASE["Patient and case operations"]
+  KNOW["Element-set and pathway governance"]
+  OBS["Observation and event operations"]
+  CTX["Context envelope builder"]
+  AI["Server-side AI boundary"]
+  AUD["Audit and transaction services"]
+ end
+ subgraph DB["PostgreSQL persistence"]
+  P["Patients and encounters"]
+  C["Clinical cases and links"]
+  E["Element sets and versions"]
+  R["Review and approval records"]
+  W["Pathways and versions"]
+  A["Case-applied set/pathway pins"]
+  O["Observations and clinical events"]
+  N["Notes and amendments"]
+  X["Context export records"]
+  CR["CCIS runs and acknowledgements"]
+  L["Audit log"]
+ end
+ subgraph INTEROP["Interoperability and exchange"]
+  T["Terminology registry and bindings"]
+  SDC["FHIR SDC / Questionnaire representation"]
+  FHIR["FHIR resource mapping"]
+  ENV["Versioned context envelope"]
+  CCIS["Separate CCIS application"]
+  RUN["Validated CCIS run record"]
+ end
+ U --> UI --> AUTH --> RBAC
+ RBAC --> CASE
+ RBAC --> KNOW
+ RBAC --> OBS
+ RBAC --> CTX
+ CASE <--> P
+ CASE <--> C
+ KNOW <--> E
+ KNOW <--> R
+ KNOW <--> W
+ OBS <--> O
+ OBS <--> N
+ CASE --> AUD
+ KNOW --> AUD
+ OBS --> AUD
+ CTX --> AUD
+ AUD --> L
+ E --> T --> SDC
+ SDC --> FHIR
+ C --> ENV
+ A --> ENV
+ O --> ENV
+ ENV --> X
+ ENV --> CCIS --> RUN --> CR
+ CR --> AUD
+ UI --> AI --> AUD
+ style DB fill:#eaf4ed,stroke:#39815c
+ style INTEROP fill:#edf2fb,stroke:#5375a5
+ style APP fill:#f5f1fa,stroke:#8467a5
+</pre></div>
+<p><b>Interpretation:</b> the browser is the interaction layer, not the source of truth for persisted clinical records. The Express API applies business rules and permissions. PostgreSQL stores the clinical record and governed knowledge. FHIR-related representations and the context envelope serve different exchange purposes. CCIS remains a separate application whose run records return through a controlled import route.</p>
+<div class="callout caution"><b>Diagram scope.</b> This is a logical architecture, not a claim that every box is a separate deployable service or that every FHIR resource mapping is complete. The repository is a modular Node/Express application with a PostgreSQL database.</div>
+</section>
+
+<section id="database">
+<h2>2. Database architecture and entity relationships</h2>
+<p>The central modelling distinction is between reusable definitions and patient-specific use of those definitions. A published element-set version is a reusable knowledge artefact. A case-applied set is a patient-case-specific pin to that exact version. Observations are recorded against the applied set and field definition, preserving the context in which the value was captured.</p>
+<div class="diagram"><pre class="mermaid">
+erDiagram
+ PATIENTS ||--o{ ENCOUNTERS : has
+ PATIENTS ||--o{ CLINICAL_CASES : has
+ CLINICAL_CASES ||--o{ CASE_ENCOUNTERS : links
+ ENCOUNTERS ||--o{ CASE_ENCOUNTERS : associated_with
+ ELEMENT_SETS ||--o{ ELEMENT_SET_VERSIONS : versions
+ ELEMENT_SET_VERSIONS ||--o{ ELEMENT_SET_REVIEWS : reviewed_through
+ PATHWAYS ||--o{ PATHWAY_VERSIONS : versions
+ PATHWAY_VERSIONS ||--o{ PATHWAY_VERSION_STEPS : contains
+ ELEMENT_SET_VERSIONS ||--o{ PATHWAY_VERSION_STEPS : referenced_by
+ CLINICAL_CASES ||--o{ CASE_APPLIED_SETS : applies
+ ELEMENT_SET_VERSIONS ||--o{ CASE_APPLIED_SETS : pinned_as
+ CLINICAL_CASES ||--o{ CASE_APPLIED_PATHWAYS : applies
+ PATHWAY_VERSIONS ||--o{ CASE_APPLIED_PATHWAYS : pinned_as
+ CASE_APPLIED_PATHWAYS ||--o{ CASE_APPLIED_SETS : creates
+ CASE_APPLIED_SETS ||--o{ OBSERVATIONS : contextualizes
+ CLINICAL_CASES ||--o{ OBSERVATIONS : records
+ CLINICAL_CASES ||--o{ CLINICAL_EVENTS : tracks
+ CLINICAL_CASES ||--o{ CASE_NOTES : documents
+ CASE_NOTES ||--o{ CASE_NOTE_AMENDMENTS : amended_by
+ CLINICAL_CASES ||--o{ CONTEXT_EXPORTS : exports
+ CLINICAL_CASES ||--o{ CCIS_RUNS : receives
+ CCIS_RUNS ||--o{ CCIS_RUN_ACKS : acknowledged_by
+</pre></div>
+<p class="small">The ER diagram is a conceptual relationship view. It intentionally avoids inventing a complete column-level schema for tables not inspected in full. The repository migrations and route implementations are authoritative for exact column names and constraints.</p>
+
+<h3>Core entity groups</h3>
+<table>
+<thead><tr><th>Group</th><th>Entities / records</th><th>Responsibility</th></tr></thead>
+<tbody>
+<tr><td>Identity and care</td><td>Patients, encounters</td><td>Represent patient identity within the application and care interactions over time.</td></tr>
+<tr><td>Clinical work unit</td><td>Clinical cases, case–encounter links, narrative entries</td><td>Provide a case-centred workspace and associate one case with relevant encounter(s).</td></tr>
+<tr><td>Reusable knowledge</td><td>Element sets, element-set versions, reviews</td><td>Store structured clinical definitions and their governed lifecycle.</td></tr>
+<tr><td>Care composition</td><td>Pathways, pathway versions, pathway steps</td><td>Compose ordered clinical steps that reference specific element-set versions.</td></tr>
+<tr><td>Case application</td><td>Case-applied sets, case-applied pathways</td><td>Record which published knowledge versions were applied to a particular case.</td></tr>
+<tr><td>Clinical record</td><td>Observations, clinical events, notes and amendments</td><td>Capture typed values, temporal events and documentation history.</td></tr>
+<tr><td>Intelligence exchange</td><td>Context exports, CCIS runs, acknowledgements</td><td>Record exported context, imported analytical run records and human acknowledgement.</td></tr>
+<tr><td>Governance</td><td>Users, roles, permissions, audit records</td><td>Establish actor identity, authorization and traceability.</td></tr>
+</tbody></table>
+
+<h3>Observation semantics</h3>
+<p>The observation route validates submitted values against the exact pinned element-set version. The implementation accepts supported field types such as text, number, integer, boolean, select and datetime, and handles explicitly unknown values. It does not silently coerce a value into another type or convert an incompatible unit. Derived fields are not stored as ordinary observations.</p>
+<p>Observation provenance includes the applied-set relationship, field key, value type, effective time, recorded time, source type, status and recording actor. Corrections are represented as new records linked to the prior record; erroneous entries are marked rather than physically erased.</p>
+<div class="callout"><b>Why the separation matters.</b> A value such as a blood pressure reading is not just a number. It has a patient case, a clinical field definition, a version of the definition, a unit, an effective time, a recording time, a source and an author. The data model makes those relationships explicit.</div>
+</section>
+
+<section id="knowledge">
+<h2>3. Reusable clinical knowledge: authoring, review, versioning and pathways</h2>
+<p>Element sets are reusable definitions. They can express structured fields, types, options, units, rationale and coding bindings. Their lifecycle is governed: draft definitions are linted, submitted for review, approved and published as versions. Pathways compose these published versions into ordered workflows.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TB
+ subgraph AUTHOR["1 · Knowledge authoring"]
+  CREATE["Create element set"]
+  KIND{"Definition category"}
+  DISEASE["Disease-oriented"]
+  CARE["Care-oriented"]
+  TEMPLATE["Template"]
+  CUSTOM["Other / custom"]
+  DEF["Declarative definition<br/>Fields · types · options · units<br/>rationale · terminology bindings"]
+  CREATE --> KIND
+  KIND --> DISEASE
+  KIND --> CARE
+  KIND --> TEMPLATE
+  KIND --> CUSTOM
+  DISEASE --> DEF
+  CARE --> DEF
+  TEMPLATE --> DEF
+  CUSTOM --> DEF
+ end
+ subgraph GOVERN["2 · Governance and versioning"]
+  DRAFT["Draft version"]
+  LINT["Structural lint"]
+  REVIEW["Submit for review"]
+  APPROVE["Reviewer decision"]
+  PUBLISH["Approved / published version"]
+  HASH["Version identity and checksum"]
+  DRAFT --> LINT --> REVIEW --> APPROVE --> PUBLISH --> HASH
+ end
+ subgraph COMPOSE["3 · Pathway composition"]
+  PW["Create pathway"]
+  PV["Pathway version"]
+  STEPS["Ordered pathway steps"]
+  PIN["References to exact published set versions"]
+  PW --> PV --> STEPS --> PIN
+ end
+ DEF --> DRAFT
+ HASH --> PIN
+ subgraph APPLY["4 · Case application"]
+  CASE["Clinical case"]
+  AP["Apply pathway"]
+  PINS["Case-applied version pins"]
+  VALUES["Record observations"]
+  CASE --> AP --> PINS --> VALUES
+ end
+ PIN --> AP
+</pre></div>
+<h3>Versioning and reproducibility</h3>
+<ul>
+<li><b>Stable identity:</b> an element set remains the same conceptual artefact as it evolves through versions.</li>
+<li><b>Immutable published versions:</b> publication creates a governed version rather than silently changing a version already in use.</li>
+<li><b>Review before publication:</b> the review workflow separates authorship from approval and includes role-based reviewer rules.</li>
+<li><b>Exact pathway references:</b> pathway steps refer to specific element-set versions, not merely the latest version of a set.</li>
+<li><b>Case pins:</b> applying a set or pathway creates case-specific references to the selected versions.</li>
+<li><b>Explicit upgrade:</b> a newer version is applied as a deliberate update; the previous application is superseded rather than rewritten.</li>
+<li><b>Withdrawal without erasure:</b> a set can stop accepting new values while its prior application and observations remain traceable.</li>
+</ul>
+<h3>Illustrative example</h3>
+<p>A hypertension pathway could contain an initial assessment set v2, a blood-pressure monitoring set v3 and a follow-up care set v1. Applying the pathway to a case pins those versions. If the monitoring set later advances to v4, the existing case does not silently inherit v4. A clinician or authorized workflow must explicitly update the application.</p>
+<div class="callout caution"><b>Terminology note.</b> Disease, care and template are useful conceptual categories for explaining the library. The precise supported kinds and validation rules should be taken from the current element-set schema and seed definitions rather than assumed from this explanatory diagram.</div>
+</section>
+
+<section id="clinical">
+<h2>4. Clinical documentation lifecycle</h2>
+<p>The patient and encounter establish the care context. A clinical case provides a persistent unit of work. The clinician selects reusable knowledge, applies a published version or pathway, then records observations against the pinned definition. The system preserves the timeline and correction history.</p>
+<div class="diagram"><pre class="mermaid">
+sequenceDiagram
+ actor Clinician
+ participant UI as EMR interface
+ participant API as Express API
+ participant DB as PostgreSQL
+ participant LIB as Knowledge library
+ Clinician->>UI: Select patient
+ UI->>API: Load patient and encounters
+ API->>DB: Retrieve patient / encounter
+ DB-->>API: Patient context
+ API-->>UI: Patient workspace
+ Clinician->>UI: Open or create clinical case
+ UI->>API: Create / retrieve case
+ API->>DB: Persist case and encounter links
+ DB-->>API: Case identity
+ Clinician->>UI: Choose published set or pathway
+ UI->>API: Request available versions
+ API->>LIB: Retrieve published definitions
+ LIB-->>API: Versioned definitions
+ API-->>UI: Available clinical structures
+ Clinician->>UI: Apply pathway
+ UI->>API: Apply pathway version
+ API->>DB: Pin exact set versions
+ DB-->>API: Applied-set identities
+ Clinician->>UI: Enter observations
+ UI->>API: Submit typed values
+ API->>API: Validate against pinned version
+ API->>DB: Append observation and event
+ DB-->>API: Persisted record
+ API-->>UI: Updated case trajectory
+ Clinician->>UI: Correct an entry if needed
+ UI->>API: Submit correction / entered-in-error
+ API->>DB: Preserve original; append correction or state
+ DB-->>API: Updated history
+</pre></div>
+<h3>What the lifecycle achieves</h3>
+<div class="grid">
+<div class="tile"><b>Contextual structure</b>Documentation is organized around a case and the knowledge applied to it, rather than being only a loose collection of forms.</div>
+<div class="tile"><b>Temporal meaning</b>Effective time and recorded time are distinct, supporting a more faithful clinical timeline.</div>
+<div class="tile"><b>Traceable change</b>Corrections and erroneous entries preserve the original record and its history.</div>
+<div class="tile"><b>Version-aware records</b>Historical observations remain interpretable against the definition version used when they were recorded.</div>
+</div>
+</section>
+
+<section id="context">
+<h2>5. Contextual elements and multi-context cases</h2>
+<p>A clinical context is a useful conceptual lens for selecting relevant knowledge and interpreting observations. It is not necessarily identical to a diagnosis code. A patient may have multiple simultaneous clinical concerns, and a case can bring together the relevant documentation and monitoring structures.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TD
+ P["Patient"] --> CASE["Clinical case"]
+ CASE --> C1["Context: diabetes"]
+ CASE --> C2["Context: chronic kidney disease"]
+ CASE --> C3["Context: hypertension"]
+ C1 --> S1["Diabetes element set"]
+ C2 --> S2["Renal monitoring element set"]
+ C3 --> S3["Blood-pressure element set"]
+ C1 --> W1["Diabetes pathway"]
+ C2 --> W2["Renal monitoring pathway"]
+ C3 --> W3["BP monitoring pathway"]
+ S1 --> SHARED["Shared case documentation"]
+ S2 --> SHARED
+ S3 --> SHARED
+ W1 --> SHARED
+ W2 --> SHARED
+ W3 --> SHARED
+ SHARED --> O["Observations"]
+ SHARED --> E["Clinical events"]
+ O --> T["Longitudinal case trajectory"]
+ E --> T
+ T --> CCIS["CCIS contextual analytics"]
+</pre></div>
+<p>For a patient with diabetes, CKD and hypertension, a case may need diabetes-specific documentation, renal monitoring and blood-pressure monitoring. These are not three separate patients or necessarily three separate cases. The case can connect multiple relevant clinical structures to a shared longitudinal record.</p>
+<div class="callout caution"><b>Implementation boundary.</b> The repository supports explicit element-set and pathway applications to cases. The richer idea of a general-purpose context ontology, automatic context inference, cross-context dependency resolution and unified multi-context analytics should be treated as an evolving design direction unless a corresponding implementation is verified in the code.</div>
+</section>
+
+<section id="interop">
+<h2>6. Interoperability architecture: FHIR, SDC and terminology</h2>
+<p>There are two distinct interoperability problems. The first is representing and exchanging clinical information using established healthcare standards. The second is packaging a bounded, case-specific context for the CCIS intelligence workflow. These mechanisms complement one another; they are not substitutes.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TB
+ subgraph SOURCE["EMR Enhancer source model"]
+  LIB["Versioned clinical element sets"]
+  BIND["Field-level terminology bindings"]
+  VERIFY["Code-system registry / verification"]
+  CASE["Clinical case"]
+  PINS["Applied set and pathway versions"]
+  OBS["Observations and clinical events"]
+ end
+ subgraph FHIR["Standards representation"]
+  SDC["FHIR SDC / Questionnaire generation"]
+  Q["Questionnaire"]
+  QR["QuestionnaireResponse"]
+  MAP["FHIR resource mapping"]
+  RES["FHIR resource representations"]
+ end
+ subgraph CONTEXT["Contextual intelligence exchange"]
+  BUILD["Context envelope builder"]
+  CONTRACT["Versioned envelope contract"]
+  INTEGRITY["Case reference + SHA-256 integrity"]
+  EXPORT["Audited context export"]
+ end
+ LIB --> BIND --> VERIFY --> SDC --> Q
+ Q --> QR
+ CASE --> MAP
+ PINS --> MAP
+ OBS --> MAP
+ MAP --> RES
+ CASE --> BUILD
+ PINS --> BUILD
+ OBS --> BUILD
+ BUILD --> CONTRACT --> INTEGRITY --> EXPORT
+</pre></div>
+<table>
+<thead><tr><th>Representation</th><th>Intended role</th><th>Important qualification</th></tr></thead>
+<tbody>
+<tr><td>FHIR Questionnaire</td><td>Represent a structured questionnaire or definition.</td><td>SDC profile conformance and supported features need explicit testing.</td></tr>
+<tr><td>FHIR QuestionnaireResponse</td><td>Represent answers captured against a questionnaire.</td><td>Mapping must preserve the relationship to the definition and its version.</td></tr>
+<tr><td>FHIR Patient / Encounter</td><td>Represent patient and care-interaction identity.</td><td>Must be mapped and validated against the target FHIR profile.</td></tr>
+<tr><td>FHIR Observation</td><td>Represent measurements and clinical findings.</td><td>Requires correct codes, units, status, effective time and provenance.</td></tr>
+<tr><td>FHIR Condition</td><td>Represent conditions or diagnoses.</td><td>Terminology and clinical-status semantics must be preserved.</td></tr>
+<tr><td>FHIR Provenance</td><td>Represent authorship and source history.</td><td>Should be tested against the actual author and amendment model.</td></tr>
+<tr><td>Context envelope</td><td>Provide a bounded case-context snapshot to CCIS.</td><td>This is a project-specific contract, not a FHIR resource or replacement for FHIR.</td></tr>
+</tbody></table>
+<h3>Terminology bindings</h3>
+<p>The element-set model can associate fields with code-system bindings. The code registry and verified-only export approach are intended to prevent unverified codes from being represented as verified clinical coding. The task tracker records nine code systems and notes that live terminology-server verification had not been tried at the time of that tracker entry.</p>
+<div class="callout caution"><b>Do not overstate standards conformance.</b> The repository contains FHIR SDC-oriented functionality and mapping work, but a comprehensive, production-conformant FHIR server or complete import/export implementation across Patient, Encounter, Condition, Observation, Questionnaire and QuestionnaireResponse should not be claimed without resource-level conformance tests and interoperability evidence.</div>
+</section>
+
+<section id="exchange">
+<h2>7. EMR → Context Envelope → CCIS → Run Record</h2>
+<p>This is a key architectural boundary. The EMR creates a context envelope from a consistent database snapshot. The export is audited and hashed. CCIS consumes that envelope and creates a run record. The EMR imports the run record only after validating its schema, case reference and connection to an envelope that the EMR actually exported for that case.</p>
+<div class="diagram"><pre class="mermaid">
+sequenceDiagram
+ participant Clinician
+ participant EMR as EMR Enhancer
+ participant DB as PostgreSQL
+ participant File as Context envelope JSON
+ participant CCIS as Separate CCIS app
+ participant Import as CCIS run import
+ Clinician->>EMR: Request case context export
+ EMR->>DB: Begin repeatable-read, read-only snapshot
+ EMR->>DB: Read case pins, pathways, observations and event count
+ DB-->>EMR: Consistent snapshot
+ EMR->>EMR: Build and validate envelope
+ EMR->>EMR: Compute SHA-256 of exact JSON bytes
+ EMR->>DB: Store export record and audit entry
+ DB-->>EMR: Commit
+ EMR-->>File: Download context envelope
+ File->>CCIS: Import envelope
+ CCIS->>CCIS: Validate contract and execute analysis
+ CCIS-->>File: Produce run record
+ File->>Import: Submit run record with envelope hash
+ Import->>Import: Validate run-record schema
+ Import->>Import: Verify case reference
+ Import->>DB: Verify envelope hash was exported for this case
+ Import->>DB: Store immutable run record and audit
+ DB-->>Import: Import result
+ Clinician->>EMR: Review and acknowledge run
+ EMR->>DB: Append acknowledgement
+</pre></div>
+<h3>Context envelope safeguards visible in the implementation</h3>
+<ul>
+<li>The case-context endpoint is permission-protected and does not accept query parameters.</li>
+<li>It reads one case snapshot in a repeatable-read, read-only transaction.</li>
+<li>It reads applied sets, applied pathways, observations and a count of clinical events.</li>
+<li>The event rows are counted but not exported by the inspected context route.</li>
+<li>Entered-in-error observations are excluded by the envelope-building contract.</li>
+<li>Patient identity and narrative are intentionally withheld from this export route.</li>
+<li>The export is limited to 50,000 observations.</li>
+<li>A configured context reference secret is required.</li>
+<li>The exact JSON body is SHA-256 hashed; the export row and audit entry are written before the file is sent.</li>
+<li>The audit record stores counts, hashes and withheld metadata, not clinical values.</li>
+</ul>
+<h3>CCIS run import safeguards</h3>
+<ul>
+<li>The imported record is validated against JSON schemas for the run-record contract and its component structures.</li>
+<li>The record must carry the envelope SHA-256 extension.</li>
+<li>The case reference must match the case reference generated for the target case.</li>
+<li>The EMR verifies that the envelope hash belongs to an export previously created for that same case.</li>
+<li>The run record is stored with its own canonical-JSON SHA-256 hash.</li>
+<li>Duplicate imports are handled idempotently using the case and run-record hash.</li>
+<li>The import path stores the run record; it does not write back to observations, notes, element sets or other clinical tables.</li>
+<li>Acknowledgements are separate records, attributed to the signed-in user.</li>
+</ul>
+<div class="callout"><b>Architectural significance.</b> CCIS is not granted direct authority to mutate the EMR's source clinical record. The exchange is snapshot-oriented and the return path is record-oriented. This supports analytical separation, provenance and controlled human review.</div>
+<div class="callout caution"><b>Known integration gap.</b> The inspected CCIS importer documents a hand-off extension for the envelope hash because the CCIS run record did not yet carry that hash natively. The integration therefore depends on this explicit extension being preserved across the hand-off.</div>
+</section>
+
+<section id="governance">
+<h2>8. Security, governance and data integrity</h2>
+<p>Security is not a single module. It is a set of controls applied across requests, clinical writes, knowledge publication, export and import.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TB
+ REQ["Incoming API request"]
+ SESSION["Session authentication"]
+ PERM["Server-side permission check"]
+ INPUT["Strict input and schema validation"]
+ TX["Database transaction"]
+ WRITE["Authorized persistent operation"]
+ AUDIT["Append-only audit event"]
+ REQ --> SESSION --> PERM --> INPUT --> TX --> WRITE --> AUDIT
+ subgraph DBGUARD["Cross-cutting database and application guarantees"]
+  IMM["Published-version immutability"]
+  APP["Append-only observation history"]
+  ERR["Entered-in-error rather than hard delete"]
+  HASH["Checksums and version integrity"]
+  ROLE["Restricted application DB role"]
+  BACKUP["Encrypted backup and restore procedures"]
+  CSP["Content Security Policy and output escaping"]
+  RATE["Rate limits and secure session cookies"]
+ end
+ TX --> DBGUARD
+</pre></div>
+<table>
+<thead><tr><th>Control</th><th>What it contributes</th></tr></thead>
+<tbody>
+<tr><td>Session-based actor identity</td><td>Author, amender and other actor identities are derived from the authenticated session, not trusted from request-body fields.</td></tr>
+<tr><td>Server-side permissions</td><td>Routes enforce permissions before sensitive operations.</td></tr>
+<tr><td>Strict request validation</td><td>Unexpected body fields and invalid values are rejected rather than silently accepted.</td></tr>
+<tr><td>Immutable published versions</td><td>Published knowledge cannot be silently rewritten.</td></tr>
+<tr><td>Append-only clinical observations</td><td>Corrections preserve prior records and the database blocks destructive changes.</td></tr>
+<tr><td>Audit trail</td><td>Important operations record actor, action and relevant metadata.</td></tr>
+<tr><td>Restricted DB role</td><td>The application role has restricted destructive privileges.</td></tr>
+<tr><td>Web security hardening</td><td>Escaping, CSP, secure cookies, headers and rate limiting reduce common application risks.</td></tr>
+<tr><td>Backup and recovery</td><td>Encrypted backup and restore scripts and procedures support recoverability.</td></tr>
+</tbody></table>
+<h3>AI boundary</h3>
+<p>The task tracker describes AI execution on the server rather than exposing a provider key in the browser, with a mock provider used for the recorded implementation stage. The broader architecture should keep AI proposals distinct from clinician-authored and verified clinical records. AI-derived or proposed content should be explicitly labelled, reviewed where appropriate and prevented from silently becoming authoritative patient data.</p>
+</section>
+
+<section id="status">
+<h2>9. Implementation status, evidence and limitations</h2>
+<p>The table below distinguishes capabilities recorded as implemented in the repository tracker from capabilities that are partial, not yet verified, or conceptual. “Implemented” here means repository implementation is recorded; it does not mean production clinical validation, regulatory clearance or successful live deployment has been established.</p>
+<table>
+<thead><tr><th>Capability</th><th>Status</th><th>Evidence / qualification</th></tr></thead>
+<tbody>
+<tr><td>Patient and encounter persistence</td><td><span class="status built">Implemented</span></td><td>Tracker records server, patient/encounter and audit foundations.</td></tr>
+<tr><td>Clinical case model and encounter links</td><td><span class="status built">Implemented</span></td><td>Case routes, migrations, permissions and same-patient link enforcement are recorded.</td></tr>
+<tr><td>Element sets and versioned definitions</td><td><span class="status built">Implemented</span></td><td>Server routes and migration for versioned element sets.</td></tr>
+<tr><td>Review and approval workflow</td><td><span class="status built">Implemented</span></td><td>Reviewer roles, no-self-review rule, approval and publication gate are recorded.</td></tr>
+<tr><td>Pathway versioning and composition</td><td><span class="status built">Implemented</span></td><td>Pathways and ordered versioned steps are represented in the application.</td></tr>
+<tr><td>Case-specific applied-set pins</td><td><span class="status built">Implemented</span></td><td>Exact version pinning, explicit update, withdrawal and version-diff UI are recorded.</td></tr>
+<tr><td>Observation persistence and validation</td><td><span class="status built">Implemented</span></td><td>Typed values validated against pinned definitions; append-only semantics and event history.</td></tr>
+<tr><td>Context envelope export</td><td><span class="status built">Implemented</span></td><td>Context route, schema builder, snapshot read, export hash and audit.</td></tr>
+<tr><td>CCIS run import and acknowledgement</td><td><span class="status built">Implemented</span></td><td>Schema validation, case/hash checks, immutable storage and acknowledgement routes.</td></tr>
+<tr><td>FHIR SDC / Questionnaire functionality</td><td><span class="status partial">Prototype implemented</span></td><td>SDC checkbox and code-picker functionality recorded; full profile conformance is not established.</td></tr>
+<tr><td>Terminology registry and verified-only export</td><td><span class="status partial">Implemented; live verification untested</span></td><td>Tracker records nine code systems; live tx.fhir.org verification was not tried.</td></tr>
+<tr><td>Comprehensive FHIR interoperability</td><td><span class="status unknown">Not established</span></td><td>Requires resource-by-resource mapping, profile validation and external interoperability testing.</td></tr>
+<tr><td>Advanced longitudinal and cohort analytics</td><td><span class="status planned">Evolving / separate CCIS scope</span></td><td>Do not infer complete analytics functionality from the EMR repository alone.</td></tr>
+<tr><td>Automatic multi-context inference</td><td><span class="status planned">Conceptual / not established</span></td><td>Explicit set and pathway application exists; automatic context inference is a separate capability.</td></tr>
+<tr><td>Production clinical deployment</td><td><span class="status unknown">Not established</span></td><td>Repository documentation identifies synthetic-data-only / non-clinical use; go-live checklist items remain to be evidenced.</td></tr>
+</tbody></table>
+
+<h3>Verification limitations recorded in the task tracker</h3>
+<ul>
+<li>The AI provider integration was recorded as using a mock provider; a real provider call had not been tried.</li>
+<li>The GitHub CI workflow was recorded as not yet run on GitHub.</li>
+<li>The restricted database role and some deployment/security work had not been tried on the hosted Render environment.</li>
+<li>The live terminology server had not been tried.</li>
+<li>The go-live checklist contained evidence/owner requirements, but the tracker noted that checklist items were not yet ticked.</li>
+</ul>
+<div class="callout critical"><b>Clinical safety and deployment statement.</b> This architecture document describes a software prototype and its repository implementation. It is not evidence of clinical effectiveness, regulatory compliance, validated decision support, production security or fitness for patient care. Use synthetic or appropriately governed test data until clinical, privacy, security, operational and regulatory requirements have been independently addressed.</div>
+</section>
+
+<section id="contribution">
+<h2>10. Architectural contribution and design interpretation</h2>
+<p>The system's most distinctive contribution is not any one screen or export format. It is the way the components are connected:</p>
+<div class="grid">
+<div class="tile"><b>1. Canonical clinical record</b>Patient, encounter, case, observation, event and note structures provide a persistent clinical information foundation.</div>
+<div class="tile"><b>2. Governed reusable knowledge</b>Element sets are versioned and reviewed independently of individual patient records.</div>
+<div class="tile"><b>3. Composable clinical pathways</b>Pathways assemble exact versions of reusable definitions into a reproducible sequence.</div>
+<div class="tile"><b>4. Context-aware application</b>Case pins connect the patient-specific record to the precise reusable knowledge applied.</div>
+<div class="tile"><b>5. Controlled intelligence exchange</b>A versioned context envelope enables a separate analytical engine to work on a bounded snapshot and return a verifiable run record.</div>
+</div>
+<h3>Why this differs from a conventional form-centric EMR</h3>
+<p>In a form-centric system, the form often acts as the main organizing object. Here, the form-like element set is a reusable, governed definition; the patient-specific application is separately recorded; and the resulting observations remain linked to the version used. This gives the system a route toward reproducibility, longitudinal interpretation and analytical reuse.</p>
+<h3>Relationship to the wider Vibe Rounds ecosystem</h3>
+<p>The EMR Enhancer is the clinical information and contextual capture side. CCIS is the separate clinical analytics and reasoning side. Vibe Rounds' broader Socratic learning and clinician-cognition direction can consume or work alongside these capabilities, but should not be conflated with the EMR's source-of-truth responsibilities or represented as an autonomous clinical decision-maker.</p>
+<div class="callout"><b>Concise thesis.</b> Vibe Rounds EMR Enhancer is a case-centred clinical information architecture that separates patient-specific records from governed, reusable clinical knowledge; connects them through version-pinned pathways and contextual documentation; and exposes a controlled, auditable exchange boundary to a separate clinical intelligence platform.</div>
+</section>
+
+<section id="references">
+<h2>11. Repository references and audit trail</h2>
+<p>These links point to the repository areas most relevant to the architecture. The implementation and task tracker should be checked again before making claims about the current deployed state.</p>
+<ul class="refs">
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App">Vibe Rounds — EMR Enhancer App repository</a> — source repository.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/README.md">README.md</a> — project purpose, setup and usage limitations.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/db.js">db.js</a> — database connection and transaction utilities.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/cases.js">cases.js</a> — clinical case routes and case persistence.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/sets.js">sets.js</a> — element-set library and version routes.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/pathways.js">pathways.js</a> — pathway functionality (check current branch/file path if reorganized).</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/observations.js">observations.js</a> — applied sets, typed observations and clinical event operations.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/context.js">context.js</a> — contextual export endpoint and snapshot construction.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/ccis-runs.js">ccis-runs.js</a> — CCIS run import, validation, storage and acknowledgement.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/blob/main/EMR_TASK_TRACKER.md">EMR_TASK_TRACKER.md</a> — task history and implementation status.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/tree/main/contracts">contracts/</a> — JSON schema contracts for context envelopes and run records.</li>
+<li><a href="https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App/tree/main/migrations">migrations/</a> — database schema migrations and constraints.</li>
+</ul>
+<p class="small">Prepared as an architecture synthesis from the repository material inspected on 25 November 2026. Diagrams are explanatory logical views; source code, migrations, contracts and current task tracker take precedence where a diagram and implementation differ.</p>
+</section>
+</main>
+<footer>
+<strong>Vibe Rounds · EMR Enhancer Architecture</strong><br>
+Architecture documentation · 25 November 2026 · Repository-grounded, with explicit implementation boundaries.
+</footer>
+</div>
+</body>
+</html>
